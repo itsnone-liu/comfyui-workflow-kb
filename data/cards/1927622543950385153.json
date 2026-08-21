@@ -1,0 +1,125 @@
+{
+ "domain": [
+  "换脸",
+  "视频生成",
+  "图像生成",
+  "角色一致性",
+  "风格化"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人脸照片，生成以该人物身份为主角的视频（如“一个穿蓝色衣服女人在屋里跳舞”），并保持面部特征一致。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过参考视频提取 OpenPose 姿态、深度图和线稿，使用 ControlNet 控制生成视频的动作结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "可叠加吉卜力动漫风格 LoRA，将写实结果转换为动漫风格视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "可通过 RH_Captioner 自动从参考图生成人物描述，并拼接为提示词。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持同时输出多个视频（多路 VHS_VideoCombine），便于对比不同条件的结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID 身份保持",
+  "FLUX.1-dev (Nunchaku int4 量化) 文生图/图生图",
+  "ControlNet-Union-Pro (canny/lineart/anime_line) + ControlNetApplyAdvanced",
+  "OpenPose 姿态估计",
+  "DepthAnything V2 深度估计",
+  "AnyLine 线稿提取",
+  "Wan2.1 T2V 14B + VACE 模块文本/图像条件视频生成",
+  "LoRA 风格化（Ghibli）与视频运动增强（AccVid）",
+  "ModelSamplingFlux / FluxGuidance 采样调整",
+  "PMRF 视频后处理增强",
+  "BlockSwap / PurgeVRAM 显存优化"
+ ],
+ "special_features": [
+  {
+   "text": "两阶段级联生成：FLUX+PuLID 先生成保持人脸身份的关键帧，再 Wan2.1 VACE 将其扩展为视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "多路条件图拼接：ImageConcatMulti/ImageConcanate 将 pose/depth/lineart 等图拼成多联图输入 Union ControlNet。",
+   "kind": "fact"
+  },
+  {
+   "text": "参考视频驱动：VHS_LoadVideo 读入后，可用视频帧直接作为 VACE 条件，形成“照片换脸 + 视频动作迁移”的组合。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存优化组合：int4 量化 FLUX + WanVideoBlockSwap + 多次 PurgeVRAM，有在消费级 GPU 上跑 14B 视频模型的意图。",
+   "kind": "fact"
+  },
+  {
+   "text": "多版本输出设计：四个 VHS_VideoCombine 同时保存多条结果，便于对比不同参数/不同输入的影响。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动提示词管道：RH_Captioner 从参考图生成人物特征描述，再经 ConcatTextOfUtils 与固定提示拼接。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能试图把“单张照片 → 有动作、有身份、有风格的视频”这一高复杂度任务拆解为两个可靠阶段：先用 FLUX+PuLID 生成符合姿势约束且保留人脸身份的关键帧，再用 Wan2.1 VACE 以该关键帧与参考视频为条件生成连续视频。通过多种预处理（pose/depth/line）和多路 ControlNet 输入保证动作可控，同时用 LoRA 与后处理增强风格和画质。整体设计看起来是为了降低用户成本（只需一张照片），却保留了专业级的可控性和扩展性。",
+ "use_case": "面向内容创作者、社交媒体用户的换脸/角色一致性视频生成，例如将真实人物照片变为跳舞视频或吉卜力动漫风格角色动画，也可用于快速生成 avatar 视频等创意场景。",
+ "limitation": "依赖大量自定义节点和外部模型文件，部署门槛高；需要较高显存的 GPU（虽有量化/BlockSwap 优化，仍可能需 >16GB VRAM）；输入人脸照要求清晰正面，参考视频中的人物姿态/服装会影响生成结果；生成视频长度固定（33帧），如需更长时间需修改 WanVideoVACEEncode 参数并可能触发显存瓶颈。",
+ "dependencies": [
+  "模型：Wan2_1-T2V-14B_fp8_e4m3fn.safetensors, Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors, FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors, Wan2_1_VAE_bf16.safetensors, ae.safetensors, depth_anything_v2_vitl_fp32.safetensors, umt5-xxl-enc-bf16.safetensors, t5xxl_fp16.safetensors, clip_l.safetensors, Nunchaku int4 FLUX.1-dev, PuLID模型, Ghibli LoRA, Wan21_AccVid_T2V_14B_lora",
+  "自定义节点：ComfyUI-VideoHelperSuite (VHS), ComfyUI-WanVideoWrapper (WanVideo*), Nunchaku-Nodes, PuLID 相关节点, ComfyUI Layers (LayerUtility), 其他辅助节点 (CR, mtb, pysssss, KJ, PDIMAGE 等)"
+ ],
+ "geek_rating": 5,
+ "input": {
+  "type": "单张人脸图 (LoadImage) + 可选参考视频 (VHS_LoadVideo) + 文本提示词（内置默认跳舞提示）",
+  "count": "1 张图像 + 1 个视频（可空）+ 提示文本"
+ },
+ "output": {
+  "type": "视频（由 VHS_VideoCombine 输出的多个视频文件）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "NunchakuPulidApply weight (当前 1.0)",
+   "how_to_tune": "控制身份保持强度：增大增强相似度，但过大会导致面部僵硬/伪影；建议 0.8-1.2 微调"
+  },
+  {
+   "param": "ControlNetApplyAdvanced strength (当前 0.6)",
+   "how_to_tune": "姿势/结构约束权重：动作漂移时调高至 0.7-0.8，构图崩溃时调低"
+  },
+  {
+   "param": "ControlNetApplyAdvanced end_percent (当前 0.35)",
+   "how_to_tune": "ControlNet 在采样后 35% 步数停止生效；调高可增强最终输出的结构一致性，但可能损失细节"
+  },
+  {
+   "param": "WanVideoSampler steps (当前 50)",
+   "how_to_tune": "视频采样步数：越高质量越好但更慢；显存小时可降至 30-40"
+  },
+  {
+   "param": "WanVideoVACEEncode 帧数 (当前 33)",
+   "how_to_tune": "总帧数：33 为默认平衡点；增加帧数会大幅增加显存/时间，需配合 BlockSwap 使用"
+  },
+  {
+   "param": "WanVideoVACEEncode 宽高 (832x480)",
+   "how_to_tune": "分辨率：按需调整，过高会爆显存，过低损失细节；通常保持 16:10 或 16:9"
+  },
+  {
+   "param": "FlexLoraLoaderModelOnly strength (当前 1.0)",
+   "how_to_tune": "吉卜力风格强度：1.0 显著；若希望弱化动漫感可调至 0.5-0.8"
+  },
+  {
+   "param": "Blend blend_factor (当前 0.8)",
+   "how_to_tune": "图像混合比例：影响原图与新生成图的叠合程度，可控制最终人脸与原图的相似度"
+  },
+  {
+   "param": "ModelSamplingFlux shift (当前 1.15)",
+   "how_to_tune": "FLUX 噪声调度 Shift：调整高频/低频比例的偏好，影响全局结构 vs 细节"
+  }
+ ],
+ "summary_text": "能力:上传单张人脸照片，生成以该人物身份为主角的视频（如“一个穿蓝色衣服女人在屋里跳舞”），并保持面部特征一致。；能力:通过参考视频提取 OpenPose 姿态、深度图和线稿，使用 ControlNet 控制生成视频的动作结构。；能力:可叠加吉卜力动漫风格 LoRA，将写实结果转换为动漫风格视频。；能力:可通过 RH_Captioner 自动从参考图生成人物描述，并拼接为提示词。；能力:支持同时输出多个视频（多路 VHS_VideoCombine），便于对比不同条件的结果。；特色:两阶段级联生成：FLUX+PuLID 先生成保持人脸身份的关键帧，再 Wan2.1 VACE 将其扩展为视频。；特色:多路条件图拼接：ImageConcatMulti/ImageConcanate 将 pose/depth/lineart 等图拼成多联图输入 Union ControlNet。；特色:参考视频驱动：VHS_LoadVideo 读入后，可用视频帧直接作为 VACE 条件，形成“照片换脸 + 视频动作迁移”的组合。；特色:显存优化组合：int4 量化 FLUX + WanVideoBlockSwap + 多次 PurgeVRAM，有在消费级 GPU 上跑 14B 视频模型的意图。；特色:多版本输出设计：四个 VHS_VideoCombine 同时保存多条结果，便于对比不同参数/不同输入的影响。；特色:自动提示词管道：RH_Captioner 从参考图生成人物特征描述，再经 ConcatTextOfUtils 与固定提示拼接。；面向内容创作者、社交媒体用户的换脸/角色一致性视频生成，例如将真实人物照片变为跳舞视频或吉卜力动漫风格角色动画，也可用于快速生成 avatar 视频等创意场景。；该工作流可能试图把“单张照片 → 有动作、有身份、有风格的视频”这一高复杂度任务拆解为两个可靠阶段：先用 FLUX+PuLID 生成符合姿势约束且保留人脸身份的关键帧，再用 Wan2.1 VACE 以该关键帧与参考视频为条件生成连续视频。通过多种预处理（pose/depth/line）和多路 ControlNet 输入保证动作可控，同时用 LoRA 与后处理增强风格和画质。整体设计看起来是为了降低用户成本（只需一张照片），却保留了专业级的可控性和扩展性。"
+}

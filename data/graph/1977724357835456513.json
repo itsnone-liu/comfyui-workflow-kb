@@ -1,0 +1,2846 @@
+{
+ "node_count": 61,
+ "link_count": 97,
+ "active_node_count": 61,
+ "nodes": [
+  {
+   "id": 123,
+   "type": "LayerUtility: CropBoxResolve",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    272
+   ],
+   "out_links": [
+    266,
+    267
+   ]
+  },
+  {
+   "id": 124,
+   "type": "GetImageSize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    276
+   ],
+   "out_links": [
+    268,
+    269
+   ]
+  },
+  {
+   "id": 133,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    "lanczos",
+    "keep proportion",
+    "always",
+    0
+   ],
+   "in_links": [
+    282
+   ],
+   "out_links": [
+    284,
+    289
+   ]
+  },
+  {
+   "id": 5,
+   "type": "SUPIR_first_stage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    52,
+    289
+   ],
+   "out_links": [
+    15,
+    16,
+    20
+   ]
+  },
+  {
+   "id": 9,
+   "type": "SUPIR_conditioner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "high quality, detailed, photograph of a woman",
+    "bad quality, blurry, messy"
+   ],
+   "in_links": [
+    53,
+    20
+   ],
+   "out_links": [
+    8,
+    9
+   ]
+  },
+  {
+   "id": 7,
+   "type": "SUPIR_sample",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    174277455657960,
+    "fixed",
+    10,
+    2,
+    1.5,
+    5,
+    1.0030000000000001,
+    1,
+    1,
+    0.9,
+    1,
+    false,
+    "RestoreDPMPP2MSampler",
+    1024,
+    512
+   ],
+   "in_links": [
+    54,
+    17,
+    8,
+    9
+   ],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 11,
+   "type": "SUPIR_encode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    15,
+    16
+   ],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 10,
+   "type": "SUPIR_decode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512
+   ],
+   "in_links": [
+    51,
+    12
+   ],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 107,
+   "type": "GetImageSize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    235
+   ],
+   "out_links": [
+    219,
+    220
+   ]
+  },
+  {
+   "id": 134,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    294
+   ],
+   "out_links": []
+  },
+  {
+   "id": 163,
+   "type": "SUPIR_conditioner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "high quality, detailed, photograph",
+    "bad quality, blurry, messy"
+   ],
+   "in_links": [
+    351,
+    352
+   ],
+   "out_links": [
+    360,
+    361
+   ]
+  },
+  {
+   "id": 165,
+   "type": "SUPIR_first_stage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    356,
+    386
+   ],
+   "out_links": [
+    349,
+    350,
+    352
+   ]
+  },
+  {
+   "id": 166,
+   "type": "SUPIR_sample",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    174277455657960,
+    "fixed",
+    10,
+    2,
+    1.5,
+    5,
+    1.0030000000000001,
+    1,
+    1,
+    0.9,
+    1,
+    false,
+    "RestoreDPMPP2MSampler",
+    1024,
+    512
+   ],
+   "in_links": [
+    358,
+    359,
+    360,
+    361
+   ],
+   "out_links": [
+    363
+   ]
+  },
+  {
+   "id": 167,
+   "type": "SUPIR_decode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512
+   ],
+   "in_links": [
+    362,
+    363
+   ],
+   "out_links": [
+    365
+   ]
+  },
+  {
+   "id": 171,
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    0.5
+   ],
+   "in_links": [
+    366
+   ],
+   "out_links": [
+    368
+   ]
+  },
+  {
+   "id": 172,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    367,
+    368
+   ],
+   "out_links": [
+    369
+   ]
+  },
+  {
+   "id": 173,
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    0.5
+   ],
+   "in_links": [
+    369
+   ],
+   "out_links": [
+    373
+   ]
+  },
+  {
+   "id": 21,
+   "type": "SUPIR_model_loader_v2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIR-v0F.ckpt",
+    false,
+    "auto",
+    false
+   ],
+   "in_links": [
+    35,
+    39,
+    40
+   ],
+   "out_links": [
+    53,
+    54,
+    51,
+    52
+   ]
+  },
+  {
+   "id": 113,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1000,
+    1000,
+    "lanczos",
+    "keep proportion",
+    "always",
+    0
+   ],
+   "in_links": [
+    497
+   ],
+   "out_links": [
+    235,
+    292,
+    465,
+    466,
+    481
+   ]
+  },
+  {
+   "id": 14,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    1,
+    true
+   ],
+   "in_links": [
+    284,
+    26
+   ],
+   "out_links": [
+    194,
+    278,
+    408,
+    409,
+    494
+   ]
+  },
+  {
+   "id": 126,
+   "type": "LayerMask: MaskGrow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    20,
+    10
+   ],
+   "in_links": [
+    281
+   ],
+   "out_links": [
+    265
+   ]
+  },
+  {
+   "id": 129,
+   "type": "LayerUtility: CropByMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    140,
+    50,
+    100,
+    100
+   ],
+   "in_links": [
+    466,
+    464
+   ],
+   "out_links": [
+    276,
+    282,
+    294,
+    281,
+    272
+   ]
+  },
+  {
+   "id": 104,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    217,
+    495
+   ],
+   "out_links": [
+    221
+   ]
+  },
+  {
+   "id": 162,
+   "type": "SUPIR_encode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    349,
+    350
+   ],
+   "out_links": [
+    359
+   ]
+  },
+  {
+   "id": 164,
+   "type": "SUPIR_model_loader_v2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIR-v0F.ckpt",
+    false,
+    "auto",
+    false
+   ],
+   "in_links": [
+    461,
+    462,
+    463
+   ],
+   "out_links": [
+    351,
+    358,
+    356,
+    362
+   ]
+  },
+  {
+   "id": 105,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4xNomos8kHAT-L_otf.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    217
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c3f6b436948dda0867cc600777cdb2c62afd0b9860c11c5112705621dd420c12.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    495,
+    496,
+    497
+   ]
+  },
+  {
+   "id": 94,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    194
+   ],
+   "out_links": []
+  },
+  {
+   "id": 153,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    392
+   ],
+   "out_links": [
+    339
+   ]
+  },
+  {
+   "id": 154,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    393
+   ],
+   "out_links": [
+    340
+   ]
+  },
+  {
+   "id": 155,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    406,
+    394
+   ],
+   "out_links": [
+    341
+   ]
+  },
+  {
+   "id": 152,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    750983712821291,
+    "fixed",
+    20,
+    1,
+    "euler",
+    "kl_optimal",
+    0.30000000000000004
+   ],
+   "in_links": [
+    503,
+    339,
+    340,
+    341
+   ],
+   "out_links": [
+    343
+   ]
+  },
+  {
+   "id": 156,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    343,
+    395
+   ],
+   "out_links": [
+    411
+   ]
+  },
+  {
+   "id": 22,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    35,
+    461,
+    39,
+    462,
+    40,
+    463
+   ]
+  },
+  {
+   "id": 125,
+   "type": "ImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    512,
+    512,
+    "disabled"
+   ],
+   "in_links": [
+    411,
+    268,
+    269
+   ],
+   "out_links": [
+    342,
+    476
+   ]
+  },
+  {
+   "id": 106,
+   "type": "ImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    512,
+    512,
+    "disabled"
+   ],
+   "in_links": [
+    221,
+    219,
+    220
+   ],
+   "out_links": [
+    386
+   ]
+  },
+  {
+   "id": 180,
+   "type": "VAEEncodeTiled",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    64,
+    64,
+    8
+   ],
+   "in_links": [
+    373,
+    374
+   ],
+   "out_links": [
+    378
+   ]
+  },
+  {
+   "id": 178,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    372
+   ],
+   "out_links": [
+    377
+   ]
+  },
+  {
+   "id": 183,
+   "type": "VAEDecodeTiled",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    64,
+    64,
+    8
+   ],
+   "in_links": [
+    381,
+    382
+   ],
+   "out_links": [
+    480
+   ]
+  },
+  {
+   "id": 219,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    0.5000000000000001,
+    true
+   ],
+   "in_links": [
+    481,
+    480
+   ],
+   "out_links": [
+    483
+   ]
+  },
+  {
+   "id": 177,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "face"
+   ],
+   "in_links": [
+    371
+   ],
+   "out_links": [
+    376
+   ]
+  },
+  {
+   "id": 169,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    367
+   ]
+  },
+  {
+   "id": 170,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    364,
+    365
+   ],
+   "out_links": [
+    366
+   ]
+  },
+  {
+   "id": 175,
+   "type": "NunchakuTextEncoderLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux",
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    512,
+    "disable",
+    "none"
+   ],
+   "in_links": [],
+   "out_links": [
+    371,
+    372,
+    392,
+    393
+   ]
+  },
+  {
+   "id": 187,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    400,
+    409
+   ],
+   "out_links": [
+    401
+   ]
+  },
+  {
+   "id": 188,
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    0.5
+   ],
+   "in_links": [
+    401
+   ],
+   "out_links": [
+    403
+   ]
+  },
+  {
+   "id": 189,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    402,
+    403
+   ],
+   "out_links": [
+    410
+   ]
+  },
+  {
+   "id": 186,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    402
+   ]
+  },
+  {
+   "id": 190,
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    0.5
+   ],
+   "in_links": [
+    410
+   ],
+   "out_links": [
+    406
+   ]
+  },
+  {
+   "id": 218,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    0.5000000000000001,
+    true
+   ],
+   "in_links": [
+    494,
+    476
+   ],
+   "out_links": [
+    478,
+    479
+   ]
+  },
+  {
+   "id": 185,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4xNomos8kHAT-L_otf.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    400
+   ]
+  },
+  {
+   "id": 168,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4xNomos8kHAT-L_otf.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    364
+   ]
+  },
+  {
+   "id": 179,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    374,
+    382,
+    394,
+    395
+   ]
+  },
+  {
+   "id": 92,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_dpdxr_00001_qxggr_1762999348.jpg&type=temp&subfolder=&rand=0.6613073537683277&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YTY2YjM3NzIxMDNkYjljOGYwODAyNDM2ODk3MjU5OSIsInNpZ25FeHBpcmUiOjE3NjM2MDQxMTQ3MDcsInRzIjoxNzYyOTk5MzE0NzA3LCJzaWduIjoiNTI3ODEzZGUxZWQxOTkwZmUxNTdjMWMwOTk3ODk0MzQifQ==&Rh-Identify=9a66b3772103db9c8f08024368972599"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_dpdxr_00002_yctxk_1762999350.jpg&type=temp&subfolder=&rand=0.7586702384355137&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YTY2YjM3NzIxMDNkYjljOGYwODAyNDM2ODk3MjU5OSIsInNpZ25FeHBpcmUiOjE3NjM2MDQxMTQ3MDcsInRzIjoxNzYyOTk5MzE0NzA3LCJzaWduIjoiNTI3ODEzZGUxZWQxOTkwZmUxNTdjMWMwOTk3ODk0MzQifQ==&Rh-Identify=9a66b3772103db9c8f08024368972599"
+     }
+    ]
+   ],
+   "in_links": [
+    496,
+    468
+   ],
+   "out_links": []
+  },
+  {
+   "id": 193,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    460
+   ],
+   "out_links": []
+  },
+  {
+   "id": 216,
+   "type": "easy humanSegmentation",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "human_parts (deeplabv3p)",
+    0.4,
+    0,
+    "1"
+   ],
+   "in_links": [
+    465
+   ],
+   "out_links": [
+    464
+   ]
+  },
+  {
+   "id": 217,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    478
+   ],
+   "out_links": []
+  },
+  {
+   "id": 122,
+   "type": "ImageComposite+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_links": [
+    483,
+    479,
+    265,
+    266,
+    267
+   ],
+   "out_links": [
+    460,
+    468
+   ]
+  },
+  {
+   "id": 181,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1106494094380806,
+    "fixed",
+    20,
+    1,
+    "euler",
+    "kl_optimal",
+    0.30000000000000004
+   ],
+   "in_links": [
+    502,
+    376,
+    377,
+    378
+   ],
+   "out_links": [
+    381
+   ]
+  },
+  {
+   "id": 174,
+   "type": "NunchakuFluxDiTLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "svdq-int4_r32-flux.1-krea-dev.safetensors",
+    0.10000000000000002,
+    "nunchaku-fp16",
+    "auto",
+    0,
+    "bfloat16",
+    "enabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    501
+   ]
+  },
+  {
+   "id": 230,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "真实质感皮肤.safetensors",
+    1
+   ],
+   "in_links": [
+    501
+   ],
+   "out_links": [
+    502,
+    503
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 104,
+   "to_node": 106,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 105,
+   "to_node": 104,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 106,
+   "to_node": 165,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 107,
+   "to_node": 106,
+   "type": "INT"
+  },
+  {
+   "from_node": 107,
+   "to_node": 106,
+   "type": "INT"
+  },
+  {
+   "from_node": 11,
+   "to_node": 7,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 113,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 129,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 216,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 219,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 193,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 92,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 122,
+   "type": "INT"
+  },
+  {
+   "from_node": 123,
+   "to_node": 122,
+   "type": "INT"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "INT"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "INT"
+  },
+  {
+   "from_node": 125,
+   "to_node": 218,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 126,
+   "to_node": 122,
+   "type": "MASK"
+  },
+  {
+   "from_node": 129,
+   "to_node": 123,
+   "type": "BOX"
+  },
+  {
+   "from_node": 129,
+   "to_node": 124,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 129,
+   "to_node": 126,
+   "type": "MASK"
+  },
+  {
+   "from_node": 129,
+   "to_node": 133,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 129,
+   "to_node": 134,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 133,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 133,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 187,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 218,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 94,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 156,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 153,
+   "to_node": 152,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 154,
+   "to_node": 152,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 155,
+   "to_node": 152,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 156,
+   "to_node": 125,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 162,
+   "to_node": 166,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 163,
+   "to_node": 166,
+   "type": "SUPIR_cond_pos"
+  },
+  {
+   "from_node": 163,
+   "to_node": 166,
+   "type": "SUPIR_cond_neg"
+  },
+  {
+   "from_node": 164,
+   "to_node": 163,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 164,
+   "to_node": 165,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 164,
+   "to_node": 166,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 164,
+   "to_node": 167,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 165,
+   "to_node": 162,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 165,
+   "to_node": 162,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 165,
+   "to_node": 163,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 166,
+   "to_node": 167,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 167,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 168,
+   "to_node": 170,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 169,
+   "to_node": 172,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 170,
+   "to_node": 171,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 171,
+   "to_node": 172,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 172,
+   "to_node": 173,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 173,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 174,
+   "to_node": 230,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 175,
+   "to_node": 153,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 175,
+   "to_node": 154,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 175,
+   "to_node": 177,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 175,
+   "to_node": 178,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 177,
+   "to_node": 181,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 178,
+   "to_node": 181,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 179,
+   "to_node": 155,
+   "type": "VAE"
+  },
+  {
+   "from_node": 179,
+   "to_node": 156,
+   "type": "VAE"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "VAE"
+  },
+  {
+   "from_node": 179,
+   "to_node": 183,
+   "type": "VAE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 181,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 181,
+   "to_node": 183,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 183,
+   "to_node": 219,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 185,
+   "to_node": 187,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 186,
+   "to_node": 189,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 187,
+   "to_node": 188,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 188,
+   "to_node": 189,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 189,
+   "to_node": 190,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 190,
+   "to_node": 155,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 104,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 113,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 92,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 10,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 5,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 7,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 21,
+   "to_node": 9,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 216,
+   "to_node": 129,
+   "type": "MASK"
+  },
+  {
+   "from_node": 218,
+   "to_node": 122,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 218,
+   "to_node": 217,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 219,
+   "to_node": 122,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 164,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 164,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 22,
+   "to_node": 164,
+   "type": "VAE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 21,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 21,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 22,
+   "to_node": 21,
+   "type": "VAE"
+  },
+  {
+   "from_node": 230,
+   "to_node": 152,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 230,
+   "to_node": 181,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 5,
+   "to_node": 11,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 9,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 9,
+   "to_node": 7,
+   "type": "SUPIR_cond_pos"
+  },
+  {
+   "from_node": 9,
+   "to_node": 7,
+   "type": "SUPIR_cond_neg"
+  }
+ ],
+ "categories": {
+  "utility": 29,
+  "image_io": 5,
+  "upscale": 10,
+  "postprocess": 3,
+  "conditioning": 4,
+  "vae": 5,
+  "sampler": 2,
+  "checkpoint_loader": 1,
+  "preprocessor": 1,
+  "lora": 1
+ },
+ "assets": [
+  {
+   "node_id": 21,
+   "node_type": "SUPIR_model_loader_v2",
+   "kind": "checkpoint",
+   "name": "SUPIR-v0F.ckpt"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SUPIR_model_loader_v2",
+   "kind": "checkpoint",
+   "name": "SUPIR-v0F.ckpt"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 22,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+  },
+  {
+   "node_id": 169,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "kind": "checkpoint",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 186,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+  },
+  {
+   "node_id": 185,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 168,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 179,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "kind": "checkpoint",
+   "name": "svdq-int4_r32-flux.1-krea-dev.safetensors"
+  },
+  {
+   "node_id": 230,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "真实质感皮肤.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 165,
+ "structure_hash": "ae75f5aebe5761b4",
+ "param_face": [
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 133,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 5,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 5,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 5,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 5,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 9,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 0,
+   "value_preview": "high quality, detailed, photograph of a woman"
+  },
+  {
+   "node_id": 9,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 1,
+   "value_preview": "bad quality, blurry, messy"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 0,
+   "value_preview": "174277455657960"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 4,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 5,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 6,
+   "value_preview": "1.0030000000000001"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 9,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 12,
+   "value_preview": "RestoreDPMPP2MSampler"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 13,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SUPIR_sample",
+   "widget_index": 14,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "SUPIR_encode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 11,
+   "node_type": "SUPIR_encode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "SUPIR_encode",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 10,
+   "node_type": "SUPIR_decode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 10,
+   "node_type": "SUPIR_decode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 163,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 0,
+   "value_preview": "high quality, detailed, photograph"
+  },
+  {
+   "node_id": 163,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 1,
+   "value_preview": "bad quality, blurry, messy"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 0,
+   "value_preview": "174277455657960"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 4,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 5,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 6,
+   "value_preview": "1.0030000000000001"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 9,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 12,
+   "value_preview": "RestoreDPMPP2MSampler"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 13,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 166,
+   "node_type": "SUPIR_sample",
+   "widget_index": 14,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 167,
+   "node_type": "SUPIR_decode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 167,
+   "node_type": "SUPIR_decode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 171,
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 171,
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 173,
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 173,
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 21,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 0,
+   "value_preview": "SUPIR-v0F.ckpt"
+  },
+  {
+   "node_id": 21,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 21,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 21,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "1000"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "1000"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 14,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 14,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 14,
+   "node_type": "ColorMatch",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 126,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 126,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 126,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 2,
+   "value_preview": "140"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 3,
+   "value_preview": "50"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 4,
+   "value_preview": "100"
+  },
+  {
+   "node_id": 129,
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 5,
+   "value_preview": "100"
+  },
+  {
+   "node_id": 162,
+   "node_type": "SUPIR_encode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 162,
+   "node_type": "SUPIR_encode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 162,
+   "node_type": "SUPIR_encode",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 0,
+   "value_preview": "SUPIR-v0F.ckpt"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c3f6b436948dda0867cc600777cdb2c62afd0b9860c11c5112705621dd42"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 153,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 154,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "750983712821291"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "kl_optimal"
+  },
+  {
+   "node_id": 152,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 22,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "ImageScale",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 125,
+   "node_type": "ImageScale",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 125,
+   "node_type": "ImageScale",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 125,
+   "node_type": "ImageScale",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 106,
+   "node_type": "ImageScale",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 106,
+   "node_type": "ImageScale",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 106,
+   "node_type": "ImageScale",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 106,
+   "node_type": "ImageScale",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 180,
+   "node_type": "VAEEncodeTiled",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 180,
+   "node_type": "VAEEncodeTiled",
+   "widget_index": 1,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 180,
+   "node_type": "VAEEncodeTiled",
+   "widget_index": 2,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 180,
+   "node_type": "VAEEncodeTiled",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 178,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 183,
+   "node_type": "VAEDecodeTiled",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 183,
+   "node_type": "VAEDecodeTiled",
+   "widget_index": 1,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 183,
+   "node_type": "VAEDecodeTiled",
+   "widget_index": 2,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 183,
+   "node_type": "VAEDecodeTiled",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 219,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 219,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 219,
+   "node_type": "ColorMatch",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 177,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "face"
+  },
+  {
+   "node_id": 169,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 0,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 2,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 4,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 175,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 5,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 188,
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 188,
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 186,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+  },
+  {
+   "node_id": 190,
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 190,
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 218,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 218,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 218,
+   "node_type": "ColorMatch",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 185,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 168,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4xNomos8kHAT-L_otf.pth"
+  },
+  {
+   "node_id": 179,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 193,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 216,
+   "node_type": "easy humanSegmentation",
+   "widget_index": 0,
+   "value_preview": "human_parts (deeplabv3p)"
+  },
+  {
+   "node_id": 216,
+   "node_type": "easy humanSegmentation",
+   "widget_index": 1,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 216,
+   "node_type": "easy humanSegmentation",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 216,
+   "node_type": "easy humanSegmentation",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 122,
+   "node_type": "ImageComposite+",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 122,
+   "node_type": "ImageComposite+",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 122,
+   "node_type": "ImageComposite+",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 122,
+   "node_type": "ImageComposite+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "1106494094380806"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "kl_optimal"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 0,
+   "value_preview": "svdq-int4_r32-flux.1-krea-dev.safetensors"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 1,
+   "value_preview": "0.10000000000000002"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 2,
+   "value_preview": "nunchaku-fp16"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 5,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 174,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 6,
+   "value_preview": "enabled"
+  },
+  {
+   "node_id": 230,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "真实质感皮肤.safetensors"
+  },
+  {
+   "node_id": 230,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  }
+ ]
+}

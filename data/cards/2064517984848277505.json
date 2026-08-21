@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "角色设计",
+  "短剧",
+  "AI图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成短剧角色设计：输入角色参考图/文案，自动生成详细描述提示词，并输出国风或仙侠风格的竖版人物立绘。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 AILab_QwenVL（Qwen3-VL-4B）对参考图像做详细视觉描述，将图片内容转写为可用于 Qwen-Image/Z-Image 的自然语言提示词。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过双 UNETLoader 加载 z_image_bf16 与 z_image_turbo_bf16，结合两个 LoRA（zit_fdpo_v1 与 Kook_Zimage_真实幻想_Turbo）生成带角色身份一致性和真实幻想风格的角色图。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出 1024×1536 竖版半身角色设定图，适合短剧角色展示。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image / Z-Image（UNET z_image_bf16 + z_image_turbo_bf16）",
+  "Qwen3-VL-4B 图像理解 / 提示词生成（AILab_QwenVL）",
+  "双 LoRA 叠加（身份一致性 + 真实幻想风格）",
+  "双阶段采样（KSamplerAdvanced Base/Turbo）",
+  "ModelSamplingAuraFlow 采样参数适配",
+  "负面提示词 + ConditioningZeroOut",
+  "Text Concatenate 文本拼接",
+  "GetNode/SetNode 变量传递",
+  "EmptyLatentImage 竖版 1024×1536 构图"
+ ],
+ "special_features": [
+  {
+   "text": "双 checkpoint + 双 KSamplerAdvanced + 双 ModelSamplingAuraFlow 组成 Base/Turbo 两段采样管线，疑似先用常规模型构图、再用 Turbo 模型低步数精修。",
+   "kind": "inference"
+  },
+  {
+   "text": "工作流内置 AILab_QwenVL 视觉语言模型，把“看图写提示词”作为生成链路的前置环节。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 GetNode/SetNode 变量节点传递采样/文本/宽高/图像，工作流像可复用的函数模板。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 LoraLoaderModelOnly 同时挂载，分别控制角色身份和画风，并以约 0.5 强度叠加。",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut、Text Concatenate 和负面 CLIPTextEncode 组合出现，可能用于空条件/负面条件增强以稳定质量。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这套工作流的核心思路是把“理解角色”和“绘制角色”拆开：先让 Qwen3-VL-4B 描述参考图，再结合 CR Text/Text Multiline 中的国风、仙侠人设文案与提示词优化系统提示，自动拼接成高质量正向提示词；随后用 Z-Image/Qwen-Image 基础模型和 Turbo 模型分别打底与快速出图，并通过两个 LoRA 同时锁定角色身份与真实幻想风格。负面提示词、ConditioningZeroOut、ModelSamplingAuraFlow 和 SetNode/GetNode 变量结构都是为提高稳定性和复用性服务。由于节点连线细节有限，双段采样是否严格“先粗后精”属于推断。",
+ "use_case": "短剧/小说/游戏的角色设计阶段：给一张参考脸或一句人设，快速产出古风、仙侠风的男主/女主立绘；也可用于批量生成多版本角色方案。",
+ "limitation": "依赖 z_image_bf16、z_image_turbo_bf16、qwen_3_4b、ae.safetensors、zit_fdpo_v1、Kook_Zimage_真实幻想_Turbo 及 Qwen3-VL-4B 等模型文件；需要 AILab_QwenVL、CR Text、Text Multiline、GetNode/SetNode、ModelSamplingAuraFlow 等自定义节点。未直接在结构化事实中看到 LoadImage，输入图可能需要通过变量节点/外部注入；生成分辨率固定 1024×1536。低步数 Turbo 模式适合快速迭代，但精细细节或文字表现可能不如高步数完整采样。",
+ "dependencies": [
+  "z_image_bf16.safetensors",
+  "z_image_turbo_bf16.safetensors",
+  "qwen_3_4b.safetensors",
+  "ae.safetensors",
+  "zit_fdpo_v1.safetensors",
+  "Kook_Zimage_真实幻想_Turbo.safetensors",
+  "Qwen3-VL-4B-Instruct（AILab_QwenVL 节点）",
+  "自定义节点：AILab_QwenVL、CR Text、Text Multiline、GetNode/SetNode、ModelSamplingAuraFlow"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "参考图 + 文本设定",
+  "count": "1 张参考图 + 多段文本"
+ },
+ "output": {
+  "type": "PNG 图像（SaveImage）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前约 0.5。若角色身份不像或风格不足，可增至 0.6~0.7；若出现特征过拟合或画质变脏，则降至 0.3~0.4。"
+  },
+  {
+   "param": "KSamplerAdvanced steps",
+   "how_to_tune": "当前 Base/Turbo 都设为 3 步。追求速度保持 3 步；需要更多细节可提高到 4~6 步，并同步检查 CFG 是否仍合适。"
+  },
+  {
+   "param": "KSamplerAdvanced cfg",
+   "how_to_tune": "当前两个采样器分别为 1 和 2 左右；Turbo 类模型建议 CFG 保持 1~2，过大会导致饱和/伪影。"
+  },
+  {
+   "param": "EmptyLatentImage 宽高",
+   "how_to_tune": "当前 1024×1536 竖版；需要横版海报可换 1536×1024，移动端封面可试 1080×1920，但显存占用会上升。"
+  },
+  {
+   "param": "AILab_QwenVL 提示词",
+   "how_to_tune": "把 'Describe this image in detail' 改为更具体的指令，如 '描述五官、发型、服装、背景与光影'，可提高角色设定还原度。"
+  },
+  {
+   "param": "CR Text / Text Multiline 人物描述",
+   "how_to_tune": "直接修改“古风短剧男主/上古神女”等文本即可换角色设定；可加入发型、服饰、眼神、画面构图关键词。"
+  }
+ ],
+ "summary_text": "能力:端到端完成短剧角色设计：输入角色参考图/文案，自动生成详细描述提示词，并输出国风或仙侠风格的竖版人物立绘。；能力:使用 AILab_QwenVL（Qwen3-VL-4B）对参考图像做详细视觉描述，将图片内容转写为可用于 Qwen-Image/Z-Image 的自然语言提示词。；能力:通过双 UNETLoader 加载 z_image_bf16 与 z_image_turbo_bf16，结合两个 LoRA（zit_fdpo_v1 与 Kook_Zimage_真实幻想_Turbo）生成带角色身份一致性和真实幻想风格的角色图。；能力:输出 1024×1536 竖版半身角色设定图，适合短剧角色展示。；特色:双 checkpoint + 双 KSamplerAdvanced + 双 ModelSamplingAuraFlow 组成 Base/Turbo 两段采样管线，疑似先用常规模型构图、再用 Turbo 模型低步数精修。；特色:工作流内置 AILab_QwenVL 视觉语言模型，把“看图写提示词”作为生成链路的前置环节。；特色:使用 GetNode/SetNode 变量节点传递采样/文本/宽高/图像，工作流像可复用的函数模板。；特色:两个 LoraLoaderModelOnly 同时挂载，分别控制角色身份和画风，并以约 0.5 强度叠加。；特色:ConditioningZeroOut、Text Concatenate 和负面 CLIPTextEncode 组合出现，可能用于空条件/负面条件增强以稳定质量。；短剧/小说/游戏的角色设计阶段：给一张参考脸或一句人设，快速产出古风、仙侠风的男主/女主立绘；也可用于批量生成多版本角色方案。；这套工作流的核心思路是把“理解角色”和“绘制角色”拆开：先让 Qwen3-VL-4B 描述参考图，再结合 CR Text/Text Multiline 中的国风、仙侠人设文案与提示词优化系统提示，自动拼接成高质量正向提示词；随后用 Z-Image/Qwen-Image 基础模型和 Turbo 模型分别打底与快速出图，并通过两个 LoRA 同时锁定角色身份与真实幻想风格。负面提示词、ConditioningZeroOut、ModelSamplingAuraFlow 和 SetNode/GetNode 变量结构都是为提高稳定性和复用性服务。由于节点连线细节有限，双段采样是否严格“先粗后精”属于推断。"
+}

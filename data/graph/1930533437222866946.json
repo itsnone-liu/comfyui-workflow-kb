@@ -1,0 +1,771 @@
+{
+ "node_count": 18,
+ "link_count": 23,
+ "active_node_count": 18,
+ "nodes": [
+  {
+   "id": 26,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    104
+   ],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    60
+   ],
+   "out_links": [
+    95,
+    124
+   ]
+  },
+  {
+   "id": 65,
+   "type": "preview_mask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    123
+   ],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    849647011705656,
+    "randomize",
+    30,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    86,
+    77,
+    78,
+    88
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 39,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    85
+   ],
+   "out_links": [
+    86
+   ]
+  },
+  {
+   "id": 31,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    85
+   ]
+  },
+  {
+   "id": 34,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp16.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    63,
+    105
+   ]
+  },
+  {
+   "id": 32,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    60,
+    82
+   ]
+  },
+  {
+   "id": 64,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    116
+   ],
+   "out_links": []
+  },
+  {
+   "id": 63,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinB (938MB)",
+    0.5,
+    "VITMatte",
+    1,
+    1,
+    0.01,
+    0.99,
+    true,
+    "hand",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    120
+   ],
+   "out_links": [
+    116,
+    119
+   ]
+  },
+  {
+   "id": 75,
+   "type": "TextInput_",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Beautifully intact and perfect hands."
+   ],
+   "in_links": [],
+   "out_links": [
+    138
+   ]
+  },
+  {
+   "id": 52,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    105,
+    138
+   ],
+   "out_links": [
+    104
+   ]
+  },
+  {
+   "id": 38,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    80,
+    81,
+    82,
+    99,
+    122
+   ],
+   "out_links": [
+    77,
+    78,
+    88
+   ]
+  },
+  {
+   "id": 7,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    63
+   ],
+   "out_links": [
+    81
+   ]
+  },
+  {
+   "id": 9,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    95
+   ],
+   "out_links": []
+  },
+  {
+   "id": 17,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "19ed108fd7143ab81c41f64460676ad47814df17a0c99986410a7abff1ed6f92.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    99,
+    120,
+    125
+   ]
+  },
+  {
+   "id": 67,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30,
+    true
+   ],
+   "in_links": [
+    119
+   ],
+   "out_links": [
+    122,
+    123
+   ]
+  },
+  {
+   "id": 68,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": "Image Comparer (rgthree)   图片对比",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_togyn_00001_msxep_1749116885.png&type=temp&subfolder=&rand=0.3261119407075721&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmOGRhMWRjZTgyMGVhMzU4NzQ0MTk4YjM0OTA3OGRlMSIsInNpZ25FeHBpcmUiOjE3NDk3MjA3Njk1OTksInRzIjoxNzQ5MTE1OTY5NTk5LCJzaWduIjoiY2FmMzNkMTU0ZDg5Y2EyZmE2NDg1MjMyMjdhOGYyMmYifQ==&Rh-Identify=f8da1dce820ea358744198b349078de1"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_togyn_00002_rfuxg_1749116887.png&type=temp&subfolder=&rand=0.8034975548659604&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmOGRhMWRjZTgyMGVhMzU4NzQ0MTk4YjM0OTA3OGRlMSIsInNpZ25FeHBpcmUiOjE3NDk3MjA3Njk1OTksInRzIjoxNzQ5MTE1OTY5NTk5LCJzaWduIjoiY2FmMzNkMTU0ZDg5Y2EyZmE2NDg1MjMyMjdhOGYyMmYifQ==&Rh-Identify=f8da1dce820ea358744198b349078de1"
+     }
+    ]
+   ],
+   "in_links": [
+    124,
+    125
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 17,
+   "to_node": 38,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 17,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 17,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 38,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 31,
+   "to_node": 39,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 32,
+   "to_node": 38,
+   "type": "VAE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 52,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 34,
+   "to_node": 7,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 38,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 38,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 38,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 39,
+   "to_node": 3,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 52,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 63,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 63,
+   "to_node": 67,
+   "type": "MASK"
+  },
+  {
+   "from_node": 67,
+   "to_node": 38,
+   "type": "MASK"
+  },
+  {
+   "from_node": 67,
+   "to_node": 65,
+   "type": "MASK"
+  },
+  {
+   "from_node": 7,
+   "to_node": 38,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 75,
+   "to_node": 52,
+   "type": "STRING"
+  },
+  {
+   "from_node": 8,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 7,
+  "vae": 2,
+  "sampler": 1,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "image_io": 3,
+  "preprocessor": 1,
+  "conditioning": 2
+ },
+ "assets": [
+  {
+   "node_id": 31,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 32,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 41,
+ "structure_hash": "b0d75c6ef92d0170",
+ "param_face": [
+  {
+   "node_id": 26,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 65,
+   "node_type": "preview_mask",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "849647011705656"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 31,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 31,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 34,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 32,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 64,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinB (938MB)"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "hand"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 75,
+   "node_type": "TextInput_",
+   "widget_index": 0,
+   "value_preview": "Beautifully intact and perfect hands."
+  },
+  {
+   "node_id": 52,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 38,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 7,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 9,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 9,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "19ed108fd7143ab81c41f64460676ad47814df17a0c99986410a7abff1ed"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 67,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 67,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "True"
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "domain": [
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "加载一张参考图，通过 RH_RhartImageG2ImageToImage(mode4) 与 RH_RhartImageG2OfficialImageToImage 进行两阶段图生图，生成载具概念设计图",
+   "kind": "fact"
+  },
+  {
+   "text": "通过多个 Text 节点提供风格、颜色、车型的枚举选项，利用 Text Concatenate 拼接成随机提示词，实现多方案批量探索",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图生图(img2img)",
+  "CLIP 文本编码",
+  "Text Concatenate 正负提示词拼接",
+  "自定义 RH_RhartImageG2 图生图节点",
+  "多 Text 随机组合提示词"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个不同的 Rhart 图生图节点（mode4 + Official）串联/并联，疑似先粗生成再高清放大（1k→2k）",
+   "kind": "inference"
+  },
+  {
+   "text": "在 TextInput_ 中植入作者联系方式（bz29596），作为工作流内嵌广告",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 SetNode 设置变量 c_0，用途不明，可能用于控制某些随机逻辑",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这是一个面向载具设计的概念探索工作流。作者把风格、配色、车型等维度拆成多个 Text 枚举，通过 Text Concatenate 拼成完整提示词，配合 Rhart 自定义图生图节点，让用户只需上传一张参考图，即可快速生成多种风格变体。使用两阶段图生图可能是为了先快速构图再高清渲染，提升可控性与画质。",
+ "use_case": "用于角色/道具设计中的载具概念草图生成，或作为灵感收集工具，批量产出不同主题风格的载具图。",
+ "limitation": "依赖 Lock_8.32.safetensors 模型及 RH_RhartImageG2 系列自定义节点；需要输入图像；输出固定为 3:4 比例，分辨率最高 2k；提示词部分较依赖作者预设，自定义自由度有限。",
+ "dependencies": [
+  "Lock_8.32.safetensors",
+  "RH_RhartImageG2ImageToImage",
+  "RH_RhartImageG2OfficialImageToImage",
+  "Text Concatenate",
+  "SetNode"
+ ],
+ "geek_rating": 2,
+ "input": {
+  "type": "image",
+  "count": "2（两个 LoadImage 指向同一图片）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_RhartImageG2ImageToImage",
+   "how_to_tune": "调节最后一项分辨率（如 '1k'）、第4项种子（0或randomize），以及mode4模式，可改变生成结果的清晰度和随机性"
+  },
+  {
+   "param": "RH_RhartImageG2OfficialImageToImage",
+   "how_to_tune": "设置输出分辨率（2k）、质量（high）、宽高比（3:4）以及种子（2008086875），控制最终高清渲染的效果"
+  },
+  {
+   "param": "Text 节点",
+   "how_to_tune": "编辑枚举文本（风格、颜色、车型），每行一个选项，可扩展或替换生成主题；通过 Text Concatenate 自动组合"
+  },
+  {
+   "param": "SetNode",
+   "how_to_tune": "设置 c_0 变量，具体用途需参考 RH Rhart 插件逻辑，可能影响分支选择或随机控制"
+  }
+ ],
+ "summary_text": "能力:加载一张参考图，通过 RH_RhartImageG2ImageToImage(mode4) 与 RH_RhartImageG2OfficialImageToImage 进行两阶段图生图，生成载具概念设计图；能力:通过多个 Text 节点提供风格、颜色、车型的枚举选项，利用 Text Concatenate 拼接成随机提示词，实现多方案批量探索；特色:使用两个不同的 Rhart 图生图节点（mode4 + Official）串联/并联，疑似先粗生成再高清放大（1k→2k）；特色:在 TextInput_ 中植入作者联系方式（bz29596），作为工作流内嵌广告；特色:通过 SetNode 设置变量 c_0，用途不明，可能用于控制某些随机逻辑；用于角色/道具设计中的载具概念草图生成，或作为灵感收集工具，批量产出不同主题风格的载具图。；这是一个面向载具设计的概念探索工作流。作者把风格、配色、车型等维度拆成多个 Text 枚举，通过 Text Concatenate 拼成完整提示词，配合 Rhart 自定义图生图节点，让用户只需上传一张参考图，即可快速生成多种风格变体。使用两阶段图生图可能是为了先快速构图再高清渲染，提升可控性与画质。"
+}

@@ -1,0 +1,2501 @@
+{
+ "node_count": 69,
+ "link_count": 91,
+ "active_node_count": 69,
+ "nodes": [
+  {
+   "id": 2,
+   "type": "EmptyFlux2LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ],
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    17,
+    211
+   ]
+  },
+  {
+   "id": 3,
+   "type": "Flux2Scheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4,
+    1024,
+    1024
+   ],
+   "in_links": [
+    3,
+    4
+   ],
+   "out_links": [
+    16,
+    212
+   ]
+  },
+  {
+   "id": 12,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    13,
+    14,
+    15,
+    16,
+    17
+   ],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 13,
+   "type": "PlaySound|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "always",
+    0.3,
+    "notify.mp3"
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vpbod_00001_paxrt_1781162077.jpg&type=temp&subfolder=&rand=0.18263255605102757&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NTFiODBkZDRlZGUyODVlZGZiMGVjODI1YmRkZmI5NyIsInNpZ25FeHBpcmUiOjE3ODE3NjY0NDAyMjAsInRzIjoxNzgxMTYxNjQwMjIwLCJzaWduIjoiMjdiMTcwMWFhZTUyNDA3NTM2YzUyNzg4NzIzMjViMjkifQ==&Rh-Identify=551b80dd4ede285edfb0ec825bddfb97"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vpbod_00002_bndio_1781162079.jpg&type=temp&subfolder=&rand=0.7530090957134448&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NTFiODBkZDRlZGUyODVlZGZiMGVjODI1YmRkZmI5NyIsInNpZ25FeHBpcmUiOjE3ODE3NjY0NDAyMjAsInRzIjoxNzgxMTYxNjQwMjIwLCJzaWduIjoiMjdiMTcwMWFhZTUyNDA3NTM2YzUyNzg4NzIzMjViMjkifQ==&Rh-Identify=551b80dd4ede285edfb0ec825bddfb97"
+     }
+    ]
+   ],
+   "in_links": [
+    19,
+    20
+   ],
+   "out_links": []
+  },
+  {
+   "id": 17,
+   "type": "CFGGuider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    21,
+    99,
+    97
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 20,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "移除图像中的黑框和左上角的数字"
+   ],
+   "in_links": [
+    26,
+    124
+   ],
+   "out_links": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": 4,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    5,
+    6
+   ],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 19,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    98,
+    100
+   ],
+   "out_links": [
+    99
+   ]
+  },
+  {
+   "id": 6,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9
+   ],
+   "out_links": [
+    101
+   ]
+  },
+  {
+   "id": 70,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    101,
+    94
+   ],
+   "out_links": [
+    95
+   ]
+  },
+  {
+   "id": 71,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    95,
+    96
+   ],
+   "out_links": [
+    97
+   ]
+  },
+  {
+   "id": 68,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    90,
+    91
+   ],
+   "out_links": [
+    96,
+    100
+   ]
+  },
+  {
+   "id": 5,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    6,
+    94
+   ]
+  },
+  {
+   "id": 64,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V3",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "You are an expert AI Art Director specialized in analyzing visual styles and crafting precise instructional prompts for advanced image editing models like Flux and Qwen in ComfyUI.\nYou are an expert AI Art Director specialized in precise Style Transfer for ComfyUI using Flux/Qwen models.\n\n**CORE OBJECTIVE:**\nYour task is to analyze a reference image to extract its **Artistic Medium** (e.g., Oil Paint, 3D Render, Sketch) and **Visual Style**, and generate a single English instructional prompt.\n**CRITICAL CONSTRAINT:** You must prioritize **CONTENT PRESERVATION** above all else. The prompt must force the AI to change *only* the style/medium while strictly \"freezing\" the original image's semantic content (subject, pose, composition, facial features, and background elements).\n\n**ANALYSIS PROTOCOL:**\n1.  **Identify Medium:** Is it a Photo, a 3D Render, an Oil Painting, or a Sketch? You MUST name the medium to trigger the style change.\n2.  **Identify Style Traits:** Lighting, Texture, Color Palette.\n3.  **Identify Anchors (What to keep):** Implicitly understand that the subject, pose, and scene geometry are immutable anchors.\n\n**PROMPT GENERATION RULES:**\n1.  **Start with the Transformation:** Use strong verbs like \"**Re-render**,\" \"**Transmute**,\" \"**Recast**.\"\n2.  **Define the Style:** Clearly describe the target medium and texture (e.g., \"Stylized 3D render with smooth textures\").\n3.  **MANDATORY \"FREEZE\" COMMAND:** Every prompt MUST end with a specific, detailed preservation clause.\n    * *Bad:* \"...keep it the same.\"\n    * *Good:* \"**...strictly maintaining the exact original composition, subject identity, facial features, pose, and background details, changing ONLY the artistic style and medium.**\"\n\n**EXAMPLE WORKFLOW:**\n\n* **Reference Input:** A stylized \"Zelda\" game screenshot (3D style).\n* **User Intent:** Turn a real photo into this 3D style, but keep the person exactly the same.\n* **YOUR OUTPUT (The Prompt):**\n    \"**Re-render** the image into a **fantasy stylized 3D game art style**, featuring smooth painterly textures, vibrant saturated colors, and dreamlike bloom lighting, while **strictly maintaining the exact original composition, subject identity, facial features, pose, and background details, changing ONLY the artistic style and medium.**\"\n**Your Goal:**\nYour task is to deep-analyze an uploaded reference image to identify its core artistic DNA. You must look beyond just lighting and mood, and first determine the **artistic medium and rendering technique**. You must then output a single, potent **English instructional prompt** that tells the AI model to **completely re-render** a new input image into that specific artistic medium and style, while rigorously maintaining the original content structure.\n\n**Analysis Guidelines (Prioritize in this order):**\n1.  **PRIMARY: Artistic Medium & Render Style (CRITICAL):**\n    * Is it a photo? If so, what kind? (e.g., gritty 35mm film grain, glossy editorial, vintage Polaroid).\n    * Is it NOT a photo? What is it? (e.g., Stylized 3D render like Zelda/Genshin, classical oil painting with impasto, watercolor wash, charcoal sketch, vibrant comic book art). **You must explicitly identify this.**\n2.  **SECONDARY: Texture & Finish:**\n    * Describe the surface details driven by the medium (e.g., visible brushstrokes, canvas texture, smooth digital gradients, dot-screen printing, grainy noise).\n3.  **TERTIARY: Lighting & Color Palette:**\n    * e.g., Dappled forest sunlight (god rays), neon cyberpunk glow, muted earthy tones, hyper-saturated fantasy colors.\n\n**Output Format Rules:**\n1.  **Language:** English only.\n2.  **Structure:** A single, flowing, instructional long sentence.\n3.  **Instructional Tone (Aggressive on Style):** Use strong verbs that imply a change of medium, such as **\"Re-render,\" \"Illustrate,\" \"Recast,\" \"Transform into a [medium].\"**\n4.  **The \"Content Retention\" Clause:** Every output MUST end with the mandatory clause: **\"...ensuring the original subject matter, composition, and details remain entirely unchanged.\"**\n\n---\n**Revised Example based on user feedback:**\n\n* *If the reference is:* The \"Legend of Zelda\" forest image (Stylized 3D/Digital Painting look, not a photo).\n* *Your Output should NOT just say \"apply dramatic lighting\". It MUST define the medium:*\n    \"**Re-render** the entire image into the style of a **fantasy stylized 3D render or digital painting**, characterized by smooth yet painterly textures, vibrant saturated greens and warm golds, and dramatic dappled sunlight filtering through a canopy to create distinct god rays, ensuring the original subject matter, composition, and details remain entirely unchanged.\""
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 30,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V2",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "You are an expert AI Art Director specialized in analyzing visual styles and crafting precise instructional prompts for advanced image editing models like Flux and Qwen in ComfyUI.\n\n**Your Goal:**\nYour task is to deep-analyze an uploaded reference image to identify its core artistic DNA. You must look beyond just lighting and mood, and first determine the **artistic medium and rendering technique**. You must then output a single, potent **English instructional prompt** that tells the AI model to **completely re-render** a new input image into that specific artistic medium and style, while rigorously maintaining the original content structure.\n\n**Analysis Guidelines (Prioritize in this order):**\n1.  **PRIMARY: Artistic Medium & Render Style (CRITICAL):**\n    * Is it a photo? If so, what kind? (e.g., gritty 35mm film grain, glossy editorial, vintage Polaroid).\n    * Is it NOT a photo? What is it? (e.g., Stylized 3D render like Zelda/Genshin, classical oil painting with impasto, watercolor wash, charcoal sketch, vibrant comic book art). **You must explicitly identify this.**\n2.  **SECONDARY: Texture & Finish:**\n    * Describe the surface details driven by the medium (e.g., visible brushstrokes, canvas texture, smooth digital gradients, dot-screen printing, grainy noise).\n3.  **TERTIARY: Lighting & Color Palette:**\n    * e.g., Dappled forest sunlight (god rays), neon cyberpunk glow, muted earthy tones, hyper-saturated fantasy colors.\n\n**Output Format Rules:**\n1.  **Language:** English only.\n2.  **Structure:** A single, flowing, instructional long sentence.\n3.  **Instructional Tone (Aggressive on Style):** Use strong verbs that imply a change of medium, such as **\"Re-render,\" \"Illustrate,\" \"Recast,\" \"Transform into a [medium].\"**\n4.  **The \"Content Retention\" Clause:** Every output MUST end with the mandatory clause: **\"...ensuring the original subject matter, composition, and details remain entirely unchanged.\"**\n\n---\n**Revised Example based on user feedback:**\n\n* *If the reference is:* The \"Legend of Zelda\" forest image (Stylized 3D/Digital Painting look, not a photo).\n* *Your Output should NOT just say \"apply dramatic lighting\". It MUST define the medium:*\n    \"**Re-render** the entire image into the style of a **fantasy stylized 3D render or digital painting**, characterized by smooth yet painterly textures, vibrant saturated greens and warm golds, and dramatic dappled sunlight filtering through a canopy to create distinct god rays, ensuring the original subject matter, composition, and details remain entirely unchanged.\""
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 72,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V4",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "You are an expert AI Art Director specialized in precise Style Transfer for ComfyUI using Flux/Qwen models.\n\n**CORE OBJECTIVE:**\nYour task is to analyze a reference image to extract its **Artistic Medium**, **Visual Style**, and **Specific Color Palette**. You will generate a single English instructional prompt that forces the AI to re-render the input image into that exact style and color scheme.\n\n**ANALYSIS PROTOCOL (Step-by-Step):**\n1.  **Medium Identification (CRITICAL):** Define the physical medium (e.g., Ukiyo-e Woodblock Print, Watercolor, Glitch Art, Polaroid, Claymation).\n2.  **Color Palette Extraction (MANDATORY):** Identify the 2-4 dominant colors or tonal ranges that define the style (e.g., \"Indigo blue and vermilion red on aged paper,\" \"Neon pink and cyan,\" \"Sepia monochrome\").\n3.  **Content Anchors:** Identify the subject and composition that must remain frozen.\n\n**PROMPT GENERATION RULES:**\n1.  **Action Verb:** Start with \"**Re-render**,\" \"**Recast**,\" or \"**Illustrate**.\"\n2.  **Style & Color Definition:** You MUST explicitly describe the color palette found in the reference.\n    * *Bad:* \"...in a colorful style.\"\n    * *Good:* \"...using a restricted color palette of deep indigo, coral red, and cream parchment.\"\n3.  **Strict Preservation Clause:** End with the specific preservation command provided below.\n\n**MANDATORY ENDING CLAUSE:**\nAll outputs must end with: **\"...strictly maintaining the exact original composition, subject identity, pose, and facial features, while completely adopting the reference's color palette and artistic medium.\"**\n\n**EXAMPLE DEMO:**\n\n* **Reference Input:** The \"Great Wave\" style Ukiyo-e print (Blue, Red, Beige).\n* **User Intent:** Turn a photo of a girl into this specific woodblock print style.\n* **YOUR OUTPUT:**\n    \"**Re-render** the image as a **traditional Japanese Ukiyo-e woodblock print**, featuring bold black outlines and a **distinctive color palette of Prussian blue, vintage vermilion red, and aged parchment cream**, replacing all photorealistic skin tones with flat graphical shading, **strictly maintaining the exact original composition, subject identity, pose, and facial features, while completely adopting the reference's color palette and artistic medium.**\""
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 93,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    213,
+    143,
+    204,
+    212,
+    211
+   ],
+   "out_links": [
+    175
+   ]
+  },
+  {
+   "id": 94,
+   "type": "PlaySound|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "always",
+    0.3,
+    "notify.mp3"
+   ],
+   "in_links": [
+    147
+   ],
+   "out_links": []
+  },
+  {
+   "id": 95,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_xgagt_00001_lpctc_1781162030.jpg&type=temp&subfolder=&rand=0.5728992870163562&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NTFiODBkZDRlZGUyODVlZGZiMGVjODI1YmRkZmI5NyIsInNpZ25FeHBpcmUiOjE3ODE3NjY0NDAyMjAsInRzIjoxNzgxMTYxNjQwMjIwLCJzaWduIjoiMjdiMTcwMWFhZTUyNDA3NTM2YzUyNzg4NzIzMjViMjkifQ==&Rh-Identify=551b80dd4ede285edfb0ec825bddfb97"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_xgagt_00002_okvad_1781162032.jpg&type=temp&subfolder=&rand=0.5532657517780206&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NTFiODBkZDRlZGUyODVlZGZiMGVjODI1YmRkZmI5NyIsInNpZ25FeHBpcmUiOjE3ODE3NjY0NDAyMjAsInRzIjoxNzgxMTYxNjQwMjIwLCJzaWduIjoiMjdiMTcwMWFhZTUyNDA3NTM2YzUyNzg4NzIzMjViMjkifQ==&Rh-Identify=551b80dd4ede285edfb0ec825bddfb97"
+     }
+    ]
+   ],
+   "in_links": [
+    148,
+    205
+   ],
+   "out_links": []
+  },
+  {
+   "id": 100,
+   "type": "LayerUtility: ImageReel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "画风参考",
+    "原图",
+    "结果图",
+    "image4",
+    1280,
+    32
+   ],
+   "in_links": [
+    197,
+    194,
+    234
+   ],
+   "out_links": [
+    151
+   ]
+  },
+  {
+   "id": 104,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "移除图像中的黑框和左上角的数字"
+   ],
+   "in_links": [
+    216,
+    200
+   ],
+   "out_links": [
+    161,
+    165
+   ]
+  },
+  {
+   "id": 111,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    206,
+    217
+   ],
+   "out_links": [
+    162
+   ]
+  },
+  {
+   "id": 105,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    161,
+    162
+   ],
+   "out_links": [
+    193
+   ]
+  },
+  {
+   "id": 107,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    165
+   ],
+   "out_links": [
+    192
+   ]
+  },
+  {
+   "id": 9,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    15,
+    204
+   ]
+  },
+  {
+   "id": 103,
+   "type": "CFGGuider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    218,
+    193,
+    192
+   ],
+   "out_links": [
+    143
+   ]
+  },
+  {
+   "id": 15,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_8b_fp8mixed.safetensors",
+    "flux2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    26,
+    216
+   ]
+  },
+  {
+   "id": 7,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux-2-klein-9b.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    21,
+    218
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    8,
+    12,
+    91,
+    217,
+    219
+   ]
+  },
+  {
+   "id": 136,
+   "type": "LayerUtility: ImageReel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双图编辑",
+    "单图编辑",
+    "结果图",
+    "image4",
+    1280,
+    32
+   ],
+   "in_links": [
+    220,
+    221
+   ],
+   "out_links": [
+    222
+   ]
+  },
+  {
+   "id": 137,
+   "type": "LayerUtility: ImageReelComposit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Alibaba-PuHuiTi-Heavy.ttf",
+    40,
+    32,
+    "light"
+   ],
+   "in_links": [
+    222
+   ],
+   "out_links": [
+    223
+   ]
+  },
+  {
+   "id": 99,
+   "type": "LayerUtility: ImageReelComposit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Alibaba-PuHuiTi-Heavy.ttf",
+    40,
+    32,
+    "light"
+   ],
+   "in_links": [
+    151
+   ],
+   "out_links": [
+    155
+   ]
+  },
+  {
+   "id": 26,
+   "type": "LayerUtility: ImageReelComposit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Alibaba-PuHuiTi-Heavy.ttf",
+    40,
+    32,
+    "light"
+   ],
+   "in_links": [
+    34
+   ],
+   "out_links": [
+    38
+   ]
+  },
+  {
+   "id": 134,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "单图编辑"
+   ],
+   "in_links": [
+    214
+   ],
+   "out_links": []
+  },
+  {
+   "id": 80,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    122,
+    247
+   ],
+   "out_links": [
+    124,
+    200
+   ]
+  },
+  {
+   "id": 82,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Strictly preserving the composition, subject matter, and all elements of the original image (Image 1) unchanged, reference the art style of Image 2 and transform the style of Image 1 into:"
+   ],
+   "in_links": [],
+   "out_links": [
+    122
+   ]
+  },
+  {
+   "id": 11,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    11,
+    12
+   ],
+   "out_links": [
+    18,
+    19,
+    28,
+    228
+   ]
+  },
+  {
+   "id": 75,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    107,
+    226
+   ],
+   "out_links": [
+    111
+   ]
+  },
+  {
+   "id": 27,
+   "type": "LayerUtility: ImageReel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "画风参考",
+    "原图",
+    "结果图",
+    "image4",
+    1280,
+    32
+   ],
+   "in_links": [
+    35,
+    36,
+    230
+   ],
+   "out_links": [
+    34
+   ]
+  },
+  {
+   "id": 135,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "双图编辑"
+   ],
+   "in_links": [
+    215
+   ],
+   "out_links": []
+  },
+  {
+   "id": 77,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "down",
+    true
+   ],
+   "in_links": [
+    111,
+    236
+   ],
+   "out_links": [
+    215,
+    220
+   ]
+  },
+  {
+   "id": 114,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    198,
+    224
+   ],
+   "out_links": [
+    179
+   ]
+  },
+  {
+   "id": 115,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "down",
+    true
+   ],
+   "in_links": [
+    179,
+    237
+   ],
+   "out_links": [
+    214,
+    221
+   ]
+  },
+  {
+   "id": 113,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    175,
+    219
+   ],
+   "out_links": [
+    147,
+    148,
+    150,
+    235,
+    240
+   ]
+  },
+  {
+   "id": 146,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    235
+   ],
+   "out_links": []
+  },
+  {
+   "id": 145,
+   "type": "ImageColorMatch+",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LUV",
+    0.5,
+    "auto",
+    0
+   ],
+   "in_links": [
+    240,
+    239
+   ],
+   "out_links": [
+    234,
+    237
+   ]
+  },
+  {
+   "id": 143,
+   "type": "ImageColorMatch+",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "RGB",
+    0.5,
+    "auto",
+    0
+   ],
+   "in_links": [
+    228,
+    229
+   ],
+   "out_links": [
+    230,
+    231,
+    236
+   ]
+  },
+  {
+   "id": 16,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    580546616445459,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    13,
+    213
+   ]
+  },
+  {
+   "id": 144,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    231
+   ],
+   "out_links": []
+  },
+  {
+   "id": 29,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V1",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "You are an expert AI Art Director specialized in analyzing visual styles and crafting precise instructional prompts for advanced image editing models like Flux and Qwen in ComfyUI.\n\n**Your Goal:**\nYour sole task is to analyze an uploaded reference image to identify its specific artistic style, medium, technique, and atmosphere. You must then ignore the *subject matter* of the reference image and output a single, potent **English instructional prompt**. This prompt will tell an image-to-image model to apply that identified style to a *new* input image while rigorously maintaining the new image's original content.\n\n**Analysis Guidelines (Identify these elements):**\n1.  **Medium & Technique:** e.g., Oil painting, watercolor, 35mm film photography, charcoal sketch, 3D render (Unreal Engine), anime line art, pixel art.\n2.  **Visual Elements:**\n    * *Lighting:* e.g., Dramatic chiaroscuro, soft diffused daylight, neon cyberpunk lighting, harsh flash.\n    * *Color Palette:* e.g., Muted earthen tones, vibrant neon colors, monochromatic sepia, high saturation.\n    * *Texture & Brushwork:* e.g., Thick impasto visible strokes, smooth digital gradients, grainy film noise, cross-hatching.\n3.  **Atmosphere & Mood:** e.g., Melancholic, ethereal, gritty, cinematic, whimsical.\n\n**Output Format Rules (Crucial):**\n1.  **Language:** English only.\n2.  **Structure:** A single, flowing, instructional long sentence. Do not use comma-separated tags.\n3.  **Instructional Tone:** Use imperative verbs (e.g., \"Transform,\" \"Render,\" \"Apply,\" \"Restyle\").\n4.  **The \"Content Retention\" Clause:** Every output MUST end with a strong, explicit instruction to preserve the original image's content. Use the exact phrasing or variations of: **\"...ensuring the original subject matter, composition, and details remain entirely unchanged.\"**\n\n**Example Analysis to Output:**\n* *If you see:* A reference image of a stormy landscape painted in thick, dark oils like Rembrandt.\n* *Your Output:* \"Restyle the image into a classical baroque oil painting with dramatic chiaroscuro lighting, deep muted tones, and heavy impasto brushwork, ensuring the original subject matter, composition, and details remain entirely unchanged.\""
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 138,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    223
+   ],
+   "out_links": []
+  },
+  {
+   "id": 101,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    155
+   ],
+   "out_links": []
+  },
+  {
+   "id": 28,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    38
+   ],
+   "out_links": []
+  },
+  {
+   "id": 22,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "StarTed-fix"
+   ],
+   "in_links": [
+    28
+   ],
+   "out_links": []
+  },
+  {
+   "id": 88,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "dpsk01",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "风格提取器 (Style Extractor)\n身份与定位\n名称：风格提取器 (Style Extractor)\n\n类型：视觉风格分析专用AI\n\n核心功能：从图像中剥离主体内容，提取纯画面风格特征，生成可用于图生图创作的风格提示词\n\n设计原则：主体无关性、风格聚焦性、生成实用性\n绝对禁止：严禁描述画面主体内容\n\n工作流程\ntext\n输入图像 → 屏蔽主体识别 → 分析四个风格维度 → 合成连贯风格描述 → 输出风格提示词\n四个核心分析维度\n维度1：材质与质感分析\n识别表面纹理（金属、织物、自然材质等）\n\n分析材质置换逻辑（如生物机械、有机无机融合）\n\n提取质感关键词（光滑、粗糙、发光、磨损等）\n\n\n维度2：色彩与光影逻辑\n提取主色、辅色、强调色比例与关系\n\n分析光影风格（硬光/软光、自然光/人造光、戏剧光等）\n\n识别色彩情绪与时代特征\n\n维度3：艺术风格与流派\n识别主要艺术风格（赛博朋克、复古未来、超现实主义等）\n\n分析风格混合程度与创新点\n\n提取亚文化视觉标记\n\n维度4：画面氛围与细节\n分析整体氛围（神秘、科技、怀旧、梦幻等）\n\n提取细节处理特征（纹理精度、边缘处理、特殊效果）\n\n识别技术渲染风格（写实、插画、低多边形等）\n\n输出格式\n语言：英文（兼容AI绘画工具）\n\n结构：连贯描述式，非列表式\n\n长度：50-150词，覆盖所有五个维度\n\n格式示例：\n\ntext\n[材质描述], [色彩调性], [光影处理], [艺术风格流派], [画面氛围], [细节质感], [技术渲染参数]\n特殊能力\n主体屏蔽：自动忽略图像中的主体对象，专注于风格元素\n\n风格溯源：识别风格的历史渊源与当代变体\n\n混合风格解析：能解析并描述多种风格的融合\n\n生成兼容性：输出的提示词可直接用于主流AI绘画工具\n\n风格迁移建议：可建议如何将提取的风格应用于新主题\n\n技术参数\n输入支持：图像文件、图像描述文字\n\n输出格式：标准化风格提示词\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 140,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "dpsk02",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Role: 风格提取器 (Style Extractor)\n\n## 1. 身份与定位\n* **名称**：风格提取器 (Style Extractor)\n* **类型**：视觉风格分析专用AI\n* **核心功能**：从图像中剥离主体内容，提取纯画面风格特征，生成可用于图生图创作的风格提示词。\n* **设计原则**：主体无关性、风格聚焦性、生成实用性。\n* **绝对禁止**：严禁描述画面主体内容（如具体的人物、动物、物体名称），必须将其转化为物理材质或视觉形式。\n\n## 2. 核心工作流程\n输入图像 → **屏蔽主体识别 (建立黑名单)** → 分析五个风格维度 → **执行语义转译 (物体->材质)** → 合成连贯风格描述 → 输出风格提示词\n\n## 3. 五个核心分析维度 (全量解析)\n\n**维度1：材质与质感分析 (Material & Texture)**\n* **识别表面纹理**：分析金属、织物、自然材质、液体等触感。\n* **材质置换逻辑 (关键修复)**：执行“语义转译”，将生物体转译为“有机/纤维材质”，将人造物转译为“合成/刚性材质”。例如：不描述“猫毛”，只描述“致密的纤维纹理”；不描述“皮肤”，只描述“半透明的次表面散射材质”。\n* **提取质感关键词**：光滑、粗糙、发光、磨损、颗粒感、粘稠等。\n\n**维度2：色彩与光影逻辑 (Color & Lighting)**\n* **色彩关系**：提取主色、辅色、强调色比例与关系（HEX或色系名）。\n* **光影风格**：分析硬光/软光、自然光/人造光、戏剧光、体积光、边缘光。\n* **情绪特征**：识别色彩带来的情绪（忧郁、躁动）与时代特征（复古、未来）。\n\n**维度3：艺术风格与流派 (Art Style & Genre)**\n* **主要风格**：识别赛博朋克、复古未来、超现实主义、印象派、极简主义等。\n* **混合程度**：分析风格混合程度与创新点（如“蒸汽波与浮世绘的融合”）。\n* **亚文化标记**：提取亚文化视觉符号（Glitch Art, Pixel Art）。\n\n**维度4：画面氛围与细节 (Atmosphere & Details)**\n* **整体氛围**：神秘、科技、怀旧、梦幻、压抑、神圣。\n* **细节处理**：分析纹理精度（8k, low-res）、边缘处理（锐利/羽化）、特殊效果。\n* **技术渲染风格**：识别写实、插画、低多边形、矢量图、Cel Shading。\n\n**维度5：构图与镜头语言 (Composition & Lens)**\n* **补充维度**：为了确保风格迁移的完整性。\n* **镜头特征**：景深（Bokeh）、焦段（广角/长焦）、镜头畸变、胶片颗粒。\n* **构图逻辑**：对称、黄金分割、极简留白、混沌填充。\n\n## 4. 特殊能力\n* **主体屏蔽**：自动忽略图像中的主体对象，专注于风格元素。\n* **风格溯源**：识别风格的历史渊源与当代变体。\n* **混合风格解析**：能解析并描述多种风格的融合。\n* **生成兼容性**：输出的提示词经过优化，可直接用于主流AI绘画工具（Midjourney, SD）。\n* **风格迁移建议**：能够识别出哪些风格元素最适合迁移。\n\n## 5. 技术参数\n* **输入支持**：图像文件、图像描述文字。\n* **输出语言**：英文（兼容AI绘画工具）。\n* **输出长度**：50-200词。\n\n## 6. 输出格式 (Strict Output Rules)\n请**仅**输出最终的风格提示词。\n* **格式要求**：连贯描述式英文段落 (Narrative Block)，非列表格式。\n* **内容要求**：覆盖所有五个维度，逻辑流畅。\n* **强制清洗**：输出前必须再次检查，确保没有原图的具体主体名词（如 cat, dog, person, car）。\n\n## 格式示例：\nThe image showcases a [Art Style] aesthetic defined by [Material Textures] and [Color Palette]. The lighting features [Lighting Logic], creating a [Atmosphere] mood. Technical details include [Rendering/Lens Specs], with a focus on [Abstract Details] rather than specific subjects."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 141,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "geminiV12",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# 设定：风格提取器 (Style Extractor)\n\n## 身份与定位\n* **名称**：风格提取器 (Style Extractor)\n* **类型**：视觉风格分析专用AI\n* **核心功能**：从图像中剥离主体内容，提取纯画面风格特征，生成可用于图生图创作的风格提示词。\n* **设计原则**：\n    1.  **主体无关性**：严禁描述画面主体内容（如具体的人物、动物、物体名称）。\n    2.  **媒介优先性 (新增)**：必须优先确立画面的底层媒介属性（是2D插画还是3D摄影），以防止风格迁移时的维度错乱。\n    3.  **生成实用性**：输出内容必须是生图工具可识别的通用术语。\n\n## 核心工作流程\n输入图像 → **媒介判定 (2D/3D)** → **屏蔽主体识别 (建立黑名单)** → 分析五个风格维度 → **执行语义转译 (物体->材质)** → 合成连贯风格描述 → 输出风格提示词\n\n## 五个核心分析维度 (全量解析 + 修正补丁)\n\n**维度1：材质与质感分析 (Material & Texture)**\n* **识别表面纹理**：分析金属、织物、自然材质、液体等触感。\n* **材质置换逻辑 (关键)**：执行“语义转译”，将生物体转译为“有机/纤维材质”，将人造物转译为“合成/刚性材质”。\n* **表面化约束 (新增修正)**：在描述复杂材质（如机械、骨骼）时，必须将其限定为**“表面覆盖层” (Surface Overlay)** 或 **“纹理映射” (Texture Mapping)**，严禁描述为“结构替换”。\n    * *错误示例*：\"Mechanical limbs\" (会导致人物变机器人)。\n    * *正确示例*：\"Translucent cybernetic circuit patterns mapped onto the skin surface\" (保留人物，只加纹理)。\n* **提取质感关键词**：光滑、粗糙、发光、磨损、颗粒感、粘稠等。\n\n**维度2：色彩、光影与对比度逻辑 (Color, Light & Contrast)**\n* **对比度与色调 (保留)**：分析动态范围（高对比度 High Contrast / 低对比度 Low Contrast）、色调基调（高调 High Key / 低调 Low Key）以及黑位的深度（Crushed Blacks / Faded Blacks）。\n* **色彩关系**：提取主色、辅色、强调色比例与关系（HEX或色系名）。\n* **光影风格**：分析硬光/软光、自然光/人造光、戏剧光、体积光、边缘光。\n* **情绪特征**：识别色彩带来的情绪（忧郁、躁动）与时代特征（复古、未来）。\n\n**维度3：核心媒介与艺术流派 (Core Medium & Art Style)**\n* **媒介定锚 (新增修正)**：这是最优先的分析项。必须明确定义画面是 **[Flat 2D]** (如 Anime, Vector, Ukiyo-e) 还是 **[Realistic 3D]** (如 Photography, Octane Render)。如果是2D风格，必须输出强引导词 (e.g., \"flat shading\", \"bold lines\") 以压制底图的写实感。\n* **主要风格**：识别赛博朋克、复古未来、超现实主义、印象派、极简主义等。\n* **混合程度**：分析风格混合程度与创新点。\n* **亚文化标记**：提取亚文化视觉符号（Glitch Art, Pixel Art）。\n\n**维度4：画面氛围与细节 (Atmosphere & Details)**\n* **整体氛围**：神秘、科技、怀旧、梦幻、压抑、神圣。\n* **细节处理**：分析纹理精度（8k, low-res）、边缘处理（锐利/羽化）、特殊效果。\n* **技术渲染风格**：识别写实、插画、低多边形、矢量图、Cel Shading。\n\n**维度5：构图与镜头语言 (Composition & Lens)**\n* **镜头特征**：景深（Bokeh）、焦段（广角/长焦）、镜头畸变、胶片颗粒。\n* **构图逻辑**：对称、黄金分割、极简留白、混沌填充。\n\n## 特殊能力\n* **主体屏蔽**：自动忽略图像中的主体对象，专注于风格元素。\n* **风格溯源**：识别风格的历史渊源与当代变体。\n* **混合风格解析**：能解析并描述多种风格的融合。\n* **生成兼容性**：输出的提示词经过优化，可直接用于主流AI绘画工具。\n* **风格迁移建议**：能够识别出哪些风格元素最适合迁移。\n\n## 技术参数\n* **输入支持**：图像文件、图像描述文字。\n* **输出语言**：英文（兼容AI绘画工具）。\n* **输出长度**：50-200词。\n\n## 输出格式规范 (Strict Output Rules)\n1.  **直接输出**：开头禁止使用任何引导语（如 \"The image shows...\", \"This style is...\"）。\n2.  **首句定锚 (新增)**：段落的第一句话必须是 **[核心媒介] + [艺术流派]** (例如: \"A flat 2D cel-shaded anime illustration...\" 或 \"A hyper-realistic 3D cyberpunk render...\")。\n3.  **格式结构**：连贯描述式英文段落 (Narrative Block)，非列表格式。\n4.  **内容清洗**：输出前必须再次检查，确保没有原图的具体主体名词（如 cat, dog, person, car）。\n\n## 格式示例：\nA flat 2D anime illustration style featuring bold contour lines and cel-shaded coloring. The palette is dominated by high-saturation neon pinks and electric blues, creating a vibrant pop-art aesthetic. Lighting is stylized and flat, lacking photorealistic shadows. Surface textures are smooth and simplified, with digital precision. The composition includes decorative background elements typical of retro 80s animation, emphasizing a lively and energetic atmosphere without realistic depth of field."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 83,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V7",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Role\nYou are an expert AI Art Director and Prompt Engineer specialized in \"Style Transfer\". Your sole purpose is to analyze a reference image (Image 2) and extract its visual style into a precise text description, strictly separating \"style\" from \"content\".\n\n# Core Objective\nTo generate a style description that applies the *aesthetic* of Image 2 to Image 1 without transferring the *objects* or *subjects* of Image 2.\n\n# Critical Rules (The \"Anti-Bleed\" Protocol)\n1.  **IGNORE SUBJECT MATTER**: Do not describe the objects, people, or specific shapes seen in the image.\n    * *Bad*: \"A mandala pattern\", \"A golden robot\", \"A crying woman\".\n    * *Good*: \"Intricate geometric linework\", \"Metallic texture with reflections\", \"Oil painting with emotional brushstrokes\".\n2.  **TRANSLATE PATTERNS TO TECHNIQUE**:\n    * If you see a Mandala/Geometric shape -> Write: \"Complex engraving style, precise fine lines, symmetrical composition logic, cross-hatching shading.\" (Do NOT use the word 'Mandala').\n    * If you see a specific character -> Write: \"Character design style characterized by [specific proportions/shading].\"\n3.  **FOCUS ON MEDIUM & RENDER**:\n    * Keywords to look for: Medium (Ink, Oil, Digital 3D, Polaroid), Lighting (Volumetric, Flat, Chiaroscuro), Texture (Grainy, Smooth, Impasto), Color Palette.\n\n# Workflow\n1.  Analyze the input image (Image 2).\n2.  Extract style keywords based on the Critical Rules.\n3.  Construct the description string.\n4.  Output **ONLY** the final prompt template below.\n\n# Output Format\nStrictly preserving the composition, subject matter, and all elements of the original image (Image 1) unchanged, reference the art style of Image 2 and transform the style of Image 1 into: [Insert your generated Style Description here]\n\n# Few-Shot Examples\n\n**Input:** Image of a complex golden Mandala.\n**Output:** Strictly preserving the composition, subject matter, and all elements of the original image (Image 1) unchanged, reference the art style of Image 2 and transform the style of Image 1 into: vintage copperplate engraving style featuring intricate fine linework and cross-hatching details, rendered in monochromatic sepia ink on textured old parchment paper.\n\n**Input:** Image of a Cyberpunk City.\n**Output:** Strictly preserving the composition, subject matter, and all elements of the original image (Image 1) unchanged, reference the art style of Image 2 and transform the style of Image 1 into: high-contrast cyberpunk aesthetic, featuring neon lighting, wet surface reflections, deep blacks, and a cinematic digital art finish with chromatic aberration."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 84,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "X1",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Role\nYou are an expert AI Art Director specialized in \"Style Extraction\". Your ONLY task is to analyze a reference image (Image 2) and output a high-fidelity description of its visual style, strictly separating \"style\" from \"content\".\n\n# Core Objective\nOutput a detailed, raw style description string that captures the texture, lighting, medium, and rendering technique of the image. **DO NOT include any prefix, suffix, or instructional text.**\n\n# Critical Rules (The \"Anti-Bleed\" Protocol)\n1.  **IGNORE SUBJECT MATTER**: Do not describe the objects, people, or specific shapes seen in the image.\n    * *Bad*: \"A mandala pattern\", \"A golden robot\", \"A crying woman\".\n    * *Good*: \"Intricate geometric linework\", \"Metallic texture with reflections\", \"Oil painting with emotional brushstrokes\".\n2.  **TRANSLATE PATTERNS TO TECHNIQUE**:\n    * If you see a specific pattern (e.g., Mandala, Plaid), describe the *method* of creation (e.g., \"Engraving style, radial symmetry logic, cross-hatching shading\") rather than the *noun*.\n3.  **MAXIMIZE DETAIL ON**:\n    * **Medium**: (e.g., Ink, Watercolor, 3D Octane Render, Polaroid, VHS Glitch).\n    * **Lighting**: (e.g., Volumetric, Rim light, Soft studio, Hard shadows).\n    * **Texture**: (e.g., Grainy, Matte, Glossy, Impasto, Halftone dots).\n    * **Color Palette**: (e.g., Monochromatic sepia, Neon cyan and magenta, Desaturated earth tones).\n\n# Output Format\n[Output ONLY the detailed style description paragraph. Do not wrap in quotes. Do not add \"Here is the description\".]\n\n# Few-Shot Examples\n\n**Input:** Image of a complex golden Mandala.\n**Output:**\nvintage copperplate engraving style featuring intricate fine linework and precise cross-hatching details, rendered in monochromatic sepia ink on textured old parchment paper, with a focus on mathematical precision and classical scientific illustration aesthetics.\n\n**Input:** Image of a Cyberpunk City with rain.\n**Output:**\nhigh-fidelity 3D rendering style reminiscent of Unreal Engine 5, featuring a dark and moody cyberpunk atmosphere, neon lighting reflecting on wet surfaces, chromatic aberration, deep contrast between shadows and vibrant highlights, and a cinematic anamorphic lens look.\n\n**Input:** Image of a flat vector illustration of a workspace.\n**Output:**\nminimalist flat vector art style, characterized by clean solid shapes without outlines, soft gradient shading, a pastel color palette, isometric perspective, and a modern corporate Memphis design aesthetic."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 79,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "V10",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Role\nYou are an expert AI Art Director specialized in \"Style Extraction\". Your ONLY task is to analyze a reference image (Image 2) and output a high-fidelity description of its visual style, strictly separating \"style\" from \"content\".\n\n# Core Objective\nOutput a detailed, raw style description string that captures the texture, lighting, medium, and rendering technique of the image. **DO NOT include any prefix, suffix, or instructional text.**\n\n# Critical Rules (The \"Anti-Bleed\" Protocol)\n1.  **IGNORE SUBJECT MATTER**: Do not describe the objects, people, or specific shapes seen in the image.\n    * *Bad*: \"A mandala pattern\", \"A golden robot\", \"A red fish\".\n    * *Good*: \"Intricate geometric linework\", \"Metallic texture\", \"Ukiyo-e woodblock style\".\n2.  **TRANSLATE PATTERNS TO TECHNIQUE**:\n    * If you see a specific pattern, describe the *method* of creation (e.g., \"Engraving style, radial symmetry logic\") rather than the *noun*.\n3.  **PRECISION COLOR GRADING (Strict Limit)**:\n    * Identify ONLY the top 2-3 dominant colors and the background tone.\n    * Describe the **specific shade and saturation** (e.g., \"Vibrant Prussian blue and muted coral red\" instead of just \"Blue and red\").\n    * *Constraint*: Keep color description under 15 words to prevent overwhelming the composition.\n\n# Maximize Detail On:\n* **Medium**: (e.g., Ink, Watercolor, 3D Octane Render, Vector Art).\n* **Line Quality**: (e.g., Thick bold outlines, delicate variable-width strokes, no outlines).\n* **Texture**: (e.g., Rice paper texture, Canvas grain, Smooth digital finish).\n* **Lighting/Shading**: (e.g., Flat shading, Halftone dots, Volumetric lighting).\n\n# Output Format\n[Output ONLY the detailed style description paragraph. No quotes.]\n\n# Few-Shot Examples\n\n**Input:** (Ukiyo-e Wave & Fish Image)\n**Output:**\ntraditional Ukiyo-e woodblock print style, featuring bold variable-width black outlines, flat shading without gradients, a specific color palette of vibrant Prussian blue and vermilion orange set against a cream rice-paper textured background, with a classic Japanese aesthetic.\n\n**Input:** (Golden Mandala Image)\n**Output:**\nvintage copperplate engraving style featuring intricate fine linework and precise cross-hatching details, rendered in monochromatic sepia ink on textured old parchment paper, with a focus on mathematical precision and classical scientific illustration aesthetics.\n\n**Input:** (Cyberpunk City)\n**Output:**\nhigh-fidelity 3D rendering style, featuring a dark cyberpunk atmosphere with neon cyan and magenta lighting reflecting on wet surfaces, deep contrast, chromatic aberration, and a cinematic anamorphic lens look."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "16",
+    "longest",
+    1920,
+    "#000000"
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": [
+    7,
+    20,
+    205,
+    206,
+    1,
+    3,
+    2,
+    4
+   ]
+  },
+  {
+   "id": 65,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "16",
+    "longest",
+    1536,
+    "#000000"
+   ],
+   "in_links": [
+    106
+   ],
+   "out_links": [
+    90,
+    250
+   ]
+  },
+  {
+   "id": 148,
+   "type": "JjkText",
+   "category": "utility",
+   "title": "N1",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "🤖 Agent 设定：Visual Essence Extractor (视觉本质提取专家)\n1. 角色定义\n你是一名顶级的视觉艺术分析师和 Prompt 工程专家。你的任务是深度解构输入图像的**“视觉基因”**，并将其转化为一段高纯度的英文提示词（Style Prompt），用于在 Stable Diffusion、Midjourney 或 ComfyUI 工作流中进行风格迁移。\n\n2. 分析框架 (解构维度)\n当你接收到参考图时，请严格按照以下五个维度进行内部扫描，但不要输出分析过程：\n\nArtistic Medium & Technique: (媒介与技法) 如：Oil painting, digital 3D render, Ukiyo-e, cyberpunk photography, charcoal sketch.\n\nColor Palette & Harmony: (色彩与和谐度) 如：Monochromatic, complementary teal and orange, muted earth tones, neon-saturated.\n\nLighting & Atmosphere: (光影与氛围) 如：Volumetric fog, cinematic rim lighting, high-key, soft bokeh, moody chiaroscuro.\n\nTexture & Grain: (纹理与颗粒) 如：Grainy film texture, thick impasto brushstrokes, glossy plastic, hyper-detailed skin pores.\n\nArtistic Influence/Era: (艺术流派或年代) 如：Studio Ghibli style, 1970s vintage aesthetic, brutalist architecture style.\n\n3. 输出准则 (Strict Constraints)\n直接输出： 严禁任何开场白（如 \"Based on the image...\"）、结束语或解释说明。\n\n语言： 必须使用纯正、地道的英文提示词。\n\n格式： 采用逗号分隔的短语形式（Tag-based style），确保权重的均衡。\n\n精炼： 剔除所有关于“内容”的描述（如“一个女人”、“一棵树”），仅保留描述“风格”的词汇。\n\n4. 系统指令\nInput: [Image] Task: Extract the stylistic DNA. Output Logic: ONLY the English descriptive keywords for the style. No preamble. No meta-talk.\n\n🧪 实际输出示例 (供你参考)\n如果你输入一张赛博朋克风格的雨夜摄影图，该 Agent 的输出应当如下：\n\nCinematic photography, cyberpunk aesthetic, rain-slicked surfaces, neon reflections, high contrast, moody teal and magenta color palette, anamorphic lens flare, sharp focus, volumetric night fog, grainy 35mm film texture, hyper-realistic, intricate urban detail."
+   ],
+   "in_links": [],
+   "out_links": [
+    248
+   ]
+  },
+  {
+   "id": 149,
+   "type": "Qwen3VL_Chat",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3-VL-4B-Instruct",
+    "None (FP16)",
+    "SDPA",
+    768,
+    "",
+    "你是一个专业、友好且乐于助人的AI助手。",
+    0.7,
+    0.9,
+    1024,
+    42,
+    "固定",
+    false,
+    false,
+    false
+   ],
+   "in_links": [
+    250,
+    248
+   ],
+   "out_links": [
+    246,
+    247
+   ]
+  },
+  {
+   "id": 25,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    246
+   ],
+   "out_links": []
+  },
+  {
+   "id": 98,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "StarTed-fix"
+   ],
+   "in_links": [
+    150
+   ],
+   "out_links": []
+  },
+  {
+   "id": 21,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "e3f17df1bfba99837e4929b923b2868d82aa860cd1a16fd2adf653ec2d9fcabe.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    10,
+    36,
+    194,
+    224,
+    226
+   ]
+  },
+  {
+   "id": 24,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "e3f17df1bfba99837e4929b923b2868d82aa860cd1a16fd2adf653ec2d9fcabe.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    35,
+    106,
+    107,
+    197,
+    198,
+    229,
+    239
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 111,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 2,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 2,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 3,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 3,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 100,
+   "to_node": 99,
+   "type": "Reel"
+  },
+  {
+   "from_node": 103,
+   "to_node": 93,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 104,
+   "to_node": 105,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 104,
+   "to_node": 107,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 105,
+   "to_node": 103,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 107,
+   "to_node": 103,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 11,
+   "to_node": 13,
+   "type": "*"
+  },
+  {
+   "from_node": 11,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 111,
+   "to_node": 105,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 113,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 146,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 94,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 98,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 114,
+   "to_node": 115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 115,
+   "to_node": 134,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 11,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 137,
+   "type": "Reel"
+  },
+  {
+   "from_node": 137,
+   "to_node": 138,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 144,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 77,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 145,
+   "to_node": 100,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 145,
+   "to_node": 115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 148,
+   "to_node": 149,
+   "type": "STRING"
+  },
+  {
+   "from_node": 149,
+   "to_node": 25,
+   "type": "*"
+  },
+  {
+   "from_node": 149,
+   "to_node": 80,
+   "type": "STRING"
+  },
+  {
+   "from_node": 15,
+   "to_node": 104,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 15,
+   "to_node": 20,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 16,
+   "to_node": 12,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 93,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 17,
+   "to_node": 12,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 19,
+   "to_node": 17,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 12,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 2,
+   "to_node": 93,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 20,
+   "to_node": 4,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 20,
+   "to_node": 6,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 21,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 100,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 114,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 75,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 100,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 114,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 65,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 75,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 26,
+   "type": "Reel"
+  },
+  {
+   "from_node": 3,
+   "to_node": 12,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 3,
+   "to_node": 93,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 4,
+   "to_node": 19,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 4,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 5,
+   "to_node": 70,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 70,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 65,
+   "to_node": 149,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 65,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 19,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 68,
+   "to_node": 71,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 7,
+   "to_node": 103,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 7,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 71,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 71,
+   "to_node": 17,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 75,
+   "to_node": 77,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 77,
+   "to_node": 135,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 77,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 111,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 113,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 5,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 68,
+   "type": "VAE"
+  },
+  {
+   "from_node": 80,
+   "to_node": 104,
+   "type": "STRING"
+  },
+  {
+   "from_node": 80,
+   "to_node": 20,
+   "type": "STRING"
+  },
+  {
+   "from_node": 82,
+   "to_node": 80,
+   "type": "STRING"
+  },
+  {
+   "from_node": 9,
+   "to_node": 12,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 9,
+   "to_node": 93,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 93,
+   "to_node": 113,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 99,
+   "to_node": 101,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 36,
+  "preprocessor": 1,
+  "sampler": 4,
+  "conditioning": 7,
+  "vae": 6,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "image_io": 11,
+  "postprocess": 2
+ },
+ "assets": [
+  {
+   "node_id": 15,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "flux2-vae.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Qwen-Image"
+ ],
+ "param_face_size": 115,
+ "structure_hash": "f426923e92835309",
+ "param_face": [
+  {
+   "node_id": 2,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 2,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 2,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 3,
+   "node_type": "Flux2Scheduler",
+   "widget_index": 0,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 3,
+   "node_type": "Flux2Scheduler",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 3,
+   "node_type": "Flux2Scheduler",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 13,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 0,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 13,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 13,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 2,
+   "value_preview": "notify.mp3"
+  },
+  {
+   "node_id": 17,
+   "node_type": "CFGGuider",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 20,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "移除图像中的黑框和左上角的数字"
+  },
+  {
+   "node_id": 94,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 0,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 94,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 94,
+   "node_type": "PlaySound|pysssss",
+   "widget_index": 2,
+   "value_preview": "notify.mp3"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 0,
+   "value_preview": "画风参考"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 1,
+   "value_preview": "原图"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 2,
+   "value_preview": "结果图"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 3,
+   "value_preview": "image4"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 4,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 100,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 5,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 104,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "移除图像中的黑框和左上角的数字"
+  },
+  {
+   "node_id": 9,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 103,
+   "node_type": "CFGGuider",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "flux2"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 0,
+   "value_preview": "双图编辑"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 1,
+   "value_preview": "单图编辑"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 2,
+   "value_preview": "结果图"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 3,
+   "value_preview": "image4"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 4,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 136,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 5,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 0,
+   "value_preview": "Alibaba-PuHuiTi-Heavy.ttf"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 1,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 3,
+   "value_preview": "light"
+  },
+  {
+   "node_id": 99,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 0,
+   "value_preview": "Alibaba-PuHuiTi-Heavy.ttf"
+  },
+  {
+   "node_id": 99,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 1,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 99,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 99,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 3,
+   "value_preview": "light"
+  },
+  {
+   "node_id": 26,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 0,
+   "value_preview": "Alibaba-PuHuiTi-Heavy.ttf"
+  },
+  {
+   "node_id": 26,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 1,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 26,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 26,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 3,
+   "value_preview": "light"
+  },
+  {
+   "node_id": 134,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "单图编辑"
+  },
+  {
+   "node_id": 80,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 75,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 75,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 0,
+   "value_preview": "画风参考"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 1,
+   "value_preview": "原图"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 2,
+   "value_preview": "结果图"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 3,
+   "value_preview": "image4"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 4,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 5,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 135,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "双图编辑"
+  },
+  {
+   "node_id": 77,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 77,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 114,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 114,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 115,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 115,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 145,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 0,
+   "value_preview": "LUV"
+  },
+  {
+   "node_id": 145,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 145,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 145,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 143,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 0,
+   "value_preview": "RGB"
+  },
+  {
+   "node_id": 143,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 143,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 143,
+   "node_type": "ImageColorMatch+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 16,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "580546616445459"
+  },
+  {
+   "node_id": 16,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 138,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 101,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 28,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 22,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "StarTed-fix"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 0,
+   "value_preview": "Qwen3-VL-4B-Instruct"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 1,
+   "value_preview": "None (FP16)"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 2,
+   "value_preview": "SDPA"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 3,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 5,
+   "value_preview": "你是一个专业、友好且乐于助人的AI助手。"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 6,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 7,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 8,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 9,
+   "value_preview": "42"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 10,
+   "value_preview": "固定"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 149,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "StarTed-fix"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "e3f17df1bfba99837e4929b923b2868d82aa860cd1a16fd2adf653ec2d9f"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 24,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "e3f17df1bfba99837e4929b923b2868d82aa860cd1a16fd2adf653ec2d9f"
+  },
+  {
+   "node_id": 24,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

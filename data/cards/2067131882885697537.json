@@ -1,0 +1,89 @@
+{
+ "domain": [
+  "图像编辑",
+  "风格迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张图片（人物/角色），将图中的角色转换为毛线/羊毛编织材质，并保持原有风格和颜色一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出两张图像：一张毛线风格效果图（r-flux2），另一张为原图与效果图的拼接对比图（r-mx）。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 (flux2_dev_fp8mixed)",
+  "Flux2Scheduler 调度器",
+  "CLIPTextEncode 文本指令",
+  "VAEEncode/VAEDecode 潜空间转换",
+  "ReferenceLatent 参考潜空间引导",
+  "SamplerCustomAdvanced + BasicGuider 采样链",
+  "Image Stitch / ImageScaleDownToSize 后处理对比"
+ ],
+ "special_features": [
+  {
+   "text": "使用 ReferenceLatent 将输入图像编码为参考潜空间，用于引导 FLUX.2 生成时保留原图构图与色彩。",
+   "kind": "inference"
+  },
+  {
+   "text": "双输出设计：r-flux2 保存生成效果图，r-mx 保存拼接对比图；对比图由 Image Stitch + ImageScaleDownToSize 生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "串联两个 LayerUtility: PurgeVRAM 节点，在流程中主动清理显存以降低峰值占用。",
+   "kind": "fact"
+  },
+  {
+   "text": "RandomNoise 固定随机种子（也可 randomize），使生成结果可复现。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕 FLUX.2 的图像编辑能力构建，目标是快速将普通角色图变为毛线/羊毛风格。设计上通过 ReferenceLatent 引入参考图潜空间，可能用于在采样时保留原图的构图与颜色；同时使用固定尺寸的 EmptyFlux2LatentImage 控制输出分辨率，并用 Image Stitch 生成对比图方便用户直观查看效果。两个 PurgeVRAM 的出现表明作者在努力控制显存，使 fp8 模型能更顺畅地运行。",
+ "use_case": "适用于将人物/宠物/二次元角色照片转化为毛线编织风格，用于头像、创意周边、手工设计示意图等场景。",
+ "limitation": "依赖 FLUX.2 模型文件：flux2_dev_fp8mixed.safetensors、mistral_3_small_flux2_fp8.safetensors、flux2-vae.safetensors；需要包含 ReferenceLatent 和 LayerUtility: PurgeVRAM 的自定义节点插件；输入为单张图片；生成分辨率固定为 1248x832，对比图长边缩放到 1280；fp8 模型对显存仍有需求，建议在支持 FP8 的环境运行。",
+ "dependencies": [
+  "flux2_dev_fp8mixed.safetensors",
+  "mistral_3_small_flux2_fp8.safetensors",
+  "flux2-vae.safetensors",
+  "ReferenceLatent 自定义节点",
+  "LayerUtility 自定义节点 (ComfyUI_LayerStyle 等)"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image (2张: r-flux2 效果图 + r-mx 对比图)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Flux2Scheduler steps=20",
+   "how_to_tune": "采样步数；20 是默认平衡值，增大可获更精细细节但耗时增加。"
+  },
+  {
+   "param": "EmptyFlux2LatentImage 1248x832",
+   "how_to_tune": "生成分辨率；需与 FLUX.2 支持的分辨率对齐，修改宽高会改变构图和显存占用。"
+  },
+  {
+   "param": "FluxGuidance=4",
+   "how_to_tune": "文本引导强度；值越大越遵提示词重塑风格，但过大会造成失真，可试 3-7。"
+  },
+  {
+   "param": "KSamplerSelect euler",
+   "how_to_tune": "采样器算法；euler 为经典选择，可更换为其他采样器如 dpmpp_2m 调整风格。"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "随机种子；固定数值可重复相同结果，改 randomize 则每次不同。"
+  },
+  {
+   "param": "ImageScaleDownToSize 1280",
+   "how_to_tune": "对比图缩放的尺寸（长边或指定边）；值越小对比图体积越小，适合预览。"
+  }
+ ],
+ "summary_text": "能力:上传单张图片（人物/角色），将图中的角色转换为毛线/羊毛编织材质，并保持原有风格和颜色一致性。；能力:输出两张图像：一张毛线风格效果图（r-flux2），另一张为原图与效果图的拼接对比图（r-mx）。；特色:使用 ReferenceLatent 将输入图像编码为参考潜空间，用于引导 FLUX.2 生成时保留原图构图与色彩。；特色:双输出设计：r-flux2 保存生成效果图，r-mx 保存拼接对比图；对比图由 Image Stitch + ImageScaleDownToSize 生成。；特色:串联两个 LayerUtility: PurgeVRAM 节点，在流程中主动清理显存以降低峰值占用。；特色:RandomNoise 固定随机种子（也可 randomize），使生成结果可复现。；适用于将人物/宠物/二次元角色照片转化为毛线编织风格，用于头像、创意周边、手工设计示意图等场景。；该工作流围绕 FLUX.2 的图像编辑能力构建，目标是快速将普通角色图变为毛线/羊毛风格。设计上通过 ReferenceLatent 引入参考图潜空间，可能用于在采样时保留原图的构图与颜色；同时使用固定尺寸的 EmptyFlux2LatentImage 控制输出分辨率，并用 Image Stitch 生成对比图方便用户直观查看效果。两个 PurgeVRAM 的出现表明作者在努力控制显存，使 fp8 模型能更顺畅地运行。"
+}

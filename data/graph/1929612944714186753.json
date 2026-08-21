@@ -1,0 +1,523 @@
+{
+ "node_count": 14,
+ "link_count": 14,
+ "active_node_count": 14,
+ "nodes": [
+  {
+   "id": 106,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "apikey可以空白，空白就是用的RH默认的API，暂时没限制，后续会有限制"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 98,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Fix this old photo, keeping the character unchanged"
+   ],
+   "in_links": [],
+   "out_links": [
+    123,
+    124
+   ]
+  },
+  {
+   "id": 104,
+   "type": "PrimitiveNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1:1",
+    "fixed",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    119
+   ]
+  },
+  {
+   "id": 84,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "https://fal.media/files/elephant/UQ9wjuAfCJYyh3jgaCVj7_340d1d26226e4e81a81d5e3b79eee587.png\\nhttps://fal.media/files/tiger/7-2uXTQTIbKHqML29BknN_cd3183e1173e4e1fa9ed5880409c0186.png\\nhttps://fal.media/files/zebra/cDJD-wnZaoudAsDzVQ_t7_e82648afca124f1b97b3de68b97ae3c2.png\\nhttps://fal.media/files/tiger/ZxPpCuJol34rLvJQDcpVc_f74ecf76df99415084c9fa2a2d0a60ac.png"
+   ],
+   "in_links": [
+    121
+   ],
+   "out_links": []
+  },
+  {
+   "id": 99,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Fix this old photo, keeping the character unchanged"
+   ],
+   "in_links": [
+    123
+   ],
+   "out_links": []
+  },
+  {
+   "id": 101,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    113,
+    118
+   ],
+   "out_links": [
+    115
+   ]
+  },
+  {
+   "id": 87,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    120
+   ],
+   "out_links": []
+  },
+  {
+   "id": 90,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "75491b75f218317ba6ed9d104bb1961fb6eb9ff9f23fbe8e50924897bc9743fe.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    113,
+    117,
+    127
+   ]
+  },
+  {
+   "id": 107,
+   "type": "DDColor_Colorize",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    "ddcolor_paper.pth"
+   ],
+   "in_links": [
+    125
+   ],
+   "out_links": [
+    126,
+    128
+   ]
+  },
+  {
+   "id": 108,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    126
+   ],
+   "out_links": []
+  },
+  {
+   "id": 102,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    115
+   ],
+   "out_links": []
+  },
+  {
+   "id": 110,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    127,
+    128
+   ],
+   "out_links": [
+    129
+   ]
+  },
+  {
+   "id": 111,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    129
+   ],
+   "out_links": []
+  },
+  {
+   "id": 103,
+   "type": "RH_ComfyFluxKontext",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "flux-kontext-pro",
+    "",
+    "1:1",
+    1,
+    355439119,
+    "randomize",
+    true,
+    3.5
+   ],
+   "in_links": [
+    117,
+    124,
+    119
+   ],
+   "out_links": [
+    118,
+    120,
+    125,
+    121
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 101,
+   "to_node": 102,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 101,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 84,
+   "type": "*"
+  },
+  {
+   "from_node": 103,
+   "to_node": 87,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 104,
+   "to_node": 103,
+   "type": "COMBO"
+  },
+  {
+   "from_node": 107,
+   "to_node": 108,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 107,
+   "to_node": 110,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 110,
+   "to_node": 111,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 90,
+   "to_node": 101,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 90,
+   "to_node": 103,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 90,
+   "to_node": 110,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 98,
+   "to_node": 103,
+   "type": "STRING"
+  },
+  {
+   "from_node": 98,
+   "to_node": 99,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "utility": 8,
+  "image_io": 5,
+  "postprocess": 1
+ },
+ "assets": [
+  {
+   "node_id": 107,
+   "node_type": "DDColor_Colorize",
+   "kind": "checkpoint",
+   "name": "ddcolor_paper.pth"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 28,
+ "structure_hash": "3d9eca38387af68f",
+ "param_face": [
+  {
+   "node_id": 106,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "apikey可以空白，空白就是用的RH默认的API，暂时没限制，后续会有限制"
+  },
+  {
+   "node_id": 98,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "Fix this old photo, keeping the character unchanged"
+  },
+  {
+   "node_id": 104,
+   "node_type": "PrimitiveNode",
+   "widget_index": 0,
+   "value_preview": "1:1"
+  },
+  {
+   "node_id": 104,
+   "node_type": "PrimitiveNode",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 104,
+   "node_type": "PrimitiveNode",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 99,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "Fix this old photo, keeping the character unchanged"
+  },
+  {
+   "node_id": 101,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 101,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 87,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 90,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "75491b75f218317ba6ed9d104bb1961fb6eb9ff9f23fbe8e50924897bc97"
+  },
+  {
+   "node_id": 90,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 90,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 107,
+   "node_type": "DDColor_Colorize",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 107,
+   "node_type": "DDColor_Colorize",
+   "widget_index": 1,
+   "value_preview": "ddcolor_paper.pth"
+  },
+  {
+   "node_id": 108,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 102,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 110,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 110,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 111,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 1,
+   "value_preview": "flux-kontext-pro"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 3,
+   "value_preview": "1:1"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 5,
+   "value_preview": "355439119"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 6,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 103,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 8,
+   "value_preview": "3.5"
+  }
+ ]
+}

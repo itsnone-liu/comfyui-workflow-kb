@@ -1,0 +1,121 @@
+{
+ "domain": [
+  "图像修复",
+  "4K 超分",
+  "人像/照片增强"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成：上传单张图片 → 分块修复/重绘 → 拼接 → LCS 后处理 → 输出 4K 级、无畸变的高清修复图",
+   "kind": "fact"
+  },
+  {
+   "text": "对人物/照片进行细节增强和皮肤质感优化，依赖 Klein 模型、'High definition, 4K, Add' 文本条件以及细节 LoRA",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 LCS 颜色锚定、锐度校准/干预和 wavelet 颜色匹配，使输出与输入保持颜色一致、清晰度可控",
+   "kind": "fact"
+  },
+  {
+   "text": "支持大图/超宽图修复：利用 TTP 分块与 MathExpression 动态计算 tile，规避单次采样分辨率上限",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX / Flux2-Klein-9B 条件图生图",
+  "TTP 分块采样与拼装（TTP_Image_Tile_Batch / TTP_Image_Assy）",
+  "多 LoRA 叠加：细节质感 / Turbo 加速 / LCS 一致性",
+  "Turbo 低步数采样（KSampler: steps=4, cfg=1, euler/simple）",
+  "LCS 颜色锚定 + 锐度校准与干预",
+  "小波颜色匹配（easy imageColorMatch wavelet）",
+  "动态宽高比缩放与恢复（ImageScaleByAspectRatio / ImageScaleRestore）"
+ ],
+ "special_features": [
+  {
+   "text": "TTP 分块-组装引擎：TTP_Image_Tile_Batch(1024,1024) 把大图切块，采样后由 TTP_Image_Assy(64) 拼回，并配合 TTP_Tile_image_size(2,2,0.2) 与 MathExpression 做动态 tile 尺寸计算，这是能稳定跑 4K 而不畸变的核心结构",
+   "kind": "fact"
+  },
+  {
+   "text": "三条 LoRA 同时启用：F2Klein9b 高清细节/皮肤质感(0.5)、klein_9B_Turbo_r128(0.2)、f2k_9B_lcs_consist(0.2)，让一个工作流同时获得细节、速度和一致性",
+   "kind": "fact"
+  },
+  {
+   "text": "生成后质量校准回路：LCSColorAnchor(0.8) → LCSSharpnessCalibrate/Intervene → easy imageColorMatch(wavelet)，相当于对生成结果做颜色和锐度二次修正，并有 Image Comparer 用于前后对比",
+   "kind": "fact"
+  },
+  {
+   "text": "低步数 Turbo 采样：KSampler steps=4、cfg=1、euler/simple，配合 Turbo LoRA 将单个 tile 的生成成本压到很低",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut + Flux2KleinEditTextEncode_EditUtils：文本条件与 ZeroOut 组合使用，疑似在保留原图结构的前提下只做增强/重绘，避免 Klein 模型过度改变内容",
+   "kind": "inference"
+  },
+  {
+   "text": "显存友好设计：MemoryCleaner(3, True) 主动清显存，加上分块、batch/list 转换，似乎是为消费级显卡跑 4K 大图而优化",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整条链路可以看作“分块采样 + 多 LoRA 加速/美化 + LCS 后处理统一质量”。先在分块尺度上用 Klein 模型做文本引导的修复和重绘，避免 4K 整图直接进扩散模型导致显存溢出或全局结构畸变；再用 TTP 拼回原尺寸，并用 LCS 把颜色和锐度拉回可控范围。三根 LoRA 分别负责细节、速度、一致性，表明作者希望兼顾输出观感、运行速度和颜色稳定，整体像一条面向照片级 4K 修复的生产型管线。",
+ "use_case": "适合老照片翻新、低清人像修复、大尺寸图像超分、人像皮肤质感增强等需要输出 4K 高清且保持结构稳定的场景；由于是 LoadImage 单张输入，更适合单张精修/离线批量，不适合实时视频或直播。",
+ "limitation": "强依赖自定义节点与外部模型：TTP_*、LCS_*、ComfyUI-Easy-Use、LayerUtility、rgthree、pysssss 等节点缺失会直接报错；模型方面必须准备 Flux2-Klein-9B-True-v2-bf16.safetensors、qwen_3_8b.safetensors、flux2-vae.safetensors 以及三个 LoRA。输入为单张图像，输出也只是一张结果图，不能直接处理视频或多图目录。UNETLoader 使用 fp8_e4m3fn 加载，显存压力小但精度可能与 bf16 直载有差异。",
+ "dependencies": [
+  "TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy",
+  "LCSLoadData / LCSColorAnchor / LCSSharpnessCalibrate / LCSSharpnessIntervene",
+  "ComfyUI-Easy-Use 的 easy imageBatchToImageList / imageListToImageBatch / imageColorMatch",
+  "LayerUtility 的 ImageScaleByAspectRatio V2 / ImageScaleRestore V2",
+  "rgthree Image Comparer",
+  "MathExpression (pysssss)",
+  "Flux2-Klein-9B-True-v2-bf16.safetensors",
+  "qwen_3_8b.safetensors",
+  "flux2-vae.safetensors",
+  "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors",
+  "klein_9B_Turbo_r128.safetensors",
+  "f2k_9B_lcs_consist_20260415.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图片（LoadImage(IN)）",
+  "count": "1"
+ },
+ "output": {
+  "type": "image（PreviewImage / SaveImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "F2Klein9b 高清细节增强皮肤质感v2.0 LoRA strength (0.5)",
+   "how_to_tune": "控制高清细节与皮肤质感强度；建议在 0.3-0.7 之间微调，太高会显得塑料感/过锐，太低细节增强不明显。"
+  },
+  {
+   "param": "klein_9B_Turbo_r128 LoRA strength (0.2)",
+   "how_to_tune": "控制 Turbo 加速/低步数采样强度；与 KSampler steps=4 配套，过大容易引入伪影或质量下降，建议保持在 0.1-0.3。"
+  },
+  {
+   "param": "f2k_9B_lcs_consist LoRA strength (0.2)",
+   "how_to_tune": "控制多 tile 拼接时的色彩一致性；如果修复后出现色偏、接缝或颜色不连续，可适当提高到 0.3-0.4。"
+  },
+  {
+   "param": "KSampler steps (4)",
+   "how_to_tune": "Turbo LoRA 下保持低步数以换取速度；若觉得细节不够，可试 6-8 步，但会明显变慢。"
+  },
+  {
+   "param": "KSampler cfg (1)",
+   "how_to_tune": "FLUX/Klein 配合 Turbo LoRA 时 cfg=1 是最稳的；不要调到 2 以上，否则容易过饱和、破坏结构。"
+  },
+  {
+   "param": "TTP_Image_Tile_Batch (1024, 1024)",
+   "how_to_tune": "tile 尺寸决定单次采样面积；显存紧张可降到 768/896，追求更大上下文时可升到 1152/1280，但显存会随之上升。"
+  },
+  {
+   "param": "LCSColorAnchor strength (0.8)",
+   "how_to_tune": "控制颜色锚定强度；如果修复后颜色飘逸或偏离原图，可以调高；如果希望让模型重新着色，可以调低。"
+  },
+  {
+   "param": "LCSSharpnessIntervene (-1, 2, 4)",
+   "how_to_tune": "-1 疑似自动判断，2/4 可能与半径/阈值相关；修复结果过锐时降低阈值或减少干预强度，过柔时反向调节。"
+  }
+ ],
+ "summary_text": "能力:端到端完成：上传单张图片 → 分块修复/重绘 → 拼接 → LCS 后处理 → 输出 4K 级、无畸变的高清修复图；能力:对人物/照片进行细节增强和皮肤质感优化，依赖 Klein 模型、'High definition, 4K, Add' 文本条件以及细节 LoRA；能力:通过 LCS 颜色锚定、锐度校准/干预和 wavelet 颜色匹配，使输出与输入保持颜色一致、清晰度可控；能力:支持大图/超宽图修复：利用 TTP 分块与 MathExpression 动态计算 tile，规避单次采样分辨率上限；特色:TTP 分块-组装引擎：TTP_Image_Tile_Batch(1024,1024) 把大图切块，采样后由 TTP_Image_Assy(64) 拼回，并配合 TTP_Tile_image_size(2,2,0.2) 与 MathExpression 做动态 tile 尺寸计算，这是能稳定跑 4K 而不畸变的核心结构；特色:三条 LoRA 同时启用：F2Klein9b 高清细节/皮肤质感(0.5)、klein_9B_Turbo_r128(0.2)、f2k_9B_lcs_consist(0.2)，让一个工作流同时获得细节、速度和一致性；特色:生成后质量校准回路：LCSColorAnchor(0.8) → LCSSharpnessCalibrate/Intervene → easy imageColorMatch(wavelet)，相当于对生成结果做颜色和锐度二次修正，并有 Image Comparer 用于前后对比；特色:低步数 Turbo 采样：KSampler steps=4、cfg=1、euler/simple，配合 Turbo LoRA 将单个 tile 的生成成本压到很低；特色:ConditioningZeroOut + Flux2KleinEditTextEncode_EditUtils：文本条件与 ZeroOut 组合使用，疑似在保留原图结构的前提下只做增强/重绘，避免 Klein 模型过度改变内容；特色:显存友好设计：MemoryCleaner(3, True) 主动清显存，加上分块、batch/list 转换，似乎是为消费级显卡跑 4K 大图而优化；适合老照片翻新、低清人像修复、大尺寸图像超分、人像皮肤质感增强等需要输出 4K 高清且保持结构稳定的场景；由于是 LoadImage 单张输入，更适合单张精修/离线批量，不适合实时视频或直播。；整条链路可以看作“分块采样 + 多 LoRA 加速/美化 + LCS 后处理统一质量”。先在分块尺度上用 Klein 模型做文本引导的修复和重绘，避免 4K 整图直接进扩散模型导致显存溢出或全局结构畸变；再用 TTP 拼回原尺寸，并用 LCS 把颜色和锐度拉回可控范围。三根 LoRA 分别负责细节、"
+}

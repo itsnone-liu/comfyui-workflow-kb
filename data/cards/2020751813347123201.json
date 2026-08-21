@@ -1,0 +1,85 @@
+{
+ "domain": [
+  "角色一致性",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张角色参考图并输入分镜故事脚本，生成保持角色一致性的皮克斯风格多场景图像",
+   "kind": "inference"
+  },
+  {
+   "text": "利用 LLM 将故事脚本解析为分镜描述，再通过图生图节点生成对应画面",
+   "kind": "fact"
+  },
+  {
+   "text": "支持对生成图像进行预览和保存",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "LLM API 调用",
+  "Image-to-Image 图生图",
+  "文本拼接",
+  "角色一致性参考图约束",
+  "多阶段提示词生成"
+ ],
+ "special_features": [
+  {
+   "text": "串联两个 LLM 节点：第一个节点提取输入文本中的分镜标记部分，第二个节点使用 Gemini 模型生成具体分镜提示词",
+   "kind": "fact"
+  },
+  {
+   "text": "使用第三方图生图节点 RH_Nano_Banana2_Image2Image，结合参考图和文本提示词生成图像",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 text 节点固定提示词模板，将用户输入与生成的分镜描述拼接，控制生成方向",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在让用户用自然语言描述故事，配合一张角色参考图，自动生成风格统一的皮克斯风分镜图。设计上采用 LLM 先解析分镜结构，再拼接固定生成指令，最后通过图生图节点保持角色一致性。可能因为 LLM 对中文分镜的理解和分步提示词生成能提高画面可控性。",
+ "use_case": "适合需要快速制作角色一致的分镜预览、绘本插画或短视频分镜草稿的场景，输入单张角色照片和故事脚本，输出多张统一风格图像。",
+ "limitation": "依赖外部的 Gemini API（gemini-3-pro-preview），需要有效的 API Key 和网络连接；RH_Nano_Banana2_Image2Image 为第三方节点，其底层模型和运行环境要求未知；输入文本需要遵循特定格式（如包含 '### E) Master C' 标记），否则 LLM 可能无法正确提取分镜信息。",
+ "dependencies": [
+  "ComfyUI 自定义节点：ComfyUI_LLM_party（RH_LLMAPI_NODE、RH_LLMAPI_Pro_Node）",
+  "RH_Nano_Banana2_Image2Image 及对应模型",
+  "gemini-3-pro-preview 模型 API Key"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张图片（参考图）+ 文本（分镜故事脚本）",
+  "count": "1 张图片，1 段文本"
+ },
+ "output": {
+  "type": "图像（PreviewImage / SaveImage 输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_LLMAPI_Pro_Node / model",
+   "how_to_tune": "选择使用的 LLM 模型，当前为 gemini-3-pro-preview，不同模型对分镜理解能力有影响"
+  },
+  {
+   "param": "RH_LLMAPI_Pro_Node / temperature",
+   "how_to_tune": "控制生成文本的随机性，值越低输出越稳定，建议 0.5-0.7 平衡创意与一致性"
+  },
+  {
+   "param": "RH_LLMAPI_Pro_Node / seed",
+   "how_to_tune": "设置随机种子，固定后可复现相同分镜描述"
+  },
+  {
+   "param": "RH_Nano_Banana2_Image2Image / aspectRatio",
+   "how_to_tune": "设置生成图片的宽高比，如 9:16，适用于竖屏分镜"
+  },
+  {
+   "param": "RH_Nano_Banana2_Image2Image / resolution",
+   "how_to_tune": "选择生成分辨率（如 1k），影响画质和生成速度"
+  },
+  {
+   "param": "CR Text Concatenate / 分隔符",
+   "how_to_tune": "调整拼接分隔符（当前为'，'），影响提示词可读性与 LLM 理解"
+  }
+ ],
+ "summary_text": "能力:上传一张角色参考图并输入分镜故事脚本，生成保持角色一致性的皮克斯风格多场景图像；能力:利用 LLM 将故事脚本解析为分镜描述，再通过图生图节点生成对应画面；能力:支持对生成图像进行预览和保存；特色:串联两个 LLM 节点：第一个节点提取输入文本中的分镜标记部分，第二个节点使用 Gemini 模型生成具体分镜提示词；特色:使用第三方图生图节点 RH_Nano_Banana2_Image2Image，结合参考图和文本提示词生成图像；特色:通过 text 节点固定提示词模板，将用户输入与生成的分镜描述拼接，控制生成方向；适合需要快速制作角色一致的分镜预览、绘本插画或短视频分镜草稿的场景，输入单张角色照片和故事脚本，输出多张统一风格图像。；该工作流旨在让用户用自然语言描述故事，配合一张角色参考图，自动生成风格统一的皮克斯风分镜图。设计上采用 LLM 先解析分镜结构，再拼接固定生成指令，最后通过图生图节点保持角色一致性。可能因为 LLM 对中文分镜的理解和分步提示词生成能提高画面可控性。"
+}

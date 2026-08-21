@@ -1,0 +1,3393 @@
+{
+ "node_count": 91,
+ "link_count": 111,
+ "active_node_count": 86,
+ "nodes": [
+  {
+   "id": 275,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    25,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    619
+   ]
+  },
+  {
+   "id": 316,
+   "type": "CFGGuider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    927,
+    617,
+    618
+   ],
+   "out_links": [
+    620
+   ]
+  },
+  {
+   "id": 295,
+   "type": "EmptyLTXVLatentVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    768,
+    512,
+    97,
+    1
+   ],
+   "in_links": [
+    642,
+    643,
+    644
+   ],
+   "out_links": [
+    647
+   ]
+  },
+  {
+   "id": 302,
+   "type": "PrimitiveBoolean",
+   "category": "utility",
+   "title": "Switch to Text to Video?",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    648
+   ]
+  },
+  {
+   "id": 307,
+   "type": "LTXVEmptyLatentAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    97,
+    25,
+    1
+   ],
+   "in_links": [
+    722,
+    661,
+    662
+   ],
+   "out_links": []
+  },
+  {
+   "id": 321,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "true 是文生视频"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 301,
+   "type": "PrimitiveInt",
+   "category": "utility",
+   "title": "Length",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    181,
+    "fixed"
+   ],
+   "in_links": [
+    691
+   ],
+   "out_links": [
+    644,
+    661,
+    701
+   ]
+  },
+  {
+   "id": 305,
+   "type": "LTXVConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24
+   ],
+   "in_links": [
+    655,
+    656,
+    657
+   ],
+   "out_links": [
+    617,
+    618
+   ]
+  },
+  {
+   "id": 304,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    788,
+    923
+   ],
+   "out_links": [
+    655
+   ]
+  },
+  {
+   "id": 315,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "blurry, oversaturated, pixelated, low resolution, grainy, distorted, noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo, signature, copyright, subtitles, distorted sound, saturated sound, loud"
+   ],
+   "in_links": [
+    789
+   ],
+   "out_links": [
+    656,
+    731,
+    732
+   ]
+  },
+  {
+   "id": 298,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a"
+   ],
+   "in_links": [
+    651
+   ],
+   "out_links": [
+    657,
+    775,
+    662
+   ]
+  },
+  {
+   "id": 339,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "753"
+   ],
+   "in_links": [
+    701
+   ],
+   "out_links": []
+  },
+  {
+   "id": 391,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx2.3紫灵触发词ziling.safetensors",
+    1
+   ],
+   "in_links": [
+    830
+   ],
+   "out_links": [
+    799
+   ]
+  },
+  {
+   "id": 393,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23-燕如嫣-E78795E5A682E5ABA3E8A7-98UH.safetensors",
+    1
+   ],
+   "in_links": [
+    832
+   ],
+   "out_links": [
+    802
+   ]
+  },
+  {
+   "id": 395,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx2.3宋玉触发词songyu.safetensors",
+    1
+   ],
+   "in_links": [
+    834
+   ],
+   "out_links": [
+    804
+   ]
+  },
+  {
+   "id": 399,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx2.3梅凝触发词meining.safetensors",
+    1
+   ],
+   "in_links": [
+    837
+   ],
+   "out_links": [
+    805
+   ]
+  },
+  {
+   "id": 407,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1360,
+    768,
+    "nearest-exact",
+    "crop",
+    "0, 0, 0",
+    "center",
+    32,
+    "cpu",
+    "<tr><td>Output: </td><td><b>1</b> x <b>736</b> x <b>1408 | 11.86MB</b></td></tr>6f955e66426f82d3d77e6961ddf0b191"
+   ],
+   "in_links": [
+    819,
+    817,
+    818
+   ],
+   "out_links": [
+    826,
+    822,
+    824,
+    823,
+    825
+   ]
+  },
+  {
+   "id": 400,
+   "type": "easy anythingIndexSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [
+    838,
+    799,
+    800,
+    801,
+    802,
+    803,
+    804,
+    805,
+    806,
+    807
+   ],
+   "out_links": [
+    827
+   ]
+  },
+  {
+   "id": 416,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_MODEL",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "MODEL"
+   ],
+   "in_links": [],
+   "out_links": [
+    830,
+    831,
+    832,
+    833,
+    834,
+    835,
+    836,
+    837,
+    838
+   ]
+  },
+  {
+   "id": 333,
+   "type": "SetLatentNoiseMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    689,
+    690
+   ],
+   "out_links": [
+    696
+   ]
+  },
+  {
+   "id": 334,
+   "type": "SolidMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    512,
+    512
+   ],
+   "in_links": [
+    824,
+    825
+   ],
+   "out_links": [
+    690
+   ]
+  },
+  {
+   "id": 328,
+   "type": "LTXVAudioVAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    697,
+    723
+   ],
+   "out_links": [
+    689
+   ]
+  },
+  {
+   "id": 394,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX2.3银月.safetensors",
+    1
+   ],
+   "in_links": [
+    833
+   ],
+   "out_links": [
+    803
+   ]
+  },
+  {
+   "id": 396,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx2.3韩立触发词hanli.safetensors",
+    1
+   ],
+   "in_links": [
+    835
+   ],
+   "out_links": [
+    806
+   ]
+  },
+  {
+   "id": 398,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx2.3韩立南宫婉双人lora.safetensors",
+    1
+   ],
+   "in_links": [
+    836
+   ],
+   "out_links": [
+    801
+   ]
+  },
+  {
+   "id": 432,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## 0 自定义音频\n\n## 1 紫灵\n\n## 2南宫婉\n\n## 3燕如嫣\n\n## 4银月\n\n## 5宋玉\n\n## 6梅凝\n\n## 7韩立\n\n## 8 慕沛灵"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 430,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "721095ae42f3c6b6377f903be5d6ca8f2864162b242ce1c6094ecce43cfd75cc.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    854
+   ]
+  },
+  {
+   "id": 425,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cbe4278f22e4c33088be8588acaa31e4a4fd702ca8f0bc5a1c1e16854b0150fe.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    855
+   ]
+  },
+  {
+   "id": 431,
+   "type": "easy anythingIndexSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [
+    882,
+    849,
+    857,
+    850,
+    851,
+    852,
+    853,
+    854,
+    855,
+    856
+   ],
+   "out_links": [
+    876,
+    881
+   ]
+  },
+  {
+   "id": 443,
+   "type": "CM_IntUnaryCondition",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "IsZero",
+    0
+   ],
+   "in_links": [
+    884
+   ],
+   "out_links": [
+    894
+   ]
+  },
+  {
+   "id": 461,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "true"
+   ],
+   "in_links": [
+    894
+   ],
+   "out_links": [
+    895
+   ]
+  },
+  {
+   "id": 459,
+   "type": "CR String To Boolean",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    895
+   ],
+   "out_links": [
+    896
+   ]
+  },
+  {
+   "id": 428,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "7fcaf886be61f8d7946fd210ea83f81d9b672d4c7350436b8666b31c2f2299ba.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    856
+   ]
+  },
+  {
+   "id": 423,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "年轻人不讲武德，来骗！来偷袭！我六十九岁的老同志。这好吗？这不好！\n我大意了啊，没有闪。\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    844
+   ]
+  },
+  {
+   "id": 392,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "peiling3-lora.comfy.safetensors",
+    0.9900000000000002
+   ],
+   "in_links": [
+    831
+   ],
+   "out_links": [
+    807
+   ]
+  },
+  {
+   "id": 472,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "原始音频"
+   ],
+   "in_links": [
+    912
+   ],
+   "out_links": []
+  },
+  {
+   "id": 405,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 740, height: 1416\n batch size: 16f955e66426f82d3d77e6961ddf0b191"
+   ],
+   "in_links": [
+    814
+   ],
+   "out_links": [
+    817,
+    818
+   ]
+  },
+  {
+   "id": 361,
+   "type": "LatentUpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 365,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemma_3_12B_it_fp8_e4m3fn.safetensors",
+    "ltx-2.3_text_projection_bf16.safetensors",
+    "ltxv",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    788,
+    789
+   ]
+  },
+  {
+   "id": 362,
+   "type": "VAELoaderKJ",
+   "category": "vae",
+   "title": "VAELoader KJ (audio VAE)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_audio_vae_bf16.safetensors",
+    "main_device",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    722,
+    723
+   ]
+  },
+  {
+   "id": 360,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_video_vae_bf16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    717,
+    906
+   ]
+  },
+  {
+   "id": 363,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    915
+   ]
+  },
+  {
+   "id": 397,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## 0 无凡人角色一致性保持\n\n## 1 紫灵\n\n## 2南宫婉\n\n## 3燕如嫣\n\n## 4银月\n\n## 5宋玉\n\n## 6梅凝\n\n## 7韩立\n\n## 8 慕沛灵"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 455,
+   "type": "ImpactConditionalBranch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    897,
+    904,
+    896
+   ],
+   "out_links": [
+    899
+   ]
+  },
+  {
+   "id": 422,
+   "type": "IndexTTS2Run",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30,
+    0.8,
+    0.8,
+    1,
+    1500,
+    160,
+    false,
+    true,
+    true,
+    1,
+    "",
+    false,
+    "",
+    false,
+    1,
+    "",
+    false,
+    "",
+    false
+   ],
+   "in_links": [
+    881,
+    844,
+    876
+   ],
+   "out_links": [
+    904
+   ]
+  },
+  {
+   "id": 331,
+   "type": "TrimAudioDuration",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    45.00000000000001
+   ],
+   "in_links": [
+    899,
+    902,
+    903
+   ],
+   "out_links": [
+    686,
+    687,
+    912
+   ]
+  },
+  {
+   "id": 468,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "音频裁剪时长",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [],
+   "out_links": [
+    903
+   ]
+  },
+  {
+   "id": 325,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "753"
+   ],
+   "in_links": [
+    681
+   ],
+   "out_links": []
+  },
+  {
+   "id": 330,
+   "type": "SoundFlow_GetLength",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    687
+   ],
+   "out_links": [
+    773
+   ]
+  },
+  {
+   "id": 476,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX-2.3-Guofeng-V0.1.safetensors",
+    0.30000000000000004
+   ],
+   "in_links": [
+    915
+   ],
+   "out_links": [
+    918
+   ]
+  },
+  {
+   "id": 291,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    621
+   ]
+  },
+  {
+   "id": 477,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX2.3人像美学-Aesthetic of Asian Portraits.safetensors",
+    0.30000000000000004
+   ],
+   "in_links": [
+    918
+   ],
+   "out_links": [
+    926
+   ]
+  },
+  {
+   "id": 475,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX-2.3-OmniNFT-RL-Lora_bf16_KJ.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    926
+   ],
+   "out_links": [
+    925
+   ]
+  },
+  {
+   "id": 413,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "MODEL"
+   ],
+   "in_links": [
+    925
+   ],
+   "out_links": []
+  },
+  {
+   "id": 283,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    619,
+    620,
+    621,
+    931,
+    623
+   ],
+   "out_links": [
+    663,
+    678
+   ]
+  },
+  {
+   "id": 326,
+   "type": "SimpleMath+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "((round((a * b -1) / 8)) * 8) + 1 "
+   ],
+   "in_links": [
+    761,
+    773
+   ],
+   "out_links": [
+    681,
+    691
+   ]
+  },
+  {
+   "id": 300,
+   "type": "PrimitiveInt",
+   "category": "utility",
+   "title": "Frame Rate",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    25,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    651,
+    761
+   ]
+  },
+  {
+   "id": 366,
+   "type": "LTX2_NAG",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    11,
+    0.25,
+    2.5,
+    true
+   ],
+   "in_links": [
+    827,
+    731,
+    732
+   ],
+   "out_links": [
+    729,
+    927,
+    933
+   ]
+  },
+  {
+   "id": 480,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "linear_quadratic",
+    8,
+    1
+   ],
+   "in_links": [
+    932
+   ],
+   "out_links": [
+    931
+   ]
+  },
+  {
+   "id": 481,
+   "type": "ModelSamplingSD3",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10.000000000000002
+   ],
+   "in_links": [
+    933
+   ],
+   "out_links": [
+    932
+   ]
+  },
+  {
+   "id": 309,
+   "type": "LTXVSeparateAVLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    663
+   ],
+   "out_links": [
+    905
+   ]
+  },
+  {
+   "id": 473,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_原始音频",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "原始音频"
+   ],
+   "in_links": [],
+   "out_links": [
+    913
+   ]
+  },
+  {
+   "id": 355,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "音频最长建议大概20多s左右，你也可以尝试30s以内，"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 319,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    678
+   ],
+   "out_links": []
+  },
+  {
+   "id": 318,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    729
+   ],
+   "out_links": []
+  },
+  {
+   "id": 479,
+   "type": "JoinStrings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "，"
+   ],
+   "in_links": [
+    922,
+    924
+   ],
+   "out_links": [
+    923
+   ]
+  },
+  {
+   "id": 478,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Prompt",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "no text"
+   ],
+   "in_links": [],
+   "out_links": [
+    922
+   ]
+  },
+  {
+   "id": 469,
+   "type": "LTXVTiledVAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    2,
+    4,
+    false,
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    906,
+    905
+   ],
+   "out_links": [
+    907
+   ]
+  },
+  {
+   "id": 292,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a"
+   ],
+   "in_links": [
+    822
+   ],
+   "out_links": [
+    642
+   ]
+  },
+  {
+   "id": 294,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a"
+   ],
+   "in_links": [
+    823
+   ],
+   "out_links": [
+    643
+   ]
+  },
+  {
+   "id": 373,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 15,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "AnimateDiff_00001_p84-audio_dmcda_1781755234.mp4",
+      "cos_url": "https://rh-images.xiaoyaoyou.com//56fffe0ba810e5cb0ebd3926419e388a/output/AnimateDiff_00001_p84-audio_dmcda_1781755234.mp4",
+      "workflow": "AnimateDiff_00001_p84.png",
+      "fullpath": "/data/ComfyUI/personal/56fffe0ba810e5cb0ebd3926419e388a/output/AnimateDiff_00001_p84-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 25
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    907,
+    913,
+    775
+   ],
+   "out_links": []
+  },
+  {
+   "id": 306,
+   "type": "LTXVConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    658,
+    696
+   ],
+   "out_links": [
+    623
+   ]
+  },
+  {
+   "id": 374,
+   "type": "PreviewAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    748
+   ],
+   "out_links": []
+  },
+  {
+   "id": 296,
+   "type": "LTXVImgToVideoInplace",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    717,
+    646,
+    647,
+    648
+   ],
+   "out_links": [
+    658
+   ]
+  },
+  {
+   "id": 426,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f8c6b37db12c33cd25fc39a1f5561bf575f4fc498b3a25b4e3d0638a6e2f5144.flac",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    852
+   ]
+  },
+  {
+   "id": 427,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c5d22815cb30aab97a5ef148a43b6e778d4bb81d72566e35007b4e91c3ce8157.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    853
+   ]
+  },
+  {
+   "id": 429,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a4eb8d4bf820fd753861b90cd63213fd115c1571eb8c0e6d7bff47ce49479f83.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    851
+   ]
+  },
+  {
+   "id": 424,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "b42fa18b98c8b00ca8a2eed4035a89cea8b0d945daf91116728ca77703ccadfc.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    850
+   ]
+  },
+  {
+   "id": 417,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3603e2a3889eb13b8cb2492a0d9b78fccab5b4382f54ded2e99b51a8221d5fc6.wav",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    849
+   ]
+  },
+  {
+   "id": 303,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Prompt",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "室内场景，女生 cos 知更鸟造型，浅蓝长发搭配头饰，肩侧生白色羽翼，身着紫白礼服，双手轻放胸口，温柔注视镜头。\n演唱动作\n演唱时身体随音乐轻晃，单手随旋律轻柔摆动；羽翼、长发自然飘动，眼神柔和带笑意，氛围温柔甜美。"
+   ],
+   "in_links": [],
+   "out_links": [
+    924
+   ]
+  },
+  {
+   "id": 269,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    819,
+    820
+   ]
+  },
+  {
+   "id": 467,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "音频裁剪开始时间",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10
+   ],
+   "in_links": [],
+   "out_links": [
+    902
+   ]
+  },
+  {
+   "id": 401,
+   "type": "easy int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    800
+   ]
+  },
+  {
+   "id": 408,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1.0000000000000002,
+    1
+   ],
+   "in_links": [
+    820
+   ],
+   "out_links": [
+    814
+   ]
+  },
+  {
+   "id": 332,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9180a8ef91482a216dba98135931d83a33b0010c70db25c2836990262a025ee9.mp3",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    882,
+    897
+   ]
+  },
+  {
+   "id": 433,
+   "type": "easy int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    857,
+    884
+   ]
+  },
+  {
+   "id": 329,
+   "type": "MelBandRoFormerSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    685,
+    686
+   ],
+   "out_links": [
+    697,
+    748
+   ]
+  },
+  {
+   "id": 323,
+   "type": "MelBandRoFormerModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "MelBandRoFormer_comfy/MelBandRoformer_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    685
+   ]
+  },
+  {
+   "id": 286,
+   "type": "ResizeImagesByLongerEdge",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1536
+   ],
+   "in_links": [
+    826
+   ],
+   "out_links": [
+    636
+   ]
+  },
+  {
+   "id": 289,
+   "type": "LTXVPreprocess",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    64
+   ],
+   "in_links": [
+    636
+   ],
+   "out_links": [
+    646
+   ]
+  },
+  {
+   "id": 482,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 269,
+   "to_node": 407,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 269,
+   "to_node": 408,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 275,
+   "to_node": 283,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 283,
+   "to_node": 309,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 283,
+   "to_node": 319,
+   "type": "*"
+  },
+  {
+   "from_node": 286,
+   "to_node": 289,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 289,
+   "to_node": 296,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 291,
+   "to_node": 283,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 292,
+   "to_node": 295,
+   "type": "INT"
+  },
+  {
+   "from_node": 294,
+   "to_node": 295,
+   "type": "INT"
+  },
+  {
+   "from_node": 295,
+   "to_node": 296,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 296,
+   "to_node": 306,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 298,
+   "to_node": 305,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 298,
+   "to_node": 307,
+   "type": "INT"
+  },
+  {
+   "from_node": 298,
+   "to_node": 373,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 300,
+   "to_node": 298,
+   "type": "INT"
+  },
+  {
+   "from_node": 300,
+   "to_node": 326,
+   "type": "INT"
+  },
+  {
+   "from_node": 301,
+   "to_node": 295,
+   "type": "INT"
+  },
+  {
+   "from_node": 301,
+   "to_node": 307,
+   "type": "INT"
+  },
+  {
+   "from_node": 301,
+   "to_node": 339,
+   "type": "*"
+  },
+  {
+   "from_node": 302,
+   "to_node": 296,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 303,
+   "to_node": 479,
+   "type": "STRING"
+  },
+  {
+   "from_node": 304,
+   "to_node": 305,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 305,
+   "to_node": 316,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 305,
+   "to_node": 316,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 306,
+   "to_node": 283,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 309,
+   "to_node": 469,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 315,
+   "to_node": 305,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 315,
+   "to_node": 366,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 315,
+   "to_node": 366,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 316,
+   "to_node": 283,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 323,
+   "to_node": 329,
+   "type": "MELROFORMERMODEL"
+  },
+  {
+   "from_node": 326,
+   "to_node": 301,
+   "type": "INT"
+  },
+  {
+   "from_node": 326,
+   "to_node": 325,
+   "type": "*"
+  },
+  {
+   "from_node": 328,
+   "to_node": 333,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 329,
+   "to_node": 328,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 329,
+   "to_node": 374,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 330,
+   "to_node": 326,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 331,
+   "to_node": 329,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 331,
+   "to_node": 330,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 331,
+   "to_node": 472,
+   "type": "*"
+  },
+  {
+   "from_node": 332,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 332,
+   "to_node": 455,
+   "type": "*"
+  },
+  {
+   "from_node": 333,
+   "to_node": 306,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 334,
+   "to_node": 333,
+   "type": "MASK"
+  },
+  {
+   "from_node": 360,
+   "to_node": 296,
+   "type": "VAE"
+  },
+  {
+   "from_node": 360,
+   "to_node": 469,
+   "type": "VAE"
+  },
+  {
+   "from_node": 362,
+   "to_node": 307,
+   "type": "VAE"
+  },
+  {
+   "from_node": 362,
+   "to_node": 328,
+   "type": "VAE"
+  },
+  {
+   "from_node": 363,
+   "to_node": 476,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 365,
+   "to_node": 304,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 365,
+   "to_node": 315,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 366,
+   "to_node": 316,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 366,
+   "to_node": 318,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 366,
+   "to_node": 481,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 391,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 392,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 393,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 394,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 395,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 396,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 398,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 399,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 400,
+   "to_node": 366,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 401,
+   "to_node": 400,
+   "type": "INT"
+  },
+  {
+   "from_node": 405,
+   "to_node": 407,
+   "type": "INT"
+  },
+  {
+   "from_node": 405,
+   "to_node": 407,
+   "type": "INT"
+  },
+  {
+   "from_node": 407,
+   "to_node": 286,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 407,
+   "to_node": 292,
+   "type": "INT"
+  },
+  {
+   "from_node": 407,
+   "to_node": 294,
+   "type": "INT"
+  },
+  {
+   "from_node": 407,
+   "to_node": 334,
+   "type": "INT"
+  },
+  {
+   "from_node": 407,
+   "to_node": 334,
+   "type": "INT"
+  },
+  {
+   "from_node": 408,
+   "to_node": 405,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 416,
+   "to_node": 391,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 392,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 393,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 394,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 395,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 396,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 398,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 399,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 400,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 417,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 422,
+   "to_node": 455,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 423,
+   "to_node": 422,
+   "type": "STRING"
+  },
+  {
+   "from_node": 424,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 425,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 426,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 427,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 428,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 429,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 430,
+   "to_node": 431,
+   "type": "*"
+  },
+  {
+   "from_node": 431,
+   "to_node": 422,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 431,
+   "to_node": 422,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 433,
+   "to_node": 431,
+   "type": "INT"
+  },
+  {
+   "from_node": 433,
+   "to_node": 443,
+   "type": "INT"
+  },
+  {
+   "from_node": 443,
+   "to_node": 461,
+   "type": "*"
+  },
+  {
+   "from_node": 455,
+   "to_node": 331,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 459,
+   "to_node": 455,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 461,
+   "to_node": 459,
+   "type": "STRING"
+  },
+  {
+   "from_node": 467,
+   "to_node": 331,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 468,
+   "to_node": 331,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 469,
+   "to_node": 373,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 473,
+   "to_node": 373,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 475,
+   "to_node": 413,
+   "type": "*"
+  },
+  {
+   "from_node": 476,
+   "to_node": 477,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 477,
+   "to_node": 475,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 478,
+   "to_node": 479,
+   "type": "STRING"
+  },
+  {
+   "from_node": 479,
+   "to_node": 304,
+   "type": "STRING"
+  },
+  {
+   "from_node": 480,
+   "to_node": 283,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 481,
+   "to_node": 480,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "sampler": 3,
+  "utility": 63,
+  "conditioning": 3,
+  "lora": 11,
+  "vae": 4,
+  "upscale": 1,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "preprocessor": 1,
+  "video_io": 1,
+  "image_io": 2
+ },
+ "assets": [
+  {
+   "node_id": 391,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ltx2.3紫灵触发词ziling.safetensors"
+  },
+  {
+   "node_id": 393,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX23-燕如嫣-E78795E5A682E5ABA3E8A7-98UH.safetensors"
+  },
+  {
+   "node_id": 395,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ltx2.3宋玉触发词songyu.safetensors"
+  },
+  {
+   "node_id": 399,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ltx2.3梅凝触发词meining.safetensors"
+  },
+  {
+   "node_id": 394,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX2.3银月.safetensors"
+  },
+  {
+   "node_id": 396,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ltx2.3韩立触发词hanli.safetensors"
+  },
+  {
+   "node_id": 398,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ltx2.3韩立南宫婉双人lora.safetensors"
+  },
+  {
+   "node_id": 392,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "peiling3-lora.comfy.safetensors"
+  },
+  {
+   "node_id": 361,
+   "node_type": "LatentUpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "gemma_3_12B_it_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 362,
+   "node_type": "VAELoaderKJ",
+   "kind": "vae",
+   "name": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 360,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 363,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 476,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX-2.3-Guofeng-V0.1.safetensors"
+  },
+  {
+   "node_id": 477,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX2.3人像美学-Aesthetic of Asian Portraits.safetensors"
+  },
+  {
+   "node_id": 475,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX-2.3-OmniNFT-RL-Lora_bf16_KJ.safetensors"
+  },
+  {
+   "node_id": 323,
+   "node_type": "MelBandRoFormerModelLoader",
+   "kind": "checkpoint",
+   "name": "MelBandRoFormer_comfy/MelBandRoformer_fp16.safetensors"
+  }
+ ],
+ "techniques": [
+  "Upscale-Hires"
+ ],
+ "param_face_size": 162,
+ "structure_hash": "6120f84d6434714a",
+ "param_face": [
+  {
+   "node_id": 275,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 275,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 316,
+   "node_type": "CFGGuider",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 295,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 0,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 295,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 295,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 2,
+   "value_preview": "97"
+  },
+  {
+   "node_id": 295,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 302,
+   "node_type": "PrimitiveBoolean",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 307,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 0,
+   "value_preview": "97"
+  },
+  {
+   "node_id": 307,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 307,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 321,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "true 是文生视频"
+  },
+  {
+   "node_id": 301,
+   "node_type": "PrimitiveInt",
+   "widget_index": 0,
+   "value_preview": "181"
+  },
+  {
+   "node_id": 301,
+   "node_type": "PrimitiveInt",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 305,
+   "node_type": "LTXVConditioning",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 304,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 298,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "a"
+  },
+  {
+   "node_id": 339,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "753"
+  },
+  {
+   "node_id": 391,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ltx2.3紫灵触发词ziling.safetensors"
+  },
+  {
+   "node_id": 391,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 393,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX23-燕如嫣-E78795E5A682E5ABA3E8A7-98UH.safetensors"
+  },
+  {
+   "node_id": 393,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 395,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ltx2.3宋玉触发词songyu.safetensors"
+  },
+  {
+   "node_id": 395,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 399,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ltx2.3梅凝触发词meining.safetensors"
+  },
+  {
+   "node_id": 399,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "1360"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 407,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 8,
+   "value_preview": "<tr><td>Output: </td><td><b>1</b> x <b>736</b> x <b>1408 | 1"
+  },
+  {
+   "node_id": 400,
+   "node_type": "easy anythingIndexSwitch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 416,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "MODEL"
+  },
+  {
+   "node_id": 334,
+   "node_type": "SolidMask",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 334,
+   "node_type": "SolidMask",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 334,
+   "node_type": "SolidMask",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 394,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX2.3银月.safetensors"
+  },
+  {
+   "node_id": 394,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 396,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ltx2.3韩立触发词hanli.safetensors"
+  },
+  {
+   "node_id": 396,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 398,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ltx2.3韩立南宫婉双人lora.safetensors"
+  },
+  {
+   "node_id": 398,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 432,
+   "node_type": "MarkdownNote",
+   "widget_index": 0,
+   "value_preview": "## 0 自定义音频\n\n## 1 紫灵\n\n## 2南宫婉\n\n## 3燕如嫣\n\n## 4银月\n\n## 5宋玉\n\n## 6梅"
+  },
+  {
+   "node_id": 430,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "721095ae42f3c6b6377f903be5d6ca8f2864162b242ce1c6094ecce43cfd"
+  },
+  {
+   "node_id": 425,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "cbe4278f22e4c33088be8588acaa31e4a4fd702ca8f0bc5a1c1e16854b01"
+  },
+  {
+   "node_id": 431,
+   "node_type": "easy anythingIndexSwitch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 443,
+   "node_type": "CM_IntUnaryCondition",
+   "widget_index": 0,
+   "value_preview": "IsZero"
+  },
+  {
+   "node_id": 443,
+   "node_type": "CM_IntUnaryCondition",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 461,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 428,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "7fcaf886be61f8d7946fd210ea83f81d9b672d4c7350436b8666b31c2f22"
+  },
+  {
+   "node_id": 423,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "年轻人不讲武德，来骗！来偷袭！我六十九岁的老同志。这好吗？这不好！\n我大意了啊，没有闪。\n"
+  },
+  {
+   "node_id": 392,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "peiling3-lora.comfy.safetensors"
+  },
+  {
+   "node_id": 392,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.9900000000000002"
+  },
+  {
+   "node_id": 472,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "原始音频"
+  },
+  {
+   "node_id": 405,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 740, height: 1416\n batch size: 16f955e66426f82d3d77e6"
+  },
+  {
+   "node_id": 361,
+   "node_type": "LatentUpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "gemma_3_12B_it_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "ltxv"
+  },
+  {
+   "node_id": 365,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 362,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 0,
+   "value_preview": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 362,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 1,
+   "value_preview": "main_device"
+  },
+  {
+   "node_id": 362,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 2,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 360,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 363,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safete"
+  },
+  {
+   "node_id": 363,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 397,
+   "node_type": "MarkdownNote",
+   "widget_index": 0,
+   "value_preview": "## 0 无凡人角色一致性保持\n\n## 1 紫灵\n\n## 2南宫婉\n\n## 3燕如嫣\n\n## 4银月\n\n## 5宋玉\n\n"
+  },
+  {
+   "node_id": 455,
+   "node_type": "ImpactConditionalBranch",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 2,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 4,
+   "value_preview": "1500"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 5,
+   "value_preview": "160"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 9,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 10,
+   "value_preview": ""
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 12,
+   "value_preview": ""
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 15,
+   "value_preview": ""
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 16,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 17,
+   "value_preview": ""
+  },
+  {
+   "node_id": 422,
+   "node_type": "IndexTTS2Run",
+   "widget_index": 18,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 331,
+   "node_type": "TrimAudioDuration",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 331,
+   "node_type": "TrimAudioDuration",
+   "widget_index": 1,
+   "value_preview": "45.00000000000001"
+  },
+  {
+   "node_id": 468,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 325,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "753"
+  },
+  {
+   "node_id": 476,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX-2.3-Guofeng-V0.1.safetensors"
+  },
+  {
+   "node_id": 476,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 291,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 477,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX2.3人像美学-Aesthetic of Asian Portraits.safetensors"
+  },
+  {
+   "node_id": 477,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 475,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX-2.3-OmniNFT-RL-Lora_bf16_KJ.safetensors"
+  },
+  {
+   "node_id": 475,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 413,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "MODEL"
+  },
+  {
+   "node_id": 326,
+   "node_type": "SimpleMath+",
+   "widget_index": 0,
+   "value_preview": "((round((a * b -1) / 8)) * 8) + 1 "
+  },
+  {
+   "node_id": 300,
+   "node_type": "PrimitiveInt",
+   "widget_index": 0,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 300,
+   "node_type": "PrimitiveInt",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 366,
+   "node_type": "LTX2_NAG",
+   "widget_index": 0,
+   "value_preview": "11"
+  },
+  {
+   "node_id": 366,
+   "node_type": "LTX2_NAG",
+   "widget_index": 1,
+   "value_preview": "0.25"
+  },
+  {
+   "node_id": 366,
+   "node_type": "LTX2_NAG",
+   "widget_index": 2,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 366,
+   "node_type": "LTX2_NAG",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 480,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "linear_quadratic"
+  },
+  {
+   "node_id": 480,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 480,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 481,
+   "node_type": "ModelSamplingSD3",
+   "widget_index": 0,
+   "value_preview": "10.000000000000002"
+  },
+  {
+   "node_id": 473,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "原始音频"
+  },
+  {
+   "node_id": 355,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "音频最长建议大概20多s左右，你也可以尝试30s以内，"
+  },
+  {
+   "node_id": 319,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 319,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 318,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 318,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 479,
+   "node_type": "JoinStrings",
+   "widget_index": 0,
+   "value_preview": "，"
+  },
+  {
+   "node_id": 478,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "no text"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 1,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 4,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 469,
+   "node_type": "LTXVTiledVAEDecode",
+   "widget_index": 5,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 292,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "a"
+  },
+  {
+   "node_id": 294,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "a"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "15"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 373,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 296,
+   "node_type": "LTXVImgToVideoInplace",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 296,
+   "node_type": "LTXVImgToVideoInplace",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "f8c6b37db12c33cd25fc39a1f5561bf575f4fc498b3a25b4e3d0638a6e2f"
+  },
+  {
+   "node_id": 427,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "c5d22815cb30aab97a5ef148a43b6e778d4bb81d72566e35007b4e91c3ce"
+  },
+  {
+   "node_id": 429,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "a4eb8d4bf820fd753861b90cd63213fd115c1571eb8c0e6d7bff47ce4947"
+  },
+  {
+   "node_id": 424,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "b42fa18b98c8b00ca8a2eed4035a89cea8b0d945daf91116728ca77703cc"
+  },
+  {
+   "node_id": 417,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "3603e2a3889eb13b8cb2492a0d9b78fccab5b4382f54ded2e99b51a8221d"
+  },
+  {
+   "node_id": 303,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "室内场景，女生 cos 知更鸟造型，浅蓝长发搭配头饰，肩侧生白色羽翼，身着紫白礼服，双手轻放胸口，温柔注视镜头。\n演唱动"
+  },
+  {
+   "node_id": 269,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 467,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 401,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 408,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 408,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 408,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 332,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "9180a8ef91482a216dba98135931d83a33b0010c70db25c2836990262a02"
+  },
+  {
+   "node_id": 433,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 323,
+   "node_type": "MelBandRoFormerModelLoader",
+   "widget_index": 0,
+   "value_preview": "MelBandRoFormer_comfy/MelBandRoformer_fp16.safetensors"
+  },
+  {
+   "node_id": 286,
+   "node_type": "ResizeImagesByLongerEdge",
+   "widget_index": 0,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 289,
+   "node_type": "LTXVPreprocess",
+   "widget_index": 0,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 482,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

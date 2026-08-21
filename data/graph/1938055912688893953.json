@@ -1,0 +1,2508 @@
+{
+ "node_count": 53,
+ "link_count": 68,
+ "active_node_count": 45,
+ "nodes": [
+  {
+   "id": 609,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    987,
+    1115
+   ],
+   "out_links": [
+    991,
+    1125
+   ]
+  },
+  {
+   "id": 618,
+   "type": "ImageToMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "red"
+   ],
+   "in_links": [
+    991
+   ],
+   "out_links": [
+    992
+   ]
+  },
+  {
+   "id": 615,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1116
+   ],
+   "out_links": [
+    987
+   ]
+  },
+  {
+   "id": 632,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1025
+   ],
+   "out_links": []
+  },
+  {
+   "id": 633,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    40,
+    40,
+    40,
+    40,
+    "8"
+   ],
+   "in_links": [
+    1026,
+    1028
+   ],
+   "out_links": [
+    1121
+   ]
+  },
+  {
+   "id": 446,
+   "type": "CLIPVisionEncode",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "none"
+   ],
+   "in_links": [
+    692,
+    1032
+   ],
+   "out_links": [
+    691
+   ]
+  },
+  {
+   "id": 232,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1022
+   ],
+   "out_links": []
+  },
+  {
+   "id": 287,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    537,
+    540
+   ],
+   "out_links": [
+    840,
+    1126
+   ]
+  },
+  {
+   "id": 629,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    1019
+   ]
+  },
+  {
+   "id": 426,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    1021
+   ],
+   "out_links": [
+    1025,
+    1026,
+    1032,
+    1028
+   ]
+  },
+  {
+   "id": 630,
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.3,
+    -1
+   ],
+   "in_links": [
+    1019,
+    1020
+   ],
+   "out_links": [
+    1021,
+    1022,
+    1056
+   ]
+  },
+  {
+   "id": 603,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "尽量和要替换的脸部角度相同。换脸效果会更佳"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 649,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    1060
+   ]
+  },
+  {
+   "id": 645,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    1057
+   ]
+  },
+  {
+   "id": 650,
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.3,
+    -1
+   ],
+   "in_links": [
+    1060,
+    1061
+   ],
+   "out_links": [
+    1062
+   ]
+  },
+  {
+   "id": 418,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "使用说明：\n\n1、导入需要换脸图片\n\n2、导入被换脸主体图片\n\n3点击运行"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 646,
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.3,
+    -1
+   ],
+   "in_links": [
+    1057,
+    1058
+   ],
+   "out_links": [
+    1059
+   ]
+  },
+  {
+   "id": 644,
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.3,
+    -1
+   ],
+   "in_links": [
+    1053,
+    1054
+   ],
+   "out_links": [
+    1055
+   ]
+  },
+  {
+   "id": 449,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    1117
+   ],
+   "out_links": []
+  },
+  {
+   "id": 350,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1129
+   ],
+   "out_links": [
+    521
+   ]
+  },
+  {
+   "id": 419,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    698,
+    640,
+    644,
+    995,
+    992
+   ],
+   "out_links": [
+    641,
+    642,
+    643
+   ]
+  },
+  {
+   "id": 604,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_pyohf_00001_cjvsa_1750909815.png&type=temp&subfolder=&rand=0.8801490939500913&Rh-Comfy-Auth=eyJ1c2VySWQiOiJhYmI4OWZmZmM4Y2RjMWUxOGM2YWQzYTIxNjQwZTI1NSIsInNpZ25FeHBpcmUiOjE3NTE1MTMwMzQ0MzksInRzIjoxNzUwOTA4MjM0NDM5LCJzaWduIjoiYWQ0NDg1ZjM0YjA5NTJkZjBlOTJjYTY0YWY2ZTQzNWEifQ==&Rh-Identify=abb89fffc8cdc1e18c6ad3a21640e255"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_pyohf_00002_jfdex_1750909817.png&type=temp&subfolder=&rand=0.08424447790005596&Rh-Comfy-Auth=eyJ1c2VySWQiOiJhYmI4OWZmZmM4Y2RjMWUxOGM2YWQzYTIxNjQwZTI1NSIsInNpZ25FeHBpcmUiOjE3NTE1MTMwMzQ0MzksInRzIjoxNzUwOTA4MjM0NDM5LCJzaWduIjoiYWQ0NDg1ZjM0YjA5NTJkZjBlOTJjYTY0YWY2ZTQzNWEifQ==&Rh-Identify=abb89fffc8cdc1e18c6ad3a21640e255"
+     }
+    ]
+   ],
+   "in_links": [
+    1118,
+    1105
+   ],
+   "out_links": []
+  },
+  {
+   "id": 531,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    840
+   ],
+   "out_links": []
+  },
+  {
+   "id": 226,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238d4de.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    374,
+    1020
+   ]
+  },
+  {
+   "id": 368,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "FLUX.1-Turbo-Alpha-8-step .safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    582
+   ],
+   "out_links": [
+    1130
+   ]
+  },
+  {
+   "id": 293,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    539,
+    644
+   ]
+  },
+  {
+   "id": 641,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238d4de.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1054
+   ]
+  },
+  {
+   "id": 647,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238d4de.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1058
+   ]
+  },
+  {
+   "id": 648,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238d4de.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1061
+   ]
+  },
+  {
+   "id": 298,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Portrait, RAW photos, professional, masterpiece, 16k resolution, high detail, advanced filters, texture noise, high-resolution photos, close ups of people's faces, high definition, realistic photos, professional, high quality, best quality, fine details,"
+   ],
+   "in_links": [
+    1107
+   ],
+   "out_links": [
+    533,
+    534
+   ]
+  },
+  {
+   "id": 348,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    524
+   ],
+   "out_links": []
+  },
+  {
+   "id": 349,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    525
+   ],
+   "out_links": []
+  },
+  {
+   "id": 345,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    50
+   ],
+   "in_links": [
+    534
+   ],
+   "out_links": [
+    697
+   ]
+  },
+  {
+   "id": 346,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    533
+   ],
+   "out_links": [
+    640
+   ]
+  },
+  {
+   "id": 347,
+   "type": "KSampler (Efficient)",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    14896425375186,
+    null,
+    8,
+    1,
+    "euler",
+    "simple",
+    1,
+    "auto",
+    "true",
+    ""
+   ],
+   "in_links": [
+    521,
+    641,
+    642,
+    643,
+    539
+   ],
+   "out_links": [
+    524,
+    525,
+    537,
+    540
+   ]
+  },
+  {
+   "id": 607,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    1114,
+    1111
+   ],
+   "out_links": [
+    995,
+    1124
+   ]
+  },
+  {
+   "id": 445,
+   "type": "StyleModelApply",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "multiply"
+   ],
+   "in_links": [
+    697,
+    693,
+    691
+   ],
+   "out_links": [
+    698
+   ]
+  },
+  {
+   "id": 443,
+   "type": "StyleModelLoader",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flex1_redux_siglip2_512.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    693
+   ]
+  },
+  {
+   "id": 444,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "siglip2_so400m_patch16_512.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    692
+   ]
+  },
+  {
+   "id": 639,
+   "type": "ImpactMakeImageBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1056,
+    1055,
+    1059,
+    1062
+   ],
+   "out_links": [
+    1131
+   ]
+  },
+  {
+   "id": 668,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "None",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    1098
+   ],
+   "out_links": [
+    1100,
+    1105,
+    1127
+   ]
+  },
+  {
+   "id": 643,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    1053
+   ]
+  },
+  {
+   "id": 450,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "仅勾选面部的话，，如果人物有刘海或者长头发的话，出图效果不是较好的，\n\n再把头发也勾选（也就是换头），换脸效果更佳\n\n所以要看参考图人物是不是有刘海或者披肩头发来决定要不要勾选头发"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 432,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    1100
+   ],
+   "out_links": [
+    1119,
+    1120
+   ]
+  },
+  {
+   "id": 651,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "通常情况下不要开拓展羽化，不然拼接边缘太硬，不然边缘有一层虚影，融合效果不好\n\n可以稍微加点模糊1-2，才更好融合边缘\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 673,
+   "type": "workflow>2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    40,
+    40,
+    40,
+    40,
+    "8",
+    1024,
+    1024,
+    "lanczos",
+    "keep proportion",
+    "downscale if bigger",
+    0,
+    0,
+    "lanczos",
+    "keep proportion",
+    "always",
+    0,
+    1,
+    false,
+    "nearest-exact",
+    "disabled",
+    0,
+    "top-right",
+    0,
+    0,
+    "adain",
+    "Preview",
+    "ComfyUI",
+    "lanczos",
+    "keep proportion",
+    "always",
+    0,
+    false,
+    ""
+   ],
+   "in_links": [
+    1119,
+    1120,
+    1121,
+    1122,
+    1123,
+    1124,
+    1125,
+    1126,
+    1127,
+    1128
+   ],
+   "out_links": [
+    1108,
+    1111,
+    1114,
+    1115,
+    1116,
+    1117,
+    1118,
+    1132
+   ]
+  },
+  {
+   "id": 675,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    1132
+   ],
+   "out_links": []
+  },
+  {
+   "id": 674,
+   "type": "workflow>1",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CUDA",
+    "pulid_flux_v0.9.1.safetensors",
+    1.0000000000000002,
+    0,
+    1,
+    0.4,
+    0.4,
+    0,
+    1
+   ],
+   "in_links": [
+    1130,
+    1131
+   ],
+   "out_links": [
+    1129
+   ]
+  },
+  {
+   "id": 637,
+   "type": "LayerMask: MaskGrow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    0,
+    1
+   ],
+   "in_links": [
+    1108
+   ],
+   "out_links": [
+    1122,
+    1123,
+    1128
+   ]
+  },
+  {
+   "id": 375,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "portrait_lora64.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    1106
+   ],
+   "out_links": [
+    582
+   ]
+  },
+  {
+   "id": 260,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    1106
+   ]
+  },
+  {
+   "id": 261,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sd3/clip_l.safetensors",
+    "sd3/t5xxl_fp16.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1107
+   ]
+  },
+  {
+   "id": 416,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238d4de.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1098
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 226,
+   "to_node": 630,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 260,
+   "to_node": 375,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 261,
+   "to_node": 298,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 287,
+   "to_node": 531,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 287,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 293,
+   "to_node": 347,
+   "type": "VAE"
+  },
+  {
+   "from_node": 293,
+   "to_node": 419,
+   "type": "VAE"
+  },
+  {
+   "from_node": 298,
+   "to_node": 345,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 298,
+   "to_node": 346,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 345,
+   "to_node": 445,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 346,
+   "to_node": 419,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 347,
+   "to_node": 287,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 347,
+   "to_node": 287,
+   "type": "VAE"
+  },
+  {
+   "from_node": 347,
+   "to_node": 348,
+   "type": "*"
+  },
+  {
+   "from_node": 347,
+   "to_node": 349,
+   "type": "*"
+  },
+  {
+   "from_node": 350,
+   "to_node": 347,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 368,
+   "to_node": 674,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 375,
+   "to_node": 368,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 668,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 419,
+   "to_node": 347,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 419,
+   "to_node": 347,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 419,
+   "to_node": 347,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 426,
+   "to_node": 446,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 426,
+   "to_node": 632,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 426,
+   "to_node": 633,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 426,
+   "to_node": 633,
+   "type": "MASK"
+  },
+  {
+   "from_node": 432,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 432,
+   "to_node": 673,
+   "type": "MASK"
+  },
+  {
+   "from_node": 443,
+   "to_node": 445,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 444,
+   "to_node": 446,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 445,
+   "to_node": 419,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 446,
+   "to_node": 445,
+   "type": "CLIP_VISION_OUTPUT"
+  },
+  {
+   "from_node": 607,
+   "to_node": 419,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 607,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 609,
+   "to_node": 618,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 609,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 615,
+   "to_node": 609,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 618,
+   "to_node": 419,
+   "type": "MASK"
+  },
+  {
+   "from_node": 629,
+   "to_node": 630,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 630,
+   "to_node": 232,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 630,
+   "to_node": 426,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 630,
+   "to_node": 639,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 633,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 637,
+   "to_node": 673,
+   "type": "MASK"
+  },
+  {
+   "from_node": 637,
+   "to_node": 673,
+   "type": "MASK"
+  },
+  {
+   "from_node": 637,
+   "to_node": 673,
+   "type": "MASK"
+  },
+  {
+   "from_node": 639,
+   "to_node": 674,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 641,
+   "to_node": 644,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 643,
+   "to_node": 644,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 644,
+   "to_node": 639,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 645,
+   "to_node": 646,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 646,
+   "to_node": 639,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 647,
+   "to_node": 646,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 648,
+   "to_node": 650,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 649,
+   "to_node": 650,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 650,
+   "to_node": 639,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 668,
+   "to_node": 432,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 668,
+   "to_node": 604,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 668,
+   "to_node": 673,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 449,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 604,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 607,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 607,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 609,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 673,
+   "to_node": 615,
+   "type": "MASK"
+  },
+  {
+   "from_node": 673,
+   "to_node": 637,
+   "type": "MASK"
+  },
+  {
+   "from_node": 673,
+   "to_node": 675,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 674,
+   "to_node": 350,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "conditioning": 5,
+  "utility": 23,
+  "postprocess": 1,
+  "image_io": 10,
+  "clip": 3,
+  "vae": 2,
+  "face": 4,
+  "lora": 2,
+  "sampler": 1,
+  "batch": 1,
+  "checkpoint_loader": 1
+ },
+ "assets": [
+  {
+   "node_id": 368,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "FLUX.1-Turbo-Alpha-8-step .safetensors"
+  },
+  {
+   "node_id": 293,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 443,
+   "node_type": "StyleModelLoader",
+   "kind": "checkpoint",
+   "name": "flex1_redux_siglip2_512.safetensors"
+  },
+  {
+   "node_id": 444,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "siglip2_so400m_patch16_512.safetensors"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "kind": "aux_model",
+   "name": "pulid_flux_v0.9.1.safetensors"
+  },
+  {
+   "node_id": 375,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 260,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "sd3/clip_l.safetensors"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "sd3/t5xxl_fp16.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 168,
+ "structure_hash": "795159f47899789f",
+ "param_face": [
+  {
+   "node_id": 609,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 609,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 618,
+   "node_type": "ImageToMask",
+   "widget_index": 0,
+   "value_preview": "red"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 633,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 446,
+   "node_type": "CLIPVisionEncode",
+   "widget_index": 0,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 629,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 629,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 426,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 630,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 630,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 630,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 603,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "尽量和要替换的脸部角度相同。换脸效果会更佳"
+  },
+  {
+   "node_id": 649,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 649,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 645,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 645,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 650,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 650,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 650,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 418,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "使用说明：\n\n1、导入需要换脸图片\n\n2、导入被换脸主体图片\n\n3点击运行"
+  },
+  {
+   "node_id": 646,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 646,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 646,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 644,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 644,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 644,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 449,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 419,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 531,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 226,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238"
+  },
+  {
+   "node_id": 226,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 226,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 368,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "FLUX.1-Turbo-Alpha-8-step .safetensors"
+  },
+  {
+   "node_id": 368,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 293,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 641,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238"
+  },
+  {
+   "node_id": 641,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 641,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238"
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 648,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238"
+  },
+  {
+   "node_id": 648,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 648,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 345,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "50"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 0,
+   "value_preview": "14896425375186"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 7,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 8,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 347,
+   "node_type": "KSampler (Efficient)",
+   "widget_index": 9,
+   "value_preview": ""
+  },
+  {
+   "node_id": 607,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 607,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 445,
+   "node_type": "StyleModelApply",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 445,
+   "node_type": "StyleModelApply",
+   "widget_index": 1,
+   "value_preview": "multiply"
+  },
+  {
+   "node_id": 443,
+   "node_type": "StyleModelLoader",
+   "widget_index": 0,
+   "value_preview": "flex1_redux_siglip2_512.safetensors"
+  },
+  {
+   "node_id": 444,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "siglip2_so400m_patch16_512.safetensors"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 668,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 643,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 643,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 450,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "仅勾选面部的话，，如果人物有刘海或者长头发的话，出图效果不是较好的，\n\n再把头发也勾选（也就是换头），换脸效果更佳\n\n所"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 432,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 651,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "通常情况下不要开拓展羽化，不然拼接边缘太硬，不然边缘有一层虚影，融合效果不好\n\n可以稍微加点模糊1-2，才更好融合边缘\n"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 2,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 3,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 4,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 5,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 8,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 9,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 10,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 11,
+   "value_preview": "downscale if bigger"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 12,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 13,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 14,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 15,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 16,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 17,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 18,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 19,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 20,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 21,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 22,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 23,
+   "value_preview": "top-right"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 24,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 25,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 26,
+   "value_preview": "adain"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 27,
+   "value_preview": "Preview"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 28,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 29,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 30,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 31,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 32,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 33,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 673,
+   "node_type": "workflow>2",
+   "widget_index": 34,
+   "value_preview": ""
+  },
+  {
+   "node_id": 675,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 675,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 0,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 1,
+   "value_preview": "pulid_flux_v0.9.1.safetensors"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 2,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 5,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 674,
+   "node_type": "workflow>1",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 637,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 637,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 637,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 375,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 375,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 260,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 260,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "sd3/clip_l.safetensors"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "sd3/t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 261,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 416,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "3ece1350b5b4e691767dd5ac7bb1bb8b9178f0a52a01aa3d2eb43799f238"
+  },
+  {
+   "node_id": 416,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 416,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  }
+ ]
+}

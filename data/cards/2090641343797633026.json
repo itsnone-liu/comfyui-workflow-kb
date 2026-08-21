@@ -1,0 +1,92 @@
+{
+ "domain": [
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "上传首帧和尾帧两张图片，使用 MiniMax H3 模型生成一段过渡视频，并可能包含同步音轨",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 4 步 Turbo LoRA 与 euler 采样器，实现快速推理生成",
+   "kind": "fact"
+  },
+  {
+   "text": "自动缩放输入图片至统一分辨率，并动态计算视频帧数",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 图生视频",
+  "首尾帧条件控制",
+  "4 步采样 + Turbo LoRA",
+  "Sigma shift 采样优化",
+  "视频/音频双 VAE 解码",
+  "动态分辨率与帧数计算",
+  "AdvancedSampling (BasicGuider + SamplerCustomAdvanced)"
+ ],
+ "special_features": [
+  {
+   "text": "使用 MiniMaxH3SigmaShift 节点做 sigma 偏移，在 4 步采样下维持运动连贯性与画质",
+   "kind": "inference"
+  },
+  {
+   "text": "双 LoadImage + 双 ImageScaleToTotalPixels 构成首尾帧输入链路，配合 ResolutionSelector 统一分辨率",
+   "kind": "fact"
+  },
+  {
+   "text": "同时解码视频 latent 与音频 latent，输出可能包含同步音频的视频",
+   "kind": "inference"
+  },
+  {
+   "text": "ComfyMathExpression 根据参数动态计算视频帧数/时长，而非固定死数值",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流以 MiniMax H3 为生成核心，将首尾帧图像作为条件输入，目标是快速生成指定转场或动态效果的短视频。通过 4 步 Turbo LoRA 与 SigmaShift 技术，在极低采样步数下尽量维持画面质量；用 ResolutionSelector 和动态数学计算来适配不同输入图像比例和期望时长；同时引入音频 VAE，使产出视频自带音轨，增强观赏性。整体设计偏向“低步数、高质量、一站式”，适合在有限算力下快速产出。",
+ "use_case": "上传两张图片（如场景 A 和场景 B），自动生成过渡动画；可用于短视频转场、商品展示、创意动效等。",
+ "limitation": "需要 MiniMax H3 全套模型文件（checkpoint、LoRA、双 VAE、Qwen3VL CLIP），显存要求高；依赖第三方自定义节点（MiniMax 系列节点），需手动安装模型；输入图像会被缩放，可能改变原始构图；视频长度受模型固定帧数限制（如 73 帧）；4 步采样下复杂动作可能质量下降。",
+ "dependencies": [
+  "checkpoint: minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+  "lora: minimax_h3_fl2v_turbo_4step_v1.1_768p_comfyui_bf16.safetensors",
+  "clip: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "vae: minimax_h3_video_vae_fp16.safetensors",
+  "vae: minimax_h3_audio_vae_fp32.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像 (jpg/png)",
+  "count": "2（首帧+尾帧）"
+ },
+ "output": {
+  "type": "视频（含音频，mp4）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler steps",
+   "how_to_tune": "默认 4 步，依托 Turbo LoRA；若画质不足可尝试 6-8 步，但耗时增加"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo width/height",
+   "how_to_tune": "根据输出比例设置，如 1344x768 为 16:9；需保持与模型支持分辨率一致"
+  },
+  {
+   "param": "MiniMaxH3SigmaShift shift/sigma",
+   "how_to_tune": "数值影响运动幅度与画面一致性，可在小范围内实验以平衡效果"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "固定 seed 可复现随机效果；更换 seed 获取不同变化"
+  },
+  {
+   "param": "ComfyMathExpression 表达式",
+   "how_to_tune": "根据期望时长或帧数调整公式中的常数值（如 24 为 fps，5/8 为秒数）"
+  },
+  {
+   "param": "CreateVideo fps",
+   "how_to_tune": "设置输出帧率，默认 24；若想更流畅可提高，但会增大文件体积与耗时"
+  }
+ ],
+ "summary_text": "能力:上传首帧和尾帧两张图片，使用 MiniMax H3 模型生成一段过渡视频，并可能包含同步音轨；能力:利用 4 步 Turbo LoRA 与 euler 采样器，实现快速推理生成；能力:自动缩放输入图片至统一分辨率，并动态计算视频帧数；特色:使用 MiniMaxH3SigmaShift 节点做 sigma 偏移，在 4 步采样下维持运动连贯性与画质；特色:双 LoadImage + 双 ImageScaleToTotalPixels 构成首尾帧输入链路，配合 ResolutionSelector 统一分辨率；特色:同时解码视频 latent 与音频 latent，输出可能包含同步音频的视频；特色:ComfyMathExpression 根据参数动态计算视频帧数/时长，而非固定死数值；上传两张图片（如场景 A 和场景 B），自动生成过渡动画；可用于短视频转场、商品展示、创意动效等。；这个工作流以 MiniMax H3 为生成核心，将首尾帧图像作为条件输入，目标是快速生成指定转场或动态效果的短视频。通过 4 步 Turbo LoRA 与 SigmaShift 技术，在极低采样步数下尽量维持画面质量；用 ResolutionSelector 和动态数学计算来适配不同输入图像比例和期望时长；同时引入音频 VAE，使产出视频自带音轨，增强观赏性。整体设计偏向“低步数、高质量、一站式”，适合在有限算力下快速产出。"
+}

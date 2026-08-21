@@ -1,0 +1,110 @@
+{
+ "domain": [
+  "人像写真",
+  "图生图",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张人脸参考图，利用 PuLID Flux 将人脸身份注入 FLUX.1-dev，生成以该脸为主体的半身人像/写真图。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果可进入 SUPIR 放大修复链（encode/sample/decode/first_stage），输出更高分辨率、细节更充分的成图。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动对图像进行人物分割（PersonMaskUltra V2）和遮罩裁剪（CropByMask V2），可限定人像区域做局部后处理。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Joy_caption_two 自动生成输入图的描述，搭配 CLIPTextEncode 的固定提示词，间接提升人与提示词的对齐度。",
+   "kind": "inference"
+  },
+  {
+   "text": "整体可实现“一张人脸照 → 高清换脸/写真成图”的端到端流程。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "PuLID",
+  "FLUX.1-dev",
+  "SUPIR 超分修复",
+  "EVA-CLIP + InsightFace 人脸特征提取",
+  "Joy Caption 图像描述",
+  "PersonMaskUltra 人像分割",
+  "ColorMatch 色彩匹配",
+  "InjectLatentNoise+ / SplitSigmasDenoise 潜空间二次采样"
+ ],
+ "special_features": [
+  {
+   "text": "混合模型架构：流程同时加载 SDXL 系 Checkpoint（XLL dreamshaperXL_lightningDPMSDE）和 FLUX dev UNet，疑似将 FLUX 用于生成、SDXL/SUPIR 用于放大底模，形成两段式工作流。",
+   "kind": "inference"
+  },
+  {
+   "text": "PuLID Flux 四节点完整链路：PulidFluxEvaClipLoader + PulidFluxInsightFaceLoader + PulidFluxModelLoader + ApplyPulidFlux，身份强度 weight=1、作用区间 start=0/end=0.98，几乎覆盖整个采样时间线。",
+   "kind": "fact"
+  },
+  {
+   "text": "双 SamplerCustomAdvanced 配合 InjectLatentNoise+ 和 SplitSigmasDenoise(0.6)，疑似首轮采样后通过注入噪声并做部分去噪，实现“保构图+提细节”的二次重绘。",
+   "kind": "inference"
+  },
+  {
+   "text": "完整的 SUPIR 修复链：SUPIR_model_loader_v2 → SUPIR_conditioner → SUPIR_encode → SUPIR_sample → SUPIR_decode → SUPIR_first_stage，形成从潜变量到高清图的后处理闭环。",
+   "kind": "fact"
+  },
+  {
+   "text": "工程化模板设计：使用 GetNode/SetNode/Reroute 将 InputImage、SUPIRVAE 定义为变量，并用 ImpactInt 管理尺寸常量，便于用户只替换输入图就复用。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流的核心意图是“一张人脸照 → 保持身份的高清写真/换脸成图”。它把 PuLID 的身份控制与 FLUX 的生成质量放在前段，把 SUPIR 的放大修复放在后段，再以人物遮罩裁剪和 ColorMatch 解决生成图与输入图在肤色、光线上不一致的问题。同时通过 GetNode/SetNode 变量区、固定随机种子和两段采样设计，让工作流更像一个可复用的生产模板。Joy_caption_two 和双提示词机制可能是为了降低提示词门槛，让普通用户只传图也能得到较准确的语义控制。",
+ "use_case": "适合人像写真、证件照换背景、模特样片生成、角色一致性创作等场景；输入一张清晰人脸照，即可生成与该人脸高度相似的半身高清成图。",
+ "limitation": "依赖较多第三方自定义节点和外部模型，首次配置成本高；FLUX dev 为非商用许可，商用需替换为授权模型；SUPIR 放大需要较高显存；InsightFace 使用 CPU 模式时较慢；输入人脸需要较清晰、正脸角度，否则身份相似度会下降。",
+ "dependencies": [
+  "ComfyUI_PuLID_Flux 自定义节点",
+  "ComfyUI-SUPIR 自定义节点",
+  "Joy_caption_two 自定义节点",
+  "LayerStyle/LayerMask 与 LayerUtility 节点",
+  "ComfyUI-Impact-Pack（ImpactInt）",
+  "flux1-dev-fp8.safetensors",
+  "pulid_flux_v0.9.0.safetensors",
+  "SUPIR-v0F_fp16.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "XLL dreamshaperXL_lightningDPMSDE.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyPulidFlux weight/start_at/end_at (1, 0, 0.98)",
+   "how_to_tune": "weight 控制身份相似度，太高容易失真/崩脸，太低会丢失人脸特征；start/end 控制身份条件参与采样的时间范围，0~0.98 表示几乎全程生效，适合强调身份保持。"
+  },
+  {
+   "param": "FluxGuidance (3.5)",
+   "how_to_tune": "FLUX 的 guidance 值，一般 2~6 之间；调低更自然，调高更贴提示词，但过高会产生伪影。"
+  },
+  {
+   "param": "SplitSigmasDenoise (0.6)",
+   "how_to_tune": "二阶段重绘强度；调低（0.4~0.5）保留首版构图，调高（0.7~0.8）获得更多细节和变化，但也可能破坏人脸一致性。"
+  },
+  {
+   "param": "SUPIR_sample steps/cfg/noise_aug",
+   "how_to_tune": "steps=10、cfg=2 是偏保守的放大设置；若图像过噪可增大 noise_aug/细节参数，若出现伪影应降低 cfg 或放大参数。"
+  },
+  {
+   "param": "ImageResize+ (2000)",
+   "how_to_tune": "用于控制送入后处理的图像长边；越大越消耗显存，越接近最终输出分辨率，建议根据目标用途和显存调整。"
+  }
+ ],
+ "summary_text": "能力:输入一张人脸参考图，利用 PuLID Flux 将人脸身份注入 FLUX.1-dev，生成以该脸为主体的半身人像/写真图。；能力:生成结果可进入 SUPIR 放大修复链（encode/sample/decode/first_stage），输出更高分辨率、细节更充分的成图。；能力:自动对图像进行人物分割（PersonMaskUltra V2）和遮罩裁剪（CropByMask V2），可限定人像区域做局部后处理。；能力:通过 Joy_caption_two 自动生成输入图的描述，搭配 CLIPTextEncode 的固定提示词，间接提升人与提示词的对齐度。；能力:整体可实现“一张人脸照 → 高清换脸/写真成图”的端到端流程。；特色:混合模型架构：流程同时加载 SDXL 系 Checkpoint（XLL dreamshaperXL_lightningDPMSDE）和 FLUX dev UNet，疑似将 FLUX 用于生成、SDXL/SUPIR 用于放大底模，形成两段式工作流。；特色:PuLID Flux 四节点完整链路：PulidFluxEvaClipLoader + PulidFluxInsightFaceLoader + PulidFluxModelLoader + ApplyPulidFlux，身份强度 weight=1、作用区间 start=0/end=0.98，几乎覆盖整个采样时间线。；特色:双 SamplerCustomAdvanced 配合 InjectLatentNoise+ 和 SplitSigmasDenoise(0.6)，疑似首轮采样后通过注入噪声并做部分去噪，实现“保构图+提细节”的二次重绘。；特色:完整的 SUPIR 修复链：SUPIR_model_loader_v2 → SUPIR_conditioner → SUPIR_encode → SUPIR_sample → SUPIR_decode → SUPIR_first_stage，形成从潜变量到高清图的后处理闭环。；特色:工程化模板设计：使用 GetNode/SetNode/Reroute 将 InputImage、SUPIRVAE 定义为变量，并用 ImpactInt 管理尺寸常量，便于用户只替换输入图就复用。；适合人像写真、证件照换背景、模特样片生成、角色一致性创作等场景；输入一张清晰人脸照，即可生成与该人脸高度相似的半身高清成图。；这个工作流的核心意图是“一张人脸照 → 保持身份的高清写真/换脸成图”。它把 PuLID 的身份控制与 FLUX 的生成质量放在前段，把 SUPIR 的放大修复放在后段，再以人物遮罩裁剪和 ColorMatch 解决生成图与输入图在肤色、光线上不一致的问题。同时通过 GetNode/SetNode 变量区、固定随机种子和两段采样设计，让工作流更"
+}

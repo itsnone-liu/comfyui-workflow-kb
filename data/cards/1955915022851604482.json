@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "AI绘画",
+  "人像写真",
+  "图像重绘/修复"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端：上传人物/主题参考图，自动产出同一主体多镜头角度、多焦段、多姿态动作的写真组。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 InstantID + ip-adapter + ControlNet 对人脸进行身份保持与换脸/人脸重绘。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过背景移除、人体遮罩、FLUX Fill / OneReward 实现背景替换、局部重绘和场景融合。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 RepeatLatentBatch=4 和多个 SaveImage 输出节点，批量生成并保存一组候选结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID（ip-adapter + ControlNet instantid/diffusion_pytorch_model）",
+  "ControlNet",
+  "FLUX.1 Fill / FLUX Fill（fluxFillFP8 + flux.1-fill-dev-OneReward-fp8）",
+  "FLUX Redux（flex1_redux_siglip2_512 + ReduxAdvanced）",
+  "Differential Diffusion 差分扩散",
+  "Inpainting 流程（InpaintCropImproved / InpaintModelConditioning / InpaintStitchImproved）",
+  "RMBG-2.0 背景移除（easy imageRemBg）",
+  "PersonMaskUltra V2 人体分割",
+  "多 LoRA 叠加风格与质量控制",
+  "Florence2 自动密集打标",
+  "RH_Translator 中文指令翻译",
+  "ImageSmartSharpen+ / LayerColor ColorAdapter 后期锐化与色彩适配"
+ ],
+ "special_features": [
+  {
+   "text": "三段式结构：节点命名中出现“设置3阶段脸部参考_遮罩缩放”、“设置3阶段脸部参考-原图”、“设置脸部重绘后”、“保存图像-3阶段-换脸”，说明有明确的阶段化换脸/重绘流程。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载 SDXL checkpoint（realvisxlV50）与两个 FLUX UNET（fluxFillFP8、OneReward FP8），人像身份生成与场景重绘分属不同模型家族，形成混合架构。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 RepeatLatentBatch=4 + RebatchLatents=1，将同一条件重复成 4 个 latent 批量采样，提升出图数量。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 GetNode/SetNode 建立命名输入输出（上传图片-预处理、输出条件、保存图片-合并等），把复杂工作流拆成带接口的组件式结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "Florence2 自动打标 + RH_Translator 翻译中文指令 + ReduxAdvanced + easy makeImageForICLora，构成“参考图→语义描述→多角度指令→Identity-consistent”的文字与图像双重引导链路。",
+   "kind": "inference"
+  },
+  {
+   "text": "多处 cleanGpuUsed、多 Preview、ShowText、ImageSmartSharpen+ 与 ColorAdapter，形成半自动的质量控制和显存管理回路。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流采用“先定身份，再改场景，最后统一后处理”的多段式设计：先用 SDXL + InstantID 从人脸/主题参考生成多姿态底图，锁定身份；再用背景移除/人体遮罩把主体与旧背景剥离，交给 FLUX Fill + OneReward 进行局部重绘和场景生成；最后通过 3 阶段脸部参考做换脸回补，并用锐化/色彩适配器统一成片。同时用 Florence2 自动打标、RH_Translator 翻译中文指令、Flux Redux 和 IC-LoRA 拼接图来增强提示词与参考图约束。这样设计可能是在身份一致性、姿态自由度和场景融合质量之间取得平衡，并让用户即使不写英文提示词也能用中文指令控制镜头角度、焦段和姿态，同时批量输出可用素材。",
+ "use_case": "适合人物写真批量生产、多角度/多姿态角色设定、换脸后的场景重绘、电商模特姿势扩展、二次元/写实混合风格原画等场景。",
+ "limitation": "强依赖大量自定义节点和外部模型；需要较高显存/内存，因为同一流程会加载 SDXL、两个 FLUX UNET、双 CLIP、Florence2、RMBG 等大模型。人脸输入需要清晰且尽量正脸，InstantID 对极端角度、遮挡、低清人脸较敏感。4 个 LoRA 同时生效时容易互相干扰，需要逐层调权。部分节点（RH_Translator、OneReward、GetNode/SetNode、easy imageRemBg、LayerMask 系列）依赖特定 ComfyUI 插件版本，缺失会直接报错。最终图没有自动质量打分，需要人工挑选。",
+ "dependencies": [
+  "模型文件：realvisxlV50_v50Bakedvae.safetensors、fluxFillFP8_v10.safetensors、flux.1-fill-dev-OneReward-fp8.safetensors、UltraFlux-v1_model.safetensors",
+  "文本编码器：t5xxl_fp16.safetensors、clip_l.safetensors、siglip2_so400m_patch16_512.safetensors",
+  "InstantID 组件：instantid/diffusion_pytorch_model.safetensors、ip-adapter.bin",
+  "FLUX Redux：flex1_redux_siglip2_512.safetensors",
+  "LoRA：portrait_lora64.safetensors、manfoot-v3-b20.safetensors、ace_plus_fft_fp8.safetensors、portrait-photography.safetensors",
+  "辅助模型：Florence-2-base、RMBG-2.0",
+  "自定义节点：InstantID、ComfyUI-Inpaint-Nodes、ComfyUI LayersPlanet、ComfyUI EasyUse、mtb、Differential Diffusion、Florence2 节点、RH_Translator、GetNode/SetNode、pysssss ShowText 等"
+ ],
+ "geek_rating": 4.5,
+ "input": {
+  "type": "一张或多张人物/主题参考图，可附带中文提示词/指令；多路输入包括原图、脸部参考、预处理图等",
+  "count": "至少 1 张，常见 1-3 张"
+ },
+ "output": {
+  "type": "一组保持身份的系列人像图，包括多镜头、多姿态、重绘/换脸后的结果，通过 PreviewImage / SaveImage 输出",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler（steps/cfg/sampler）",
+   "how_to_tune": "当前为 20 步、CFG 1.5、dpmpp_2m+karras。若细节不足可提高到 25-30 步；FLUX 系 CFG 建议保持在 1-2，避免颜色过饱和或结构失真。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前 guidance=50。希望更贴近提示词和遮罩语义时可保持；若画面显得生硬/过度控制，可逐步降到 30-45 重新生成。"
+  },
+  {
+   "param": "ApplyInstantID weight",
+   "how_to_tune": "当前为 1.0。人脸相似度不足时可增到 1.2-1.5；脸部僵硬或构图被锁死时可降到 0.6-0.9。"
+  },
+  {
+   "param": "LoRA 权重（portrait/manfoot/ace_plus/portrait-photography）",
+   "how_to_tune": "多个 LoRA 同时加载时建议从 0.6-0.8 起步逐层增加；不需要的 LoRA 置 0，避免风格打架。portrait 类可保持较高权重，manfoot 等专项目 LoRA 按需微调。"
+  },
+  {
+   "param": "RH_Translator 中文指令",
+   "how_to_tune": "修改指令可控制镜头角度、焦段、姿态动作；建议写清主体和动作，例如“侧面机位、中长焦、低头看镜头”；force_english 开启时会自动翻译。"
+  },
+  {
+   "param": "ImageSmartSharpen+ / ColorAdapter",
+   "how_to_tune": "锐化强度过强时减小 strength/radius，避免边缘光晕；ColorAdapter 当前为 50，颜色偏差大时上调，融合生硬时下调。"
+  }
+ ],
+ "summary_text": "能力:端到端：上传人物/主题参考图，自动产出同一主体多镜头角度、多焦段、多姿态动作的写真组。；能力:通过 InstantID + ip-adapter + ControlNet 对人脸进行身份保持与换脸/人脸重绘。；能力:通过背景移除、人体遮罩、FLUX Fill / OneReward 实现背景替换、局部重绘和场景融合。；能力:通过 RepeatLatentBatch=4 和多个 SaveImage 输出节点，批量生成并保存一组候选结果。；特色:三段式结构：节点命名中出现“设置3阶段脸部参考_遮罩缩放”、“设置3阶段脸部参考-原图”、“设置脸部重绘后”、“保存图像-3阶段-换脸”，说明有明确的阶段化换脸/重绘流程。；特色:同时加载 SDXL checkpoint（realvisxlV50）与两个 FLUX UNET（fluxFillFP8、OneReward FP8），人像身份生成与场景重绘分属不同模型家族，形成混合架构。；特色:使用 RepeatLatentBatch=4 + RebatchLatents=1，将同一条件重复成 4 个 latent 批量采样，提升出图数量。；特色:通过 GetNode/SetNode 建立命名输入输出（上传图片-预处理、输出条件、保存图片-合并等），把复杂工作流拆成带接口的组件式结构。；特色:Florence2 自动打标 + RH_Translator 翻译中文指令 + ReduxAdvanced + easy makeImageForICLora，构成“参考图→语义描述→多角度指令→Identity-consistent”的文字与图像双重引导链路。；特色:多处 cleanGpuUsed、多 Preview、ShowText、ImageSmartSharpen+ 与 ColorAdapter，形成半自动的质量控制和显存管理回路。；适合人物写真批量生产、多角度/多姿态角色设定、换脸后的场景重绘、电商模特姿势扩展、二次元/写实混合风格原画等场景。；该工作流采用“先定身份，再改场景，最后统一后处理”的多段式设计：先用 SDXL + InstantID 从人脸/主题参考生成多姿态底图，锁定身份；再用背景移除/人体遮罩把主体与旧背景剥离，交给 FLUX Fill + OneReward 进行局部重绘和场景生成；最后通过 3 阶段脸部参考做换脸回补，并用锐化/色彩适配器统一成片。同时用 Florence2 自动打标、RH_Translator 翻译中文指令、Flux Redux 和 IC-LoRA 拼接图来增强提示词与参考图约束。这样设计可能是在身份一致性、姿态自由度和场景融合质量之间取得平衡，并让用户即使不写英文提示词也能用中文指令控制镜头角度、焦段和姿态，同时批量输出可用素材。"
+}

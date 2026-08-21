@@ -1,0 +1,53 @@
+{
+ "domain": [
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张图像，通过RH_Nano_Banana2_Image2Image节点进行图像到图像转换，生成具有圣诞氛围的图像，并支持预览和保存。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图像到图像生成（Image-to-Image）",
+  "基于正面提示词的生成控制",
+  "第三方自定义节点应用（RH_Nano_Banana2_Image2Image）",
+  "标准图像加载/预览/保存流程（LoadImage/PreviewImage/SaveImage）"
+ ],
+ "special_features": [],
+ "design_intent": "本工作流设计极为精简，目的可能是让用户无需理解底层生成参数，只需上传图像即可快速获得圣诞氛围风格的结果。通过将复杂的生成模型封装为单一第三方节点，并使用固定提示词和分辨率（4:3、2k），降低了使用门槛，适合非技术用户进行快速风格化实验。",
+ "use_case": "将普通图像（如人物照片、风景图）转换为带有圣诞氛围的图像，用于节日贺卡、社交媒体头像等场景。",
+ "limitation": "依赖第三方自定义节点RH_Nano_Banana2_Image2Image，需确保环境已安装；输入必须是图像文件；输出分辨率和宽高比固定为4:3和2k；提示词已固定，无法在流程内自定义（除非修改工作流）。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_Nano_Banana2_Image2Image 自定义节点"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "图像",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "text（提示词）",
+   "how_to_tune": "当前为'(杰作, 最高画质, 超细节, 8k分辨率). '，可追加'圣诞、雪、圣诞树、红色调'等词汇来强化圣诞氛围。"
+  },
+  {
+   "param": "seed",
+   "how_to_tune": "固定种子可复现相同结果；randomize时每次随机。"
+  },
+  {
+   "param": "aspect_ratio",
+   "how_to_tune": "当前'4:3'，可根据需要调整为'1:1'、'16:9'等。"
+  },
+  {
+   "param": "resolution",
+   "how_to_tune": "当前'2k'，可降低为'1k'以加快速度。"
+  }
+ ],
+ "summary_text": "能力:上传一张图像，通过RH_Nano_Banana2_Image2Image节点进行图像到图像转换，生成具有圣诞氛围的图像，并支持预览和保存。；将普通图像（如人物照片、风景图）转换为带有圣诞氛围的图像，用于节日贺卡、社交媒体头像等场景。；本工作流设计极为精简，目的可能是让用户无需理解底层生成参数，只需上传图像即可快速获得圣诞氛围风格的结果。通过将复杂的生成模型封装为单一第三方节点，并使用固定提示词和分辨率（4:3、2k），降低了使用门槛，适合非技术用户进行快速风格化实验。"
+}

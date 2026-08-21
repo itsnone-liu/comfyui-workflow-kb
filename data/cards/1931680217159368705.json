@@ -1,0 +1,125 @@
+{
+ "domain": [
+  "人像生成",
+  "图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人物照片与姿势/深度参考图，经 InstantID 保持人脸身份、ControlNet 控制姿态/深度、FLUX 生成多张写实人像，实现“一张人脸照 → 多样姿态写真”的端到端生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持对生成结果进行三阶段后处理：换脸/局部重绘、裁剪缩放、调色与智能锐化，输出精修后的最终图像。",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 LLM 自动分析输入图像生成服装/背景/姿态描述，并翻译为英文提示词，降低手动写 prompt 的成本。",
+   "kind": "fact"
+  },
+  {
+   "text": "提供多个保存/预览输出（SaveImage/PreviewImage），可同时输出不同阶段的中间结果和最终结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID 人脸身份保持",
+  "ControlNet（OpenPose 姿态 + Depth 深度）条件控制",
+  "FLUX.1-dev 扩散生成",
+  "FLUX Redux / StyleModel 图像风格与结构参考",
+  "SDXL（realvisxlV50）辅助生成",
+  "Inpaint 局部重绘（换脸/精修）",
+  "BiRefNet 背景移除",
+  "PersonMaskUltra 人物分割",
+  "LLM API 自动提示词生成",
+  "TeaCache 采样加速",
+  "LoRA（portrait_lora64 等）风格控制",
+  "Differential Diffusion 细节保持"
+ ],
+ "special_features": [
+  {
+   "text": "使用大量 GetNode/SetNode 节点将子流程封装为参数化模块（如“获取姿势图”“设置ace图像”“随机种子共享”），形成高可维护性的模块化工作流。",
+   "kind": "fact"
+  },
+  {
+   "text": "多段式结构：从节点命名可见“3阶段”流水线（如“保存图像-3阶段裁剪后”“保存图像-3阶段-换脸”），可能实现先整体生成、再换脸精修、最后裁剪调色的分段流程。",
+   "kind": "inference"
+  },
+  {
+   "text": "引入 LLM 节点（RH_LLMAPI_NODE）和翻译节点（RH_Translator）自动生成并翻译英文提示词，形成“图像理解 → 提示词构造”的自动化链路。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载 FLUX、SDXL 两套基础模型，并配合 FLUX Redux/StyleModel，可能用于不同阶段或不同画质需求。",
+   "kind": "inference"
+  },
+  {
+   "text": "集成 TeaCache 加速与 DifferentialDiffusion 细节保护，在重绘阶段兼顾速度与质量。",
+   "kind": "fact"
+  },
+  {
+   "text": "后处理质量控制回路：ColorMatch 颜色匹配、ImageSmartSharpen+ 锐化、Brightness & Contrast 调节依次串联，提升最终画质。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流似乎旨在构建一条“身份可控、姿势可控、画质可修”的人像写真生产线。作者以 InstantID + ControlNet(OpenPose/Depth) 保证人脸一致性与构图可控，用 FLUX/Redux 提供高质量生成基底；同时通过 LLM 自动撰写提示词降低使用门槛，并用 GetNode/SetNode 将重复步骤封装成模块，使 244 节点的复杂流程可读可维护。3 阶段流水线很可能用于将粗生成、换脸精修、裁剪后处理分开，以逐步提升最终画面质量。",
+ "use_case": "人物写真/肖像照生成：电商模特图、个人写真、多姿态参考图制作；也可用于角色换脸和局部重绘。",
+ "limitation": "依赖大量第三方自定义节点（如 ComfyUI_InstantID、ComfyUI_ControlNetUnion、LayerStyle 系列、RH_LLMAPI_NODE 等）；需要下载多个大型模型文件（FLUX.1-dev、Redux、ControlNet-Union、InstantID ip-adapter、VAE、LoRA 等），显存占用高；LLM 节点需要可用的 API 服务/配置；输入需提供清晰的 frontal 人脸照和姿态/深度参考图，否则 InstantID/ControlNet 效果不保证；不同阶段对图像尺寸和遮罩有隐式要求（如 InpaintCropImproved 设定 1024 分辨率）。",
+ "dependencies": [
+  "ComfyUI_InstantID (InstantIDModelLoader, ApplyInstantID, InstantIDFaceAnalysis)",
+  "ComfyUI_ControlNetUnion (FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors)",
+  "FLUX Redux/StyleModel (flux1-redux-dev.safetensors, flex1_redux_siglip2_512.safetensors)",
+  "ComfyUI_LayerStyle (LayerMask, LayerUtility, ImageBlend, InpaintCropImproved, etc.)",
+  "ComfyUI_BiRefNet (BiRefNetRMBG)",
+  "RH_LLMAPI_NODE / RH_Translator",
+  "TeaCache (TeaCache node)",
+  "FLUX.1-dev fp8 model (flux1-dev-fp8.safetensors)",
+  "InstantID ControlNet (instantid/diffusion_pytorch_model.safetensors) & ip-adapter.bin",
+  "SDXL checkpoint (realvisxlV50_v50Bakedvae.safetensors)",
+  "DualCLIPLoader (clip_l.safetensors, t5xxl_fp8_e4m3fn_scaled.safetensors)",
+  "VAE (ae.sft)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "multiple (至少 2 张：人物正面照 + 姿势/深度参考图；另有可选的 redux 参考图)"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "控制 FLUX 对提示词的遵循程度，默认 3.5 左右；增大可让画面更贴近描述，但过高可能导致过饱和/僵硬。工作流中出现 3.5 和 50 两个值，说明不同阶段使用了不同强度。"
+  },
+  {
+   "param": "KSampler steps/sampler/scheduler",
+   "how_to_tune": "20 步 + dpmpp_2m + karras 是质量和速度的平衡选择；若追求速度可降到 8-12 步，配合 TeaCache 使用。"
+  },
+  {
+   "param": "ControlNetApplySD3 strength",
+   "how_to_tune": "工作流中姿势/深度强度多为 0.5~0.8，0.5 给生成更多自由空间，0.8 更严格保留参考结构；按参考图与目标的差异调整。"
+  },
+  {
+   "param": "ApplyInstantID weight",
+   "how_to_tune": "weight=1 为默认；人脸相似度不够可提高，但过大会导致表情僵硬或构图受限。"
+  },
+  {
+   "param": "LoRA 权重",
+   "how_to_tune": "portrait_lora64 设为 1.0 用于肖像风格；3kman-v2-joyb1-8 和 manfoot-v3-b20 设置为 0.5~0.8 控制风格强度，过高可能失真。"
+  },
+  {
+   "param": "TeaCache",
+   "how_to_tune": "两个 TeaCache 阈值分别为 0.15/0.13，用于 FLUX 加速；阈值越大速度越快但质量下降，需根据画质要求调整。"
+  },
+  {
+   "param": "BiRefNetRMBG",
+   "how_to_tune": "用于背景移除，若人物边缘有残留可调整参数或配合 MaskGrow 扩张/收缩遮罩。"
+  },
+  {
+   "param": "ColorMatch",
+   "how_to_tune": "强度 0.35 左右做颜色匹配，使生成结果与参考图色调一致；需要更接近参考可提高，但会导致颜色过于统一。"
+  }
+ ],
+ "summary_text": "能力:上传人物照片与姿势/深度参考图，经 InstantID 保持人脸身份、ControlNet 控制姿态/深度、FLUX 生成多张写实人像，实现“一张人脸照 → 多样姿态写真”的端到端生成。；能力:支持对生成结果进行三阶段后处理：换脸/局部重绘、裁剪缩放、调色与智能锐化，输出精修后的最终图像。；能力:利用 LLM 自动分析输入图像生成服装/背景/姿态描述，并翻译为英文提示词，降低手动写 prompt 的成本。；能力:提供多个保存/预览输出（SaveImage/PreviewImage），可同时输出不同阶段的中间结果和最终结果。；特色:使用大量 GetNode/SetNode 节点将子流程封装为参数化模块（如“获取姿势图”“设置ace图像”“随机种子共享”），形成高可维护性的模块化工作流。；特色:多段式结构：从节点命名可见“3阶段”流水线（如“保存图像-3阶段裁剪后”“保存图像-3阶段-换脸”），可能实现先整体生成、再换脸精修、最后裁剪调色的分段流程。；特色:引入 LLM 节点（RH_LLMAPI_NODE）和翻译节点（RH_Translator）自动生成并翻译英文提示词，形成“图像理解 → 提示词构造”的自动化链路。；特色:同时加载 FLUX、SDXL 两套基础模型，并配合 FLUX Redux/StyleModel，可能用于不同阶段或不同画质需求。；特色:集成 TeaCache 加速与 DifferentialDiffusion 细节保护，在重绘阶段兼顾速度与质量。；特色:后处理质量控制回路：ColorMatch 颜色匹配、ImageSmartSharpen+ 锐化、Brightness & Contrast 调节依次串联，提升最终画质。；人物写真/肖像照生成：电商模特图、个人写真、多姿态参考图制作；也可用于角色换脸和局部重绘。；该工作流似乎旨在构建一条“身份可控、姿势可控、画质可修”的人像写真生产线。作者以 InstantID + ControlNet(OpenPose/Depth) 保证人脸一致性与构图可控，用 FLUX/Redux 提供高质量生成基底；同时通过 LLM 自动撰写提示词降低使用门槛，并用 GetNode/SetNode 将重复步骤封装成模块，使 244 节点的复杂流程可读可维护。3 阶段流水线很可能用于将粗生成、换脸精修、裁剪后处理分开，以逐步提升最终画面质量。"
+}

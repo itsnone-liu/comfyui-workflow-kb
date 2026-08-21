@@ -1,0 +1,89 @@
+{
+ "domain": [
+  "老照片修复"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张老照片，使用 DDColor 自动完成黑白/褪色照片上色。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 FLUX Kontext Pro 与文本提示“Fix this old photo, keep”进行指令式老照片修复（去缺陷/增强/保持身份）。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ImageConcanate 将原图/上色图/修复图按右侧拼接，输出并保存多个修复结果/对比图。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "DDColor 老照片上色",
+  "FLUX Kontext Pro 指令式图像修复",
+  "CR Prompt Text 文本条件控制",
+  "ImageConcanate 图像拼接对比",
+  "多路 SaveImage 结果保存"
+ ],
+ "special_features": [
+  {
+   "text": "两段式修复设计：DDColor 先做色彩重建，FLUX Kontext Pro 再做语义级修复，形成“上色→修复”串行流水线。",
+   "kind": "inference"
+  },
+  {
+   "text": "多个 ImageConcanate 节点按 right 方向拼接图像，可能用于制作原始照片、上色结果、修复结果的横向对比图。",
+   "kind": "inference"
+  },
+  {
+   "text": "并列设置 4 个 SaveImage 输出节点，可同时保存不同阶段/不同拼接方式的产物，便于批量归档。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 PrimitiveNode 固定 1:1 宽高比，并以 'fixed' 模式约束 FLUX Kontext 生成尺寸，可能是为适配模型默认输入。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整体是一条“先上色、后修复、再对比”的老照片修复流水线：DDColor 负责把灰度/褪色照片恢复成自然彩色，FLUX Kontext Pro 再用自然语言指令“Fix this old photo, keep”修复划痕、噪点、模糊等问题，并用 keep 约束内容与人物身份不漂移；拼接节点用于直观对比修复效果，多个 SaveImage 用于同时沉淀中间结果。这样设计可能是为了用传统模型解决色彩、用扩散模型解决语义修复，避免单一模型顾此失彼。",
+ "use_case": "适用于黑白/褪色老照片的快速上色与高清修复，也可作为 FLUX Kontext Pro 老照片修复工作流的参考模板。",
+ "limitation": "依赖 ddcolor_paper.pth 与 flux-kontext-pro 模型/服务，且需要 RH_ComfyFluxKontext 等自定义节点；输入仅为单张图片；PrimitiveNode 默认固定 1:1，老照片常见 4:3/3:2 比例需要手动调整；修复提示词写死为英文，需自行修改 CR Prompt Text 才能改变修复风格。",
+ "dependencies": [
+  "ComfyUI 核心 LoadImage/SaveImage",
+  "DDColor_Colorize 自定义节点",
+  "ddcolor_paper.pth 模型文件",
+  "CR Prompt Text（ComfyUI_Comfyroll_CustomNodes）",
+  "ImageConcanate 节点",
+  "RH_ComfyFluxKontext 自定义节点",
+  "flux-kontext-pro 模型/推理服务",
+  "easy showAnything（ComfyUI Easy Use）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张老照片/图片文件",
+  "count": "1"
+ },
+ "output": {
+  "type": "修复后的彩色图片（可能含上色图、修复图、拼接对比图等多路保存）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "DDColor_Colorize size（当前 512）",
+   "how_to_tune": "控制上色处理尺寸；调大可保留更多细节，但显存和耗时上升。老照片像素不高时 512 已够用。"
+  },
+  {
+   "param": "CR Prompt Text 的提示词（Fix this old photo, keep）",
+   "how_to_tune": "keep 用于保持人物身份和照片内容；想加强去划痕可加 remove scratches/repair defects，想增强年代感可加 vintage color style 等。"
+  },
+  {
+   "param": "PrimitiveNode 的宽高比（当前 1:1）",
+   "how_to_tune": "应与输入老照片比例一致；若照片是 4:3 或 3:2，改对应比例可避免生成结果被拉伸或裁切。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 的 seed（1597375416）",
+   "how_to_tune": "控制修复过程中的随机细节；结果不稳定或出现伪影时，更换 seed 重新生成。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 的 model（flux-kontext-pro）",
+   "how_to_tune": "当前选择 Pro 模型，要求对应推理服务/API；若无可用服务，可替换为本地轻量版或改用普通 FLUX 图生图管线。"
+  }
+ ],
+ "summary_text": "能力:上传单张老照片，使用 DDColor 自动完成黑白/褪色照片上色。；能力:通过 FLUX Kontext Pro 与文本提示“Fix this old photo, keep”进行指令式老照片修复（去缺陷/增强/保持身份）。；能力:使用 ImageConcanate 将原图/上色图/修复图按右侧拼接，输出并保存多个修复结果/对比图。；特色:两段式修复设计：DDColor 先做色彩重建，FLUX Kontext Pro 再做语义级修复，形成“上色→修复”串行流水线。；特色:多个 ImageConcanate 节点按 right 方向拼接图像，可能用于制作原始照片、上色结果、修复结果的横向对比图。；特色:并列设置 4 个 SaveImage 输出节点，可同时保存不同阶段/不同拼接方式的产物，便于批量归档。；特色:使用 PrimitiveNode 固定 1:1 宽高比，并以 'fixed' 模式约束 FLUX Kontext 生成尺寸，可能是为适配模型默认输入。；适用于黑白/褪色老照片的快速上色与高清修复，也可作为 FLUX Kontext Pro 老照片修复工作流的参考模板。；整体是一条“先上色、后修复、再对比”的老照片修复流水线：DDColor 负责把灰度/褪色照片恢复成自然彩色，FLUX Kontext Pro 再用自然语言指令“Fix this old photo, keep”修复划痕、噪点、模糊等问题，并用 keep 约束内容与人物身份不漂移；拼接节点用于直观对比修复效果，多个 SaveImage 用于同时沉淀中间结果。这样设计可能是为了用传统模型解决色彩、用扩散模型解决语义修复，避免单一模型顾此失彼。"
+}

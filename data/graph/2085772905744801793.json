@@ -1,0 +1,1066 @@
+{
+ "node_count": 24,
+ "link_count": 30,
+ "active_node_count": 24,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 2,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    4,
+    14
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    5,
+    15
+   ]
+  },
+  {
+   "id": 6,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 7,
+   "type": "LoraLoaderBypassModelOnly",
+   "category": "lora",
+   "title": "lora only",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_turbo_4步加速_comfyui.safetensors",
+    1
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 9,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    11,
+    12
+   ],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 10,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    13,
+    14,
+    15
+   ],
+   "out_links": [
+    16,
+    17
+   ]
+  },
+  {
+   "id": 12,
+   "type": "MiniMaxH3DualClockSamplerT8",
+   "category": "sampler",
+   "title": "STABLE 4 video / 4 audio",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8,
+    12,
+    3,
+    "dual_clock_euler",
+    "native_flow"
+   ],
+   "in_links": [
+    18,
+    19
+   ],
+   "out_links": [
+    11,
+    22,
+    23
+   ]
+  },
+  {
+   "id": 13,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    123456786,
+    "decrement"
+   ],
+   "in_links": [],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 14,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    20,
+    21,
+    22,
+    23,
+    24
+   ],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 18,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    25
+   ],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 4,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    15
+   ],
+   "in_links": [],
+   "out_links": [
+    25
+   ]
+  },
+  {
+   "id": 16,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    0.7,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    8,
+    9
+   ]
+  },
+  {
+   "id": 5,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 11,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "H3_MP",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "H3_MP_00001_p82-audio_qjybb_1786124294.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//93b79de843e25f152b2c8fe69a7bacf8/output/H3_MP_00001_p82-audio_qjybb_1786124294.mp4",
+      "workflow": "H3_MP_00001_p82.png",
+      "fullpath": "/data/ComfyUI/personal/93b79de843e25f152b2c8fe69a7bacf8/output/H3_MP_00001_p82-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    16,
+    17
+   ],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 17,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "分镜八：坠入星海\n画面风格：超现实梦境，深蓝与金色交织的星空色调，粒子光效飘浮。\n动作描述：女孩缓缓坠落在一片由星光和咖啡色星云构成的虚空中，头发和衣袂在无重力中飘浮。她睁开眼，发现自己置身于一个奇幻的宇宙。一只巨大的黑色长尾猫从星云中优雅走出，尾巴如彗星般拖曳着星尘，琥珀色的眼睛凝视着女孩。\n镜头变化：从女孩面部特写缓慢拉远至大远景，展现黑猫与女孩在星海中对视的宏大画面。\n\n分镜九：猫的引领\n画面风格：魔幻现实主义，色调温暖如黄昏，光线柔和带有丁达尔效应。\n动作描述：黑猫转身，长尾轻轻一扫，虚空裂开一道门。女孩跟随黑猫穿过光门，来到一个奇幻的浮空花园——花朵巨大如房屋，藤蔓编织成楼梯，空中漂浮着发光的蒲公英。黑猫回头望向女孩，眼神温柔，仿佛在说\"跟我来\"。\n镜头变化：跟拍镜头，从女孩身后拍摄，展现她追随黑猫穿越奇幻花园的全过程。\n\n分镜十：巨猫与微缩城市\n画面风格：超现实比例反差，柔和的蓝紫色暮光。\n动作描述：女孩与黑猫来到一片开阔地——黑猫趴在一座微缩的伦敦城市模型旁，身体比大本钟还要巨大，长尾慵懒地环绕着整座城市。 女孩站在猫的爪边，轻轻抚摸它的毛发。猫发出满足的呼噜声，整个微缩城市随之微微震动。\n镜头变化：侧面远景，缓慢环绕拍摄，展现巨猫、女孩与微缩伦敦的奇妙比例关系。\n\n分镜十一：共舞星空\n画面风格：浪漫梦幻，银河色调，光粒子飞舞。\n动作描述：黑猫站起身，伸出一只巨大的爪子。女孩轻轻踏上猫的掌心，黑猫将女孩托举到空中，两人在星空中缓缓旋转共舞。 黑猫的长尾在空中画出优美的弧线，轨迹化作流光溢彩的光带。女孩张开双臂，感受星光洒落。\n镜头变化：360度环绕航拍，从慢速旋转到加速，营造梦幻的舞蹈感。\n\n分镜十二：猫的礼物\n画面风格：温馨治愈，金色暖光，细节精致。\n动作描述：黑猫轻轻低头，用鼻尖将一个发光的小物件推向女孩——那正是带有黑色猫形手柄的马克杯的迷你版，杯身上黑色长尾猫在柔光中闪烁。 女孩双手捧起杯子，杯中的咖啡泛着星光。黑猫用长尾温柔地环绕住女孩，画面温暖而宁静。\n镜头变化：面部与手部特写，浅景深，焦点在女孩感动的表情与发光的杯子上。\n\n分镜十三：梦醒回归\n画面风格：从梦幻过渡回现实，色调从金色渐变回明亮的自然光。\n动作描述：女孩低头看着手中的杯子，画面开始如水波般荡漾——镜头拉远，女孩正坐在伦敦街头的咖啡馆里，手中握着黑色长尾猫形手柄的白色款马克杯, 杯中的咖啡还在微微晃动。 她微微一笑，仿佛刚从一场美梦中醒来。桌对面，一只普通的黑色长尾猫正慵懒地舔着爪子，琥珀色的眼睛望向她，仿佛在说\"那场梦，是真的哦\"。\n镜头变化：从中景缓慢拉远至远景，展现温馨的街景全貌。\n\n分镜十四：品牌谢幕\n画面风格：产品矩阵展示，干净整洁，现代简约。\n主体：一排颜色不一的黑色长尾猫形手柄的马克杯，旁边蹲坐着那只黑色长尾猫。\n动作描述：模特趴在桌子后面向观众微笑，前方整齐摆放着三款不同颜色的马克杯。最后屏幕中心浮现黑猫优雅地坐在杯子旁边，尾巴轻轻摆动。设计字体，黑猫的剪影巧妙地融入Logo设计中。背景是柔和的天空与云朵。\n镜头变化：平拍特写，镜头极轻微地前推，画面渐隐至品牌色。"
+   ],
+   "in_links": [],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 25,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 23,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 22,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 15,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 8,
+   "type": "MiniMaxH3AudioConditioningT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "Ref2VA — 参考生音视频",
+    "native",
+    1,
+    false,
+    0,
+    true,
+    "match",
+    "official_2_to_15s"
+   ],
+   "in_links": [
+    3,
+    4,
+    5,
+    26,
+    29,
+    30,
+    31,
+    33,
+    28,
+    7,
+    8,
+    9,
+    10
+   ],
+   "out_links": [
+    12,
+    19,
+    24
+   ]
+  },
+  {
+   "id": 27,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 0,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "force_rate": 0,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    33
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 8,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 12,
+   "to_node": 14,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 12,
+   "to_node": 14,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 12,
+   "to_node": 9,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 14,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 10,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 8,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 8,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 8,
+   "type": "STRING"
+  },
+  {
+   "from_node": 19,
+   "to_node": 8,
+   "type": "INT"
+  },
+  {
+   "from_node": 2,
+   "to_node": 10,
+   "type": "VAE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 23,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 8,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 25,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 10,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 19,
+   "type": "FLOAT,INT,BOOLEAN"
+  },
+  {
+   "from_node": 5,
+   "to_node": 6,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 6,
+   "to_node": 7,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 7,
+   "to_node": 12,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 8,
+   "to_node": 12,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 14,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 9,
+   "to_node": 14,
+   "type": "GUIDER"
+  }
+ ],
+ "categories": {
+  "clip": 1,
+  "vae": 2,
+  "utility": 9,
+  "lora": 1,
+  "sampler": 4,
+  "checkpoint_loader": 1,
+  "video_io": 2,
+  "image_io": 4
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_turbo_4步加速_comfyui.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_int8_convrot.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 61,
+ "structure_hash": "f07eb01b76d41d32",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 1,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 2,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_turbo_4步加速_comfyui.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 12,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 12,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 1,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 12,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 12,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 3,
+   "value_preview": "dual_clock_euler"
+  },
+  {
+   "node_id": 12,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 4,
+   "value_preview": "native_flow"
+  },
+  {
+   "node_id": 13,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "123456786"
+  },
+  {
+   "node_id": 13,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "decrement"
+  },
+  {
+   "node_id": 19,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 4,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 5,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "H3_MP"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 24,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 25,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 4,
+   "value_preview": "Ref2VA — 参考生音视频"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 5,
+   "value_preview": "native"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 9,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 10,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 8,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 11,
+   "value_preview": "official_2_to_15s"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": ""
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 27,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  }
+ ]
+}

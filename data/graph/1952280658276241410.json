@@ -1,0 +1,1887 @@
+{
+ "node_count": 39,
+ "link_count": 59,
+ "active_node_count": 39,
+ "nodes": [
+  {
+   "id": 364,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da739104.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 365,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "wwrs"
+   ],
+   "in_links": [
+    985
+   ],
+   "out_links": []
+  },
+  {
+   "id": 397,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da739104.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    786,
+    987
+   ]
+  },
+  {
+   "id": 362,
+   "type": "PrimitiveInt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    -1070175287012231,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    966
+   ]
+  },
+  {
+   "id": 389,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da739104.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    976
+   ]
+  },
+  {
+   "id": 366,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_mrpfx_00003_hunoi_1754452997.png&type=temp&subfolder=&rand=0.2109734392636502&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwMTFjNGZhOTQ2M2FkZTBmYjdlMWMwYzNjZjM1MDY5NyIsInNpZ25FeHBpcmUiOjE3NTUwNTc2NzY3OTAsInRzIjoxNzU0NDUyODc2NzkwLCJzaWduIjoiYjE1OWI2OTcwZmQ1YjNhNmUwMWUyNzI2MDY2ZmQyZTEifQ==&Rh-Identify=011c4fa9463ade0fb7e1c0c3cf350697"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_mrpfx_00004_myozj_1754452999.png&type=temp&subfolder=&rand=0.1549603923719629&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwMTFjNGZhOTQ2M2FkZTBmYjdlMWMwYzNjZjM1MDY5NyIsInNpZ25FeHBpcmUiOjE3NTUwNTc2NzY3OTAsInRzIjoxNzU0NDUyODc2NzkwLCJzaWduIjoiYjE1OWI2OTcwZmQ1YjNhNmUwMWUyNzI2MDY2ZmQyZTEifQ==&Rh-Identify=011c4fa9463ade0fb7e1c0c3cf350697"
+     }
+    ]
+   ],
+   "in_links": [
+    986,
+    786
+   ],
+   "out_links": []
+  },
+  {
+   "id": "367",
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    931,
+    932
+   ],
+   "out_links": [
+    933
+   ]
+  },
+  {
+   "id": "368",
+   "type": "SetLatentNoiseMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    934,
+    935
+   ],
+   "out_links": [
+    936
+   ]
+  },
+  {
+   "id": "369",
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    937,
+    938
+   ],
+   "out_links": [
+    934
+   ]
+  },
+  {
+   "id": "370",
+   "type": "LayerUtility: CropBoxResolve",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    939
+   ],
+   "out_links": [
+    940,
+    941,
+    942,
+    943
+   ]
+  },
+  {
+   "id": "371",
+   "type": "ImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    512,
+    512,
+    "center"
+   ],
+   "in_links": [
+    944
+   ],
+   "out_links": [
+    945,
+    946
+   ]
+  },
+  {
+   "id": "372",
+   "type": "LayerUtility: CropByMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    96,
+    96,
+    96,
+    96
+   ],
+   "in_links": [
+    947,
+    948
+   ],
+   "out_links": [
+    949,
+    950,
+    939
+   ]
+  },
+  {
+   "id": "373",
+   "type": "CR Upscale Image",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2xNomosUni_span_multijpg_ldl.pth",
+    "resize",
+    2,
+    1024,
+    "lanczos",
+    "true",
+    8
+   ],
+   "in_links": [
+    949
+   ],
+   "out_links": [
+    951,
+    952
+   ]
+  },
+  {
+   "id": "374",
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    1.41
+   ],
+   "in_links": [
+    951
+   ],
+   "out_links": [
+    953
+   ]
+  },
+  {
+   "id": "377",
+   "type": "ControlNetApplySD3",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.3500000000000001,
+    0,
+    0.7500000000000002
+   ],
+   "in_links": [
+    962,
+    963,
+    967,
+    968,
+    969
+   ],
+   "out_links": [
+    964,
+    965
+   ]
+  },
+  {
+   "id": "379",
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "instantid/diffusion_pytorch_model.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    956
+   ]
+  },
+  {
+   "id": "380",
+   "type": "InstantIDFaceAnalysis",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    955
+   ]
+  },
+  {
+   "id": "382",
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    0.71
+   ],
+   "in_links": [
+    970
+   ],
+   "out_links": [
+    971
+   ]
+  },
+  {
+   "id": "383",
+   "type": "easy imageColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "adain",
+    "Preview",
+    "ComfyUI"
+   ],
+   "in_links": [
+    952,
+    971
+   ],
+   "out_links": [
+    972
+   ]
+  },
+  {
+   "id": "384",
+   "type": "ImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    [
+     "370",
+     2
+    ],
+    [
+     "370",
+     3
+    ],
+    "disabled"
+   ],
+   "in_links": [
+    972,
+    942,
+    943
+   ],
+   "out_links": [
+    973
+   ]
+  },
+  {
+   "id": "385",
+   "type": "LayerMask: MaskGrow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    96,
+    8
+   ],
+   "in_links": [
+    950
+   ],
+   "out_links": [
+    974
+   ]
+  },
+  {
+   "id": "387",
+   "type": "LayerMask: MaskGrow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    48,
+    16
+   ],
+   "in_links": [
+    977
+   ],
+   "out_links": [
+    935
+   ]
+  },
+  {
+   "id": "388",
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    975
+   ]
+  },
+  {
+   "id": "391",
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    980
+   ],
+   "out_links": [
+    959
+   ]
+  },
+  {
+   "id": "393",
+   "type": "LayerUtility: LayerImageTransform",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    "None",
+    1.41,
+    1,
+    [
+     "394",
+     0
+    ],
+    "lanczos",
+    0
+   ],
+   "in_links": [
+    933,
+    981
+   ],
+   "out_links": [
+    970
+   ]
+  },
+  {
+   "id": "394",
+   "type": "JWFloat",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    981,
+    982
+   ]
+  },
+  {
+   "id": "395",
+   "type": "LayerUtility: LayerImageTransform",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    "None",
+    0.71,
+    1.0000000000000002,
+    [
+     "394",
+     0
+    ],
+    "lanczos",
+    2
+   ],
+   "in_links": [
+    953,
+    982
+   ],
+   "out_links": [
+    937,
+    960,
+    969,
+    983
+   ]
+  },
+  {
+   "id": "396",
+   "type": "ImageComposite+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     "370",
+     0
+    ],
+    [
+     "370",
+     1
+    ],
+    0,
+    0
+   ],
+   "in_links": [
+    984,
+    973,
+    974,
+    940,
+    941
+   ],
+   "out_links": [
+    985,
+    986
+   ]
+  },
+  {
+   "id": "405",
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    988
+   ],
+   "out_links": [
+    948
+   ]
+  },
+  {
+   "id": "406",
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    983
+   ],
+   "out_links": [
+    977
+   ]
+  },
+  {
+   "id": "378",
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    967
+   ]
+  },
+  {
+   "id": "390",
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "392,0"
+   ],
+   "in_links": [
+    978,
+    979
+   ],
+   "out_links": [
+    958
+   ]
+  },
+  {
+   "id": "375",
+   "type": "ApplyInstantID",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.0000000000000002,
+    0,
+    1
+   ],
+   "in_links": [
+    954,
+    955,
+    956,
+    945,
+    957,
+    958,
+    959,
+    960
+   ],
+   "out_links": [
+    961,
+    962,
+    963
+   ]
+  },
+  {
+   "id": "392",
+   "type": "RH_Captioner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "描述这个人的脸部特征使用英文输出"
+   ],
+   "in_links": [
+    946
+   ],
+   "out_links": [
+    979
+   ]
+  },
+  {
+   "id": "386",
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.30000000000000004,
+    -1
+   ],
+   "in_links": [
+    975,
+    976
+   ],
+   "out_links": [
+    944
+   ]
+  },
+  {
+   "id": "381",
+   "type": "InstantIDModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ip-adapter.bin"
+   ],
+   "in_links": [],
+   "out_links": [
+    954
+   ]
+  },
+  {
+   "id": "398",
+   "type": "JWImageResizeByLongerSide",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1536,
+    "bicubic"
+   ],
+   "in_links": [
+    987
+   ],
+   "out_links": [
+    947,
+    984,
+    988
+   ]
+  },
+  {
+   "id": "376",
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     "362",
+     0
+    ],
+    "randomize",
+    6,
+    3,
+    "euler_ancestral",
+    "sgm_uniform",
+    0.8000000000000002
+   ],
+   "in_links": [
+    961,
+    964,
+    965,
+    936,
+    966
+   ],
+   "out_links": [
+    931
+   ]
+  },
+  {
+   "id": 363,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    957,
+    978,
+    980,
+    932,
+    938,
+    968
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 362,
+   "to_node": "376",
+   "type": "INT"
+  },
+  {
+   "from_node": 363,
+   "to_node": "367",
+   "type": "VAE"
+  },
+  {
+   "from_node": 363,
+   "to_node": "369",
+   "type": "VAE"
+  },
+  {
+   "from_node": 363,
+   "to_node": "375",
+   "type": "MODEL"
+  },
+  {
+   "from_node": 363,
+   "to_node": "377",
+   "type": "VAE"
+  },
+  {
+   "from_node": 363,
+   "to_node": "390",
+   "type": "CLIP"
+  },
+  {
+   "from_node": 363,
+   "to_node": "391",
+   "type": "CLIP"
+  },
+  {
+   "from_node": "367",
+   "to_node": "393",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "368",
+   "to_node": "376",
+   "type": "LATENT"
+  },
+  {
+   "from_node": "369",
+   "to_node": "368",
+   "type": "LATENT"
+  },
+  {
+   "from_node": "370",
+   "to_node": "384",
+   "type": "INT"
+  },
+  {
+   "from_node": "370",
+   "to_node": "384",
+   "type": "INT"
+  },
+  {
+   "from_node": "370",
+   "to_node": "396",
+   "type": "INT"
+  },
+  {
+   "from_node": "370",
+   "to_node": "396",
+   "type": "INT"
+  },
+  {
+   "from_node": "371",
+   "to_node": "375",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "371",
+   "to_node": "392",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "372",
+   "to_node": "370",
+   "type": "BOX"
+  },
+  {
+   "from_node": "372",
+   "to_node": "373",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "372",
+   "to_node": "385",
+   "type": "MASK"
+  },
+  {
+   "from_node": "373",
+   "to_node": "374",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "373",
+   "to_node": "383",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "374",
+   "to_node": "395",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "375",
+   "to_node": "376",
+   "type": "MODEL"
+  },
+  {
+   "from_node": "375",
+   "to_node": "377",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "375",
+   "to_node": "377",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "376",
+   "to_node": "367",
+   "type": "LATENT"
+  },
+  {
+   "from_node": "377",
+   "to_node": "376",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "377",
+   "to_node": "376",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "378",
+   "to_node": "377",
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": "379",
+   "to_node": "375",
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": "380",
+   "to_node": "375",
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": "381",
+   "to_node": "375",
+   "type": "INSTANTID"
+  },
+  {
+   "from_node": "382",
+   "to_node": "383",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "383",
+   "to_node": "384",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "384",
+   "to_node": "396",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "385",
+   "to_node": "396",
+   "type": "MASK"
+  },
+  {
+   "from_node": "386",
+   "to_node": "371",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "387",
+   "to_node": "368",
+   "type": "MASK"
+  },
+  {
+   "from_node": "388",
+   "to_node": "386",
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 389,
+   "to_node": "386",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "390",
+   "to_node": "375",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "391",
+   "to_node": "375",
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "392",
+   "to_node": "390",
+   "type": "STRING"
+  },
+  {
+   "from_node": "393",
+   "to_node": "382",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "394",
+   "to_node": "393",
+   "type": "FLOAT"
+  },
+  {
+   "from_node": "394",
+   "to_node": "395",
+   "type": "FLOAT"
+  },
+  {
+   "from_node": "395",
+   "to_node": "369",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "395",
+   "to_node": "375",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "395",
+   "to_node": "377",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "395",
+   "to_node": "406",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "396",
+   "to_node": 365,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "396",
+   "to_node": 366,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 397,
+   "to_node": 366,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 397,
+   "to_node": "398",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "398",
+   "to_node": "372",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "398",
+   "to_node": "396",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "398",
+   "to_node": "405",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "405",
+   "to_node": "372",
+   "type": "MASK"
+  },
+  {
+   "from_node": "406",
+   "to_node": "387",
+   "type": "MASK"
+  }
+ ],
+ "categories": {
+  "image_io": 4,
+  "utility": 20,
+  "vae": 2,
+  "upscale": 1,
+  "controlnet": 3,
+  "face": 4,
+  "postprocess": 1,
+  "conditioning": 2,
+  "sampler": 1,
+  "checkpoint_loader": 1
+ },
+ "assets": [
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "kind": "upscaler",
+   "name": "2xNomosUni_span_multijpg_ldl.pth"
+  },
+  {
+   "node_id": "379",
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  {
+   "node_id": "378",
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors"
+  },
+  {
+   "node_id": "381",
+   "node_type": "InstantIDModelLoader",
+   "kind": "aux_model",
+   "name": "ip-adapter.bin"
+  },
+  {
+   "node_id": 363,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors"
+  }
+ ],
+ "techniques": [
+  "InstantID",
+  "ControlNet",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 115,
+ "structure_hash": "51bac1e275525ea4",
+ "param_face": [
+  {
+   "node_id": 364,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da73"
+  },
+  {
+   "node_id": 364,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 365,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "wwrs"
+  },
+  {
+   "node_id": 397,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da73"
+  },
+  {
+   "node_id": 397,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 362,
+   "node_type": "PrimitiveInt",
+   "widget_index": 0,
+   "value_preview": "-1070175287012231"
+  },
+  {
+   "node_id": 362,
+   "node_type": "PrimitiveInt",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 389,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "561492d4fa71390dc35341fc00efc3fb8da00b33cceefa28f2df6571da73"
+  },
+  {
+   "node_id": 389,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": "371",
+   "node_type": "ImageScale",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": "371",
+   "node_type": "ImageScale",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": "371",
+   "node_type": "ImageScale",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": "371",
+   "node_type": "ImageScale",
+   "widget_index": 3,
+   "value_preview": "center"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 2,
+   "value_preview": "96"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 3,
+   "value_preview": "96"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 4,
+   "value_preview": "96"
+  },
+  {
+   "node_id": "372",
+   "node_type": "LayerUtility: CropByMask",
+   "widget_index": 5,
+   "value_preview": "96"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 0,
+   "value_preview": "2xNomosUni_span_multijpg_ldl.pth"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 1,
+   "value_preview": "resize"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 5,
+   "value_preview": "true"
+  },
+  {
+   "node_id": "373",
+   "node_type": "CR Upscale Image",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": "374",
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": "374",
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "1.41"
+  },
+  {
+   "node_id": "377",
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 0,
+   "value_preview": "0.3500000000000001"
+  },
+  {
+   "node_id": "377",
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "377",
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 2,
+   "value_preview": "0.7500000000000002"
+  },
+  {
+   "node_id": "379",
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  {
+   "node_id": "380",
+   "node_type": "InstantIDFaceAnalysis",
+   "widget_index": 0,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": "382",
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": "382",
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "0.71"
+  },
+  {
+   "node_id": "383",
+   "node_type": "easy imageColorMatch",
+   "widget_index": 0,
+   "value_preview": "adain"
+  },
+  {
+   "node_id": "383",
+   "node_type": "easy imageColorMatch",
+   "widget_index": 1,
+   "value_preview": "Preview"
+  },
+  {
+   "node_id": "383",
+   "node_type": "easy imageColorMatch",
+   "widget_index": 2,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": "384",
+   "node_type": "ImageScale",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": "384",
+   "node_type": "ImageScale",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": "385",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "385",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 1,
+   "value_preview": "96"
+  },
+  {
+   "node_id": "385",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": "387",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "387",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 1,
+   "value_preview": "48"
+  },
+  {
+   "node_id": "387",
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 2,
+   "value_preview": "16"
+  },
+  {
+   "node_id": "388",
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": "388",
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": "391",
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 2,
+   "value_preview": "None"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 3,
+   "value_preview": "1.41"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 6,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": "393",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "394",
+   "node_type": "JWFloat",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 2,
+   "value_preview": "None"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 3,
+   "value_preview": "0.71"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 4,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 6,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": "395",
+   "node_type": "LayerUtility: LayerImageTransform",
+   "widget_index": 7,
+   "value_preview": "2"
+  },
+  {
+   "node_id": "396",
+   "node_type": "ImageComposite+",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "396",
+   "node_type": "ImageComposite+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": "405",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": "406",
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": "378",
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors"
+  },
+  {
+   "node_id": "390",
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "392,0"
+  },
+  {
+   "node_id": "375",
+   "node_type": "ApplyInstantID",
+   "widget_index": 0,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": "375",
+   "node_type": "ApplyInstantID",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "375",
+   "node_type": "ApplyInstantID",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": "392",
+   "node_type": "RH_Captioner",
+   "widget_index": 0,
+   "value_preview": "描述这个人的脸部特征使用英文输出"
+  },
+  {
+   "node_id": "386",
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": "386",
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": "386",
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": "381",
+   "node_type": "InstantIDModelLoader",
+   "widget_index": 0,
+   "value_preview": "ip-adapter.bin"
+  },
+  {
+   "node_id": "398",
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 0,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": "398",
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "6"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "3"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": "376",
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 363,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors"
+  }
+ ]
+}

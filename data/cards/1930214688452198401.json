@@ -1,0 +1,70 @@
+{
+ "domain": [
+  "图像生成",
+  "动作迁移",
+  "角色一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张包含人物姿态的参考图，配合文本提示词（如'Ice queen in a frozen castle'）生成保持参考动作的新图像",
+   "kind": "fact"
+  },
+  {
+   "text": "利用OpenPose预处理器提取参考图中的手部、身体、面部关键点，使生成图像的动作迁移更精确",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "ControlNet",
+  "OpenPose",
+  "Stable Diffusion",
+  "Text-to-Image",
+  "Negative Prompt",
+  "Fixed Seed"
+ ],
+ "special_features": [],
+ "design_intent": "该工作流以动作迁移和角色一致性为核心：通过OpenPose从输入图像中提取姿态骨架，再借助ControlNet将姿态条件注入SD1.5生成过程；正面提示词用于限定角色身份（如冰女王），负面提示词剔除低质量、模糊等退化因素；使用固定种子和KSampler的固定控制模式保证生成结果可复现。ControlNetApplyAdvanced提供起始/结束步长调节，便于在去噪过程中灵活控制姿态影响的介入时段。",
+ "use_case": "快速生成指定角色的特定动作图像，例如根据一张真人/插画姿势图，生成同一姿态的‘冰女王’概念图；也可用于角色设计、姿势参考图制作。",
+ "limitation": "依赖SD1.5 checkpoint（dreamshaper_8.safetensors）和ControlNet OpenPose模型（control_v11p_sd15_openpose.pth）；上传图像需包含清晰可识别的人物姿态；生成分辨率固定为512x768；未使用面部修复或超分，输出质量受限于基础模型。",
+ "dependencies": [
+  "SD1.5 dreamshaper_8.safetensors",
+  "control_v11p_sd15_openpose.pth",
+  "ComfyUI ControlNet Aux Preprocessors（OpenPose）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "默认30；若生成图像细节不足可增至40，但会降低速度；若追求效率可减至20"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "默认6；提示词相关性不足时可提高至8，但过高易产生过饱和和伪影"
+  },
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "固定为8；改变该值可在保持姿态结构不变的前提下获得不同的纹理、构图和颜色搭配"
+  },
+  {
+   "param": "ControlNetApplyAdvanced.strength",
+   "how_to_tune": "默认1.0；若姿态控制过强导致生成人物僵硬或边缘抽搐，可调低至0.7-0.9"
+  },
+  {
+   "param": "ControlNetApplyAdvanced.start_percent",
+   "how_to_tune": "默认0；表示ControlNet从去噪开始即生效，通常无需修改，若想先自由构图再施加姿态，可适当增大"
+  },
+  {
+   "param": "ControlNetApplyAdvanced.end_percent",
+   "how_to_tune": "默认1；表示ControlNet全程生效；若希望后期采样自由发挥细节，可设为0.6-0.8"
+  }
+ ],
+ "summary_text": "能力:上传一张包含人物姿态的参考图，配合文本提示词（如'Ice queen in a frozen castle'）生成保持参考动作的新图像；能力:利用OpenPose预处理器提取参考图中的手部、身体、面部关键点，使生成图像的动作迁移更精确；快速生成指定角色的特定动作图像，例如根据一张真人/插画姿势图，生成同一姿态的‘冰女王’概念图；也可用于角色设计、姿势参考图制作。；该工作流以动作迁移和角色一致性为核心：通过OpenPose从输入图像中提取姿态骨架，再借助ControlNet将姿态条件注入SD1.5生成过程；正面提示词用于限定角色身份（如冰女王），负面提示词剔除低质量、模糊等退化因素；使用固定种子和KSampler的固定控制模式保证生成结果可复现。ControlNetApplyAdvanced提供起始/结束步长调节，便于在去噪过程中灵活控制姿态影响的介入时段。"
+}

@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "图像精修",
+  "人像美化",
+  "超分辨率增强"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照片 → 输出高清精修图，完成面部/皮肤细节增强、整体放大与色彩统一",
+   "kind": "fact"
+  },
+  {
+   "text": "通过提示词 'face' 和人体分割支持对人像区域进行局部精修，可能用于脸部重绘/增强",
+   "kind": "inference"
+  },
+  {
+   "text": "支持多级放大（4xNomos8kHAT）+ 皮肤细节模型（ITF-SkinDiffDetail）+ SUPIR 修复，输出高分辨率结果",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX (Nunchaku 量化) 扩散精修",
+  "SUPIR 扩散放大/修复",
+  "SDXL (DreamShaper XL v2.1 Turbo) 精修",
+  "4xNomos8kHAT 超分辨率",
+  "ITF-SkinDiffDetail 皮肤细节增强",
+  "easy humanSegmentation 人体分割引导",
+  "ColorMatch 颜色匹配",
+  "VAE Tiled 编解码（节省显存）"
+ ],
+ "special_features": [
+  {
+   "text": "三引擎级联：SDXL + FLUX + SUPIR 三个扩散模型在同一工作流中接力精修，形成多级增强链",
+   "kind": "fact"
+  },
+  {
+   "text": "人物/背景分治：使用 humanSegmentation 分割 human parts，结合 CropByMask 和 MaskGrow 对人像局部区域做定向精修",
+   "kind": "inference"
+  },
+  {
+   "text": "颜色一致性控制：3 个 ColorMatch 节点配合 Image Comparer 进行输出色彩校正与结果对比，疑似质量控制回路",
+   "kind": "inference"
+  },
+  {
+   "text": "高效 FLUX 部署：通过 NunchakuFluxDiTLoader 加载 4-bit 量化 FLUX（svdq-int4），降低大模型推理显存",
+   "kind": "fact"
+  },
+  {
+   "text": "双 SUPIR 分支：存在两个 SUPIR_conditioner/sample/decode 组合，分别处理不同精修分支",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能将传统超分、生成式修复和扩散精修整合为一条人像精修流水线：先用 4xNomos8kHAT 提升基础分辨率，再用 SDXL/FLUX 根据文本提示词对整体或局部进行重绘/精修，最后用 SUPIR 进行感知级修复与细节增强；同时通过人体分割、颜色匹配和比较器来保障人物区域细节与整体色调的一致性，从而在复杂图片上获得稳定高质量的精修效果。",
+ "use_case": "适用于人像照片精修、老照片修复、电商模特图放大与细节增强等场景，尤其适合需要同时保留人物身份特征并提升清晰度的任务。",
+ "limitation": "依赖大量外部模型文件（SUPIR-v0F.ckpt、DreamShaper XL v2.1 Turbo、t5xxl_fp8_e4m3fn.safetensors、clip_l.safetensors、ae.sft、Nunchaku 量化 FLUX 等）；需要 NVIDIA GPU 和足够显存；强依赖多个自定义节点（Nunchaku、easy humanSegmentation、rgthree、ComfyUI LayerStyle 等），环境搭建复杂；输入建议为单张正脸/全身人像，否则 face 条件可能无效。",
+ "dependencies": [
+  "checkpoint: DreamShaper XL v2.1 Turbo 闪电.safetensors",
+  "lora: 真实质感皮肤.safetensors",
+  "FLUX: t5xxl_fp8_e4m3fn.safetensors, clip_l.safetensors, ae.sft",
+  "Nunchaku: svdq-int4_r32-flux.1-kre",
+  "SUPIR: SUPIR-v0F.ckpt",
+  "Upscale: 4xNomos8kHAT-L_otf.pth, 1x-ITF-SkinDiffDetail-Lite-v1.pth",
+  "Custom nodes: Nunchaku, easy-human-segmentation, rgthree-comfy, comfyui_layerstyle"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "seed (KSampler)",
+   "how_to_tune": "两个 KSampler 使用固定 seed（750983712821291 与 1106494094380806），保持可复现；若需变化精修风格，可随机化 seed"
+  },
+  {
+   "param": "steps (KSampler)",
+   "how_to_tune": "当前均为 20 步，质量优先；追求速度可降低到 15 左右"
+  },
+  {
+   "param": "cfg (KSampler)",
+   "how_to_tune": "CFG=1 为 DreamShaper Turbo 类蒸馏模型推荐值，通常不需调整；普通模型可提高至 3-7"
+  },
+  {
+   "param": "SUPIR_sample steps / cfg / noise",
+   "how_to_tune": "当前 steps=10, cfg=2, noise=1.5；增大 noise 增强恢复强度，cfg 影响提示词跟随度，可按需微调"
+  },
+  {
+   "param": "easy humanSegmentation threshold",
+   "how_to_tune": "当前 threshold=0.4，控制分割掩码敏感度；值越小掩码越保守"
+  },
+  {
+   "param": "MaskGrow grow / feather",
+   "how_to_tune": "当前 grow=20, feather=10，控制人像区域向外扩展/羽化程度，避免边缘生硬"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照片 → 输出高清精修图，完成面部/皮肤细节增强、整体放大与色彩统一；能力:通过提示词 'face' 和人体分割支持对人像区域进行局部精修，可能用于脸部重绘/增强；能力:支持多级放大（4xNomos8kHAT）+ 皮肤细节模型（ITF-SkinDiffDetail）+ SUPIR 修复，输出高分辨率结果；特色:三引擎级联：SDXL + FLUX + SUPIR 三个扩散模型在同一工作流中接力精修，形成多级增强链；特色:人物/背景分治：使用 humanSegmentation 分割 human parts，结合 CropByMask 和 MaskGrow 对人像局部区域做定向精修；特色:颜色一致性控制：3 个 ColorMatch 节点配合 Image Comparer 进行输出色彩校正与结果对比，疑似质量控制回路；特色:高效 FLUX 部署：通过 NunchakuFluxDiTLoader 加载 4-bit 量化 FLUX（svdq-int4），降低大模型推理显存；特色:双 SUPIR 分支：存在两个 SUPIR_conditioner/sample/decode 组合，分别处理不同精修分支；适用于人像照片精修、老照片修复、电商模特图放大与细节增强等场景，尤其适合需要同时保留人物身份特征并提升清晰度的任务。；该工作流可能将传统超分、生成式修复和扩散精修整合为一条人像精修流水线：先用 4xNomos8kHAT 提升基础分辨率，再用 SDXL/FLUX 根据文本提示词对整体或局部进行重绘/精修，最后用 SUPIR 进行感知级修复与细节增强；同时通过人体分割、颜色匹配和比较器来保障人物区域细节与整体色调的一致性，从而在复杂图片上获得稳定高质量的精修效果。"
+}

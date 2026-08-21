@@ -1,0 +1,120 @@
+{
+ "domain": [
+  "AI人像编辑",
+  "AI换脸/换头",
+  "局部重绘",
+  "FLUX图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成「上传参考人脸照 + 目标人像图 → 自动抠图/分割 → 在保持目标姿态、背景、衣着的条件下，用FLUX Fill局部重绘生成换脸结果」，并输出未裁剪、裁剪后、贴回原图等多个版本。",
+   "kind": "inference"
+  },
+  {
+   "text": "同时启用 InstantID（SDXL路径）与 PuLID（FLUX路径）双身份约束，将参考人脸的身份特征注入生成，降低换脸后的不像问题。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 OpenPose/ControlNet Union 对人物姿态进行显式约束，可从目标图提取骨骼/关键点并用于FLUX生成，保持原图动作。",
+   "kind": "fact"
+  },
+  {
+   "text": "内置完整的 mask 预处理链：RMBG/BEN2 抠图、PersonMaskUltra 语义分割、YOLO/face/head 检测、mask 移动与反选，可自动生成面部/目标区域 mask，无需手动涂抹。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID",
+  "InstantID",
+  "ControlNet (OpenPose / Union / InstantID)",
+  "FLUX.1 Fill 局部重绘",
+  "Differential Diffusion",
+  "多层次人像分割 (PersonMaskUltra, RMBG-2.0, BEN2)",
+  "Inpaint Crop/Stitch 裁剪回贴流程",
+  "LoRA 组合 (portrait_lora64, portrait-photography, Flux Turbo, manfoot-v3-b20)",
+  "FLUX Redux / SigLIP2 风格对齐",
+  "TeaCache 加速采样",
+  "Pose 检测 (vitpose-l-wholebody + yolov10m)",
+  "SetNode/GetNode + Anything Everywhere 模块化数据流"
+ ],
+ "special_features": [
+  {
+   "text": "双路径身份保持：项目中同时挂载 ApplyInstantID（SDXL+ip-adapter）与 ApplyPulidFlux（FLUX+PuLID），形成「粗身份生成 + 精身份重绘」的互补结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "高复用命名总线：大量 SetNode/GetNode 以「上传图片-参考图」「右图-预处理-遮罩」「获取clip条件+redux」等中文标签解耦数据流，配合 Anything Everywhere 广播，使196节点图可读性显著提升。",
+   "kind": "fact"
+  },
+  {
+   "text": "四段式 InpaintCropImproved + InpaintStitchImproved + 两次 DifferentialDiffusion：先抠出多个局部区域分别重绘，再缝合回原图，既控制分辨率又保护非重绘区。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动 mask 迁移链路：workflow>mask mover 使用 head_yolov8n.pt/face_yolov8m.pt 检测头部/脸部bbox并迁移mask，避免因姿态偏移导致重绘区域错位。",
+   "kind": "fact"
+  },
+  {
+   "text": "极限加速组合：Flux Turbo LoRA + TeaCache + 10步euler/simple + cfg=1，使FLUX Fill 在低步数下有可用的重绘质量。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整个工作流像一条「身份—姿态—局部精修」的流水线：先用 SDXL+InstantID 做快速、低成本的身份/构图预演，再用 FLUX Fill + PuLID 在高分辨率局部 crop 上做细节重绘，最后用 mask stitch 拼回原图；大量 SetNode/GetNode 总线是为了把复杂功能拆成可独立调试的模块。可能是在刻意避免直接全图重绘导致的背景/肢体漂移，同时通过 TeaCache、Turbo LoRA、FP8 模型与超低步数缓解双大模型同时加载带来的性能压力。",
+ "use_case": "适用于人像照片换脸/换头、影视二创、电商模特换脸/换装预览等需要保持目标姿态、背景和衣着的局部重绘；也可作为“FLUX Fill + PuLID/InstantID 多身份保持 + 自动mask”的复杂工作流参考模板。",
+ "limitation": "依赖大量自定义节点与外部模型，安装/部署门槛高；需要较高显存（同时加载 SDXL、FLUX Fill、ControlNet、PuLID/InstantID、多个检测模型）；输入图像需要清晰且正脸/半侧脸可检测，否则 face_yolov8/head_yolov8 的 mask 迁移会失败；FLUX.1-dev-ControlNet-Union-Pro 对 OpenPose 的兼容性需验证；非 1024×1024 的高分辨率图经过 InpaintCropImproved 重采样后可能有细节损失；两个 KSampler 的 cfg/step 参数互相独立，调参时需分别验证。",
+ "dependencies": [
+  "PuLID Flux 节点族（ApplyPulidFlux, PulidFluxModelLoader, PulidFluxEvaClipLoader, PulidFluxInsightFaceLoader）",
+  "InstantID 节点族（ApplyInstantID, InstantIDFaceAnalysis, InstantIDModelLoader）",
+  "FLUX.1-dev-ControlNet-Union-Pro + SetUnionControlNetType",
+  "Impact Pack（ImpactSwitch, ImpactConditionalBranch, MaskToSEGS, SegsToCombinedMask）",
+  "ComfyUI-Easy-Use（easy imageConcat, easy imageRemBg, easy seed, easy boolean, cleanGpuUsed, makeImageForICLora）",
+  "ComfyUI-Inpaint-Crop/Stitch（InpaintCropImproved, InpaintStitchImproved, InpaintModelConditioning）",
+  "LayerMask（PersonMaskUltra V2, MaskGrow）",
+  "workflow>mask mover 自定义节点",
+  "TeaCache 加速节点",
+  "DifferentialDiffusion",
+  "FLUX Redux / StyleModelLoader (flex1_redux_siglip2_512)",
+  "ControlNet Aux / OpenPose 预处理",
+  "模型: pulid_flux_v0.9.1.safetensors, ip-adapter.bin, fluxFillFP8_v10.safetensors, FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors, realvisxlV50_v50Bakedvae.safetensors, UltraFlux-v1_model.safetensors, sd3/t5xxl_fp8_e4m3fn_scaled.safetensors, clip_l.safetensors, siglip2_so400m_patch16_512.safetensors, vitpose-l-wholebody.onnx, yolov10m.onnx, face_yolov8m.pt, head_yolov8n.pt"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "3（参考人脸、目标人像、可选目标遮罩）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler (FLUX Fill路径): steps=10, cfg=1.0, sampler=euler, scheduler=simple",
+   "how_to_tune": "保持 cfg≈1，step 可先从 10 起；若出现重绘不充分/面部崩坏，可逐步提高到 15-20；seed 用固定值便于复现和调参。"
+  },
+  {
+   "param": "KSampler (SDXL+InstantID路径): steps=20, cfg=1.5, sampler=dpmpp_2m, scheduler=karras",
+   "how_to_tune": "cfg 1.5 依赖模型本身的真实感；若要更强文本提示遵循可提到 2.5-3，但过高会让InstantID身份约束变弱。"
+  },
+  {
+   "param": "ApplyPulidFlux: weight=0.8, start=0.1, end=0.8",
+   "how_to_tune": "weight 控制身份逼真度，0.8 是平衡点；若不像可升到 1.0，若表情/光照僵硬可降到 0.6；end=0.8 给后半程去噪自由。"
+  },
+  {
+   "param": "ApplyInstantID: strength=1, start=0, end=1",
+   "how_to_tune": "strength=1 为完全跟随参考脸；若与目标底图冲突，可降至 0.5-0.8，并把 start 改到 0.2 避免早期破坏构图。"
+  },
+  {
+   "param": "ControlNetApplySD3: strength=0.8, start=0, end=0.66",
+   "how_to_tune": "控制OpenPose/Union的强度；strength 大则姿态贴合度高，end 前移可减少 CN 对最终材质/皮肤细节的锁死。"
+  },
+  {
+   "param": "TeaCache: thresholds=0.1/0.2/0.8",
+   "how_to_tune": "阈值越高速度越快但越可能产生伪影；质量敏感时把前两个阈值降到 0.05-0.1，或关闭 TeaCache。"
+  },
+  {
+   "param": "LoRA 强度组合: portrait_lora64=1.0, portrait-photography=0.6, manfoot-v3-b20=0.5, Flux Turbo=1.0",
+   "how_to_tune": "人像/摄影 LoRA 会改变色调和皮肤质感，建议 0.5-0.8 区间微调；manfoot 用于手脚细节，过高会产生畸形；Turbo LoRA 应与超低步数/低cfg配合使用。"
+  }
+ ],
+ "summary_text": "能力:端到端完成「上传参考人脸照 + 目标人像图 → 自动抠图/分割 → 在保持目标姿态、背景、衣着的条件下，用FLUX Fill局部重绘生成换脸结果」，并输出未裁剪、裁剪后、贴回原图等多个版本。；能力:同时启用 InstantID（SDXL路径）与 PuLID（FLUX路径）双身份约束，将参考人脸的身份特征注入生成，降低换脸后的不像问题。；能力:通过 OpenPose/ControlNet Union 对人物姿态进行显式约束，可从目标图提取骨骼/关键点并用于FLUX生成，保持原图动作。；能力:内置完整的 mask 预处理链：RMBG/BEN2 抠图、PersonMaskUltra 语义分割、YOLO/face/head 检测、mask 移动与反选，可自动生成面部/目标区域 mask，无需手动涂抹。；特色:双路径身份保持：项目中同时挂载 ApplyInstantID（SDXL+ip-adapter）与 ApplyPulidFlux（FLUX+PuLID），形成「粗身份生成 + 精身份重绘」的互补结构。；特色:高复用命名总线：大量 SetNode/GetNode 以「上传图片-参考图」「右图-预处理-遮罩」「获取clip条件+redux」等中文标签解耦数据流，配合 Anything Everywhere 广播，使196节点图可读性显著提升。；特色:四段式 InpaintCropImproved + InpaintStitchImproved + 两次 DifferentialDiffusion：先抠出多个局部区域分别重绘，再缝合回原图，既控制分辨率又保护非重绘区。；特色:自动 mask 迁移链路：workflow>mask mover 使用 head_yolov8n.pt/face_yolov8m.pt 检测头部/脸部bbox并迁移mask，避免因姿态偏移导致重绘区域错位。；特色:极限加速组合：Flux Turbo LoRA + TeaCache + 10步euler/simple + cfg=1，使FLUX Fill 在低步数下有可用的重绘质量。；适用于人像照片换脸/换头、影视二创、电商模特换脸/换装预览等需要保持目标姿态、背景和衣着的局部重绘；也可作为“FLUX Fill + PuLID/InstantID 多身份保持 + 自动mask”的复杂工作流参考模板。；整个工作流像一条「身份—姿态—局部精修」的流水线：先用 SDXL+InstantID 做快速、低成本的身份/构图预演，再用 FLUX Fill + PuLID 在高分辨率局部 crop 上做细节重绘，最后用 mask stitch 拼回原图；大量 SetNode/GetNode 总线是为了把复杂功能拆成可独立调试的模块。可能是在刻意避免直接全图重绘导致的背景/肢体漂移，同时通过 TeaCache、T"
+}

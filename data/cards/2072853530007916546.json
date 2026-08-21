@@ -1,0 +1,130 @@
+{
+ "domain": [
+  "图生图",
+  "时尚模特写真",
+  "社交平台九宫格图片"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张时尚模特/穿搭照片，自动生成保持同风格的高清模特图，并输出1600万像素级别成品",
+   "kind": "fact"
+  },
+  {
+   "text": "自动将最终图切成3×3九宫格，便于直接发布到微信朋友圈/小红书等社交平台",
+   "kind": "fact"
+  },
+  {
+   "text": "用Qwen3-VL-4B视觉语言模型（AILab_QwenVL）自动分析参考图并生成详细提示词，用户无需手写prompt",
+   "kind": "fact"
+  },
+  {
+   "text": "双阶段低步数采样（第一段8步生成 + 第二段3步精修），在Krea2 Turbo上实现快速出图",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果自动与原始参考图做色彩匹配（easy imageColorMatch），降低颜色偏移",
+   "kind": "fact"
+  },
+  {
+   "text": "自动按1:1方形构图裁剪并放大到16MP，适配社交平台正方形九宫格展示",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image基座 + Krea2 Turbo蒸馏模型（krea2_turbo_fp8.safetensors）",
+  "Qwen3-VL-4B视觉语言模型自动描述/提示词生成（qwen3vl_4b_fp8_scaled.safetensors）",
+  "双KSampler级联：8步主体生成 + 3步细节精修（euler_ancestral / CFG=1）",
+  "ConditioningKrea2Rebalance条件重平衡",
+  "ImageScaleToTotalPixelsX两段式放大（4MP中继 → 16MP最终输出）",
+  "easy imageColorMatch参考图色彩匹配",
+  "ImageTile+ 3×3九宫格切分",
+  "ImageScaleByAspectRatio V2 1:1方形化处理"
+ ],
+ "special_features": [
+  {
+   "text": "VLM驱动的全自动提示词引擎：AILab_QwenVL内置角色设定提示词（“你是一个专业的视觉分析与提示词生成”），将参考图自动翻译为详细时尚摄影描述，并经StringConcatenate组装后送入CLIPTextEncode；easy showAnything可实时预览VLM输出文本",
+   "kind": "fact"
+  },
+  {
+   "text": "两段式采样级联：第一段KSampler以8步/CFG=1生成主体，经VAEDecode→缩放→VAEEncode后，第二段KSampler以3步精修细节，两段使用独立Seed控制随机性",
+   "kind": "fact"
+  },
+  {
+   "text": "针对Krea2模型的ConditioningKrea2Rebalance节点，对文本条件各分量加权重平衡（balanced模式），适配蒸馏模型的提示词响应特性",
+   "kind": "fact"
+  },
+  {
+   "text": "4MP→16MP两段式高清放大：先缩放到4MP中继图做二次精修，再放大到16MP超高清输出，兼顾显存与清晰度",
+   "kind": "fact"
+  },
+  {
+   "text": "色彩回迁质量控制回路：输出端easy imageColorMatch将生成图色彩匹配回原始参考图，构成“生成→比对→校准”的闭环",
+   "kind": "fact"
+  },
+  {
+   "text": "社交传播定向输出：ImageTile+将最终1:1方图切成3×3九格，专为朋友圈/小红书九宫格发图格式设计；双SaveImage分别保存全图与切片结果",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从命名「超好玩，推荐给你！」和「九宫格-1600万像素」可看出，这是一张面向普通用户的消费级工作流：把提示词工程交给Qwen3-VL自动完成，把格式工程交给九宫格切分和16MP放大完成。设计上可能希望用户只做一件事——上传照片，然后直接拿到一张能发朋友圈的九宫格成品。双阶段采样与色彩匹配则是在保证出图速度的同时尽量贴近原图质感与颜色。",
+ "use_case": "时尚博主或普通用户上传一张穿搭/模特照，自动生成同风格高清模特图并切成九宫格，用于朋友圈/小红书等社交平台分享；也可用于服装电商快速产出多角度展示素材。",
+ "limitation": "依赖3个模型文件（krea2_turbo_fp8.safetensors / qwen3vl_4b_fp8_scaled.safetensors / qwen_image_vae.safetensors），且必须安装AILab_QwenVL、ConditioningKrea2Rebalance、ImageScaleToTotalPixelsX、ImageTile+、easy imageColorMatch、Seed (rgthree)、LayerUtility等自定义节点；Qwen3-VL-4B推理需要一定显存；输入仅限单张图像（LoadImage），生成质量受VLM描述准确度影响，若参考图不是时尚模特类题材，效果可能明显偏离；九宫格与16MP输出为固定格式，灵活性有限。",
+ "dependencies": [
+  "checkpoint: krea2_turbo_fp8.safetensors",
+  "clip: qwen3vl_4b_fp8_scaled.safetensors",
+  "vae: qwen_image_vae.safetensors",
+  "自定义节点: AILab_QwenVL / ConditioningKrea2Rebalance / ImageScaleToTotalPixelsX / ImageTile+ / easy imageColorMatch / easy showAnything / Seed (rgthree) / LayerUtility (ImageScaleByAspectRatio V2)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张参考图像（LoadImage上传）",
+  "count": "1"
+ },
+ "output": {
+  "type": "1张16MP高清模特图 + 3×3九宫格切片（双SaveImage + PreviewImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler（第一段）steps=8",
+   "how_to_tune": "负责主体结构生成。追求更高细节可提到10~12步，追求速度可降到6步；超过15步对turbo模型收益递减"
+  },
+  {
+   "param": "KSampler（第二段）steps=3",
+   "how_to_tune": "负责细节精修。建议保持≤5步，过大会导致过度锐化/伪影；此段步数越低出图越快"
+  },
+  {
+   "param": "KSampler cfg=1",
+   "how_to_tune": "Krea2 Turbo为蒸馏模型，CFG建议0.8~1.5。若提示词跟随不足可微调至1.5~2.0，过高会过曝或色彩失真"
+  },
+  {
+   "param": "sampler=euler_ancestral",
+   "how_to_tune": "对turbo类模型稳定且纹理好。可尝试'euler'看更平滑结果；不建议换dpmpp_2m等非ancestral采样器"
+  },
+  {
+   "param": "Seed (rgthree) ×2",
+   "how_to_tune": "两个seed分别控制两阶段随机性。固定seed可复现同人物/构图；改第一段seed换姿势/表情，改第二段seed微调细节质感"
+  },
+  {
+   "param": "ConditioningKrea2Rebalance",
+   "how_to_tune": "'balanced'为均衡模式，'1.0, 1.0, ...'为各条件分量权重。若生成偏离参考图可调高图像条件权重；若过于照搬原图则降低"
+  },
+  {
+   "param": "ImageScaleToTotalPixelsX",
+   "how_to_tune": "4MP为中间分辨率，16为最终目标（1600万像素）。显存不足时把16降到12或8；追求更大输出可提到24/32"
+  },
+  {
+   "param": "ImageTile+ 3×3",
+   "how_to_tune": "固定九宫格。若要发4格/6格可改为2×2或2×3；切分顺序与拼接方向取决于tile排列参数"
+  },
+  {
+   "param": "ImageScaleByAspectRatio V2 '1:1'",
+   "how_to_tune": "强制1:1方形。若想保留原图竖构图可改为'3:4'或'9:16'，但九宫格观感会改变"
+  },
+  {
+   "param": "AILab_QwenVL prompt模板",
+   "how_to_tune": "内置'角色定义'系统提示词决定VLM描述风格。想生成更夸张或更保守的时尚画面，可改写该模板；negative侧'不要使用全景，不要使用俯拍。'可扩展更多禁止项"
+  }
+ ],
+ "summary_text": "能力:上传单张时尚模特/穿搭照片，自动生成保持同风格的高清模特图，并输出1600万像素级别成品；能力:自动将最终图切成3×3九宫格，便于直接发布到微信朋友圈/小红书等社交平台；能力:用Qwen3-VL-4B视觉语言模型（AILab_QwenVL）自动分析参考图并生成详细提示词，用户无需手写prompt；能力:双阶段低步数采样（第一段8步生成 + 第二段3步精修），在Krea2 Turbo上实现快速出图；能力:生成结果自动与原始参考图做色彩匹配（easy imageColorMatch），降低颜色偏移；能力:自动按1:1方形构图裁剪并放大到16MP，适配社交平台正方形九宫格展示；特色:VLM驱动的全自动提示词引擎：AILab_QwenVL内置角色设定提示词（“你是一个专业的视觉分析与提示词生成”），将参考图自动翻译为详细时尚摄影描述，并经StringConcatenate组装后送入CLIPTextEncode；easy showAnything可实时预览VLM输出文本；特色:两段式采样级联：第一段KSampler以8步/CFG=1生成主体，经VAEDecode→缩放→VAEEncode后，第二段KSampler以3步精修细节，两段使用独立Seed控制随机性；特色:针对Krea2模型的ConditioningKrea2Rebalance节点，对文本条件各分量加权重平衡（balanced模式），适配蒸馏模型的提示词响应特性；特色:4MP→16MP两段式高清放大：先缩放到4MP中继图做二次精修，再放大到16MP超高清输出，兼顾显存与清晰度；特色:色彩回迁质量控制回路：输出端easy imageColorMatch将生成图色彩匹配回原始参考图，构成“生成→比对→校准”的闭环；特色:社交传播定向输出：ImageTile+将最终1:1方图切成3×3九格，专为朋友圈/小红书九宫格发图格式设计；双SaveImage分别保存全图与切片结果；时尚博主或普通用户上传一张穿搭/模特照，自动生成同风格高清模特图并切成九宫格，用于朋友圈/小红书等社交平台分享；也可用于服装电商快速产出多角度展示素材。；从命名「超好玩，推荐给你！」和「九宫格-1600万像素」可看出，这是一张面向普通用户的消费级工作流：把提示词工程交给Qwen3-VL自动完成，把格式工程交给九宫格切分和16MP放大完成。设计上可能希望用户只做一件事——上传照片，然后直接拿到一张能发朋友圈的九宫格成品。双阶段采样与色彩匹配则是在保证出图速度的同时尽量贴近原图质感与颜色。"
+}

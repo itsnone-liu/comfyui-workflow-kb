@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "人像写实",
+  "妆容",
+  "FLUX 文生图"
+ ],
+ "capabilities": [
+  {
+   "text": "输入中文人像/妆容描述词（如侧影、皮肤、妆面），经 RH_Translator 翻译后端到端生成自然写实人像；EmptyLatentImage 为 768×1152，batch_size=2，一次可出两张。",
+   "kind": "fact"
+  },
+  {
+   "text": "流内嵌 RH_Translator 中文提示词翻译，无需手动转英文即可驱动 FLUX 生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 flux1-krea-dev + Flux_Krea_Blaze_Lora 组合，强化皮肤质感与写真感。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev 微调版（flux1-krea-dev）",
+  "DualCLIP 文本编码（CLIP-L + T5-XXL fp8）",
+  "LoRA 模型增强（LoraLoaderModelOnly）",
+  "ConditioningZeroOut 零条件作负条件，用于 FLUX guidance",
+  "euler + simple 采样",
+  "RH_Translator 提示词翻译（RunningHub 自定义节点）"
+ ],
+ "special_features": [
+  {
+   "text": "CLIPTextEncodeFlux 输出同时接 KSampler 正条件与 ConditioningZeroOut，将同一条件置零后作为负条件，适配 FLUX 无负提示词的引导方式。",
+   "kind": "inference"
+  },
+  {
+   "text": "RH_Translator 内部带中文→英文翻译及独立 seed/randomize 控件，可控制翻译结果的随机与复现。",
+   "kind": "inference"
+  },
+  {
+   "text": "LoRA 只用 LoraLoaderModelOnly 作用于 UNet，不混入 CLIP 文本特征；文本条件更稳定，风格强度由 strength_model 单独调节。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Krea Blaze LoRA + flux1-krea-dev 这一非原生组合，整体走“写实人像”定向微调路线。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整体似乎是为中文用户提供一个低门槛的人像写真工作流：先由 RH_Translator 把中文人像/妆容描述自动翻译成英文，再交给 FLUX.1-dev（配 Krea Blaze LoRA）生成写实人像；使用 ConditioningZeroOut 制造零负条件，满足 FLUX guidance 的用法，同时不引入额外负提示词。LoraLoaderModelOnly 只改 UNet，可能既降低显存占用又保持 CLIP 文本条件稳定，使整体流程简单且可控。",
+ "use_case": "中文美妆/人像内容创作者快速生成写实人像参考图；也可用于妆容示例、小红书/公众号配图，输入侧影/妆面描述即可出图。",
+ "limitation": "依赖 RH_Translator 自定义节点（RunningHub）与指定模型文件；输入仅支持文本，无 ControlNet/参考图输入，不能做身份保持；输出分辨率默认固定 768×1152，batch_size=2 时显存占用较高；FLUX 类模型需要 fp8 T5 文本编码，需配合相应模型文件。",
+ "dependencies": [
+  "rh_translator（RunningHub 自定义节点）",
+  "flux1-krea-dev.safetensors",
+  "sd3/clip_l.safetensors",
+  "sd3/t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "Flux_Krea_Blaze_Lora-rank64.safetensors",
+  "ComfyUI 内置 UNETLoader/DualCLIPLoader/VAELoader/KSampler/VAEDecode/SaveImage"
+ ],
+ "geek_rating": 2,
+ "input": {
+  "type": "文本提示词（中文字符串，RH_Translator 的 text 输入）",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像（PNG，768×1152，一次 2 张）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "CLIPTextEncodeFlux.guidance",
+   "how_to_tune": "当前 3.5；想让语义跟随更强可升至 4.0，想更自由/柔和可降至 2.5-3.0。"
+  },
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前 18；追求更多细节可提到 20-30，但速度变慢；FLUX 通常不建议低于 15。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "保持 1.0 即可；FLUX.1-dev 原生建议 cfg=1，调高容易色彩过饱和或产生伪影。"
+  },
+  {
+   "param": "KSampler.sampler_name/scheduler",
+   "how_to_tune": "当前 euler/simple；这是 FLUX 常用组合，若换 ddim/uniform 需自行验证稳定性。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength_model",
+   "how_to_tune": "当前 1.0；控制 Krea Blaze 风格强度，建议在 0.7-1.1 之间微调，过高可能出现纹理过强或面部崩坏。"
+  },
+  {
+   "param": "EmptyLatentImage.width/height",
+   "how_to_tune": "当前 768×1152（2:3 竖构图）；可按需改 832×1216 或更高，注意显存；建议保持 64 的倍数。"
+  },
+  {
+   "param": "RH_Translator.seed",
+   "how_to_tune": "当前 983/randomize；固定 seed 可复现同一次翻译和后续生成，randomize 则每次获得不同描述变体。"
+  }
+ ],
+ "summary_text": "能力:输入中文人像/妆容描述词（如侧影、皮肤、妆面），经 RH_Translator 翻译后端到端生成自然写实人像；EmptyLatentImage 为 768×1152，batch_size=2，一次可出两张。；能力:流内嵌 RH_Translator 中文提示词翻译，无需手动转英文即可驱动 FLUX 生成。；能力:通过 flux1-krea-dev + Flux_Krea_Blaze_Lora 组合，强化皮肤质感与写真感。；特色:CLIPTextEncodeFlux 输出同时接 KSampler 正条件与 ConditioningZeroOut，将同一条件置零后作为负条件，适配 FLUX 无负提示词的引导方式。；特色:RH_Translator 内部带中文→英文翻译及独立 seed/randomize 控件，可控制翻译结果的随机与复现。；特色:LoRA 只用 LoraLoaderModelOnly 作用于 UNet，不混入 CLIP 文本特征；文本条件更稳定，风格强度由 strength_model 单独调节。；特色:使用 Krea Blaze LoRA + flux1-krea-dev 这一非原生组合，整体走“写实人像”定向微调路线。；中文美妆/人像内容创作者快速生成写实人像参考图；也可用于妆容示例、小红书/公众号配图，输入侧影/妆面描述即可出图。；整体似乎是为中文用户提供一个低门槛的人像写真工作流：先由 RH_Translator 把中文人像/妆容描述自动翻译成英文，再交给 FLUX.1-dev（配 Krea Blaze LoRA）生成写实人像；使用 ConditioningZeroOut 制造零负条件，满足 FLUX guidance 的用法，同时不引入额外负提示词。LoraLoaderModelOnly 只改 UNet，可能既降低显存占用又保持 CLIP 文本条件稳定，使整体流程简单且可控。"
+}

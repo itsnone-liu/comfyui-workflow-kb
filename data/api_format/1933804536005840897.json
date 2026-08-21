@@ -1,0 +1,164 @@
+{
+ "77": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "76",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "78": {
+  "class_type": "TextNode",
+  "inputs": {
+   "text": "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+  },
+  "_meta": {
+   "title": "TextNode"
+  }
+ },
+ "79": {
+  "class_type": "ImageTile+",
+  "inputs": {
+   "image": [
+    "73",
+    0
+   ],
+   "overlap": 0,
+   "overlap_x": 0,
+   "overlap_y": 0,
+   "rows": 2,
+   "cols": 2
+  },
+  "_meta": {
+   "title": "🔧 Image Tile"
+  }
+ },
+ "80": {
+  "class_type": "ImageUpscaleWithModel",
+  "inputs": {
+   "image": [
+    "79",
+    0
+   ],
+   "upscale_model": [
+    "81",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Upscale Image (using Model)"
+  }
+ },
+ "81": {
+  "class_type": "UpscaleModelLoader",
+  "inputs": {
+   "model_name": "4x-UltraSharp.pth"
+  },
+  "_meta": {
+   "title": "Load Upscale Model"
+  }
+ },
+ "82": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_iqybz_00001_pzjyr_1749910484.png&type=temp&subfolder=&rand=0.7672494887283676&Rh-Comfy-Auth=eyJ1c2VySWQiOiI3MTFlMDhmMDMxMTUxM2YyZDY2YjMwNjA4NTI4YTcxYyIsInNpZ25FeHBpcmUiOjE3NTA1MTUxOTIxNTMsInRzIjoxNzQ5OTEwMzkyMTUzLCJzaWduIjoiMDdmODgyNTI4MTU5ZDE4ZjRhN2RhYTY2ZTZkOWYxMTkifQ==&Rh-Identify=711e08f0311513f2d66b30608528a71c"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_iqybz_00002_gtxmn_1749910490.png&type=temp&subfolder=&rand=0.7389939957879164&Rh-Comfy-Auth=eyJ1c2VySWQiOiI3MTFlMDhmMDMxMTUxM2YyZDY2YjMwNjA4NTI4YTcxYyIsInNpZ25FeHBpcmUiOjE3NTA1MTUxOTIxNTMsInRzIjoxNzQ5OTEwMzkyMTUzLCJzaWduIjoiMDdmODgyNTI4MTU5ZDE4ZjRhN2RhYTY2ZTZkOWYxMTkifQ==&Rh-Identify=711e08f0311513f2d66b30608528a71c"
+     }
+    ]
+   },
+   "image_a": [
+    "76",
+    0
+   ],
+   "image_b": [
+    "73",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Image Comparer (rgthree)"
+  }
+ },
+ "72": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "882da6b5f3a9df7171fa7d61712e4ec05cd09346dbb7baa09091f447ec7e68ab.webp"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "73": {
+  "class_type": "RH_ComfyFluxKontext",
+  "inputs": {
+   "api_provider": "ai.t8star.cn",
+   "aspect_ratio": "match_input_image",
+   "apikey": "",
+   "seed": 1131043041,
+   "clear_image": true,
+   "guidance_scale": 3.5,
+   "input_image": [
+    "72",
+    0
+   ],
+   "model": "flux-kontext-pro",
+   "num_of_images": 1,
+   "prompt": "Restoration of old photographs, preservation of their original features, removal of cracks, scratches, sharpening of sharpness, correction of colour balance, restoration of detail, ultra-high-level 4K paint, real recovery, natural texture, restoration of professional photographs, photo effects"
+  },
+  "_meta": {
+   "title": "RH ComfyFlux Kontext"
+  }
+ },
+ "74": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "73",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "75": {
+  "class_type": "TextNode",
+  "inputs": {
+   "text": "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+  },
+  "_meta": {
+   "title": "TextNode"
+  }
+ },
+ "76": {
+  "class_type": "ImageUntile+",
+  "inputs": {
+   "tiles": [
+    "80",
+    0
+   ],
+   "overlap_x": 0,
+   "overlap_y": 0,
+   "rows": 2,
+   "cols": 2
+  },
+  "_meta": {
+   "title": "🔧 Image Untile"
+  }
+ }
+}

@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "视频生成",
+  "角色设计",
+  "人物类特效"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张图像并附带中文提示词，生成一段指定风格（如唯美妖娆国漫风格）的人物动态视频，包含梦幻特效",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果同时包含视频与音频轨道（通过音频VAE解码），可输出有声短片",
+   "kind": "fact"
+  },
+  {
+   "text": "通过BlockCache与SageAttention优化，降低MiniMax H3大模型的显存占用/推理开销",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 (FL2VA) 图像到视频生成",
+  "双VAE体系：视频VAE + 音频VAE",
+  "MiniMaxH3BlockCacheT8 分块缓存",
+  "PathchSageAttentionKJ 注意力优化",
+  "BasicScheduler + BasicGuider 采样调度",
+  "RandomNoise 固定种子控制",
+  "ComfyMathExpression 动态帧数计算",
+  "ResolutionSelector 宽高比自动适配"
+ ],
+ "special_features": [
+  {
+   "text": "视频VAE与音频VAE并行解码，输出带音轨的视频，属于多模态生成管线",
+   "kind": "fact"
+  },
+  {
+   "text": "使用MiniMaxH3BlockCacheT8对模型进行分块缓存，并配置了cpu卸载选项，疑似针对低显存环境专门设计",
+   "kind": "fact"
+  },
+  {
+   "text": "通过ComfyMathExpression根据输入参数a动态计算总帧数（表达式中包含 max(5, round(a*24))），可灵活控制视频时长",
+   "kind": "inference"
+  },
+  {
+   "text": "RandomNoise设置固定种子（1058158424724271）并标记为fixed，确保生成结果可复现",
+   "kind": "fact"
+  },
+  {
+   "text": "引入easy showAnything调试节点，疑似用于在流程中可视化中间张量或数据，方便调参",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕MiniMax H3这一特定图像转视频基础模型构建，通过集成音频VAE实现音画联合输出，利用BlockCache和SageAttention缓解大模型的显存压力，再配合分辨率选择器和动态帧数计算来适配不同内容比例与时长需求。整体设计偏向在资源受限的平台上获得更流畅的多模态生成体验。",
+ "use_case": "上传一张角色立绘或人物照片，输入风格描述，几分钟内生成一段带特效和音频的短视频，适合快速制作角色宣传素材或概念动态图。",
+ "limitation": "依赖MiniMax H3专属模型文件（checkpoint、CLIP、视频VAE、音频VAE），需要安装对应自定义节点（如MiniMaxH3BlockCacheT8、PathchSageAttentionKJ、easy showAnything等）；输入仅支持单张图像，且图像内容需匹配人物/角色题材；生成帧数、分辨率受显存与参数限制，提示词风格偏向中文描述的视觉效果。",
+ "dependencies": [
+  "minimax_h3_fl2va_bf16.safetensors",
+  "qwen3vl_32b_minimax_h3_bf16.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "自定义节点：MiniMaxH3BlockCacheT8 / MiniMaxH3ImageToVideo / PathchSageAttentionKJ / easy showAnything"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video（含音频轨道）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ImageToVideo 的 prompt",
+   "how_to_tune": "直接定义视觉风格和特效方向，建议使用形容词+主体+氛围的句式；改变关键词会显著影响生成内容"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 的 width/height (1344/768)",
+   "how_to_tune": "与ResolutionSelector联动，决定输出分辨率；显存不足时调低，分辨率越高细节越多但耗时增加"
+  },
+  {
+   "param": "PrimitiveFloat (a=5)",
+   "how_to_tune": "作为计算帧数的输入，增大会生成更长视频，但推理时间与显存占用同步上升；配合表达式 max(5, round(a*24))"
+  },
+  {
+   "param": "BasicScheduler 的 steps (25)",
+   "how_to_tune": "控制采样步数，通常15-25步在质量与速度间平衡；追求质量可提高至30，快速预览可用10-15"
+  },
+  {
+   "param": "MiniMaxH3BlockCacheT8 参数 (0.14, 0.15, 0.9, 2, cpu, 8)",
+   "how_to_tune": "参数涉及缓存强度与卸载阈值，在低显存环境下可尝试增大卸载比例、调整缓存系数；需根据实测显存占用微调"
+  },
+  {
+   "param": "PathchSageAttentionKJ (auto, False)",
+   "how_to_tune": "切换注意力优化模式；auto模式自动选择，若遇到精度问题可关闭，速度变慢但质量更稳定"
+  }
+ ],
+ "summary_text": "能力:上传一张图像并附带中文提示词，生成一段指定风格（如唯美妖娆国漫风格）的人物动态视频，包含梦幻特效；能力:生成结果同时包含视频与音频轨道（通过音频VAE解码），可输出有声短片；能力:通过BlockCache与SageAttention优化，降低MiniMax H3大模型的显存占用/推理开销；特色:视频VAE与音频VAE并行解码，输出带音轨的视频，属于多模态生成管线；特色:使用MiniMaxH3BlockCacheT8对模型进行分块缓存，并配置了cpu卸载选项，疑似针对低显存环境专门设计；特色:通过ComfyMathExpression根据输入参数a动态计算总帧数（表达式中包含 max(5, round(a*24))），可灵活控制视频时长；特色:RandomNoise设置固定种子（1058158424724271）并标记为fixed，确保生成结果可复现；特色:引入easy showAnything调试节点，疑似用于在流程中可视化中间张量或数据，方便调参；上传一张角色立绘或人物照片，输入风格描述，几分钟内生成一段带特效和音频的短视频，适合快速制作角色宣传素材或概念动态图。；该工作流围绕MiniMax H3这一特定图像转视频基础模型构建，通过集成音频VAE实现音画联合输出，利用BlockCache和SageAttention缓解大模型的显存压力，再配合分辨率选择器和动态帧数计算来适配不同内容比例与时长需求。整体设计偏向在资源受限的平台上获得更流畅的多模态生成体验。"
+}

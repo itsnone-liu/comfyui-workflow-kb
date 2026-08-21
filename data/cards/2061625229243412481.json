@@ -1,0 +1,97 @@
+{
+ "domain": [
+  "图生图",
+  "抠图",
+  "批量处理"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端批量抠图：上传 zip 压缩包（内含多张图片）→ 解压 → 按循环逐张/分批用 BiRefNet 抠图 → 保存为 PNG → 再压缩成 zip 下载。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持单张图片输入链路：结构中有 LoadImage、PreviewImage、SaveImage，可用于单张图片预览/保存场景。",
+   "kind": "inference"
+  },
+  {
+   "text": "在批量任务中加入 GPU 显存与缓存清理，适合长时间跑图时保持显存稳定。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "BiRefNet 抠图：LoadRembgByBiRefNetModel / RembgByBiRefNet",
+  "批量图像列表转 batch：ImageListToBatch_",
+  "for 循环批处理：easy forLoopStart / easy forLoopEnd / easy batchAnything",
+  "zip 压缩包上传、解压、再压缩：RHUploadZip / RHExtractImage / CompressImages",
+  "图像数量统计与调试输出：easy imageCount / easy showAnything / Bjornulf_ShowInt",
+  "显存/缓存清理：easy cleanGpuUsed / easy clearCacheAll"
+ ],
+ "special_features": [
+  {
+   "text": "以“压缩包上传 + 压缩包下载”作为任务边界：用户不需要在 ComfyUI 里手选每张图，只需打包上传，工作流自动解包、抠图、再打包。",
+   "kind": "fact"
+  },
+  {
+   "text": "多段式批量循环：easy forLoopStart/End 包裹抠图主流程，配合 RHBatchImages、ImageListToBatch_、easy imageCount 做图集拆分与数量控制，适合大量图片分批执行。",
+   "kind": "fact"
+  },
+  {
+   "text": "存在 mode4 平行链路：LoadRembgByBiRefNetModel、RembgByBiRefNet、SaveImage 各有一组 mode4 版本，似乎构成两条平行处理链，可能用于批量输出与单张输出/多线路并行。",
+   "kind": "inference"
+  },
+  {
+   "text": "循环结束包含 easy cleanGpuUsed 与 easy clearCacheAll，属于面向长批量任务的显存与缓存回收设计。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从结构看，作者主要想把 Ai 抠图封装成“zip 进、zip 出”的黑盒批处理器：用户不用理解 ComfyUI 图生图流程，只要打包上传图片，就能拿到透明底 PNG 压缩包。批量循环、显存/缓存清理是为了长时间跑批量任务更稳定；mode4 平行链路可能用于同时保留批量结果和单张预览/对照输出。整体是偏实用交付而非实验探索的设计。",
+ "use_case": "电商商品图批量去背景、设计素材整理、人像/物体透明底图生产、批量预处理后续合成工作流。",
+ "limitation": "依赖 BiRefNet 自定义抠图节点和模型文件 Matting.safetensors；批量输入以 zip 压缩包为主，需平台侧支持 RHUploadZip/RHExtractImage/CompressImages 等节点；输出 PNG 保留透明通道，若模型对复杂边缘/半透明区域分割不佳，抠图质量会受影响；大批量循环时显存占用仍可能偏高，出现 OOM 需要调小单批数量；mode4 平行链路可能带来双倍资源消耗。",
+ "dependencies": [
+  "BiRefNet 抠图节点：LoadRembgByBiRefNetModel / RembgByBiRefNet",
+  "模型文件：Matting.safetensors",
+  "RunningHub 扩展节点：RHUploadZip / RHExtractImage / RHBatchImages / CompressImages",
+  "ComfyUI-Easy-Use 节点：easy forLoopStart / easy forLoopEnd / easy batchAnything / easy imageCount / easy cleanGpuUsed / easy clearCacheAll / easy showAnything",
+  "其他节点：ImageListToBatch_ / LoadImage / PreviewImage / SaveImage / Bjornulf_ShowInt"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "zip 压缩包（内含多张图片）；另有单张图片 LoadImage 入口",
+  "count": "一个 zip 可含多张；单张输入为一次一张"
+ },
+ "output": {
+  "type": "zip 压缩包（内含透明背景 PNG），也可通过 SaveImage 输出到图片目录",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoadRembgByBiRefNetModel.model_name",
+   "how_to_tune": "当前为 Matting.safetensors；抠图边缘/半透明效果与权重直接相关，若人像或物体边缘不理想可更换更适配的 BiRefNet 权重。"
+  },
+  {
+   "param": "LoadRembgByBiRefNetModel.device",
+   "how_to_tune": "当前为 AUTO；GPU 可用时自动选 GPU，若显存不足可改为 CPU/指定设备，或配合调小 RHBatchImages 的批大小。"
+  },
+  {
+   "param": "LoadRembgByBiRefNetModel 第三开关",
+   "how_to_tune": "当前为 False；该开关可能影响模型预处理/优化方式，默认关闭较稳，若背景残留可尝试打开观察效果（推断）。"
+  },
+  {
+   "param": "RHBatchImages.widgets 0-100",
+   "how_to_tune": "控制单批读取/处理的图像范围；值越大吞吐越高但显存压力越大，值越小越稳定，需按显卡显存调节。"
+  },
+  {
+   "param": "easy forLoopStart.widgets 2",
+   "how_to_tune": "表示循环次数或起始索引；应与图片分批方案匹配，图片多时需相应增加循环次数，否则可能空跑或漏图（推断）。"
+  },
+  {
+   "param": "CompressImages.widgets",
+   "how_to_tune": "当前输出文件夹名为“DM批量抠图后的素材”，格式为 PNG；保留透明底必须用 PNG，若改成 JPEG 会丢失透明通道。"
+  },
+  {
+   "param": "SaveImage.widgets",
+   "how_to_tune": "当前输出目录为 ComfyUI 默认目录；可改为特定输出文件夹，方便后续压缩包收集批量结果。"
+  }
+ ],
+ "summary_text": "能力:端到端批量抠图：上传 zip 压缩包（内含多张图片）→ 解压 → 按循环逐张/分批用 BiRefNet 抠图 → 保存为 PNG → 再压缩成 zip 下载。；能力:支持单张图片输入链路：结构中有 LoadImage、PreviewImage、SaveImage，可用于单张图片预览/保存场景。；能力:在批量任务中加入 GPU 显存与缓存清理，适合长时间跑图时保持显存稳定。；特色:以“压缩包上传 + 压缩包下载”作为任务边界：用户不需要在 ComfyUI 里手选每张图，只需打包上传，工作流自动解包、抠图、再打包。；特色:多段式批量循环：easy forLoopStart/End 包裹抠图主流程，配合 RHBatchImages、ImageListToBatch_、easy imageCount 做图集拆分与数量控制，适合大量图片分批执行。；特色:存在 mode4 平行链路：LoadRembgByBiRefNetModel、RembgByBiRefNet、SaveImage 各有一组 mode4 版本，似乎构成两条平行处理链，可能用于批量输出与单张输出/多线路并行。；特色:循环结束包含 easy cleanGpuUsed 与 easy clearCacheAll，属于面向长批量任务的显存与缓存回收设计。；电商商品图批量去背景、设计素材整理、人像/物体透明底图生产、批量预处理后续合成工作流。；从结构看，作者主要想把 Ai 抠图封装成“zip 进、zip 出”的黑盒批处理器：用户不用理解 ComfyUI 图生图流程，只要打包上传图片，就能拿到透明底 PNG 压缩包。批量循环、显存/缓存清理是为了长时间跑批量任务更稳定；mode4 平行链路可能用于同时保留批量结果和单张预览/对照输出。整体是偏实用交付而非实验探索的设计。"
+}

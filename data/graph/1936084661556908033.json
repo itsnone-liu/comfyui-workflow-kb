@@ -1,0 +1,1201 @@
+{
+ "node_count": 25,
+ "link_count": 33,
+ "active_node_count": 25,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    11
+   ],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 12,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    24
+   ],
+   "out_links": []
+  },
+  {
+   "id": 9,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.5
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 7,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    6
+   ],
+   "out_links": [
+    19
+   ]
+  },
+  {
+   "id": 14,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    23,
+    39
+   ],
+   "out_links": [
+    24
+   ]
+  },
+  {
+   "id": 8,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp16.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    10,
+    11
+   ]
+  },
+  {
+   "id": 2,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-dev.sft",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 3,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 15,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "42933efa3cb9f5451d613e128b509d06d96ad475c895c63e603cbf236b927a6a.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    25,
+    27,
+    35,
+    28
+   ]
+  },
+  {
+   "id": 21,
+   "type": "LayerMask: LoadSAM2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam2_hiera_base_plus.safetensors",
+    "fp16",
+    "cuda"
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 24,
+   "type": "LayerMask: LoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "base"
+   ],
+   "in_links": [],
+   "out_links": [
+    36
+   ]
+  },
+  {
+   "id": 11,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    21,
+    39
+   ]
+  },
+  {
+   "id": 22,
+   "type": "LayerMask: ObjectDetectorFL2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "dress",
+    "left_to_right",
+    "all",
+    "0,"
+   ],
+   "in_links": [
+    35,
+    36
+   ],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 30,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sigclip_vision_patch14_384.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    43
+   ]
+  },
+  {
+   "id": 29,
+   "type": "StyleModelLoader",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-redux-dev.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    42
+   ]
+  },
+  {
+   "id": 31,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "42933efa3cb9f5451d613e128b509d06d96ad475c895c63e603cbf236b927a6a.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    45,
+    47
+   ]
+  },
+  {
+   "id": 13,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    41,
+    19,
+    21,
+    25,
+    53
+   ],
+   "out_links": [
+    18,
+    20,
+    22
+   ]
+  },
+  {
+   "id": 32,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "width",
+    768,
+    "#000000"
+   ],
+   "in_links": [
+    45,
+    47
+   ],
+   "out_links": [
+    46,
+    48
+   ]
+  },
+  {
+   "id": 1,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    157135730093968,
+    "randomize",
+    30,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    3,
+    13,
+    20,
+    22
+   ],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 16,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "width",
+    768,
+    "#000000"
+   ],
+   "in_links": [
+    27,
+    28
+   ],
+   "out_links": [
+    49
+   ]
+  },
+  {
+   "id": 4,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "There are rape flowers embroidered on the dress."
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": [
+    40
+   ]
+  },
+  {
+   "id": 20,
+   "type": "LayerMask: SAM2UltraV2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "all",
+    "0,",
+    "VITMatte",
+    6,
+    4,
+    0.15,
+    0.99,
+    true,
+    2
+   ],
+   "in_links": [
+    30,
+    49,
+    31
+   ],
+   "out_links": [
+    33,
+    52
+   ]
+  },
+  {
+   "id": 23,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    33
+   ],
+   "out_links": []
+  },
+  {
+   "id": 28,
+   "type": "ReduxAdvanced",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    9,
+    "area",
+    "center crop (square)",
+    0.5000000000000001,
+    0.1
+   ],
+   "in_links": [
+    40,
+    42,
+    43,
+    46,
+    48
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 34,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10,
+    2,
+    true,
+    false,
+    10,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    52
+   ],
+   "out_links": [
+    53
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 14,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 11,
+   "to_node": 13,
+   "type": "VAE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 14,
+   "type": "VAE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 1,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 13,
+   "to_node": 1,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 13,
+   "to_node": 9,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 14,
+   "to_node": 12,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 13,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 16,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 16,
+   "type": "MASK"
+  },
+  {
+   "from_node": 15,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 3,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 20,
+   "to_node": 23,
+   "type": "MASK"
+  },
+  {
+   "from_node": 20,
+   "to_node": 34,
+   "type": "MASK"
+  },
+  {
+   "from_node": 21,
+   "to_node": 20,
+   "type": "LS_SAM2_MODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 20,
+   "type": "BBOXES"
+  },
+  {
+   "from_node": 24,
+   "to_node": 22,
+   "type": "FLORENCE2"
+  },
+  {
+   "from_node": 28,
+   "to_node": 13,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 28,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 3,
+   "to_node": 1,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 30,
+   "to_node": 28,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 31,
+   "to_node": 32,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 31,
+   "to_node": 32,
+   "type": "MASK"
+  },
+  {
+   "from_node": 32,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 28,
+   "type": "MASK"
+  },
+  {
+   "from_node": 34,
+   "to_node": 13,
+   "type": "MASK"
+  },
+  {
+   "from_node": 4,
+   "to_node": 28,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 7,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 13,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 8,
+   "to_node": 4,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 8,
+   "to_node": 5,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 9,
+   "to_node": 1,
+   "type": "CONDITIONING"
+  }
+ ],
+ "categories": {
+  "conditioning": 3,
+  "image_io": 3,
+  "utility": 12,
+  "vae": 2,
+  "clip": 2,
+  "checkpoint_loader": 1,
+  "sampler": 1,
+  "postprocess": 1
+ },
+ "assets": [
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux1-dev.sft"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LayerMask: LoadSAM2Model",
+   "kind": "checkpoint",
+   "name": "sam2_hiera_base_plus.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 29,
+   "node_type": "StyleModelLoader",
+   "kind": "checkpoint",
+   "name": "flux1-redux-dev.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 77,
+ "structure_hash": "ca484b2c3d4c3eaa",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 12,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 9,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 8,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 2,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-dev.sft"
+  },
+  {
+   "node_id": 2,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "42933efa3cb9f5451d613e128b509d06d96ad475c895c63e603cbf236b92"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "LayerMask: LoadSAM2Model",
+   "widget_index": 0,
+   "value_preview": "sam2_hiera_base_plus.safetensors"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LayerMask: LoadSAM2Model",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LayerMask: LoadSAM2Model",
+   "widget_index": 2,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 24,
+   "node_type": "LayerMask: LoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "base"
+  },
+  {
+   "node_id": 11,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 0,
+   "value_preview": "dress"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 1,
+   "value_preview": "left_to_right"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 2,
+   "value_preview": "all"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 3,
+   "value_preview": "0,"
+  },
+  {
+   "node_id": 30,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 29,
+   "node_type": "StyleModelLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 31,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "42933efa3cb9f5451d613e128b509d06d96ad475c895c63e603cbf236b92"
+  },
+  {
+   "node_id": 31,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 31,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 13,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "width"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "157135730093968"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 1,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "width"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 16,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 4,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "There are rape flowers embroidered on the dress."
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 0,
+   "value_preview": "all"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 1,
+   "value_preview": "0,"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 2,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 3,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 4,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 5,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 6,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2UltraV2",
+   "widget_index": 8,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LayerMask: MaskPreview",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 28,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 0,
+   "value_preview": "9"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 1,
+   "value_preview": "area"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 2,
+   "value_preview": "center crop (square)"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 3,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 4,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  }
+ ]
+}

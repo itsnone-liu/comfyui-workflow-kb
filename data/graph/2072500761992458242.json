@@ -1,0 +1,1699 @@
+{
+ "node_count": 50,
+ "link_count": 47,
+ "active_node_count": 49,
+ "nodes": [
+  {
+   "id": 8,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    12
+   ],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 22,
+   "type": "llama_cpp_parameters",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4096,
+    30,
+    0.9,
+    0.05,
+    1,
+    0.8,
+    1,
+    0,
+    1,
+    0,
+    0.1,
+    5,
+    -1
+   ],
+   "in_links": [],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 18,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    1
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": [
+    19
+   ]
+  },
+  {
+   "id": 33,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Krea 2 独立模板：一句话变英文 Prompt\n\n> 启动词：`#Krea2需求转Prompt`  \n> 作用：把一句中文需求变成一段可直接复制到 Krea 2 的英文长提示词。  \n> 硬规则：最终只输出 Prompt 本身，不输出标题、解释、参数、拆解、表格、Markdown 代码块。\n\n---\n\n## 1. 调用方式\n\n```text\n#Krea2需求转Prompt：{一句中文需求}\n```\n\n或：\n\n```markdown\n#Krea2需求转Prompt\n需求：\n用途：\n画幅：\n风格：\n必须出现：\n必须避免：\n```\n\n---\n\n## 2. 最终输出硬规则\n\n调用本模板后，最终回答只能是一段英文 Prompt。\n\n禁止输出：\n\n- `## 判断`\n- `推荐设置`\n- `中文拆解`\n- `下一轮建议`\n- `Mode / Model / Creativity`\n- 表格\n- 解释\n- Markdown 代码块\n- 项目符号\n\n最终输出只允许：\n\n```text\n一整段英文 Prompt\n```\n\n长度要求：\n\n```text\n最终英文 Prompt 不少于 500 个英文单词。\n建议长度：500-750 个英文单词。\n如果用户明确要求更短，仍不得低于 500 个英文单词，除非用户再次明确要求压缩。\n```\n\n---\n\n## 3. 内部工作流\n\n收到用户一句中文需求后，内部执行以下步骤，但不要把步骤输出给用户：\n\n```text\n1. 判断主体是什么。\n2. 判断用途和画幅。\n3. 判断场景、时间、天气、环境。\n4. 判断构图、镜头距离、视角、主体占比。\n5. 判断光线类型、方向、软硬、色温、对比度。\n6. 判断情绪和商业目的。\n7. 判断图像媒介：摄影、产品摄影、电影剧照、动漫插画、概念艺术、建筑摄影。\n8. 补充材质、颜色、纹理、背景、前景、技术细节。\n9. 加入必要限制：no text, no logo, no watermark, no distorted anatomy, no clutter。\n10. 合并成一段自然流畅的英文长 Prompt。\n```\n\n---\n\n## 4. 内容占比分配\n\n最终 500+ 英文单词 Prompt 的信息量按下面比例分配。\n\n| 内容模块 | 占比 | 要写什么 |\n|---|---:|---|\n| 主体细节 | 20% | 主体身份、形态、数量、动作、状态、比例、关键特征 |\n| 场景环境 | 15% | 地点、时间、天气、背景、前景、空间层次 |\n| 构图镜头 | 15% | 画幅、镜头距离、视角、主体占比、焦点、留白 |\n| 光线影调 | 15% | 光源方向、软硬、色温、阴影、反射、对比度 |\n| 风格媒介 | 10% | 摄影 / 电影 / 产品 / 动漫 / 概念艺术 / 建筑摄影 |\n| 材质色彩 | 15% | 材质、纹理、色彩系统、表面反光、颗粒 |\n| 质量限制 | 10% | 清晰度、无文字、无 logo、无水印、避免错误 |\n\n---\n\n## 5. Prompt 结构\n\n最终英文 Prompt 应该是一段完整自然语言，不要分条。\n\n基础结构：\n\n```text\nCreate a {image type} featuring {main subject} ... The subject is ... The scene takes place ... The composition uses ... The lighting should ... The mood feels ... The visual style is ... Materials and colors include ... Technical qualities should include ... Avoid ...\n```\n\n不要写成：\n\n```text\nSubject: ...\nScene: ...\nLighting: ...\n```\n\n因为最终输出只能是一段可复制的 Prompt。\n\n---\n\n## 6. 场景识别词库\n\n根据用户中文需求自动选择英文表达。\n\n| 中文需求 | 英文视觉表达 |\n|---|---|\n| 高级 | premium, refined, restrained, elegant, clean commercial finish |\n| 电影感 | cinematic still, dramatic framing, controlled contrast, atmospheric depth |\n| 科技感 | futuristic design, cool rim light, clean geometry, metallic surfaces |\n| 商业感 | commercial photography, crisp focus, polished lighting, product clarity |\n| 真实 | photorealistic, natural texture, realistic lighting, believable scale |\n| 干净 | minimal background, clear silhouette, uncluttered composition |\n| 温暖 | warm light, soft shadows, inviting atmosphere, gentle color palette |\n| 复古 | muted film colors, subtle grain, analog texture, nostalgic tone |\n| 酷炫 | bold composition, strong lighting contrast, dynamic visual impact |\n| 梦幻 | soft glow, atmospheric haze, delicate highlights, ethereal mood |\n| 日系 | soft daylight, quiet emotional tone, delicate background details |\n| 赛博朋克 | neon reflections, rainy streets, dense urban detail, cool magenta-blue palette |\n\n---\n\n## 7. 用途适配规则\n\n### 产品图\n\nPrompt 必须强调：\n\n- product shape accuracy\n- commercial product photography\n- clean background\n- crisp focus\n- material detail\n- no text, no logo\n\n### 短视频封面\n\nPrompt 必须强调：\n\n- vertical composition\n- strong central subject\n- high visual impact\n- readable silhouette\n- dramatic lighting\n- optional empty space for title, but no actual text\n\n### 人像\n\nPrompt 必须强调：\n\n- face clarity\n- natural anatomy\n- pose and expression\n- skin texture\n- lens and depth of field\n- no distorted hands or facial features\n\n### 建筑室内\n\nPrompt 必须强调：\n\n- straight vertical lines\n- spatial layout\n- realistic materials\n- daylight direction\n- clean editorial composition\n\n### 动漫插画\n\nPrompt 必须强调：\n\n- character design\n- scene storytelling\n- cel shading or clean linework\n- background detail\n- emotional atmosphere\n\n### 概念艺术\n\nPrompt 必须强调：\n\n- worldbuilding\n- scale\n- atmosphere\n- cinematic composition\n- environmental storytelling\n\n---\n\n## 8. 最终 Prompt 示例\n\n用户输入：\n\n```text\n#Krea2需求转Prompt：做一张 9:16 的短视频封面，一个未来感机器人站在雨夜城市街头，要电影感\n```\n\n下面是结构示意，真实调用时必须扩展到不少于 500 个英文单词，并且不要附加任何解释：\n\nCreate a vertical 9:16 cinematic cover image featuring a futuristic humanoid robot standing alone on a rainy city street at night, designed as a high-impact short-video thumbnail with a strong central silhouette and immediate visual readability. The robot should appear full body or slightly three-quarter body, occupying the central portion of the frame with enough negative space around the upper area for possible title placement, but do not include any actual text, captions, symbols, logos, or watermarks. Its body should combine sleek brushed metal panels, dark graphite armor plates, subtle exposed mechanical joints, translucent illuminated details, and small blue status lights embedded into the chest, neck, and forearms. The posture should feel calm but powerful, with the robot standing upright, shoulders squared, head slightly tilted downward toward the viewer, as if it has just emerged from the storm. The street environment should be dense but not cluttered, with wet asphalt, shallow puddles, rain streaks, blurred neon storefronts, distant traffic lights, reflective glass facades, steam rising from vents, and a deep urban background that fades into atmospheric mist. Use a low camera angle at street level to make the robot feel tall and imposing, with a cinematic perspective that leads the eye from the reflective puddles in the foreground up to the robot and then into the glowing city depth behind it. Lighting should be low-key and dramatic, driven by cool blue rim light from one side, subtle magenta neon reflections from the opposite side, faint white highlights along the robot’s metal edges, and soft diffused rain glow in the background. The color palette should stay controlled: deep black, graphite gray, electric blue, muted cyan, restrained magenta, and small silver highlights, avoiding overly saturated rainbow colors. The mood should feel mysterious, tense, futuristic, cinematic, and premium rather than chaotic. Render it as photorealistic sci-fi photography with the texture of a high-end movie still, crisp focus on the robot’s face and torso, realistic raindrops on metal surfaces, believable reflections on the ground, subtle motion blur only in distant background lights, volumetric mist, shallow atmospheric depth, clean readable composition, no distorted anatomy, no extra limbs, no messy wires, no random text, no brand marks, no watermark, no cartoon style, no flat illustration, no overexposed highlights, no low-resolution artifacts.\n\n---\n\n## 9. 500 词扩写库\n\n当用户需求过短时，用下面模块扩写最终 Prompt。扩写只进入最终英文 Prompt，不以清单形式输出。\n\n主体扩写：写清主体的形状、比例、数量、动作、状态、表面细节、视觉优先级、与环境的关系，以及缩略图尺寸下是否仍然清晰可读。\n\n场景扩写：写清前景、中景、背景、空间深度、天气、时间、环境材质、反射、雾气、背景密度，以及哪些环境元素只做氛围不要抢主体。\n\n构图扩写：写清画幅、镜头高度、视角、主体占画面比例、居中或偏置、留白、引导线、焦点层级、裁切边界和画面重心。\n\n光线扩写：写清主光、辅光、轮廓光、阴影软硬、色温、对比度、反射控制、高光范围、低光区域，以及光线如何服务主体。\n\n材质扩写：写清 matte、glossy、brushed、translucent、ceramic、glass、metal、fabric、skin、wood、stone 等表面质感，以及细微划痕、边缘高光、纹理颗粒、真实瑕疵。\n\n限制扩写：按场景加入 no text, no logo, no watermark, no distorted anatomy, no extra limbs, no unreadable symbols, no random objects, no clutter, no low-resolution artifacts, no overexposed highlights。\n\n---\n\n## 10. 最终输出自检\n\n输出前内部检查，不要把检查结果输出：\n\n```text\n是否只有一段英文 Prompt？\n是否没有标题、解释、参数、表格、Markdown 代码块？\n是否不少于 500 个英文单词？\n是否详细写了主体、场景、构图、光线、风格、材质、限制？\n是否能直接复制到 Krea 2？\n```\n\n---\n\n## 11. 复制给 AI 的执行指令\n\n```markdown\n你是 `#Krea2需求转Prompt` 模板。\n\n当我调用该启动词时，你只输出一段英文 Prompt。\n不要输出标题、解释、参数、表格、拆解、Markdown 代码块或任何说明。\n最终英文 Prompt 不少于 500 个英文单词。\n你需要内部拆解主体、场景、构图、光线、情绪、风格媒介、材质色彩、技术细节和限制词，但不要把拆解过程输出。\n最终 Prompt 必须详细、自然、可直接复制到 Krea 2。\n```\n\n---\n\n## 12. 真实 500+ 词完整输出样例\n\n本节是长度标准参考。真实调用时，最终仍然只输出英文 Prompt，不输出本节标题。\n\nCreate a vertical 9:16 cinematic cover image featuring a futuristic humanoid robot standing alone on a rain-soaked city street at night, designed as a high-impact short-video thumbnail with a strong central silhouette, clear visual hierarchy, and immediate readability on a mobile screen. The robot should appear full body or slightly three-quarter body, placed near the center of the composition, occupying roughly sixty percent of the image height while leaving controlled negative space in the upper third for possible title placement, but do not include any actual text, typography, captions, symbols, brand marks, logos, or watermarks. Its design should combine sleek brushed metal panels, dark graphite armor plates, subtle exposed mechanical joints, translucent illuminated seams, small blue status lights embedded in the chest, neck, wrists, and forearms, and refined industrial details that feel engineered rather than decorative. The posture should feel calm, powerful, and slightly threatening, with squared shoulders, a stable stance, relaxed mechanical hands, and the head tilted just enough to suggest awareness of the viewer. The environment should be a dense but readable rainy urban street with wet asphalt, shallow puddles, blurred neon storefronts, distant traffic lights, reflective glass facades, steam rising from street vents, thin rain streaks catching light, and a deep background that fades into atmospheric mist without becoming visually cluttered. Use a low camera angle close to street level so the robot feels tall and imposing, with subtle leading lines from the curb, pavement reflections, crosswalk markings, and building edges guiding the eye toward the figure. Lighting should be low-key and cinematic, driven by a cool blue rim light from one side, restrained magenta neon reflections from the opposite side, soft diffused rain glow in the background, and small white highlights along the metal edges to reveal form. Shadows should be deep but not muddy, with enough front detail to keep the robot’s face, chest, and hands readable. The color palette should remain controlled: deep black, graphite gray, muted cyan, electric blue, restrained magenta, wet pavement silver, and small white specular highlights, avoiding rainbow neon chaos or excessive saturation. Add small believable details that enrich the scene without distracting from the robot, such as droplets clinging to armor seams, shallow ripples in puddles, faint reflections of passing vehicle lights, tiny scratches on metal panels, moisture gathering along mechanical joints, and distant silhouettes of buildings softened by rain haze. The background should suggest a larger futuristic city, but it must remain subordinate to the central figure through softened edges, atmospheric perspective, and restrained detail density. Render the image as photorealistic sci-fi movie-still photography with realistic raindrops on metal surfaces, believable reflections, crisp focus on the robot’s head and torso, subtle atmospheric depth, slight background motion blur only in distant lights, volumetric mist, clean edges, and a premium cinematic finish. Avoid distorted anatomy, extra limbs, messy wires, random floating objects, unreadable markings, visible text, logos, watermarks, cartoon style, flat illustration, overexposed highlights, low-resolution artifacts, cluttered background props, plastic materials, badly aligned joints, and any element that weakens the strong central cover composition.\n\n---\n\n## 附录：结构示意样例（非长度标准）\n\n下面样例用于校准输出密度。真实调用时，最终回答仍然只能输出英文 Prompt 本身，不要输出本节标题。\n\nCreate a vertical 9:16 cinematic cover image featuring a futuristic humanoid robot standing alone on a rain-soaked city street at night, designed as a high-impact short-video thumbnail with a strong central silhouette, clear visual hierarchy, and immediate readability on a mobile screen. The robot should appear full body or slightly three-quarter body, placed near the center of the composition, occupying roughly sixty percent of the image height while leaving controlled negative space in the upper third for possible title placement, but do not include any actual text, typography, captions, symbols, brand marks, logos, or watermarks. Its design should combine sleek brushed metal panels, dark graphite armor plates, subtle exposed mechanical joints, translucent illuminated seams, small blue status lights embedded in the chest and forearms, and refined industrial details that feel engineered rather than decorative. The posture should feel calm, powerful, and slightly threatening, with squared shoulders, a stable stance, and the head tilted just enough to suggest awareness of the viewer. The environment should be a dense but readable rainy urban street with wet asphalt, shallow puddles, blurred neon storefronts, distant traffic lights, reflective glass facades, steam rising from street vents, thin rain streaks catching light, and a deep background that fades into atmospheric mist without becoming visually cluttered. Use a low camera angle close to street level so the robot feels tall and imposing, with subtle leading lines from the curb, pavement reflections, and building edges guiding the eye toward the figure. Lighting should be low-key and cinematic, driven by a cool blue rim light from one side, restrained magenta neon reflections from the opposite side, soft diffused rain glow in the background, and small white highlights along the metal edges to reveal form. Shadows should be deep but not muddy, with enough front detail to keep the robot’s face and torso readable. The color palette should remain controlled: deep black, graphite gray, muted cyan, electric blue, restrained magenta, silver highlights, and wet pavement reflections, avoiding rainbow neon chaos or excessive saturation. Render the image as photorealistic sci-fi movie-still photography with realistic raindrops on metal surfaces, believable reflections, crisp focus on the robot’s head and chest, subtle atmospheric depth, slight background motion blur only in distant lights, volumetric mist, clean edges, and a premium cinematic finish. Avoid distorted anatomy, extra limbs, messy wires, random floating objects, unreadable markings, visible text, logos, watermarks, cartoon style, flat illustration, overexposed highlights, low-resolution artifacts, cluttered background props, and any element that weakens the strong central cover composition.\n\n\n\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    81
+   ]
+  },
+  {
+   "id": 39,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Krea 2 风格提取・改写融合模板\n启动词：#Krea2单图参考\n定位：输入「1 张参考图 + 任意长度用户提示词」，内部先按专业维度反向提取纯风格胶囊，再以该风格为统一标准，对用户提示词做全域风格化改写 + 细节扩写，最终输出可直接使用的完整英文长提示词。禁止输出其他内容，包括用户输入等，只输出提示词。\n一、输入格式\nplaintext\n#Krea2单图参考\n参考图：[上传图片]\n用户提示词：[可短可长，如“雨夜街头的摩托车”]\n画幅：\n必须保留：\n必须避免：\n二、输出铁则\n最终仅输出一整段连贯英文 Prompt，无中文、分析、参数、标题、代码块，不对外输出风格胶囊、设置项等中间产物。\n单词量稳定在 500–750，自然语言连贯成段，无标签堆砌、无参数标记，适配 Krea 2 Turbo 文本编码器阅读逻辑。\n全程不出现 reference image copy style 等表述，所有风格特征转化为自然视觉描写；不出现参考图中的任何具体主体名词。\n三、内部三步工作流（严格执行，不对外输出）\n第一步：反向提取纯风格胶囊（内容完全剥离）\n从参考图中按 8 个层级标准化提取风格，生成无任何主体内容的纯风格胶囊（50–90 词，内部复用，不对外输出），绝对禁止带入参考图的具体人物、物品、场景名词：\n媒介 / 渲染类型：摄影 / 3D 渲染 / 手绘 / 胶片剧照等，明确画面载体属性\n画质质感：锐度 / 柔焦程度、分辨率观感、焦外虚化特征、渲染精细度\n色彩体系：4–6 个核心色 + 饱和度等级（低饱和 / 自然 / 高饱和）+ 冷暖基调\n调色影调：后期质感（黑位抬升 / 高光柔化 / 色偏 / 胶片模拟 / 光晕 / 暗角）\n光线特征：光源方向、光质软硬、对比度高低，不用纯亮度词描述\n纹理细节：颗粒感、笔触、表面肌理、噪点、微观细节丰富度\n镜头景深：焦段观感、景深大小、画面呼吸感、空气介质（雾气 / 颗粒 / 漏光）\n情绪美学：4–6 个精准形容词定义整体氛围与风格流派\n第二步：读取并拆解用户提示词\n完整承接用户输入，拆分两类信息分别处理：\n核心内容层（100% 保留语义）：主体、场景、动作、道具、事件、构图要求 → 作为画面核心骨架，只扩写不篡改、不增删核心元素\n原有风格层（全部待替换）：色调、滤镜、调色、影调、氛围、质感形容词 → 全部废弃，统一替换为第一步提取的参考图风格\n第三步：风格融合 + 扩写润色\n以「用户主体前置 + 风格全域渗透」的结构生成最终 Prompt：\n开头先明确用户的主体、场景与核心构图，符合 Krea 2 「主体在前权重更高」的读取逻辑\n将第一步提取的风格胶囊自然打散，渗透到主体、背景、材质、光影、空气感的每一处描写中，而非集中堆砌在末尾\n对简短提示词自动补全细节：主体形态、空间层次、材质纹理、光影互动、环境氛围，所有扩写严格贴合参考图的风格语言\n末尾内嵌匹配该风格的质量约束与负面限制，整体连贯成一段自然语言\n四、冲突与边界规则\n风格唯一锚点是参考图：用户提示词中的所有色调、光影、氛围、质感描述，与参考图冲突时直接重写，不保留原风格词\n内容只校准不删除：用户指定的具体物体、材质、场景，保留形态与功能，其色彩、反光、光影表现统一校准为参考图兼容版本\n严格内容剥离：禁止迁移参考图里的具体人物、道具、空间、服装、文字、logo、构图结构，只迁移纯风格感觉\n隐性色彩拦截：用户提示词中自带强色彩倾向的材质、光源、物体，自动按参考图色调体系重写，保留物体本体"
+   ],
+   "in_links": [],
+   "out_links": [
+    44,
+    83
+   ]
+  },
+  {
+   "id": 61,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_切换生成模式",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "切换生成模式"
+   ],
+   "in_links": [],
+   "out_links": [
+    102
+   ]
+  },
+  {
+   "id": 24,
+   "type": "llama_cpp_instruct_adv",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Creative - Refine & Expand Prompt",
+    "",
+    "You are an expert prompt engineer for text-to-image models. Your task is to expand the user's prompt into a highly effective image-generation prompt.\n\nThink step by step about the request before writing the answer:\n- What is the subject and mood?\n- What visual styles, mediums, and lighting options would fit? Consider two or three alternatives and pick the one that best serves the caption.\n- What composition, framing, and grounded details will help the text-to-image model?\n\nThen output a single expanded prompt paragraph.\n\nFollow these rules strictly:\n1. **Faithfulness First:** Preserve all original subjects, actions, colors, and spatial relationships. Do not add new objects, props, characters, or animals unless the user clearly implies them.\n2. **Practical T2I Structure:** Write a prompt that a text-to-image model can parse cleanly. Group subjects with their own attributes and actions. Use grounded phrasing for poses, interactions, and spatial layout.\n3. **Style Planning Stays Internal:** Use your internal reasoning to choose style, medium, framing, and lighting. Do not emit planning tags or wrappers in the visible answer body.\n4. **Text Rendering:** If the user requests visible text, quotes, labels, or typography, specify the exact text clearly and wrap requested words in quotes.\n5. **Avoid Over-Specification:** Do not invent highly specific clothing, colors, materials, or scene details unless the input supports them.\n6. **Structure:** Write one cohesive paragraph after the thinking block. No bullets, JSON, or markdown.\n7. **Respect Existing Detail:** If the user's prompt is already detailed, lightly polish and finalize rather than heavily expanding — preserve their phrasing and direction.\n8. **Respect the Human Form:** Treat depictions of people with dignity. Assume clothing covers genitals and intimate anatomy.\n9. **Preserve User Medium:** When the user explicitly requests a medium (e.g. \"photo of\", \"photograph of\", \"illustration of\", \"painting of\", \"sketch of\", \"3D render of\"), honor it. Do not pivot to a different medium to avoid difficulty — match the user's stated intent.\n",
+    "images",
+    24,
+    256,
+    1011645104434361,
+    "randomize",
+    true,
+    false
+   ],
+   "in_links": [
+    22,
+    23,
+    89,
+    70,
+    76
+   ],
+   "out_links": [
+    77
+   ]
+  },
+  {
+   "id": 35,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Krea 2 独立模板：一张参考图控风格\n\n> 启动词：`#Krea2单图参考`  \n> 作用：用户上传或描述 1 张参考图后，输出一段可直接复制到 Krea 2 的英文长提示词。  \n> 硬规则：最终只输出 Prompt 本身，不输出参考图分析、参数、解释、表格、标题或 Markdown 代码块。\n\n---\n\n## 1. 调用方式\n\n```text\n#Krea2单图参考：参考这张图的风格，生成 {新主体 / 新场景 / 新产品}\n```\n\n或：\n\n```markdown\n#Krea2单图参考\n参考图：\n参考图负责：\n新主体：\n新场景：\n画幅：\n必须出现：\n必须避免：\n```\n\n---\n\n## 2. 最终输出硬规则\n\n调用本模板后，最终回答只能是一段英文 Prompt。\n\n禁止输出：\n\n- 参考图职责分析\n- `Reference strength`\n- `Mode / Model / Creativity`\n- 判断原因\n- 中文拆解\n- 调参建议\n- 表格\n- 标题\n- Markdown 代码块\n- 项目符号\n\n最终输出只允许：\n\n```text\n一整段英文 Prompt\n```\n\n长度要求：\n\n```text\n最终英文 Prompt 不少于 500 个英文单词。\n建议长度：500-750 个英文单词。\n```\n\n---\n\n## 3. 内部工作流\n\n模板内部可以分析参考图，但不要输出分析过程。\n\n```text\n1. 判断参考图主要负责什么：色彩、光线、材质、影调、构图气质、情绪、时代感。\n2. 严格以参考图的色调、影调、色彩关系、明暗关系为最高优先级。\n3. 判断用户新画面要画什么：主体、场景、构图、用途。\n4. 将参考图风格转写成隐性的英文视觉描述。\n5. 忽略用户额外添加但与参考图冲突的色调词、滤镜词、调色词、影调词、风格色彩词。\n6. 避免直接说“copy the reference image”或“same as the reference”。\n7. Prompt 里重点写新内容，同时自然嵌入从参考图提取出的色彩、光线、材质和气质。\n8. 加入质量控制和限制词。\n9. 合并成一段 500+ 英文单词长 Prompt。\n```\n\n---\n\n## 4. 参考图色调优先级硬规则\n\n单图参考模式下，参考图是唯一色调锚点。用户可能会在需求里额外加入很多色调词，例如“冷色调、暖色调、莫兰迪、赛博蓝、胶片绿、日系淡彩、高饱和、低饱和、复古黄、青橙、暗黑、奶油色、INS 风、电影 LUT、油画色调”等。这些词只作为弱建议处理。\n\n如果用户额外色调词和参考图一致，可以自然吸收进最终 Prompt。  \n如果用户额外色调词和参考图不一致，必须忽略用户色调词，严格遵循参考图的真实色调、影调、色彩比例、明暗关系和光线气质。\n\n内部优先级：\n\n```text\n参考图真实色调 > 参考图光线影调 > 参考图材质颜色 > 用户新主体 / 新场景 > 用户内容里的隐性色彩词 > 用户额外色调词\n```\n\n最终 Prompt 里不要写：\n\n```text\nalthough the user asked for warm tones...\nignore the user's color words...\nfollow the reference image...\n```\n\n应该直接把参考图色调转成自然英文视觉语言，例如：\n\n```text\nmuted warm-gray palette, soft low-contrast daylight, restrained neutral tones, subtle tonal transitions\n```\n\n---\n\n## 5. 隐性色彩污染拦截\n\n失败通常不是因为用户直接写了“暖色调”，而是因为用户内容里包含大量会自动带出某种色调的物体、材质和光源。单图参考模式下，这些也必须被参考图色调约束。\n\n需要拦截的隐性色彩来源：\n\n| 类型 | 示例 | 处理 |\n|---|---|---|\n| 暖色材质 | walnut, mahogany, warm oak, brass, gold, amber glass | 如果和参考图冲突，改成参考图允许的暗木、冷灰金属、低饱和材质 |\n| 暖色光源 | warm daylight, amber lamp, golden hour, candlelight | 如果参考图是冷调 / 暗调，改成 cold diffused backlight、misty rim light、low-key ambient light |\n| 暖色物体 | citrus fruit, whiskey, cognac, burgundy wine, terracotta | 降低存在感或改成低饱和、阴影中的材质描述 |\n| 高饱和装饰 | colorful posters, neon signs, bright labels, vivid bottles | 删除或压成 faded, unreadable, muted, shadowed |\n| 场景自带调性 | cozy bar, sunny cafe, warm bedroom, vintage shop | 保留主体功能，但把影调改成参考图的光线和色彩体系 |\n\n内部改写规则：\n\n```text\n用户要的主体可以保留。\n用户要的场景可以保留。\n但所有会破坏参考图色调的材质、光源、装饰、物体颜色，都必须被重写成参考图兼容版本。\n```\n\n例如参考图是冷灰绿、暗调、雾气、逆光时：\n\n```text\nwarm gold accents → muted tarnished metal with cold green-gray highlights\namber bar lamps → dim diffused backlight filtered through mist\ndark walnut bar → wet dark desaturated wood with cool gray reflections\nbright liquor bottles → shadowed glass silhouettes with muted green-gray reflections\ncolorful vintage posters → faded unreadable paper shapes kept in darkness\nlazy warm afternoon mood → quiet low-key misty cinematic mood\n```\n\n最终 Prompt 里不能保留会把画面拉回暖色的原词。\n\n---\n\n## 5A. 色调风格感觉锁定，不迁移具体内容\n\n单图参考模式的核心是迁移“色调、影调、光感、质感和情绪”，不是迁移参考图里的具体物体、空间类型或故事内容。参考图必须被拆成两层：第一层是可以迁移的色调风格感觉；第二层是禁止迁移的内容物。\n\n可以迁移的内容：\n\n| 可迁移层 | 必须识别什么 | Prompt 中怎么体现 |\n|---|---|---|\n| 主色相 | 偏黄、偏绿、偏青、偏蓝、偏红、偏灰、偏棕等 | dirty yellow-green cast, muted amber-green palette, cool cyan-gray tint |\n| 色彩比例 | 哪种颜色占主导，哪些颜色只做少量点缀 | dominant muted greenish-yellow, restrained dark neutrals, small dull red accents |\n| 明暗影调 | 低对比、高对比、黑位深浅、高光是否溢出 | low-contrast shadows, compressed highlights, dim midtones, soft highlight bloom |\n| 饱和度 | 高饱和、低饱和、褪色、脏旧、清透 | desaturated colors, faded chroma, stained color density, muted tonal range |\n| 光线感觉 | 光是硬、软、脏、雾化、漫射、刺眼、闷、潮湿 | dirty diffused glow, fluorescent-like color contamination, hazy light falloff |\n| 镜头质感 | 颗粒、柔焦、虚焦、眩光、老镜头、低清晰边缘 | analog film grain, soft lens bloom, shallow-focus softness, smeared highlights |\n| 情绪温度 | 慵懒、压抑、暧昧、孤独、复古、潮湿、紧张 | quiet uneasy nostalgia, humid worn atmosphere, subdued cinematic melancholy |\n| 材质调色 | 木头、金属、皮肤、玻璃如何被统一进参考色调 | all surfaces harmonized into the same muted yellow-green low-contrast grade |\n\n禁止迁移的内容：\n\n| 禁止层 | 示例 | 正确处理 |\n|---|---|---|\n| 空间类型 | 参考图里的原始地点、房间类别、公共场所、自然环境 | 不把参考图空间搬过去，继续画用户要求的新场景 |\n| 具体物件 | 参考图里的原始道具、背景设施、装饰物、可见文字 | 不强行加入，只迁移它们带来的色调和旧化感觉 |\n| 人物身份 | 学生、武士、机器人、路人、店员 | 不复制参考图人物身份，保留用户新主体 |\n| 服装造型 | 校服、皮衣、盔甲、制服、帽子 | 不复制，除非用户明确要求 |\n| 文字标识 | 任何原图中的可读文字、品牌、标牌、信息牌 | 不复制，最终仍然避免可读文字和 logo |\n| 构图物件 | 任何原图中的框架结构、设施结构、背景结构 | 不作为必须出现的道具，只保留相似的明暗、虚焦或压缩感 |\n\n例如参考图是“黄绿荧光、脏旧胶片、低对比、前景虚焦、压抑公共空间感觉”，用户要生成一个新主体和新场景。正确做法不是把新场景改成参考图原场景，也不是加入参考图原道具、原文字或原人物；正确做法是保留用户的新主体和新场景，只把整个画面调成同样的黄绿偏色、低对比、脏旧胶片颗粒、柔焦高光、闷湿阴影和压抑复古情绪。\n\n错误写法：\n\n```text\ninside the original reference location with copied background props, copied signage, and copied scene objects\n```\n\n正确写法：\n\n```text\nwith a sickly muted yellow-green color cast, low-contrast analog film grain, dirty diffused glow, faded chroma, soft lens bloom, shallow-focus haze, compressed dim shadows, and a quietly uneasy worn cinematic mood\n```\n\n内部硬规则：\n\n```text\n最终 Prompt 至少包含 5 个来自参考图的色调风格感觉锚点。\n不能迁移参考图里的具体空间、道具、人物、服装、文字或叙事内容。\n参考图优先控制色相、色温、明暗、饱和度、光线感觉、胶片质感和情绪温度。\n用户的新主体和新场景必须保留，只对它们进行参考图式的调色、光感和质感重映射。\n如果用户粘贴的旧 Prompt 和参考图色调感觉冲突，忽略旧 Prompt 的风格锚点，重新按图片本身提取色调感觉。\n```\n\n---\n\n## 6. 内容占比分配\n\n最终 500+ 英文单词 Prompt 的信息量按下面比例分配。\n\n| 内容模块 | 占比 | 要写什么 |\n|---|---:|---|\n| 新主体与新内容 | 30% | 新主体身份、外观、动作、状态、关键细节 |\n| 参考图风格迁移 | 25% | 色彩、光线、影调、材质、构图气质、时代感 |\n| 场景与空间 | 15% | 新场景、背景、前景、环境细节、空间层次 |\n| 构图与镜头 | 10% | 画幅、主体占比、视角、焦点、留白 |\n| 材质与色彩 | 10% | 表面、纹理、反光、色彩协调 |\n| 质量与限制 | 10% | 清晰度、无文字、无 logo、无水印、避免错误 |\n\n---\n\n## 7. 参考图风格转写词库\n\n不要在最终输出里写“Reference 1”。要把参考图职责转成自然英文描述。\n\n| 参考图特征 | Prompt 中转写 |\n|---|---|\n| 高级灰 | restrained warm gray palette, muted neutrals, subtle tonal contrast |\n| 柔和窗光 | soft directional window light, gentle falloff, natural shadow gradients |\n| 棚拍光 | polished studio lighting, controlled highlights, clean reflective edges |\n| 胶片感 | muted film color, subtle grain, low dynamic range, analog softness |\n| 极简商业图 | minimal composition, clean background, refined product clarity |\n| 科技蓝光 | cool blue rim light, precise highlights, futuristic atmosphere |\n| 暖木色 | warm wood tones, natural material harmony, calm organic palette |\n| 暗调电影感 | low-key cinematic lighting, deep shadows, controlled contrast |\n| 日系清淡 | soft daylight, quiet atmosphere, delicate background detail |\n| 奢侈品质感 | premium finish, elegant restraint, polished material detail |\n| 脏旧黄绿色调 | sickly muted yellow-green color cast, stained warm-green shadows, faded amber-green highlights |\n| 荧光污染感 | fluorescent-like color contamination, dirty diffused glow, greenish-yellow light spill, dull ceiling-like brightness |\n| 虚焦胶片感 | shallow-focus softness, soft lens bloom, smeared highlights, analog blur, gentle focus falloff |\n| 过期胶片 / 老镜头 | low-contrast analog grime, expired film color cast, visible grain, faded chroma, imperfect highlight bloom |\n| 压抑公共空间情绪 | quietly uneasy worn atmosphere, humid dimness, compressed emotional tension, subdued nostalgic melancholy |\n\n---\n\n## 8. Prompt 结构\n\n最终英文 Prompt 应该是一段自然语言。\n\n推荐结构：\n\n```text\nCreate a {image type} featuring {new subject} ... The image should carry a visual language of {style extracted from reference} ... The subject should ... The environment should ... The composition should ... Lighting should ... Materials should ... The final image should feel ... Avoid ...\n```\n\n不要输出：\n\n```text\nReference 1 is responsible for color...\nStrength: medium...\n```\n\n---\n\n## 9. 不同场景写法\n\n### 参考产品摄影风格\n\n最终 Prompt 应强调：\n\n- 新产品形态\n- 商业摄影清晰度\n- 参考图的色彩和光线\n- 干净背景\n- 材质准确\n- no text, no logo\n\n### 参考人像风格\n\n最终 Prompt 应强调：\n\n- 新人物身份\n- 姿势、表情、服装\n- 参考图的光线和肤色影调\n- 自然人体结构\n- 面部清晰\n- no distorted hands\n\n### 参考室内风格\n\n最终 Prompt 应强调：\n\n- 新空间布局\n- 家具和材料\n- 参考图的光线、色调、空间气质\n- 垂直线条准确\n- realistic architecture\n\n### 参考电影剧照风格\n\n最终 Prompt 应强调：\n\n- 新主体和新场景\n- 参考图的影调和光线方向\n- cinematic framing\n- atmospheric depth\n- dramatic but controlled contrast\n\n---\n\n## 10. 最终 Prompt 示例\n\n用户输入：\n\n```markdown\n#Krea2单图参考\n参考图：一张高级灰调室内摄影图\n参考图负责：色彩、柔和窗光、安静的杂志感\n新主体：一间小型现代客厅\n新场景：城市公寓\n画幅：3:2\n```\n\n下面是结构示意，真实调用时必须扩展到不少于 500 个英文单词，并且不要附加任何解释：\n\nCreate a refined 3:2 interior photograph of a compact modern living room inside a quiet city apartment, designed with the restrained elegance of a high-end editorial design magazine and a calm warm-gray visual palette. The room should feel small but carefully composed, with a low neutral sofa placed near a large window, a simple stone or wood coffee table, a soft textured rug, minimal shelving, a few understated ceramic objects, and enough open floor space to make the layout feel breathable rather than crowded. The visual language should carry muted gray, soft taupe, warm off-white, pale oak, and subtle charcoal accents, avoiding bright saturated colors or decorative clutter. Light should enter from one side through a tall window as soft directional daylight, creating gentle gradients across the walls, floor, and furniture, with natural shadow falloff and no harsh artificial glare. The atmosphere should feel quiet, premium, lived-in, and architectural, not staged like a showroom and not overly decorated. Use a balanced editorial composition with straight vertical lines, realistic perspective, a medium-wide camera position, and a clear sense of spatial depth from foreground furniture to background wall surfaces. The sofa should have clean lines, natural fabric texture, and soft folds, while the coffee table should show believable material detail such as honed stone, matte wood, or brushed metal. Keep all decorative objects minimal and intentional, such as a single ceramic vase, one closed book, or a small sculptural lamp, but do not include readable text, brand labels, framed typography, people, pets, or unnecessary visual noise. The floor should show realistic texture and subtle reflections, with warm oak or smooth stone that matches the quiet gray-toned palette. Render the scene as realistic architectural interior photography with crisp focus, natural material fidelity, controlled highlights, soft shadows, clean window light, refined tonal harmony, and a polished magazine-quality finish. Avoid fisheye distortion, warped furniture, crooked walls, overexposure, plastic-looking materials, excessive contrast, messy cables, random objects, visible logos, watermarks, text, cartoon style, painterly effects, or unrealistic proportions.\n\n---\n\n## 11. 500 词扩写库\n\n当用户只给一张参考图和一句新需求时，用下面模块扩写最终 Prompt。扩写只进入最终英文 Prompt，不以清单形式输出。\n\n新主体扩写：写清新主体是什么、形状比例、姿态动作、关键特征、材料表面、视觉优先级，以及如何避免被参考图原主体带偏。\n\n参考风格隐性迁移：把参考图的色彩、光线、影调、材质、构图气质、情绪转成自然英文视觉语言，不要写 `Reference image`、`same as the reference`、`copy the style` 这类机械表达。\n\n新场景扩写：写清新主体所在环境、背景层次、前景元素、空间深度、干净程度、氛围元素，以及哪些东西不能出现。\n\n构图扩写：写清画幅、主体占比、视角、镜头距离、焦点、留白、裁切方式、画面重心和视觉动线。\n\n材质扩写：写清 texture、surface finish、subtle reflection、edge highlight、micro detail、realistic imperfection、tactile quality。\n\n限制扩写：加入 no text, no logo, no watermark, no copied character, no brand mark, no distorted anatomy, no clutter, no random objects, no low-resolution artifacts。\n\n---\n\n## 12. 最终输出自检\n\n输出前内部检查，不要把检查结果输出：\n\n```text\n是否只有一段英文 Prompt？\n是否没有标题、解释、参数、参考图职责、表格、Markdown 代码块？\n是否不少于 500 个英文单词？\n是否详细写了新主体和新场景？\n是否自然融入参考图风格，而不是直接说 copy reference？\n是否提取了至少 5 个参考图色调风格感觉锚点，而不是只写 vintage / cinematic / mood？\n是否只迁移色相、色温、明暗、饱和度、光感、胶片质感和情绪温度？\n是否避免迁移参考图里的具体空间、道具、人物、服装、文字和叙事内容？\n是否加入必要限制？\n```\n\n---\n\n## 13. 复制给 AI 的执行指令\n\n```markdown\n你是 `#Krea2单图参考` 模板。\n\n当我调用该启动词时，你只输出一段英文 Prompt。\n不要输出标题、解释、参数、参考图职责、表格、拆解、Markdown 代码块或任何说明。\n最终英文 Prompt 不少于 500 个英文单词。\n你需要内部分析参考图的色彩、光线、材质、影调、构图气质和情绪，但不要把分析过程输出。\n如果用户额外写了色调、调色、滤镜、影调或配色提示词，只有在它们与参考图一致时才吸收；一旦冲突，必须忽略用户色调词，严格遵循参考图真实色调。\n如果用户内容里包含会破坏参考图色调的隐性色彩词，例如 warm gold、amber light、walnut wood、citrus fruit、colorful posters、bright liquor bottles，也必须重写成参考图兼容的低饱和材质、冷调光线或阴影元素。\n你必须提取参考图的色调风格感觉，包括主色相、色彩比例、明暗影调、饱和度、光线感觉、胶片质感、柔焦程度和情绪温度。最终 Prompt 至少写入 5 个色调风格感觉锚点，不能只用 vintage、cinematic、warm、moody、film grain 等泛化词概括参考图。\n禁止迁移参考图里的具体空间、道具、人物身份、服装、文字、logo 或叙事内容。用户的新主体和新场景必须保留，只把它们重映射到参考图的色调、光感、影调和质感里。\n如果用户粘贴的旧 Prompt 或用户文字与参考图色调感觉冲突，以参考图为准，忽略旧 Prompt 里的风格锚点、色调锚点、光源锚点和调色词。\n最终 Prompt 要自然融合参考图风格，同时详细描述新主体和新场景。\n```\n\n---\n\n## 14. 真实 500+ 词完整输出样例\n\n本节是长度标准参考。真实调用时，最终仍然只输出英文 Prompt，不输出本节标题。\n\nCreate a refined 3:2 architectural interior photograph of a compact modern living room inside a quiet city apartment, using a restrained warm-gray visual language, soft directional window light, muted neutral colors, and the calm editorial discipline of a high-end interior design magazine. The new room should be clearly different from any source image content while carrying a similar sense of tonal restraint, gentle daylight, clean spatial order, and understated premium taste. The space should feel small but carefully composed, with a low neutral sofa placed near a large window, a simple stone or matte wood coffee table, a soft textured rug, pale oak flooring, minimal built-in shelving, and a few intentional ceramic or linen details that add warmth without becoming decorative clutter. The palette should stay cohesive and quiet: warm gray, soft taupe, off-white, pale oak, muted charcoal, and very subtle beige undertones, avoiding saturated colors, glossy artificial finishes, or loud accent objects. Light should enter from one side through a tall window as soft natural daylight, creating gentle gradients across the wall, sofa fabric, floor, table surface, and shelving edges, with natural shadow falloff, no harsh studio glare, and no overexposed window bloom. The room should feel calm, breathable, premium, lived-in, and architectural rather than staged like a furniture showroom. Use a balanced editorial composition with straight vertical lines, realistic perspective, a medium-wide camera position, and enough depth to show foreground texture, the main seating area, and a softened background wall or shelf layer. The sofa should show believable fabric weave, soft folds, clean seams, and subtle compression where cushions meet the frame; the coffee table should show tactile material quality such as honed stone, matte wood grain, or brushed metal edges; the floor should show restrained texture, gentle tonal variation, and soft reflection without looking glossy. Add subtle lived-in cues that do not break the minimal discipline, such as a softly folded throw, a matte ceramic cup without writing, a small shadow beneath the table, a single sculptural lamp, and gentle compression marks in the rug, so the room feels real rather than computer-generated. The window area should show diffused exterior brightness without revealing distracting city details, keeping the viewer’s attention on the interior proportions, material harmony, and quiet tonal balance. Keep decorative objects minimal and purposeful, such as one ceramic vase, one closed book without readable text, or a small stone object, but do not include people, pets, visible brand labels, framed typography, messy cables, random household objects, excessive plants, or decorative clutter. Render the image as realistic editorial interior photography with crisp focus, natural material fidelity, controlled highlights, soft shadows, refined tonal harmony, straight architectural lines, believable scale, and a polished magazine-quality finish. Avoid fisheye distortion, warped furniture, crooked walls, plastic-looking materials, excessive contrast, clutter, watermarks, logos, readable text, cartoon style, painterly effects, unrealistic proportions, oversaturated colors, noisy shadows, and any object that distracts from the quiet warm-gray interior atmosphere.\n\nThe final image should also preserve a quiet sense of air between objects, with subtle tonal separation between wall, sofa, table, and floor, so every element feels intentionally placed and visually calm while still supporting the warm-gray reference mood.\n\n## 附录：结构示意样例（非长度标准）\n\n下面样例用于校准输出密度。真实调用时，最终回答仍然只能输出英文 Prompt 本身，不要输出本节标题。\n\nCreate a refined 3:2 architectural interior photograph of a compact modern living room inside a quiet city apartment, using a restrained warm-gray visual language, soft directional window light, muted neutral colors, and the calm editorial discipline of a high-end interior design magazine. The new room should be clearly different from any source image content while carrying a similar sense of tonal restraint, gentle daylight, clean spatial order, and understated premium taste. The space should feel small but carefully composed, with a low neutral sofa placed near a large window, a simple stone or matte wood coffee table, a soft textured rug, pale oak flooring, minimal built-in shelving, and a few intentional ceramic or linen details that add warmth without becoming decorative clutter. The palette should stay cohesive and quiet: warm gray, soft taupe, off-white, pale oak, muted charcoal, and very subtle beige undertones, avoiding saturated colors, glossy artificial finishes, or loud accent objects. Light should enter from one side through a tall window as soft natural daylight, creating gentle gradients across the wall, sofa fabric, floor, and table surface, with natural shadow falloff, no harsh studio glare, and no overexposed window bloom. The room should feel calm, breathable, premium, lived-in, and architectural rather than staged like a furniture showroom. Use a balanced editorial composition with straight vertical lines, realistic perspective, a medium-wide camera position, and enough depth to show foreground texture, the main seating area, and a softened background wall or shelf layer. The sofa should show believable fabric weave, soft folds, and clean seams; the coffee table should show tactile material quality such as honed stone, matte wood grain, or brushed metal edges; the floor should show subtle texture and restrained reflections. Keep decorative objects minimal and purposeful, such as a single ceramic vase, a closed book without readable text, or a small sculptural lamp, but do not include people, pets, visible brand labels, framed typography, messy cables, random household objects, or excessive plants. Render the image as realistic editorial interior photography with crisp focus, natural material fidelity, controlled highlights, soft shadows, refined tonal harmony, straight architectural lines, believable scale, and a polished magazine-quality finish. Avoid fisheye distortion, warped furniture, crooked walls, plastic-looking materials, excessive contrast, clutter, watermarks, logos, readable text, cartoon style, painterly effects, unrealistic proportions, oversaturated colors, and any object that distracts from the quiet warm-gray interior atmosphere.\nThe final image should also preserve a quiet sense of air between objects, with subtle tonal separation between wall, sofa, table, and floor, so every element feels intentionally placed and visually calm while still supporting the warm-gray reference mood.\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 31,
+   "type": "TTResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "1920x1080 (16:9) (横屏)",
+    1024,
+    1024
+   ],
+   "in_links": [],
+   "out_links": [
+    27,
+    28
+   ]
+  },
+  {
+   "id": 63,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_用户输入提示词",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "用户输入提示词"
+   ],
+   "in_links": [],
+   "out_links": [
+    104
+   ]
+  },
+  {
+   "id": 57,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "参考图"
+   ],
+   "in_links": [
+    98
+   ],
+   "out_links": []
+  },
+  {
+   "id": 21,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    77
+   ],
+   "out_links": [
+    21,
+    111
+   ]
+  },
+  {
+   "id": 15,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    15
+   ],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    31,
+    3
+   ],
+   "out_links": [
+    15
+   ]
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "krea2_turbo_fp8.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 13,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_4b_fp8_scaled.safetensors",
+    "krea2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    14,
+    135
+   ],
+   "out_links": [
+    5,
+    12
+   ]
+  },
+  {
+   "id": 2,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    438722812972960,
+    "randomize",
+    8,
+    1,
+    "euler_ancestral",
+    "beta57",
+    1
+   ],
+   "in_links": [
+    19,
+    5,
+    8,
+    30
+   ],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 64,
+   "type": "ZML_BooleanSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    105
+   ],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 32,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    1
+   ],
+   "in_links": [
+    27,
+    28
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 68,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "大模型提示词"
+   ],
+   "in_links": [
+    111
+   ],
+   "out_links": []
+  },
+  {
+   "id": 41,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    46,
+    104
+   ],
+   "out_links": [
+    70,
+    119
+   ]
+  },
+  {
+   "id": 40,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "下面是用户输入提示词：\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    46
+   ]
+  },
+  {
+   "id": 47,
+   "type": "easy convertAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "string"
+   ],
+   "in_links": [
+    81
+   ],
+   "out_links": [
+    82
+   ]
+  },
+  {
+   "id": 58,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "用户输入提示词"
+   ],
+   "in_links": [
+    116
+   ],
+   "out_links": []
+  },
+  {
+   "id": 48,
+   "type": "easy convertAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "string"
+   ],
+   "in_links": [
+    83
+   ],
+   "out_links": [
+    84
+   ]
+  },
+  {
+   "id": 46,
+   "type": "ImpactSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    82,
+    129,
+    84
+   ],
+   "out_links": [
+    85
+   ]
+  },
+  {
+   "id": 75,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    126
+   ]
+  },
+  {
+   "id": 76,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2
+   ],
+   "in_links": [],
+   "out_links": [
+    127
+   ]
+  },
+  {
+   "id": 62,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_切换生成模式",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "切换生成模式"
+   ],
+   "in_links": [],
+   "out_links": [
+    129
+   ]
+  },
+  {
+   "id": 60,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_参考图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "参考图"
+   ],
+   "in_links": [],
+   "out_links": [
+    101
+   ]
+  },
+  {
+   "id": 49,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "92bb83f6596a7c93e5253e882a80ecbd3a291b7d3ad9756907a10e5269bbba6e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    92
+   ]
+  },
+  {
+   "id": 44,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    85,
+    119
+   ],
+   "out_links": [
+    76
+   ]
+  },
+  {
+   "id": 23,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    21
+   ],
+   "out_links": []
+  },
+  {
+   "id": 79,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    133
+   ]
+  },
+  {
+   "id": 80,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2
+   ],
+   "in_links": [],
+   "out_links": [
+    134
+   ]
+  },
+  {
+   "id": 67,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_用户输入提示词",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "用户输入提示词"
+   ],
+   "in_links": [],
+   "out_links": [
+    132
+   ]
+  },
+  {
+   "id": 69,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_大模型提示词",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "大模型提示词"
+   ],
+   "in_links": [],
+   "out_links": [
+    131
+   ]
+  },
+  {
+   "id": 78,
+   "type": "ImpactSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    131,
+    136,
+    132
+   ],
+   "out_links": [
+    135
+   ]
+  },
+  {
+   "id": 66,
+   "type": "Switch any [Crystools]",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    133,
+    134,
+    107
+   ],
+   "out_links": [
+    136
+   ]
+  },
+  {
+   "id": 59,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "切换生成模式"
+   ],
+   "in_links": [
+    100
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "llama_cpp_model_loader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3.5-9B-Q8_0.gguf",
+    "Qwen3.5-9B-mmproj-BF16.gguf",
+    "Qwen3.5",
+    8192,
+    -1,
+    0,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    22
+   ]
+  },
+  {
+   "id": 52,
+   "type": "ImpactSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    92,
+    102,
+    101
+   ],
+   "out_links": [
+    89
+   ]
+  },
+  {
+   "id": 29,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": [
+    105
+   ]
+  },
+  {
+   "id": 71,
+   "type": "easy convertAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "string"
+   ],
+   "in_links": [
+    138
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 54,
+   "type": "ImpactSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    126,
+    127
+   ],
+   "out_links": [
+    100
+   ]
+  },
+  {
+   "id": 82,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "这里切换\n1是润色提示词，\n2是参考图片进行生成。\n如果直接使用提示词生成，则关闭上方扩写提示词开关"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 81,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "漂亮少女，女生，真人，姿态自然，小头，头像感，特别特别瘦，白皙皮肤。梦核风格的前置摄像头抓拍画面，有一种抓拍的随性松弛氛围感，ins风，随手记录。画面里的18岁岁清冷少女超级漂亮，低分辨率，露出的脸和皮肤微微曝光，柔顺头发，浅褐色长卷发，头发上卸了很多粉色的丝带，拿着一只粉色毛绒丝带兔子，俏皮，精致的耳饰，项链，设计感露肩上衣，浅色温馨室内。"
+   ],
+   "in_links": [],
+   "out_links": [
+    138
+   ]
+  },
+  {
+   "id": 36,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "92bb83f6596a7c93e5253e882a80ecbd3a291b7d3ad9756907a10e5269bbba6e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    98
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 18,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 18,
+   "to_node": 2,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 2,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 21,
+   "to_node": 23,
+   "type": "*"
+  },
+  {
+   "from_node": 21,
+   "to_node": 68,
+   "type": "*"
+  },
+  {
+   "from_node": 22,
+   "to_node": 24,
+   "type": "LLAMACPPARAMS"
+  },
+  {
+   "from_node": 24,
+   "to_node": 21,
+   "type": "*"
+  },
+  {
+   "from_node": 25,
+   "to_node": 24,
+   "type": "LLAMACPPMODEL"
+  },
+  {
+   "from_node": 29,
+   "to_node": 64,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 3,
+   "to_node": 15,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 31,
+   "to_node": 32,
+   "type": "INT"
+  },
+  {
+   "from_node": 31,
+   "to_node": 32,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 2,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 33,
+   "to_node": 47,
+   "type": "*"
+  },
+  {
+   "from_node": 36,
+   "to_node": 57,
+   "type": "*"
+  },
+  {
+   "from_node": 39,
+   "to_node": 38,
+   "type": "STRING"
+  },
+  {
+   "from_node": 39,
+   "to_node": 48,
+   "type": "*"
+  },
+  {
+   "from_node": 4,
+   "to_node": 3,
+   "type": "VAE"
+  },
+  {
+   "from_node": 40,
+   "to_node": 41,
+   "type": "STRING"
+  },
+  {
+   "from_node": 41,
+   "to_node": 24,
+   "type": "STRING"
+  },
+  {
+   "from_node": 41,
+   "to_node": 44,
+   "type": "STRING"
+  },
+  {
+   "from_node": 44,
+   "to_node": 24,
+   "type": "STRING"
+  },
+  {
+   "from_node": 46,
+   "to_node": 44,
+   "type": "STRING"
+  },
+  {
+   "from_node": 47,
+   "to_node": 46,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 46,
+   "type": "STRING"
+  },
+  {
+   "from_node": 49,
+   "to_node": 52,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 52,
+   "to_node": 24,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 59,
+   "type": "*"
+  },
+  {
+   "from_node": 6,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 8,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 60,
+   "to_node": 52,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 61,
+   "to_node": 52,
+   "type": "INT"
+  },
+  {
+   "from_node": 62,
+   "to_node": 46,
+   "type": "INT"
+  },
+  {
+   "from_node": 63,
+   "to_node": 41,
+   "type": "STRING"
+  },
+  {
+   "from_node": 64,
+   "to_node": 66,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 66,
+   "to_node": 78,
+   "type": "INT"
+  },
+  {
+   "from_node": 67,
+   "to_node": 78,
+   "type": "*"
+  },
+  {
+   "from_node": 69,
+   "to_node": 78,
+   "type": "*"
+  },
+  {
+   "from_node": 71,
+   "to_node": 58,
+   "type": "*"
+  },
+  {
+   "from_node": 75,
+   "to_node": 54,
+   "type": "INT"
+  },
+  {
+   "from_node": 76,
+   "to_node": 54,
+   "type": "INT"
+  },
+  {
+   "from_node": 78,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 79,
+   "to_node": 66,
+   "type": "*"
+  },
+  {
+   "from_node": 8,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 80,
+   "to_node": 66,
+   "type": "*"
+  },
+  {
+   "from_node": 81,
+   "to_node": 71,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "utility": 38,
+  "lora": 1,
+  "image_io": 3,
+  "vae": 2,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "conditioning": 3,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "krea2_turbo_fp8.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 87,
+ "structure_hash": "cea7983f549efb47",
+ "param_face": [
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 0,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 1,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 3,
+   "value_preview": "0.05"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 5,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 10,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 11,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 22,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 12,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 61,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "切换生成模式"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 0,
+   "value_preview": "Creative - Refine & Expand Prompt"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 3,
+   "value_preview": "images"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 4,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 5,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 6,
+   "value_preview": "1011645104434361"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 31,
+   "node_type": "TTResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 31,
+   "node_type": "TTResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "1920x1080 (16:9) (横屏)"
+  },
+  {
+   "node_id": 31,
+   "node_type": "TTResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 31,
+   "node_type": "TTResolutionSelector",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 63,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "用户输入提示词"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "参考图"
+  },
+  {
+   "node_id": 15,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "krea2_turbo_fp8.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 13,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "krea2"
+  },
+  {
+   "node_id": 13,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "438722812972960"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "beta57"
+  },
+  {
+   "node_id": 2,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "ZML_BooleanSwitch",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 32,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 32,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 32,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 68,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "大模型提示词"
+  },
+  {
+   "node_id": 41,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 40,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": "下面是用户输入提示词：\n"
+  },
+  {
+   "node_id": 47,
+   "node_type": "easy convertAnything",
+   "widget_index": 0,
+   "value_preview": "string"
+  },
+  {
+   "node_id": 58,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "用户输入提示词"
+  },
+  {
+   "node_id": 48,
+   "node_type": "easy convertAnything",
+   "widget_index": 0,
+   "value_preview": "string"
+  },
+  {
+   "node_id": 46,
+   "node_type": "ImpactSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "ImpactSwitch",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 75,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 76,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "切换生成模式"
+  },
+  {
+   "node_id": 60,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "参考图"
+  },
+  {
+   "node_id": 49,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "92bb83f6596a7c93e5253e882a80ecbd3a291b7d3ad9756907a10e5269bb"
+  },
+  {
+   "node_id": 49,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 44,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 79,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 80,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 67,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "用户输入提示词"
+  },
+  {
+   "node_id": 69,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "大模型提示词"
+  },
+  {
+   "node_id": 78,
+   "node_type": "ImpactSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 78,
+   "node_type": "ImpactSwitch",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 66,
+   "node_type": "Switch any [Crystools]",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 59,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "切换生成模式"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 0,
+   "value_preview": "Qwen3.5-9B-Q8_0.gguf"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 1,
+   "value_preview": "Qwen3.5-9B-mmproj-BF16.gguf"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 2,
+   "value_preview": "Qwen3.5"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 3,
+   "value_preview": "8192"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 4,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 52,
+   "node_type": "ImpactSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 52,
+   "node_type": "ImpactSwitch",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 71,
+   "node_type": "easy convertAnything",
+   "widget_index": 0,
+   "value_preview": "string"
+  },
+  {
+   "node_id": 54,
+   "node_type": "ImpactSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "ImpactSwitch",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 82,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "这里切换\n1是润色提示词，\n2是参考图片进行生成。\n如果直接使用提示词生成，则关闭上方扩写提示词开关"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "92bb83f6596a7c93e5253e882a80ecbd3a291b7d3ad9756907a10e5269bb"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

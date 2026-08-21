@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "图像生成",
+  "虚拟试穿",
+  "服装迁移",
+  "AI换装"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张人物图和一张服装图，自动分割服装/人物区域，结合Flux Redux风格参考与Flux Fill修复，生成人物换上指定服装的结果图。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动生成服装图片的详细英文描述（Florence2 + DeepTranslator），作为额外的文本条件辅助生成。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Flux Redux (flux1-redux-dev) 风格条件注入",
+  "Flux.1 Fill Dev (svdq-int4-flux.1-fill-de) 扩散修复",
+  "ACE++ Subject LoRA 主体一致性保持",
+  "SAM + GroundingDINO 语义分割 / 抠图",
+  "Florence2 详细字幕生成",
+  "Differential Diffusion 局部重绘",
+  "Nunchaku INT4 量化低显存推理"
+ ],
+ "special_features": [
+  {
+   "text": "同时加载Flux Redux风格模型与Flux Fill修复模型：用Redux把服装图编码为风格条件，再在Fill的Inpaint过程中引导生成，实现参考图驱动的换装而非纯文本驱动。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动字幕管道：Florence2Run输出more_detailed_caption后经DeepTranslatorTextNode自动翻译为英文，省去手动输入服装描述。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用两个easy imageConcat节点将人物图、掩码或纯色背景拼接，构造Inpaint所需的多通道条件输入。",
+   "kind": "inference"
+  },
+  {
+   "text": "集成Nunchaku量化DiT loader（svdq-int4-flux.1-fill-de）与Redux风格模型，使FLUX系列模型可在消费级显卡上运行。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "此工作流采用“参考图+局部重绘”的换装路线：先用SAM/DINO精确分割出目标服装区域，再用Florence2自动生成服装语义描述作为附加条件；随后用Flux Redux把服装参考图直接变成风格向量，配合ACE++ LoRA锁定人物身份，最后在Flux Fill的mask区域内扩散生成新服装。由于FLUX模型本身显存需求较高，作者使用Nunchaku量化版DiT来降低资源门槛，因此整体设计兼顾效果与可运行性。",
+ "use_case": "电商服装效果图快速生成、穿搭博主多套服装模拟、虚拟试衣间等场景，可对同一人像快速替换不同服装并保持人物身份和姿势。",
+ "limitation": "必须输入两张图像（人物图+服装图），分割质量直接影响结果；如果服装图与人物透视角度差异过大，生成贴合度会下降。自动翻译和Florence2描述可能不准确，复杂服装可能丢失细节；Nunchaku量化模型也会带来一定精度损失。",
+ "dependencies": [
+  "ComfyUI-LayerUtility",
+  "ComfyUI-Easy-Use",
+  "rgthree-comfy",
+  "ComfyUI-Nunchaku",
+  "SegmentAnythingUltraV2 插件",
+  "Florence2 相关插件",
+  "flux1-redux-dev.safetensors",
+  "svdq-int4-flux.1-fill-de",
+  "ace++_subject_lora16.safetensors",
+  "sigclip_vision_patch14_384.safetensors",
+  "sd3/t5xxl_fp16.safetensors",
+  "ae.sft"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两张图像：人物图 + 服装图",
+  "count": "2"
+ },
+ "output": {
+  "type": "换装结果图（可能同时输出比较图/预览图）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "默认25步；质量优先可加到30-35，追求速度可减到20，FLUX在20步以上已较稳定。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "FLUX推荐cfg=1；若出现比例失衡可微调至1.5-2，不建议超过3。"
+  },
+  {
+   "param": "ModelSamplingFlux/shift",
+   "how_to_tune": "默认1.15适合1024分辨率；低分辨率可降至0.8-1.0，高分辨率可提至1.2-1.3。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认50；若衣物变形可降至30，若与参考图/文本不符可升至70。"
+  },
+  {
+   "param": "NunchakuFluxLoraLoader/strength",
+   "how_to_tune": "约1.0为完整应用LoRA；人物身份保持不足可提高到1.1-1.2，伪影过多则降至0.7-0.9。"
+  },
+  {
+   "param": "Florence2Run/max_new_tokens",
+   "how_to_tune": "默认1024；简单服装可降至512以减少无关描述和计算量。"
+  },
+  {
+   "param": "LayerMask/GroundingDINO threshold",
+   "how_to_tune": "0.3较均衡；误检调高到0.4-0.5，漏检调低到0.2。"
+  },
+  {
+   "param": "KSampler/seed",
+   "how_to_tune": "randomize可每次生成不同结果；固定seed便于复现与调试。"
+  }
+ ],
+ "summary_text": "能力:输入一张人物图和一张服装图，自动分割服装/人物区域，结合Flux Redux风格参考与Flux Fill修复，生成人物换上指定服装的结果图。；能力:自动生成服装图片的详细英文描述（Florence2 + DeepTranslator），作为额外的文本条件辅助生成。；特色:同时加载Flux Redux风格模型与Flux Fill修复模型：用Redux把服装图编码为风格条件，再在Fill的Inpaint过程中引导生成，实现参考图驱动的换装而非纯文本驱动。；特色:自动字幕管道：Florence2Run输出more_detailed_caption后经DeepTranslatorTextNode自动翻译为英文，省去手动输入服装描述。；特色:使用两个easy imageConcat节点将人物图、掩码或纯色背景拼接，构造Inpaint所需的多通道条件输入。；特色:集成Nunchaku量化DiT loader（svdq-int4-flux.1-fill-de）与Redux风格模型，使FLUX系列模型可在消费级显卡上运行。；电商服装效果图快速生成、穿搭博主多套服装模拟、虚拟试衣间等场景，可对同一人像快速替换不同服装并保持人物身份和姿势。；此工作流采用“参考图+局部重绘”的换装路线：先用SAM/DINO精确分割出目标服装区域，再用Florence2自动生成服装语义描述作为附加条件；随后用Flux Redux把服装参考图直接变成风格向量，配合ACE++ LoRA锁定人物身份，最后在Flux Fill的mask区域内扩散生成新服装。由于FLUX模型本身显存需求较高，作者使用Nunchaku量化版DiT来降低资源门槛，因此整体设计兼顾效果与可运行性。"
+}

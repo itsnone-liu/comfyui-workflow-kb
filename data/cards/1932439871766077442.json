@@ -1,0 +1,108 @@
+{
+ "domain": [
+  "视频生成",
+  "图像生成",
+  "人物动画",
+  "街舞动作/特效迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张双人合影，按工作流内置说明“上传一张双人图片就可以让他们调起来”，用 Wan2.1-I2V 生成双人跳舞视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过大量 WanVideoLoraSelect 引入街舞单手倒立、倒立直转、托马斯、双人对战/对打、大风车、拔刀/起火特效等动作，形成舞蹈/特效动作库。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 GIMMVFI_interpolate（1→4、1→7）对视频做帧插值，输出更平滑/慢动作的视频版本。",
+   "kind": "fact"
+  },
+  {
+   "text": "结合 FLUX 图生图增强、增加细节SYK_Mild detail adju LoRA、两次 UltimateSDUpscaleCustomSample（1.2/1.8）与 4x-UltraSharp，对输入图片做高质量放大与细节增强后再进入视频环节。",
+   "kind": "inference"
+  },
+  {
+   "text": "最终由 6 个 VHS_VideoCombine 输出多段视频文件，可分别保存不同动作/效果/慢动作版本。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Upscale-Hires",
+  "Wan2.1-I2V 图生视频",
+  "LoRA 动作/特效混合",
+  "UltimateSDUpscale + 4x-UltraSharp 高清放大",
+  "GIMMVFI 视频插帧",
+  "WanVideoTeaCache / WanVideoBlockSwap / FP8 显存优化",
+  "LyingSigmaSampler 采样调优",
+  "rgthree Fast Groups Bypasser 模块切换"
+ ],
+ "special_features": [
+  {
+   "text": "动作 LoRA 大列表：超过 30 个 WanVideoLoraSelect 以 0.01 低权重叠加多个舞蹈动作/特效，而“220调戏.safetensors”用 0.75 高权重，疑似“主动作 + 大量辅助 LoRA 合流”的极客调法。",
+   "kind": "inference"
+  },
+  {
+   "text": "跨模型两级工程：FLUX（DualCLIPLoader + CLIPTextEncodeFlux）负责图像细节/放大，Wan2.1-I2V（WanVideoModelLoader + WanVideoSampler）负责视频生成；两套文本编码体系（FLUX CLIP 与 Wan 的 umt5-xxl/open-clip-xlm-roberta）并存。",
+   "kind": "inference"
+  },
+  {
+   "text": "双 GIMMVFI 插帧节点（1→4 与 1→7）并行，可能分别生成不同慢动作/Smooth 程度的视频版本供选择。",
+   "kind": "fact"
+  },
+  {
+   "text": "显存与实验设计：WanVideoTeaCache(0.13)、WanVideoBlockSwap(20)、LayerUtility: PurgeVRAM、6 个 Fast Groups Bypasser、2 个 Image Comparer 共存，兼顾 14B 模型省显存和快速 A/B 对比。",
+   "kind": "fact"
+  },
+  {
+   "text": "VideoHelperSuite 多路视频管线：3 个 VHS_LoadVideo（非用户输入标记）与 6 个 VHS_VideoCombine 并存，暗示有参考视频/音频/多片段并行合成逻辑，但具体连接关系需要看原工作流。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整体像一条“图生舞”流水线：用户只提供一张双人照片，FLUX 前置把图修清晰/放大，Wan2.1-I2V 根据动作 LoRA 生成舞蹈视频；多个 LoRA 低权重叠加是为了在一个视频里混合出多种街舞动作/特效，而不用逐段训练；GIMMVFI 插帧把模型输出的视频变成更丝滑的慢动作。作者还加入 TeaCache/BlockSwap/PurgeVRAM 来降低 Wan2.1-14B 的显存压力，并用 Fast Groups Bypasser 方便在不同舞种/版本间切换。设计意图更像“动作 LoRA 大锅烩 + 后期补帧”的实验性模板。",
+ "use_case": "适合“一张双人照生成一段双人街舞视频”的创意短视频场景；也可用于快速尝试不同舞蹈动作 LoRA 的混合效果，输出多个版本后挑选最佳片段。",
+ "limitation": "依赖大量未随工作流打包的模型文件：Wan2_1-I2V-14B-480P、FLUX.1 相关模型、umt5-xxl-enc、open-clip-xlm-roberta、GIMMVFI 的 gimmvfi_r_arb_lpips_fp32、4x-UltraSharp 以及 30+ 个舞蹈/特效 LoRA；任一缺失都会运行报错。需要安装 VideoHelperSuite、ComfyUI-WanVideoWrapper、UltimateSDUpscale、rgthree-comfy、KJNodes、LayerUtility 等插件。显存需求仍很高，虽然用了 fp8 与 BlockSwap；输入被限定为双人图片，动作范围受 LoRA 覆盖限制，双人不清晰/遮挡严重时效果可能不稳定。",
+ "dependencies": [
+  "ComfyUI-WanVideoWrapper (WanVideoModelLoader/WanVideoSampler/WanVideoLoraSelect 等)",
+  "ComfyUI-VideoHelperSuite (VHS_LoadVideo/VHS_VideoCombine)",
+  "ComfyUI_UltimateSDUpscale (UltimateSDUpscaleCustomSample)",
+  "rgthree-comfy (Fast Groups Bypasser/Image Comparer)",
+  "ComfyUI-KJNodes (ImageResizeKJ)",
+  "LayerUtility (PurgeVRAM)",
+  "GIMM-VFI (DownloadAndLoadGIMMVFIModel/GIMMVFI_interpolate)",
+  "ComfyUI Easy Use (easy imageSize)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1 张双人合影"
+ },
+ "output": {
+  "type": "video 文件（VHS_VideoCombine，多路） + 预览图",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoTeaCache",
+   "how_to_tune": "threshold=0.13 是加速缓存阈值；如果画面出现闪烁/细节丢失，可降到 0.08-0.10 换质量，但速度和显存压力会变大。"
+  },
+  {
+   "param": "WanVideoSampler",
+   "how_to_tune": "steps=20, cfg=6, shift=5。动作不稳定可把 steps 提高到 25-30；颜色过饱和/过淡可微调 cfg；shift 影响噪声调度，通常保持 5 附近。"
+  },
+  {
+   "param": "WanVideoLoraSelect 权重",
+   "how_to_tune": "多数 LoRA 为 0.01 弱混合，220调戏.safetensors 为 0.75 主控。想让某个招式更明显可单独提高对应 LoRA 到 0.1-0.3，但多 LoRA 同时加高容易互相干扰/动作崩坏。"
+  },
+  {
+   "param": "GIMMVFI_interpolate",
+   "how_to_tune": "1→4 / 1→7 是插帧倍数，倍数越大慢动作越 smooth 但计算量/伪影越大；运动剧烈时先用 1→4，稳定后再尝试 1→7。"
+  },
+  {
+   "param": "UltimateSDUpscaleCustomSample",
+   "how_to_tune": "scale=1.2/1.8 表示两级放大倍率，配 4x-UltraSharp。倍率越高细节越强，但 FLUX 重绘可能改变人脸/身份；以保证人物一致为首要目标时建议不超过 2.0。"
+  }
+ ],
+ "summary_text": "能力:上传一张双人合影，按工作流内置说明“上传一张双人图片就可以让他们调起来”，用 Wan2.1-I2V 生成双人跳舞视频。；能力:通过大量 WanVideoLoraSelect 引入街舞单手倒立、倒立直转、托马斯、双人对战/对打、大风车、拔刀/起火特效等动作，形成舞蹈/特效动作库。；能力:使用 GIMMVFI_interpolate（1→4、1→7）对视频做帧插值，输出更平滑/慢动作的视频版本。；能力:结合 FLUX 图生图增强、增加细节SYK_Mild detail adju LoRA、两次 UltimateSDUpscaleCustomSample（1.2/1.8）与 4x-UltraSharp，对输入图片做高质量放大与细节增强后再进入视频环节。；能力:最终由 6 个 VHS_VideoCombine 输出多段视频文件，可分别保存不同动作/效果/慢动作版本。；特色:动作 LoRA 大列表：超过 30 个 WanVideoLoraSelect 以 0.01 低权重叠加多个舞蹈动作/特效，而“220调戏.safetensors”用 0.75 高权重，疑似“主动作 + 大量辅助 LoRA 合流”的极客调法。；特色:跨模型两级工程：FLUX（DualCLIPLoader + CLIPTextEncodeFlux）负责图像细节/放大，Wan2.1-I2V（WanVideoModelLoader + WanVideoSampler）负责视频生成；两套文本编码体系（FLUX CLIP 与 Wan 的 umt5-xxl/open-clip-xlm-roberta）并存。；特色:双 GIMMVFI 插帧节点（1→4 与 1→7）并行，可能分别生成不同慢动作/Smooth 程度的视频版本供选择。；特色:显存与实验设计：WanVideoTeaCache(0.13)、WanVideoBlockSwap(20)、LayerUtility: PurgeVRAM、6 个 Fast Groups Bypasser、2 个 Image Comparer 共存，兼顾 14B 模型省显存和快速 A/B 对比。；特色:VideoHelperSuite 多路视频管线：3 个 VHS_LoadVideo（非用户输入标记）与 6 个 VHS_VideoCombine 并存，暗示有参考视频/音频/多片段并行合成逻辑，但具体连接关系需要看原工作流。；适合“一张双人照生成一段双人街舞视频”的创意短视频场景；也可用于快速尝试不同舞蹈动作 LoRA 的混合效果，输出多个版本后挑选最佳片段。；整体像一条“图生舞”流水线：用户只提供一张双人照片，FLUX 前置把图修清晰/放大，Wan2.1-I2V 根据动作 LoRA 生成舞蹈视频；多个 LoRA 低权重叠加是为了在一个视频里混合出多种街舞动作/特效，而不用逐段"
+}

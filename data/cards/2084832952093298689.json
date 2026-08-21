@@ -1,0 +1,95 @@
+{
+ "domain": [
+  "图生视频",
+  "人物类特效",
+  "数字人"
+ ],
+ "capabilities": [
+  {
+   "text": "输入9张参考图、1个参考视频和1个参考音频，端到端生成融合多模态条件的高质量视频（含音频轨道）",
+   "kind": "fact"
+  },
+  {
+   "text": "支持对参考人物的外貌、动作、场景等多维特征保持，生成数字人或角色一致性的视频",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 Reference-to-Video 多模态参考生成",
+  "Text+Image+Video+Audio 混合条件注入（Qwen3VL CLIP）",
+  "ResMultistep 采样器 + BasicGuider 引导",
+  "VAE 视频/音频双解码",
+  "SageAttention 注意力加速",
+  "PainterVRAM 显存优化",
+  "ComfyMathExpression 动态帧数计算",
+  "VHS 视频加载与合成"
+ ],
+ "special_features": [
+  {
+   "text": "9路 LoadImage 并行组成多参考图输入，并与视频/音频参考同时送入 MiniMaxH3ReferenceToVideo，实现多模态多参考融合",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ComfyMathExpression 根据分辨率动态计算生成帧数，适配不同宽高比",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 PathchSageAttentionKJ 与 PainterVRAM，在低显存下加速生成",
+   "kind": "fact"
+  },
+  {
+   "text": "VAE 同时解码视频和音频，输出带声轨的视频",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "此工作流旨在将 MiniMax H3 的参考生成能力模块化、加速化，并通过多路参考图/视频/音频输入提供更细粒度的内容控制。作者通过 SageAttention 和显存优化节点降低使用门槛，同时用动态帧数计算提升不同分辨率下的生成效率，可能面向数字人/角色一致性视频制作场景。",
+ "use_case": "多参考图+视频+音频驱动的数字人视频生成、人物类特效视频制作、角色一致性内容创作",
+ "limitation": "依赖特定 MiniMax H3 模型文件（checkpoint、CLIP、双 VAE），需要自定义节点（MiniMaxH3ReferenceToVideo、PainterVRAM、PathchSageAttentionKJ、ComfyMathExpression、VHS 等）；原始工作流固定为9图输入，如需更多/更少需修改连线；生成质量受参考图/视频/音频的清晰度与一致性影响。",
+ "dependencies": [
+  "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+  "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "MiniMaxH3ReferenceToVideo",
+  "PainterVRAM",
+  "PathchSageAttentionKJ",
+  "ComfyMathExpression",
+  "VHS_LoadVideo/VHS_VideoCombine"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "9张参考图像 + 1个参考视频 + 1个参考音频",
+  "count": "9 image / 1 video / 1 audio"
+ },
+ "output": {
+  "type": "带音频的视频文件",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ResolutionSelector 宽高比",
+   "how_to_tune": "按目标平台选择（如9:16竖屏），影响生成视频的长宽比和总像素；数值越小越省显存"
+  },
+  {
+   "param": "BasicScheduler steps",
+   "how_to_tune": "步数越多细节越好但耗时越长；建议20附近，质量不足可上调至30"
+  },
+  {
+   "param": "ComfyMathExpression 公式 max(5, round(a * 24))",
+   "how_to_tune": "a 通常来自分辨率/参考视频长度等变量，用于自动决定生成帧数；要生成更长视频可增大系数24"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo frames",
+   "how_to_tune": "手动指定帧数时可直接覆盖动态计算值；需注意帧数越高显存占用越大"
+  },
+  {
+   "param": "PainterVRAM mode",
+   "how_to_tune": "auto 模式自动选择省显存策略；若爆显存可手动降低等级"
+  },
+  {
+   "param": "PathchSageAttentionKJ",
+   "how_to_tune": "开启后加速注意力计算，若出现精度问题可关闭"
+  }
+ ],
+ "summary_text": "能力:输入9张参考图、1个参考视频和1个参考音频，端到端生成融合多模态条件的高质量视频（含音频轨道）；能力:支持对参考人物的外貌、动作、场景等多维特征保持，生成数字人或角色一致性的视频；特色:9路 LoadImage 并行组成多参考图输入，并与视频/音频参考同时送入 MiniMaxH3ReferenceToVideo，实现多模态多参考融合；特色:使用 ComfyMathExpression 根据分辨率动态计算生成帧数，适配不同宽高比；特色:集成 PathchSageAttentionKJ 与 PainterVRAM，在低显存下加速生成；特色:VAE 同时解码视频和音频，输出带声轨的视频；多参考图+视频+音频驱动的数字人视频生成、人物类特效视频制作、角色一致性内容创作；此工作流旨在将 MiniMax H3 的参考生成能力模块化、加速化，并通过多路参考图/视频/音频输入提供更细粒度的内容控制。作者通过 SageAttention 和显存优化节点降低使用门槛，同时用动态帧数计算提升不同分辨率下的生成效率，可能面向数字人/角色一致性视频制作场景。"
+}

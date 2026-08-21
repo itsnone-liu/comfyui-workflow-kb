@@ -1,0 +1,77 @@
+{
+ "domain": [
+  "video_generation",
+  "text_to_video"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一段自然语言提示词，调用 MiniMax Hailuo H3 模型生成约 10 秒、2K、16:9 的短视频，并自动保存为本地视频文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "在同一工作流中并行展示生成视频的首帧预览图和任务信息 JSON（含 taskId），让用户无需打开远端平台即可核对任务状态与成品。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Text-to-Video（文生视频）",
+  "Hailuo H3 / MiniMax 视频生成 API 集成",
+  "多路输出分流：一个生成节点同时连接预览显示、任务信息显示和视频保存",
+  "极简 utility + video_io 线性工作流"
+ ],
+ "special_features": [
+  {
+   "text": "仅用 4 个节点完成从提示词到成片落盘的最小链路，不包含超分、插帧、配音等后处理，属于可一键复现的极限精简模板。",
+   "kind": "fact"
+  },
+  {
+   "text": "将同一个 API 生成结果同时路由到两个 showAnything 观测节点和一个 SaveVideo 保存节点，形成面向黑盒 API 的“预览+元数据+产物”三路观测结构。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个模板似乎是为了快速验证 Hailuo H3 的文本生成视频能力而设计：以最少的 3 条连接把生成、预览和保存串成闭环，重点在于让用户第一时间看到“提示词→视频”的直接结果，而不是做复杂的后期处理链路。",
+ "use_case": "作为 Hailuo H3 文生视频的入门测试模板，适合快速体验提示词到成片的完整流程，也可作为后续接入声音、拼接、风格化等后处理步骤的起点。",
+ "limitation": "依赖 RH_MinimaxHailuoH3TextToVideo 自定义节点以及 MiniMax/Hailuo API 的访问权限与配额；视频时长、分辨率和宽高比受 API 限制；模板本身不含提示词优化、负向提示词或视频后期编辑，生成质量完全取决于 H3 模型与 API 策略。",
+ "dependencies": [
+  "RH_MinimaxHailuoH3TextToVideo（自定义节点）",
+  "ComfyUI easy-showAnything 节点（原生扩展）",
+  "ComfyUI SaveVideo 节点",
+  "MiniMax/Hailuo API Key 及网络访问权限"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "text prompt（自然语言视频描述）及基础生成参数（时长、分辨率、宽高比）",
+  "count": "1"
+ },
+ "output": {
+  "type": "本地视频文件 + 首帧预览图 + taskId JSON 输出",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Minimax H3 \"10 second vi\"",
+   "how_to_tune": "该选项疑似为“10 秒视频”时长档位；若 API 支持更多档位，可依据使用场景选择，快速测试时优先短时长以节省配额。"
+  },
+  {
+   "param": "2K",
+   "how_to_tune": "生成分辨率档位，2K 适合高质量展示但耗时更长；测试提示词效果时可下调至 1080P。"
+  },
+  {
+   "param": "10",
+   "how_to_tune": "视频时长（秒），与上述“10 second vi”档位保持一致；以 API 实际支持范围为准。"
+  },
+  {
+   "param": "16:9",
+   "how_to_tune": "画面宽高比；横屏叙事用 16:9，短视频/竖屏场景可切换到 9:16 或 1:1。"
+  },
+  {
+   "param": "False",
+   "how_to_tune": "可能是快速模式或提示词优化开关：若生成结果不稳定可尝试开启优化；若追求最快返回，则保持关闭。"
+  },
+  {
+   "param": "173335921",
+   "how_to_tune": "疑似任务/种子标识，用于追踪一次 API 请求；排查问题时保留该值，确认是否可复现相同结果。"
+  }
+ ],
+ "summary_text": "能力:输入一段自然语言提示词，调用 MiniMax Hailuo H3 模型生成约 10 秒、2K、16:9 的短视频，并自动保存为本地视频文件。；能力:在同一工作流中并行展示生成视频的首帧预览图和任务信息 JSON（含 taskId），让用户无需打开远端平台即可核对任务状态与成品。；特色:仅用 4 个节点完成从提示词到成片落盘的最小链路，不包含超分、插帧、配音等后处理，属于可一键复现的极限精简模板。；特色:将同一个 API 生成结果同时路由到两个 showAnything 观测节点和一个 SaveVideo 保存节点，形成面向黑盒 API 的“预览+元数据+产物”三路观测结构。；作为 Hailuo H3 文生视频的入门测试模板，适合快速体验提示词到成片的完整流程，也可作为后续接入声音、拼接、风格化等后处理步骤的起点。；这个模板似乎是为了快速验证 Hailuo H3 的文本生成视频能力而设计：以最少的 3 条连接把生成、预览和保存串成闭环，重点在于让用户第一时间看到“提示词→视频”的直接结果，而不是做复杂的后期处理链路。"
+}

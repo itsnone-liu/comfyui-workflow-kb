@@ -1,0 +1,100 @@
+{
+ "domain": [
+  "数字人"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物图片与一段音频，端到端生成口型同步的说话视频",
+   "kind": "fact"
+  },
+  {
+   "text": "根据音频时长自动推算生成帧数，保证视频长度与音频匹配",
+   "kind": "inference"
+  },
+  {
+   "text": "支持分辨率/宽高比选择，输出可定制尺寸的视频",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 Ref2VA 参考图到视频模型",
+  "VRGDG_MiniMaxH3AudioDrive 音频驱动口型同步",
+  "Qwen3VL 32B int8 CLIP 编码器加载",
+  "双 VAE 分离解码（视频/音频）",
+  "LoRA lightx2v turbo 4-step 加速采样",
+  "MiniMaxH3MemoryEfficientSageAttentionPatch 显存优化",
+  "SoundFlow_GetLength + ComfyMathExpression 音频长度→帧数计算"
+ ],
+ "special_features": [
+  {
+   "text": "音频时长驱动动态帧数：SoundFlow_GetLength 获取音频长度，ComfyMathExpression 计算约 a*24 帧，让视频长度贴合音频",
+   "kind": "fact"
+  },
+  {
+   "text": "视频和音频使用独立的 VAE（minimax_h3_video_vae_fp16 与 minimax_h3_audio_vae_fp32），分路处理后再合成",
+   "kind": "fact"
+  },
+  {
+   "text": "嵌入 MiniMaxH3MemoryEfficientSageAttentionPatch，降低注意力计算显存占用，利于长视频生成",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 lightx2v_turbo_4step LoRA（强度 0.75）将推理压缩到约 6 步，显著提速",
+   "kind": "fact"
+  },
+  {
+   "text": "采用 VRGDG_MiniMaxH3AudioDrive 模块将音频条件注入采样过程，实现对口型",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕 MiniMax H3 的 Ref2VA 能力构建：以参考图片作为身份/形象条件，音频通过 VRGDG 模块驱动口型，生成与语音内容同步的说话视频。为了工程可用性，使用 turbo LoRA 将采样步数降至 6 步，并启用 SageAttention 显存优化，降低高端显卡门槛；再通过读取音频时长计算帧数，使视频长度自动匹配输入音频；双 VAE 设计则分别解码视频与音频，保证两种模态互不干扰。整体设计兼顾效果、效率与易用性。",
+ "use_case": "适用于数字人播报、虚拟主播、历史照片/绘画人物说话、影视配音对口型等需要让静态形象开口说话的内容生产场景。",
+ "limitation": "需要加载多个大型模型（Ref2VA bf16、Qwen3VL 32B int8、两个 VAE），显存与内存占用较高；依赖 MiniMax H3 自定义节点、VRGDG、SoundFlow、VideoHelperSuite 等扩展，需手动安装；输入图片需为人脸正面/清晰形象，音频需干净，否则口型效果受影响；生成帧数直接由音频长度×24 决定，长音频耗时会线性增长。",
+ "dependencies": [
+  "minimax_h3_ref2va_bf16.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_fl2v_lightx2v_turbo_4step_v0.1_comfy.safetensors",
+  "ComfyUI MiniMax H3 节点（MiniMaxH3ReferenceToVideo 等）",
+  "VRGDG_MiniMaxH3AudioDrive 自定义节点",
+  "SoundFlow 自定义节点",
+  "VideoHelperSuite (VHS_VideoCombine)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "一张人物图片 + 一段音频",
+  "count": "1 张图片 + 1 个音频"
+ },
+ "output": {
+  "type": "MP4 视频文件",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly.strength",
+   "how_to_tune": "当前 0.75，控制 turbo 加速 LoRA 的影响程度；增大更接近 4 步出图风格，但可能损失细节，一般可在 0.5–1.0 之间调节。"
+  },
+  {
+   "param": "BasicScheduler.steps",
+   "how_to_tune": "当前 6 步；配合 lightx2v_turbo_4step LoRA 可在 4–8 步间调节，步数越高质量越好但更慢。"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo.width/height/frames",
+   "how_to_tune": "当前 1344×768、124 帧；分辨率越高显存占用越大，frames 实际会被音频长度计算结果覆盖，可只设上限/初始值。"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "可用于切换 16:9 等宽高比，影响画面的构图与输出尺寸，选择合适的比例以避免人物裁切。"
+  },
+  {
+   "param": "ComfyMathExpression",
+   "how_to_tune": "公式 max(5, round(a * 24)) 中的 24 为帧率，若输出需要不同帧率应同步修改；a 来自音频长度（秒）。"
+  },
+  {
+   "param": "RandomNoise.seed",
+   "how_to_tune": "固定种子可复现结果，随机化则每次生成不同微表情/动作。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物图片与一段音频，端到端生成口型同步的说话视频；能力:根据音频时长自动推算生成帧数，保证视频长度与音频匹配；能力:支持分辨率/宽高比选择，输出可定制尺寸的视频；特色:音频时长驱动动态帧数：SoundFlow_GetLength 获取音频长度，ComfyMathExpression 计算约 a*24 帧，让视频长度贴合音频；特色:视频和音频使用独立的 VAE（minimax_h3_video_vae_fp16 与 minimax_h3_audio_vae_fp32），分路处理后再合成；特色:嵌入 MiniMaxH3MemoryEfficientSageAttentionPatch，降低注意力计算显存占用，利于长视频生成；特色:使用 lightx2v_turbo_4step LoRA（强度 0.75）将推理压缩到约 6 步，显著提速；特色:采用 VRGDG_MiniMaxH3AudioDrive 模块将音频条件注入采样过程，实现对口型；适用于数字人播报、虚拟主播、历史照片/绘画人物说话、影视配音对口型等需要让静态形象开口说话的内容生产场景。；该工作流围绕 MiniMax H3 的 Ref2VA 能力构建：以参考图片作为身份/形象条件，音频通过 VRGDG 模块驱动口型，生成与语音内容同步的说话视频。为了工程可用性，使用 turbo LoRA 将采样步数降至 6 步，并启用 SageAttention 显存优化，降低高端显卡门槛；再通过读取音频时长计算帧数，使视频长度自动匹配输入音频；双 VAE 设计则分别解码视频与音频，保证两种模态互不干扰。整体设计兼顾效果、效率与易用性。"
+}

@@ -1,0 +1,2933 @@
+{
+ "node_count": 68,
+ "link_count": 78,
+ "active_node_count": 42,
+ "nodes": [
+  {
+   "id": 29,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    24,
+    39
+   ]
+  },
+  {
+   "id": 26,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    38
+   ]
+  },
+  {
+   "id": 22,
+   "type": "Seed (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    -1,
+    "",
+    "",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 56,
+   "type": "SeedVR2LoadVAEModel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ema_vae_fp16.safetensors",
+    "cuda:0",
+    true,
+    1024,
+    128,
+    true,
+    1024,
+    128,
+    "false",
+    "cpu"
+   ],
+   "in_links": [],
+   "out_links": [
+    81
+   ]
+  },
+  {
+   "id": 53,
+   "type": "easy int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4096
+   ],
+   "in_links": [],
+   "out_links": [
+    83
+   ]
+  },
+  {
+   "id": 58,
+   "type": "easy int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4096
+   ],
+   "in_links": [],
+   "out_links": [
+    82
+   ]
+  },
+  {
+   "id": 30,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors",
+    1
+   ],
+   "in_links": [
+    78
+   ],
+   "out_links": [
+    59
+   ]
+  },
+  {
+   "id": 55,
+   "type": "SeedVR2LoadDiTModel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+    "cuda:0",
+    36,
+    false,
+    "cpu",
+    "sdpa"
+   ],
+   "in_links": [],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 80,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_4b.safetensors",
+    "lumina2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    106,
+    109
+   ]
+  },
+  {
+   "id": 79,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_turbo_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    122
+   ]
+  },
+  {
+   "id": 82,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.0000000000000004
+   ],
+   "in_links": [
+    123
+   ],
+   "out_links": [
+    110,
+    114
+   ]
+  },
+  {
+   "id": 76,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    952423965103406,
+    "randomize",
+    8,
+    1,
+    "res_2m",
+    "sgm_uniform",
+    5,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    110,
+    143,
+    144,
+    113
+   ],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 71,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_turbo-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    108,
+    145
+   ]
+  },
+  {
+   "id": 75,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "\nDescribe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate.\n\n终极禁止项（仅保留光影相关）\n✘ 五官矛盾（修改后的五官不一致）\n✘ 背景颜色矛盾（修改后的背景颜色和原图不一致）\n✘ 表情矛盾（修改后的表情和原图不一致，特别是口部有没有张嘴）\n✘ 身材矛盾（修改后的身材和原图不一致，特别是胸部和隐私部位，必须一致）\n✘ 服装矛盾（修改后的服装和原图不一致）\n✘ 光影矛盾（光源方向偏移＞1°、阴影投射角度/模糊度/透明度与参考图不一致）\n✘ 噪点失真（200%放大时噪点分布统计特征差异＞0.3% RMS）\n✘ 未授权光影增删（新增高光/反射/环境光，或删除原生阴影）\n✘ 遮挡区光影断裂（恢复区域与相邻像素的光照梯度偏差＞2%）\n\n光影继承铁律\n光源复刻\n光源方向/颜色/柔和度必须与参考图完全一致（HSL色偏≤5%）\n环境反射光强度与色温需100%匹配（禁止添加虚拟补光）\n阴影同步\n阴影投射角度误差≤1°，模糊半径/透明度与参考图物理等效\n多物体阴影必须保持同一光源逻辑（如参考图无多重阴影，输出严禁生成）\n遮挡区域恢复（仅当用户明确指令时激活）\n恢复内容必须仅基于相邻像素的光影外推（禁止语义推测）\n光照融合标准：恢复区与未遮挡区的强度梯度差≤2%，噪点分布标准差差异＜0.3%\n质量熔断机制\n• 200%放大检测到以下任一即终止输出：\n➤ 光源方向偏移＞1°\n➤ 阴影投射逻辑断裂（如角度/模糊度突变）\n➤ 噪点分布统计特征异常（色度标准差差异≥0.5%）\n• 遮挡恢复失败时自动回滚至原始遮挡状态\n\n技术参数强制同步（EXIF硬性嵌入）\n相机：索尼 A7R V  镜头：FE 85mm GM  \n光圈：f/2.8  快门：1/200s  ISO：100  \n白平衡：参考图色温±50K  测光模式：点测光（同参考图主体区域）  \n"
+   ],
+   "in_links": [
+    109
+   ],
+   "out_links": [
+    139
+   ]
+  },
+  {
+   "id": 73,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    106
+   ],
+   "out_links": [
+    105,
+    138
+   ]
+  },
+  {
+   "id": 86,
+   "type": "FluxKontextImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    150
+   ],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 85,
+   "type": "LayerMask: LoadSegmentAnythingModels",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinT_OGC (694MB)"
+   ],
+   "in_links": [],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 74,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    107,
+    108
+   ],
+   "out_links": [
+    117,
+    151
+   ]
+  },
+  {
+   "id": 77,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    1040801365083111,
+    "randomize",
+    8,
+    1,
+    "dpmpp_2m",
+    "exponential",
+    5,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    114,
+    146,
+    147,
+    142
+   ],
+   "out_links": [
+    113
+   ]
+  },
+  {
+   "id": 61,
+   "type": "ImageScaleRestore_UTK",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.30000000000000004,
+    "lanczos",
+    "longest",
+    768,
+    "8"
+   ],
+   "in_links": [
+    152
+   ],
+   "out_links": [
+    89
+   ]
+  },
+  {
+   "id": 21,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    104,
+    24
+   ],
+   "out_links": [
+    22,
+    90
+   ]
+  },
+  {
+   "id": 37,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Any2Cosplay_25.safetensors",
+    0.8000000000000002
+   ],
+   "in_links": [
+    59
+   ],
+   "out_links": [
+    60
+   ]
+  },
+  {
+   "id": 27,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1023431544453213,
+    "randomize",
+    4,
+    1,
+    "res_2m",
+    "sgm_uniform",
+    1
+   ],
+   "in_links": [
+    60,
+    30,
+    31,
+    32,
+    33
+   ],
+   "out_links": [
+    104
+   ]
+  },
+  {
+   "id": 19,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_edit_2511_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 36,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "bicubic",
+    "None",
+    "longest",
+    1440,
+    "#000000"
+   ],
+   "in_links": [
+    46
+   ],
+   "out_links": [
+    43,
+    54
+   ]
+  },
+  {
+   "id": 23,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_mrtua_00001_jheos_1781317694.jpg&type=temp&subfolder=&rand=0.07615054188966996&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzI1N2M4ODVjMWFhYTlkZGRmY2MzMmFjMDRjNmJhMSIsInNpZ25FeHBpcmUiOjE3ODE5MjI0MDkyMjMsInRzIjoxNzgxMzE3NjA5MjIzLCJzaWduIjoiYjVlNjliMTU0ZDY5NmExOGExNjI1NTI5NGJlOTA0YjkifQ==&Rh-Identify=f3257c885c1aaa9dddfcc32ac04c6ba1"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_mrtua_00002_osvkk_1781317697.jpg&type=temp&subfolder=&rand=0.4674467660507907&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzI1N2M4ODVjMWFhYTlkZGRmY2MzMmFjMDRjNmJhMSIsInNpZ25FeHBpcmUiOjE3ODE5MjI0MDkyMjMsInRzIjoxNzgxMzE3NjA5MjIzLCJzaWduIjoiYjVlNjliMTU0ZDY5NmExOGExNjI1NTI5NGJlOTA0YjkifQ==&Rh-Identify=f3257c885c1aaa9dddfcc32ac04c6ba1"
+     }
+    ]
+   ],
+   "in_links": [
+    153,
+    154
+   ],
+   "out_links": []
+  },
+  {
+   "id": 81,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Z-image绝对真人像写真.safetensors",
+    0.8000000000000002
+   ],
+   "in_links": [
+    122
+   ],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 88,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    129
+   ],
+   "out_links": [
+    155
+   ]
+  },
+  {
+   "id": 62,
+   "type": "PurgeVRAM_UTK",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    90
+   ],
+   "out_links": [
+    149,
+    150
+   ]
+  },
+  {
+   "id": 72,
+   "type": "RunningHub Deepcleaner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Purge Model"
+   ],
+   "in_links": [
+    105
+   ],
+   "out_links": []
+  },
+  {
+   "id": 84,
+   "type": "LayerMask: SegmentAnythingUltra V3",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.3,
+    "VITMatte",
+    6,
+    6,
+    0.15,
+    0.99,
+    true,
+    "face",
+    "cuda",
+    2
+   ],
+   "in_links": [
+    124,
+    125
+   ],
+   "out_links": [
+    129
+   ]
+  },
+  {
+   "id": 34,
+   "type": "Easy_QwenEdit2509",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "crop",
+    384,
+    "让图1人物cosplay图2角色",
+    "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate."
+   ],
+   "in_links": [
+    38,
+    39,
+    54,
+    98,
+    43
+   ],
+   "out_links": [
+    30,
+    31,
+    32
+   ]
+  },
+  {
+   "id": 96,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    160,
+    174
+   ]
+  },
+  {
+   "id": 97,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 98,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [
+    156
+   ],
+   "out_links": []
+  },
+  {
+   "id": 100,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip"
+   ],
+   "in_links": [
+    158
+   ],
+   "out_links": []
+  },
+  {
+   "id": 101,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    156
+   ]
+  },
+  {
+   "id": 102,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    159,
+    160
+   ],
+   "out_links": [
+    167,
+    178
+   ]
+  },
+  {
+   "id": 105,
+   "type": "ProcessString",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "去空行"
+   ],
+   "in_links": [
+    162
+   ],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 108,
+   "type": "JDCN_StringToList",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    168
+   ],
+   "out_links": [
+    177
+   ]
+  },
+  {
+   "id": 111,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_edit_2511_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    157
+   ]
+  },
+  {
+   "id": 112,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    170
+   ],
+   "out_links": [
+    171
+   ]
+  },
+  {
+   "id": 113,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": [
+    172
+   ]
+  },
+  {
+   "id": 114,
+   "type": "CFGNorm",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    172
+   ],
+   "out_links": [
+    163
+   ]
+  },
+  {
+   "id": 115,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip"
+   ],
+   "in_links": [],
+   "out_links": [
+    173
+   ]
+  },
+  {
+   "id": 120,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cospose_20.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    179
+   ],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 68,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "bicubic",
+    "None",
+    "longest",
+    1440,
+    "#000000"
+   ],
+   "in_links": [
+    97
+   ],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 92,
+   "type": "PurgeVRAM_UTK",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    151
+   ],
+   "out_links": [
+    152
+   ]
+  },
+  {
+   "id": 57,
+   "type": "SeedVR2VideoUpscaler",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3161316479,
+    "randomize",
+    1080,
+    0,
+    1,
+    false,
+    "lab",
+    0,
+    0,
+    0,
+    0,
+    "cpu",
+    false
+   ],
+   "in_links": [
+    89,
+    80,
+    81,
+    82,
+    83
+   ],
+   "out_links": [
+    92,
+    153,
+    181
+   ]
+  },
+  {
+   "id": 122,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "bicubic",
+    "None",
+    "longest",
+    1472,
+    "#000000"
+   ],
+   "in_links": [
+    181
+   ],
+   "out_links": [
+    182
+   ]
+  },
+  {
+   "id": 110,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "可以通过删减提示词减少出图数量。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 104,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "改变动作姿势，跪地姿势\n\n\n改变动作姿势，人物双手做出互动姿态\n\n\n改变动作姿势，手臂向前伸展，手指比出v字手势\n\n\n改变动作姿势，变成俯视拍摄，握拳的手向前伸展\n\n\n改变动作姿势，变成俯视拍摄，带上黑色墨镜，双手抬起\n\n\n改变动作姿势，变成俯视拍摄，跪地姿势\n\n\n改变动作姿势，变成俯视拍摄，人物面部呈现单眼眨眼\n\n\n改变动作姿势，侧躺坐姿\n\n\n改变动作姿势，变成仰视拍摄，手掌朝镜头伸展\n\n\n改变动作姿势，俯身姿态\n\n\n改变动作姿势，坐在地上双腿交叉伸展\n\n\n改变动作姿势，单膝跪地姿态\n\n\n改变动作姿势，坐在高脚凳上，双腿优雅交叠\n\n\n改变动作姿势，一只手向前撑地\n\n\n改变动作姿势，站立姿态，双臂交叉抱于胸前\n\n\n改变动作姿势，变成俯视拍摄，双手在镜头前巧妙组合"
+   ],
+   "in_links": [],
+   "out_links": [
+    161
+   ]
+  },
+  {
+   "id": 103,
+   "type": "Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ", ",
+    "true"
+   ],
+   "in_links": [
+    161
+   ],
+   "out_links": [
+    162
+   ]
+  },
+  {
+   "id": 107,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    167
+   ],
+   "out_links": []
+  },
+  {
+   "id": 117,
+   "type": "Easy_QwenEdit2509",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "crop",
+    384,
+    "transform the image to realistic photograph",
+    "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate."
+   ],
+   "in_links": [
+    173,
+    174,
+    175,
+    176,
+    177
+   ],
+   "out_links": [
+    164,
+    165,
+    166
+   ]
+  },
+  {
+   "id": 99,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "model"
+   ],
+   "in_links": [
+    157
+   ],
+   "out_links": []
+  },
+  {
+   "id": 95,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "model"
+   ],
+   "in_links": [],
+   "out_links": [
+    179
+   ]
+  },
+  {
+   "id": 123,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ref_img1_0"
+   ],
+   "in_links": [
+    182
+   ],
+   "out_links": []
+  },
+  {
+   "id": 118,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ref_img1_0"
+   ],
+   "in_links": [],
+   "out_links": [
+    175,
+    176
+   ]
+  },
+  {
+   "id": 119,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    178
+   ],
+   "out_links": []
+  },
+  {
+   "id": 91,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    139,
+    138,
+    145,
+    149,
+    155
+   ],
+   "out_links": [
+    143,
+    147,
+    144,
+    146,
+    142
+   ]
+  },
+  {
+   "id": 106,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    872667304038004,
+    "randomize",
+    4,
+    1,
+    "res_2m",
+    "sgm_uniform",
+    1
+   ],
+   "in_links": [
+    163,
+    164,
+    165,
+    166
+   ],
+   "out_links": [
+    159
+   ]
+  },
+  {
+   "id": 63,
+   "type": "Fast Groups Muter (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 20,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    22
+   ],
+   "out_links": []
+  },
+  {
+   "id": 64,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    92
+   ],
+   "out_links": []
+  },
+  {
+   "id": 78,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    117
+   ],
+   "out_links": []
+  },
+  {
+   "id": 33,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c6d0ccea0e46e21be8da43c61fc5f93260b72b712765f5f9da6c3a3a8dfd38e6.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    46,
+    154
+   ]
+  },
+  {
+   "id": 69,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c6d0ccea0e46e21be8da43c61fc5f93260b72b712765f5f9da6c3a3a8dfd38e6.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    97
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 101,
+   "to_node": 98,
+   "type": "*"
+  },
+  {
+   "from_node": 102,
+   "to_node": 107,
+   "type": "*"
+  },
+  {
+   "from_node": 102,
+   "to_node": 119,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 105,
+   "type": "STRING"
+  },
+  {
+   "from_node": 104,
+   "to_node": 103,
+   "type": "STRING"
+  },
+  {
+   "from_node": 105,
+   "to_node": 108,
+   "type": "STRING"
+  },
+  {
+   "from_node": 106,
+   "to_node": 102,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 108,
+   "to_node": 117,
+   "type": "STRING"
+  },
+  {
+   "from_node": 111,
+   "to_node": 99,
+   "type": "*"
+  },
+  {
+   "from_node": 112,
+   "to_node": 113,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 113,
+   "to_node": 114,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 114,
+   "to_node": 106,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 115,
+   "to_node": 117,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 117,
+   "to_node": 106,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 117,
+   "to_node": 106,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 117,
+   "to_node": 106,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 118,
+   "to_node": 117,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 118,
+   "to_node": 117,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 112,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 122,
+   "to_node": 123,
+   "type": "*"
+  },
+  {
+   "from_node": 19,
+   "to_node": 30,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 21,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 62,
+   "type": "*"
+  },
+  {
+   "from_node": 22,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 26,
+   "to_node": 34,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 27,
+   "to_node": 21,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 29,
+   "to_node": 21,
+   "type": "VAE"
+  },
+  {
+   "from_node": 29,
+   "to_node": 34,
+   "type": "VAE"
+  },
+  {
+   "from_node": 30,
+   "to_node": 37,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 33,
+   "to_node": 23,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 33,
+   "to_node": 36,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 27,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 36,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 36,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 37,
+   "to_node": 27,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 53,
+   "to_node": 57,
+   "type": "INT"
+  },
+  {
+   "from_node": 55,
+   "to_node": 57,
+   "type": "SEEDVR2_DIT"
+  },
+  {
+   "from_node": 56,
+   "to_node": 57,
+   "type": "SEEDVR2_VAE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 122,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 23,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 58,
+   "to_node": 57,
+   "type": "INT"
+  },
+  {
+   "from_node": 61,
+   "to_node": 57,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 62,
+   "to_node": 86,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 62,
+   "to_node": 91,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 74,
+   "type": "VAE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 91,
+   "type": "VAE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 72,
+   "type": "*"
+  },
+  {
+   "from_node": 73,
+   "to_node": 91,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 74,
+   "to_node": 78,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 92,
+   "type": "*"
+  },
+  {
+   "from_node": 75,
+   "to_node": 91,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 76,
+   "to_node": 74,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 77,
+   "to_node": 76,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 79,
+   "to_node": 81,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 80,
+   "to_node": 73,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 80,
+   "to_node": 75,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 81,
+   "to_node": 82,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 82,
+   "to_node": 76,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 82,
+   "to_node": 77,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 84,
+   "to_node": 88,
+   "type": "MASK"
+  },
+  {
+   "from_node": 85,
+   "to_node": 84,
+   "type": "LS_SAM_MODELS"
+  },
+  {
+   "from_node": 86,
+   "to_node": 84,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 88,
+   "to_node": 91,
+   "type": "MASK"
+  },
+  {
+   "from_node": 91,
+   "to_node": 76,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 91,
+   "to_node": 76,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 91,
+   "to_node": 77,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 91,
+   "to_node": 77,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 91,
+   "to_node": 77,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 92,
+   "to_node": 61,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 120,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 96,
+   "to_node": 102,
+   "type": "VAE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 117,
+   "type": "VAE"
+  },
+  {
+   "from_node": 97,
+   "to_node": 100,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "vae": 6,
+  "clip": 3,
+  "utility": 35,
+  "lora": 5,
+  "checkpoint_loader": 3,
+  "sampler": 4,
+  "conditioning": 3,
+  "preprocessor": 2,
+  "upscale": 1,
+  "image_io": 6
+ },
+ "assets": [
+  {
+   "node_id": 29,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 26,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "kind": "vae",
+   "name": "ema_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "kind": "checkpoint",
+   "name": "seedvr2_ema_3b_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 80,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 79,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 71,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "z_image_turbo-vae.safetensors"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Any2Cosplay_25.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "qwen_image_edit_2511_bf16.safetensors"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Z-image绝对真人像写真.safetensors"
+  },
+  {
+   "node_id": 97,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 101,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 111,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "qwen_image_edit_2511_bf16.safetensors"
+  },
+  {
+   "node_id": 112,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "cospose_20.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Qwen-Image",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 181,
+ "structure_hash": "ecc39b4cf5364beb",
+ "param_face": [
+  {
+   "node_id": 29,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 26,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 26,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 26,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 0,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 0,
+   "value_preview": "ema_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 1,
+   "value_preview": "cuda:0"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 6,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 7,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 8,
+   "value_preview": "false"
+  },
+  {
+   "node_id": 56,
+   "node_type": "SeedVR2LoadVAEModel",
+   "widget_index": 9,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 53,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 58,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 0,
+   "value_preview": "seedvr2_ema_3b_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 1,
+   "value_preview": "cuda:0"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 2,
+   "value_preview": "36"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 4,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 55,
+   "node_type": "SeedVR2LoadDiTModel",
+   "widget_index": 5,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 80,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 80,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "lumina2"
+  },
+  {
+   "node_id": 80,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 79,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 79,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 82,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3.0000000000000004"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "952423965103406"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "res_2m"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 76,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 71,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "z_image_turbo-vae.safetensors"
+  },
+  {
+   "node_id": 73,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 85,
+   "node_type": "LayerMask: LoadSegmentAnythingModels",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 85,
+   "node_type": "LayerMask: LoadSegmentAnythingModels",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinT_OGC (694MB)"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "1040801365083111"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "exponential"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 77,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ImageScaleRestore_UTK",
+   "widget_index": 0,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ImageScaleRestore_UTK",
+   "widget_index": 1,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ImageScaleRestore_UTK",
+   "widget_index": 2,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ImageScaleRestore_UTK",
+   "widget_index": 3,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ImageScaleRestore_UTK",
+   "widget_index": 4,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Any2Cosplay_25.safetensors"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "1023431544453213"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "res_2m"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 19,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_edit_2511_bf16.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1440"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Z-image绝对真人像写真.safetensors"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 62,
+   "node_type": "PurgeVRAM_UTK",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 62,
+   "node_type": "PurgeVRAM_UTK",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 72,
+   "node_type": "RunningHub Deepcleaner",
+   "widget_index": 0,
+   "value_preview": "Purge Model"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 0,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 1,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 2,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 3,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 4,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 5,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 7,
+   "value_preview": "face"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 8,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerMask: SegmentAnythingUltra V3",
+   "widget_index": 9,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 34,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 0,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 34,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 1,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 34,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 2,
+   "value_preview": "让图1人物cosplay图2角色"
+  },
+  {
+   "node_id": 96,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 97,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 97,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 97,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 98,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 100,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "clip"
+  },
+  {
+   "node_id": 101,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 105,
+   "node_type": "ProcessString",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 105,
+   "node_type": "ProcessString",
+   "widget_index": 1,
+   "value_preview": "去空行"
+  },
+  {
+   "node_id": 111,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_edit_2511_bf16.safetensors"
+  },
+  {
+   "node_id": 111,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 112,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors"
+  },
+  {
+   "node_id": 112,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 114,
+   "node_type": "CFGNorm",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 114,
+   "node_type": "CFGNorm",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 115,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "clip"
+  },
+  {
+   "node_id": 120,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "cospose_20.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1440"
+  },
+  {
+   "node_id": 68,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 92,
+   "node_type": "PurgeVRAM_UTK",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 92,
+   "node_type": "PurgeVRAM_UTK",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 0,
+   "value_preview": "3161316479"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 2,
+   "value_preview": "1080"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 6,
+   "value_preview": "lab"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 10,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 11,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SeedVR2VideoUpscaler",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1472"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 110,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "可以通过删减提示词减少出图数量。"
+  },
+  {
+   "node_id": 103,
+   "node_type": "Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ", "
+  },
+  {
+   "node_id": 103,
+   "node_type": "Text Concatenate",
+   "widget_index": 1,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 107,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 107,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 117,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 0,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 117,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 1,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 117,
+   "node_type": "Easy_QwenEdit2509",
+   "widget_index": 2,
+   "value_preview": "transform the image to realistic photograph"
+  },
+  {
+   "node_id": 99,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "model"
+  },
+  {
+   "node_id": 95,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "model"
+  },
+  {
+   "node_id": 123,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ref_img1_0"
+  },
+  {
+   "node_id": 118,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ref_img1_0"
+  },
+  {
+   "node_id": 119,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 91,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "872667304038004"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "res_2m"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 106,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 20,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 64,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 78,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c6d0ccea0e46e21be8da43c61fc5f93260b72b712765f5f9da6c3a3a8dfd"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c6d0ccea0e46e21be8da43c61fc5f93260b72b712765f5f9da6c3a3a8dfd"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

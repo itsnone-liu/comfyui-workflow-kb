@@ -1,0 +1,926 @@
+{
+ "44": {
+  "class_type": "MaskPreview+",
+  "inputs": {
+   "mask": [
+    "59",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "🔧 Mask Preview"
+  }
+ },
+ "88": {
+  "class_type": "ImageConcanate",
+  "inputs": {
+   "match_image_size": true,
+   "image1": [
+    "86",
+    0
+   ],
+   "image2": [
+    "87",
+    0
+   ],
+   "direction": "right"
+  },
+  "_meta": {
+   "title": "Image Concatenate"
+  }
+ },
+ "45": {
+  "class_type": "GetImageSize+",
+  "inputs": {
+   "image": [
+    "59",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "🔧 Get Image Size"
+  }
+ },
+ "46": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "text,watermark",
+   "clip": [
+    "81",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "47": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "Load ControlNet Model"
+  }
+ },
+ "48": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "35",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "49": {
+  "class_type": "LayerUtility: LayerImageTransform",
+  "inputs": {
+   "aspect_ratio": 1,
+   "rotate": [
+    "38",
+    0
+   ],
+   "image": [
+    "35",
+    0
+   ],
+   "mirror": "None",
+   "transform_method": "lanczos",
+   "anti_aliasing": 0,
+   "x": 0,
+   "y": 0,
+   "scale": 1.41
+  },
+  "_meta": {
+   "title": "LayerUtility: LayerImageTransform"
+  }
+ },
+ "50": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "49",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "51": {
+  "class_type": "easy imageColorMatch",
+  "inputs": {
+   "save_prefix": "ComfyUI",
+   "image_ref": [
+    "41",
+    0
+   ],
+   "method": "adain",
+   "image_output": "Preview",
+   "image_target": [
+    "36",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Image Color Match"
+  }
+ },
+ "52": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "51",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "53": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "56",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "54": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "59",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "55": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_ikvpe_00001_hgzqj_1751601680.png&type=temp&subfolder=&rand=0.15399993571605597&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYzVlMjlmODBhY2Q4NDk3M2M0MWUzYTljNGNhYjIyZiIsInNpZ25FeHBpcmUiOjE3NTIyMDUyMzAyOTcsInRzIjoxNzUxNjAwNDMwMjk3LCJzaWduIjoiNzY3MTU4N2FlNGI3YzJjNDIyMGQyMWUyM2ExMTU0ZGIifQ==&Rh-Identify=0c5e29f80acd84973c41e3a9c4cab22f"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_ikvpe_00002_ohmvc_1751601682.png&type=temp&subfolder=&rand=0.5625388716983963&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYzVlMjlmODBhY2Q4NDk3M2M0MWUzYTljNGNhYjIyZiIsInNpZ25FeHBpcmUiOjE3NTIyMDUyMzAyOTcsInRzIjoxNzUxNjAwNDMwMjk3LCJzaWduIjoiNzY3MTU4N2FlNGI3YzJjNDIyMGQyMWUyM2ExMTU0ZGIifQ==&Rh-Identify=0c5e29f80acd84973c41e3a9c4cab22f"
+     }
+    ]
+   },
+   "image_a": [
+    "76",
+    0
+   ],
+   "image_b": [
+    "70",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Image Comparer (rgthree)"
+  }
+ },
+ "56": {
+  "class_type": "ImageScale",
+  "inputs": {
+   "image": [
+    "62",
+    0
+   ],
+   "width": 512,
+   "upscale_method": "nearest-exact",
+   "crop": "center",
+   "height": 512
+  },
+  "_meta": {
+   "title": "Upscale Image"
+  }
+ },
+ "57": {
+  "class_type": "LayerUtility: CropBoxResolve",
+  "inputs": {
+   "crop_box": [
+    "59",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "LayerUtility: CropBoxResolve"
+  }
+ },
+ "58": {
+  "class_type": "CM_IntToFloat",
+  "inputs": {
+   "a": [
+    "27",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "IntToFloat"
+  }
+ },
+ "59": {
+  "class_type": "LayerUtility: CropByMask",
+  "inputs": {
+   "invert_mask": false,
+   "left_reserve": 96,
+   "image": [
+    "70",
+    0
+   ],
+   "mask_for_crop": [
+    "60",
+    1
+   ],
+   "detect": "mask_area",
+   "right_reserve": 96,
+   "bottom_reserve": 96,
+   "top_reserve": 96
+  },
+  "_meta": {
+   "title": "LayerUtility: CropByMask"
+  }
+ },
+ "60": {
+  "class_type": "LayerMask: PersonMaskUltra V2",
+  "inputs": {
+   "detail_dilate": 6,
+   "images": [
+    "70",
+    0
+   ],
+   "detail_erode": 6,
+   "accessories": false,
+   "confidence": 0.4,
+   "max_megapixels": 2,
+   "body": false,
+   "clothes": false,
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": true,
+   "face": true,
+   "hair": false,
+   "white_point": 0.99,
+   "background": false,
+   "device": "cuda"
+  },
+  "_meta": {
+   "title": "LayerMask: PersonMaskUltra V2(Advance)"
+  }
+ },
+ "61": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "81",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "62": {
+  "class_type": "FaceBoundingBox",
+  "inputs": {
+   "padding_percent": 0.30000000000000004,
+   "padding": 0,
+   "image": [
+    "86",
+    0
+   ],
+   "analysis_models": [
+    "64",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Face Bounding Box"
+  }
+ },
+ "63": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "67",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "64": {
+  "class_type": "FaceAnalysisModels",
+  "inputs": {
+   "library": "insightface",
+   "provider": "CPU"
+  },
+  "_meta": {
+   "title": "Face Analysis Models"
+  }
+ },
+ "66": {
+  "class_type": "PMRF",
+  "inputs": {
+   "num_steps": 25,
+   "interpolation": "lanczos4",
+   "images": [
+    "76",
+    0
+   ],
+   "seed": 893485372,
+   "scale": 2
+  },
+  "_meta": {
+   "title": "PMRF"
+  }
+ },
+ "23": {
+  "class_type": "CM_NumberUnaryOperation",
+  "inputs": {
+   "op": "Neg",
+   "a": [
+    "42",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "NumberUnaryOperation"
+  }
+ },
+ "67": {
+  "class_type": "LayerUtility: LayerImageTransform",
+  "inputs": {
+   "aspect_ratio": 1,
+   "rotate": [
+    "58",
+    0
+   ],
+   "image": [
+    "40",
+    0
+   ],
+   "mirror": "None",
+   "transform_method": "lanczos",
+   "anti_aliasing": 0,
+   "x": 0,
+   "y": 0,
+   "scale": 0.71
+  },
+  "_meta": {
+   "title": "LayerUtility: LayerImageTransform"
+  }
+ },
+ "24": {
+  "class_type": "CM_NumberToInt",
+  "inputs": {
+   "a": [
+    "23",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "NumberToInt"
+  }
+ },
+ "68": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "76",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "25": {
+  "class_type": "ImageScale",
+  "inputs": {
+   "image": [
+    "51",
+    0
+   ],
+   "width": [
+    "45",
+    0
+   ],
+   "upscale_method": "lanczos",
+   "crop": "disabled",
+   "height": [
+    "45",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "Upscale Image"
+  }
+ },
+ "26": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "sgm_uniform",
+   "negative": [
+    "34",
+    1
+   ],
+   "denoise": 0.5,
+   "latent_image": [
+    "31",
+    0
+   ],
+   "seed": 937403637767675,
+   "cfg": 1,
+   "sampler_name": "euler_ancestral",
+   "model": [
+    "82",
+    0
+   ],
+   "positive": [
+    "34",
+    0
+   ],
+   "steps": 8
+  },
+  "_meta": {
+   "title": "KSampler"
+  }
+ },
+ "27": {
+  "class_type": "CM_NumberToInt",
+  "inputs": {
+   "a": [
+    "42",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "NumberToInt"
+  }
+ },
+ "28": {
+  "class_type": "LayerMask: MaskGrow",
+  "inputs": {
+   "invert_mask": false,
+   "grow": 96,
+   "blur": 8,
+   "mask": [
+    "59",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "LayerMask: MaskGrow"
+  }
+ },
+ "29": {
+  "class_type": "InstantIDModelLoader",
+  "inputs": {
+   "instantid_file": "ip-adapter.bin"
+  },
+  "_meta": {
+   "title": "Load InstantID Model"
+  }
+ },
+ "70": {
+  "class_type": "JWImageResizeByLongerSide",
+  "inputs": {
+   "image": [
+    "87",
+    0
+   ],
+   "interpolation_mode": "bicubic",
+   "size": 1536
+  },
+  "_meta": {
+   "title": "Image Resize by Longer Side"
+  }
+ },
+ "30": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  "_meta": {
+   "title": "Load ControlNet Model"
+  }
+ },
+ "31": {
+  "class_type": "SetLatentNoiseMask",
+  "inputs": {
+   "samples": [
+    "32",
+    0
+   ],
+   "mask": [
+    "37",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Set Latent Noise Mask"
+  }
+ },
+ "32": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "67",
+    0
+   ],
+   "vae": [
+    "81",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "VAE Encode"
+  }
+ },
+ "76": {
+  "class_type": "ImageComposite+",
+  "inputs": {
+   "x": [
+    "57",
+    0
+   ],
+   "destination": [
+    "70",
+    0
+   ],
+   "y": [
+    "57",
+    1
+   ],
+   "source": [
+    "25",
+    0
+   ],
+   "offset_x": 0,
+   "offset_y": 0,
+   "mask": [
+    "28",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "🔧 Image Composite"
+  }
+ },
+ "33": {
+  "class_type": "InstantIDFaceAnalysis",
+  "inputs": {
+   "provider": "CPU"
+  },
+  "_meta": {
+   "title": "InstantID Face Analysis"
+  }
+ },
+ "34": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "67",
+    0
+   ],
+   "negative": [
+    "82",
+    2
+   ],
+   "control_net": [
+    "47",
+    0
+   ],
+   "strength": 0.1,
+   "start_percent": 0,
+   "positive": [
+    "82",
+    1
+   ],
+   "vae": [
+    "81",
+    2
+   ],
+   "end_percent": 0.5
+  },
+  "_meta": {
+   "title": "Apply ControlNet"
+  }
+ },
+ "78": {
+  "class_type": "ImageConcanate",
+  "inputs": {
+   "match_image_size": true,
+   "image1": [
+    "88",
+    0
+   ],
+   "image2": [
+    "76",
+    0
+   ],
+   "direction": "right"
+  },
+  "_meta": {
+   "title": "Image Concatenate"
+  }
+ },
+ "35": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "81",
+    2
+   ],
+   "samples": [
+    "26",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "79": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "78",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "36": {
+  "class_type": "ImageScaleBy",
+  "inputs": {
+   "image": [
+    "49",
+    0
+   ],
+   "scale_by": 0.71,
+   "upscale_method": "nearest-exact"
+  },
+  "_meta": {
+   "title": "Upscale Image By"
+  }
+ },
+ "37": {
+  "class_type": "LayerMask: MaskGrow",
+  "inputs": {
+   "invert_mask": false,
+   "grow": 48,
+   "blur": 16,
+   "mask": [
+    "39",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "LayerMask: MaskGrow"
+  }
+ },
+ "38": {
+  "class_type": "CM_IntToFloat",
+  "inputs": {
+   "a": [
+    "24",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "IntToFloat"
+  }
+ },
+ "39": {
+  "class_type": "LayerMask: PersonMaskUltra V2",
+  "inputs": {
+   "detail_dilate": 6,
+   "images": [
+    "67",
+    0
+   ],
+   "detail_erode": 6,
+   "accessories": false,
+   "confidence": 0.4,
+   "max_megapixels": 2,
+   "body": false,
+   "clothes": false,
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": true,
+   "face": true,
+   "hair": false,
+   "white_point": 0.99,
+   "background": false,
+   "device": "cuda"
+  },
+  "_meta": {
+   "title": "LayerMask: PersonMaskUltra V2(Advance)"
+  }
+ },
+ "80": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "66",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "81": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "juggernautXL_v9Rdphoto2Lightning.safetensors"
+  },
+  "_meta": {
+   "title": "Load Checkpoint"
+  }
+ },
+ "82": {
+  "class_type": "ApplyInstantID",
+  "inputs": {
+   "instantid": [
+    "29",
+    0
+   ],
+   "end_at": 1,
+   "image": [
+    "56",
+    0
+   ],
+   "negative": [
+    "46",
+    0
+   ],
+   "control_net": [
+    "30",
+    0
+   ],
+   "insightface": [
+    "33",
+    0
+   ],
+   "image_kps": [
+    "67",
+    0
+   ],
+   "weight": 1,
+   "model": [
+    "83",
+    0
+   ],
+   "positive": [
+    "61",
+    0
+   ],
+   "start_at": 0
+  },
+  "_meta": {
+   "title": "Apply InstantID"
+  }
+ },
+ "83": {
+  "class_type": "ApplyFBCacheOnModel",
+  "inputs": {
+   "residual_diff_threshold": 0.10000000000000002,
+   "start": 0,
+   "end": 1,
+   "model": [
+    "81",
+    0
+   ],
+   "object_to_patch": "diffusion_model",
+   "max_consecutive_cache_hits": -1
+  },
+  "_meta": {
+   "title": "Apply First Block Cache"
+  }
+ },
+ "40": {
+  "class_type": "ImageScaleBy",
+  "inputs": {
+   "image": [
+    "41",
+    0
+   ],
+   "scale_by": 1.41,
+   "upscale_method": "lanczos"
+  },
+  "_meta": {
+   "title": "Upscale Image By"
+  }
+ },
+ "84": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "050132a6f34b8e2db8313e3ce796108c13809f4d01b1c623b5a0adb52eeb4f06.png"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "41": {
+  "class_type": "CR Upscale Image",
+  "inputs": {
+   "mode": "resize",
+   "image": [
+    "59",
+    0
+   ],
+   "rescale_factor": 2,
+   "supersample": "true",
+   "upscale_model": "2xNomosUni_span_multijpg_ldl.pth",
+   "resampling_method": "lanczos",
+   "resize_width": 1024,
+   "rounding_modulus": 8
+  },
+  "_meta": {
+   "title": "🔍 CR Upscale Image"
+  }
+ },
+ "85": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "acf4cf40d319dc68f94dc317cfe6fa3ffcc8213fba67694344224b1fd37e6f20.png"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "42": {
+  "class_type": "CM_IntToNumber",
+  "inputs": {
+   "a": 0
+  },
+  "_meta": {
+   "title": "IntToNumber"
+  }
+ },
+ "86": {
+  "class_type": "PDIMAGE_LongerSize",
+  "inputs": {
+   "image": [
+    "84",
+    0
+   ],
+   "interpolation": "bicubic",
+   "size": 1024
+  },
+  "_meta": {
+   "title": "PDIMAGE:LongerSize"
+  }
+ },
+ "43": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "60",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "87": {
+  "class_type": "PDIMAGE_LongerSize",
+  "inputs": {
+   "image": [
+    "85",
+    0
+   ],
+   "interpolation": "bicubic",
+   "size": 1024
+  },
+  "_meta": {
+   "title": "PDIMAGE:LongerSize"
+  }
+ }
+}

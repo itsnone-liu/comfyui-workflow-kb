@@ -1,0 +1,118 @@
+{
+ "domain": [
+  "虚拟试穿",
+  "人像生成",
+  "图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人像照与服装图，端到端生成该人物穿上指定服装后的换装效果图，并输出换装前后的对比图。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 PuLID 在换装过程中保持人物面部身份一致性，适合多姿势/多服装的人像换装。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动用 JoyCaptionBeta1 识别服装并生成文本描述，再与用户输入的提示词“Have this person put on ”拼接，控制 FLUX 生成目标穿衣效果。",
+   "kind": "inference"
+  },
+  {
+   "text": "输出带标签的对比拼图：input person / input clothes / output，便于直接查看换装前后效果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev Kontext + DualCLIPLoader 文本编码",
+  "PuLID for FLUX 人脸身份保持",
+  "mytryon4_comfy LoRA 虚拟试穿",
+  "clothes_remover_v0 LoRA 衣物移除/去衣",
+  "Flux-Turbo-Alpha LoRA 采样加速",
+  "JoyCaptionBeta1 服装图自动打标",
+  "BEN_Base + LayerMask 抠图与 CropByMask V2 裁剪",
+  "ImageReel + ImageStitch 多图拼版对比",
+  "双 KSampler 两阶段采样控制"
+ ],
+ "special_features": [
+  {
+   "text": "多 LoRA 叠加控制：同一 FLUX 模型路径上加载 clothes_remover_v0、mytryon4_comfy 和 Flux-Turbo-Alpha，形成“去衣 + 试穿 + 加速”的组合控制。",
+   "kind": "fact"
+  },
+  {
+   "text": "两段式采样设计：第一个 KSampler 使用 randomize 种子，第二个使用 fixed 种子，可能分别承担去衣重建和穿衣生成阶段，兼顾效果与可复现性。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动服装语义描述链路：JoyCaptionBeta1 对服装图生成描述，经 Text Concatenate (JPS) 与固定前缀文本拼接，让用户只需提供服装图即可获得自然语言指令。",
+   "kind": "inference"
+  },
+  {
+   "text": "PuLID 人脸条件控制：ApplyPulidFlux + PulidFluxEvaClipLoader + PulidFluxInsightFaceLoader 提取人脸身份，并用 ConditioningZeroOut 做条件开关，可能用于控制不同阶段是否保留人脸约束。",
+   "kind": "inference"
+  },
+  {
+   "text": "人物抠像与裁剪预处理：BenUltra 模型做人物 matting，再经 CropByMask V2 裁剪人物区域，ImageScaleByAspectRatio V2 统一长宽比，降低背景对试穿效果的干扰。",
+   "kind": "fact"
+  },
+  {
+   "text": "对比图自动排版：LayerUtility: ImageReel 将 input person、input clothes、output 三路图片制作为带标题的图卷，再用 ImageStitch 横向拼接并保存/预览。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流把换装任务拆成了“去衣 + 重新穿衣”两个阶段：先用 clothes_remover_v0 剥离原衣物，再靠 mytryon4_comfy 把目标服装“穿”到人身上；同时用 PuLID 锁定人脸身份，避免换装后人物不像。为了降低用户输入成本，使用 JoyCaptionBeta1 自动把服装图变成文字描述，再与固定提示词拼接。最后通过 ImageReel/ImageStitch 自动生成前后对比图，方便直接检查效果。整体可能为了在 FLUX 大模型下兼顾身份一致性、服装保真度和生成速度。",
+ "use_case": "适合服装电商快速出试穿效果图、穿搭博主做多套服装预览、虚拟试衣间、同人/写真人像换装等需要“同一人物换不同衣服”的场景。",
+ "limitation": "依赖较多自定义节点和外部模型，如 PuLID Flux、LayerStyle/ImageReel、BenUltra、JoyCaptionBeta1 等，部署门槛高；需要下载 FLUX.1-dev、PuLID、BEN_Base 等多个大模型，显存占用高。输入图像质量、角度和服装图清晰度会显著影响效果；输出分辨率固定为 EmptyLatentImage 1536x1152，缺乏自动质量控制/修复回路。",
+ "dependencies": [
+  "自定义节点：ComfyUI PuLID Flux（ApplyPulidFlux 等）、ComfyUI LayerStyle（LayerUtility: ImageReel/ImageStitch/CropByMask 系列）、ComfyUI BEN LayerMask、JoyCaptionBeta1、easy-showAnything、Flux Kontext 相关节点",
+  "Checkpoint/UNET：flux1-dev-kontext_fp8_scaled.safetensors",
+  "VAE：ae.sft",
+  "CLIP：clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors",
+  "人脸模型：pulid_flux_v0.9.1.safetensors",
+  "分割模型：BEN_Base.pth",
+  "LoRA：clothes_remover_v0.safetensors、mytryon4_comfy.safetensors、Flux-Turbo-Alpha.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像输入（至少人像图 + 服装图，共有 3 个 LoadImage 输入节点）+ 文本输入（TextInput_ 用户提示词）",
+  "count": "4（3 图像 + 1 文本）"
+ },
+ "output": {
+  "type": "预览图 / PNG 保存图，以及带 input person、input clothes、output 标签的拼接对比图",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly: mytryon4_comfy.safetensors strength",
+   "how_to_tune": "默认 0.85，控制试穿贴合度；越高越贴近目标服装，但过高可能导致衣物纹理过强或人物不自然，可尝试 0.7~1.0 微调。"
+  },
+  {
+   "param": "LoraLoaderModelOnly: clothes_remover_v0.safetensors strength",
+   "how_to_tune": "默认 1，去衣强度；若人物结构被破坏或衣物残留，可降低到 0.5~0.8。"
+  },
+  {
+   "param": "LoraLoaderModelOnly: Flux-Turbo-Alpha.safetensors strength",
+   "how_to_tune": "默认 1，加速采样；画质下降时可降低到 0.5~0.8。"
+  },
+  {
+   "param": "KSampler seed / steps / cfg",
+   "how_to_tune": "两个采样器均为 25 步、cfg=1、euler/simple；第一个 seed 为 randomize，第二个 fixed。要复现稳定结果，建议把第一个也改为 fixed 并记录种子。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 2.5，控制 FLUX 对文本的遵从度；换装指令不生效可调高到 3~4，过度变形则调低。"
+  },
+  {
+   "param": "EmptyLatentImage 宽高",
+   "how_to_tune": "默认 1536x1152；显存不足时可降为 1024x768，但细节和衣服纹理精度会下降。"
+  },
+  {
+   "param": "ApplyPulidFlux 的 weight/start/end",
+   "how_to_tune": "widgets 为 1/0/1，即全流程使用完整人脸权重；若人脸过强导致服装/姿态僵硬，可降低 weight 或调整 end 在后期减弱人脸约束。"
+  },
+  {
+   "param": "LayerUtility: CropByMask V2 的扩展边距",
+   "how_to_tune": "默认四周 20px，用于包围人物区域；若人物被裁掉可增大，若背景干扰多可适当减小。"
+  }
+ ],
+ "summary_text": "能力:上传人像照与服装图，端到端生成该人物穿上指定服装后的换装效果图，并输出换装前后的对比图。；能力:通过 PuLID 在换装过程中保持人物面部身份一致性，适合多姿势/多服装的人像换装。；能力:自动用 JoyCaptionBeta1 识别服装并生成文本描述，再与用户输入的提示词“Have this person put on ”拼接，控制 FLUX 生成目标穿衣效果。；能力:输出带标签的对比拼图：input person / input clothes / output，便于直接查看换装前后效果。；特色:多 LoRA 叠加控制：同一 FLUX 模型路径上加载 clothes_remover_v0、mytryon4_comfy 和 Flux-Turbo-Alpha，形成“去衣 + 试穿 + 加速”的组合控制。；特色:两段式采样设计：第一个 KSampler 使用 randomize 种子，第二个使用 fixed 种子，可能分别承担去衣重建和穿衣生成阶段，兼顾效果与可复现性。；特色:自动服装语义描述链路：JoyCaptionBeta1 对服装图生成描述，经 Text Concatenate (JPS) 与固定前缀文本拼接，让用户只需提供服装图即可获得自然语言指令。；特色:PuLID 人脸条件控制：ApplyPulidFlux + PulidFluxEvaClipLoader + PulidFluxInsightFaceLoader 提取人脸身份，并用 ConditioningZeroOut 做条件开关，可能用于控制不同阶段是否保留人脸约束。；特色:人物抠像与裁剪预处理：BenUltra 模型做人物 matting，再经 CropByMask V2 裁剪人物区域，ImageScaleByAspectRatio V2 统一长宽比，降低背景对试穿效果的干扰。；特色:对比图自动排版：LayerUtility: ImageReel 将 input person、input clothes、output 三路图片制作为带标题的图卷，再用 ImageStitch 横向拼接并保存/预览。；适合服装电商快速出试穿效果图、穿搭博主做多套服装预览、虚拟试衣间、同人/写真人像换装等需要“同一人物换不同衣服”的场景。；这个工作流把换装任务拆成了“去衣 + 重新穿衣”两个阶段：先用 clothes_remover_v0 剥离原衣物，再靠 mytryon4_comfy 把目标服装“穿”到人身上；同时用 PuLID 锁定人脸身份，避免换装后人物不像。为了降低用户输入成本，使用 JoyCaptionBeta1 自动把服装图变成文字描述，再与固定提示词拼接。最后通过 ImageReel/ImageStitch 自动生成前后对比图，方便直接检查效果。整体可能为了在 FLUX 大模型下兼顾身份一致性、"
+}

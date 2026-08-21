@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "图像生成",
+  "文生图"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成 FLUX2 文生图：用户提供中文提示词后，经 Qwen3 文本编码、FLUX2 Klein 9B 去噪采样、VAE 解码，最终输出高分辨率静态图像并保存。",
+   "kind": "fact"
+  },
+  {
+   "text": "附带了 LoadImage 图片输入端口，可接收一张外部图片；但从节点清单看没有 ControlNet/IPAdapter 等条件控制节点，因此它可能只是平台统一输入占位，或为图生图扩展预留。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "FLUX2 Klein 9B 扩散模型",
+  "Qwen3 8B 文本编码",
+  "CLIPTextEncode 条件编码",
+  "VAE 解码",
+  "KSampler 低步数采样（steps=6, cfg=1, euler/simple）",
+  "SageAttention 注意力加速",
+  "torch 层模型补丁优化"
+ ],
+ "special_features": [
+  {
+   "text": "加入 PathchSageAttentionKJ 节点对 Attention 做 SageAttention 补丁，配合 2048×1568 等高分辨率生成，主要目的是降低显存占用和计算量。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ModelPatchTorchSettings(True) 做 torch 层补丁，与 SageAttention 组成“加速/省显存”组合，这在普通 FLUX 文生图模板中不常见。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 CLIPTextEncode 的 text 控件都显示为空，而提示词由 CR Text 节点承载；说明作者用字符串参数节点动态注入提示词，便于平台 API 或上层界面传参。",
+   "kind": "inference"
+  },
+  {
+   "text": "结构里同时存在 LoadImage(IN) 和 EmptyFlux2LatentImage：主链路是文生图的空 latent，但图片输入没有对应的 ControlNet/IPAdapter 等下游条件节点，可能是预留输入或平台统一输入格式。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整个流程似乎按“最简可运行的 FLUX2 文生图模板”设计：固定加载 FLUX2 Klein 9B、Qwen3 8B 和 flux2-vae，文本通过 CR Text 参数化，采样使用 FLUX 常见的低步数和 cfg=1；为了支撑 2K 级高分辨率生成，额外打上 SageAttention 与 torch 优化补丁。LoadImage 的存在可能是 RunningHub 平台标准输入习惯，也可能是作者预留图生图能力，但当前结构中没有展示其对采样结果的实际控制链路。",
+ "use_case": "适合在 RunningHub 上快速跑通 FLUX2 文生图流程，尤其是需要高分辨率宽幅雪景/人物/风景概念图的场景；也可以作为基于 FLUX2 的二次开发模板，替换提示词后生成不同题材。",
+ "limitation": "依赖指定模型文件：flux-2-klein-9b.safetensors、flux2-vae.safetensors、qwen_3_8b.safetensors；依赖自定义节点：CR Text、JWInteger、EmptyFlux2LatentImage、ModelPatchTorchSettings、PathchSageAttentionKJ；负面提示词默认为空，复杂画面可能需要手动补充；KSampler 仅 6 步，细节丰富度有限；LoadImage 与生成链路的关系在结构中不明确，可能不参与实际生成。",
+ "dependencies": [
+  "模型：flux-2-klein-9b.safetensors",
+  "文本编码器：qwen_3_8b.safetensors",
+  "VAE：flux2-vae.safetensors",
+  "自定义节点：PathchSageAttentionKJ",
+  "自定义节点：ModelPatchTorchSettings",
+  "自定义节点：CR Text、JWInteger、EmptyFlux2LatentImage",
+  "ComfyUI 核心节点：CLIPTextEncode、KSampler、VAEDecode、LoadImage、SaveImage"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "文本提示词 + 可选图片输入",
+  "count": "1 个必选/默认文本提示词（CR Text），另有 1 个可选图片输入（LoadImage IN）"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler seed",
+   "how_to_tune": "默认 720751931851671，control_after_generate 为 randomize；固定 seed 可复现同一构图，随机 seed 适合批量找图。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 6，FLUX 类模型低步数即可出图；若细节/质感不足，可提高到 8-12，但耗时和显存消耗会上升。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前为 1，符合 FLUX 系列推荐用法；不建议盲目调高，否则容易过曝或色彩失真。"
+  },
+  {
+   "param": "KSampler sampler/scheduler",
+   "how_to_tune": "当前为 euler/simple，是 FLUX 常用组合；若追求其他风格可尝试不同 scheduler，但通常优先保持这套参数。"
+  },
+  {
+   "param": "EmptyFlux2LatentImage 尺寸",
+   "how_to_tune": "当前为 2048×1568，属于高分辨率宽幅；如果显存不足或出图过慢，可降到 1024×1024 或 1344×768。注意 JWInteger 还有 1920/1080 可能动态覆盖尺寸，改参数时要看连线。"
+  },
+  {
+   "param": "PathchSageAttentionKJ",
+   "how_to_tune": "当前为 auto/False，表示自动选择是否启用 SageAttention；如果遇到黑图、NaN 或自定义节点兼容性问题，可以尝试关闭 SageAttention。"
+  },
+  {
+   "param": "ModelPatchTorchSettings",
+   "how_to_tune": "当前为 True，开启 torch 层面优化补丁；若报错或图像异常，可先改为 False 排查。"
+  }
+ ],
+ "summary_text": "能力:端到端完成 FLUX2 文生图：用户提供中文提示词后，经 Qwen3 文本编码、FLUX2 Klein 9B 去噪采样、VAE 解码，最终输出高分辨率静态图像并保存。；能力:附带了 LoadImage 图片输入端口，可接收一张外部图片；但从节点清单看没有 ControlNet/IPAdapter 等条件控制节点，因此它可能只是平台统一输入占位，或为图生图扩展预留。；特色:加入 PathchSageAttentionKJ 节点对 Attention 做 SageAttention 补丁，配合 2048×1568 等高分辨率生成，主要目的是降低显存占用和计算量。；特色:使用 ModelPatchTorchSettings(True) 做 torch 层补丁，与 SageAttention 组成“加速/省显存”组合，这在普通 FLUX 文生图模板中不常见。；特色:两个 CLIPTextEncode 的 text 控件都显示为空，而提示词由 CR Text 节点承载；说明作者用字符串参数节点动态注入提示词，便于平台 API 或上层界面传参。；特色:结构里同时存在 LoadImage(IN) 和 EmptyFlux2LatentImage：主链路是文生图的空 latent，但图片输入没有对应的 ControlNet/IPAdapter 等下游条件节点，可能是预留输入或平台统一输入格式。；适合在 RunningHub 上快速跑通 FLUX2 文生图流程，尤其是需要高分辨率宽幅雪景/人物/风景概念图的场景；也可以作为基于 FLUX2 的二次开发模板，替换提示词后生成不同题材。；整个流程似乎按“最简可运行的 FLUX2 文生图模板”设计：固定加载 FLUX2 Klein 9B、Qwen3 8B 和 flux2-vae，文本通过 CR Text 参数化，采样使用 FLUX 常见的低步数和 cfg=1；为了支撑 2K 级高分辨率生成，额外打上 SageAttention 与 torch 优化补丁。LoadImage 的存在可能是 RunningHub 平台标准输入习惯，也可能是作者预留图生图能力，但当前结构中没有展示其对采样结果的实际控制链路。"
+}

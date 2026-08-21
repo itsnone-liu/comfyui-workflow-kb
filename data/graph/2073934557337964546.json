@@ -1,0 +1,779 @@
+{
+ "node_count": 31,
+ "link_count": 15,
+ "active_node_count": 31,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux-2-klein-9b.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_8b.safetensors",
+    "flux2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    2,
+    21
+   ]
+  },
+  {
+   "id": 14,
+   "type": "EmptyFlux2LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2048,
+    1568,
+    1
+   ],
+   "in_links": [
+    16,
+    17
+   ],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 7,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    720751931851671,
+    "randomize",
+    6,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    21,
+    20
+   ],
+   "out_links": [
+    4
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    5
+   ]
+  },
+  {
+   "id": 11,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    11
+   ],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 10,
+   "type": "ModelPatchTorchSettings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 29,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#14 EmptyFlux2LatentImage\n作用：为 Flux 工作流创建空白 latent 画布。\n参数：\n- width：当前值=2048；作用：控制输出尺寸与清晰度；改大更清晰但更耗时、更占显存；范围：整数或预设分辨率档位（常见 256 ~ 4096）；默认：1024（常见）。\n- height：当前值=1568；作用：控制输出尺寸与清晰度；改大更清晰但更耗时、更占显存；范围：整数或预设分辨率档位（常见 256 ~ 4096）；默认：1024（常见）。\n- batch_size：当前值=1；作用：一次生成的图片数量；范围：整数，常见 1 ~ 16；默认：1。\n邀请码：jq8lvwrk，领1000RH币"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 35,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "03c6995f39e7aa19ef9398f3894057df1f4d792a1bf665abb5eac280442677ca.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 15,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1920
+   ],
+   "in_links": [],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 31,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#16 CR Text\n作用：接收一段文本并原样输出，常用来传递提示词片段、保存前缀或其它字符串变量。\n参数：\n- text：当前值=\\n这是一张老式数码相机拍摄的快照，镜头从高处俯拍，一位二十出头的年轻女子正乘坐公共扶梯下行。她抬…；作用：输入文本内容（正/负提示词）；范围：字符串，通常 0 ~ 4096 字符；默认：空字符串。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 20,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#3 UNETLoader\n作用：加载扩散主干模型（UNet），决定核心生成能力。\n参数：\n- unet_name：当前值=flux-2-klein-9b.safetensors；作用：选择 UNet 模型文件；范围：模型下拉列表中的文件名；默认：系统默认 UNet。\n- weight_dtype：当前值=default；作用：模型权重精度类型；范围：fp16 / bf16 / fp8 等枚举；默认：默认精度。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#11 PathchSageAttentionKJ\n作用：给模型打上 SageAttention 注意力补丁，通常用于提速或省显存。\n参数：\n- sage_attention：当前值=auto；作用：选择 SageAttention 策略；`auto` 通常自动选更稳的实现；范围：插件下拉枚举（如 auto / off / 其他实现）；默认：auto。\n- allow_compile：当前值=False；作用：是否启用编译优化；开启后可能更快，但首次加载更慢且兼容性更敏感；范围：布尔值：true/false；默认：false。\n- model：当前值=来自 节点#3 UNETLoader 的 `MODEL` 输出；作用：接收上游模型对象（具体是扩散模型、姿态模型或检测模型由该节点类型决定）；范围：模型对象（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#2 CLIPLoader\n作用：加载 CLIP 语义编码器，供文本/图像条件编码使用。\n参数：\n- clip_name：当前值=qwen_3_8b.safetensors；作用：选择 CLIP 模型文件；范围：模型下拉列表中的文件名；默认：系统默认 CLIP。\n- type：当前值=flux2；作用：CLIP 工作模式；范围：插件定义的下拉枚举；默认：default。\n- device：当前值=default；作用：模型运行设备；范围：cpu / cuda / mps 等可用设备；默认：default。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 18,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#1 JWInteger\n作用：输出一个整数常量，常用于宽高、步数、帧数等数值控制。\n参数：\n- value：当前值=1280；作用：输出固定常量值，供其他节点引用；范围：按节点类型可为整数/浮点/表达式字符串；默认：0（常见，可按任务改写）。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 30,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#15 JWInteger\n作用：输出一个整数常量，常用于宽高、步数、帧数等数值控制。\n参数：\n- value：当前值=1920；作用：输出固定常量值，供其他节点引用；范围：按节点类型可为整数/浮点/表达式字符串；默认：0（常见，可按任务改写）。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 21,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#4 VAELoader\n作用：加载 VAE 编解码器，负责像素域与潜空间转换。\n参数：\n- vae_name：当前值=flux2-vae.safetensors；作用：选择 VAE 文件；范围：VAE 文件列表中的文件名；默认：系统默认 VAE。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 23,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#6 CLIPTextEncode\n作用：将文本编码为条件向量（常用于负面词或补充条件）。\n参数：\n- text：当前值=；作用：输入文本内容（正/负提示词）；范围：字符串，通常 0 ~ 4096 字符；默认：空字符串。\n- clip：当前值=来自 节点#2 CLIPLoader 的 `CLIP` 输出；作用：接收 CLIP 编码器对象，用于把提示词编码成条件向量；范围：CLIP 编码器对象（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 22,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#5 CLIPTextEncode\n作用：将文本编码为条件向量（常用于负面词或补充条件）。\n参数：\n- text：当前值=；作用：输入文本内容（正/负提示词）；范围：字符串，通常 0 ~ 4096 字符；默认：空字符串。\n- clip：当前值=来自 节点#2 CLIPLoader 的 `CLIP` 输出；作用：接收 CLIP 编码器对象，用于把提示词编码成条件向量；范围：CLIP 编码器对象（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 26,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#10 ModelPatchTorchSettings\n作用：给模型打补丁并设置 PyTorch 运行参数（如精度/累积行为），用于稳定性或性能调优。\n参数：\n- enable_fp16_accumulation：当前值=True；作用：布尔开关；开启或关闭该功能分支；范围：布尔值：true/false；默认：false。\n- model：当前值=来自 节点#11 PathchSageAttentionKJ 的 `MODEL` 输出；作用：接收上游模型对象（具体是扩散模型、姿态模型或检测模型由该节点类型决定）；范围：模型对象（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#8 VAEDecode\n作用：将采样 latent 解码为可视图像。\n参数：\n- samples：当前值=来自 节点#7 KSampler 的 `LATENT` 输出；作用：接收待处理 latent 样本（如待解码或待上采样的数据）；范围：latent 数据（连线输入）；默认：由上游节点输出决定。\n- vae：当前值=来自 节点#4 VAELoader 的 `VAE` 输出；作用：接收 VAE 对象，用于像素图像与 latent 之间转换；范围：VAE 对象（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#7 KSampler\n作用：核心采样器：按步数/采样器/调度器将噪声迭代为目标 latent。\n参数：\n- seed：当前值=671496267233118；作用：随机种子，控制可复现性；范围：整数，常见 0 ~ 2^63-1；默认：0。\n- control_after_generate：当前值=fixed；作用：每次生成后对种子的处理策略；范围：固定/随机/递增等枚举值；默认：fixed。\n- steps：当前值=6；作用：采样步数，步数越高通常细节越充分；范围：整数，常见 1 ~ 150；默认：20。\n- cfg：当前值=1；作用：提示词引导强度；范围：浮点，常见 0.0 ~ 30.0；默认：7.0。\n- sampler_name：当前值=euler；作用：采样算法类型；范围：下拉枚举（如 euler / dpm / sa_solver）；默认：euler。\n- scheduler：当前值=simple；作用：噪声调度策略；范围：下拉枚举（normal / karras / beta 等）；默认：normal。\n- denoise：当前值=1；作用：去噪强度；1 表示完整重绘；范围：浮点 0.0 ~ 1.0；默认：1.0。\n- model：当前值=来自 节点#10 ModelPatchTorchSettings 的 `MODEL` 输出；作用：接收上游模型对象（具体是扩散模型、姿态模型或检测模型由该节点类型决定）；范围：模型对象（连线输入）；默认：由上游节点输出决定。\n- positive：当前值=来自 节点#5 CLIPTextEncode 的 `CONDITIONING` 输出；作用：接收正向条件向量，告诉模型“应该生成什么”；范围：CONDITIONING 类型数据（连线输入）；默认：由上游节点输出决定。\n- negative：当前值=来自 节点#6 CLIPTextEncode 的 `CONDITIONING` 输出；作用：接收负向条件向量，告诉模型“尽量避免什么”；范围：CONDITIONING 类型数据（连线输入）；默认：由上游节点输出决定。\n- latent_image：当前值=来自 节点#14 EmptyFlux2LatentImage 的 `LATENT` 输出；作用：接收起始 latent 画布或中间 latent 结果，作为采样输入底稿；范围：latent 数据（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 32,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#17 CR Text\n作用：接收一段文本并原样输出，常用来传递提示词片段、保存前缀或其它字符串变量。\n参数：\n- text：当前值=邀请码：jq8lvwrk，领1000RH币；作用：输入文本内容（正/负提示词）；范围：字符串，通常 0 ~ 4096 字符；默认：空字符串。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 28,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "节点#12 SaveImage\n作用：保存图像到输出目录并生成文件名前缀。\n参数：\n- filename_prefix：当前值=邀请码：jq8lvwrk，领1000RH币；作用：输出文件名前缀；范围：字符串（文件系统合法字符）；默认：ComfyUI。\n- images：当前值=来自 节点#8 VAEDecode 的 `IMAGE` 输出；作用：接收图像序列输入（可是一张图或多帧批次）；范围：图像数据（连线输入）；默认：由上游节点输出决定。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 17,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    22
+   ]
+  },
+  {
+   "id": 12,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "邀请码：jq8lvwrk，领1000RH币"
+   ],
+   "in_links": [
+    12,
+    22
+   ],
+   "out_links": []
+  },
+  {
+   "id": 16,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "冬日雪景中，一位年轻女子伫立于皑皑白雪覆盖的林间小径，发丝柔顺卷曲，深棕色长发编成精致的侧麻花辫，发梢与额前散落着晶莹雪粒，如星屑轻吻。她双眸清澈温柔，眼尾微翘，唇色粉润，面颊透出淡淡红晕，神情恬静中带着一丝暖意。她身披米白色粗针织毛衣，纹理厚实温暖，搭配一条柔粉色围巾，围巾上缀有雪花刺绣图案，末端系着小巧蝴蝶结，围巾轻柔环绕脖颈，与毛衣袖口相映成趣。她右手轻抚颈侧，指尖微颤，似在感受雪落的温柔。耳畔垂坠着精致的金色花朵耳环，在雪光映衬下闪烁微光。\n\n前景聚焦于女子上半身，毛衣与围巾的纹理清晰可见，雪粒在衣物上凝结，形成细腻的白色点缀，强化冬日氛围。中景是她身后模糊的雪地与枯枝，枝干被雪覆盖，轮廓朦胧，营造出纵深感。背景是虚化的雪林，灰白与淡蓝交织，远处隐约可见树影与雪堆，强化静谧空灵的意境。\n\n构图采用中近景特写，人物居中偏右，视线自然引向观者，形成柔和的视觉引导。画面留白充足，雪地与天空占据上半部，营造开阔与纯净之感。光影柔和，来自侧上方的自然光穿透云层，均匀洒在人物面部与衣物上，形成微妙的明暗过渡，毛衣与围巾的褶皱处有自然阴影，增强立体感。整体氛围静谧、温柔、治愈，如冬日午后的一抹暖阳，雪落无声，却在人物温柔的凝视中，诉说着冬日的诗意与安宁。色调以暖粉、米白、灰蓝为主，冷暖交融，营造出梦幻而真实的冬日氛围，仿佛一幅胶片质感的日常影像，充满生活气息与艺术美感。"
+   ],
+   "in_links": [],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 1,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1080
+   ],
+   "in_links": [],
+   "out_links": [
+    16
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 14,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 7,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 11,
+   "to_node": 10,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 14,
+   "to_node": 7,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 14,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 5,
+   "type": "STRING"
+  },
+  {
+   "from_node": 17,
+   "to_node": 12,
+   "type": "STRING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 5,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 2,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 3,
+   "to_node": 11,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 4,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 7,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 7,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 12,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "checkpoint_loader": 1,
+  "vae": 2,
+  "clip": 1,
+  "utility": 22,
+  "sampler": 1,
+  "conditioning": 2,
+  "image_io": 2
+ },
+ "assets": [
+  {
+   "node_id": 3,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_8b.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 27,
+ "structure_hash": "534d642ac2d96efc",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_8b.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "flux2"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 14,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 0,
+   "value_preview": "2048"
+  },
+  {
+   "node_id": 14,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 1,
+   "value_preview": "1568"
+  },
+  {
+   "node_id": 14,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "720751931851671"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 7,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 5,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 11,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 11,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "ModelPatchTorchSettings",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 35,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "03c6995f39e7aa19ef9398f3894057df1f4d792a1bf665abb5eac2804426"
+  },
+  {
+   "node_id": 35,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 15,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 17,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "邀请码：jq8lvwrk，领1000RH币"
+  },
+  {
+   "node_id": 1,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "1080"
+  }
+ ]
+}

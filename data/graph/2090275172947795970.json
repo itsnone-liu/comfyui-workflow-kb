@@ -1,0 +1,2254 @@
+{
+ "node_count": 51,
+ "link_count": 75,
+ "active_node_count": 49,
+ "nodes": [
+  {
+   "id": 1186,
+   "type": "ImageFromBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1
+   ],
+   "in_links": [
+    3121,
+    3122
+   ],
+   "out_links": [
+    3150
+   ]
+  },
+  {
+   "id": 1187,
+   "type": "VAEEncodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3123,
+    3124
+   ],
+   "out_links": [
+    3125
+   ]
+  },
+  {
+   "id": 1188,
+   "type": "SetLatentNoiseMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3125,
+    3126
+   ],
+   "out_links": [
+    3164
+   ]
+  },
+  {
+   "id": 1189,
+   "type": "SolidMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    32,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    3126
+   ]
+  },
+  {
+   "id": 1190,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3127,
+    3128
+   ],
+   "out_links": [
+    3188
+   ]
+  },
+  {
+   "id": 1191,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3129
+   ],
+   "out_links": [
+    3157,
+    3158
+   ]
+  },
+  {
+   "id": 1192,
+   "type": "EmptyImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    32,
+    32,
+    1,
+    16777215
+   ],
+   "in_links": [],
+   "out_links": [
+    3154
+   ]
+  },
+  {
+   "id": 1193,
+   "type": "CreateVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8
+   ],
+   "in_links": [
+    3130,
+    3131
+   ],
+   "out_links": [
+    3138
+   ]
+  },
+  {
+   "id": 1194,
+   "type": "ImageBlend",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "normal"
+   ],
+   "in_links": [
+    3132,
+    3133
+   ],
+   "out_links": [
+    3174
+   ]
+  },
+  {
+   "id": 1195,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    606032546021656,
+    "randomize",
+    6,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    3134,
+    3135,
+    3136,
+    3137
+   ],
+   "out_links": [
+    3139,
+    3161
+   ]
+  },
+  {
+   "id": 1196,
+   "type": "easy sam3ModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam3.pt",
+    "video",
+    "cuda",
+    "fp32"
+   ],
+   "in_links": [],
+   "out_links": [
+    3146
+   ]
+  },
+  {
+   "id": 1197,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/MiniMax_H3_Masked",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    3138
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1198,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3139,
+    3140
+   ],
+   "out_links": [
+    3131
+   ]
+  },
+  {
+   "id": 1199,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    3128,
+    3162,
+    3183
+   ]
+  },
+  {
+   "id": 1200,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    3124,
+    3140,
+    3184
+   ]
+  },
+  {
+   "id": 1201,
+   "type": "RemoveBackground",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3141,
+    3142
+   ],
+   "out_links": [
+    3143
+   ]
+  },
+  {
+   "id": 1202,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3143
+   ],
+   "out_links": [
+    3172
+   ]
+  },
+  {
+   "id": 1203,
+   "type": "EmptyImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    1,
+    16777215
+   ],
+   "in_links": [],
+   "out_links": [
+    3171
+   ]
+  },
+  {
+   "id": 1204,
+   "type": "ModelAttentionBackend",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "comfy kitchen attention"
+   ],
+   "in_links": [
+    3144
+   ],
+   "out_links": [
+    3145
+   ]
+  },
+  {
+   "id": 1205,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+    0.75
+   ],
+   "in_links": [
+    3145
+   ],
+   "out_links": [
+    3177
+   ]
+  },
+  {
+   "id": 1206,
+   "type": "SeCModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bfloat16",
+    "auto",
+    true,
+    true
+   ],
+   "in_links": [],
+   "out_links": [
+    3192
+   ]
+  },
+  {
+   "id": 1207,
+   "type": "easy sam3VideoSegmentation",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "person",
+    0,
+    1,
+    0.5,
+    0.7,
+    "both",
+    0,
+    -1,
+    true,
+    false
+   ],
+   "in_links": [
+    3146,
+    3147,
+    3148,
+    3149
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1208,
+   "type": "ResizeImageMaskNode",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "scale dimensions",
+    512,
+    512,
+    "center",
+    "bicubic"
+   ],
+   "in_links": [
+    3150,
+    3151,
+    3152
+   ],
+   "out_links": [
+    3127,
+    3165
+   ]
+  },
+  {
+   "id": 1209,
+   "type": "ImageCompositeMasked",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    true
+   ],
+   "in_links": [
+    3153,
+    3154,
+    3155
+   ],
+   "out_links": [
+    3173
+   ]
+  },
+  {
+   "id": 1210,
+   "type": "ResizeImageMaskNode",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "scale dimensions",
+    512,
+    512,
+    "disabled",
+    "nearest-exact"
+   ],
+   "in_links": [
+    3156,
+    3157,
+    3158
+   ],
+   "out_links": [
+    3155
+   ]
+  },
+  {
+   "id": 1211,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a)) - ((max(5, round(a)) - 5) % 17)"
+   ],
+   "in_links": [
+    3159
+   ],
+   "out_links": [
+    3122,
+    3178
+   ]
+  },
+  {
+   "id": 1212,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3160
+   ],
+   "out_links": [
+    3136
+   ]
+  },
+  {
+   "id": 1213,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3161,
+    3162
+   ],
+   "out_links": [
+    3130
+   ]
+  },
+  {
+   "id": 1214,
+   "type": "LTXVConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3163,
+    3164
+   ],
+   "out_links": [
+    3137
+   ]
+  },
+  {
+   "id": 1215,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3165
+   ],
+   "out_links": [
+    3186,
+    3187
+   ]
+  },
+  {
+   "id": 1216,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3166
+   ],
+   "out_links": [
+    3159
+   ]
+  },
+  {
+   "id": 1217,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    720,
+    720,
+    "nearest-exact",
+    "resize",
+    "0, 0, 0",
+    "center",
+    2,
+    "cpu"
+   ],
+   "in_links": [
+    3167,
+    3168,
+    3169
+   ],
+   "out_links": [
+    3121,
+    3147,
+    3166,
+    3179,
+    3193,
+    3180,
+    3181
+   ]
+  },
+  {
+   "id": 1218,
+   "type": "LoadBackgroundRemovalModel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "birefnet.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    3141
+   ]
+  },
+  {
+   "id": 1219,
+   "type": "ImageCompositeMasked",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    true
+   ],
+   "in_links": [
+    3170,
+    3171,
+    3172
+   ],
+   "out_links": [
+    3185
+   ]
+  },
+  {
+   "id": 1220,
+   "type": "PreviewAnimation",
+   "category": "utility",
+   "title": "Preview Animation",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24
+   ],
+   "in_links": [
+    3173
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1221,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": null,
+   "in_links": [
+    3174
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1222,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    3142,
+    3170
+   ]
+  },
+  {
+   "id": 1223,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    1,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    3151,
+    3168,
+    3152,
+    3169
+   ]
+  },
+  {
+   "id": 1224,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "881960687caf95b2d9e3cee21a928a6b904249605784c7f1a5bf2dd7ad422024.mp4",
+      "force_rate": 24,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "881960687caf95b2d9e3cee21a928a6b904249605784c7f1a5bf2dd7ad422024.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    3167,
+    3123
+   ]
+  },
+  {
+   "id": 1225,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3176
+   ]
+  },
+  {
+   "id": 1226,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3182
+   ]
+  },
+  {
+   "id": 1227,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3175
+   ],
+   "out_links": [
+    3144
+   ]
+  },
+  {
+   "id": 1228,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disabled",
+    false
+   ],
+   "in_links": [
+    3176
+   ],
+   "out_links": [
+    3175
+   ]
+  },
+  {
+   "id": 1229,
+   "type": "ModelPreviewOverrideKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    80,
+    true,
+    1,
+    12,
+    "taeh3.safetensors",
+    ""
+   ],
+   "in_links": [
+    3177,
+    3178
+   ],
+   "out_links": [
+    3134
+   ]
+  },
+  {
+   "id": 1230,
+   "type": "PointsEditor",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "{\"positive\":[{\"x\":429.00657265679536,\"y\":1173.253929093601},{\"x\":409.79527386720923,\"y\":757.0611907844217},{\"x\":418.724329962729,\"y\":360.1727492176192},{\"x\":281.0845106142036,\"y\":520.3934750190556},{\"x\":561.7275093332313,\"y\":532.3019056437649},{\"x\":316.15659416004473,\"y\":272.5104905155255},{\"x\":436.79440756797203,\"y\":205.49318503173046},{\"x\":532.2007166212646,\"y\":250.06835789888186}],\"negative\":[]}",
+    "[{\"x\":429.00657265679536,\"y\":1173.253929093601},{\"x\":409.79527386720923,\"y\":757.0611907844217},{\"x\":418.724329962729,\"y\":360.1727492176192},{\"x\":281.0845106142036,\"y\":520.3934750190556},{\"x\":561.7275093332313,\"y\":532.3019056437649},{\"x\":316.15659416004473,\"y\":272.5104905155255},{\"x\":436.79440756797203,\"y\":205.49318503173046},{\"x\":532.2007166212646,\"y\":250.06835789888186}]",
+    "[]",
+    "[{}]",
+    "[{}]",
+    "xyxy",
+    768,
+    1364,
+    false,
+    "",
+    ""
+   ],
+   "in_links": [
+    3179,
+    3180,
+    3181
+   ],
+   "out_links": [
+    3148,
+    3194,
+    3149,
+    3195,
+    3129,
+    3132,
+    3153
+   ]
+  },
+  {
+   "id": 1231,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "<Subject 1> is the young woman depicted in <Image 1>. She has dark brown wavy hair, wears a metallic bronze-colored high-neck long-sleeved top, paired with a light blue high-waisted mini skirt, and wears round silver earrings.\n<Subject 1> As the main character dancing in the final video, its image should be consistent with the tone, aesthetics, visual style, and soundscape of the surrounding videos.",
+    1344,
+    768,
+    124,
+    "max"
+   ],
+   "in_links": [
+    3182,
+    3183,
+    3184,
+    3185,
+    3186,
+    3187
+   ],
+   "out_links": [
+    3135,
+    3160
+   ]
+  },
+  {
+   "id": 1232,
+   "type": "SetLatentNoiseMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3188,
+    3189
+   ],
+   "out_links": [
+    3163
+   ]
+  },
+  {
+   "id": 1233,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    3190
+   ],
+   "out_links": [
+    3133
+   ]
+  },
+  {
+   "id": 1234,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    119,
+    true
+   ],
+   "in_links": [
+    3191
+   ],
+   "out_links": [
+    3156,
+    3189,
+    3190
+   ]
+  },
+  {
+   "id": 1235,
+   "type": "SeCVideoSegmentation",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    null,
+    0,
+    1,
+    -1,
+    12,
+    false
+   ],
+   "in_links": [
+    3192,
+    3193,
+    3194,
+    3195
+   ],
+   "out_links": [
+    3191
+   ]
+  },
+  {
+   "id": 1236,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1186,
+   "to_node": 1208,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1187,
+   "to_node": 1188,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1188,
+   "to_node": 1214,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1189,
+   "to_node": 1188,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1190,
+   "to_node": 1232,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1191,
+   "to_node": 1210,
+   "type": "INT"
+  },
+  {
+   "from_node": 1191,
+   "to_node": 1210,
+   "type": "INT"
+  },
+  {
+   "from_node": 1192,
+   "to_node": 1209,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1193,
+   "to_node": 1197,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 1194,
+   "to_node": 1221,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1195,
+   "to_node": 1198,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1195,
+   "to_node": 1213,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1196,
+   "to_node": 1207,
+   "type": "EASY_SAM3_MODEL"
+  },
+  {
+   "from_node": 1198,
+   "to_node": 1193,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 1199,
+   "to_node": 1190,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1199,
+   "to_node": 1213,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1199,
+   "to_node": 1231,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1200,
+   "to_node": 1187,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1200,
+   "to_node": 1198,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1200,
+   "to_node": 1231,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1201,
+   "to_node": 1202,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1202,
+   "to_node": 1219,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1203,
+   "to_node": 1219,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1204,
+   "to_node": 1205,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1205,
+   "to_node": 1229,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1206,
+   "to_node": 1235,
+   "type": "SEC_MODEL"
+  },
+  {
+   "from_node": 1208,
+   "to_node": 1190,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1208,
+   "to_node": 1215,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1209,
+   "to_node": 1220,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1210,
+   "to_node": 1209,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1211,
+   "to_node": 1186,
+   "type": "INT"
+  },
+  {
+   "from_node": 1211,
+   "to_node": 1229,
+   "type": "INT"
+  },
+  {
+   "from_node": 1212,
+   "to_node": 1195,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1213,
+   "to_node": 1193,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1214,
+   "to_node": 1195,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1215,
+   "to_node": 1231,
+   "type": "INT"
+  },
+  {
+   "from_node": 1215,
+   "to_node": 1231,
+   "type": "INT"
+  },
+  {
+   "from_node": 1216,
+   "to_node": 1211,
+   "type": "FLOAT,INT,BOOLEAN"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1186,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1207,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1216,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1230,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1230,
+   "type": "INT"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1230,
+   "type": "INT"
+  },
+  {
+   "from_node": 1217,
+   "to_node": 1235,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1218,
+   "to_node": 1201,
+   "type": "BACKGROUND_REMOVAL"
+  },
+  {
+   "from_node": 1219,
+   "to_node": 1231,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1222,
+   "to_node": 1201,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1222,
+   "to_node": 1219,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1223,
+   "to_node": 1208,
+   "type": "INT"
+  },
+  {
+   "from_node": 1223,
+   "to_node": 1208,
+   "type": "INT"
+  },
+  {
+   "from_node": 1223,
+   "to_node": 1217,
+   "type": "INT"
+  },
+  {
+   "from_node": 1223,
+   "to_node": 1217,
+   "type": "INT"
+  },
+  {
+   "from_node": 1224,
+   "to_node": 1187,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 1224,
+   "to_node": 1217,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1225,
+   "to_node": 1228,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1226,
+   "to_node": 1231,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 1227,
+   "to_node": 1204,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1228,
+   "to_node": 1227,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1229,
+   "to_node": 1195,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1191,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1194,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1207,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1207,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1209,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1235,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1230,
+   "to_node": 1235,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1231,
+   "to_node": 1195,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1231,
+   "to_node": 1212,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1232,
+   "to_node": 1214,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1233,
+   "to_node": 1194,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1234,
+   "to_node": 1210,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1234,
+   "to_node": 1232,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1234,
+   "to_node": 1233,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1235,
+   "to_node": 1234,
+   "type": "MASK"
+  }
+ ],
+ "categories": {
+  "batch": 1,
+  "vae": 6,
+  "utility": 30,
+  "sampler": 1,
+  "video_io": 2,
+  "lora": 1,
+  "preprocessor": 2,
+  "postprocess": 3,
+  "conditioning": 1,
+  "image_io": 2,
+  "checkpoint_loader": 1,
+  "clip": 1
+ },
+ "assets": [
+  {
+   "node_id": 1196,
+   "node_type": "easy sam3ModelLoader",
+   "kind": "checkpoint",
+   "name": "sam3.pt"
+  },
+  {
+   "node_id": 1199,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 1200,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 1205,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors"
+  },
+  {
+   "node_id": 1218,
+   "node_type": "LoadBackgroundRemovalModel",
+   "kind": "checkpoint",
+   "name": "birefnet.safetensors"
+  },
+  {
+   "node_id": 1225,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors"
+  },
+  {
+   "node_id": 1226,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "kind": "checkpoint",
+   "name": "taeh3.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 129,
+ "structure_hash": "ae5ad223c2432d67",
+ "param_face": [
+  {
+   "node_id": 1186,
+   "node_type": "ImageFromBatch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1186,
+   "node_type": "ImageFromBatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1189,
+   "node_type": "SolidMask",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1189,
+   "node_type": "SolidMask",
+   "widget_index": 1,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 1189,
+   "node_type": "SolidMask",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 1192,
+   "node_type": "EmptyImage",
+   "widget_index": 0,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 1192,
+   "node_type": "EmptyImage",
+   "widget_index": 1,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 1192,
+   "node_type": "EmptyImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1192,
+   "node_type": "EmptyImage",
+   "widget_index": 3,
+   "value_preview": "16777215"
+  },
+  {
+   "node_id": 1193,
+   "node_type": "CreateVideo",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 1193,
+   "node_type": "CreateVideo",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 1194,
+   "node_type": "ImageBlend",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1194,
+   "node_type": "ImageBlend",
+   "widget_index": 1,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "606032546021656"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 1195,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1196,
+   "node_type": "easy sam3ModelLoader",
+   "widget_index": 0,
+   "value_preview": "sam3.pt"
+  },
+  {
+   "node_id": 1196,
+   "node_type": "easy sam3ModelLoader",
+   "widget_index": 1,
+   "value_preview": "video"
+  },
+  {
+   "node_id": 1196,
+   "node_type": "easy sam3ModelLoader",
+   "widget_index": 2,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 1196,
+   "node_type": "easy sam3ModelLoader",
+   "widget_index": 3,
+   "value_preview": "fp32"
+  },
+  {
+   "node_id": 1197,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/MiniMax_H3_Masked"
+  },
+  {
+   "node_id": 1197,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 1197,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 1199,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 1200,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 1203,
+   "node_type": "EmptyImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1203,
+   "node_type": "EmptyImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1203,
+   "node_type": "EmptyImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1203,
+   "node_type": "EmptyImage",
+   "widget_index": 3,
+   "value_preview": "16777215"
+  },
+  {
+   "node_id": 1204,
+   "node_type": "ModelAttentionBackend",
+   "widget_index": 0,
+   "value_preview": "comfy kitchen attention"
+  },
+  {
+   "node_id": 1205,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors"
+  },
+  {
+   "node_id": 1205,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.75"
+  },
+  {
+   "node_id": 1206,
+   "node_type": "SeCModelLoader",
+   "widget_index": 0,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 1206,
+   "node_type": "SeCModelLoader",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 1206,
+   "node_type": "SeCModelLoader",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1206,
+   "node_type": "SeCModelLoader",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 0,
+   "value_preview": "person"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 3,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 4,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 5,
+   "value_preview": "both"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 7,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1207,
+   "node_type": "easy sam3VideoSegmentation",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1208,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 0,
+   "value_preview": "scale dimensions"
+  },
+  {
+   "node_id": 1208,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1208,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1208,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 3,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 1208,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 4,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 1209,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1209,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1209,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1210,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 0,
+   "value_preview": "scale dimensions"
+  },
+  {
+   "node_id": 1210,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1210,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 1210,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 1210,
+   "node_type": "ResizeImageMaskNode",
+   "widget_index": 4,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 1211,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a)) - ((max(5, round(a)) - 5) % 17)"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "resize"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1217,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 1218,
+   "node_type": "LoadBackgroundRemovalModel",
+   "widget_index": 0,
+   "value_preview": "birefnet.safetensors"
+  },
+  {
+   "node_id": 1219,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1219,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1219,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1220,
+   "node_type": "PreviewAnimation",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 1222,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1223,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 1223,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1223,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "881960687caf95b2d9e3cee21a928a6b904249605784c7f1a5bf2dd7ad42"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 1224,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1225,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors"
+  },
+  {
+   "node_id": 1225,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1226,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 1226,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 1226,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1228,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 1228,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 1,
+   "value_preview": "80"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 4,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 5,
+   "value_preview": "taeh3.safetensors"
+  },
+  {
+   "node_id": 1229,
+   "node_type": "ModelPreviewOverrideKJ",
+   "widget_index": 6,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 2,
+   "value_preview": "[]"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 3,
+   "value_preview": "[{}]"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 4,
+   "value_preview": "[{}]"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 5,
+   "value_preview": "xyxy"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 6,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 7,
+   "value_preview": "1364"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 9,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1230,
+   "node_type": "PointsEditor",
+   "widget_index": 10,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1231,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 1231,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 1231,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 1231,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "max"
+  },
+  {
+   "node_id": 1234,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "119"
+  },
+  {
+   "node_id": 1234,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 6,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 7,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 1235,
+   "node_type": "SeCVideoSegmentation",
+   "widget_index": 8,
+   "value_preview": "False"
+  }
+ ]
+}

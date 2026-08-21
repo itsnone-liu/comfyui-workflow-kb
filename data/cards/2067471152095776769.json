@@ -1,0 +1,89 @@
+{
+ "domain": [
+  "人物特效"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张或多张人物照片（LoadImage x2），借助 Flux.2 Klein 模型生成保持原图身份/颜色特征的多张增强人物图像，并自动输出前后对比图（SaveImage x3）。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Flux2KleinColorAnchor 节点对生成结果进行颜色锚定，使输出色调与参考图保持一致，适合风格化但颜色可控的人物写真生成。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Flux.2 Klein 9B 模型生成",
+  "颜色锚定 (Flux2KleinColorAnchor)",
+  "参考潜空间控制 (ReferenceLatent / Flux2KleinRefLatentController)",
+  "文本条件生成 (CLIPTextEncode)",
+  "VAE 编解码",
+  "图像对比与拼图后处理"
+ ],
+ "special_features": [
+  {
+   "text": "双 LoadImage 输入 + 多个 ReferenceLatent 节点，可能利用一张图提供身份/结构参考，另一张图提供颜色参考，实现多参考约束生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "两个 Flux2KleinColorAnchor 节点分别以不同参数（4 和 2）运行，形成多级/多路颜色锚定，增强色彩控制的精细度。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 LayerUtility: ImageReel 和 ImageReelComposit 自动生成带标题（中文字体 Alibaba-PuHuiTi-Heavy）的前后对比长图，便于直接审阅效果。",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut + CFGGuider=1 组合，可能用于取消或弱化正向条件对生成的引导，配合参考潜空间实现更自由的风格迁移。",
+   "kind": "inference"
+  },
+  {
+   "text": "RandomNoise 固定种子（708843174654291），保证实验可复现。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流似乎专门设计为「人物照片的颜色/身份保持型增强」：先通过 LoadImage 载入原始人物图与参考图，经 ReferenceLatent 提取参考特征，再利用 Flux.2 Klein 模型进行高质量重绘；同时用两个 ColorAnchor 节点对不同生成阶段/区域进行颜色锚定，确保输出颜色不偏离预期。最后用 ImageReel 拼图输出对比图，方便用户直观检查生成质量。整体设计强调多参考控制与可视化验证，适合需要精细控制颜色风格的人物特效场景。",
+ "use_case": "适用于人物写真的风格化再生成、颜色一致性增强、多参考融合生成，也可用于生成可对比的前后效果展示。",
+ "limitation": "依赖特定模型文件（Flux.2 Klein 9B-f16_nsfw.safetensors、qwen_3_8b_fp8mixed.safetensors、flux2-vae.safetensors）以及自定义节点（Flux2Klein 系列、LayerUtility、rgthree 等）；输入图像数量固定为两张；文本提示词被硬编码为 'the man in thephoto1 is'，无法在界面直接修改；生成分辨率固定为 1024x1024，输出尺寸受限于输入缩放；种子固定，随机性受限。",
+ "dependencies": [
+  "Flux.2 Klein 9B-f16_nsfw.safetensors",
+  "qwen_3_8b_fp8mixed.safetensors",
+  "flux2-vae.safetensors",
+  "ComfyUI-Flux2Klein 自定义节点",
+  "ComfyUI_LayerStyle (LayerUtility)",
+  "rgthree 节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（两张，一张人物主体照、一张颜色参考图）",
+  "count": "2"
+ },
+ "output": {
+  "type": "image（3 个 SaveImage：原图、最终结果、Flux2-Klein-4b-base 变体）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Flux2KleinColorAnchor 第一个参数（示例 0.65）",
+   "how_to_tune": "控制颜色锚定强度，值越大颜色越贴近参考图；建议在 0.3~1.0 间调节，过高可能使生成图失去细节层次。"
+  },
+  {
+   "param": "Flux2KleinColorAnchor 第二个参数（示例 4 / 2）",
+   "how_to_tune": "可能表示锚点数量或阶段数，数值越大颜色约束越强，但可能限制模型发挥；对比两个实例（4 和 2）可观察颜色保真度与多样性平衡。"
+  },
+  {
+   "param": "Flux2KleinColorAnchor 第三个参数（示例 0 / 1）",
+   "how_to_tune": "可能是锚点索引或模式选择，用于切换不同的颜色分布处理方式；当输出偏色时，尝试 0/1 切换看哪种更符合预期。"
+  },
+  {
+   "param": "Flux2KleinRefLatentController（示例 ['2', '1', 'none', '0.5', 'True']）",
+   "how_to_tune": "可能控制参考潜空间注入的时间步/强度：第二个参数 1 和 0 表示起始/结束步；0.5 为参考强度；可调低强度（如 0.3）以保留更多生成自由度，或调高（如 0.8）以强化参考特征。"
+  },
+  {
+   "param": "Flux2KleinTextRefBalance（示例 ['0.75', 'True']）",
+   "how_to_tune": "可能控制文本条件与图像参考的平衡权重，0.75 偏向图像参考；若希望文本提示作用更强，可增大该值。"
+  }
+ ],
+ "summary_text": "能力:输入一张或多张人物照片（LoadImage x2），借助 Flux.2 Klein 模型生成保持原图身份/颜色特征的多张增强人物图像，并自动输出前后对比图（SaveImage x3）。；能力:通过 Flux2KleinColorAnchor 节点对生成结果进行颜色锚定，使输出色调与参考图保持一致，适合风格化但颜色可控的人物写真生成。；特色:双 LoadImage 输入 + 多个 ReferenceLatent 节点，可能利用一张图提供身份/结构参考，另一张图提供颜色参考，实现多参考约束生成。；特色:两个 Flux2KleinColorAnchor 节点分别以不同参数（4 和 2）运行，形成多级/多路颜色锚定，增强色彩控制的精细度。；特色:使用 LayerUtility: ImageReel 和 ImageReelComposit 自动生成带标题（中文字体 Alibaba-PuHuiTi-Heavy）的前后对比长图，便于直接审阅效果。；特色:ConditioningZeroOut + CFGGuider=1 组合，可能用于取消或弱化正向条件对生成的引导，配合参考潜空间实现更自由的风格迁移。；特色:RandomNoise 固定种子（708843174654291），保证实验可复现。；适用于人物写真的风格化再生成、颜色一致性增强、多参考融合生成，也可用于生成可对比的前后效果展示。；该工作流似乎专门设计为「人物照片的颜色/身份保持型增强」：先通过 LoadImage 载入原始人物图与参考图，经 ReferenceLatent 提取参考特征，再利用 Flux.2 Klein 模型进行高质量重绘；同时用两个 ColorAnchor 节点对不同生成阶段/区域进行颜色锚定，确保输出颜色不偏离预期。最后用 ImageReel 拼图输出对比图，方便用户直观检查生成质量。整体设计强调多参考控制与可视化验证，适合需要精细控制颜色风格的人物特效场景。"
+}

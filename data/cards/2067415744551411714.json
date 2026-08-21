@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "图像编辑",
+  "风格迁移",
+  "图生图"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张图片 → 生成该图的手绘线条水彩风格版本（正向提示词明确为“手绘线条水彩,将图片转换成手绘线条水彩风格”）。",
+   "kind": "fact"
+  },
+  {
+   "text": "输入图会先按长边缩放到 2048px，保持比例后生成大尺寸输出。",
+   "kind": "fact"
+  },
+  {
+   "text": "配合 Lightning LoRA 与 KSampler 12 步采样，可快速出图。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过修改 TextEncodeQwenImageEditPlus 中的提示词，可将同一管线复用于其他风格化/图像编辑任务。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit（qwen_image_edit_2511_bf16.safetensors）端到端图生图/图像编辑",
+  "Qwen2.5-VL-7B（qwen_2.5_vl_7b_fp8_scaled.safetensors，type=qwen_image）文本编码/图像理解",
+  "ReferenceLatent(mode4) 参考潜空间构造（2 个节点）",
+  "LoRA 风格注入：qwen2511-Hand-drawn-line-watercolor_20.safetensors（强度1.0）",
+  "LoRA 推理加速：Qwen-Edit-2511-8步加速-Lightning-LoRA_V1.safetensors（强度0.8）",
+  "ModelSamplingAuraFlow(shift=3.1) 适配 AuraFlow/Qwen-Image 采样",
+  "DifferentialDiffusion(1) 差分扩散模型补丁",
+  "VAE encode/decode + 长边2048 预处理",
+  "正负提示词双分支 TextEncodeQwenImageEditPlus"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个 ReferenceLatent(mode4) 节点，而不是普通 img2img 的 VAEEncode→KSampler 直连，属于 Qwen-Image-Edit 特有的参考潜空间接线。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 reference latent 分支疑似分别服务正/负条件编码或分别用于条件与采样 latent；具体连线语义需结合完整 workflow 图确认。",
+   "kind": "inference"
+  },
+  {
+   "text": "模型侧叠加了风格 LoRA + Lightning 加速 LoRA 两个 LoraLoaderModelOnly，一个偏控制画风，一个偏减少采样步数，风格与性能解耦。",
+   "kind": "fact"
+  },
+  {
+   "text": "采样链路叠加 ModelSamplingAuraFlow(3.1) 与 DifferentialDiffusion(1) 两个模型补丁，对 flow-matching schedule 和编辑强度做额外调制。",
+   "kind": "fact"
+  },
+  {
+   "text": "负向提示词专门写“模糊低质量，不清晰，缺乏细节”，形成提示词层的画质护栏。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流以 Qwen-Image-Edit 为基座，围绕它的参考图编辑机制设计：输入图先被缩放到 2048 并 VAE 编码，再通过 ReferenceLatent(mode4) 把参考 latent 注入编辑流程，让模型在生成手绘水彩的同时仍能参照原图结构。Hand-drawn-line-watercolor LoRA 负责锁定风格，Lightning LoRA 负责把步数压到 12 步，ModelSamplingAuraFlow 和 DifferentialDiffusion 则负责适配 Qwen-Image 的采样分布并控制编辑幅度。整体意图似乎是：把通用图像编辑模型收敛成一个“图片→手绘线条水彩”专用风格化工具，用最少节点获得稳定的风格、清晰度和速度。",
+ "use_case": "适合把照片、插画、截图等单张图片转成手绘线条水彩风格；也可作为 Qwen-Image-Edit 的参考模板，改提示词与 LoRA 后用于其他风格化编辑。",
+ "limitation": "依赖 Qwen-Image-Edit 专用模型与 LoRA，以及 TextEncodeQwenImageEditPlus、ReferenceLatent、ResizeImagesByLongerEdge 等自定义节点；输入必须是单张图片；长边固定 2048，短边等比缩放，显存需求较高。CFG=1 且高度依赖风格 LoRA，复杂场景/人脸可能结构不稳定；无后续放大或质量校验模块。",
+ "dependencies": [
+  "qwen_image_edit_2511_bf16.safetensors（UNET/checkpoint）",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors（CLIP，type=qwen_image）",
+  "qwen_image_vae.safetensors（VAE）",
+  "qwen2511-Hand-drawn-line-watercolor_20.safetensors（风格 LoRA）",
+  "Qwen-Edit-2511-8步加速-Lightning-LoRA_V1.safetensors（加速 LoRA）",
+  "自定义/扩展节点：TextEncodeQwenImageEditPlus、ReferenceLatent、ResizeImagesByLongerEdge、DifferentialDiffusion、ModelSamplingAuraFlow"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": 1
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "qwen2511-Hand-drawn-line-watercolor LoRA 强度",
+   "how_to_tune": "当前 1.0；建议在 0.7~1.2 之间尝试，越高风格越强但越容易破坏原图结构。"
+  },
+  {
+   "param": "Qwen-Edit-2511-8步加速 Lightning LoRA 强度",
+   "how_to_tune": "当前 0.8；若画面显脏/噪点，可降到 0.5~0.7，或提高 KSampler steps 补偿。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前 12；有 Lightning LoRA 时 8~16 均可用，追求细节可提高到 16~20。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前 1.0；Qwen-Image/Flow matching 通常用 1.0，若风格或编辑强度不足可小范围试 1.5~2.0，过高易色彩过曝。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift",
+   "how_to_tune": "当前 3.1；画面发灰/发闷时可调高到 3.5~4.0，端侧小图可调低。"
+  },
+  {
+   "param": "DifferentialDiffusion 强度",
+   "how_to_tune": "当前 1；降低可削弱编辑幅度、更贴近原图；提高可让风格化更彻底。"
+  },
+  {
+   "param": "ResizeImagesByLongerEdge 长边",
+   "how_to_tune": "当前 2048；显存不足时降到 1024~1536，追求细节维持 2048。"
+  },
+  {
+   "param": "正向提示词（TextEncodeQwenImageEditPlus）",
+   "how_to_tune": "当前为“手绘线条水彩,将图片转换成手绘线条水彩风格”；修改为其他画风即可切换输出风格。"
+  }
+ ],
+ "summary_text": "能力:上传单张图片 → 生成该图的手绘线条水彩风格版本（正向提示词明确为“手绘线条水彩,将图片转换成手绘线条水彩风格”）。；能力:输入图会先按长边缩放到 2048px，保持比例后生成大尺寸输出。；能力:配合 Lightning LoRA 与 KSampler 12 步采样，可快速出图。；能力:通过修改 TextEncodeQwenImageEditPlus 中的提示词，可将同一管线复用于其他风格化/图像编辑任务。；特色:使用两个 ReferenceLatent(mode4) 节点，而不是普通 img2img 的 VAEEncode→KSampler 直连，属于 Qwen-Image-Edit 特有的参考潜空间接线。；特色:两个 reference latent 分支疑似分别服务正/负条件编码或分别用于条件与采样 latent；具体连线语义需结合完整 workflow 图确认。；特色:模型侧叠加了风格 LoRA + Lightning 加速 LoRA 两个 LoraLoaderModelOnly，一个偏控制画风，一个偏减少采样步数，风格与性能解耦。；特色:采样链路叠加 ModelSamplingAuraFlow(3.1) 与 DifferentialDiffusion(1) 两个模型补丁，对 flow-matching schedule 和编辑强度做额外调制。；特色:负向提示词专门写“模糊低质量，不清晰，缺乏细节”，形成提示词层的画质护栏。；适合把照片、插画、截图等单张图片转成手绘线条水彩风格；也可作为 Qwen-Image-Edit 的参考模板，改提示词与 LoRA 后用于其他风格化编辑。；该工作流以 Qwen-Image-Edit 为基座，围绕它的参考图编辑机制设计：输入图先被缩放到 2048 并 VAE 编码，再通过 ReferenceLatent(mode4) 把参考 latent 注入编辑流程，让模型在生成手绘水彩的同时仍能参照原图结构。Hand-drawn-line-watercolor LoRA 负责锁定风格，Lightning LoRA 负责把步数压到 12 步，ModelSamplingAuraFlow 和 DifferentialDiffusion 则负责适配 Qwen-Image 的采样分布并控制编辑幅度。整体意图似乎是：把通用图像编辑模型收敛成一个“图片→手绘线条水彩”专用风格化工具，用最少节点获得稳定的风格、清晰度和速度。"
+}

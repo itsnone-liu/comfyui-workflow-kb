@@ -1,0 +1,97 @@
+{
+ "domain": [
+  "图像编辑",
+  "人物肖像",
+  "人脸交换",
+  "FLUX.2"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张源人脸照和一张目标图像，端到端完成‘换头’：生成保持源人脸身份特征的目标图。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 SegmentV2 分割出 face/ear/hair 区域，结合 VAEEncode 与 ReferenceLatent 作为语义条件，使生成变化集中在头部/发际线区域，而不是整图无约束重绘。",
+   "kind": "inference"
+  },
+  {
+   "text": "生成结果经过 easy imageColorMatch 颜色匹配后处理，自动将换脸区域的肤色/光影向目标图像校准。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时保存 Flux2-Klein 和 ComfyUI 两路输出，并通过 ImageReel + ImageReelComposit 生成带中文标签的输入输出对比接触条，便于人工抽检。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 (Klein 9B, 低步数扩散生成)",
+  "ReferenceLatent 参考潜变量注入（4 路）",
+  "GroundingDINO + SAM-ViT-H 语义分割（SegmentV2, face/ear/hair）",
+  "Flux2Scheduler 4 步采样 + KSamplerSelect(euler) + SamplerCustomAdvanced",
+  "ConditioningZeroOut + CFGGuider(1) 的无 CFG 引导策略",
+  "VAEEncode ×2 将分割结果/源图转成潜变量条件",
+  "easy imageColorMatch 色彩匹配后处理",
+  "LayerUtility ImageReel + ImageReelComposit 接触条拼版",
+  "Image Comparer (rgthree) 输入输出对比质检"
+ ],
+ "special_features": [
+  {
+   "text": "4 个 ReferenceLatent 节点串联，直接使用 FLUX.2 原生的参考潜变量机制作为换脸核心，而不是传统 face-swap 模型或像素混合。",
+   "kind": "fact"
+  },
+  {
+   "text": "结构上 SegmentV2 分割结果与 VAEEncode 相连，暗示作者把分割出的‘脸/耳/发’区域编码成参考条件，形成局部身份引导，而非简单用作 inpaint mask。",
+   "kind": "inference"
+  },
+  {
+   "text": "ConditioningZeroOut 与 CFGGuider=1 共同出现，可能是有意关闭传统 CFG/负向条件干扰，让生成完全依赖 FLUX.2 的参考耦合来保持一致性。",
+   "kind": "inference"
+  },
+  {
+   "text": "尾部用 ImageReel + ImageReelComposit 自动组装带中文字体标题的对比接触条，并同时输出两路 SaveImage，属于面向批量交付和质量抽检的工程化设计。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从结构上看，作者似乎是想用 FLUX.2 的原生 ReferenceLatent 机制实现一个无需训练的换头管线：先由 SegmentV2 精准分割 face/ear/hair，再经 VAEEncode 将源脸编码为参考潜变量，通过 4 路 ReferenceLatent 将身份特征注入采样过程，让换脸结果保持 FLUX.2 自然的生成质感。CFG 被刻意固定为 1 并配合 ConditioningZeroOut，可能是为了消除传统 CFG 带来的过饱和与身份漂移。结尾的 easy imageColorMatch 和 ImageReel 接触条又明显是为了批量交付时的肤色统一与人工抽检，因此这条工作流更像一个面向真实业务的人像换脸生产模板，而不是实验性 demo。",
+ "use_case": "适合运营、自媒体、电商模特图等场景：将一张正式肖像照批量替换到多张目标照片/服装图中，要求保持人脸身份一致且肤色光线统一；也可用于快速生成多张候选换脸图再人工挑选。",
+ "limitation": "依赖 FLUX.2 专属权重（flux-2-klein-9b-nvfp4.safetensors、qwen_3_8b_fp8mixed.safetensors、flux2-vae.safetensors），无法直接复用 SD/SDXL 模型；需要额外安装 SegmentV2（Impact Pack）、LayerUtility（ComfyUI Essentials）、Image Comparer（rgthree）、easy imageColorMatch（easy-use）等自定义节点；输入需两张图像，源脸必须能被 GroundingDINO/SAM 分割出 face/ear/hair，大角度侧脸或重度遮挡会导致分割漏检；模板中 GetImageSize 显示曾处理 1152×153 的横条状图像，普通竖版人像输入可能需要先裁剪/缩放；当前仅 4 步采样，输出细节上限有限，超高精需求需增大步数或外接放大。",
+ "dependencies": [
+  "checkpoint: flux-2-klein-9b-nvfp4.safetensors",
+  "clip: qwen_3_8b_fp8mixed.safetensors (flux2)",
+  "vae: flux2-vae.safetensors",
+  "分割模型: GroundingDINO_SwinT_OGC + sam_vit_h (2.56GB)",
+  "自定义节点: ComfyUI-Essentials (LayerUtility), ComfyUI-Impact-Pack (SegmentV2), rgthree (Image Comparer), easy-use (easy imageColorMatch)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Flux2Scheduler.steps（当前 4）",
+   "how_to_tune": "FLUX.2 为低步采样设计，4 步已能出图；若追求更高细节可试 8~12 步，但超过 12 步收益递减且速度明显变慢。"
+  },
+  {
+   "param": "CFGGuider.cfg（当前 1）",
+   "how_to_tune": "FLUX.2 主要靠 ReferenceLatent 传身份，CFG 建议保持 1；调高容易导致颜色过饱和、面部细节伪影和身份漂移。"
+  },
+  {
+   "param": "CLIPTextEncode 提示词（当前 '换头，保持人脸一致，'）",
+   "how_to_tune": "该文本由 qwen_3_8b 编码，中文自然语言即可；可根据目标场景补充描述（如‘穿红色汉服、室内光’），但建议保留‘换头/保持人脸一致’等身份约束词。"
+  },
+  {
+   "param": "SegmentV2 的 box_threshold（当前 0.35）",
+   "how_to_tune": "该阈值用于 GroundingDINO 目标框检测；若 face/ear/hair 分割框漏检，可调低到 0.25~0.3；若误检框过多，则适当调高。"
+  },
+  {
+   "param": "RandomNoise.seed（当前 1064743339343480）",
+   "how_to_tune": "固定 seed 可复现同一结果；切换 randomize 可获得不同脸部细节/姿态，适合批量生成多张候选图后人工挑选最佳。"
+  }
+ ],
+ "summary_text": "能力:输入一张源人脸照和一张目标图像，端到端完成‘换头’：生成保持源人脸身份特征的目标图。；能力:用 SegmentV2 分割出 face/ear/hair 区域，结合 VAEEncode 与 ReferenceLatent 作为语义条件，使生成变化集中在头部/发际线区域，而不是整图无约束重绘。；能力:生成结果经过 easy imageColorMatch 颜色匹配后处理，自动将换脸区域的肤色/光影向目标图像校准。；能力:同时保存 Flux2-Klein 和 ComfyUI 两路输出，并通过 ImageReel + ImageReelComposit 生成带中文标签的输入输出对比接触条，便于人工抽检。；特色:4 个 ReferenceLatent 节点串联，直接使用 FLUX.2 原生的参考潜变量机制作为换脸核心，而不是传统 face-swap 模型或像素混合。；特色:结构上 SegmentV2 分割结果与 VAEEncode 相连，暗示作者把分割出的‘脸/耳/发’区域编码成参考条件，形成局部身份引导，而非简单用作 inpaint mask。；特色:ConditioningZeroOut 与 CFGGuider=1 共同出现，可能是有意关闭传统 CFG/负向条件干扰，让生成完全依赖 FLUX.2 的参考耦合来保持一致性。；特色:尾部用 ImageReel + ImageReelComposit 自动组装带中文字体标题的对比接触条，并同时输出两路 SaveImage，属于面向批量交付和质量抽检的工程化设计。；适合运营、自媒体、电商模特图等场景：将一张正式肖像照批量替换到多张目标照片/服装图中，要求保持人脸身份一致且肤色光线统一；也可用于快速生成多张候选换脸图再人工挑选。；从结构上看，作者似乎是想用 FLUX.2 的原生 ReferenceLatent 机制实现一个无需训练的换头管线：先由 SegmentV2 精准分割 face/ear/hair，再经 VAEEncode 将源脸编码为参考潜变量，通过 4 路 ReferenceLatent 将身份特征注入采样过程，让换脸结果保持 FLUX.2 自然的生成质感。CFG 被刻意固定为 1 并配合 ConditioningZeroOut，可能是为了消除传统 CFG 带来的过饱和与身份漂移。结尾的 easy imageColorMatch 和 ImageReel 接触条又明显是为了批量交付时的肤色统一与人工抽检，因此这条工作流更像一个面向真实业务的人像换脸生产模板，而不是实验性 demo。"
+}

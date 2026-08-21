@@ -1,0 +1,119 @@
+{
+ "domain": [
+  "换装",
+  "虚拟试衣",
+  "电商出图"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成「上传模特图 + 服装图 → 生成模特穿着该服装的效果图」的换装流程，包含自动抠衣、局部重绘、人脸/手部修复、高清放大。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 SegformerB2ClothesUltra + SegmentAnythingUltra V2 自动生成衣服区域 mask，再交给 FLUX.1 Fill 做局部 Inpaint，而不是整图重绘。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 FaceDetailer（face_yolov8m + hand_yolov8n）对生成后的人脸和手部进行二次修复，降低换装带来的五官/手部畸变。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 flux1-redux-dev / StyleModelApply + CLIPVision 将参考服装的风格与外观注入主生成链路，使衣服更接近用户提供的款式。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 UltimateSDUpscale + 4xNomos8kSCHAT-L.pth 做最终高清放大，适合电商大图输出。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Fill Inpainting",
+  "FLUX.1 Dev fp8",
+  "Flux Redux StyleModel",
+  "GroundingDINO + SAM (SegmentAnythingUltra V2)",
+  "SegformerB2ClothesUltra 服饰语义分割",
+  "FaceDetailer 人脸/手部修复",
+  "UltimateSDUpscale 高倍放大",
+  "Differential Diffusion",
+  "Inpaint Crop / Stitch 局部重绘管线",
+  "显存管理与动态尺寸控制"
+ ],
+ "special_features": [
+  {
+   "text": "双 UNet 双 KSampler 的两段式生成结构：flux1-fill-dev 与 flux1-dev-fp8 同时存在，配合 Any Switch / Fast Bypasser 可切换生成阶段，疑似先用 Fill 换装，再走 Dev + Redux 做风格与细节精修。",
+   "kind": "inference"
+  },
+  {
+   "text": "构建了多组 mask 工程链：ColorImage / MaskToImage / ImageToMask / ImageCompositeMasked / Bounded Image Crop with Mask 互相转换，配合 MaskGrow 和 MathExpression 动态计算裁剪偏移，属于可编程的遮罩处理链。",
+   "kind": "fact"
+  },
+  {
+   "text": "质量控制回路：两个 Image Comparer (rgthree) + Preview Chooser + 多个 PreviewImage 用于对比原图/结果并选择最终出图，FaceDetailer 和 Upscale 放在后面形成“检测-修复-检查”回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "显存管理设计：PurgeVRAM、easy cleanGpuUsed、easy clearCacheAll、fp8 模型、easy imageSize / imageSizeBySide 限制最大分辨率，说明工作流针对高显存压力场景做过优化。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 easy ifElse + easy isMaskEmpty 做条件分支，衣服 mask 为空时可能跳过重绘或走另一条逻辑，避免无效生成。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整体是一个面向“换装”的 FLUX 局部重绘工作流。作者可能想让用户在不重绘全图的情况下，只替换衣服区域：先用 GroundingDINO/SegFormer 把衣服区域切成 mask，再用 FLUX.1 Fill 做 inpaint；同时用 Redux 风格模型把参考衣服的纹理、颜色和风格注入生成结果。为了保持人物稳定，后面接 FaceDetailer 修复脸和手，再用 UltimateSDUpscale 放大输出。大量 Switch/Comparer/Bypasser 说明它也被设计成可对比、可临时启用或停用某段流程的实验性工作台；频繁出现的显存清理节点则是为了在有限显存下跑多个 FLUX 模型。",
+ "use_case": "电商服装换装、虚拟试衣、模特图后期合成、服装款式快速上身预览，以及需要对生成结果做人工对比筛选的批量出图场景。",
+ "limitation": "依赖多个外部模型文件和 ComfyUI 自定义节点；输入必须是清晰的模特图 + 服装参考图两张图片；若没有 GroundingDINO/SAM 模型，自动抠衣遮罩会失效；FLUX fp8 模型虽然有省显存优势，但 FaceDetailer 与 4x 放大阶段仍可能显存不足或耗时较长；上传服装图若带复杂背景，Redux 可能把背景纹理也带入生成结果。",
+ "dependencies": [
+  "flux1-fill-dev.safetensors",
+  "flux1-dev-fp8.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "clip_l.safetensors",
+  "sigclip_vision_patch14_384.safetensors",
+  "ae.sft",
+  "flux1-redux-dev.safetensors",
+  "完美高清放大4xNomos8kSCHAT-L.pth",
+  "GroundingDINO_SwinT_OGC",
+  "sam_hq_vit_l",
+  "bbox/face_yolov8m.pt",
+  "bbox/hand_yolov8n.pt",
+  "ComfyUI Impact Pack",
+  "ComfyUI LayerStyle",
+  "rgthree-comfy",
+  "ComfyUI Easy Use",
+  "UltimateSDUpscale",
+  "KJNodes",
+  "ComfyUI MathExpression/pysssss"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FluxGuidance=30",
+   "how_to_tune": "数值越大生成结果越服从文本提示；换装任务中如果衣服细节被过度改写，可适当调低；如果整体构图偏离 prompt，可调高。建议以预览结果为准小幅步进。"
+  },
+  {
+   "param": "KSampler steps=25, cfg=1, euler/simple",
+   "how_to_tune": "这是 FLUX 的常见低 cfg 配置。若细节不足可把 steps 提高到 28-30；FLUX 一般不建议把 cfg 拉到 1 以上，否则容易过曝或产生伪影。"
+  },
+  {
+   "param": "FaceDetailer 尺寸参数 (512/1024)",
+   "how_to_tune": "FaceDetailer 的 crop/重绘尺寸影响脸和手部修复质量：尺寸太小修复不彻底，太大会增加显存和时间；手部崩坏时优先检查 hand_yolov8n 检测结果与 denoise 值。"
+  },
+  {
+   "param": "UltimateSDUpscale scale=1.5",
+   "how_to_tune": "放大倍数越大细节越多，但可能放大原本的瑕疵；若最终图偏软可提高到 2，若已经足够清晰则 1.5 更自然。放大前应尽量先修好脸和手部。"
+  },
+  {
+   "param": "SegmentAnything GroundingDINO threshold=0.3",
+   "how_to_tune": "阈值越低越容易切出更多区域，越高越精确但可能漏切；换装时如果衣服边缘被切掉，可调低阈值并配合 MaskGrow 膨胀值；如果背景被误选中，则调高阈值。"
+  }
+ ],
+ "summary_text": "能力:端到端完成「上传模特图 + 服装图 → 生成模特穿着该服装的效果图」的换装流程，包含自动抠衣、局部重绘、人脸/手部修复、高清放大。；能力:通过 SegformerB2ClothesUltra + SegmentAnythingUltra V2 自动生成衣服区域 mask，再交给 FLUX.1 Fill 做局部 Inpaint，而不是整图重绘。；能力:使用 FaceDetailer（face_yolov8m + hand_yolov8n）对生成后的人脸和手部进行二次修复，降低换装带来的五官/手部畸变。；能力:使用 flux1-redux-dev / StyleModelApply + CLIPVision 将参考服装的风格与外观注入主生成链路，使衣服更接近用户提供的款式。；能力:通过 UltimateSDUpscale + 4xNomos8kSCHAT-L.pth 做最终高清放大，适合电商大图输出。；特色:双 UNet 双 KSampler 的两段式生成结构：flux1-fill-dev 与 flux1-dev-fp8 同时存在，配合 Any Switch / Fast Bypasser 可切换生成阶段，疑似先用 Fill 换装，再走 Dev + Redux 做风格与细节精修。；特色:构建了多组 mask 工程链：ColorImage / MaskToImage / ImageToMask / ImageCompositeMasked / Bounded Image Crop with Mask 互相转换，配合 MaskGrow 和 MathExpression 动态计算裁剪偏移，属于可编程的遮罩处理链。；特色:质量控制回路：两个 Image Comparer (rgthree) + Preview Chooser + 多个 PreviewImage 用于对比原图/结果并选择最终出图，FaceDetailer 和 Upscale 放在后面形成“检测-修复-检查”回路。；特色:显存管理设计：PurgeVRAM、easy cleanGpuUsed、easy clearCacheAll、fp8 模型、easy imageSize / imageSizeBySide 限制最大分辨率，说明工作流针对高显存压力场景做过优化。；特色:使用 easy ifElse + easy isMaskEmpty 做条件分支，衣服 mask 为空时可能跳过重绘或走另一条逻辑，避免无效生成。；电商服装换装、虚拟试衣、模特图后期合成、服装款式快速上身预览，以及需要对生成结果做人工对比筛选的批量出图场景。；整体是一个面向“换装”的 FLUX 局部重绘工作流。作者可能想让用户在不重绘全图的情况下，只替换衣服区域：先用 GroundingDINO/SegFormer 把衣服区域切成 mask"
+}

@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图生图",
+  "图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端图像编辑：输入图1（女孩）与图2（男孩），按提示词“图2的男孩给图1的女孩一束鲜花”生成把男孩放入女孩场景并献花的写真/氛围图。",
+   "kind": "fact"
+  },
+  {
+   "text": "LLM 指令改写：RH_LLMAPI_NODE 把简短自然语言改写成更详细的 Qwen-Image Edit 指令，再交给 TextEncodeQwenImageEditPlusCustom_lrzjason。",
+   "kind": "fact"
+  },
+  {
+   "text": "姿态与光照控制：AIO_Preprocessor(OpenposePreprocessor) 提取人物姿态，并配合“重新照明，使用黄昏阳光……”提示词控制输出光线。",
+   "kind": "inference"
+  },
+  {
+   "text": "多模式分辨率适配：通过 GetImageSize、ImageScaleToTotalPixels、FluxResolutionNode、QwenEditConfigPreparer 按输入图尺寸/比例动态规划编辑分辨率。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image Edit",
+  "FLUX 工作流技巧（FluxResolutionNode/CFGNorm）",
+  "OpenPose 姿态预处理",
+  "多图拼接（ImageConcatMulti / ImageConcanate）",
+  "LLM 指令改写（RH_LLMAPI_NODE）",
+  "低 CFG 采样（CFGNorm、ConditioningZeroOut、KSampler cfg=1）",
+  "动态分辨率适配",
+  "模块化分支切换（ImpactSwitch/ImpactMinMax/rgthree）"
+ ],
+ "special_features": [
+  {
+   "text": "多个 QwenEditConfigPreparer 并行/可选（True/False、1536、pad、lanczos），配合 ImpactSwitch 和 mode4 分组，使同一工作流可切换不同编辑策略。",
+   "kind": "fact"
+  },
+  {
+   "text": "LLM in the loop：RH_LLMAPI_NODE 注释为 '# Edit Instruction Rewri'，意思是用 LLM 把“图2的男孩给图1的女孩一束鲜花”展开成更详细的图像编辑指令。",
+   "kind": "fact"
+  },
+  {
+   "text": "CFGNorm + ConditioningZeroOut + KSampler(cfg=1, euler_ancestral, beta)：推测是为了控制 Qwen/FLUX 系模型的低 CFG 表现，避免饱和度溢出或训导过强。",
+   "kind": "inference"
+  },
+  {
+   "text": "rgthree Fast Groups Bypasser 与 Impact 系列组合，可以对成组节点做整体旁路/切换，方便对比不同分辨率、不同编辑配置的效果。",
+   "kind": "inference"
+  },
+  {
+   "text": "两个 GetImageSize 记录到 945x1664、768x1365 两种竖图尺寸，说明作者考虑了手机竖图/平台来源比例差异，并围绕它们做了缩放分支。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整体像是围绕 Qwen-Image Edit 搭的“多图参考 + 指令改写 + 分辨率自适应”流水线：用户提供女孩图和男孩图后，先用 LLM 把“献花”口语扩展成可编辑指令，再用 OpenPose 固定人物姿态，接着通过多尺度缩放/拼接把不同来源图片统一到 Qwen-Image Edit 的工作分辨率，最后以低 CFG 采样合成。ImpactSwitch/mode4 与 rgthree Bypasser 说明作者希望保留多种配置便于切换调试；整体设计意图似乎是用更少的提示词操作，换取对人物姿态、场景光影和分辨率更强的可控性。",
+ "use_case": "适合人物照片之间的动作/场景融合，例如“男孩给女孩献花”的情侣写真、朋友合影、封面图/插画；也可用于在保留人物身份的前提下，把某张照片中的人物移动到另一张照片的场景并做互动。",
+ "limitation": "依赖若干自定义节点与外部 LLM API（RH_LLMAPI_NODE）；需要指定模型 Qwen-Rapid-AIO-NSFW-v18.safetensors。输入至少需要图1、图2两张图片（流程中还有第3个 LoadImage 用于多模式分支，是否启用需看模式设置）。OpenPose 对低分辨率/遮挡/复杂手部姿态可能约束不足，生成结果不一定能完全还原动作或交互细节。",
+ "dependencies": [
+  "Qwen-Rapid-AIO-NSFW-v18.safetensors",
+  "ComfyUI 自定义节点：rgthree (Fast Groups Bypasser)",
+  "ComfyUI Impact Pack (ImpactSwitch/ImpactInt/ImpactMinMax)",
+  "AIO_Preprocessor (OpenPosePreprocessor)",
+  "QwenImageEditPlusCustom_lrzjason",
+  "RH_LLMAPI_NODE (Runninghub LLM API)",
+  "FluxResolutionNode / QwenEditConfigPreparer"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2（图1+图2；另有第3个 LoadImage 用于多模式分支）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 4，属低步数快速采样；若画面不完整或细节粗糙，可先提高到 8~12，但要接受更慢的生成速度。"
+  },
+  {
+   "param": "KSampler cfg / CFGNorm",
+   "how_to_tune": "当前 cfg=1，配合 CFGNorm=1；Qwen/FLUX 系模型不建议像 SD 那样调到 7，优先保持 1~2，避免过曝/伪影。"
+  },
+  {
+   "param": "QwenEditConfigPreparer 1536/pad/lanczos",
+   "how_to_tune": "1536 是编辑/输出基础分辨率；输入图细节多可提高到 1728/2048，显存紧张则降低；pad 与 lanczos 影响填充和缩放质量。"
+  },
+  {
+   "param": "OpenPosePreprocessor 512",
+   "how_to_tune": "512 是姿态检测边长；人物过小或姿态不准确时调到 768，但会增加预处理耗时与显存占用。"
+  },
+  {
+   "param": "RH_LLMAPI_NODE temperature",
+   "how_to_tune": "当前 0.6；如果 LLM 改写偏离原意，把温度降到 0.2~0.4；需要更丰富/更具创意的画面描述可适当调高。"
+  },
+  {
+   "param": "ImpactSwitch 1/False",
+   "how_to_tune": "用于选择模式分支；修改该数字应与 Fast Groups Bypasser 的启用/旁路状态配合，以切换不同分辨率或编辑配置。"
+  }
+ ],
+ "summary_text": "能力:端到端图像编辑：输入图1（女孩）与图2（男孩），按提示词“图2的男孩给图1的女孩一束鲜花”生成把男孩放入女孩场景并献花的写真/氛围图。；能力:LLM 指令改写：RH_LLMAPI_NODE 把简短自然语言改写成更详细的 Qwen-Image Edit 指令，再交给 TextEncodeQwenImageEditPlusCustom_lrzjason。；能力:姿态与光照控制：AIO_Preprocessor(OpenposePreprocessor) 提取人物姿态，并配合“重新照明，使用黄昏阳光……”提示词控制输出光线。；能力:多模式分辨率适配：通过 GetImageSize、ImageScaleToTotalPixels、FluxResolutionNode、QwenEditConfigPreparer 按输入图尺寸/比例动态规划编辑分辨率。；特色:多个 QwenEditConfigPreparer 并行/可选（True/False、1536、pad、lanczos），配合 ImpactSwitch 和 mode4 分组，使同一工作流可切换不同编辑策略。；特色:LLM in the loop：RH_LLMAPI_NODE 注释为 '# Edit Instruction Rewri'，意思是用 LLM 把“图2的男孩给图1的女孩一束鲜花”展开成更详细的图像编辑指令。；特色:CFGNorm + ConditioningZeroOut + KSampler(cfg=1, euler_ancestral, beta)：推测是为了控制 Qwen/FLUX 系模型的低 CFG 表现，避免饱和度溢出或训导过强。；特色:rgthree Fast Groups Bypasser 与 Impact 系列组合，可以对成组节点做整体旁路/切换，方便对比不同分辨率、不同编辑配置的效果。；特色:两个 GetImageSize 记录到 945x1664、768x1365 两种竖图尺寸，说明作者考虑了手机竖图/平台来源比例差异，并围绕它们做了缩放分支。；适合人物照片之间的动作/场景融合，例如“男孩给女孩献花”的情侣写真、朋友合影、封面图/插画；也可用于在保留人物身份的前提下，把某张照片中的人物移动到另一张照片的场景并做互动。；整体像是围绕 Qwen-Image Edit 搭的“多图参考 + 指令改写 + 分辨率自适应”流水线：用户提供女孩图和男孩图后，先用 LLM 把“献花”口语扩展成可编辑指令，再用 OpenPose 固定人物姿态，接着通过多尺度缩放/拼接把不同来源图片统一到 Qwen-Image Edit 的工作分辨率，最后以低 CFG 采样合成。ImpactSwitch/mode4 与 rgthree Bypasser 说明作者希望保留多种配置便于切换调试；整体设计意图似乎是用"
+}

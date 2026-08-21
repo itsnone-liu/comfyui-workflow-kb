@@ -1,0 +1,1352 @@
+{
+ "node_count": 30,
+ "link_count": 37,
+ "active_node_count": 30,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    8
+   ],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 4,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    9
+   ],
+   "out_links": [
+    4
+   ]
+  },
+  {
+   "id": 6,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": 13,
+   "type": "NunchakuFluxLoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "removal-v2.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    17
+   ],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 15,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sea,"
+   ],
+   "in_links": [
+    19,
+    43
+   ],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 5,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp16.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    9,
+    19
+   ]
+  },
+  {
+   "id": 25,
+   "type": "LayerMask: LoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Florence-2-Flux-Large"
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 23,
+   "type": "LayerMask: ObjectDetectorFL2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "left_to_right",
+    "all",
+    "0,"
+   ],
+   "in_links": [
+    34,
+    30,
+    29
+   ],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 2,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    3,
+    4,
+    5,
+    6,
+    49
+   ],
+   "out_links": [
+    12,
+    13,
+    14
+   ]
+  },
+  {
+   "id": 28,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    40
+   ],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    31
+   ],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    18
+   ],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 8,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    385636837451365,
+    "randomize",
+    20,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    11,
+    12,
+    13,
+    14
+   ],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 30,
+   "type": "Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ", ",
+    "true",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    41,
+    42
+   ],
+   "out_links": [
+    43
+   ]
+  },
+  {
+   "id": 12,
+   "type": "NunchakuFluxDiTLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "svdq-int4-flux.1-fill-dev",
+    0,
+    "nunchaku-fp16",
+    "auto",
+    0,
+    "bfloat16",
+    "enabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 20,
+   "type": "LayerMask: SAM2Ultra",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam2_hiera_base_plus.safetensors",
+    "fp16",
+    "all",
+    "0,",
+    false,
+    "VITMatte",
+    6,
+    4,
+    0.15,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    36,
+    28
+   ],
+   "out_links": [
+    32,
+    45,
+    31,
+    33
+   ]
+  },
+  {
+   "id": 32,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    45
+   ],
+   "out_links": []
+  },
+  {
+   "id": 33,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    10,
+    38
+   ]
+  },
+  {
+   "id": 7,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    39
+   ],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    768,
+    "#000000"
+   ],
+   "in_links": [
+    32,
+    33
+   ],
+   "out_links": [
+    6,
+    40,
+    39,
+    47
+   ]
+  },
+  {
+   "id": 34,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    0,
+    true,
+    false,
+    0,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    47
+   ],
+   "out_links": [
+    48,
+    49
+   ]
+  },
+  {
+   "id": 16,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Remove the selected objects from the image."
+   ],
+   "in_links": [],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 11,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f335d4e698772c0a7486cbf8177da516a28ef923a602762006a39996809c350e.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    25,
+    34,
+    36,
+    37
+   ]
+  },
+  {
+   "id": 24,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "human,sword,"
+   ],
+   "in_links": [],
+   "out_links": [
+    29,
+    46
+   ]
+  },
+  {
+   "id": 29,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "grass,sky,"
+   ],
+   "in_links": [],
+   "out_links": [
+    42
+   ]
+  },
+  {
+   "id": 26,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    37,
+    38
+   ],
+   "out_links": [
+    44
+   ]
+  },
+  {
+   "id": 35,
+   "type": "MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    48
+   ],
+   "out_links": []
+  },
+  {
+   "id": 31,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    44
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 26,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1,
+   "to_node": 7,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 27,
+   "type": "MASK"
+  },
+  {
+   "from_node": 10,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 34,
+   "type": "MASK"
+  },
+  {
+   "from_node": 11,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 23,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 26,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 13,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 14,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 14,
+   "to_node": 8,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 15,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 16,
+   "to_node": 30,
+   "type": "STRING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 8,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 8,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 20,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 10,
+   "type": "MASK"
+  },
+  {
+   "from_node": 20,
+   "to_node": 19,
+   "type": "MASK"
+  },
+  {
+   "from_node": 20,
+   "to_node": 32,
+   "type": "*"
+  },
+  {
+   "from_node": 23,
+   "to_node": 20,
+   "type": "BBOXES"
+  },
+  {
+   "from_node": 24,
+   "to_node": 23,
+   "type": "STRING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 33,
+   "type": "*"
+  },
+  {
+   "from_node": 25,
+   "to_node": 23,
+   "type": "FLORENCE2"
+  },
+  {
+   "from_node": 26,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 29,
+   "to_node": 30,
+   "type": "STRING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 30,
+   "to_node": 15,
+   "type": "STRING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 2,
+   "type": "MASK"
+  },
+  {
+   "from_node": 34,
+   "to_node": 35,
+   "type": "MASK"
+  },
+  {
+   "from_node": 4,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 15,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 5,
+   "to_node": 4,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 6,
+   "to_node": 1,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 2,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 1,
+   "type": "LATENT"
+  }
+ ],
+ "categories": {
+  "utility": 17,
+  "conditioning": 3,
+  "vae": 2,
+  "lora": 1,
+  "clip": 1,
+  "image_io": 4,
+  "sampler": 1,
+  "postprocess": 1
+ },
+ "assets": [
+  {
+   "node_id": 6,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "NunchakuFluxLoraLoader",
+   "kind": "lora",
+   "name": "removal-v2.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "kind": "checkpoint",
+   "name": "sam2_hiera_base_plus.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 86,
+ "structure_hash": "c9649d101775ab20",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 4,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "NunchakuFluxLoraLoader",
+   "widget_index": 0,
+   "value_preview": "removal-v2.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "NunchakuFluxLoraLoader",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "sea,"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 5,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 25,
+   "node_type": "LayerMask: LoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "Florence-2-Flux-Large"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 23,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 1,
+   "value_preview": "left_to_right"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 2,
+   "value_preview": "all"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LayerMask: ObjectDetectorFL2",
+   "widget_index": 3,
+   "value_preview": "0,"
+  },
+  {
+   "node_id": 2,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 28,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "MaskPreview",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "385636837451365"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ", "
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 1,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 30,
+   "node_type": "Text Concatenate",
+   "widget_index": 5,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 0,
+   "value_preview": "svdq-int4-flux.1-fill-dev"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 2,
+   "value_preview": "nunchaku-fp16"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 5,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 12,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 6,
+   "value_preview": "enabled"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 0,
+   "value_preview": "sam2_hiera_base_plus.safetensors"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 2,
+   "value_preview": "all"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 3,
+   "value_preview": "0,"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 5,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 6,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 7,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 8,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 9,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 10,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 11,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 20,
+   "node_type": "LayerMask: SAM2Ultra",
+   "widget_index": 12,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 27,
+   "node_type": "MaskPreview",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 16,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "Remove the selected objects from the image."
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "f335d4e698772c0a7486cbf8177da516a28ef923a602762006a39996809c"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 24,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "human,sword,"
+  },
+  {
+   "node_id": 29,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "grass,sky,"
+  },
+  {
+   "node_id": 26,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 26,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 35,
+   "node_type": "MaskPreview",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  }
+ ]
+}

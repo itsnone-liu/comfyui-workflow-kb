@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "老照片修复",
+  "图像修复"
+ ],
+ "capabilities": [
+  {
+   "text": "加载一张老照片，配合中文修复描述，经自动翻译后用 FLUX Kontext 生成修复/重绘图并保存。",
+   "kind": "inference"
+  },
+  {
+   "text": "将输入图像等比缩放至 1024 尺寸后再送入生成节点，避免直接使用超高清原图带来的显存压力。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 easy showAnything 观察中间结果，方便调试和确认 FLUX Kontext 的生成效果。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "FLUX Kontext",
+  "图像等比缩放",
+  "中英文自动翻译",
+  "图像比例计算"
+ ],
+ "special_features": [
+  {
+   "text": "DeepTranslatorTextNode 节点存在并配置为中译英，位于生成节点之前，使中文用户可以直接输入中文提示词。",
+   "kind": "fact"
+  },
+  {
+   "text": "GetImageSizeRatio 与 ImageScaleDownToSize 串联，先读取原图比例再缩放到 1024，形成统一的预处理链。",
+   "kind": "fact"
+  },
+  {
+   "text": "RH_ComfyFluxKontext 使用 flux-kontext-max 并设置 match_input_image，使生成结果与输入图像在构图/内容上对齐，类似弱控制回路。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "从节点组合看，作者似乎想做一条轻量的生成式老照片修复流水线：先用 GetImageSizeRatio + ImageScaleDownToSize 把任意大小的老照片统一到 1024 分辨率，再用 DeepTranslatorTextNode 让中文用户直接描述修复意图，最后交给 RH_ComfyFluxKontext 生成修复结果。FLUX Kontext 本身具有图像上下文条件能力，match_input_image 模式可能用于在重绘时保留原照片的结构和主体，避免把老照片改得面目全非。",
+ "use_case": "上传一张老照片并输入中文修复描述，如“修复破损、去划痕、清晰化”，得到一张经过生成式重绘的老照片。",
+ "limitation": "依赖 RH_ComfyFluxKontext、DeepTranslatorTextNode、easy showAnything 等自定义节点，以及 flux-kontext-max 模型；DeepTranslatorTextNode 使用 GoogleTranslator，需联网才能翻译；输入图像会被缩放到 1024，原始高分辨率细节可能被压缩；没有传统去噪/人脸修复模块，严重破损照片可能出现幻觉细节或与原照片不完全一致。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_ComfyFluxKontext 自定义节点",
+  "DeepTranslatorTextNode 自定义节点",
+  "easy showAnything 自定义节点",
+  "FLUX Kontext 模型 (flux-kontext-max)",
+  "GoogleTranslator 网络服务"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image + 中文文本",
+  "count": "一张老照片 + 一段修复描述"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ImageScaleDownToSize/1024",
+   "how_to_tune": "控制送入 FLUX Kontext 的目标分辨率。显存充足且需要保留更多细节时可以提高；显存不足时降低，但过低会丢失修复细节。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext/flux-kontext-max",
+   "how_to_tune": "选择 FLUX Kontext 模型变体。当前是 max，质量较高但资源开销大；若速度/显存受限可替换为更小变体。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext/match_input_image",
+   "how_to_tune": "当前设置为 match_input_image，表示生成时更贴近输入图像。如果希望更大胆地重绘/去瑕疵，可尝试其他模式或调整参考强度。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext/1",
+   "how_to_tune": "估计是生成强度/去噪强度相关参数。取 1 通常表示最大程度参与重绘；若发现细节被过度改写，可适度降低。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext/1093038150",
+   "how_to_tune": "随机种子。固定后可复现同一修复结果；不满意生成效果时可改种子再试。"
+  },
+  {
+   "param": "DeepTranslatorTextNode/chinese (simplified)",
+   "how_to_tune": "源语言设为简体中文，目标语言为英文。若直接使用英文提示词，可以绕过翻译节点或把源语言改成 automatic/english。"
+  }
+ ],
+ "summary_text": "能力:加载一张老照片，配合中文修复描述，经自动翻译后用 FLUX Kontext 生成修复/重绘图并保存。；能力:将输入图像等比缩放至 1024 尺寸后再送入生成节点，避免直接使用超高清原图带来的显存压力。；能力:使用 easy showAnything 观察中间结果，方便调试和确认 FLUX Kontext 的生成效果。；特色:DeepTranslatorTextNode 节点存在并配置为中译英，位于生成节点之前，使中文用户可以直接输入中文提示词。；特色:GetImageSizeRatio 与 ImageScaleDownToSize 串联，先读取原图比例再缩放到 1024，形成统一的预处理链。；特色:RH_ComfyFluxKontext 使用 flux-kontext-max 并设置 match_input_image，使生成结果与输入图像在构图/内容上对齐，类似弱控制回路。；上传一张老照片并输入中文修复描述，如“修复破损、去划痕、清晰化”，得到一张经过生成式重绘的老照片。；从节点组合看，作者似乎想做一条轻量的生成式老照片修复流水线：先用 GetImageSizeRatio + ImageScaleDownToSize 把任意大小的老照片统一到 1024 分辨率，再用 DeepTranslatorTextNode 让中文用户直接描述修复意图，最后交给 RH_ComfyFluxKontext 生成修复结果。FLUX Kontext 本身具有图像上下文条件能力，match_input_image 模式可能用于在重绘时保留原照片的结构和主体，避免把老照片改得面目全非。"
+}

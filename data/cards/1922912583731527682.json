@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图像生成",
+  "人像处理",
+  "证件照"
+ ],
+ "capabilities": [
+  {
+   "text": "从 LoadImage 读入人像照片，经 FLUX.1-dev 与证件照 LoRA 采样后由 SaveImage 输出一张 1024×1024 的图片。",
+   "kind": "fact"
+  },
+  {
+   "text": "最终图像被约束为证件照风格（prompt 为 'A person is taking ID photo'，且带 F.1 证件照_v1 LoRA），可完成一键证件照生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用深度图+ControlNet 锁住人物姿态/取景，并在 mask 区域内进行局部重绘/修复，以生成符合证件照构图的人像。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev（fp8）",
+  "DualCLIPLoader（CLIP_L + T5XXL）",
+  "LoRA F.1 证件照_v1",
+  "ControlNet Union Pro（depth 模式）",
+  "DepthAnything 预处理器",
+  "InpaintModelConditioning + GrowMaskWithBlur + JWMaskResize",
+  "FluxGuidance",
+  "KSampler（euler/normal, 20 steps, denoise=1）"
+ ],
+ "special_features": [
+  {
+   "text": "ControlNet 分支使用 SetShakkerLabsUnionControlNetType 将 Union ControlNet 显式设为 depth，并接入 AIO_Preprocessor 的 DepthAnything 深度图，实现结构保持。",
+   "kind": "fact"
+  },
+  {
+   "text": "输入侧有两个 LoadImage(IN)，并配有 JWMaskResize 与 GrowMaskWithBlur，形成同一张输入图分别走深度控制与 mask 局部重绘的双支路结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "InpaintModelConditioning 将 mask 区域编码为 latent 条件，配合 KSampler denoise=1，使重绘区域完全重新生成，并用 mask 膨胀/羽化让修复边缘过渡自然。",
+   "kind": "fact"
+  },
+  {
+   "text": "采用 FLUX 推荐的 CFG=1 + FluxGuidance=3.5 参数组合，而不是传统 CFG 放大，避免 FLUX 过曝/色彩异常。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流把“一键证件照”拆成两条互补的约束：一方面用 DepthAnything 深度图 + ControlNet 锁住用户原有姿态与构图，另一方面用证件照 LoRA 提供证件照风格先验；同时用 mask 局部重绘处理背景、服装等非 ID 区域，避免整图重绘导致人物身份漂移。这样设计可能是为了在无需复杂人物分割的情况下，仅凭一张上传图就能稳定输出证件照风格结果。",
+ "use_case": "用户上传正面/半身人像照，自动生成证件照风格的方形照片；适合简历照、形象照等非官方证件照场景。若输入图带透明背景或专门 mask，则可以有针对性重绘背景和服装。",
+ "limitation": "依赖 FLUX.1-dev-fp8、T5XXL、VAE、ControlNet Union Pro、证件照 LoRA 等多个大模型，显存/内存占用高；依赖 AIO_Preprocessor、ImageResizeKJ、JWMaskResize、SetShakkerLabsUnionControlNetType 等自定义节点；输出为 1024×1024 方形图，不是标准一寸/两寸比例，也没有头部占比、背景色、露耳等证件照合规校验，不能保证严格符合正式证件照规范。",
+ "dependencies": [
+  "模型文件：flux1-dev-fp8.safetensors",
+  "模型文件：clip_l.safetensors",
+  "模型文件：t5xxl_fp8_e4m3fn.safetensors",
+  "模型文件：ae.sft",
+  "模型文件：FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors",
+  "模型文件：F.1 证件照_v1.safetensors",
+  "自定义节点：AIO_Preprocessor",
+  "自定义节点：ImageResizeKJ（KJNodes）",
+  "自定义节点：JWMaskResize",
+  "自定义节点：SetShakkerLabsUnionControlNetType（Shakker-Labs 相关）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image（人像照片）",
+  "count": "1（结构中有两个 LoadImage，但当前可视为同一张输入图的两路使用）"
+ },
+ "output": {
+  "type": "image（证件照风格 1024×1024 图片）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoRA 权重（0.8）",
+   "how_to_tune": "提高至 0.9-1.0 会强化证件照风格，但可能降低人物相似度；降低到 0.5-0.6 可更多保留原始人脸与光线特征。"
+  },
+  {
+   "param": "ControlNet strength（1）",
+   "how_to_tune": "保持 1.0 会严格遵循深度图；若发现姿态/构图被锁得过死或边缘生硬，可降到 0.7-0.9，建议不要低于 0.6。"
+  },
+  {
+   "param": "FluxGuidance（3.5）",
+   "how_to_tune": "FLUX 的 prompt 引导强度，可在 2.5-4 之间调节；越大越服从“证件照”语义，但过高容易过曝或色彩失真。"
+  },
+  {
+   "param": "KSampler denoise（1）",
+   "how_to_tune": "当前是 1，表示全量/局部重绘；若希望保留更多原始纹理，可降至 0.5-0.8，但需要注意与 InpaintModelConditioning 的配合。"
+  },
+  {
+   "param": "depth 预处理宽度（768）",
+   "how_to_tune": "提高可得到更精细的深度图，速度变慢；降低可加快速度并减少细碎噪点对 ControlNet 的影响。"
+  },
+  {
+   "param": "GrowMaskWithBlur（4/2/True）",
+   "how_to_tune": "膨胀值控制重绘区域向外扩展，值越大修复范围越大，但可能吞掉脸部或背景边缘；blur 决定边缘羽化程度，值越大过渡越柔和。"
+  },
+  {
+   "param": "ImageResizeKJ（1024×1024）",
+   "how_to_tune": "FLUX 原生适合 1024 级分辨率；可尝试 768 或 1344 等尺寸，但需注意宽高比和显存占用。"
+  }
+ ],
+ "summary_text": "能力:从 LoadImage 读入人像照片，经 FLUX.1-dev 与证件照 LoRA 采样后由 SaveImage 输出一张 1024×1024 的图片。；能力:最终图像被约束为证件照风格（prompt 为 'A person is taking ID photo'，且带 F.1 证件照_v1 LoRA），可完成一键证件照生成。；能力:使用深度图+ControlNet 锁住人物姿态/取景，并在 mask 区域内进行局部重绘/修复，以生成符合证件照构图的人像。；特色:ControlNet 分支使用 SetShakkerLabsUnionControlNetType 将 Union ControlNet 显式设为 depth，并接入 AIO_Preprocessor 的 DepthAnything 深度图，实现结构保持。；特色:输入侧有两个 LoadImage(IN)，并配有 JWMaskResize 与 GrowMaskWithBlur，形成同一张输入图分别走深度控制与 mask 局部重绘的双支路结构。；特色:InpaintModelConditioning 将 mask 区域编码为 latent 条件，配合 KSampler denoise=1，使重绘区域完全重新生成，并用 mask 膨胀/羽化让修复边缘过渡自然。；特色:采用 FLUX 推荐的 CFG=1 + FluxGuidance=3.5 参数组合，而不是传统 CFG 放大，避免 FLUX 过曝/色彩异常。；用户上传正面/半身人像照，自动生成证件照风格的方形照片；适合简历照、形象照等非官方证件照场景。若输入图带透明背景或专门 mask，则可以有针对性重绘背景和服装。；该工作流把“一键证件照”拆成两条互补的约束：一方面用 DepthAnything 深度图 + ControlNet 锁住用户原有姿态与构图，另一方面用证件照 LoRA 提供证件照风格先验；同时用 mask 局部重绘处理背景、服装等非 ID 区域，避免整图重绘导致人物身份漂移。这样设计可能是为了在无需复杂人物分割的情况下，仅凭一张上传图就能稳定输出证件照风格结果。"
+}

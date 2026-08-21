@@ -1,0 +1,91 @@
+{
+ "domain": [
+  "图像生成",
+  "电商产品",
+  "人像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "接收多张输入图像，通过Qwen-Image模型与专用LoRA实现人物换脸、融图打光、产品透视矫正与光源重设，最终输出合成后的电商产品图",
+   "kind": "inference"
+  },
+  {
+   "text": "一键自动去除图像背景（easy imageRemBg，基于RMBG-1.4），为后续合成提供透明主体",
+   "kind": "fact"
+  },
+  {
+   "text": "对输入图像进行固定尺寸裁剪（ImageCropper），统一产品构图",
+   "kind": "fact"
+  },
+  {
+   "text": "使用文本指令编辑图像（TextEncodeQwenImageEditPlus_lrzjason），支持“调整视角、保持主体位置不变、改变拍摄角度”等自然语言控制",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image",
+  "LoRA微调（qwen2511_融合矫正透视v1）",
+  "文本条件图像编辑（TextEncodeQwenImageEditPlus）",
+  "背景移除（RMBG-1.4）",
+  "图像裁剪与构图",
+  "低步数扩散采样（KSampler steps=4, cfg=1）",
+  "图像对比质量控制（Image Comparer）"
+ ],
+ "special_features": [
+  {
+   "text": "使用FastCanvas与FastCanvasTool进行交互式画布操作，可能用于手动调整产品位置或绘制蒙版，增加人工干预能力",
+   "kind": "inference"
+  },
+  {
+   "text": "集成Image Comparer (rgthree)对比输入输出，形成质量反馈回路",
+   "kind": "fact"
+  },
+  {
+   "text": "KSampler采用极低步数4步和CFG=1，属于快速迭代采样策略，配合LoRA可高效出图",
+   "kind": "fact"
+  },
+  {
+   "text": "使用ConditioningZeroOut节点，可能用于无条件生成分支或调节编辑强度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕Qwen-Image的指令编辑能力构建，利用专用LoRA强化透视与光源矫正。输入多张图像后，先通过去背景和裁剪得到干净的产品主体，再用FastCanvas进行构图布局，最后由文本提示词驱动模型完成换脸、溶图和光影重绘。整体设计强调交互性与快速迭代，低步数采样配合图像对比器让用户能即时验证效果并反复调整。",
+ "use_case": "适用于电商产品图自动化处理，如商品透视纠偏、光源统一、人物换脸合成等场景，也可用于广告素材的快速生成与迭代。",
+ "limitation": "依赖特定模型文件Qwen-Rapid-AIO-SFW-v18.safetensors和LoRA qwen2511_融合矫正透视v1.safetensors，需手动下载；需要安装多个第三方自定义节点（TextEncodeQwenImageEditPlus_lrzjason、easy imageRemBg、rgthree、FastCanvas、ImageCropper）；输入必须为3张图像；LoRA强度固定为1.0，无法通过界面调节；4步采样可能牺牲精细度，复杂光影或细节需要更高步数。",
+ "dependencies": [
+  "Qwen-Rapid-AIO-SFW-v18.safetensors",
+  "qwen2511_融合矫正透视v1.safetensors",
+  "TextEncodeQwenImageEditPlus_lrzjason 节点",
+  "easy imageRemBg 节点",
+  "rgthree 节点包",
+  "FastCanvas / FastCanvasTool 节点"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "3"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前为4，适合快速预演；若生成结果细节不足或透视矫正不彻底，可提高到8-12步，但耗时增加。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "当前为1，表示完全信任模型预测，对LoRA微调风格友好；若生成内容不符合提示词，可逐渐增至2-4，但可能导致色彩饱和或过度矫正。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength_model",
+   "how_to_tune": "当前约1.0，表示LoRA完全生效；若产品角度矫正过度或风格过强，可调低至0.7-0.9。"
+  },
+  {
+   "param": "TextEncodeQwenImageEditPlus_lrzjason 提示词",
+   "how_to_tune": "当前提示词为“en，调整视角，保持主体位置不变，改变拍摄角度，”，可修改或增加方向词（如“正面视角”“光线从左上”），以精确控制生成效果。"
+  }
+ ],
+ "summary_text": "能力:接收多张输入图像，通过Qwen-Image模型与专用LoRA实现人物换脸、融图打光、产品透视矫正与光源重设，最终输出合成后的电商产品图；能力:一键自动去除图像背景（easy imageRemBg，基于RMBG-1.4），为后续合成提供透明主体；能力:对输入图像进行固定尺寸裁剪（ImageCropper），统一产品构图；能力:使用文本指令编辑图像（TextEncodeQwenImageEditPlus_lrzjason），支持“调整视角、保持主体位置不变、改变拍摄角度”等自然语言控制；特色:使用FastCanvas与FastCanvasTool进行交互式画布操作，可能用于手动调整产品位置或绘制蒙版，增加人工干预能力；特色:集成Image Comparer (rgthree)对比输入输出，形成质量反馈回路；特色:KSampler采用极低步数4步和CFG=1，属于快速迭代采样策略，配合LoRA可高效出图；特色:使用ConditioningZeroOut节点，可能用于无条件生成分支或调节编辑强度；适用于电商产品图自动化处理，如商品透视纠偏、光源统一、人物换脸合成等场景，也可用于广告素材的快速生成与迭代。；该工作流围绕Qwen-Image的指令编辑能力构建，利用专用LoRA强化透视与光源矫正。输入多张图像后，先通过去背景和裁剪得到干净的产品主体，再用FastCanvas进行构图布局，最后由文本提示词驱动模型完成换脸、溶图和光影重绘。整体设计强调交互性与快速迭代，低步数采样配合图像对比器让用户能即时验证效果并反复调整。"
+}

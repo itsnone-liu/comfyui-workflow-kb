@@ -1,0 +1,56 @@
+{
+  "$comment": "Composer declarative recipe specs. Ops: load / sink / transplant / pose_transplant / param / prune. '$n' references the --n CLI arg. Metric: resolution|count_n|alpha|sharpness|outputs_ge1.",
+  "upscale": {
+    "desc": "base + 模型放大段（ImageUpscaleWithModel）接在 SaveImage 前",
+    "prefix": "upscale",
+    "steps": [
+      {"op": "load"},
+      {"op": "sink", "class": "SaveImage"},
+      {"op": "transplant", "anchor": "ImageUpscaleWithModel", "dangling": ["image"], "sink_input": "images"},
+      {"op": "prune"}
+    ],
+    "metric": "resolution"
+  },
+  "face_detail": {
+    "desc": "base + FaceDetailer 段（含检测器链）接在 SaveImage 前",
+    "prefix": "facedetail",
+    "steps": [
+      {"op": "load"},
+      {"op": "sink", "class": "SaveImage"},
+      {"op": "transplant", "anchor": "FaceDetailer", "dangling": ["image"], "sink_input": "images"},
+      {"op": "prune"}
+    ],
+    "metric": "sharpness"
+  },
+  "bg_remove": {
+    "desc": "base + BiRefNet 抠图段，输出带 alpha",
+    "prefix": "bgremove",
+    "steps": [
+      {"op": "load"},
+      {"op": "sink", "class": "SaveImage"},
+      {"op": "transplant", "anchor": "BiRefNetUltra", "dangling": ["image"], "sink_input": "images"},
+      {"op": "prune"}
+    ],
+    "metric": "alpha"
+  },
+  "batch": {
+    "desc": "参数变换：batch_size 设为 $n（验证：输出张数恰为 n）",
+    "prefix": "batch{n}",
+    "steps": [
+      {"op": "load", "prune": true},
+      {"op": "param", "name": "batch_size", "value": "$n"}
+    ],
+    "metric": "count_n"
+  },
+  "pose_transfer": {
+    "desc": "多端口注入：positive/negative 双条件边经 跨源合成 pose ControlNet 段改道（FLUX 家族匹配）",
+    "prefix": "pose",
+    "steps": [
+      {"op": "load", "prune": true},
+      {"op": "sampler"},
+      {"op": "pose_transplant", "rewires": [["@sampler", "positive", "positive", 0], ["@sampler", "negative", "negative", 1]]},
+      {"op": "prune"}
+    ],
+    "metric": "outputs_ge1"
+  }
+}

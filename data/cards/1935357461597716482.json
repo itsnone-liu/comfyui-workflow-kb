@@ -1,0 +1,100 @@
+{
+ "domain": [
+  "视频编辑/局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "输入视频后，通过 Florence2 文本定位 + SAM2 自动分割获取目标区域遮罩，再经 Wan2.1 MiniMaxRemover 进行视频级重绘，输出目标区域被智能移除/填充的新视频",
+   "kind": "inference"
+  },
+  {
+   "text": "支持自动模式与手动模式切换：自动模式基于语句 grounding 识别目标；手动模式通过 PointsEditor 暂停工作流并用点选/涂抹修正遮罩",
+   "kind": "fact"
+  },
+  {
+   "text": "同一流程可同时输出原视频、重绘视频和左右拼接对比视频，用于直观核验重绘效果",
+   "kind": "fact"
+  },
+  {
+   "text": "模块化复用大量 GetNode/SetNode 参数泛化，用户可通过 Fast Groups Bypasser 灵活启用/跳过子流程，便于批量实验",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1 MiniMaxRemover 视频局部重绘（WanVideoMiniMaxRemoverEmbeds, WanVideoModelLoader, WanVideoSampler）",
+  "SAM2 语义分割（Sam2Segmentation, DownloadAndLoadSAM2Model）",
+  "Florence2 caption_to_phrase_grounding（Florence2Run, DownloadAndLoadFlorence2Model）",
+  "WanVideo VAE 编解码（WanVideoEncode/Decode, WanVideoVAELoader）",
+  "Mask 生长/羽化后处理（GrowMaskWithBlur, MaskToImage）",
+  "视频帧序列切片（GetImageRangeFromBatch, VHS_DuplicateMasks）",
+  "显存优化（WanVideoBlockSwap, WanVideoTorchCompileSettings, easy clearCacheAll）"
+ ],
+ "special_features": [
+  {
+   "text": "双通道遮罩生成：同时存在三个 GrowMaskWithBlur 与三个 GetImageRangeFromBatch，并夹在 Sam2Segmentation 和 WanVideoMiniMaxRemoverEmbeds 之间，可能对原始帧、重绘掩膜和参考帧各自维护一套遮罩后处理分支。",
+   "kind": "inference"
+  },
+  {
+   "text": "Any Switch + PointsEditor 组成“自动/手动识别”切换开关，注释明确标注 1=自动识别，2=手动识别，且手动模式需要暂停后手工涂抹，这是自动化流程中的人工干预口。",
+   "kind": "fact"
+  },
+  {
+   "text": "分辨率与帧数硬编码：WanVideoMiniMaxRemoverEmbeds 的 widgets 明确给出 832×480×81，重绘上下文被强制限定，可能为控制显存和保证多分支输入一致。",
+   "kind": "inference"
+  },
+  {
+   "text": "三路 VHS_VideoCombine 输出并存，并通过 ImageCompositeMasked/ImageConcanate 将多路结果组合预览，属于“生成+对比”的极客式审计设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 TorchCompile 与 BlockSwap 的高阶性能优化组合，在视频生成类工作流中较少见，适合长视频/大模型场景。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流解决视频局部重绘（特别是目标移除）的工程化挑战：先以 Florence2 与 SAM2 做自动语义定位与像素级分割，同时预留 PointsEditor 人工修正通道，提高复杂场景下的遮罩准确率；随后将遮罩与原始视频 fed 给 Wan2.1 MiniMaxRemover，以低 cfg 与固定分辨率生成与背景连贯的重绘结果。为了便于对比和调参，作者引入三路视频输出、GetNode/SetNode 参数路由和 Fast Groups Bypasser，使得工作流既是生产工具，又像一个可模块化调试的实验台。",
+ "use_case": "适用于视频中物体移除/擦除（如路人、车、水印、穿帮物），也可用于局部内容替换、广告品牌替换、隐私模糊等。可作为批量视频修复流水线的前端。",
+ "limitation": "依赖大量自定义节点与模型文件，且没有内置模型自动下载引导（除 Florence2 外）。输入必须是视频文件并通过 VHS_LoadVideo 加载；WanVideoMiniMaxRemoverEmbeds 将输入锁定在 832×480×81 帧，视频过长需手动切片。显存占用较高，注记提示“太大容易爆显存”；手动模式需要暂停 UI 进行涂抹，不适合无人值守。",
+ "dependencies": [
+  "模型：Wan2_1-MiniMaxRemover_1_3B_fp16.safetensors、sam2_hiera_base_plus.safetensors、umt5-xxl-enc-bf16.safetensors、Wan2_1_VAE_bf16.safetensors",
+  "Florence2 模型：microsoft/Florence-2-large（自动下载）",
+  "custom_nodes: ComfyUI-VideoHelperSuite (VHS_*)",
+  "custom_nodes: rgthree-comfyui (Any Switch, Fast Groups Bypasser, PreviewBridge)",
+  "custom_nodes: ComfyUI-WanVideoWrapper / wan-video 节点集",
+  "custom_nodes: ComfyUI-SAM2 / Florence2 节点",
+  "custom_nodes: ComfyUI-easy-use (easy clearCacheAll, showAnything)",
+  "custom_nodes: LayerUtility (ImageScaleByAspectRatio V2)",
+  "custom_nodes: Crystools (Primitive integer)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "视频 + 可选的文字提示/手动点选",
+  "count": "1 路视频（VHS_LoadVideo）+ 1 个文本提示（Florence2Run 的 caption）+ 可选 PointsEditor 点选"
+ },
+ "output": {
+  "type": "视频文件（最多 3 路 VHS_VideoCombine 输出：原视频、重绘视频、拼接对比）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "VHS_LoadVideo.frame_load_cap",
+   "how_to_tune": "限制加载帧数最大值；若视频总帧数大于 81 或显存不足，可先降低此值分段处理，或用 GetImageRangeFromBatch 再切区间。"
+  },
+  {
+   "param": "WanVideoSampler steps/cfg",
+   "how_to_tune": "当前 steps=6、cfg 在 1~4 之间。增加 steps（如 10~12）可提升细节；保持较低 cfg 可防止重绘结果偏离原视频结构。若出现闪烁，可调高 steps 并固定 seed。"
+  },
+  {
+   "param": "GrowMaskWithBlur（grow 与 blur）",
+   "how_to_tune": "grow 控制遮罩向外扩展的像素数，若目标没有被完全覆盖则调大；blur 控制边缘柔化半径，若重绘边界有硬边或接缝则调大 blur。当前 grow=40 对 812×480 分辨率属中高水平。"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "控制将 transformer blocks 卸载到 CPU 的力度。显存 OOM 时增大（如 16~20）；速度优先时减小（如 6~8），并按需配合 offload_device 使用。"
+  },
+  {
+   "param": "Florence2Run 的 grounding 参数（caption_to_phrase_ground）",
+   "how_to_tune": "caption 文本应给出具体目标的描述短语，而非整句描述；grounding 阈值影响候选框数量。若自动识别到多个干扰区域，可增加阈值或增加短语约束。"
+  }
+ ],
+ "summary_text": "能力:输入视频后，通过 Florence2 文本定位 + SAM2 自动分割获取目标区域遮罩，再经 Wan2.1 MiniMaxRemover 进行视频级重绘，输出目标区域被智能移除/填充的新视频；能力:支持自动模式与手动模式切换：自动模式基于语句 grounding 识别目标；手动模式通过 PointsEditor 暂停工作流并用点选/涂抹修正遮罩；能力:同一流程可同时输出原视频、重绘视频和左右拼接对比视频，用于直观核验重绘效果；能力:模块化复用大量 GetNode/SetNode 参数泛化，用户可通过 Fast Groups Bypasser 灵活启用/跳过子流程，便于批量实验；特色:双通道遮罩生成：同时存在三个 GrowMaskWithBlur 与三个 GetImageRangeFromBatch，并夹在 Sam2Segmentation 和 WanVideoMiniMaxRemoverEmbeds 之间，可能对原始帧、重绘掩膜和参考帧各自维护一套遮罩后处理分支。；特色:Any Switch + PointsEditor 组成“自动/手动识别”切换开关，注释明确标注 1=自动识别，2=手动识别，且手动模式需要暂停后手工涂抹，这是自动化流程中的人工干预口。；特色:分辨率与帧数硬编码：WanVideoMiniMaxRemoverEmbeds 的 widgets 明确给出 832×480×81，重绘上下文被强制限定，可能为控制显存和保证多分支输入一致。；特色:三路 VHS_VideoCombine 输出并存，并通过 ImageCompositeMasked/ImageConcanate 将多路结果组合预览，属于“生成+对比”的极客式审计设计。；特色:集成 TorchCompile 与 BlockSwap 的高阶性能优化组合，在视频生成类工作流中较少见，适合长视频/大模型场景。；适用于视频中物体移除/擦除（如路人、车、水印、穿帮物），也可用于局部内容替换、广告品牌替换、隐私模糊等。可作为批量视频修复流水线的前端。；该工作流解决视频局部重绘（特别是目标移除）的工程化挑战：先以 Florence2 与 SAM2 做自动语义定位与像素级分割，同时预留 PointsEditor 人工修正通道，提高复杂场景下的遮罩准确率；随后将遮罩与原始视频 fed 给 Wan2.1 MiniMaxRemover，以低 cfg 与固定分辨率生成与背景连贯的重绘结果。为了便于对比和调参，作者引入三路视频输出、GetNode/SetNode 参数路由和 Fast Groups Bypasser，使得工作流既是生产工具，又像一个可模块化调试的实验台。"
+}

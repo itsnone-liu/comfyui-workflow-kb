@@ -1,0 +1,242 @@
+{
+ "11": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "24",
+    0
+   ],
+   "vae": [
+    "4",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "VAE编码"
+  }
+ },
+ "22": {
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "6",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "条件零化"
+  }
+ },
+ "44": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "controlnet-union-sdxl-1.0/diffusion_pytorch_model.safetensors"
+  },
+  "_meta": {
+   "title": "ControlNet加载器"
+  }
+ },
+ "45": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "44bbfb3ba9560bc9f1e42cfd9ce5d99784b48381efa16693a3d0736f985d4949.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "24": {
+  "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+  "inputs": {
+   "fit": "letterbox",
+   "aspect_ratio": "original",
+   "image": [
+    "10",
+    0
+   ],
+   "method": "lanczos",
+   "background_color": "#000000",
+   "round_to_multiple": "8",
+   "scale_to_side": "height",
+   "proportional_height": 1,
+   "proportional_width": 1,
+   "scale_to_length": 1024
+  },
+  "_meta": {
+   "title": "按宽高比缩放_V2"
+  }
+ },
+ "17": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "3": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "karras",
+   "negative": [
+    "41",
+    2
+   ],
+   "denoise": 0.5000000000000001,
+   "latent_image": [
+    "11",
+    0
+   ],
+   "seed": 4226933427030,
+   "cfg": 7,
+   "sampler_name": "dpmpp_2m",
+   "model": [
+    "41",
+    0
+   ],
+   "positive": [
+    "41",
+    1
+   ],
+   "steps": 25
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ },
+ "4": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "Juggernaut_X_RunDiffusion.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": [
+    "31",
+    0
+   ],
+   "clip": [
+    "4",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "8": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "4",
+    2
+   ],
+   "samples": [
+    "3",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "41": {
+  "class_type": "ApplyInstantID",
+  "inputs": {
+   "instantid": [
+    "42",
+    0
+   ],
+   "end_at": 1,
+   "image": [
+    "24",
+    0
+   ],
+   "negative": [
+    "22",
+    0
+   ],
+   "control_net": [
+    "44",
+    0
+   ],
+   "insightface": [
+    "43",
+    0
+   ],
+   "image_kps": [
+    "45",
+    0
+   ],
+   "weight": 0.8,
+   "model": [
+    "4",
+    0
+   ],
+   "positive": [
+    "6",
+    0
+   ],
+   "start_at": 0
+  },
+  "_meta": {
+   "title": "应用InstantID"
+  }
+ },
+ "31": {
+  "class_type": "WD14Tagger|pysssss",
+  "inputs": {
+   "replace_underscore": false,
+   "image": [
+    "10",
+    0
+   ],
+   "character_threshold": 0.85,
+   "model": "wd-v1-4-moat-tagger-v2",
+   "threshold": 0.35,
+   "trailing_comma": false,
+   "exclude_tags": "",
+   "tags": "1girl, solo, breasts, looking_at_viewer, short_hair, black_hair, dress, bare_shoulders, brown_eyes, jewelry, collarbone, earrings, small_breasts, parted_lips, sleeveless, indoors, blurry, lips, makeup, sleeveless_dress, red_dress, lipstick, curly_hair, realistic, red_lips"
+  },
+  "_meta": {
+   "title": "WD14反推提示词"
+  }
+ },
+ "42": {
+  "class_type": "InstantIDModelLoader",
+  "inputs": {
+   "instantid_file": "ip-adapter.bin"
+  },
+  "_meta": {
+   "title": "InstnatID模型加载器"
+  }
+ },
+ "10": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "9aacec53f5dc7a6e9365ec231fec2af401c0f37f6812f52398f48c6b1c54ddcc.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "43": {
+  "class_type": "InstantIDFaceAnalysis",
+  "inputs": {
+   "provider": "CPU"
+  },
+  "_meta": {
+   "title": "InstantID面部分析"
+  }
+ }
+}

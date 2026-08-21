@@ -1,0 +1,64 @@
+{
+ "domain": [
+  "图像生成",
+  "证件照"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照片后，由 LoadImage 送入 RH_Nano_Banana_Image2Image，结合固定提示词完成图生图，生成美式风格专业证件照/头像照，并可通过 SaveImage 保存。",
+   "kind": "fact"
+  },
+  {
+   "text": "用户只需提供图片，提示词已内置，可快速获得风格化人像，无需配置采样器、ControlNet 或多步重绘流程。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图生图（image-to-image）",
+  "Nano Banana 图像生成模型（RH_Nano_Banana_Image2Image）",
+  "固定文本提示词注入（CR Prompt Text）",
+  "基础图像加载/预览/保存链路"
+ ],
+ "special_features": [
+  {
+   "text": "全流程仅 5 个节点，生成部分完全由 RH_Nano_Banana_Image2Image 单节点完成，没有 KSampler、CLIP、VAE、ControlNet 等常规采样链路。",
+   "kind": "fact"
+  },
+  {
+   "text": "提示词被预置在 CR Prompt Text 中，交互上只需输入图片，可看作“模板化、低门槛”的专用人像风格化工具。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流似乎面向证件照快速生成场景，作者将 Nano Banana 图生图能力封装成单个 RH_Nano_Banana_Image2Image 节点，并配合固定的中文提示词，让用户上传任意人像即可得到美式风格专业头像照。它刻意省去了人脸对齐、面部修复、背景替换等复杂控制，看起来是为了追求开箱即用的最低操作成本。",
+ "use_case": "证件照/职业头像照快速风格化：用户上传一张正面或日常人像，输出美式专业风格 headshot。",
+ "limitation": "依赖 RH_Nano_Banana_Image2Image 自定义节点及其模型；提示词固定在 CR Prompt Text 中，不修改节点时风格不可变；无分辨率、人脸相似度、背景颜色的精确控制，可能偏离原人物；没有批量处理、遮罩重绘或高清放大环节。",
+ "dependencies": [
+  "RH_Nano_Banana_Image2Image 自定义节点",
+  "Comfyroll Utilities（CR Prompt Text）",
+  "ComfyUI 内置 image_io 节点（LoadImage/PreviewImage/SaveImage）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "CR Prompt Text.text",
+   "how_to_tune": "修改提示词可控制风格；当前固定为“将上传的人像转换为美式风格的专业 headsho...”，可改为商务、简约、蓝底等更具体指令，也可中英文混用。"
+  },
+  {
+   "param": "RH_Nano_Banana_Image2Image widgets[1]（疑似 seed，当前值 977379818）",
+   "how_to_tune": "调整该数值可改变生成结果的随机细节和构图变体；效果不佳时可重新随机。具体参数名需以节点定义为准。"
+  },
+  {
+   "param": "RH_Nano_Banana_Image2Image widgets[2]（randomize）",
+   "how_to_tune": "控制是否随机化种子；开启后每次运行结果不同，关闭后可用固定种子复现结果。"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照片后，由 LoadImage 送入 RH_Nano_Banana_Image2Image，结合固定提示词完成图生图，生成美式风格专业证件照/头像照，并可通过 SaveImage 保存。；能力:用户只需提供图片，提示词已内置，可快速获得风格化人像，无需配置采样器、ControlNet 或多步重绘流程。；特色:全流程仅 5 个节点，生成部分完全由 RH_Nano_Banana_Image2Image 单节点完成，没有 KSampler、CLIP、VAE、ControlNet 等常规采样链路。；特色:提示词被预置在 CR Prompt Text 中，交互上只需输入图片，可看作“模板化、低门槛”的专用人像风格化工具。；证件照/职业头像照快速风格化：用户上传一张正面或日常人像，输出美式专业风格 headshot。；这个工作流似乎面向证件照快速生成场景，作者将 Nano Banana 图生图能力封装成单个 RH_Nano_Banana_Image2Image 节点，并配合固定的中文提示词，让用户上传任意人像即可得到美式风格专业头像照。它刻意省去了人脸对齐、面部修复、背景替换等复杂控制，看起来是为了追求开箱即用的最低操作成本。"
+}

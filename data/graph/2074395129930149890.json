@@ -1,0 +1,3389 @@
+{
+ "node_count": 97,
+ "link_count": 107,
+ "active_node_count": 33,
+ "nodes": [
+  {
+   "id": 1067,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_8b_fp8mixed.safetensors",
+    "flux2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1463
+   ]
+  },
+  {
+   "id": 1079,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2
+   ],
+   "in_links": [],
+   "out_links": [
+    1427
+   ]
+  },
+  {
+   "id": 1087,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0.4"
+   ],
+   "in_links": [],
+   "out_links": [
+    1476
+   ]
+  },
+  {
+   "id": 1097,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2美妆精修.safetensors",
+    1
+   ],
+   "in_links": [
+    1477,
+    1476
+   ],
+   "out_links": [
+    1475
+   ]
+  },
+  {
+   "id": 1065,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1432,
+    1433
+   ],
+   "out_links": [
+    1441
+   ]
+  },
+  {
+   "id": 1069,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1466
+   ],
+   "out_links": [
+    1442
+   ]
+  },
+  {
+   "id": 1062,
+   "type": "EmptyFlux2LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ],
+   "in_links": [
+    1425,
+    1426,
+    1427
+   ],
+   "out_links": [
+    1443
+   ]
+  },
+  {
+   "id": 1073,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    756502158318687,
+    "randomize",
+    4,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    1475,
+    1441,
+    1442,
+    1443,
+    1444
+   ],
+   "out_links": [
+    1448
+   ]
+  },
+  {
+   "id": 1080,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0.99"
+   ],
+   "in_links": [],
+   "out_links": [
+    1444
+   ]
+  },
+  {
+   "id": 1081,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    1450
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1063,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1428,
+    1429
+   ],
+   "out_links": [
+    1433
+   ]
+  },
+  {
+   "id": 1068,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1429,
+    1449
+   ]
+  },
+  {
+   "id": 1085,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "精修这款产品，突出顺滑质感，晶莹剔透、光滑细腻、光泽自然，无污渍、指纹、划痕、瑕疵。背景保持不变，专业影棚布光：柔和且层次分明，光影边界清晰，凸显轮廓与立体感，提升色彩真实饱和度。不要改变原材质。"
+   ],
+   "in_links": [],
+   "out_links": [
+    1437
+   ]
+  },
+  {
+   "id": 1078,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1436
+   ]
+  },
+  {
+   "id": 1064,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1536,
+    "#000000"
+   ],
+   "in_links": [
+    1430
+   ],
+   "out_links": [
+    1428,
+    1425,
+    1426
+   ]
+  },
+  {
+   "id": 1070,
+   "type": "easy promptConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "，"
+   ],
+   "in_links": [
+    1436,
+    1437
+   ],
+   "out_links": [
+    1464
+   ]
+  },
+  {
+   "id": 1098,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux-2-klein-9b.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1477
+   ]
+  },
+  {
+   "id": 1066,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4
+   ],
+   "in_links": [
+    1465
+   ],
+   "out_links": [
+    1432
+   ]
+  },
+  {
+   "id": "1071",
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1070,0"
+   ],
+   "in_links": [
+    1463,
+    1464
+   ],
+   "out_links": [
+    1465,
+    1466
+   ]
+  },
+  {
+   "id": 1046,
+   "type": "LayerMask: BiRefNetUltraV2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "VITMatte",
+    5,
+    2,
+    0.01,
+    0.99,
+    false,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    1411,
+    1412
+   ],
+   "out_links": [
+    1424
+   ]
+  },
+  {
+   "id": 1045,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    true
+   ],
+   "in_links": [
+    1410
+   ],
+   "out_links": [
+    1417
+   ]
+  },
+  {
+   "id": 1059,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1424
+   ],
+   "out_links": [
+    1410
+   ]
+  },
+  {
+   "id": 1044,
+   "type": "LayerMask: LoadBiRefNetModelV2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BiRefNet-General"
+   ],
+   "in_links": [],
+   "out_links": [
+    1412
+   ]
+  },
+  {
+   "id": 1053,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    1401
+   ]
+  },
+  {
+   "id": 1040,
+   "type": "easy promptConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "，"
+   ],
+   "in_links": [
+    1401,
+    1402
+   ],
+   "out_links": [
+    1479
+   ]
+  },
+  {
+   "id": 1037,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_8b_fp8mixed.safetensors",
+    "flux2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1478
+   ]
+  },
+  {
+   "id": 1099,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    1478,
+    1479
+   ],
+   "out_links": [
+    1480,
+    1481
+   ]
+  },
+  {
+   "id": 1034,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1536,
+    "#000000"
+   ],
+   "in_links": [
+    1395
+   ],
+   "out_links": [
+    1393,
+    1390,
+    1391
+   ]
+  },
+  {
+   "id": 1038,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1394,
+    1419
+   ]
+  },
+  {
+   "id": 1042,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux-2-klein-9b.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1414
+   ]
+  },
+  {
+   "id": 1058,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.6000000000000001
+   ],
+   "in_links": [],
+   "out_links": [
+    1415
+   ]
+  },
+  {
+   "id": 1036,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4
+   ],
+   "in_links": [
+    1480
+   ],
+   "out_links": [
+    1397
+   ]
+  },
+  {
+   "id": 1033,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1393,
+    1394
+   ],
+   "out_links": [
+    1398
+   ]
+  },
+  {
+   "id": 1054,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2
+   ],
+   "in_links": [],
+   "out_links": [
+    1392
+   ]
+  },
+  {
+   "id": 1048,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2美妆精修.safetensors",
+    1
+   ],
+   "in_links": [
+    1414,
+    1415
+   ],
+   "out_links": [
+    1457
+   ]
+  },
+  {
+   "id": 1055,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0.99"
+   ],
+   "in_links": [],
+   "out_links": [
+    1409
+   ]
+  },
+  {
+   "id": 1035,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1397,
+    1398
+   ],
+   "out_links": [
+    1406
+   ]
+  },
+  {
+   "id": 1039,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1481
+   ],
+   "out_links": [
+    1407
+   ]
+  },
+  {
+   "id": 1032,
+   "type": "EmptyFlux2LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ],
+   "in_links": [
+    1390,
+    1391,
+    1392
+   ],
+   "out_links": [
+    1408
+   ]
+  },
+  {
+   "id": 1043,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1062946975709229,
+    "randomize",
+    4,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    1457,
+    1406,
+    1407,
+    1408,
+    1409
+   ],
+   "out_links": [
+    1418
+   ]
+  },
+  {
+   "id": 1050,
+   "type": "JoinImageWithAlpha",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1416,
+    1417
+   ],
+   "out_links": [
+    1420
+   ]
+  },
+  {
+   "id": 1052,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    1420
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1056,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    1421
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1102,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2048
+   ],
+   "in_links": [],
+   "out_links": [
+    1483
+   ]
+  },
+  {
+   "id": 1103,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4xNomos8kSCHAT-L.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    1484
+   ]
+  },
+  {
+   "id": 1105,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1484,
+    1485
+   ],
+   "out_links": [
+    1486
+   ]
+  },
+  {
+   "id": 1106,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1486
+   ],
+   "out_links": [
+    1509
+   ]
+  },
+  {
+   "id": 1107,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4096
+   ],
+   "in_links": [],
+   "out_links": [
+    1510
+   ]
+  },
+  {
+   "id": 1108,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1507
+   ]
+  },
+  {
+   "id": 1109,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "wan",
+    "cpu"
+   ],
+   "in_links": [],
+   "out_links": [
+    1488,
+    1490
+   ]
+  },
+  {
+   "id": 1110,
+   "type": "Text _O",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "最佳质量，4k，杰作"
+   ],
+   "in_links": [],
+   "out_links": [
+    1489
+   ]
+  },
+  {
+   "id": 1111,
+   "type": "easy imageBatchToImageList",
+   "category": "batch",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1487
+   ],
+   "out_links": [
+    1491
+   ]
+  },
+  {
+   "id": 1112,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan_2.1_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1492,
+    1503
+   ]
+  },
+  {
+   "id": 1113,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "高质量,4K"
+   ],
+   "in_links": [
+    1488,
+    1489
+   ],
+   "out_links": [
+    1495
+   ]
+  },
+  {
+   "id": 1114,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+   ],
+   "in_links": [
+    1490
+   ],
+   "out_links": [
+    1496
+   ]
+  },
+  {
+   "id": 1115,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1491,
+    1492
+   ],
+   "out_links": [
+    1497
+   ]
+  },
+  {
+   "id": 1116,
+   "type": "MathExpression|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a/5"
+   ],
+   "in_links": [
+    1493
+   ],
+   "out_links": [
+    1498
+   ]
+  },
+  {
+   "id": 1117,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0.5"
+   ],
+   "in_links": [],
+   "out_links": [
+    1493
+   ]
+  },
+  {
+   "id": 1118,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    400944616673935,
+    "randomize",
+    10,
+    1,
+    "heun",
+    "beta",
+    0.1
+   ],
+   "in_links": [
+    1494,
+    1495,
+    1496,
+    1497,
+    1498
+   ],
+   "out_links": [
+    1502
+   ]
+  },
+  {
+   "id": 1119,
+   "type": "ImageListToImageBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1499
+   ],
+   "out_links": [
+    1500
+   ]
+  },
+  {
+   "id": 1120,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1500
+   ],
+   "out_links": [
+    1514
+   ]
+  },
+  {
+   "id": 1121,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1501
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1502,
+    1503
+   ],
+   "out_links": [
+    1499,
+    1501
+   ]
+  },
+  {
+   "id": 1124,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    1506
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1125,
+   "type": "ModelSamplingSD3",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8.000000000000002
+   ],
+   "in_links": [
+    1507
+   ],
+   "out_links": [
+    1494
+   ]
+  },
+  {
+   "id": 1126,
+   "type": "TTP_Tile_image_size",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3,
+    3,
+    0.1
+   ],
+   "in_links": [
+    1508
+   ],
+   "out_links": [
+    1512,
+    1513
+   ]
+  },
+  {
+   "id": 1127,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    1509,
+    1510
+   ],
+   "out_links": [
+    1508,
+    1511
+   ]
+  },
+  {
+   "id": 1128,
+   "type": "TTP_Image_Tile_Batch",
+   "category": "batch",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024
+   ],
+   "in_links": [
+    1511,
+    1512,
+    1513
+   ],
+   "out_links": [
+    1487,
+    1515,
+    1516,
+    1517
+   ]
+  },
+  {
+   "id": 1130,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1518
+   ],
+   "out_links": [
+    1522
+   ]
+  },
+  {
+   "id": 1131,
+   "type": "LayerMask: LoadBiRefNetModelV2",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BiRefNet-General"
+   ],
+   "in_links": [],
+   "out_links": [
+    1520
+   ]
+  },
+  {
+   "id": 1132,
+   "type": "LayerMask: BiRefNetUltraV2",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "VITMatte",
+    4,
+    2,
+    0.01,
+    0.99,
+    false,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    1519,
+    1520
+   ],
+   "out_links": [
+    1521,
+    1523,
+    1518
+   ]
+  },
+  {
+   "id": 1133,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1521
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1134,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    true
+   ],
+   "in_links": [
+    1522
+   ],
+   "out_links": [
+    1524
+   ]
+  },
+  {
+   "id": 1135,
+   "type": "JoinImageWithAlpha",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1523,
+    1524
+   ],
+   "out_links": [
+    1525
+   ]
+  },
+  {
+   "id": 1136,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1525
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1139,
+   "type": "LayerColor: ColorTemperature",
+   "category": "postprocess",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [
+    1527
+   ],
+   "out_links": [
+    1528
+   ]
+  },
+  {
+   "id": 1140,
+   "type": "LayerColor: Brightness & Contrast",
+   "category": "postprocess",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    1,
+    1
+   ],
+   "in_links": [
+    1528
+   ],
+   "out_links": [
+    1529
+   ]
+  },
+  {
+   "id": 1141,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1529
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1138,
+   "type": "Image Filter Adjustments",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    "false"
+   ],
+   "in_links": [
+    1526
+   ],
+   "out_links": [
+    1527
+   ]
+  },
+  {
+   "id": 1146,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3ab391.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1482
+   ]
+  },
+  {
+   "id": 1142,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3ab391.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1526
+   ]
+  },
+  {
+   "id": 1137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3ab391.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1519
+   ]
+  },
+  {
+   "id": 1051,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1418,
+    1419
+   ],
+   "out_links": [
+    1411,
+    1416,
+    1421,
+    1541
+   ]
+  },
+  {
+   "id": 1147,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A1",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_xqpju_00001_nnjom_1783409484.jpg&type=temp&subfolder=&rand=0.2497486146604665&Rh-Comfy-Auth=eyJ1c2VySWQiOiJlYjA2YTYwMzMyZTM2YTc3ZTZiYWNlNGRlYjY0ODc0MCIsInNpZ25FeHBpcmUiOjE3ODQwMTQyNDIxNTIsInRzIjoxNzgzNDA5NDQyMTUyLCJzaWduIjoiMzEzN2FhMWEzZWZkMjc0MDNkNGI4NGU0NjMyYjE4YmUifQ==&Rh-Identify=eb06a60332e36a77e6bace4deb648740"
+     },
+     {
+      "name": "B1",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_xqpju_00002_xlqpm_1783409485.jpg&type=temp&subfolder=&rand=0.25417889856293896&Rh-Comfy-Auth=eyJ1c2VySWQiOiJlYjA2YTYwMzMyZTM2YTc3ZTZiYWNlNGRlYjY0ODc0MCIsInNpZ25FeHBpcmUiOjE3ODQwMTQyNDIxNTIsInRzIjoxNzgzNDA5NDQyMTUyLCJzaWduIjoiMzEzN2FhMWEzZWZkMjc0MDNkNGI4NGU0NjMyYjE4YmUifQ==&Rh-Identify=eb06a60332e36a77e6bace4deb648740"
+     },
+     {
+      "name": "B2",
+      "selected": false,
+      "url": "/view?filename=rgthree.compare._temp_xqpju_00003_jkixe_1783409485.jpg&type=temp&subfolder=&rand=0.32957484700396766&Rh-Comfy-Auth=eyJ1c2VySWQiOiJlYjA2YTYwMzMyZTM2YTc3ZTZiYWNlNGRlYjY0ODc0MCIsInNpZ25FeHBpcmUiOjE3ODQwMTQyNDIxNTIsInRzIjoxNzgzNDA5NDQyMTUyLCJzaWduIjoiMzEzN2FhMWEzZWZkMjc0MDNkNGI4NGU0NjMyYjE4YmUifQ==&Rh-Identify=eb06a60332e36a77e6bace4deb648740"
+     }
+    ]
+   ],
+   "in_links": [
+    1540,
+    1541
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1083,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3ab391.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1430,
+    1542
+   ]
+  },
+  {
+   "id": 1076,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1448,
+    1449
+   ],
+   "out_links": [
+    1450,
+    1543
+   ]
+  },
+  {
+   "id": 1148,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    []
+   ],
+   "in_links": [
+    1542,
+    1543
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1129,
+   "type": "TTP_Image_Assy",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    256
+   ],
+   "in_links": [
+    1514,
+    1515,
+    1516,
+    1517
+   ],
+   "out_links": [
+    1506,
+    1544
+   ]
+  },
+  {
+   "id": 1104,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    1482,
+    1483
+   ],
+   "out_links": [
+    1485,
+    1545
+   ]
+  },
+  {
+   "id": 1149,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    []
+   ],
+   "in_links": [
+    1544,
+    1545
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1086,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 1150,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 1151,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 1152,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 1153,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 1089,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3ab391.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1395,
+    1540
+   ]
+  },
+  {
+   "id": 1061,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "精修这款产品，突出金属质感，晶莹剔透、光滑细腻、光泽自然，无污渍、指纹、划痕、瑕疵。消除背景、消除底座，背景改为纯白色，专业影棚布光：柔和且层次分明，光影边界清晰，凸显轮廓与立体感，提升色彩真实饱和度。不要改变原材质。"
+   ],
+   "in_links": [],
+   "out_links": [
+    1402
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1032,
+   "to_node": 1043,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1033,
+   "to_node": 1035,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1034,
+   "to_node": 1032,
+   "type": "INT"
+  },
+  {
+   "from_node": 1034,
+   "to_node": 1032,
+   "type": "INT"
+  },
+  {
+   "from_node": 1034,
+   "to_node": 1033,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1035,
+   "to_node": 1043,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1036,
+   "to_node": 1035,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1037,
+   "to_node": 1099,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 1038,
+   "to_node": 1033,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1038,
+   "to_node": 1051,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1039,
+   "to_node": 1043,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1040,
+   "to_node": 1099,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1042,
+   "to_node": 1048,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1043,
+   "to_node": 1051,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1044,
+   "to_node": 1046,
+   "type": "BIREFNET_MODEL"
+  },
+  {
+   "from_node": 1045,
+   "to_node": 1050,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1046,
+   "to_node": 1059,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1048,
+   "to_node": 1043,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1050,
+   "to_node": 1052,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1051,
+   "to_node": 1046,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1051,
+   "to_node": 1050,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1051,
+   "to_node": 1056,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1051,
+   "to_node": 1147,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1053,
+   "to_node": 1040,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1054,
+   "to_node": 1032,
+   "type": "INT"
+  },
+  {
+   "from_node": 1055,
+   "to_node": 1043,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 1058,
+   "to_node": 1048,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 1059,
+   "to_node": 1045,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1061,
+   "to_node": 1040,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1062,
+   "to_node": 1073,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1063,
+   "to_node": 1065,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1064,
+   "to_node": 1062,
+   "type": "INT"
+  },
+  {
+   "from_node": 1064,
+   "to_node": 1062,
+   "type": "INT"
+  },
+  {
+   "from_node": 1064,
+   "to_node": 1063,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1065,
+   "to_node": 1073,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1066,
+   "to_node": 1065,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1067,
+   "to_node": "1071",
+   "type": "CLIP"
+  },
+  {
+   "from_node": 1068,
+   "to_node": 1063,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1068,
+   "to_node": 1076,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1069,
+   "to_node": 1073,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1070,
+   "to_node": "1071",
+   "type": "STRING"
+  },
+  {
+   "from_node": "1071",
+   "to_node": 1066,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": "1071",
+   "to_node": 1069,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1073,
+   "to_node": 1076,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1076,
+   "to_node": 1081,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1076,
+   "to_node": 1148,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1078,
+   "to_node": 1070,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1079,
+   "to_node": 1062,
+   "type": "INT"
+  },
+  {
+   "from_node": 1080,
+   "to_node": 1073,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 1083,
+   "to_node": 1064,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1083,
+   "to_node": 1148,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1085,
+   "to_node": 1070,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1087,
+   "to_node": 1097,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 1089,
+   "to_node": 1034,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1089,
+   "to_node": 1147,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1097,
+   "to_node": 1073,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1098,
+   "to_node": 1097,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1099,
+   "to_node": 1036,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1099,
+   "to_node": 1039,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1102,
+   "to_node": 1104,
+   "type": "INT"
+  },
+  {
+   "from_node": 1103,
+   "to_node": 1105,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 1104,
+   "to_node": 1105,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1104,
+   "to_node": 1149,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1105,
+   "to_node": 1106,
+   "type": "*"
+  },
+  {
+   "from_node": 1106,
+   "to_node": 1127,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1107,
+   "to_node": 1127,
+   "type": "INT"
+  },
+  {
+   "from_node": 1108,
+   "to_node": 1125,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1109,
+   "to_node": 1113,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 1109,
+   "to_node": 1114,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 1110,
+   "to_node": 1113,
+   "type": "STRING"
+  },
+  {
+   "from_node": 1111,
+   "to_node": 1115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1112,
+   "to_node": 1115,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1112,
+   "to_node": 1122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 1113,
+   "to_node": 1118,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1114,
+   "to_node": 1118,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 1115,
+   "to_node": 1118,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1116,
+   "to_node": 1118,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 1117,
+   "to_node": 1116,
+   "type": "INT,FLOAT,IMAGE,LATENT"
+  },
+  {
+   "from_node": 1118,
+   "to_node": 1122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 1119,
+   "to_node": 1120,
+   "type": "*"
+  },
+  {
+   "from_node": 1120,
+   "to_node": 1129,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1122,
+   "to_node": 1119,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1122,
+   "to_node": 1121,
+   "type": "*"
+  },
+  {
+   "from_node": 1125,
+   "to_node": 1118,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 1126,
+   "to_node": 1128,
+   "type": "INT"
+  },
+  {
+   "from_node": 1126,
+   "to_node": 1128,
+   "type": "INT"
+  },
+  {
+   "from_node": 1127,
+   "to_node": 1126,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1127,
+   "to_node": 1128,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1128,
+   "to_node": 1111,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1128,
+   "to_node": 1129,
+   "type": "LIST"
+  },
+  {
+   "from_node": 1128,
+   "to_node": 1129,
+   "type": "TUPLE"
+  },
+  {
+   "from_node": 1128,
+   "to_node": 1129,
+   "type": "TUPLE"
+  },
+  {
+   "from_node": 1129,
+   "to_node": 1124,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1129,
+   "to_node": 1149,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1130,
+   "to_node": 1134,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1131,
+   "to_node": 1132,
+   "type": "BIREFNET_MODEL"
+  },
+  {
+   "from_node": 1132,
+   "to_node": 1130,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1132,
+   "to_node": 1133,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1132,
+   "to_node": 1135,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1134,
+   "to_node": 1135,
+   "type": "MASK"
+  },
+  {
+   "from_node": 1135,
+   "to_node": 1136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1137,
+   "to_node": 1132,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1138,
+   "to_node": 1139,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1139,
+   "to_node": 1140,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1140,
+   "to_node": 1141,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1142,
+   "to_node": 1138,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1146,
+   "to_node": 1104,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "clip": 3,
+  "utility": 52,
+  "lora": 2,
+  "sampler": 3,
+  "image_io": 12,
+  "vae": 9,
+  "conditioning": 6,
+  "checkpoint_loader": 3,
+  "upscale": 2,
+  "batch": 3,
+  "postprocess": 2
+ },
+ "assets": [
+  {
+   "node_id": 1067,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 1097,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "flux2美妆精修.safetensors"
+  },
+  {
+   "node_id": 1068,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 1098,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 1037,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 1038,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 1042,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 1048,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "flux2美妆精修.safetensors"
+  },
+  {
+   "node_id": 1103,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4xNomos8kSCHAT-L.pth"
+  },
+  {
+   "node_id": 1108,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 1109,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 1112,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "wan_2.1_vae.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 163,
+ "structure_hash": "ee63dbfbc20f4d55",
+ "param_face": [
+  {
+   "node_id": 1067,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 1067,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "flux2"
+  },
+  {
+   "node_id": 1067,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1079,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1087,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 1097,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "flux2美妆精修.safetensors"
+  },
+  {
+   "node_id": 1097,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1062,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1062,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1062,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "756502158318687"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 1073,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1080,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 1081,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 1068,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 1085,
+   "node_type": "JjkText",
+   "widget_index": 0,
+   "value_preview": "精修这款产品，突出顺滑质感，晶莹剔透、光滑细腻、光泽自然，无污渍、指纹、划痕、瑕疵。背景保持不变，专业影棚布光：柔和且层"
+  },
+  {
+   "node_id": 1078,
+   "node_type": "JjkText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 1064,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 1070,
+   "node_type": "easy promptConcat",
+   "widget_index": 0,
+   "value_preview": "，"
+  },
+  {
+   "node_id": 1098,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 1098,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1066,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "4"
+  },
+  {
+   "node_id": "1071",
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "1070,0"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 0,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 1,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 3,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 4,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 6,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 1046,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 7,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1045,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1045,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1044,
+   "node_type": "LayerMask: LoadBiRefNetModelV2",
+   "widget_index": 0,
+   "value_preview": "BiRefNet-General"
+  },
+  {
+   "node_id": 1053,
+   "node_type": "JjkText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1040,
+   "node_type": "easy promptConcat",
+   "widget_index": 0,
+   "value_preview": "，"
+  },
+  {
+   "node_id": 1037,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_8b_fp8mixed.safetensors"
+  },
+  {
+   "node_id": 1037,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "flux2"
+  },
+  {
+   "node_id": 1037,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1099,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 1034,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 1038,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 1042,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux-2-klein-9b.safetensors"
+  },
+  {
+   "node_id": 1042,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1058,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 1036,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 1054,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1048,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "flux2美妆精修.safetensors"
+  },
+  {
+   "node_id": 1048,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1055,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 1032,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1032,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1032,
+   "node_type": "EmptyFlux2LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "1062946975709229"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 1043,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1052,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 1056,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 1102,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "2048"
+  },
+  {
+   "node_id": 1103,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4xNomos8kSCHAT-L.pth"
+  },
+  {
+   "node_id": 1107,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 1108,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 1108,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 1109,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 1109,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "wan"
+  },
+  {
+   "node_id": 1109,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 1110,
+   "node_type": "Text _O",
+   "widget_index": 0,
+   "value_preview": "最佳质量，4k，杰作"
+  },
+  {
+   "node_id": 1112,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "wan_2.1_vae.safetensors"
+  },
+  {
+   "node_id": 1113,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "高质量,4K"
+  },
+  {
+   "node_id": 1116,
+   "node_type": "MathExpression|pysssss",
+   "widget_index": 0,
+   "value_preview": "a/5"
+  },
+  {
+   "node_id": 1117,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "400944616673935"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "heun"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 1118,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 1124,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 1125,
+   "node_type": "ModelSamplingSD3",
+   "widget_index": 0,
+   "value_preview": "8.000000000000002"
+  },
+  {
+   "node_id": 1126,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 1126,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 1,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 1126,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 2,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1127,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 1128,
+   "node_type": "TTP_Image_Tile_Batch",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1128,
+   "node_type": "TTP_Image_Tile_Batch",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1131,
+   "node_type": "LayerMask: LoadBiRefNetModelV2",
+   "widget_index": 0,
+   "value_preview": "BiRefNet-General"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 0,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 3,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 4,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 6,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 1132,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 7,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1134,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 1134,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1139,
+   "node_type": "LayerColor: ColorTemperature",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1140,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1140,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1140,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 1138,
+   "node_type": "Image Filter Adjustments",
+   "widget_index": 7,
+   "value_preview": "false"
+  },
+  {
+   "node_id": 1146,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3a"
+  },
+  {
+   "node_id": 1146,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1142,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3a"
+  },
+  {
+   "node_id": 1142,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1137,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3a"
+  },
+  {
+   "node_id": 1137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1083,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3a"
+  },
+  {
+   "node_id": 1083,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1129,
+   "node_type": "TTP_Image_Assy",
+   "widget_index": 0,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 1104,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 1089,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "51a8a45a5da6ff33cdf7186f368ab034e484a7a3979a724c94c467589c3a"
+  },
+  {
+   "node_id": 1089,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1061,
+   "node_type": "JjkText",
+   "widget_index": 0,
+   "value_preview": "精修这款产品，突出金属质感，晶莹剔透、光滑细腻、光泽自然，无污渍、指纹、划痕、瑕疵。消除背景、消除底座，背景改为纯白色，"
+  }
+ ]
+}

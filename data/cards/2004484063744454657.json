@@ -1,0 +1,78 @@
+{
+ "domain": [
+  "文生图",
+  "人像",
+  "妆容"
+ ],
+ "capabilities": [
+  {
+   "text": "输入中文提示词（描述构图、视角、人物姿态等）→ 直接生成 1088×1920 竖屏人像图片",
+   "kind": "fact"
+  },
+  {
+   "text": "面向“银发少女”题材的妆容样图生成，可快速产出半身自拍风格视觉参考",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Z-Image Turbo 快速文生图（UNETLoader + z_image_turbo_bf16.safetensors）",
+  "Qwen3-4B 大语言模型作为文本编码器（CLIPLoader + qwen_3_4b.safetensors, lumina2）",
+  "9 步采样 + CFG=1 的蒸馏模型低步生成",
+  "ModelSamplingAuraFlow shift=3 对采样噪声分布进行适配",
+  "ConditioningZeroOut 构造零条件用于无负向引导的采样"
+ ],
+ "special_features": [
+  {
+   "text": "使用 Qwen3-4B LLM 作为 CLIP 文本编码器，配合 lumina2 协议，能较好理解长中文提示词",
+   "kind": "fact"
+  },
+  {
+   "text": "采样配置为 steps=9、cfg=1，属于典型的 Turbo 蒸馏模型低引导、少步数快速生成方案",
+   "kind": "fact"
+  },
+  {
+   "text": "加入 ModelSamplingAuraFlow shift=3，针对 AuraFlow 系模型调整采样偏移，可能与 Z-Image Turbo 的生成质量直接相关",
+   "kind": "factory"
+  },
+  {
+   "text": "存在 ConditioningZeroOut 节点，很可能将正条件置零后作为 negative 条件传入 KSampler，在 CFG=1 时实际不影响生成，只是补齐接口或兼容节点结构",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕 Z-Image Turbo 的低步长快速生成特性设计，使用 Qwen3-4B 增强中文语义理解，再通过 AuraFlow 采样参数微调，以 9 步直接产出接近最终效果的竖屏人像图。CFG=1 表明依赖蒸馏模型自身的引导能力，ConditioningZeroOut 可能只是用于占据负条件位置，或用来在无负提示词时保持输入结构完整。整体配置简洁，似乎是为快速出图、批量尝试提示词效果而设计的轻量级流程。",
+ "use_case": "适用于快速生成银发少女主题的妆容/人像样图，尤其适合需要竖屏自拍构图、半身姿态的视觉参考或前期概念探索。",
+ "limitation": "仅支持文本输入，无图像输入，不能做图生图、人脸保持或换脸；依赖外部模型文件 z_image_turbo_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors；加载 Qwen3-4B 需要较大显存；输出分辨率固定由 EmptySD3LatentImage 控制（1088×1920）；CFG=1 且仅 9 步，复杂构图或精细细节可能受限。",
+ "dependencies": [
+  "z_image_turbo_bf16.safetensors",
+  "qwen_3_4b.safetensors",
+  "ae.safetensors"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "文本提示词（CLIPTextEncode）",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像（SaveImage，文件名前缀 z-image）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "当前 9，对应 Turbo 模型的快速出图；若画面欠细节可尝试 10-15，但会降低速度；不建议超过 20。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "当前 1，适合蒸馏模型；若产生灰雾或对比不足，可微调至 1.5-2.0，但过高的 CFG 容易过曝或色彩失真。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow/shift",
+   "how_to_tune": "当前 3，控制采样噪声偏移；数值越亮/柔和，数值越低对比越强；可结合模型在 2-4 之间测试。"
+  },
+  {
+   "param": "EmptySD3LatentImage 尺寸",
+   "how_to_tune": "当前 1088×1920 竖屏；如需改横构图可置换宽高，但尽量保持与模型训练分辨率接近，否则可能生成变形。"
+  }
+ ],
+ "summary_text": "能力:输入中文提示词（描述构图、视角、人物姿态等）→ 直接生成 1088×1920 竖屏人像图片；能力:面向“银发少女”题材的妆容样图生成，可快速产出半身自拍风格视觉参考；特色:使用 Qwen3-4B LLM 作为 CLIP 文本编码器，配合 lumina2 协议，能较好理解长中文提示词；特色:采样配置为 steps=9、cfg=1，属于典型的 Turbo 蒸馏模型低引导、少步数快速生成方案；特色:加入 ModelSamplingAuraFlow shift=3，针对 AuraFlow 系模型调整采样偏移，可能与 Z-Image Turbo 的生成质量直接相关；特色:存在 ConditioningZeroOut 节点，很可能将正条件置零后作为 negative 条件传入 KSampler，在 CFG=1 时实际不影响生成，只是补齐接口或兼容节点结构；适用于快速生成银发少女主题的妆容/人像样图，尤其适合需要竖屏自拍构图、半身姿态的视觉参考或前期概念探索。；该工作流围绕 Z-Image Turbo 的低步长快速生成特性设计，使用 Qwen3-4B 增强中文语义理解，再通过 AuraFlow 采样参数微调，以 9 步直接产出接近最终效果的竖屏人像图。CFG=1 表明依赖蒸馏模型自身的引导能力，ConditioningZeroOut 可能只是用于占据负条件位置，或用来在无负提示词时保持输入结构完整。整体配置简洁，似乎是为快速出图、批量尝试提示词效果而设计的轻量级流程。"
+}

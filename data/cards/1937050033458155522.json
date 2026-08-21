@@ -1,0 +1,89 @@
+{
+ "domain": [
+  "AI图像生成",
+  "人像换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张人脸照片作为身份基准，结合InstantID与IPAdapter FaceID双重身份编码，生成保持该人脸身份的写实人像换脸图；可另配结构参考图（深度/线稿）控制姿态与构图。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持利用WD14Tagger自动对输入图像打标签，作为提示词来源，免去手动编写prompt的步骤。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过Marigold深度估计与LineArt线稿提取，构建深度+线稿双重ControlNet条件，实现对生成图像结构与边缘的精细约束。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID身份注入",
+  "IP-Adapter FaceID",
+  "ControlNet（SDXL Union）",
+  "Marigold深度估计",
+  "LineArt线稿预处理器",
+  "WD14Tagger自动打标",
+  "深度重映射（RemapDepth）",
+  "条件零化/图像反转"
+ ],
+ "special_features": [
+  {
+   "text": "双ID锁定策略：ApplyInstantID与IPAdapterFaceID同时启用，且IPAdapterUnifiedLoaderFaceID选用'FACEID PLUS V2'，大幅强化身份特征保持。",
+   "kind": "fact"
+  },
+  {
+   "text": "深度条件处理链：MarigoldDepthEstimation → RemapDepth → ColorizeDepthmap，生成可视化深度图并可能经ControlNet参与生成，形成“深度+线稿”的双结构控制。",
+   "kind": "inference"
+  },
+  {
+   "text": "全自动提示词管道：WD14Tagger（pysssss版）自动为输入图生成标签，再由CLIPTextEncode编码，适合零提示词用户或批量化换脸。",
+   "kind": "inference"
+  },
+  {
+   "text": "极客预处理组合：ConditioningZeroOut、ImageInvert、ImageScaleByAspectRatio V2（letterbox）等节点，疑似用于构造正/负条件或翻转结构图，实现精细控制。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流面向“真实人像换脸”需求，设计者试图用多个互补模型解决身份保真度与姿态可控性之间的矛盾：一方面用InstantID+IPAdapter双重锁定人脸特征，防止换脸后“不像”；另一方面用深度估计和线稿提取生成结构条件，通过ControlNet约束姿态和轮廓，避免身份注入破坏原有构图。同时引入WD14Tagger自动写prompt，降低使用门槛，推测是为了让普通用户也能快速产出写真级换脸图。",
+ "use_case": "个人AI写真生成、电商模特图替换、影视角色定妆照预演、短视频换脸素材制作等",
+ "limitation": "依赖多个外部模型（checkpoint/controlnet/ip-adapter），首次配置较繁琐；显存占用高，SDXL生成速度较慢；输入人脸角度过大或遮挡时身份保持可能下降；深度估计和线稿预处理对图片分辨率敏感，建议输入清晰正脸图；需安装ComfyUI_InstantID、ComfyUI_IPAdapter_plus、Marigold、WD14Tagger等自定义节点。",
+ "dependencies": [
+  "Juggernaut_X_RunDiffusion.safetensors（checkpoint）",
+  "ip-adapter.bin（InstantID模型）",
+  "controlnet-union-sdxl-1.0.safetensors（ControlNet模型）",
+  "ComfyUI_InstantID 自定义节点",
+  "ComfyUI_IPAdapter_plus 自定义节点",
+  "ComfyUI_Marigold 自定义节点",
+  "comfyui-wd14-tagger 自定义节点",
+  "ComfyUI_LayerStyle（LayerUtility）自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "3路图像输入：人脸身份参考图、结构参考图（线稿/深度源）、自动打标图（可复用同一张）",
+  "count": "3"
+ },
+ "output": {
+  "type": "生成后的换脸真实人像图片（PNG/JPG）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID weight",
+   "how_to_tune": "当前0.8，控制身份特征注入强度。建议0.5-0.9之间调节：过小则人脸不像，过大可能破坏姿态或产生伪影，可结合step/seed微调。"
+  },
+  {
+   "param": "IPAdapterFaceID weight",
+   "how_to_tune": "当前1.0，与InstantID协同增强人脸特征。建议0.5-1.2，过高容易导致脸部僵硬或表情固化，需根据实际效果回调。"
+  },
+  {
+   "param": "KSampler steps & cfg",
+   "how_to_tune": "当前steps=25, cfg=7。steps建议20-30，兼顾速度与细节；cfg建议5-8，过高会使颜色过饱和、细节生硬。"
+  },
+  {
+   "param": "WD14Tagger threshold",
+   "how_to_tune": "当前阈值0.35/0.85，用于过滤低置信度标签。若提示词干扰大，可提高阈值；若标签过少导致内容缺失，可降低阈值。"
+  }
+ ],
+ "summary_text": "能力:输入一张人脸照片作为身份基准，结合InstantID与IPAdapter FaceID双重身份编码，生成保持该人脸身份的写实人像换脸图；可另配结构参考图（深度/线稿）控制姿态与构图。；能力:支持利用WD14Tagger自动对输入图像打标签，作为提示词来源，免去手动编写prompt的步骤。；能力:通过Marigold深度估计与LineArt线稿提取，构建深度+线稿双重ControlNet条件，实现对生成图像结构与边缘的精细约束。；特色:双ID锁定策略：ApplyInstantID与IPAdapterFaceID同时启用，且IPAdapterUnifiedLoaderFaceID选用'FACEID PLUS V2'，大幅强化身份特征保持。；特色:深度条件处理链：MarigoldDepthEstimation → RemapDepth → ColorizeDepthmap，生成可视化深度图并可能经ControlNet参与生成，形成“深度+线稿”的双结构控制。；特色:全自动提示词管道：WD14Tagger（pysssss版）自动为输入图生成标签，再由CLIPTextEncode编码，适合零提示词用户或批量化换脸。；特色:极客预处理组合：ConditioningZeroOut、ImageInvert、ImageScaleByAspectRatio V2（letterbox）等节点，疑似用于构造正/负条件或翻转结构图，实现精细控制。；个人AI写真生成、电商模特图替换、影视角色定妆照预演、短视频换脸素材制作等；该工作流面向“真实人像换脸”需求，设计者试图用多个互补模型解决身份保真度与姿态可控性之间的矛盾：一方面用InstantID+IPAdapter双重锁定人脸特征，防止换脸后“不像”；另一方面用深度估计和线稿提取生成结构条件，通过ControlNet约束姿态和轮廓，避免身份注入破坏原有构图。同时引入WD14Tagger自动写prompt，降低使用门槛，推测是为了让普通用户也能快速产出写真级换脸图。"
+}

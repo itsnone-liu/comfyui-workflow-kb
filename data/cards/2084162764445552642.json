@@ -1,0 +1,92 @@
+{
+ "domain": [
+  "图生视频",
+  "视频生成",
+  "AI视频"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端：上传首帧图和尾帧图，使用海螺Hailuo H3生成两帧之间的过渡视频，并最终得到可在ComfyUI中预览/保存的本地视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持文本提示词控制视频内容，当前默认提示词为'换装'，可用来生成服装替换/角色换装类动态视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过GetVideoComponents + VHS_VideoCombine，似乎将在线API返回的视频重新拆帧再合成，从而接入ComfyUI统一的视频输出与预览链路。",
+   "kind": "inference"
+  },
+  {
+   "text": "提供生成结果的可视化调试：用easy showAnything展示Hailuo返回的视频URL和taskId。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "首尾帧图生视频（Hailuo H3 / Minimax）",
+  "文本引导视频生成（prompt: 换装）",
+  "视频组件拆分与重组（GetVideoComponents + VHS_VideoCombine）",
+  "在线API生成结果的本地化保存",
+  "异步任务状态/URL可视化调试（easy showAnything）"
+ ],
+ "special_features": [
+  {
+   "text": "双LoadImage首尾帧输入，而非单张图生视频，用首尾两帧约束视频运动的起止状态。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果回灌：GetVideoComponents + VHS_VideoCombine把在线API视频拆帧后再次合成，可能是为了统一格式、补全元数据并让VHS完成本地保存/预览。",
+   "kind": "inference"
+  },
+  {
+   "text": "两个easy showAnything节点分别展示视频URL和taskId，形成轻量级生成任务调试面板。",
+   "kind": "fact"
+  },
+  {
+   "text": "SaveVideo与VHS_VideoCombine同时出现，可能同时保留原始API视频产物和标准化重封装的视频输出。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这是一个围绕海螺Hailuo H3首尾帧API的最小可用封装：两个LoadImage提供首/尾帧，RH_MinimaxHailuoH3ImageToVideo发起在线生成；为了把在线返回结果纳入ComfyUI的本地视频产出体系，后续似乎用GetVideoComponents将视频拆解，再交给VHS_VideoCombine合并、预览和保存；同时用两个showAnything把视频URL与taskId暴露到界面，方便排查异步生成任务。整体体现了'外部API生成 + 本地视频后处理 + 可观测调试'的封装思路。",
+ "use_case": "首尾帧可控视频生成，例如虚拟换装/服装变化展示、角色动作过渡、商品动态展示；本工作流默认示例面向'换装'场景。",
+ "limitation": "依赖海螺Hailuo H3 API的可用性及对应接口节点；需要ComfyUI-VideoHelperSuite（VHS_VideoCombine/GetVideoComponents）、easy showAnything、SaveVideo等自定义节点；实际视频时长、分辨率、生成质量受Hailuo H3服务限制；默认提示词为'换装'，用于其他场景需修改。",
+ "dependencies": [
+  "RH_MinimaxHailuoH3ImageToVideo",
+  "ComfyUI-VideoHelperSuite（VHS_VideoCombine / GetVideoComponents）",
+  "easy showAnything",
+  "SaveVideo 自定义节点",
+  "海螺 Hailuo H3 API 访问权限"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image（首帧 + 尾帧）",
+  "count": "2"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt（当前值：换装）",
+   "how_to_tune": "控制视频中的运动与内容主题；换装场景建议写明'从衣服A自然变为衣服B'，其他场景改为对应的动作/转场描述。"
+  },
+  {
+   "param": "resolution（2K）",
+   "how_to_tune": "影响清晰度与API耗时/费用；快速预览时调低，最终出片保持2K。"
+  },
+  {
+   "param": "duration（5）",
+   "how_to_tune": "控制视频时长，默认5秒；更长视频可能增大运动一致性和API成本。"
+  },
+  {
+   "param": "seed（randomize）",
+   "how_to_tune": "随机种子会改变生成结果；固定seed可复现，randomize可多抽几版挑选最佳。"
+  },
+  {
+   "param": "crf（VHS_VideoCombine）",
+   "how_to_tune": "控制视频压缩质量，crf越小画质越高、文件越大；想要平衡体积与画质可设在18~23左右。"
+  }
+ ],
+ "summary_text": "能力:端到端：上传首帧图和尾帧图，使用海螺Hailuo H3生成两帧之间的过渡视频，并最终得到可在ComfyUI中预览/保存的本地视频。；能力:支持文本提示词控制视频内容，当前默认提示词为'换装'，可用来生成服装替换/角色换装类动态视频。；能力:通过GetVideoComponents + VHS_VideoCombine，似乎将在线API返回的视频重新拆帧再合成，从而接入ComfyUI统一的视频输出与预览链路。；能力:提供生成结果的可视化调试：用easy showAnything展示Hailuo返回的视频URL和taskId。；特色:双LoadImage首尾帧输入，而非单张图生视频，用首尾两帧约束视频运动的起止状态。；特色:生成结果回灌：GetVideoComponents + VHS_VideoCombine把在线API视频拆帧后再次合成，可能是为了统一格式、补全元数据并让VHS完成本地保存/预览。；特色:两个easy showAnything节点分别展示视频URL和taskId，形成轻量级生成任务调试面板。；特色:SaveVideo与VHS_VideoCombine同时出现，可能同时保留原始API视频产物和标准化重封装的视频输出。；首尾帧可控视频生成，例如虚拟换装/服装变化展示、角色动作过渡、商品动态展示；本工作流默认示例面向'换装'场景。；这是一个围绕海螺Hailuo H3首尾帧API的最小可用封装：两个LoadImage提供首/尾帧，RH_MinimaxHailuoH3ImageToVideo发起在线生成；为了把在线返回结果纳入ComfyUI的本地视频产出体系，后续似乎用GetVideoComponents将视频拆解，再交给VHS_VideoCombine合并、预览和保存；同时用两个showAnything把视频URL与taskId暴露到界面，方便排查异步生成任务。整体体现了'外部API生成 + 本地视频后处理 + 可观测调试'的封装思路。"
+}

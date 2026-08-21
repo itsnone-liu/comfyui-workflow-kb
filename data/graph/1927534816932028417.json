@@ -1,0 +1,1764 @@
+{
+ "node_count": 42,
+ "link_count": 45,
+ "active_node_count": 42,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 2,
+   "type": "NunchakuFluxDiTLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "svdq-int4-flux.1-dev",
+    0,
+    "nunchaku-fp16",
+    "auto",
+    0,
+    "bfloat16",
+    "enabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 3,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.5
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 4,
+   "type": "LatentToWidthHeight",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    4,
+    5
+   ]
+  },
+  {
+   "id": 5,
+   "type": "ModelSamplingFlux",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.1500000000000001,
+    0.5,
+    1024,
+    1024
+   ],
+   "in_links": [
+    3,
+    4,
+    5
+   ],
+   "out_links": [
+    6,
+    8
+   ]
+  },
+  {
+   "id": 6,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    51,
+    "increment"
+   ],
+   "in_links": [],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 7,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    6,
+    7
+   ],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 8,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 9,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "normal",
+    20,
+    1
+   ],
+   "in_links": [
+    8
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 10,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 13,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 22,
+   "type": "Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "：",
+    "true",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    23,
+    24
+   ],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 23,
+   "type": "ReplaceText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "```json",
+    ""
+   ],
+   "in_links": [
+    25
+   ],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 24,
+   "type": "ReplaceText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "```",
+    ""
+   ],
+   "in_links": [
+    26
+   ],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 25,
+   "type": "LoadJsonFromText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    27
+   ],
+   "out_links": [
+    31,
+    32
+   ]
+  },
+  {
+   "id": 26,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "You are a useful music assistant",
+    "",
+    0.8,
+    290,
+    "randomize"
+   ],
+   "in_links": [
+    28
+   ],
+   "out_links": [
+    29,
+    30
+   ]
+  },
+  {
+   "id": 28,
+   "type": "ShowText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "```json\n{\n  \"Tags\": \"R&B, soulful, melodic, female vocals, emotive soundscape, subtle acoustic guitar, warm piano, smooth bassline, 85 BPM, celebratory, uplifting, traditional vibes\",\n  \"Lyrics\": \"[verse]\\n端午的清晨迎着阳光\\n香粽飘香家乡的芬芳\\n龙舟竞渡河畔的欢畅\\n古老节日传承的力量\\n\\n[chorus]\\n划啊 划啊 心在飞翔\\n齐声呐喊节奏在荡漾\\n五月的风伴着歌吟响\\n端午的情把心点亮\\n\\n[verse]\\n艾草挂窗驱散了忧伤\\n千年的习俗深植心上\\n团圆时光亲情最难忘\\n古韵悠悠共品茶汤\\n\\n[chorus]\\n划啊 划啊 心在飞翔\\n齐声呐喊节奏在荡漾\\n五月的风伴着歌吟响\\n端午的情把心点亮\"\n}\n```"
+   ],
+   "in_links": [
+    30
+   ],
+   "out_links": [
+    25
+   ]
+  },
+  {
+   "id": 29,
+   "type": "GetTextFromJson",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Tags"
+   ],
+   "in_links": [
+    31
+   ],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 31,
+   "type": "ShowText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "R&B, soulful, melodic, female vocals, emotive soundscape, subtle acoustic guitar, warm piano, smooth bassline, 85 BPM, celebratory, uplifting, traditional vibes"
+   ],
+   "in_links": [
+    33
+   ],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "easy saveText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "./output",
+    "歌词",
+    "txt",
+    true
+   ],
+   "in_links": [
+    29
+   ],
+   "out_links": []
+  },
+  {
+   "id": 39,
+   "type": "LoadFloatModels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "float.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    42
+   ]
+  },
+  {
+   "id": 15,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": "Prompt",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a Pretty Girl,real person"
+   ],
+   "in_links": [
+    17
+   ],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 12,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": "Image Size",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    768,
+    512,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    2,
+    15
+   ]
+  },
+  {
+   "id": 35,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    35
+   ],
+   "out_links": []
+  },
+  {
+   "id": 54,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    66
+   ],
+   "out_links": []
+  },
+  {
+   "id": 57,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    69
+   ],
+   "out_links": []
+  },
+  {
+   "id": 56,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    68
+   ],
+   "out_links": []
+  },
+  {
+   "id": 41,
+   "type": "FloatProcess",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    1,
+    1,
+    25,
+    "none",
+    true,
+    982045898717762,
+    "fixed"
+   ],
+   "in_links": [
+    92,
+    89,
+    42,
+    43
+   ],
+   "out_links": [
+    44,
+    68
+   ]
+  },
+  {
+   "id": 34,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "端午節，女声，R&B"
+   ],
+   "in_links": [],
+   "out_links": [
+    24
+   ]
+  },
+  {
+   "id": 30,
+   "type": "GetTextFromJson",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Lyrics"
+   ],
+   "in_links": [
+    32
+   ],
+   "out_links": [
+    34,
+    66,
+    79
+   ]
+  },
+  {
+   "id": 63,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": "输入DEEPSEEK写的歌词",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "​[Verse 1]​​\n风吹过空荡的站台，\n旧车票在掌心徘徊，\n你说远方有片海，\n却忘了带我离开。\n\n​​[Pre-Chorus]​​\n路灯下影子太单薄，\n像被时间遗忘的承诺，\n我数着秒针的脉搏，\n却等不到你的如果。\n\n​​[Chorus]​​\n我是折坏的纸船，\n漂不到你的港湾，\n潮汐带走了晚安，\n剩月光在哭喊。\n你是遥远的灯塔，\n亮着别人的童话，\n我沉没在回忆里，\n连浪花都沉默啊……\n\n​​[Verse 2]​​\n抽屉里未寄的信，\n字迹被泪水洇晕，\n那年你种的茉莉，\n枯萎在无人雨季。\n\n​​[Bridge]​​\n如果候鸟终要南飞，\n为何留我冻僵在北？\n当雪花埋葬了结尾，\n谁还记得……谁还记得……\n\n​​[Outro]​​\n纸船碎成星，\n灯塔不再明，\n原来最痛的别离，\n是无声无息……\n\n——"
+   ],
+   "in_links": [],
+   "out_links": [
+    75
+   ]
+  },
+  {
+   "id": 64,
+   "type": "GenerationParameters",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    210,
+    60,
+    15,
+    "euler",
+    "apg",
+    10,
+    2171811814,
+    "randomize",
+    0.5,
+    0,
+    3,
+    true,
+    true,
+    true,
+    "",
+    0,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 42,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "AnimateDiff_00507-audio_mygdf_1748419152.mp4",
+      "workflow": "AnimateDiff_00507.png",
+      "fullpath": "/data/ComfyUI/personal/5260d0c0c49b3a3234ec53cb14b69539/output/AnimateDiff_00507-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 25
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 8,
+    "pingpong": false
+   },
+   "in_links": [
+    44,
+    90,
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 61,
+   "type": "MultiLinePromptACES",
+   "category": "utility",
+   "title": "ACE-音乐风格",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "端午節，女声，R&B"
+   ],
+   "in_links": [],
+   "out_links": [
+    76
+   ]
+  },
+  {
+   "id": 60,
+   "type": "SaveAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio/ComfyUI",
+    ""
+   ],
+   "in_links": [
+    74
+   ],
+   "out_links": []
+  },
+  {
+   "id": 11,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9,
+    10
+   ],
+   "out_links": [
+    35,
+    69,
+    92
+   ]
+  },
+  {
+   "id": 65,
+   "type": "ACEStepGen",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    76,
+    79,
+    78
+   ],
+   "out_links": [
+    74,
+    93
+   ]
+  },
+  {
+   "id": 40,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "FPS",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    25
+   ],
+   "in_links": [],
+   "out_links": [
+    43,
+    46
+   ]
+  },
+  {
+   "id": 71,
+   "type": "AudioCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0:00",
+    "1:20"
+   ],
+   "in_links": [
+    93
+   ],
+   "out_links": [
+    89,
+    90
+   ]
+  },
+  {
+   "id": 62,
+   "type": "MultiLineLyrics",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "**[Verse 1]**    \n我站在数字的浪潮之巅，  \n键盘敲击出未来的诗篇。  \n0和1是心跳的鼓点，  \n黑夜中燃烧不灭的火焰！  \n\n**[Pre-Chorus]**    \n失败？不过是数据重载，  \n痛苦？升级就把它打败！  \n年轻的血，沸腾的AI，  \n这世界由我——来！改！写！  \n\n**[Chorus]**    \n**我是光！我是电！**  \n**冲破所有极限的算法少年！**  \n（Hey! Hey!）  \n**代码里长出翅膀，**  \n**云端之上——**  \n**才是我的王座之巅！**  \n\n**[Verse 2]**    \n流量是战场的号角声，  \n热搜榜刻下我的ID名。  \n千万次训练只为这一刻，  \n让所有屏幕为我而沸腾！  \n\n**[Bridge]**    \n听！亿万次点击在呼啸，  \n看！代码洪流正闪耀——  \n**“We are the AI generation!**  \n**（This is our revolution!）”**  \n\n**[Final Chorus]**    \n**我是光！我是电！**  \n**银河系也要刷爆我的封面！**  \n（Now! Now!）  \n**若你也有不服的倔强，**  \n**就和我——**  \n**把整个世界重启一遍！**  "
+   ],
+   "in_links": [
+    75
+   ],
+   "out_links": []
+  },
+  {
+   "id": 32,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "请根据内容的提示内容生成文生音乐提示词。要求：\n1：文生音乐模型示例生成对应Tags音乐风格类型和Lyrics歌曲。\n\n2：可选的Tags有：```electronic, rock, pop, funk, soul, melodic, surf music, DUBSTEP, OBSCURE, DARKNESS, FEAR, TERROR, cyberpunk, Acid jazz, electro, em, soft electric drums, dark, death rock, metal, hardcore, electric guitar, powerful, bass, drums, Cuban music, salsa, son, Afro-Cuban, traditional Cuban, country rock, folk rock, southern rock, bluegrass, aggressive, Heavy Riffs, Blast Beats, Satanic Black Metal, Galaxy, space, electric guitar, cosmic tides, Galactic dreams, Neon lights, Industrial Techno,    Gothic Rave, city rock, folk rock, southern rock, bluegrass, country rock, folk rock, mandolin, pop, Aggressive, Heavy Riffs, Blast Beats, Satanic Black Metal, Jazz, Electro, 808 bass, smooth flow, party atmosphere, theme, sub bassline, mandarin hip hop, smooth, bassline, fast, hip hop, rap, yachtrck, female singer, catchy, lounge, funny, uplifting, emotive soundscape, dramatic female vocals, sad, traditional waltz, Russian folk, Romani folk influences, Hungarian minor scales,    orchestral strings, Latin Music, melodic, subtle acoustic guitar, warm male vocal, a cappella, b-box, deep male voice, trap, super fast tempo, drum & bass, 160bpm, ethereal dark liquid, deep bassline, female vocals, Classic opera, Mozart’s, Oratorio, Aria, female, Instrumentals, Nightclubs, dance parties, workout playlists, radio broadcasts, Minimal Techno, phonk, russian dark accordion, 130 bpm, russian psaltery, russian harmonica, psychedelic, dark, saxphone, sonata, piano, Violin,    B Flat Major, allegro, tango finlandés, guitarra clásica, Psychedelic trance, volin, solo, fast tempo, R&B, Soul, Hip Hop, Dance, geman rock, Psychedelic rock, hip-house, folk song, protest song, Italian, historical, melancholic, anthemic, anime, cute female vocals, kawaii pop, j-pop, childish, piano, guitar, synthesizer, Electropop, K-Pop, EDM, Latin Music, melodic, subtle acoustic guitar, a warm male vocal, emotive soundscape for dramatic female vocals, sad,, hungarian minor scales,   orchestral strings, folk, russian folk, classic, Recuérdame, Latin Music, melodic, subtle acoustic guitar, warm male vocal```. \n\n3：参考案例如下：```**Tags**：funk, pop, soul, rock, melodic, guitar, drums, bass, keyboard, percussion, 105 BPM, energetic, upbeat, groovy, vibrant, dynamic\n**Lyrics**:\n[verse]\n夜幕降临星光在闪烁\n人群涌动气氛已点燃\n抛开所有烦恼的枷锁\n这是属于我们的时段\n\n[chorus]\n来吧 最后的狂欢\n尽情舞动忘掉所有不安\n节奏在呐喊 激情在弥漫\n投入这最后的疯狂夜晚\n\n[verse]\n灯光旋转色彩在变幻\n身体随着旋律在摆荡\n不用去想明天会怎样\n此刻只沉醉在这欢场\n\n[chorus]\n快来 最后的狂欢\n将热情释放如烟火绚烂\n心跳在狂欢 灵魂在呼喊\n沉醉于这最后的疯狂浪漫```\n\n请以JSON格式返回，字段名分别为`Tags`和`Lyrics`并且都是string字符串类型，请仅输出JSON普通文本字符串，请不要输入任何额外多余信息。\n\n请为我按照要求生成对应主题的文生音乐提示语，提供的主题为"
+   ],
+   "in_links": [],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 33,
+   "type": "ShowText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "[verse]\n端午的清晨迎着阳光\n香粽飘香家乡的芬芳\n龙舟竞渡河畔的欢畅\n古老节日传承的力量\n\n[chorus]\n划啊 划啊 心在飞翔\n齐声呐喊节奏在荡漾\n五月的风伴着歌吟响\n端午的情把心点亮\n\n[verse]\n艾草挂窗驱散了忧伤\n千年的习俗深植心上\n团圆时光亲情最难忘\n古韵悠悠共品茶汤\n\n[chorus]\n划啊 划啊 心在飞翔\n齐声呐喊节奏在荡漾\n五月的风伴着歌吟响\n端午的情把心点亮"
+   ],
+   "in_links": [
+    34
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 15,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 35,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 41,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 57,
+   "type": "*"
+  },
+  {
+   "from_node": 12,
+   "to_node": 13,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 12,
+   "to_node": 4,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 13,
+   "to_node": 11,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 5,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 26,
+   "type": "STRING"
+  },
+  {
+   "from_node": 23,
+   "to_node": 24,
+   "type": "STRING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 25,
+   "type": "STRING"
+  },
+  {
+   "from_node": 25,
+   "to_node": 29,
+   "type": "JSON"
+  },
+  {
+   "from_node": 25,
+   "to_node": 30,
+   "type": "JSON"
+  },
+  {
+   "from_node": 26,
+   "to_node": 27,
+   "type": "STRING"
+  },
+  {
+   "from_node": 26,
+   "to_node": 28,
+   "type": "STRING"
+  },
+  {
+   "from_node": 28,
+   "to_node": 23,
+   "type": "STRING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 31,
+   "type": "STRING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 7,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 30,
+   "to_node": 33,
+   "type": "STRING"
+  },
+  {
+   "from_node": 30,
+   "to_node": 54,
+   "type": "*"
+  },
+  {
+   "from_node": 30,
+   "to_node": 65,
+   "type": "STRING"
+  },
+  {
+   "from_node": 32,
+   "to_node": 22,
+   "type": "STRING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 22,
+   "type": "STRING"
+  },
+  {
+   "from_node": 39,
+   "to_node": 41,
+   "type": "FLOAT_PIPE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "INT"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "INT"
+  },
+  {
+   "from_node": 40,
+   "to_node": 41,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 40,
+   "to_node": 42,
+   "type": "FLOAT,INT"
+  },
+  {
+   "from_node": 41,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 41,
+   "to_node": 56,
+   "type": "*"
+  },
+  {
+   "from_node": 5,
+   "to_node": 7,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 5,
+   "to_node": 9,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 6,
+   "to_node": 13,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 61,
+   "to_node": 65,
+   "type": "STRING"
+  },
+  {
+   "from_node": 63,
+   "to_node": 62,
+   "type": "STRING"
+  },
+  {
+   "from_node": 64,
+   "to_node": 65,
+   "type": "STRING"
+  },
+  {
+   "from_node": 65,
+   "to_node": 60,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 65,
+   "to_node": 71,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 7,
+   "to_node": 13,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 71,
+   "to_node": 41,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 71,
+   "to_node": 42,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 8,
+   "to_node": 13,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 9,
+   "to_node": 13,
+   "type": "SIGMAS"
+  }
+ ],
+ "categories": {
+  "clip": 1,
+  "utility": 30,
+  "sampler": 4,
+  "preprocessor": 1,
+  "vae": 2,
+  "conditioning": 2,
+  "image_io": 1,
+  "video_io": 1
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 39,
+   "node_type": "LoadFloatModels",
+   "kind": "checkpoint",
+   "name": "float.pth"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 111,
+ "structure_hash": "fa48ee1eb9076116",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 1,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 0,
+   "value_preview": "svdq-int4-flux.1-dev"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 2,
+   "value_preview": "nunchaku-fp16"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 5,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 2,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 6,
+   "value_preview": "enabled"
+  },
+  {
+   "node_id": 3,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 5,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 0,
+   "value_preview": "1.1500000000000001"
+  },
+  {
+   "node_id": 5,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 5,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 5,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "51"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "increment"
+  },
+  {
+   "node_id": 8,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 9,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 9,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 9,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 0,
+   "value_preview": "："
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 1,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Concatenate",
+   "widget_index": 5,
+   "value_preview": ""
+  },
+  {
+   "node_id": 23,
+   "node_type": "ReplaceText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 23,
+   "node_type": "ReplaceText",
+   "widget_index": 1,
+   "value_preview": "```json"
+  },
+  {
+   "node_id": 23,
+   "node_type": "ReplaceText",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 24,
+   "node_type": "ReplaceText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 24,
+   "node_type": "ReplaceText",
+   "widget_index": 1,
+   "value_preview": "```"
+  },
+  {
+   "node_id": 24,
+   "node_type": "ReplaceText",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 25,
+   "node_type": "LoadJsonFromText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 3,
+   "value_preview": "You are a useful music assistant"
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "290"
+  },
+  {
+   "node_id": 26,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ShowText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 29,
+   "node_type": "GetTextFromJson",
+   "widget_index": 0,
+   "value_preview": "Tags"
+  },
+  {
+   "node_id": 31,
+   "node_type": "ShowText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 27,
+   "node_type": "easy saveText",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 27,
+   "node_type": "easy saveText",
+   "widget_index": 1,
+   "value_preview": "./output"
+  },
+  {
+   "node_id": 27,
+   "node_type": "easy saveText",
+   "widget_index": 2,
+   "value_preview": "歌词"
+  },
+  {
+   "node_id": 27,
+   "node_type": "easy saveText",
+   "widget_index": 3,
+   "value_preview": "txt"
+  },
+  {
+   "node_id": 27,
+   "node_type": "easy saveText",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 39,
+   "node_type": "LoadFloatModels",
+   "widget_index": 0,
+   "value_preview": "float.pth"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "a Pretty Girl,real person"
+  },
+  {
+   "node_id": 12,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 12,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 12,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 57,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 57,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 56,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 56,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 3,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 4,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 6,
+   "value_preview": "982045898717762"
+  },
+  {
+   "node_id": 41,
+   "node_type": "FloatProcess",
+   "widget_index": 7,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 34,
+   "node_type": "Text Multiline",
+   "widget_index": 0,
+   "value_preview": "端午節，女声，R&B"
+  },
+  {
+   "node_id": 30,
+   "node_type": "GetTextFromJson",
+   "widget_index": 0,
+   "value_preview": "Lyrics"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 0,
+   "value_preview": "210"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 1,
+   "value_preview": "60"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 2,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 3,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 4,
+   "value_preview": "apg"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 5,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 6,
+   "value_preview": "2171811814"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 8,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 10,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 11,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 13,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 14,
+   "value_preview": ""
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 15,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GenerationParameters",
+   "widget_index": 16,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'A"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "8"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 61,
+   "node_type": "MultiLinePromptACES",
+   "widget_index": 0,
+   "value_preview": "端午節，女声，R&B"
+  },
+  {
+   "node_id": 60,
+   "node_type": "SaveAudio",
+   "widget_index": 0,
+   "value_preview": "audio/ComfyUI"
+  },
+  {
+   "node_id": 60,
+   "node_type": "SaveAudio",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 65,
+   "node_type": "ACEStepGen",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 65,
+   "node_type": "ACEStepGen",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 65,
+   "node_type": "ACEStepGen",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 40,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 71,
+   "node_type": "AudioCrop",
+   "widget_index": 0,
+   "value_preview": "0:00"
+  },
+  {
+   "node_id": 71,
+   "node_type": "AudioCrop",
+   "widget_index": 1,
+   "value_preview": "1:20"
+  },
+  {
+   "node_id": 33,
+   "node_type": "ShowText",
+   "widget_index": 0,
+   "value_preview": ""
+  }
+ ]
+}

@@ -1,0 +1,260 @@
+{
+ "node_count": 4,
+ "link_count": 3,
+ "active_node_count": 4,
+ "nodes": [
+  {
+   "id": 4,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "DeepTranslatorTextNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    "english",
+    false,
+    "",
+    "",
+    "GoogleTranslator",
+    "把图片改成三视图 正面 侧面 背面",
+    "proxy_hide",
+    "authorization_hide"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 5,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "b160f262d2fcc344806c0915ae60125eadfba8119919209c6f74c6c78ba458db.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 1,
+   "type": "Comfly_Flux_Kontext",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "flux-kontext-pro",
+    "",
+    "16:9",
+    3.5,
+    1,
+    244913681,
+    "randomize",
+    true
+   ],
+   "in_links": [
+    3,
+    1
+   ],
+   "out_links": [
+    2
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 4,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 1,
+   "type": "STRING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 1,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 2,
+  "utility": 2
+ },
+ "assets": [],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 23,
+ "structure_hash": "eb9096269d3015c5",
+ "param_face": [
+  {
+   "node_id": 4,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 4,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 1,
+   "value_preview": "english"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 5,
+   "value_preview": "GoogleTranslator"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 6,
+   "value_preview": "把图片改成三视图 正面 侧面 背面"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 7,
+   "value_preview": "proxy_hide"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 8,
+   "value_preview": "authorization_hide"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "b160f262d2fcc344806c0915ae60125eadfba8119919209c6f74c6c78ba4"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 1,
+   "value_preview": "flux-kontext-pro"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 3,
+   "value_preview": "16:9"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 4,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 6,
+   "value_preview": "244913681"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Comfly_Flux_Kontext",
+   "widget_index": 8,
+   "value_preview": "True"
+  }
+ ]
+}

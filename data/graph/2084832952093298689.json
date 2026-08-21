@@ -1,0 +1,1260 @@
+{
+ "node_count": 31,
+ "link_count": 35,
+ "active_node_count": 29,
+ "nodes": [
+  {
+   "id": 123,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    255
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    253,
+    254,
+    255,
+    256,
+    271
+   ],
+   "out_links": [
+    280,
+    281
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    290,
+    270
+   ],
+   "out_links": [
+    254
+   ]
+  },
+  {
+   "id": 129,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    884074143823689,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    253
+   ]
+  },
+  {
+   "id": 131,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    261
+   ],
+   "out_links": [
+    275
+   ]
+  },
+  {
+   "id": 124,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    20,
+    1
+   ],
+   "in_links": [
+    252
+   ],
+   "out_links": [
+    256
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    280,
+    251
+   ],
+   "out_links": [
+    284
+   ]
+  },
+  {
+   "id": 121,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    281,
+    250
+   ],
+   "out_links": [
+    285
+   ]
+  },
+  {
+   "id": 143,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "video/MiniMax_H3",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "MiniMax_H3_00007-audio.mp4",
+      "workflow": "MiniMax_H3_00007.png",
+      "fullpath": "H:\\AI-ComfyUI\\25122wangyi AI-super-comfyui\\2601-WY-50S-130-ComfyUI\\260221-WY-50S-130-ComfyUI\\ComfyUI\\output\\video\\MiniMax_H3_00007-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "video",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    284,
+    285
+   ],
+   "out_links": []
+  },
+  {
+   "id": 140,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "分辨率设置说明",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 132,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (Duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [],
+   "out_links": [
+    261
+   ]
+  },
+  {
+   "id": 120,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    250,
+    274
+   ]
+  },
+  {
+   "id": 119,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    251,
+    273
+   ]
+  },
+  {
+   "id": 128,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    272
+   ]
+  },
+  {
+   "id": 127,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    252,
+    287
+   ]
+  },
+  {
+   "id": 144,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    287
+   ],
+   "out_links": [
+    289
+   ]
+  },
+  {
+   "id": 146,
+   "type": "PainterVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "auto",
+    true
+   ],
+   "in_links": [
+    289
+   ],
+   "out_links": [
+    290
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "Resolution Selector (Size)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    276,
+    277
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "帮我生成一个视频：图1女人和图2的男人，在图3的房间里，拥抱亲吻，然后开始跳舞"
+   ],
+   "in_links": [],
+   "out_links": [
+    279
+   ]
+  },
+  {
+   "id": 139,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    282
+   ]
+  },
+  {
+   "id": 147,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    292
+   ]
+  },
+  {
+   "id": 149,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    294
+   ]
+  },
+  {
+   "id": 150,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    295
+   ]
+  },
+  {
+   "id": 151,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    296
+   ]
+  },
+  {
+   "id": 152,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    297
+   ]
+  },
+  {
+   "id": 153,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    298
+   ]
+  },
+  {
+   "id": 136,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    272,
+    273,
+    274,
+    278,
+    282,
+    283,
+    292,
+    294,
+    295,
+    296,
+    297,
+    298,
+    303,
+    302,
+    279,
+    276,
+    277,
+    275
+   ],
+   "out_links": [
+    270,
+    271
+   ]
+  },
+  {
+   "id": 155,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    302
+   ]
+  },
+  {
+   "id": 158,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 832,
+      "filename": "0",
+      "force_rate": 24,
+      "custom_width": 480,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/0",
+      "skip_first_frames": 0,
+      "type": "input"
+     },
+     "muted": false
+    },
+    "format": "Wan",
+    "video": "0",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    303
+   ]
+  },
+  {
+   "id": 142,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    283
+   ]
+  },
+  {
+   "id": 137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d291f0.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    278
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 119,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 121,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 143,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 122,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 125,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 125,
+   "to_node": 121,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 125,
+   "to_node": 122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 126,
+   "to_node": 125,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 127,
+   "to_node": 124,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 127,
+   "to_node": 144,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 128,
+   "to_node": 136,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 129,
+   "to_node": 125,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 132,
+   "to_node": 131,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 125,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 126,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 137,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 138,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 139,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 144,
+   "to_node": 146,
+   "type": "*"
+  },
+  {
+   "from_node": 146,
+   "to_node": 126,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 147,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 149,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 150,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 151,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 153,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 155,
+   "to_node": 136,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 158,
+   "to_node": 136,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "sampler": 4,
+  "utility": 9,
+  "preprocessor": 1,
+  "vae": 4,
+  "video_io": 2,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "image_io": 9
+ },
+ "assets": [
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 71,
+ "structure_hash": "ed4d5b55710c8e37",
+ "param_face": [
+  {
+   "node_id": 123,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "884074143823689"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 131,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'M"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 132,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 138,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "帮我生成一个视频：图1女人和图2的男人，在图3的房间里，拥抱亲吻，然后开始跳舞"
+  },
+  {
+   "node_id": 139,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 139,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 149,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 149,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 153,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 153,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 155,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "Wan"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "58257a781818cf7b22203f3daaf20156d51e11099d10e5c17b1b12d6e8d2"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "domain": [
+  "图生视频",
+  "角色一致性",
+  "数字人",
+  "音频驱动"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物参考图 + 一段音频，端到端生成与音频口型/节奏同步、人物身份一致的数字人 MV 视频",
+   "kind": "fact"
+  },
+  {
+   "text": "自动根据音频时长换算视频帧数（SoundFlow_GetLength 读取秒数，ComfyMathExpression 按 24fps 折算并保证最少 5 帧），实现音画时长对齐",
+   "kind": "fact"
+  },
+  {
+   "text": "借助 minimax_h3_turbo_4步加速 LoRA + BasicScheduler 12 步 + res_multistep 采样器快速出片，适配短视频生产节奏",
+   "kind": "fact"
+  },
+  {
+   "text": "支持先裁剪音频片段（AudioCrop 默认 0-10 秒）再作为驱动源，可对歌曲/语音中指定段落生成",
+   "kind": "fact"
+  },
+  {
+   "text": "音频经独立 minimax_h3_audio_vae 链路参与驱动，视频经 minimax_h3_video_vae 解码后合成音视频输出，形成双 VAE 编解码架构",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 ref2va 参考图转视频（reference-to-video diffusion）",
+  "VRGDG 音频引导采样（VRGDG_MiniMaxH3AudioDrive 注入音频条件）",
+  "Turbo LoRA 步数加速 + 12 步 BasicScheduler 调度",
+  "双 VAE：audio VAE 编码音频条件、video VAE 解码视频",
+  "SageAttention 内存高效注意力补丁（两组补丁叠加）",
+  "音频长度到视频帧数的数学映射（max(5, round(a*24))）",
+  "res_multistep 采样器配合确定性种子复现",
+  "9:16 竖屏分辨率预设 + 参考图条件控制身份一致性"
+ ],
+ "special_features": [
+  {
+   "text": "音频长度→帧数自动链路：SoundFlow_GetLength 取音频秒数，ComfyMathExpression 以 max(5, round(a*24)) 换算为帧数，免去手工估算帧数的麻烦",
+   "kind": "fact"
+  },
+  {
+   "text": "VRGDG_MiniMaxH3AudioDrive 把音频特征作为 VRGDG 引导信号注入 SamplerCustomAdvanced，而非仅做文本/图像条件拼接，采样过程持续受音频驱动",
+   "kind": "fact"
+  },
+  {
+   "text": "双 VAE 分离设计：minimax_h3_audio_vae_fp32 与 minimax_h3_video_vae_fp16 并行加载，音频与视频各自独立编码空间",
+   "kind": "fact"
+  },
+  {
+   "text": "双 SageAttention 补丁组合：MiniMaxH3MemoryEfficientSageAttentionPatch 与 PathchSageAttentionKJ 同时存在，尽可能压 int8 模型的显存占用",
+   "kind": "fact"
+  },
+  {
+   "text": "easy anythingIndexSwitch（默认 1）预留切换开关，可能用于在两组参考图/音频/预设之间一键 AB 切换而无需改连线",
+   "kind": "inference"
+  },
+  {
+   "text": "ResolutionSelector 直接内置 9:16 竖屏短视频预设，面向抖音/TikTok 等移动端发布场景",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者似乎想把「参考图 + 音频 → 口型同步 MV」做成一条确定性、可复现且尽量快的一键流水线：用 MiniMax H3 ref2va 官方权重保住人物身份，用 Turbo LoRA 把步数压到 12 步换取速度；用音频长度自动折算帧数来保证音画同步，避免用户手填帧数导致口型错位；再用 VRGDG 音频驱动节点把音频持续注入采样过程，使口型/表情跟随语音或音乐；最后通过双 VAE 和 SageAttention 缓解显存压力。整体设计目标更像是面向短视频创作者的低门槛数字人 MV 生成器，而非研究型探索。",
+ "use_case": "短视频创作者用一张人像照片 + 一首歌或一段语音，快速产出可发布的 MV；也可用于数字人口播、虚拟偶像、电商商品解说、老照片开口说话等需要『照片开口/唱歌』的批量内容生产场景。",
+ "limitation": "依赖特定模型权重与自定义节点生态，模型文件需自行下载并放入对应目录：minimax_h3_ref2va_int8_convrot.safetensors、qwen3vl_32b_minimax_h3_int8_convrot.safetensors、minimax_h3_audio_vae_fp32.safetensors、minimax_h3_video_vae_fp16.safetensors、minimax_h3_turbo_4步加速 LoRA；音频默认只能裁剪 0-10 秒，长音频需分批生成再拼接；显存占用高，虽有 int8 + SageAttention 补丁，仍建议较大显存；步数固定为 12 且绑定该 Turbo LoRA，不能直接替换其它 MiniMax H3 权重；需要 qwen3vl_32b 文本编码器参与，加载耗内存；流程无后处理质量控制回路，画质/手部/口型精度受模型能力上限约束。",
+ "dependencies": [
+  "minimax_h3_ref2va_int8_convrot.safetensors（UNETLoader）",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors（CLIPLoader）",
+  "minimax_h3_audio_vae_fp32.safetensors（VAELoader）",
+  "minimax_h3_video_vae_fp16.safetensors（VAELoader）",
+  "minimax_h3_turbo_4步加速_comfyui_T8.safetensors（LoraLoaderModelOnly）",
+  "自定义节点：ComfyUI MiniMax H3 系列（MiniMaxH3ReferenceToVideo、VRGDG_MiniMaxH3AudioDrive、MiniMaxH3MemoryEfficientSageAttentionPatch）、SoundFlow、ComfyMath、easy anythingIndexSwitch、VideoHelperSuite（VHS_VideoCombine）、PathchSageAttentionKJ"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人物参考图（LoadImage）+ 一段音频（LoadAudio，可裁剪为 0-10 秒片段）",
+  "count": "image × 1 + audio × 1"
+ },
+ "output": {
+  "type": "MP4 视频文件（VHS_VideoCombine 输出，含音轨，trim_to_audio 对齐音频长度）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler steps（12）",
+   "how_to_tune": "配合 Turbo LoRA 的推荐折中步数；口型抖动/闪烁时可上调到 16-20 提升稳定性，追求极限速度可试 4-8 步"
+  },
+  {
+   "param": "AudioCrop（0, 10）",
+   "how_to_tune": "0 为起始秒数、10 为结束秒数，决定驱动音频片段；想生成更长视频可扩到 30/60 秒，但显存和耗时上升；想跳过前奏可把起始值后移"
+  },
+  {
+   "param": "ComfyMathExpression: max(5, round(a*24))",
+   "how_to_tune": "a 为音频长度秒数，24 为帧率假设；若目标平台为 30fps 可把 24 改为 30；末尾想留几帧尾帧可改为 max(5, round(a*24)+N)"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength（1）",
+   "how_to_tune": "1.0 为默认加速强度；若出现结构崩坏或伪影可降到 0.7-0.9 并配合更高步数；想更激进加速可保持 1.0 并降低步数"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo（1344, 768, 124, match）",
+   "how_to_tune": "宽高 1344×768 为默认横屏；'match' 表示长度跟随音频，可改成固定帧数；竖屏时由 ResolutionSelector 的 9:16 输出覆盖宽高"
+  },
+  {
+   "param": "RandomNoise seed（121918437767075）",
+   "how_to_tune": "固定 seed 便于同一参考图/音频复现对比；勾选 randomize 每次获得不同构图，适合批量试素材"
+  },
+  {
+   "param": "KSamplerSelect（res_multistep）",
+   "how_to_tune": "res_multistep 是该模型/VRGDG 链路搭配的采样器；出现噪点或异常时可对比其它采样器，但 Turbo 模型一般建议保持默认"
+  },
+  {
+   "param": "ResolutionSelector（9:16, 0.6, 32）",
+   "how_to_tune": "9:16 为竖屏短视频比例；0.6 与 32 疑似为倍率和对齐参数，人物构图不满意时可调倍率并保持 32 对齐；横屏需求可切换到 16:9 预设"
+  }
+ ],
+ "summary_text": "能力:上传单张人物参考图 + 一段音频，端到端生成与音频口型/节奏同步、人物身份一致的数字人 MV 视频；能力:自动根据音频时长换算视频帧数（SoundFlow_GetLength 读取秒数，ComfyMathExpression 按 24fps 折算并保证最少 5 帧），实现音画时长对齐；能力:借助 minimax_h3_turbo_4步加速 LoRA + BasicScheduler 12 步 + res_multistep 采样器快速出片，适配短视频生产节奏；能力:支持先裁剪音频片段（AudioCrop 默认 0-10 秒）再作为驱动源，可对歌曲/语音中指定段落生成；能力:音频经独立 minimax_h3_audio_vae 链路参与驱动，视频经 minimax_h3_video_vae 解码后合成音视频输出，形成双 VAE 编解码架构；特色:音频长度→帧数自动链路：SoundFlow_GetLength 取音频秒数，ComfyMathExpression 以 max(5, round(a*24)) 换算为帧数，免去手工估算帧数的麻烦；特色:VRGDG_MiniMaxH3AudioDrive 把音频特征作为 VRGDG 引导信号注入 SamplerCustomAdvanced，而非仅做文本/图像条件拼接，采样过程持续受音频驱动；特色:双 VAE 分离设计：minimax_h3_audio_vae_fp32 与 minimax_h3_video_vae_fp16 并行加载，音频与视频各自独立编码空间；特色:双 SageAttention 补丁组合：MiniMaxH3MemoryEfficientSageAttentionPatch 与 PathchSageAttentionKJ 同时存在，尽可能压 int8 模型的显存占用；特色:easy anythingIndexSwitch（默认 1）预留切换开关，可能用于在两组参考图/音频/预设之间一键 AB 切换而无需改连线；特色:ResolutionSelector 直接内置 9:16 竖屏短视频预设，面向抖音/TikTok 等移动端发布场景；短视频创作者用一张人像照片 + 一首歌或一段语音，快速产出可发布的 MV；也可用于数字人口播、虚拟偶像、电商商品解说、老照片开口说话等需要『照片开口/唱歌』的批量内容生产场景。；作者似乎想把「参考图 + 音频 → 口型同步 MV」做成一条确定性、可复现且尽量快的一键流水线：用 MiniMax H3 ref2va 官方权重保住人物身份，用 Turbo LoRA 把步数压到 12 步换取速度；用音频长度自动折算帧数来保证音画同步，避免用户手填帧数导致口型错位；再用 VRGDG 音频驱动节点把音频持续注入采样过程，使口型/表情跟随语音或音乐；最后通过双 VAE 和 SageAt"
+}

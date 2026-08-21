@@ -1,0 +1,67 @@
+{
+ "domain": [
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "根据中文提示词生成海螺Hailuo H3风格的视频内容（如赛博朋克高饱和场景），并输出保存为本地视频文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成视频后通过组件拆解与再合成，可适配不同的视频封装、编码或后续处理需求。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "文生视频（Text-to-Video）",
+  "视频组件拆分（GetVideoComponents）",
+  "视频合成与编码（VHS_VideoCombine）"
+ ],
+ "special_features": [
+  {
+   "text": "使用 GetVideoComponents 拆分生成视频的组件，再经 VHS_VideoCombine 合成输出，形成“生成→拆解→重组”的视频IO管线，可能用于统一编码、封装或插入中间处理步骤。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流似乎采用“提示词生成→视频组件拆解→视频合成输出”的直通式管线设计，先用海螺H3模型生成原始视频，再通过 GetVideoComponents 将视频拆分为可操作的组件，最后由 VHS_VideoCombine 重新封装导出。这样的设计可能便于在生成后对视频的音频、帧率或编码格式进行统一调整，同时保持流程简单可控。",
+ "use_case": "快速从文本创意生成概念视频，适用于短视频创作、赛博朋克风格镜头预览、影视分镜设计及社交媒体内容产出。",
+ "limitation": "依赖海螺Hailuo H3文生视频节点及对应模型/API服务，可能需要相关密钥或模型文件；输出视频的分辨率、时长、宽高比受模型能力限制；需完整安装 RH系列、easy-use、VideoHelperSuite 等自定义节点，且 GetVideoComponents 与 VHS_VideoCombine 之间的组件格式需保持兼容。",
+ "dependencies": [
+  "RH_MinimaxHailuoH3TextToVideo 节点",
+  "GetVideoComponents 节点",
+  "VHS_VideoCombine 节点（VideoHelperSuite）",
+  "easy showAnything 节点（easy-use）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "文本提示词",
+  "count": "1"
+ },
+ "output": {
+  "type": "视频文件",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt（提示词）",
+   "how_to_tune": "描述越具体越好，可包含主体、环境、风格、色彩、镜头运动等要素，以提升生成效果的可控性。"
+  },
+  {
+   "param": "resolution（分辨率）",
+   "how_to_tune": "当前为2K，细节更丰富但耗时更长；快速验证时建议降至1080P以提升迭代效率。"
+  },
+  {
+   "param": "duration（时长）",
+   "how_to_tune": "当前为5秒，适合短视频镜头；若需要更长时间，需评估模型对镜头连贯性的支持，并考虑增加生成难度。"
+  },
+  {
+   "param": "aspect_ratio（宽高比）",
+   "how_to_tune": "当前为16:9横屏比例，适合叙事类视频；若要用于短视频平台竖屏场景，可调整至9:16。"
+  },
+  {
+   "param": "seed（随机种子）",
+   "how_to_tune": "固定种子可复现相同结果；修改种子可尝试获得不同风格或构图，适合批量探索方案时使用。"
+  }
+ ],
+ "summary_text": "能力:根据中文提示词生成海螺Hailuo H3风格的视频内容（如赛博朋克高饱和场景），并输出保存为本地视频文件。；能力:生成视频后通过组件拆解与再合成，可适配不同的视频封装、编码或后续处理需求。；特色:使用 GetVideoComponents 拆分生成视频的组件，再经 VHS_VideoCombine 合成输出，形成“生成→拆解→重组”的视频IO管线，可能用于统一编码、封装或插入中间处理步骤。；快速从文本创意生成概念视频，适用于短视频创作、赛博朋克风格镜头预览、影视分镜设计及社交媒体内容产出。；该工作流似乎采用“提示词生成→视频组件拆解→视频合成输出”的直通式管线设计，先用海螺H3模型生成原始视频，再通过 GetVideoComponents 将视频拆分为可操作的组件，最后由 VHS_VideoCombine 重新封装导出。这样的设计可能便于在生成后对视频的音频、帧率或编码格式进行统一调整，同时保持流程简单可控。"
+}

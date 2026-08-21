@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "图像生成",
+  "文生图/图生图"
+ ],
+ "capabilities": [
+  {
+   "text": "用户输入一句自然语言描述或上传一张参考图，选择模式后，自动完成提示词优化、模型推理并输出最终图像",
+   "kind": "fact"
+  },
+  {
+   "text": "支持双模式生成：模式1为「提示词润色并生成」，模式2为「参考图引导生成」",
+   "kind": "fact"
+  },
+  {
+   "text": "内置本地 LLM（llama_cpp）对用户提示词进行翻译（中文→英文）与创意改写",
+   "kind": "fact"
+  },
+  {
+   "text": "基于 Krea 2 Turbo 模型完成高质量文生图/图生图，并可通过 LoRA 调节风格",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Qwen3VL 多模态模型理解参考图内容，将其转化为语义/风格条件参与生成",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "本地 LLM 提示词工程（llama_cpp + Qwen3.5-9B）",
+  "多模态语义理解（Qwen3VL）",
+  "双路条件分支控制（ImpactSwitch / GetNode / SetNode / Fast Groups Bypasser）",
+  "Krea 2 Turbo 低步数采样 + LoRA 风格控制",
+  "低 CFG 快速采样（euler_ancestral / beta57）",
+  "VAE 解码与图像保存"
+ ],
+ "special_features": [
+  {
+   "text": "使用 rgthree Fast Groups Bypasser 配合多个 Switch 实现「生成模式」一键切换，两个子流程并行配置",
+   "kind": "fact"
+  },
+  {
+   "text": "把 llama_cpp 大模型直接嵌入工作流，用 Qwen3.5-9B 做提示词改写/翻译，属于 AIGC 前处理流水线",
+   "kind": "fact"
+  },
+  {
+   "text": "内置多套 CR Text / CR Prompt Text 模板节点，预置「Krea 2 独立模板：一句话变英文 Pro」「一张参考图控风格」",
+   "kind": "fact"
+  },
+  {
+   "text": "大量使用 easy convertAnything 做类型转换，以及 easy cleanGpuUsed 清理显存，工程化细节丰富",
+   "kind": "fact"
+  },
+  {
+   "text": "参考图控制没有使用 IPAdapter/ControlNet，而是疑似通过多模态 LLM 理解图像后生成语义描述，再参与条件生成",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流定位是“零门槛”的生成入口：用户不需要掌握 prompt 工程，只需提供粗略中文描述或一张参考图，系统先通过本地 LLM 重新组织成适合 Krea 2 的英文提示词，再结合参考图语义控制风格。双模式切换和大量 UI 控制节点（GetNode/SetNode/ImpactSwitch）可能为了在一个工作流内提供两种使用方式，方便非专业用户操作；同时使用量化 GGUF 模型和 Turbo 采样来提升生成速度、降低显存压力。",
+ "use_case": "适合内容创作者快速出图：既可以直接用文字描述生成，也可以给定风格参考图生成同风格图像。",
+ "limitation": "依赖多个第三方自定义节点（ComfyUI-Impact-Pack、rgthree、Crystools、easy-use、CR 系列等），需确保安装齐全且版本兼容；需要提前下载 Krea 2 Turbo、Qwen3VL-4B、Qwen3.5-9B-GGUF 等大模型文件；参考图风格控制依赖多模态模型的理解能力，可能不如专用 IPAdapter 精确。",
+ "dependencies": [
+  "krea2_turbo_fp8.safetensors",
+  "qwen3vl_4b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "Qwen3.5-9B-Q8_0.gguf",
+  "Qwen3.5-9B-mmproj-BF16.gguf",
+  "ComfyUI-Impact-Pack",
+  "ComfyUI-RGThree",
+  "ComfyUI-Crystools",
+  "ComfyUI-Easy-Use",
+  "ComfyUI CR 系列节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "text + optional image",
+  "count": "1 text + 0-2 images"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler - steps",
+   "how_to_tune": "默认 8，是 Krea 2 Turbo 的低步数快速采样配置；若需更精细画质可逐步增大到 10-15，但速度会变慢。"
+  },
+  {
+   "param": "KSampler - cfg",
+   "how_to_tune": "默认 1，Krea 2 Turbo 适合低 CFG；若画面与提示词不一致可尝试 2-4，过高容易过饱和。"
+  },
+  {
+   "param": "KSampler - sampler/scheduler",
+   "how_to_tune": "默认 euler_ancestral + beta57，可换成 dpmpp_2m / karras 测试不同质感。"
+  },
+  {
+   "param": "llama_cpp_parameters - temperature",
+   "how_to_tune": "默认 0.9，值越高提示词改写越有创意，越低越忠实原文；追求稳定可降到 0.7。"
+  },
+  {
+   "param": "TTResolutionSelector",
+   "how_to_tune": "默认 1024×1024，可选择 1920×1080 等横屏比例，会影响构图和显存占用。"
+  },
+  {
+   "param": "LoraLoaderModelOnly - strength",
+   "how_to_tune": "widget 为 1 表示 LoRA 满强度；若过拟合或风格过重可降低到 0.5-0.8。"
+  }
+ ],
+ "summary_text": "能力:用户输入一句自然语言描述或上传一张参考图，选择模式后，自动完成提示词优化、模型推理并输出最终图像；能力:支持双模式生成：模式1为「提示词润色并生成」，模式2为「参考图引导生成」；能力:内置本地 LLM（llama_cpp）对用户提示词进行翻译（中文→英文）与创意改写；能力:基于 Krea 2 Turbo 模型完成高质量文生图/图生图，并可通过 LoRA 调节风格；能力:通过 Qwen3VL 多模态模型理解参考图内容，将其转化为语义/风格条件参与生成；特色:使用 rgthree Fast Groups Bypasser 配合多个 Switch 实现「生成模式」一键切换，两个子流程并行配置；特色:把 llama_cpp 大模型直接嵌入工作流，用 Qwen3.5-9B 做提示词改写/翻译，属于 AIGC 前处理流水线；特色:内置多套 CR Text / CR Prompt Text 模板节点，预置「Krea 2 独立模板：一句话变英文 Pro」「一张参考图控风格」；特色:大量使用 easy convertAnything 做类型转换，以及 easy cleanGpuUsed 清理显存，工程化细节丰富；特色:参考图控制没有使用 IPAdapter/ControlNet，而是疑似通过多模态 LLM 理解图像后生成语义描述，再参与条件生成；适合内容创作者快速出图：既可以直接用文字描述生成，也可以给定风格参考图生成同风格图像。；这个工作流定位是“零门槛”的生成入口：用户不需要掌握 prompt 工程，只需提供粗略中文描述或一张参考图，系统先通过本地 LLM 重新组织成适合 Krea 2 的英文提示词，再结合参考图语义控制风格。双模式切换和大量 UI 控制节点（GetNode/SetNode/ImpactSwitch）可能为了在一个工作流内提供两种使用方式，方便非专业用户操作；同时使用量化 GGUF 模型和 Turbo 采样来提升生成速度、降低显存压力。"
+}

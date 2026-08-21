@@ -1,0 +1,112 @@
+{
+ "domain": [
+  "图像修复",
+  "图像高清放大",
+  "人像精修"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张模糊/低清图片，通过分块放大和 Flux2-Klein 重绘，输出高清大图",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 TTP_Image_Tile_Batch 切块、逐块生成、TTP_Image_Assy 拼回，支持大图低显存分块修复",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 LCSSharpnessCalibrate/Intervene、LCSColorAnchor 和 imageColorMatch 做锐度与色彩校正，减少分块痕迹",
+   "kind": "fact"
+  },
+  {
+   "text": "针对人像皮肤质感做细节增强（LoRA 名含“皮肤质感”），可作为人像精修用途",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX (Flux2-Klein-9B-True-v2-bf16)",
+  "分块处理 / Tiling (TTP_Image_Tile_Batch + TTP_Image_Assy)",
+  "LoRA 叠加（细节增强 0.5 / Turbo 0.2 / 一致性 0.2）",
+  "低步数 Turbo 采样（steps=4, cfg=1, euler, simple）",
+  "Qwen 3 8B 文本编码 + Flux2KleinEditTextEncode 指令增强",
+  "VAEDecode + flux2-vae",
+  "锐度校准 / 颜色匹配 / 颜色锚定"
+ ],
+ "special_features": [
+  {
+   "text": "多段式分块修复：TTP_Image_Tile_Batch(1024,1024) 切块 → easy imageBatchToImageList → 逐块交给 Flux2-Klein 重绘 → easy imageListToImageBatch → TTP_Image_Assy(64) 拼回",
+   "kind": "fact"
+  },
+  {
+   "text": "质量校正链：LCSSharpnessCalibrate + LCSSharpnessIntervene + LCSColorAnchor + easy imageColorMatch 组合，配合 Image Comparer 对照原图/结果图",
+   "kind": "fact"
+  },
+  {
+   "text": "三个 LoRA 同时注入：F2Klein9b 高清细节增强皮肤质感 v2.0、klein_9B_Turbo_r128、f2k_9B_lcs_consist，分别承担细节、加速、一致性",
+   "kind": "fact"
+  },
+  {
+   "text": "低步数快速生成：KSampler 使用 steps=4、cfg=1、euler/simple，结合 Turbo LoRA 显著减少每块耗时",
+   "kind": "fact"
+  },
+  {
+   "text": "动态分块参数计算：用 MathExpression 根据原图尺寸算 tile 数量，配合 GetImageSize/SimpleMath+ 自动适配目标放大尺寸",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整体设计可能目标是在有限显存内做大图高清修复，同时避免传统整体重绘造成的“变形”。流程先用 TTP 分块把大图切成多个 1024 方块，逐块经过 FLUX + 三个 LoRA 进行细节增强/清晰化，再由 TTP_Image_Assy 拼回；这样每块都能独立完成放大/修复，降低显存峰值。为了减少分块痕迹，加入 LCS 锐度校准、颜色锚定和 imageColorMatch 做后处理。加上 Turbo LoRA 和 4 步采样，让逐块推理保持可接受的速度。标题中的“零变形”可能来自分块+一致性 LoRA+颜色校正的组合策略，而“SeedVR2.5”在结构中没有对应节点，可能是方案命名或外部前置工具。",
+ "use_case": "需要把模糊或低分辨率图片放大成高清大图的场景，特别是人像/摄影精修；分块设计让高分辨率图可以在有限显存内逐块处理，并通过锐度/色彩校正尽量保证拼接自然。",
+ "limitation": "依赖较多自定义节点（TTP、LCS、rgthree、pysssss、ComfyUI LayerUtility、easy-use 等）；需要下载 Flux2-Klein-9B 检查点、qwen_3_8b CLIP、flux2-vae 和三个 LoRA 文件；FLUX fp8 与分块处理对显存仍有较高要求；标题提到的 SeedVR2.5 在节点资产中未显式出现，可能需要另行安装/确认。",
+ "dependencies": [
+  "Flux2-Klein-9B-True-v2-bf16.safetensors (fp8_e4m3fn)",
+  "qwen_3_8b.safetensors (CLIPLoader, flux2)",
+  "flux2-vae.safetensors",
+  "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors",
+  "klein_9B_Turbo_r128.safetensors",
+  "f2k_9B_lcs_consist_20260415.safetensors",
+  "TTP 系列节点、LCS 系列节点、easy-use、rgthree、pysssss、LayerUtility"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片",
+  "count": "1"
+ },
+ "output": {
+  "type": "图片",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "INTConstant=3840",
+   "how_to_tune": "控制放大后的最大边尺寸；值越大输出分辨率越高，但显存和耗时也越高"
+  },
+  {
+   "param": "TTP_Image_Tile_Batch=1024,1024",
+   "how_to_tune": "分块边长；1024 是 FLUX 常用平衡点，调小更省显存但可能增加接缝，调大保留更多全局上下文但更吃显存"
+  },
+  {
+   "param": "F2Klein9b 细节增强 LoRA strength=0.5",
+   "how_to_tune": "控制皮肤/细节增强力度，建议 0.3~0.6；过高容易粗糙或塑料感"
+  },
+  {
+   "param": "klein_9B_Turbo strength=0.2",
+   "how_to_tune": "Turbo 加速力度；0.2 可与步骤 4 搭配，若效果不稳定可微调至 0.1~0.3"
+  },
+  {
+   "param": "f2k_9B_lcs_consist strength=0.2",
+   "how_to_tune": "控制跨分块一致性；拼图接缝明显时可适当提高，但太高可能压制细节"
+  },
+  {
+   "param": "KSampler steps=4, cfg=1",
+   "how_to_tune": "低步数 Turbo 配置；追求质量可试 steps=6~8，cfg 保持 1 附近，避免过曝/色彩偏移"
+  },
+  {
+   "param": "LCSSharpnessIntervene=-1,2,4",
+   "how_to_tune": "锐度干预参数；输出偏软时调高介入值，出现振铃/锐化过度时调低或保持 -1"
+  },
+  {
+   "param": "LCSColorAnchor=auto,0.8",
+   "how_to_tune": "颜色锚定强度 0.8；与 imageColorMatch 搭配，若色调漂移明显可提高，若色彩过平可降低"
+  }
+ ],
+ "summary_text": "能力:输入单张模糊/低清图片，通过分块放大和 Flux2-Klein 重绘，输出高清大图；能力:使用 TTP_Image_Tile_Batch 切块、逐块生成、TTP_Image_Assy 拼回，支持大图低显存分块修复；能力:通过 LCSSharpnessCalibrate/Intervene、LCSColorAnchor 和 imageColorMatch 做锐度与色彩校正，减少分块痕迹；能力:针对人像皮肤质感做细节增强（LoRA 名含“皮肤质感”），可作为人像精修用途；特色:多段式分块修复：TTP_Image_Tile_Batch(1024,1024) 切块 → easy imageBatchToImageList → 逐块交给 Flux2-Klein 重绘 → easy imageListToImageBatch → TTP_Image_Assy(64) 拼回；特色:质量校正链：LCSSharpnessCalibrate + LCSSharpnessIntervene + LCSColorAnchor + easy imageColorMatch 组合，配合 Image Comparer 对照原图/结果图；特色:三个 LoRA 同时注入：F2Klein9b 高清细节增强皮肤质感 v2.0、klein_9B_Turbo_r128、f2k_9B_lcs_consist，分别承担细节、加速、一致性；特色:低步数快速生成：KSampler 使用 steps=4、cfg=1、euler/simple，结合 Turbo LoRA 显著减少每块耗时；特色:动态分块参数计算：用 MathExpression 根据原图尺寸算 tile 数量，配合 GetImageSize/SimpleMath+ 自动适配目标放大尺寸；需要把模糊或低分辨率图片放大成高清大图的场景，特别是人像/摄影精修；分块设计让高分辨率图可以在有限显存内逐块处理，并通过锐度/色彩校正尽量保证拼接自然。；整体设计可能目标是在有限显存内做大图高清修复，同时避免传统整体重绘造成的“变形”。流程先用 TTP 分块把大图切成多个 1024 方块，逐块经过 FLUX + 三个 LoRA 进行细节增强/清晰化，再由 TTP_Image_Assy 拼回；这样每块都能独立完成放大/修复，降低显存峰值。为了减少分块痕迹，加入 LCS 锐度校准、颜色锚定和 imageColorMatch 做后处理。加上 Turbo LoRA 和 4 步采样，让逐块推理保持可接受的速度。标题中的“零变形”可能来自分块+一致性 LoRA+颜色校正的组合策略，而“SeedVR2.5”在结构中没有对应节点，可能是方案命名或外部前置工具。"
+}

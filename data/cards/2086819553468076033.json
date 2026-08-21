@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张静态图像和文本提示词，端到端生成电影感的视频片段",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Turbo LoRA 加速采样，默认 8 步即可生成视频",
+   "kind": "fact"
+  },
+  {
+   "text": "支持音频条件生成，可为视频配合人声或音效，形成图生音视频（首帧）",
+   "kind": "inference"
+  },
+  {
+   "text": "支持多分辨率选择（如 9:16 竖屏）和基于表达式的动态帧数计算",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频生成模型 (checkpoint: minimax_h3_fl2va_int8_convrot.safetensors)",
+  "Turbo LoRA 加速采样 (minimax_h3_turbo_4步加速_comfyui.safetensors)",
+  "CLIP 文本编码 (qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors)",
+  "双 VAE 解码：视频 VAE + 音频 VAE",
+  "DualClock Sampler 自定义采样",
+  "SageAttention 内存高效注意力补丁",
+  "音频条件生成 (MiniMaxH3AudioConditioningT8)",
+  "分辨率选择与动态表达式计算"
+ ],
+ "special_features": [
+  {
+   "text": "采用 int8 量化的 UNet 和 fp16/fp32 分离的双 VAE，显著降低显存占用，适合消费级显卡",
+   "kind": "fact"
+  },
+  {
+   "text": "集成了 SageAttention 补丁，进一步提升注意力计算的效率与显存表现",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ComfyMathExpression 动态计算视频帧数（可能根据时长 a 以 24fps 换算），增强灵活度",
+   "kind": "inference"
+  },
+  {
+   "text": "配备音频生成分支，形成'图-文-音-视频'联合生成管线，这是非典型图生视频工作流",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在将 MiniMax H3 模型封装为一条从静态图到带声音视频的完整生成管线。通过 Turbo LoRA、int8 量化和 SageAttention 降低计算与显存门槛，同时保留多分辨率与自定义帧率的能力。音频条件的加入使输出更接近电影感短片，可能面向快速创意预演和短视频创作者。",
+ "use_case": "适用于影视分镜预览、广告视觉提案、短视频内容快速生成等场景，用户提供一张参考图和一句文字描述即可获得动态视频片段。",
+ "limitation": "依赖特定版本/尺寸的 MiniMax H3 模型文件（见 dependencies），必须安装 MiniMax H3 相关自定义节点（MiniMaxH3DualClockSamplerT8、MiniMaxH3AVDecodeT8 等）。虽然进行了量化优化，但仍在高分辨率或长时长下可能显存不足。音频生成质量受文本条件影响，且需要额外下载音频 VAE。",
+ "dependencies": [
+  "model: minimax_h3_fl2va_int8_convrot.safetensors",
+  "lora: minimax_h3_turbo_4步加速_comfyui.safetensors",
+  "clip: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "vae: minimax_h3_video_vae_fp16.safetensors",
+  "vae: minimax_h3_audio_vae_fp32.safetensors",
+  "custom_node: ComfyUI MiniMax H3 nodes (MiniMaxH3DualClockSamplerT8, MiniMaxH3AVDecodeT8, MiniMaxH3AudioConditioningT8, MiniMaxH3MemoryEfficientSageAttentionPatch)",
+  "custom_node: ComfyUI-VideoHelperSuite (VHS_VideoCombine)",
+  "custom_node: CR Prompt Text, ResolutionSelector, ComfyMathExpression"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image + text",
+  "count": "1张图像 + 1段提示词"
+ },
+ "output": {
+  "type": "视频文件（含音频轨道）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3DualClockSamplerT8 steps (默认8)",
+   "how_to_tune": "采样步数。步数越低生成越快，但画质和动态一致性下降；追求质量可提高到12或更高，显存和时间成本也会增加。"
+  },
+  {
+   "param": "MiniMaxH3DualClockSamplerT8 cfg (默认12)",
+   "how_to_tune": "提示词引导强度。越高越贴合文本，但可能出现色彩过饱和或伪影；通常7-15之间，建议从12开始微调。"
+  },
+  {
+   "param": "LoraLoaderBypassModelOnly strength (默认1)",
+   "how_to_tune": "Turbo LoRA 权重。1为推荐，增大可强化加速风格但可能改变模型输出；若出现不稳定可降低至0.8左右。"
+  },
+  {
+   "param": "ResolutionSelector (宽高比/缩放)",
+   "how_to_tune": "选择输出画幅比例，例如'9:16'适合竖屏短视频，'16:9'适合横屏电影感。内部缩放值可控制实际分辨率，过高的分辨率会显著增加显存占用。"
+  },
+  {
+   "param": "ComfyMathExpression 表达式中的 a",
+   "how_to_tune": "表达式中 a 可能代表视频时长（秒），乘以24得到总帧数，最大值/最小值由 max(5,...) 约束。调整 a 可改变生成视频的长度。"
+  }
+ ],
+ "summary_text": "能力:输入一张静态图像和文本提示词，端到端生成电影感的视频片段；能力:通过 Turbo LoRA 加速采样，默认 8 步即可生成视频；能力:支持音频条件生成，可为视频配合人声或音效，形成图生音视频（首帧）；能力:支持多分辨率选择（如 9:16 竖屏）和基于表达式的动态帧数计算；特色:采用 int8 量化的 UNet 和 fp16/fp32 分离的双 VAE，显著降低显存占用，适合消费级显卡；特色:集成了 SageAttention 补丁，进一步提升注意力计算的效率与显存表现；特色:通过 ComfyMathExpression 动态计算视频帧数（可能根据时长 a 以 24fps 换算），增强灵活度；特色:配备音频生成分支，形成'图-文-音-视频'联合生成管线，这是非典型图生视频工作流；适用于影视分镜预览、广告视觉提案、短视频内容快速生成等场景，用户提供一张参考图和一句文字描述即可获得动态视频片段。；该工作流旨在将 MiniMax H3 模型封装为一条从静态图到带声音视频的完整生成管线。通过 Turbo LoRA、int8 量化和 SageAttention 降低计算与显存门槛，同时保留多分辨率与自定义帧率的能力。音频条件的加入使输出更接近电影感短片，可能面向快速创意预演和短视频创作者。"
+}

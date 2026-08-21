@@ -1,0 +1,87 @@
+{
+ "domain": [
+  "图像生成",
+  "人像换装",
+  "角色概念设计"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端：上传一张人脸参考图，通过 PuLID 提取身份特征，结合固定提示词“pl,Clothes made of white”和两个 LoRA，输出保持人脸一致的白衣服装/角色图。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Flux 微调底模 + 国漫风格 LoRA + 模特 LoRA，生成特定画风或人物气质的换装结果。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "PuLID：人脸身份特征提取与注入（PulidFluxEvaClipLoader + PulidFluxInsightFaceLoader + PulidFluxModelLoader + ApplyPulidFlux）",
+  "FLUX：以 Flux_redcraftCADSUpdated fp8_e4m3fn 微调模型为主干生成图像",
+  "双 LoRA：Flux-绮梦流光（国漫角色风格） + 模特02（模特特征）",
+  "FluxGuidance 引导 + CLIP 文本条件（“pl,Clothes made of white”）",
+  "SDXL 比例预设：CR SDXL Aspect Ratio 与 EmptySD3LatentImage 配合控制 3:4 竖构图"
+ ],
+ "special_features": [
+  {
+   "text": "没有使用常规 KSampler，而是用 SamplerCustomAdvanced + BasicGuider + BasicScheduler + KSamplerSelect + RandomNoise 手动搭建采样链路，调度器 normal、30 步、euler、固定随机种子。",
+   "kind": "fact"
+  },
+  {
+   "text": "PuLID 身份保持三件套：PulidFluxModelLoader、PulidFluxEvaClipLoader、PulidFluxInsightFaceLoader(CPU)，再经 ApplyPulidFlux 注入 Flux 生成过程。",
+   "kind": "fact"
+  },
+  {
+   "text": "叠加两个 LoRA：Flux-绮梦流光-斗破苍穹-古熏儿_国漫经典_ 与 模特02.safetensors，两者的 model strength 都是 0.8、CLIP strength 都是 1，形成风格与人物特征并行控制。",
+   "kind": "fact"
+  },
+  {
+   "text": "固定提示词“pl,Clothes made of white”中的“pl”可能是一个风格/角色触发 token，用于激活微调模型或 LoRA 对应的国漫风格语言。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕“换装但保持人脸”的目标设计：先用 PuLID 把人脸身份锁进生成条件，再用文本指定白色服装，并用“国漫风格 LoRA + 模特 LoRA”分别控制画面风格与人物气质；Flux 微调底模作为主干，最后用高级采样器手动控制步数、调度器和随机种子，以便在稳定复现的基础上保留创作自由度。",
+ "use_case": "适合服装模特图生成、国漫角色换装概念图、个人照片换衣预览等需要保持人脸身份和风格一致性的场景。",
+ "limitation": "依赖外部模型文件 pulid_flux_v0.9.0.safetensors、ae.sft、Flux_redcraftCADSUpdatedMay11_newREVEAL.safetensors、clip_l/t5xxl、两个 LoRA，以及 PuLID Flux 自定义节点；输入为单张人脸图，提示词在图中固定，无法临时改写；输出分辨率固定为 768x1024（3:4），未包含脸部后处理或超分环节。",
+ "dependencies": [
+  "pulid_flux_v0.9.0.safetensors",
+  "ae.sft",
+  "Flux_redcraftCADSUpdatedMay11_newREVEAL.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "Flux-绮梦流光-斗破苍穹-古熏儿_国漫经典_",
+  "模特02.safetensors",
+  "PuLID Flux 自定义节点（PulidFlux*/ApplyPulidFlux）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image（单张人脸参考图，由 LoadImage(IN) 载入）",
+  "count": "1"
+ },
+ "output": {
+  "type": "image（经 VAEDecode 解码后由 PreviewImage/SaveImage 输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoRA strength_model / strength_clip（两个 LoraLoader 均为 0.8 / 1）",
+   "how_to_tune": "strength_model 控制 LoRA 风格/人物特征强度，建议 0.5-1.2 调节；strength_clip 保持 1 可保留文本语义，若提示词服从性下降可适当降低。"
+  },
+  {
+   "param": "seed（RandomNoise 固定为 117886849211902，randomize 开启）",
+   "how_to_tune": "固定 seed 用于复现同一结果；开启 randomize 可每次随机，想换构图或细节时改 seed。"
+  },
+  {
+   "param": "steps（BasicScheduler 中为 30）",
+   "how_to_tune": "质量与速度平衡点；追求细节可提到 40，快速草稿可用 20。"
+  },
+  {
+   "param": "FluxGuidance（3.5）",
+   "how_to_tune": "调大更贴近提示词，但过高可能色彩饱和/过曝；Flux 常规范围建议 2-6。"
+  },
+  {
+   "param": "宽高比（CR SDXL Aspect Ratio 3:4 portrait 896x1152 / EmptySD3LatentImage 768x1024）",
+   "how_to_tune": "当前为竖构图人像；如需半身/全身可改为 2:3 或 9:16，并同步 latent 尺寸。"
+  }
+ ],
+ "summary_text": "能力:端到端：上传一张人脸参考图，通过 PuLID 提取身份特征，结合固定提示词“pl,Clothes made of white”和两个 LoRA，输出保持人脸一致的白衣服装/角色图。；能力:使用 Flux 微调底模 + 国漫风格 LoRA + 模特 LoRA，生成特定画风或人物气质的换装结果。；特色:没有使用常规 KSampler，而是用 SamplerCustomAdvanced + BasicGuider + BasicScheduler + KSamplerSelect + RandomNoise 手动搭建采样链路，调度器 normal、30 步、euler、固定随机种子。；特色:PuLID 身份保持三件套：PulidFluxModelLoader、PulidFluxEvaClipLoader、PulidFluxInsightFaceLoader(CPU)，再经 ApplyPulidFlux 注入 Flux 生成过程。；特色:叠加两个 LoRA：Flux-绮梦流光-斗破苍穹-古熏儿_国漫经典_ 与 模特02.safetensors，两者的 model strength 都是 0.8、CLIP strength 都是 1，形成风格与人物特征并行控制。；特色:固定提示词“pl,Clothes made of white”中的“pl”可能是一个风格/角色触发 token，用于激活微调模型或 LoRA 对应的国漫风格语言。；适合服装模特图生成、国漫角色换装概念图、个人照片换衣预览等需要保持人脸身份和风格一致性的场景。；该工作流围绕“换装但保持人脸”的目标设计：先用 PuLID 把人脸身份锁进生成条件，再用文本指定白色服装，并用“国漫风格 LoRA + 模特 LoRA”分别控制画面风格与人物气质；Flux 微调底模作为主干，最后用高级采样器手动控制步数、调度器和随机种子，以便在稳定复现的基础上保留创作自由度。"
+}

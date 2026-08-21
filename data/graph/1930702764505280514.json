@@ -1,0 +1,648 @@
+{
+ "node_count": 16,
+ "link_count": 19,
+ "active_node_count": 16,
+ "nodes": [
+  {
+   "id": 19,
+   "type": "PulidEvaClipLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    81
+   ]
+  },
+  {
+   "id": 17,
+   "type": "PulidInsightFaceLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CPU"
+   ],
+   "in_links": [],
+   "out_links": [
+    82
+   ]
+  },
+  {
+   "id": 16,
+   "type": "PulidModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ip-adapter_pulid_sdxl_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    117
+   ]
+  },
+  {
+   "id": 5,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    768,
+    1024,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 23,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "blurry, malformed, low quality, worst quality, artifacts, noise, text, watermark, glitch, deformed, ugly, horror, ill"
+   ],
+   "in_links": [
+    94
+   ],
+   "out_links": [
+    34
+   ]
+  },
+  {
+   "id": 22,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "closeup portrait, cyberpunk, cinematic, hoodie, purple hair, highly detailed, 4k, high resolution"
+   ],
+   "in_links": [
+    93
+   ],
+   "out_links": [
+    35
+   ]
+  },
+  {
+   "id": 33,
+   "type": "ApplyPulid",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fidelity",
+    0.8,
+    0,
+    1
+   ],
+   "in_links": [
+    133,
+    117,
+    81,
+    82,
+    114
+   ],
+   "out_links": [
+    136
+   ]
+  },
+  {
+   "id": 47,
+   "type": "IPAdapterUnifiedLoader",
+   "category": "ipadapter",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "PLUS (high strength)"
+   ],
+   "in_links": [
+    136
+   ],
+   "out_links": [
+    137,
+    135
+   ]
+  },
+  {
+   "id": 46,
+   "type": "IPAdapterAdvanced",
+   "category": "ipadapter",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "style transfer",
+    "concat",
+    0,
+    1,
+    "V only"
+   ],
+   "in_links": [
+    137,
+    135,
+    139
+   ],
+   "out_links": [
+    138
+   ]
+  },
+  {
+   "id": 3,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    52,
+    "fixed",
+    30,
+    6,
+    "dpmpp_2m",
+    "sgm_uniform",
+    1
+   ],
+   "in_links": [
+    138,
+    35,
+    34,
+    2
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 12,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "49ca1ef81071bd8e9f35f881cde118f1798db9ae3c00aaca76ef50a29438258c.jpg",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    114
+   ]
+  },
+  {
+   "id": 48,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "49ca1ef81071bd8e9f35f881cde118f1798db9ae3c00aaca76ef50a29438258c.jpg",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    139
+   ]
+  },
+  {
+   "id": 4,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "protovisionXLHighFidelity3D_releaseV660Bakedvae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    133,
+    93,
+    94,
+    8
+   ]
+  },
+  {
+   "id": 10,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    10,
+    140
+   ]
+  },
+  {
+   "id": 49,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    140
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 12,
+   "to_node": 33,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 33,
+   "type": "PULID"
+  },
+  {
+   "from_node": 17,
+   "to_node": 33,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 19,
+   "to_node": 33,
+   "type": "EVA_CLIP"
+  },
+  {
+   "from_node": 22,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 23,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 33,
+   "to_node": 47,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 4,
+   "to_node": 22,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 4,
+   "to_node": 23,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 4,
+   "to_node": 33,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 4,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 46,
+   "to_node": 3,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 47,
+   "to_node": 46,
+   "type": "IPADAPTER"
+  },
+  {
+   "from_node": 47,
+   "to_node": 46,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 48,
+   "to_node": 46,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 49,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "face": 4,
+  "utility": 1,
+  "conditioning": 2,
+  "ipadapter": 2,
+  "sampler": 1,
+  "image_io": 4,
+  "checkpoint_loader": 1,
+  "vae": 1
+ },
+ "assets": [
+  {
+   "node_id": 16,
+   "node_type": "PulidModelLoader",
+   "kind": "aux_model",
+   "name": "ip-adapter_pulid_sdxl_fp16.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "vae",
+   "name": "protovisionXLHighFidelity3D_releaseV660Bakedvae.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "IP-Adapter"
+ ],
+ "param_face_size": 35,
+ "structure_hash": "9cf9c7e9b525fe8e",
+ "param_face": [
+  {
+   "node_id": 17,
+   "node_type": "PulidInsightFaceLoader",
+   "widget_index": 0,
+   "value_preview": "CPU"
+  },
+  {
+   "node_id": 16,
+   "node_type": "PulidModelLoader",
+   "widget_index": 0,
+   "value_preview": "ip-adapter_pulid_sdxl_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 23,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "blurry, malformed, low quality, worst quality, artifacts, no"
+  },
+  {
+   "node_id": 22,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "closeup portrait, cyberpunk, cinematic, hoodie, purple hair,"
+  },
+  {
+   "node_id": 33,
+   "node_type": "ApplyPulid",
+   "widget_index": 0,
+   "value_preview": "fidelity"
+  },
+  {
+   "node_id": 33,
+   "node_type": "ApplyPulid",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 33,
+   "node_type": "ApplyPulid",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 33,
+   "node_type": "ApplyPulid",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 47,
+   "node_type": "IPAdapterUnifiedLoader",
+   "widget_index": 0,
+   "value_preview": "PLUS (high strength)"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 1,
+   "value_preview": "style transfer"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 2,
+   "value_preview": "concat"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 5,
+   "value_preview": "V only"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "52"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "49ca1ef81071bd8e9f35f881cde118f1798db9ae3c00aaca76ef50a29438"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 48,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "49ca1ef81071bd8e9f35f881cde118f1798db9ae3c00aaca76ef50a29438"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 4,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "protovisionXLHighFidelity3D_releaseV660Bakedvae.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 49,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 49,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  }
+ ]
+}

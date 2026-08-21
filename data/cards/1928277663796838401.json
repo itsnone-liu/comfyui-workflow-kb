@@ -1,0 +1,95 @@
+{
+ "domain": [
+  "图像生成",
+  "虚拟试衣",
+  "图像修复",
+  "高清放大"
+ ],
+ "capabilities": [
+  {
+   "text": "上传模特照与目标服装图，通过蒙版区域重绘生成换装结果（标签为“换装”，工作流内有“涂抹模特/服装”“上传服装白底图”等明确提示）。",
+   "kind": "fact"
+  },
+  {
+   "text": "换装后可对局部做“修复裁剪”、ControlNet Tile 细化，并经 UltimateSDUpscale（4x-UltraSharp）与 SUPIR 做两级高清放大/修复，输出高分辨率成片。",
+   "kind": "fact"
+  },
+  {
+   "text": "同一工作流包含“纯手动遮罩版”和“SegmentAnything 自动分割版”两条路径，可用 Fast Groups Muter 切换，并用 Image Comparer 对比结果。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-Fill (Inpainting/Outpainting) 局部重绘",
+  "FLUX.1-Redux + SigLIP CLIP Vision (StyleModelApply) 图像参考条件",
+  "ControlNet Tile (control_v11f1e_sd15_tile)",
+  "DifferentialDiffusion 差分扩散 / 局部遮罩重绘",
+  "InpaintCrop + InpaintStitch 裁剪修复/拼接",
+  "SegmentAnythingUltra V2 (GroundingDINO + SAM-HQ + VITMatte) 自动分割",
+  "UltimateSDUpscale + 4x-UltraSharp 放大",
+  "SUPIR-v0F (SUPIR_sample/conditioner/encode/decode) 高清恢复",
+  "SD1.5 写实模型 (majicMIX realistic / LEOSAM HelloWorld) + 女生Add More Details LoRA"
+ ],
+ "special_features": [
+  {
+   "text": "双版本结构：一个分支靠用户手动在 MaskEditor 里涂抹，另一个分支用 SegmentAnythingUltra V2 自动生成蒙版，Fast Groups Muter 控制启停，Image Comparer 做前后对比。",
+   "kind": "inference"
+  },
+  {
+   "text": "多段式局部重绘：先用 InpaintCrop 从大图中裁出待修复区域，FLUX Fill 只在该区域采样，再由 InpaintStitch 拼回原图，配合 DifferentialDiffusion 限制重绘范围，避免全图风格漂移。",
+   "kind": "inference"
+  },
+  {
+   "text": "图像条件化换装：用 CLIPVision/SigLIP 编码服装图或模特图后，通过 StyleModelApply (flux1-redux-dev) 注入到 FLUX 的 conditioning，使换装主要依靠参考图而非文本提示词。",
+   "kind": "inference"
+  },
+  {
+   "text": "后处理放大链路：在 FLUX 换装完成后，用 SD1.5 + ControlNet Tile 结合 4x-UltraSharp 做结构保持放大，再接 SUPIR 做真实感修复；整体形成“生成→局部修复→放大→恢复”的多级管线。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流似乎把“换装”拆成两个大阶段：先用 FLUX.1-Fill 在蒙版区域生成新服装，并用 Redux 图像参考条件尽量保持服装和模特特征；随后用 SD1.5 + ControlNet Tile、UltimateSDUpscale 和 SUPIR 对生成结果做放大与画质恢复，弥补 FLUX 直接输出在细节/分辨率上的不足。同时提供手动和自动两种蒙版路径，可能是为了兼顾精确控制和批量自动化场景；多个 PreviewImage 与 Image Comparer 则用于在不同阶段人工检查换装质量。",
+ "use_case": "电商服装/模特图换装预览、服装上身效果试穿、穿搭图重拍与后期、人像服装局部修复及高清化出片。",
+ "limitation": "依赖较多外部权重（FLUX Fill/Redux、SUPIR、SD1.5 模型、ControlNet Tile、4x-UltraSharp、LoRA）和自定义节点（rgthree、Impact Pack、LayerStyle/LayerMask、UltimateSDUpscale、SUPIR）。显存占用较高，FLUX+SUPIR 同时运行可能需要大显存；蒙版不准或参考图质量差时仍可能产生服装穿帮、边缘瑕疵或身份漂移；纯手动版需要人工在遮罩编辑器中逐张涂抹，自动版对 GroundingDINO 阈值比较敏感。",
+ "dependencies": [
+  "模型/权重: majicMIX realistic 麦橘写实, LEOSAM HelloWorld, flux1-fill-dev.safetensors, flux1-redux-dev.safetensors, SUPIR-v0F_fp16.safetensors, ae.sft, clip_l.safetensors, t5xxl_fp8_e4m3fn.safetensors, sigclip_vision_patch14_384.safetensors, control_v11f1e_sd15_tile, 4x-UltraSharp, 女生Add More Details LoRA",
+  "自定义节点: rgthree (Fast Groups Muter, Image Comparer), ComfyUI Impact Pack (InpaintCrop/InpaintStitch), ComfyUI LayerStyle/LayerMask (SegmentAnythingUltra V2), UltimateSDUpscale, SUPIR",
+  "硬件: 高显存 GPU（FLUX.1 Fill + SUPIR 同时加载占用较大）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（模特照、服装图；部分入口需在 LoadImage 上右键打开遮罩编辑器手动涂抹）",
+  "count": "至少 2 张，工作流中约 8 个 LoadImage 输入口"
+ },
+ "output": {
+  "type": "图像（换装结果、中间预览、高清成片）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ControlNetApply.strength",
+   "how_to_tune": "默认 0.35；值越大结构越贴近原图，适合保持衣服版型，但可能压制生成自由度；边缘生硬时可降到 0.25-0.30。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 30；FLUX 对提示词/参考图的引导强度，建议 25-40；蒙版重绘区域细节不足时提高，整体失衡时降低。"
+  },
+  {
+   "param": "UltimateSDUpscale.scale",
+   "how_to_tune": "默认 2，即两倍放大；显存不足可降为 1.5，追求更精细可到 4；过大会产生过度锐化或伪影。"
+  },
+  {
+   "param": "SUPIR_sample.steps/cfg",
+   "how_to_tune": "默认 steps=35、cfg=7，适合高质量修复；出现涂抹/塑料感时可降低 cfg，出现细节不足时可适当增加 steps。"
+  },
+  {
+   "param": "LoraLoader.strength",
+   "how_to_tune": "默认 0.2；该 LoRA 用于“女生加细节”，过高会产生不自然皮肤质感，建议 0.1-0.3 微调。"
+  },
+  {
+   "param": "SegmentAnythingUltra V2.threshold",
+   "how_to_tune": "默认 0.3；自动分割时目标区域漏检就调低阈值，背景被误选就调高，需结合 prompt 文本一起调整。"
+  }
+ ],
+ "summary_text": "能力:上传模特照与目标服装图，通过蒙版区域重绘生成换装结果（标签为“换装”，工作流内有“涂抹模特/服装”“上传服装白底图”等明确提示）。；能力:换装后可对局部做“修复裁剪”、ControlNet Tile 细化，并经 UltimateSDUpscale（4x-UltraSharp）与 SUPIR 做两级高清放大/修复，输出高分辨率成片。；能力:同一工作流包含“纯手动遮罩版”和“SegmentAnything 自动分割版”两条路径，可用 Fast Groups Muter 切换，并用 Image Comparer 对比结果。；特色:双版本结构：一个分支靠用户手动在 MaskEditor 里涂抹，另一个分支用 SegmentAnythingUltra V2 自动生成蒙版，Fast Groups Muter 控制启停，Image Comparer 做前后对比。；特色:多段式局部重绘：先用 InpaintCrop 从大图中裁出待修复区域，FLUX Fill 只在该区域采样，再由 InpaintStitch 拼回原图，配合 DifferentialDiffusion 限制重绘范围，避免全图风格漂移。；特色:图像条件化换装：用 CLIPVision/SigLIP 编码服装图或模特图后，通过 StyleModelApply (flux1-redux-dev) 注入到 FLUX 的 conditioning，使换装主要依靠参考图而非文本提示词。；特色:后处理放大链路：在 FLUX 换装完成后，用 SD1.5 + ControlNet Tile 结合 4x-UltraSharp 做结构保持放大，再接 SUPIR 做真实感修复；整体形成“生成→局部修复→放大→恢复”的多级管线。；电商服装/模特图换装预览、服装上身效果试穿、穿搭图重拍与后期、人像服装局部修复及高清化出片。；这个工作流似乎把“换装”拆成两个大阶段：先用 FLUX.1-Fill 在蒙版区域生成新服装，并用 Redux 图像参考条件尽量保持服装和模特特征；随后用 SD1.5 + ControlNet Tile、UltimateSDUpscale 和 SUPIR 对生成结果做放大与画质恢复，弥补 FLUX 直接输出在细节/分辨率上的不足。同时提供手动和自动两种蒙版路径，可能是为了兼顾精确控制和批量自动化场景；多个 PreviewImage 与 Image Comparer 则用于在不同阶段人工检查换装质量。"
+}

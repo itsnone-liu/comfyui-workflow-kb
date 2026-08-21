@@ -1,0 +1,74 @@
+{
+ "domain": [
+  "老照片修复",
+  "图像高清化",
+  "图像增强"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张老照片，经过 FLUX Kontext 生成式修复和 4x-UltraSharp 放大，输出高清修复结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ImageTile+/ImageUntile+ 将输入图像分块后依次修复，再从分块结果重组成完整图像。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Image Comparer 并排或叠加对比原图/放大图与修复结果，便于人工质检。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX (Kontext Pro) 生成式修复",
+  "Upscale-Hires 高清放大（4x-UltraSharp）",
+  "图像分块/解块处理（ImageTile+/ImageUntile+）"
+ ],
+ "special_features": [
+  {
+   "text": "分块修复流水线：先对输入图像做 2x2 分块，独立送入 FLUX Kontext 修复模块，再用 ImageUntile+ 拼接，以降低显存压力并保持局部细节。",
+   "kind": "fact"
+  },
+  {
+   "text": "双 SaveImage 输出路径：存在两个保存节点，可能分别保存放大前后或修复前后的图像，便于用户比较和挑选。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流将 FLUX Kontext 的生成式修复能力与 4x-UltraSharp 放大结合：先加载放大模型，再通过 RH_ComfyFluxKontext 执行 prompt 指定的修复任务。为了兼顾高分辨率细节与硬件显存限制，设计者将图像分块后分别修复再拼接，并加入 Image Comparer 做修复效果对比。总体结构精简，重点是让老旧照片在恢复内容的同时获得更高清晰度。",
+ "use_case": "适用于老照片的数字化修复与高清化，例如家庭旧照片翻新、历史影像资料增强、破损照片的内容补全和去噪。",
+ "limitation": "依赖外部自定义节点 RH_ComfyFluxKontext，需要 Flux Kontext Pro 模型权重；放大依赖 4x-UltraSharp.pth 文件；分块数需手动保持一致，否则 Untile 失败；输入图片尺寸过大/过小时效果可能不稳定；Prompt 和 match_input_image 参数需按旧照片类型调整。",
+ "dependencies": [
+  "4x-UltraSharp.pth",
+  "flux-kontext-pro 模型",
+  "RH_ComfyFluxKontext 节点",
+  "rgthree 节点",
+  "ImageTile+/ImageUntile+ 自定义节点"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_ComfyFluxKontext > prompt",
+   "how_to_tune": "默认 'Restoration of old photo'；可改为更具体的描述，如 '修复划痕、去噪、增强肤色'，以获得更符合目标的修复风格。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext > match_input_image",
+   "how_to_tune": "控制生成与输入图的相似度：数值越高越保真，越低则自由发挥。老照片细节缺损时可适当调低。"
+  },
+  {
+   "param": "ImageTile+ > rows/cols (2,2)",
+   "how_to_tune": "分块的行列数；显存不足时增加分块数，但要保证与 ImageUntile+ 的 rows/cols 设置一致。"
+  },
+  {
+   "param": "UpscaleModelLoader 模型选择",
+   "how_to_tune": "切换 4x-UltraSharp.pth 为其他放大模型（如 RealESRGAN_x4）可改变锐化/噪点倾向。"
+  }
+ ],
+ "summary_text": "能力:上传单张老照片，经过 FLUX Kontext 生成式修复和 4x-UltraSharp 放大，输出高清修复结果。；能力:使用 ImageTile+/ImageUntile+ 将输入图像分块后依次修复，再从分块结果重组成完整图像。；能力:使用 Image Comparer 并排或叠加对比原图/放大图与修复结果，便于人工质检。；特色:分块修复流水线：先对输入图像做 2x2 分块，独立送入 FLUX Kontext 修复模块，再用 ImageUntile+ 拼接，以降低显存压力并保持局部细节。；特色:双 SaveImage 输出路径：存在两个保存节点，可能分别保存放大前后或修复前后的图像，便于用户比较和挑选。；适用于老照片的数字化修复与高清化，例如家庭旧照片翻新、历史影像资料增强、破损照片的内容补全和去噪。；该工作流将 FLUX Kontext 的生成式修复能力与 4x-UltraSharp 放大结合：先加载放大模型，再通过 RH_ComfyFluxKontext 执行 prompt 指定的修复任务。为了兼顾高分辨率细节与硬件显存限制，设计者将图像分块后分别修复再拼接，并加入 Image Comparer 做修复效果对比。总体结构精简，重点是让老旧照片在恢复内容的同时获得更高清晰度。"
+}

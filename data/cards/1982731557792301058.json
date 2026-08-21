@@ -1,0 +1,68 @@
+{
+ "domain": [
+  "视频处理",
+  "抠图"
+ ],
+ "capabilities": [
+  {
+   "text": "上传视频后，自动下载 BiRefNet 模型并对每一帧执行抠图，端到端输出透明背景视频（支持 MOV 格式）",
+   "kind": "fact"
+  },
+  {
+   "text": "同时输出对应的蒙版视频，便于后期合成、调色或继续编辑",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "BiRefNet 抠图 (RembgByBiRefNet)",
+  "视频拆帧 (GetVideoComponents)",
+  "视频合成 (VHS_VideoCombine)",
+  "MaskToImage 将蒙版转为可视化图像"
+ ],
+ "special_features": [
+  {
+   "text": "双输出分支：一路用 VHS_VideoCombine 输出透明前景视频，另一路经 MaskToImage 后输出蒙版视频",
+   "kind": "inference"
+  },
+  {
+   "text": "集成 AutoDownloadBiRefNetModel，可自动下载指定 BiRefNet 模型权重，免去手动配置模型路径",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流将视频拆分成帧序列后利用 BiRefNet 逐帧抠图，再通过 VHS_VideoCombine 重新合成视频；双输出设计让用户同时获得透明前景和蒙版，可能为了兼顾直接使用与后期二次编辑的需求，同时自动下载模型降低了使用门槛。",
+ "use_case": "适用于视频人物/物体一键抠像，输出透明 MOV 或蒙版用于剪辑、合成、背景替换等场景。",
+ "limitation": "依赖 AutoDownloadBiRefNetModel 联网下载模型；透明背景输出仅支持 MOV 等支持 Alpha 通道的格式；逐帧抠图对长视频耗时较久；输入视频格式受 LoadVideo(IN) 支持范围限制。",
+ "dependencies": [
+  "ComfyUI-VideoHelperSuite (VHS_VideoCombine)",
+  "BiRefNet 模型（自动下载）",
+  "LoadVideo 节点（需支持输入视频格式）"
+ ],
+ "geek_rating": 2,
+ "input": {
+  "type": "视频文件",
+  "count": "1"
+ },
+ "output": {
+  "type": "透明背景视频 + 蒙版视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "VHS_VideoCombine.format",
+   "how_to_tune": "要输出透明背景时选择 MOV 等支持 Alpha 的格式；否则可用 mp4。"
+  },
+  {
+   "param": "VHS_VideoCombine.crf",
+   "how_to_tune": "控制视频压缩质量，数值越低质量越高，文件越大；一般 18-23 为常用范围。"
+  },
+  {
+   "param": "VHS_VideoCombine.filename_prefix",
+   "how_to_tune": "设置输出文件名前缀，便于区分多个视频结果。"
+  },
+  {
+   "param": "AutoDownloadBiRefNetModel",
+   "how_to_tune": "Model 参数选择 'General' 适合通用场景，'AUTO' 会自动选择合适的模型。"
+  }
+ ],
+ "summary_text": "能力:上传视频后，自动下载 BiRefNet 模型并对每一帧执行抠图，端到端输出透明背景视频（支持 MOV 格式）；能力:同时输出对应的蒙版视频，便于后期合成、调色或继续编辑；特色:双输出分支：一路用 VHS_VideoCombine 输出透明前景视频，另一路经 MaskToImage 后输出蒙版视频；特色:集成 AutoDownloadBiRefNetModel，可自动下载指定 BiRefNet 模型权重，免去手动配置模型路径；适用于视频人物/物体一键抠像，输出透明 MOV 或蒙版用于剪辑、合成、背景替换等场景。；该工作流将视频拆分成帧序列后利用 BiRefNet 逐帧抠图，再通过 VHS_VideoCombine 重新合成视频；双输出设计让用户同时获得透明前景和蒙版，可能为了兼顾直接使用与后期二次编辑的需求，同时自动下载模型降低了使用门槛。"
+}

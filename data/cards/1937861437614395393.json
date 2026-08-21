@@ -1,0 +1,51 @@
+{
+ "domain": [
+  "老照片修复"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张老照片（LoadImage），自动完成破损修复并还原真实色彩，最终保存修复结果（SaveImage）",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX"
+ ],
+ "special_features": [],
+ "design_intent": "工作流以极简的4节点端到端完成老照片修复：LoadImage 输入图片，DeepTranslatorTextNode 将中文/任意语言提示词自动翻译为英文，RH_ComfyFluxKontext 作为核心生成模型（flux-kontext-pro）对照片进行去旧、补全和色彩还原，最后 SaveImage 输出。这种设计可能旨在降低用户使用门槛，让非技术用户无需处理复杂节点，直接上传照片即可获得修复效果。",
+ "use_case": "用于老旧照片的修复、去划痕、补全缺失部分及还原真实色彩，尤其适合家庭老照片数字化后的色彩增强。",
+ "limitation": "依赖自定义节点 DeepTranslatorTextNode 和 RH_ComfyFluxKontext，需要加载 FLUX Kontext Pro 模型；仅支持单张图像输入；工作流节点少，缺乏精细的局部修复参数控制，不适合对特定瑕疵做精准调整。",
+ "dependencies": [
+  "DeepTranslatorTextNode",
+  "RH_ComfyFluxKontext",
+  "FLUX Kontext Pro 模型"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_ComfyFluxKontext.model",
+   "how_to_tune": "当前选用 flux-kontext-pro，可尝试其他版本以获得不同修复风格"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 提示词",
+   "how_to_tune": "建议使用描述性中文提示词（如 '真实色彩，高清，自然肤色'），节点会自动翻译为英文"
+  },
+  {
+   "param": "RH_ComfyFluxKontext.match_input_image",
+   "how_to_tune": "设为 match_input_image 以保持输入照片的身份/构图一致性"
+  },
+  {
+   "param": "DeepTranslatorTextNode 目标语言",
+   "how_to_tune": "保持 english，确保 FLUX 模型能正确理解提示词"
+  }
+ ],
+ "summary_text": "能力:上传单张老照片（LoadImage），自动完成破损修复并还原真实色彩，最终保存修复结果（SaveImage）；用于老旧照片的修复、去划痕、补全缺失部分及还原真实色彩，尤其适合家庭老照片数字化后的色彩增强。；工作流以极简的4节点端到端完成老照片修复：LoadImage 输入图片，DeepTranslatorTextNode 将中文/任意语言提示词自动翻译为英文，RH_ComfyFluxKontext 作为核心生成模型（flux-kontext-pro）对照片进行去旧、补全和色彩还原，最后 SaveImage 输出。这种设计可能旨在降低用户使用门槛，让非技术用户无需处理复杂节点，直接上传照片即可获得修复效果。"
+}

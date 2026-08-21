@@ -1,0 +1,26 @@
+# secrets & platform state
+.rh_token
+.rh_apikey
+.rh_sandbox_wf
+.rh_profile/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# heavy data: re-collectable via collector/*.py
+data/raw/
+data/models/
+downloads/
+probe_out/
+
+# experiment/composition OUTPUT images (configs & verdicts live in data/kb.db)
+data/experiments/*/
+data/composed/*/
+# keep the assembled workflow definitions themselves
+!data/composed/*.api.json
+
+# scratch
+_*.py
+_tmp*

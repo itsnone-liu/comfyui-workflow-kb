@@ -1,0 +1,894 @@
+{
+ "node_count": 20,
+ "link_count": 25,
+ "active_node_count": 20,
+ "nodes": [
+  {
+   "id": 7,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "text, watermark,"
+   ],
+   "in_links": [
+    116
+   ],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 15,
+   "type": "InpaintStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bislerp"
+   ],
+   "in_links": [
+    17,
+    90
+   ],
+   "out_links": [
+    142
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Masterpiece, High Definition,perfect hand,\n\n\n\n"
+   ],
+   "in_links": [
+    115,
+    121
+   ],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 19,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    115,
+    116
+   ]
+  },
+  {
+   "id": 53,
+   "type": "Joy_caption_two_load",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2"
+   ],
+   "in_links": [],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 28,
+   "type": "InpaintResize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bicubic",
+    "ensure minimum size",
+    1024,
+    1024,
+    1
+   ],
+   "in_links": [
+    99,
+    97
+   ],
+   "out_links": [
+    100,
+    101
+   ]
+  },
+  {
+   "id": 56,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    118
+   ],
+   "out_links": [
+    119
+   ]
+  },
+  {
+   "id": 20,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    29,
+    31
+   ]
+  },
+  {
+   "id": 10,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    20,
+    21,
+    31,
+    139,
+    138
+   ],
+   "out_links": [
+    118,
+    114,
+    137
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    120,
+    29
+   ],
+   "out_links": [
+    90
+   ]
+  },
+  {
+   "id": 18,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    117
+   ]
+  },
+  {
+   "id": 54,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "A close-up photograph of a young Asian woman with smooth, fair skin and long, dark brown hair. Her lips are painted a vibrant red, and she has a subtle, natural makeup look. She is delicately touching her lips with her manicured fingers, which have a French manicure with nude polish and sharp, natural nails. She wears a white, sleeveless top, and the background is a soft, blurred gradient of white and grey. The image focuses on her serene facial expression and elegant hand gesture, emphasizing beauty and sophistication.",
+    "Photograph of an Asian woman with fair skin, red lipstick, and manicured nails touching her lips gently."
+   ],
+   "in_links": [
+    109
+   ],
+   "out_links": [
+    121
+   ]
+  },
+  {
+   "id": 55,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    691172499951121,
+    "randomize",
+    20,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    117,
+    119,
+    114,
+    137
+   ],
+   "out_links": [
+    120
+   ]
+  },
+  {
+   "id": 52,
+   "type": "Joy_caption_two",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Descriptive",
+    "very short",
+    false
+   ],
+   "in_links": [
+    107,
+    106
+   ],
+   "out_links": [
+    109
+   ]
+  },
+  {
+   "id": 11,
+   "type": "InpaintCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    1,
+    true,
+    16,
+    false,
+    16,
+    "bicubic",
+    "ranged size",
+    1024,
+    1024,
+    1,
+    512,
+    512,
+    768,
+    768,
+    32
+   ],
+   "in_links": [
+    100,
+    101
+   ],
+   "out_links": [
+    17,
+    139,
+    138
+   ]
+  },
+  {
+   "id": 71,
+   "type": "Note",
+   "category": "utility",
+   "title": "Runninghub新用户注册福利",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH币可以免费生成好多图片视频哦！"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 57,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "联系我：15884404095（微信同号）。\n1.定制专属工作流（根据具体需求制作，更实用）\n2.定制Lora（让生成图片的模特、产品、风格等保持一致性）\n3.获取AI绘画视频教程（可在下面的更多中找到教程工作流）\n4.定制AI视频（根据具体需求生成特定视频）\n更多类似实用工作流可在个人主页获取，https://www.runninghub.cn/user-center/1913519461180006401/userPost?inviteCode=pyespett\nrunninghub新用户注册福利，打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH币可以免费生成好多图片视频哦！\n有其他需求可以评论出来，会根据需求考虑更新\n\n功能：手部修复\n使用方法：在绿色框处上传要修复的手部图片，涂抹需要修复的手部区域，右上角点击开始生图就可以了。\n如果修复的图片细节不完美可以在更多工作流使用高清放大，完善细节。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 45,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0fadb979d1cee7206f6f44d78c017cf98096e7b1ec75636727fa1a7bcd16566c.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    99,
+    106
+   ]
+  },
+  {
+   "id": 21,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0fadb979d1cee7206f6f44d78c017cf98096e7b1ec75636727fa1a7bcd16566c.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    97
+   ]
+  },
+  {
+   "id": 72,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    142
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 55,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 10,
+   "to_node": 55,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 56,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 11,
+   "to_node": 10,
+   "type": "MASK"
+  },
+  {
+   "from_node": 11,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 15,
+   "type": "STITCH"
+  },
+  {
+   "from_node": 15,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 18,
+   "to_node": 55,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 19,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 19,
+   "to_node": 7,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 20,
+   "to_node": 10,
+   "type": "VAE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 28,
+   "type": "MASK"
+  },
+  {
+   "from_node": 28,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 11,
+   "type": "MASK"
+  },
+  {
+   "from_node": 45,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 52,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 52,
+   "to_node": 54,
+   "type": "STRING"
+  },
+  {
+   "from_node": 53,
+   "to_node": 52,
+   "type": "JoyTwoPipeline"
+  },
+  {
+   "from_node": 54,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 55,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 56,
+   "to_node": 55,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 10,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 8,
+   "to_node": 15,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "conditioning": 2,
+  "utility": 10,
+  "clip": 1,
+  "vae": 2,
+  "checkpoint_loader": 1,
+  "sampler": 1,
+  "image_io": 3
+ },
+ "assets": [
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 20,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 18,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 54,
+ "structure_hash": "a2a939bfb465cce1",
+ "param_face": [
+  {
+   "node_id": 7,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "text, watermark,"
+  },
+  {
+   "node_id": 15,
+   "node_type": "InpaintStitch",
+   "widget_index": 0,
+   "value_preview": "bislerp"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "Masterpiece, High Definition,perfect hand,\n\n\n\n"
+  },
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 19,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 53,
+   "node_type": "Joy_caption_two_load",
+   "widget_index": 0,
+   "value_preview": "Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2"
+  },
+  {
+   "node_id": 28,
+   "node_type": "InpaintResize",
+   "widget_index": 0,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 28,
+   "node_type": "InpaintResize",
+   "widget_index": 1,
+   "value_preview": "ensure minimum size"
+  },
+  {
+   "node_id": 28,
+   "node_type": "InpaintResize",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 28,
+   "node_type": "InpaintResize",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 28,
+   "node_type": "InpaintResize",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 56,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 20,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 10,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 18,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 54,
+   "node_type": "ShowText|pysssss",
+   "widget_index": 1,
+   "value_preview": "Photograph of an Asian woman with fair skin, red lipstick, a"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "691172499951121"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 55,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 52,
+   "node_type": "Joy_caption_two",
+   "widget_index": 0,
+   "value_preview": "Descriptive"
+  },
+  {
+   "node_id": 52,
+   "node_type": "Joy_caption_two",
+   "widget_index": 1,
+   "value_preview": "very short"
+  },
+  {
+   "node_id": 52,
+   "node_type": "Joy_caption_two",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 3,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 6,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 7,
+   "value_preview": "ranged size"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 8,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 9,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 11,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 12,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 13,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 14,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 11,
+   "node_type": "InpaintCrop",
+   "widget_index": 15,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 71,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH"
+  },
+  {
+   "node_id": 45,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "0fadb979d1cee7206f6f44d78c017cf98096e7b1ec75636727fa1a7bcd16"
+  },
+  {
+   "node_id": 45,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 45,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "0fadb979d1cee7206f6f44d78c017cf98096e7b1ec75636727fa1a7bcd16"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 72,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  }
+ ]
+}

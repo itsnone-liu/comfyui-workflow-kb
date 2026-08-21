@@ -1,0 +1,112 @@
+{
+ "domain": [
+  "图像生成",
+  "角色表演",
+  "图生图"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人物照片和一张姿势参考图，生成保持原人物面部特征与背景一致、但动作姿态变为参考图姿势的新图像。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过文本提示词进一步控制编辑效果，提示词中明确指定了图1为人物参考、图2为姿势参考，并保持一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "可对生成结果进行4倍超分辨率放大（Upscale-Hires），输出高清版本。",
+   "kind": "fact"
+  },
+  {
+   "text": "可同时预览多张对比图，便于评估姿势迁移的效果。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit-PLUS 图像编辑模型",
+  "SDPoseOOD 全身姿势提取",
+  "YOLOv8 person segmentation 人物分割",
+  "GroundingDINO 目标检测/定位",
+  "Qwen-Image-Lightning LoRA 加速采样",
+  "Upscale-Hires 4x 超分",
+  "CFGNorm 与 ModelSamplingAuraFlow 参数调制",
+  "阶段性两段式采样"
+ ],
+ "special_features": [
+  {
+   "text": "采用两阶段采样策略：第一个 KSampler 使用8步（配合Lightning LoRA）生成初步结果，第二个 KSampler 使用4步、固定种子进行精细优化/重绘，构成先粗后精的生成回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "组合使用 YOLO 人物分割、SDPoseOOD 姿态提取和 GroundingDINO，从输入图中提取结构化语义信息，为 Qwen-Image-Edit-PLUS 提供多维条件。",
+   "kind": "fact"
+  },
+  {
+   "text": "图像预处理链包含 Aspect Ratio 计算、Resize（pad to ratio 4:3）、ScaleBy 0.5、ScaleToTotalPixels 等多重尺寸归一化，确保输入满足模型要求。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ImageComparer (rgthree) 将多路结果并排对比，形成人工质检回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "VAE 编码采用 VAEEncodeTiled（tile 512x512）处理大图，避免显存溢出，属于工程化细节。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在解决角色姿势迁移任务，核心思路是利用 Qwen-Image-Edit-PLUS 的多模态编辑能力，同时通过 SDPose 和 YOLO 等工具显式注入姿势与人物语义信息，以增强模型对姿势的遵循度。两段式采样配合 Lightning LoRA 先快速生成再精修，降低单次采样压力；后置 4x 超分提升最终分辨率。多重图像归一化与 tile VAE 可能用于适配不同输入尺寸并控制显存占用。整体设计兼顾生成质量与资源效率，并保留了可视化对比接口。",
+ "use_case": "适用于电商模特换姿势、角色动作迁移、照片重演等场景，用户只需提供一张包含人物的图片和一张目标姿势示意图，即可获得身份与背景保持、动作改变的新图像。",
+ "limitation": "依赖较多自定义节点和模型文件：需要 Qwen_Image_Edit_PLUS_FP8.safetensors、qwen_2.5_vl_7b_fp8_scaled.safetensors、qwen_image_vae.safetensors、person_yolov8m-seg.pt、GroundingDINO_SwinT_OGC、SDPoseOOD 节点及 4xNomos8kSCHAT-L.pth 等。输入图像可能需要符合 4:3 比例或经过自动裁剪；姿势参考图质量影响最终效果。",
+ "dependencies": [
+  "Qwen_Image_Edit_PLUS_FP8.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "Qwen-Image-Lightning-8steps-V1.1.safetensors",
+  "person_yolov8m-seg.pt",
+  "GroundingDINO_SwinT_OGC",
+  "4xNomos8kSCHAT-L.pth",
+  "SDPoseOOD 自定义节点",
+  "TextEncodeQwenImageEditPlus 自定义节点",
+  "rgthree Image Comparer 节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（人物照片 + 姿势参考图）",
+  "count": 2
+ },
+ "output": {
+  "type": "图像（姿势迁移结果 + 放大版本 + 对比预览）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler（第一个）steps=8, cfg=1, sampler=euler, scheduler=simple",
+   "how_to_tune": "8步配合Lightning LoRA可快速出图；若质量不足可适当增加步数（如10-12），但会影响速度。"
+  },
+  {
+   "param": "KSampler（第二个）steps=4, cfg=1, seed=fixed",
+   "how_to_tune": "固定种子用于稳定二次细化；若与原图差异过小，可尝试提高cfg或更换scheduler。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift=3.0",
+   "how_to_tune": "该参数影响采样时的噪声分布，值越大越偏向全局结构，越小越偏向细节纹理；对Qwen-Image系列可尝试2.5-3.5范围。"
+  },
+  {
+   "param": "ImageResize pad to ratio=4:3, reduce size only",
+   "how_to_tune": "控制输入图像比例适配；若输入是竖图，可改比例如3:4以避免过多裁剪。"
+  },
+  {
+   "param": "ImageScaleToTotalPixels scale=1.0",
+   "how_to_tune": "控制送入模型的总像素；若显存不足可降低到0.8，若需更高细节可提升到1.2。"
+  },
+  {
+   "param": "SDPoseOODProcessor confidence=0.2, bbox_threshold=1, mask_threshold=1",
+   "how_to_tune": "降低confidence可检测更多关键点，但可能引入噪声；误检时提高阈值。"
+  },
+  {
+   "param": "VAEEncodeTiled tile_size=512",
+   "how_to_tune": "显存不足时减小到256或384；显存充足时增大到640或768可减少tile接缝。"
+  }
+ ],
+ "summary_text": "能力:上传一张人物照片和一张姿势参考图，生成保持原人物面部特征与背景一致、但动作姿态变为参考图姿势的新图像。；能力:支持通过文本提示词进一步控制编辑效果，提示词中明确指定了图1为人物参考、图2为姿势参考，并保持一致性。；能力:可对生成结果进行4倍超分辨率放大（Upscale-Hires），输出高清版本。；能力:可同时预览多张对比图，便于评估姿势迁移的效果。；特色:采用两阶段采样策略：第一个 KSampler 使用8步（配合Lightning LoRA）生成初步结果，第二个 KSampler 使用4步、固定种子进行精细优化/重绘，构成先粗后精的生成回路。；特色:组合使用 YOLO 人物分割、SDPoseOOD 姿态提取和 GroundingDINO，从输入图中提取结构化语义信息，为 Qwen-Image-Edit-PLUS 提供多维条件。；特色:图像预处理链包含 Aspect Ratio 计算、Resize（pad to ratio 4:3）、ScaleBy 0.5、ScaleToTotalPixels 等多重尺寸归一化，确保输入满足模型要求。；特色:使用 ImageComparer (rgthree) 将多路结果并排对比，形成人工质检回路。；特色:VAE 编码采用 VAEEncodeTiled（tile 512x512）处理大图，避免显存溢出，属于工程化细节。；适用于电商模特换姿势、角色动作迁移、照片重演等场景，用户只需提供一张包含人物的图片和一张目标姿势示意图，即可获得身份与背景保持、动作改变的新图像。；该工作流旨在解决角色姿势迁移任务，核心思路是利用 Qwen-Image-Edit-PLUS 的多模态编辑能力，同时通过 SDPose 和 YOLO 等工具显式注入姿势与人物语义信息，以增强模型对姿势的遵循度。两段式采样配合 Lightning LoRA 先快速生成再精修，降低单次采样压力；后置 4x 超分提升最终分辨率。多重图像归一化与 tile VAE 可能用于适配不同输入尺寸并控制显存占用。整体设计兼顾生成质量与资源效率，并保留了可视化对比接口。"
+}

@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "图像生成",
+  "多视图生成",
+  "角色一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物照，生成保持原姿态的背面、左侧、右侧三个视角的图像；提示词明确写入“根据图片，保持原姿态”等指令，由 TextEncodeQwenImageEditPlus 驱动 Qwen-Image-Edit 完成编辑生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "把原始图与三个视角图通过 ImageConcatFromBatch 拼接成一张 2048px 宽的多视图对比图，便于直接查看和交付。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 Lightning 4-step LoRA 与 KSampler（4步/euler/simple）实现快速低步数出图，适合预览和批量尝试。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit",
+  "FLUX 系参考潜变量注入（FluxKontextMultiReferenceLatentMethod）",
+  "多视图提示词批量管理（KepStringList）",
+  "TextEncodeQwenImageEditPlus 编辑提示词编码",
+  "Lightning 4-step LoRA 加速采样",
+  "CFGNorm + ModelSamplingAuraFlow 采样校准",
+  "ImageConcatFromBatch / ImageListToBatch+ 图像批次拼接"
+ ],
+ "special_features": [
+  {
+   "text": "流程中同时存在两个 FluxKontextMultiReferenceLatentMethod，且均设置为 index_timestep_zero；可能用于把原始人物图作为多参考潜变量注入生成过程，以增强身份与姿态保持。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ModelSamplingAuraFlow(shift=3.1) + CFGNorm(=1) + KSampler(CFG=1, steps=4) 这套紧密配合的采样组合，配合 Lightning LoRA，属于针对 flow-matching 模型的特殊调参结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "KepStringList 中集中写了背视图、左视图、右视图三条中文提示词，并用空字符串占位，便于统一调整多视角文案。",
+   "kind": "fact"
+  },
+  {
+   "text": "ImageConcatFromBatch widgets=['4','False','2048'] 表明按 4 张图拼接为宽 2048px 的多视图网格，最终由一个 SaveImage(OUT) 输出。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "设计者似乎想用单张人物照片快速扩展出背、左、右三个视角，形成类似“三视图”的输出。为了在保持原姿态和身份的同时控制成本，工作流选择 Qwen-Image-Edit 作为编辑底座，并叠加 Lightning 4-step LoRA、CFG=1、CFGNorm=1、ModelSamplingAuraFlow(3.1) 来压低采样步数、提高速度；两个 FluxKontextMultiReferenceLatentMethod 可能用于将原图作为参考潜变量注入，减少视角旋转时的人物漂移。最后用 ImageConcatFromBatch 把多视角结果拼成一张宽图，方便直接对比和验收。",
+ "use_case": "电商/动漫角色多视图试稿、游戏原画三视图快速预览、人像摄影姿态参考，以及对同一角色快速补出背/左/右视角的批量出图场景。",
+ "limitation": "依赖 Qwen-Image-Edit 系列模型文件（bf16 checkpoint、7B VL CLIP、专用 VAE）和多个自定义节点，若缺少 FluxKontext、CFGNorm、ModelSamplingAuraFlow、KepStringList、ImageConcatFromBatch 等会直接报错；对显存和参数加载速度有一定要求。输入被设计为单张人物照，输出视角固定为背面/左侧/右侧，若要增加视角需同步修改 KepStringList 和拼接数量；另外“保持原姿态”是语义级控制，不是严格三维几何一致。",
+ "dependencies": [
+  "模型文件：qwen_image_edit_2511_bf16.safetensors",
+  "CLIP：qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "VAE：qwen_image_vae.safetensors",
+  "LoRA：Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors",
+  "自定义节点：FluxKontextMultiReferenceLatentMethod（FluxKontext）",
+  "自定义节点：CFGNorm",
+  "自定义节点：ModelSamplingAuraFlow",
+  "自定义节点：TextEncodeQwenImageEditPlus",
+  "自定义节点：KepStringList",
+  "自定义节点：ImageListToBatch+ / ImageConcatFromBatch"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图片（LoadImage）",
+  "count": "1"
+ },
+ "output": {
+  "type": "image（两个 SaveImage OUT，其中可能包含多视图拼接图与中间图）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前为 4，与 Lightning 4-step LoRA 匹配；若移除 LoRA，建议回到 20-30，否则画面可能不完整。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "当前为 1，并配合 CFGNorm=1 使用；不要单独大幅调高，否则可能色彩/对比度失衡。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow.shift",
+   "how_to_tune": "当前为 3.1，控制 flow 时间步偏移；生成不稳定或构图崩坏时可尝试 2.5-4.0 微调。"
+  },
+  {
+   "param": "ImageScaleToTotalPixels",
+   "how_to_tune": "当前约 1.5 百万像素；分辨率越高细节越多，但显存与耗时增加，全身/多人图可适当提高。"
+  },
+  {
+   "param": "ImageConcatFromBatch.count",
+   "how_to_tune": "当前为 4，对应原图+背/左/右三个视角；若改变视角数量，需要同步调整该参数。"
+  },
+  {
+   "param": "KepStringList 提示词",
+   "how_to_tune": "三条视角提示词可自由替换；建议保留“保持原姿态”等约束词，以维持一致性。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物照，生成保持原姿态的背面、左侧、右侧三个视角的图像；提示词明确写入“根据图片，保持原姿态”等指令，由 TextEncodeQwenImageEditPlus 驱动 Qwen-Image-Edit 完成编辑生成。；能力:把原始图与三个视角图通过 ImageConcatFromBatch 拼接成一张 2048px 宽的多视图对比图，便于直接查看和交付。；能力:通过 Lightning 4-step LoRA 与 KSampler（4步/euler/simple）实现快速低步数出图，适合预览和批量尝试。；特色:流程中同时存在两个 FluxKontextMultiReferenceLatentMethod，且均设置为 index_timestep_zero；可能用于把原始人物图作为多参考潜变量注入生成过程，以增强身份与姿态保持。；特色:使用 ModelSamplingAuraFlow(shift=3.1) + CFGNorm(=1) + KSampler(CFG=1, steps=4) 这套紧密配合的采样组合，配合 Lightning LoRA，属于针对 flow-matching 模型的特殊调参结构。；特色:KepStringList 中集中写了背视图、左视图、右视图三条中文提示词，并用空字符串占位，便于统一调整多视角文案。；特色:ImageConcatFromBatch widgets=['4','False','2048'] 表明按 4 张图拼接为宽 2048px 的多视图网格，最终由一个 SaveImage(OUT) 输出。；电商/动漫角色多视图试稿、游戏原画三视图快速预览、人像摄影姿态参考，以及对同一角色快速补出背/左/右视角的批量出图场景。；设计者似乎想用单张人物照片快速扩展出背、左、右三个视角，形成类似“三视图”的输出。为了在保持原姿态和身份的同时控制成本，工作流选择 Qwen-Image-Edit 作为编辑底座，并叠加 Lightning 4-step LoRA、CFG=1、CFGNorm=1、ModelSamplingAuraFlow(3.1) 来压低采样步数、提高速度；两个 FluxKontextMultiReferenceLatentMethod 可能用于将原图作为参考潜变量注入，减少视角旋转时的人物漂移。最后用 ImageConcatFromBatch 把多视角结果拼成一张宽图，方便直接对比和验收。"
+}

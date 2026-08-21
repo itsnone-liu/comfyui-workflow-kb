@@ -1,0 +1,932 @@
+{
+ "node_count": 20,
+ "link_count": 24,
+ "active_node_count": 20,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_turbo_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 4,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    458318106166034,
+    "randomize",
+    10,
+    1,
+    "euler",
+    "sgm_uniform",
+    1
+   ],
+   "in_links": [
+    13,
+    3,
+    5,
+    6
+   ],
+   "out_links": [
+    7,
+    26
+   ]
+  },
+  {
+   "id": 6,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    4
+   ],
+   "out_links": [
+    5
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    28,
+    31
+   ]
+  },
+  {
+   "id": 13,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Electric Blue Style（电蓝风格）.safetensors",
+    1
+   ],
+   "in_links": [
+    12
+   ],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_4b.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    2,
+    22,
+    24
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    8,
+    19
+   ]
+  },
+  {
+   "id": 7,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1536,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 21,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    " 这是一张蓝色调的插画，画面中有一个穿着白色运动服的人物，衣服上有法拉利logo。人物的头发凌乱，背景是深蓝色，整体色调偏冷。"
+   ],
+   "in_links": [
+    24,
+    32
+   ],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+   ],
+   "in_links": [
+    22
+   ],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 15,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    15
+   ]
+  },
+  {
+   "id": 18,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    20
+   ],
+   "out_links": []
+  },
+  {
+   "id": 16,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    578566555107124,
+    "randomize",
+    10,
+    1,
+    "euler",
+    "sgm_uniform",
+    0.30000000000000004
+   ],
+   "in_links": [
+    15,
+    16,
+    21,
+    27
+   ],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 17,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    18,
+    19
+   ],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 22,
+   "type": "Latent Noise Injection",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.6000000000000001
+   ],
+   "in_links": [
+    26
+   ],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "男孩身着黄色上衣，外搭蓝色背带，围着橙色围巾，黑色短发随水流扬起，仰头注视前方，双手向前伸展，掌心向上。前方有一条橙白相间的大型锦鲤，鱼身舒展，鱼鳍飘动，眼睛圆睁。周围散落着透明气泡，水流从男孩身边和锦鲤周围涌动，另有几条橙色小锦鲤环绕游动，背景是深浅不一的蓝色水域。"
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    3,
+    4,
+    16
+   ]
+  },
+  {
+   "id": 23,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    28
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "llama_cpp_model_loader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemma-4-26B-A4B-it-heretic.q8_0.gguf",
+    "gemma-4-26B-A4B-it-heretic-mmproj.q8_0.gguf",
+    "Gemma4",
+    8192,
+    -1,
+    0,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 26,
+   "type": "llama_cpp_parameters",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    30,
+    0.9,
+    0.05,
+    1,
+    0.8,
+    1,
+    0,
+    1,
+    0,
+    0.1,
+    5,
+    -1
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 24,
+   "type": "llama_cpp_instruct_adv",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Empty - Nothing",
+    "不要展示思考过程，用中文描述这张图片",
+    "详细描述200-300字",
+    "one by one",
+    24,
+    256,
+    16785927786453,
+    "randomize",
+    false,
+    false
+   ],
+   "in_links": [
+    29,
+    30,
+    31
+   ],
+   "out_links": [
+    32
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 13,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 4,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 15,
+   "to_node": 16,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 16,
+   "to_node": 17,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 18,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 19,
+   "to_node": 16,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 19,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 2,
+   "to_node": 21,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 2,
+   "to_node": 5,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 22,
+   "to_node": 16,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 24,
+   "to_node": 21,
+   "type": "STRING"
+  },
+  {
+   "from_node": 25,
+   "to_node": 24,
+   "type": "LLAMACPPMODEL"
+  },
+  {
+   "from_node": 26,
+   "to_node": 24,
+   "type": "LLAMACPPARAMS"
+  },
+  {
+   "from_node": 3,
+   "to_node": 17,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 22,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 4,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 5,
+   "to_node": 16,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 4,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 6,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 4,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 4,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 23,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 24,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "checkpoint_loader": 2,
+  "sampler": 2,
+  "utility": 6,
+  "vae": 3,
+  "lora": 1,
+  "clip": 1,
+  "conditioning": 3,
+  "image_io": 2
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Electric Blue Style（电蓝风格）.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "z_image_bf16.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 60,
+ "structure_hash": "310ccb80738ff22b",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "458318106166034"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 4,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Electric Blue Style（电蓝风格）.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 7,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 7,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 21,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": " 这是一张蓝色调的插画，画面中有一个穿着白色运动服的人物，衣服上有法拉利logo。人物的头发凌乱，背景是深蓝色，整体色调"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "z_image_bf16.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 18,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "578566555107124"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Latent Noise Injection",
+   "widget_index": 0,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 0,
+   "value_preview": "gemma-4-26B-A4B-it-heretic.q8_0.gguf"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 1,
+   "value_preview": "gemma-4-26B-A4B-it-heretic-mmproj.q8_0.gguf"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 2,
+   "value_preview": "Gemma4"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 3,
+   "value_preview": "8192"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 4,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 25,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 1,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 3,
+   "value_preview": "0.05"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 5,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 10,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 11,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 26,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 12,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 0,
+   "value_preview": "Empty - Nothing"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 1,
+   "value_preview": "不要展示思考过程，用中文描述这张图片"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 2,
+   "value_preview": "详细描述200-300字"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 3,
+   "value_preview": "one by one"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 4,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 5,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 6,
+   "value_preview": "16785927786453"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 24,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 9,
+   "value_preview": "False"
+  }
+ ]
+}

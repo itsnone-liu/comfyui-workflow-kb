@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "图像生成",
+  "创意形象",
+  "风格化人像"
+ ],
+ "capabilities": [
+  {
+   "text": "输入两张真人面部照片，端到端生成一张 1024×768 的双人卡通/3D 风格合影，并通过 PuLID-Flux 同时保留两张脸的身份特征。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动用视觉描述模型分析两张输入人物的服装、发型、颜色等外观，再翻译成英文提示词，组合成“画面左侧/画面右侧”的人物描述，降低手写 prompt 成本。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 CR Image Input Switch 切换左右两张人脸对应的输入，可在不重连节点的情况下交换两个身份在画面中的左右位置。",
+   "kind": "inference"
+  },
+  {
+   "text": "提供多路 PreviewImage 与 SEGSPreview，便于在生成前/后查看构图、mask 和人物分区效果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID-Flux 身份一致性保持",
+  "FLUX.1-dev 文生图",
+  "FLUX-3D-GPT-4o LoRA 卡通/3D 风格迁移",
+  "RH_Captioner + RH_Translator 自动提示词生成与翻译",
+  "Florence2 caption_to_phrase_ground + Mask/SEGS 区域分割与构图辅助",
+  "TeaCache 采样加速",
+  "SamplerCustomAdvanced + Euler + 28 steps 采样"
+ ],
+ "special_features": [
+  {
+   "text": "存在两个 ApplyPulidFlux 节点，推断为串联/并行注入同一个 FLUX conditioning，使同一张画面同时携带两张人脸的身份信息，这是双人合影的关键设计。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 RH_Captioner 对两张参考图分别生成外观描述，再经 RH_Translator 翻译并拼入“左侧/右侧”文本，属于自动 VLM 描述替代手工写 prompt 的做法。",
+   "kind": "fact"
+  },
+  {
+   "text": "含有 Florence2 目标定位 + MaskToSEGS + SEGSPreview + SolidMask/MaskComposite/InvertMask 分区调试链，疑似用于把画面划分为左右区域或给双人布局提供 mask 参考。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ApplyTeaCachePatch、FLUX fp8 模型与 FluxForwardOverrider/FluxGuidance，在保持生成质量的同时降低显存与采样开销。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流面向“两张真人脸合成一张卡通双人合照”的任务。作者选用 FLUX.1-dev 作为高语义理解底模，用 PuLID-Flux 把两张人脸分别注入到同一个 conditioning 中以稳定身份，再用 FLUX-3D-GPT-4o LoRA 统一转换为 3D 卡通风格。由于 FLUX 通常对英文 prompt 更敏感，工作流用 RH_Captioner + RH_Translator 自动把输入照片的外观细节翻译成英文并写到左右人物描述里；同时用 Florence2/mask/SEGS 链处理人物区域，可能用于约束“一左一右”的构图，或仅作为可视化调试。整体像是“身份保持 + 风格迁移 + 位置控制 + 采样加速”的组合思路。",
+ "use_case": "适合把两张单人照片合成为一张同风格卡通双人合影，用于头像、纪念图、互动剧情图或创意社交媒体内容。",
+ "limitation": "需要完整 FLUX.1-dev fp8、T5/CLIP、PuLID-Flux v0.9.1、FLUX-3D-GPT-4o LoRA、Florence2 等模型资产；依赖 RunningHub 的 RH_Captioner/RH_Translator 及多个自定义节点，脱离平台环境需自行补齐。FLUX 与 PuLID 对显存要求高；输入人脸的角度、清晰度和光线会显著影响身份保持与成图质量。若 mask/SEGS 链确实参与布局，参考图的人物位置也会影响最终构图。",
+ "dependencies": [
+  "flux1-dev-fp8.safetensors",
+  "pulid_flux_v0.9.1.safetensors",
+  "FLUX-3D-GPT-4o-v1.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "clip_l.safetensors",
+  "ae.safetensors",
+  "CogFlorence-2.2-Large (fp16)",
+  "自定义节点：ComfyUI-PuLID-Flux、ComfyUI-Florence2、ComfyUI-Impact-Pack、ComfyUI-Comfyroll、ComfyUI-TeaCache、ComfyUI-Custom-Scripts、ComfyUI-Flux、RunningHub RH_Captioner/RH_Translator"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "3 个 LoadImage(IN) 输入接口（通常为 2 张人脸照 + 1 张参考/备用图）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyPulidFlux 的 weight/start/end",
+   "how_to_tune": "weight=1 身份感较强；如果脸部崩坏或过度拟合，可降低到 0.5-0.8；start/end 控制身份注入在采样步数中的生效区间。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 3.5 是 FLUX 常见值；提示词服从不够可调高到 4-5，想要更自然可略降到 2.5-3。"
+  },
+  {
+   "param": "LoraLoader 的 strength (FLUX-3D-GPT-4o-v1)",
+   "how_to_tune": "strength=1 时卡通/3D 风格最强；想保留更多真实脸部质地可降到 0.6-0.8；过高可能导致手部和细节变形。"
+  },
+  {
+   "param": "BasicScheduler 的 steps/sampler",
+   "how_to_tune": "当前 28 步 + euler；追求速度可降到 20 步并开 TeaCache；追求细节可升到 30-40 步，但要接受更慢。"
+  },
+  {
+   "param": "ApplyTeaCachePatch 阈值",
+   "how_to_tune": "当前 0.4；阈值越大跳过/缓存越多、速度越快，但可能出现细节丢失；质量优先时用 0.2-0.3。"
+  },
+  {
+   "param": "CR Image Input Switch 的 switch 值",
+   "how_to_tune": "如果发现左侧/右侧人脸弄反，直接切换该值，不必重新加载图片或改连线。"
+  }
+ ],
+ "summary_text": "能力:输入两张真人面部照片，端到端生成一张 1024×768 的双人卡通/3D 风格合影，并通过 PuLID-Flux 同时保留两张脸的身份特征。；能力:自动用视觉描述模型分析两张输入人物的服装、发型、颜色等外观，再翻译成英文提示词，组合成“画面左侧/画面右侧”的人物描述，降低手写 prompt 成本。；能力:通过 CR Image Input Switch 切换左右两张人脸对应的输入，可在不重连节点的情况下交换两个身份在画面中的左右位置。；能力:提供多路 PreviewImage 与 SEGSPreview，便于在生成前/后查看构图、mask 和人物分区效果。；特色:存在两个 ApplyPulidFlux 节点，推断为串联/并行注入同一个 FLUX conditioning，使同一张画面同时携带两张人脸的身份信息，这是双人合影的关键设计。；特色:使用 RH_Captioner 对两张参考图分别生成外观描述，再经 RH_Translator 翻译并拼入“左侧/右侧”文本，属于自动 VLM 描述替代手工写 prompt 的做法。；特色:含有 Florence2 目标定位 + MaskToSEGS + SEGSPreview + SolidMask/MaskComposite/InvertMask 分区调试链，疑似用于把画面划分为左右区域或给双人布局提供 mask 参考。；特色:使用 ApplyTeaCachePatch、FLUX fp8 模型与 FluxForwardOverrider/FluxGuidance，在保持生成质量的同时降低显存与采样开销。；适合把两张单人照片合成为一张同风格卡通双人合影，用于头像、纪念图、互动剧情图或创意社交媒体内容。；该工作流面向“两张真人脸合成一张卡通双人合照”的任务。作者选用 FLUX.1-dev 作为高语义理解底模，用 PuLID-Flux 把两张人脸分别注入到同一个 conditioning 中以稳定身份，再用 FLUX-3D-GPT-4o LoRA 统一转换为 3D 卡通风格。由于 FLUX 通常对英文 prompt 更敏感，工作流用 RH_Captioner + RH_Translator 自动把输入照片的外观细节翻译成英文并写到左右人物描述里；同时用 Florence2/mask/SEGS 链处理人物区域，可能用于约束“一左一右”的构图，或仅作为可视化调试。整体像是“身份保持 + 风格迁移 + 位置控制 + 采样加速”的组合思路。"
+}

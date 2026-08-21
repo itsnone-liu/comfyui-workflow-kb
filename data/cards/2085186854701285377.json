@@ -1,0 +1,102 @@
+{
+ "domain": [
+  "图生视频",
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传多张参考图（角色、服装、姿态等）并输入文本提示词，端到端生成与参考图保持高一致性的短视频片段",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过 LoRA 叠加（hmmotion 动作、私处内容、turbo 加速）对生成结果进行定制",
+   "kind": "fact"
+  },
+  {
+   "text": "模型内置音频 VAE 与解码节点，可能具备生成配音/音效的能力，但流程中未显式保存音频文件",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMaxH3ReferenceToVideo 多图参考条件生成",
+  "Qwen3VL 大语言模型作为高遵循度文本编码器",
+  "LoRA 模型多重叠加（动作、内容、蒸馏加速）",
+  "视频 VAE 解码 + 音频 VAE 解码",
+  "ResMultistep 采样器 + BasicScheduler（simple / 20 steps / CFG≈0.98）",
+  "SageAttention 注意力优化（PathchSageAttentionKJ）"
+ ],
+ "special_features": [
+  {
+   "text": "8 个 LoadImage 输入节点，支持多参考图联合控制，远超常规单图参考",
+   "kind": "fact"
+  },
+  {
+   "text": "ComfyMathExpression 动态计算视频总帧数：max(5, round(a * 24)) + ...，其中 a 由 PrimitiveFloat 提供，实现按秒数换算帧数",
+   "kind": "fact"
+  },
+  {
+   "text": "Fast Groups Bypasser (rgthree) + DuckHideNode + easy clearCacheAll 组合，提供模块化旁路与缓存管理，方便快速切换工作流分支",
+   "kind": "fact"
+  },
+  {
+   "text": "包含私处内容定制 LoRA（minimax_私处模型_0.2版本.safetensors），明确面向成人向定制生成",
+   "kind": "fact"
+  },
+  {
+   "text": "StringFunction|pysssss 与 PrimitiveStringMultiline 组合，将参考图描述模板化（如 image0: 女子穿丝袜前 / image1: 丝袜），自动拼装提示词",
+   "kind": "fact"
+  },
+  {
+   "text": "EasyCache 节点预加载模型，降低重复生成时的加载开销",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流以 MiniMax H3 为核心，通过多图 Reference 节点将多张参考图的视觉信息注入到生成过程中，同时用 Qwen3VL 高遵循度 CLIP 提升文本指令的跟随能力。LoRA 叠加机制让用户可以独立控制动作、内容风格和采样加速，而动态帧数计算与模块旁路设计则提高了灵活性与显存适应性。整体设计似乎为了在保证高一致性的前提下，支持成人向或特定角色/服装的定制视频生成，同时兼顾运行效率。",
+ "use_case": "适用于需要多张参考图约束的视频生成场景，例如角色一致性视频、换装/脱衣视频、多视角产品展示、成人向定制内容等",
+ "limitation": "依赖 MiniMax H3 系列模型文件及多个 LoRA，需额外下载；需要安装 rgthree、pysssss、KJNodes 等自定义节点；显存占用高，生成帧数受限于 GPU 内存；输入图像需匹配所选分辨率；私处模型等 LoRA 可能违反平台内容政策",
+ "dependencies": [
+  "checkpoint: minimax_h3_ref2va_bf16.safetensors",
+  "clip: qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "vae: minimax_h3_video_vae_fp16.safetensors",
+  "vae: minimax_h3_audio_vae_fp32.safetensors",
+  "lora: hmmotion_minimax-h3_epoch120.safetensors",
+  "lora: minimax_私处模型_0.2版本.safetensors",
+  "lora: minimax_h3_turbo_6step_ema.safetensors",
+  "自定义节点: rgthree (Fast Groups Bypasser)",
+  "自定义节点: pysssss (StringFunction)",
+  "自定义节点: KJNodes (PathchSageAttentionKJ?)",
+  "自定义节点: EasyCache / DuckHideNode / HAIGC_SaveImagesToZip"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "多张参考图（8 路 LoadImage）+ 文本提示词（PrimitiveStringMultiline）",
+  "count": "8 图像 + 1 文本"
+ },
+ "output": {
+  "type": "视频帧（SaveImage / HAIGC_SaveImagesToZip + CreateVideo），可能含音频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ReferenceToVideo 的 width/height/frame_count",
+   "how_to_tune": "示例中为 1344x768、124 帧。分辨率越大细节越好但显存占用剧增；帧数可根据视频时长与帧率换算，建议先用小分辨率测试，确认真实需求后逐步增大。"
+  },
+  {
+   "param": "BasicScheduler 的 steps 和 cfg",
+   "how_to_tune": "当前 steps=20, cfg≈0.98。对于 H3 模型，steps 在 15-25 之间平衡质量与速度；CFG 接近 1.0 时更强调遵循提示，若出现过度饱和可降至 0.9。"
+  },
+  {
+   "param": "LoraLoaderModelOnly_Any 的 strength",
+   "how_to_tune": "hmmotion 和私处模型默认强度 1.0，turbo 模型 1.0。强度过高可能导致画面失真或局部过拟合，建议从 0.5 起步微调；turbo 模型强度宜保持 1 以发挥加速效果。"
+  },
+  {
+   "param": "PrimitiveFloat（变量 a）",
+   "how_to_tune": "该值被 ComfyMathExpression 用于计算总帧数，当前 a=5 对应约 5 秒视频（5*24=120 帧，最终可能加偏移）。增大 a 可延长视频秒数，但需权衡显存和时长。"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "固定 seed 可复现结果；切换 randomize 可增加多样性。若发现生成结果不稳定，可尝试固定 seed 并微调其他参数。"
+  }
+ ],
+ "summary_text": "能力:上传多张参考图（角色、服装、姿态等）并输入文本提示词，端到端生成与参考图保持高一致性的短视频片段；能力:支持通过 LoRA 叠加（hmmotion 动作、私处内容、turbo 加速）对生成结果进行定制；能力:模型内置音频 VAE 与解码节点，可能具备生成配音/音效的能力，但流程中未显式保存音频文件；特色:8 个 LoadImage 输入节点，支持多参考图联合控制，远超常规单图参考；特色:ComfyMathExpression 动态计算视频总帧数：max(5, round(a * 24)) + ...，其中 a 由 PrimitiveFloat 提供，实现按秒数换算帧数；特色:Fast Groups Bypasser (rgthree) + DuckHideNode + easy clearCacheAll 组合，提供模块化旁路与缓存管理，方便快速切换工作流分支；特色:包含私处内容定制 LoRA（minimax_私处模型_0.2版本.safetensors），明确面向成人向定制生成；特色:StringFunction|pysssss 与 PrimitiveStringMultiline 组合，将参考图描述模板化（如 image0: 女子穿丝袜前 / image1: 丝袜），自动拼装提示词；特色:EasyCache 节点预加载模型，降低重复生成时的加载开销；适用于需要多张参考图约束的视频生成场景，例如角色一致性视频、换装/脱衣视频、多视角产品展示、成人向定制内容等；该工作流以 MiniMax H3 为核心，通过多图 Reference 节点将多张参考图的视觉信息注入到生成过程中，同时用 Qwen3VL 高遵循度 CLIP 提升文本指令的跟随能力。LoRA 叠加机制让用户可以独立控制动作、内容风格和采样加速，而动态帧数计算与模块旁路设计则提高了灵活性与显存适应性。整体设计似乎为了在保证高一致性的前提下，支持成人向或特定角色/服装的定制视频生成，同时兼顾运行效率。"
+}

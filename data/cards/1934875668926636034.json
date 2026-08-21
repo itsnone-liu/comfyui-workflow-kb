@@ -1,0 +1,90 @@
+{
+ "domain": [
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张图片，自动为其右侧区域添加掩码并进行局部重绘，输出修改后的完整图片",
+   "kind": "fact"
+  },
+  {
+   "text": "借助 ACE++ LoRA 使重绘区域的主体身份与原图保持一致",
+   "kind": "inference"
+  },
+  {
+   "text": "借助 FLUX Redux 进行图像风格引导（可能基于同一张输入图或额外参考图）",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Fill",
+  "ACE++ LoRA",
+  "FLUX Redux",
+  "Differential Diffusion",
+  "InpaintModelConditioning",
+  "IC-LoRA",
+  "局部重绘"
+ ],
+ "special_features": [
+  {
+   "text": "AddMaskForICLora 以参数 patch_right 自动生成右侧区域掩码，无需手动绘制蒙版",
+   "kind": "fact"
+  },
+  {
+   "text": "DifferentialDiffusion 与 InpaintModelConditioning 配合 FLUX.1 Fill 模型，实现高质量局部重绘",
+   "kind": "fact"
+  },
+  {
+   "text": "YC_LG_Redux + StyleModelLoader(flux1-redux-dev) 构成 Redux 风格控制分支",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 LoadImage 节点加载同一默认图片，可能用于不同路径（如主体参考与分辨率统一）",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流将 FLUX.1 Fill 的局部重绘能力与 ACE++ LoRA 的主体保持结合，并利用 Redux 风格模型和 DifferentialDiffusion 提升重绘区域的真实感。通过 AddMaskForICLora 自动创建掩码，避免手动蒙版步骤，使局部重绘更高效、更可控；整体设计可能面向电商模特图或创意图片编辑，希望在局部修改时保持人物身份和整体风格一致。",
+ "use_case": "适用于对图片特定区域（如右侧）进行局部重绘的场景，例如替换服装、修改背景、修复瑕疵时，同时要求主体身份或风格保持一致。",
+ "limitation": "依赖大型 FLUX 模型和多个自定义节点，需要较高显存并手动下载模型文件；两个 LoadImage 节点默认载入同一张图片，若需不同参考图需手动切换；输出为图像，无自动质量评估环节。",
+ "dependencies": [
+  "模型文件: F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+  "模型文件: flux1-redux-dev.safetensors",
+  "模型文件: t5xxl_fp8_e4m3fn.safetensors, clip_l.safetensors, sigclip_vision_patch14_384.safetensors, ae.safetensors",
+  "Lora 模型: ACE++ comfyui_subject_lora16_comfyui_subject.safetensors",
+  "自定义节点: LayerUtility (ImageScaleByAspectRatio V2)",
+  "自定义节点: AddMaskForICLora",
+  "自定义节点: DifferentialDiffusion, FluxGuidance, InpaintModelConditioning, MaskPreview+, YC_LG_Redux"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "2（默认同一张图片，可分别加载不同图片）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/seed",
+   "how_to_tune": "设为 randomize 可每次生成不同结果；固定 seed 可复现同一效果。"
+  },
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "默认 20 步，画质不足时可增至 30，速度敏感时可降至 15。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "默认 1.33 接近 FLUX 推荐值，通常无需调整；增大可能改变对比度，过小可能欠约束。"
+  },
+  {
+   "param": "FluxGuidance/guidance",
+   "how_to_tune": "默认 30，数值越高越贴合文本提示，但可能提高饱和度；建议在 20-40 之间调节。"
+  },
+  {
+   "param": "AddMaskForICLora",
+   "how_to_tune": "patch_right 决定重绘区域方向，size=1024 控制掩码尺寸，数值越大重绘区域越宽，可按需调整。"
+  }
+ ],
+ "summary_text": "能力:上传一张图片，自动为其右侧区域添加掩码并进行局部重绘，输出修改后的完整图片；能力:借助 ACE++ LoRA 使重绘区域的主体身份与原图保持一致；能力:借助 FLUX Redux 进行图像风格引导（可能基于同一张输入图或额外参考图）；特色:AddMaskForICLora 以参数 patch_right 自动生成右侧区域掩码，无需手动绘制蒙版；特色:DifferentialDiffusion 与 InpaintModelConditioning 配合 FLUX.1 Fill 模型，实现高质量局部重绘；特色:YC_LG_Redux + StyleModelLoader(flux1-redux-dev) 构成 Redux 风格控制分支；特色:两个 LoadImage 节点加载同一默认图片，可能用于不同路径（如主体参考与分辨率统一）；适用于对图片特定区域（如右侧）进行局部重绘的场景，例如替换服装、修改背景、修复瑕疵时，同时要求主体身份或风格保持一致。；该工作流将 FLUX.1 Fill 的局部重绘能力与 ACE++ LoRA 的主体保持结合，并利用 Redux 风格模型和 DifferentialDiffusion 提升重绘区域的真实感。通过 AddMaskForICLora 自动创建掩码，避免手动蒙版步骤，使局部重绘更高效、更可控；整体设计可能面向电商模特图或创意图片编辑，希望在局部修改时保持人物身份和整体风格一致。"
+}

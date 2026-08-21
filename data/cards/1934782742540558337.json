@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "图像生成",
+  "图像修复",
+  "超分辨率"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张人像图→自动检测并修复面部细节→再检测并修复手部细节→SUPIR 2倍放大输出高清图",
+   "kind": "fact"
+  },
+  {
+   "text": "端到端完成人像照片的细节修复与高清化增强，特别针对AI生成图中常见的脸崩和手崩问题",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FaceDetailer",
+  "FLUX",
+  "SDXL",
+  "Upscale-Hires",
+  "Flux Turbo LoRA",
+  "YOLO 检测器 (face/hand)",
+  "SUPIR 超分",
+  "局部重绘"
+ ],
+ "special_features": [
+  {
+   "text": "串联两段 FaceDetailer：先用 face_yolov8m 检测面部修复，再用 hand_yolov8n 检测手部修复，形成多段式局部重绘管线",
+   "kind": "fact"
+  },
+  {
+   "text": "没有独立的 KSampler 主采样节点，生成和修复全部由 FaceDetailer 内嵌采样器完成，配合 ConditioningZeroOut 与 FluxGuidance 控制文本引导",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Flux Turbo LoRA 加速 FLUX 采样，降低推理步数，提升速度",
+   "kind": "fact"
+  },
+  {
+   "text": "最终用 SUPIR_Upscale 配合 Juggernaut-XL-v9 做扩散式超分，获得高分辨率输出",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整体设计聚焦于修复 AI 生成人像中最容易崩坏的面部和手部。通过两个独立YOLO检测器分别定位、两块 FaceDetailer 串联重绘，避免相互干扰；同时用 FLUX Turbo LoRA 加速采样，最后用 SUPIR 放大，兼顾速度与画质。可能的目标是在一次端到端流程中解决局部低质量和整体分辨率不足两个问题。",
+ "use_case": "适用于人像照片的细节修复与高清放大，尤其可处理 AI 绘图中面部变形、手部畸形等常见瑕疵，也可用于老照片增强和人像精修。",
+ "limitation": "依赖多个自定义节点和模型文件；必须输入已有图像，不能从纯文本直接生成；运行显存占用高，且模型文件体积大。",
+ "dependencies": [
+  "flux1-dev-fp8.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.safetensors",
+  "Flux Turbo Lora加速模型_StarAi_Flux Turbo Lora.safetensors",
+  "SUPIR-v0F_fp16.safetensors",
+  "Juggernaut-XL-v9.safetensors",
+  "bbox/face_yolov8m.pt",
+  "bbox/hand_yolov8n.pt",
+  "FaceDetailer (Impact Pack)",
+  "SUPIR_Upscale",
+  "UltralyticsDetectorProvider",
+  "DF_Image_scale_to_side",
+  "FluxGuidance",
+  "SDXLPromptStyler"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像",
+  "count": 1
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前为 0.8，增大可增强 FLUX Turbo 加速效果，但过大会破坏内容一致性；建议在 0.6-1.0 之间调整"
+  },
+  {
+   "param": "FaceDetailer 重绘强度（widgets 第6项）",
+   "how_to_tune": "当前为 8（可能表示 0.8），值越高重绘幅度越大，适合严重崩坏修复；值越低越保留原始细节，防止原有特征被改变"
+  },
+  {
+   "param": "SUPIR_Upscale scale",
+   "how_to_tune": "当前为 2 倍放大，降低倍数可节省显存和耗时；调大至 3-4 可获得更高分辨率，但可能引入伪影且需要更多显存"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前为 12.9，数值越高图像越贴近提示词，低则更自由；可根据需要尝试 8-20 范围"
+  }
+ ],
+ "summary_text": "能力:输入单张人像图→自动检测并修复面部细节→再检测并修复手部细节→SUPIR 2倍放大输出高清图；能力:端到端完成人像照片的细节修复与高清化增强，特别针对AI生成图中常见的脸崩和手崩问题；特色:串联两段 FaceDetailer：先用 face_yolov8m 检测面部修复，再用 hand_yolov8n 检测手部修复，形成多段式局部重绘管线；特色:没有独立的 KSampler 主采样节点，生成和修复全部由 FaceDetailer 内嵌采样器完成，配合 ConditioningZeroOut 与 FluxGuidance 控制文本引导；特色:使用 Flux Turbo LoRA 加速 FLUX 采样，降低推理步数，提升速度；特色:最终用 SUPIR_Upscale 配合 Juggernaut-XL-v9 做扩散式超分，获得高分辨率输出；适用于人像照片的细节修复与高清放大，尤其可处理 AI 绘图中面部变形、手部畸形等常见瑕疵，也可用于老照片增强和人像精修。；整体设计聚焦于修复 AI 生成人像中最容易崩坏的面部和手部。通过两个独立YOLO检测器分别定位、两块 FaceDetailer 串联重绘，避免相互干扰；同时用 FLUX Turbo LoRA 加速采样，最后用 SUPIR 放大，兼顾速度与画质。可能的目标是在一次端到端流程中解决局部低质量和整体分辨率不足两个问题。"
+}

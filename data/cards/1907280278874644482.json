@@ -1,0 +1,123 @@
+{
+ "domain": [
+  "风格迁移",
+  "图生图",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人物/人脸照片，在保留该人脸身份特征的同时，生成 SDXL 可爱儿童插画/漫画风格图像（PuLID + 双 LoRA 风格叠加）。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动用 RH_Captioner 为输入图生成详细描述，并通过 SeargePromptCombiner 拼上“Cute style, 5-year-old...”风格前缀，实现免手写提示词的一键风格化。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 BRIA_RMBG 与 u2net_human_seg 做背景/人像分割，再经图层混合将主体合成到纯色背景上，可以去除原图杂乱背景。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持一次生成 4 张候选图（EmptyLatentImage batch=4），配合 Seed Generator randomize 快速挑选构图。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出前有多个 PreviewImage 预览和 SaveImage 保存，并且用 easy promptReplace 去除 Watermark, frown 等不期望元素，结果更干净。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID 身份保持（ApplyPulid + ip-adapter_pulid_sdxl_fp16）",
+  "SDXL 采样生成（KSampler: dpmpp_sde / karras）",
+  "LoRA 风格微调叠加（夸张表情漫画.safetensors + Picture_儿童插画绘本_v1.0.safetensors）",
+  "CLIP 文本编码与调整（CLIPSetLastLayer=-2）",
+  "自动提示词生成（RH_Captioner）与提示词拼接/替换（SeargePromptCombiner / easy promptReplace）",
+  "前景分割与抠图（BRIA_RMBG、RemBGSession+ u2net_human_seg）",
+  "图像预处理与后处理（ImageScaleToMegapixels、LoadAndResizeImage、ImageDesaturate+、ImageRemoveBackground+）",
+  "图层混合合成（LayerUtility: ImageBlendAdvance V2、MergeLayers、NewLayer）",
+  "批量生成与随机种子（EmptyLatentImage batch=4、Seed Generator）",
+  "全局广播/变量传递式布线（Anything Everywhere、Prompts Everywhere、SetNode/GetNode）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式预处理管线：输入图先用背景移除/人像分割提取主体，再经过缩放、去色/去背景等处理，最终把重绘结果与纯色背景/图层做混合；这种“先抠图-再生成-后合成”的流程比直接图生图更可控。",
+   "kind": "inference"
+  },
+  {
+   "text": "大量使用 Anything Everywhere 与 Prompts Everywhere，把未显式连线的前置输出自动广播到同类输入，减少高密度边数；属于高级工作流整理技巧。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 GetImageSizeAndCount、GetNode、SetNode、SeargeIntegerConstant 构建“全局变量”通道，把 width/height/rescaled image/Model-Lora 等值跨分支传递，使采样尺寸/模型选择不依赖固定连线。",
+   "kind": "inference"
+  },
+  {
+   "text": "提示词质量控制回路：RH_Captioner 生成描述 → SeargePromptCombiner 拼接风格 → easy promptReplace 擦除负面词（Watermark, frown）→ ShowText 可视化最终提示词；形成可追溯的提示词流水线。",
+   "kind": "fact"
+  },
+  {
+   "text": "在流程中安排了两个 easy cleanGpuUsed 节点，可能是为了在抠图、PuLID 与采样阶段之间手动回收显存，避免 SDXL 大图批量生成时 OOM。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流的目标是把真实人脸照片“流水线式”地变成儿童插画/漫画风格头像。它先用抠图和缩放把输入照片统一成干净的主体图像，再用 PuLID 锁定人脸身份，并通过两个 LoRA 与 RH_Captioner 自动提示词控制绘画风格；最后通过图层混合把生成结果贴到纯色背景上并保存。大量使用全局广播、SetNode/GetNode 变量传递，可能是为了在复杂节点图中避免重复连线，并把预处理分支得到的尺寸/图像信息复用到采样与后处理分支，整体看起来是一个偏极客的图生图模板。",
+ "use_case": "适合将普通人物照片快速转换为可爱儿童插画/绘本角色头像；也适合使用者替换其中的风格 LoRA（如换成其他画风）或修改风格前缀，复用于各类二次元/卡通风格化创作。",
+ "limitation": "需要额外下载 SDXL checkpoint、PuLID 相关模型和两个 LoRA，并安装 PuLID、LayerStyle、BRIA_RMBG、RemBG、RH_Captioner、SeargeSDXL、Easy-Use、Custom-Scripts、Anywhere 等自定义节点；SDXL + batch=4 的显存占用较高，PuLID 的 InsightFace 在 CPU 上也可能较慢；生成分辨率固定为 832x1128 等设定，可能不会一比一保留原图尺寸/构图。",
+ "dependencies": [
+  "Checkpoint: dreamshaperXL10_alpha2Xl10.safetensors",
+  "PuLID 辅助模型: ip-adapter_pulid_sdxl_fp16.safetensors",
+  "LoRA: 夸张表情漫画.safetensors",
+  "LoRA: Picture_儿童插画绘本_v1.0.safetensors",
+  "PuLID 配套权重（EVA-CLIP、InsightFace/buffalo_l 等）",
+  "自定义节点: ComfyUI-PuLID",
+  "自定义节点: ComfyUI_LayerStyle（LayerUtility: ImageBlendAdvance/MergeLayers/NewLayer/ColorImage）",
+  "自定义节点: BRIA_RMBG_Zho",
+  "自定义节点: rembg（RemBGSession+）",
+  "自定义节点: ComfyUI-RH_Captioner",
+  "自定义节点: ComfyUI-SeargeSDXL",
+  "自定义节点: ComfyUI-Easy-Use（easy cleanGpuUsed / easy promptReplace）",
+  "自定义节点: pysssss Custom-Scripts（ShowText|pysssss）",
+  "自定义节点: ComfyUI-Anywhere（Anything Everywhere/Prompts Everywhere）",
+  "自定义节点: ComfyUI_essentials / WAS Node Suite（GetImageSizeAndCount、ImageDesaturate+、ImageRemoveBackground+、LoadAndResizeImage 等）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图像（LoadImage(IN)）",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像（PreviewImage 预览 + SaveImage 保存 PNG）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyPulid — widget [style, 0.6, 0, 1]",
+   "how_to_tune": "0.6 是身份注入权重：生成的脸不像时可上调到 0.8~1.0；若风格被身份压制可降到 0.3~0.5。start=0 / end=1 表示全程注入，可试把 end 设为 0.7，让后半程主要由 LoRA 决定风格。"
+  },
+  {
+   "param": "LoraLoader 夸张表情漫画 — strength=0.35",
+   "how_to_tune": "负责漫画/夸张表情程度，可往 0.5~0.7 调以增强效果；但过高容易导致五官变形，需要配合 PuLID 身份权重一起微调。"
+  },
+  {
+   "param": "LoraLoader Picture_儿童插画绘本 — strength=0.6",
+   "how_to_tune": "控制儿童绘本质感/水彩感，一般 0.4~0.8 区间调整；越高风格越“绘本”，但会削弱真实人脸相似度。"
+  },
+  {
+   "param": "KSampler — cfg=6, steps=30, sampler=dpmpp_sde, scheduler=karras",
+   "how_to_tune": "cfg=6 在遵循提示词和艺术自由度之间较均衡；想更贴合提示词可提到 7~8，想更发散可降到 4~5。steps=30 足够出完整图，快速验证用 20，追求细节可加至 40。"
+  },
+  {
+   "param": "EmptyLatentImage — 832x1128, batch=4",
+   "how_to_tune": "控制生成尺寸和候选数量。batch=4 适合挑选构图，显存不足时改 1~2；分辨率可整体缩放，但注意不要离 SDXL 常见训练分布太远。"
+  },
+  {
+   "param": "CLIPSetLastLayer — -2",
+   "how_to_tune": "表示使用倒数第二层 CLIP 文本特征，语义更抽象。如果希望提示词更贴合细节可改 -1；如果希望更“自由/去字面化”可继续减到 -3 或更低。"
+  },
+  {
+   "param": "RH_Captioner — prompt 输入",
+   "how_to_tune": "可通过修改模板/最大长度影响自动描述精细度；描述越具体，最终生成场景和主体动作越贴近输入图。"
+  }
+ ],
+ "summary_text": "能力:上传一张人物/人脸照片，在保留该人脸身份特征的同时，生成 SDXL 可爱儿童插画/漫画风格图像（PuLID + 双 LoRA 风格叠加）。；能力:自动用 RH_Captioner 为输入图生成详细描述，并通过 SeargePromptCombiner 拼上“Cute style, 5-year-old...”风格前缀，实现免手写提示词的一键风格化。；能力:通过 BRIA_RMBG 与 u2net_human_seg 做背景/人像分割，再经图层混合将主体合成到纯色背景上，可以去除原图杂乱背景。；能力:支持一次生成 4 张候选图（EmptyLatentImage batch=4），配合 Seed Generator randomize 快速挑选构图。；能力:输出前有多个 PreviewImage 预览和 SaveImage 保存，并且用 easy promptReplace 去除 Watermark, frown 等不期望元素，结果更干净。；特色:多段式预处理管线：输入图先用背景移除/人像分割提取主体，再经过缩放、去色/去背景等处理，最终把重绘结果与纯色背景/图层做混合；这种“先抠图-再生成-后合成”的流程比直接图生图更可控。；特色:大量使用 Anything Everywhere 与 Prompts Everywhere，把未显式连线的前置输出自动广播到同类输入，减少高密度边数；属于高级工作流整理技巧。；特色:用 GetImageSizeAndCount、GetNode、SetNode、SeargeIntegerConstant 构建“全局变量”通道，把 width/height/rescaled image/Model-Lora 等值跨分支传递，使采样尺寸/模型选择不依赖固定连线。；特色:提示词质量控制回路：RH_Captioner 生成描述 → SeargePromptCombiner 拼接风格 → easy promptReplace 擦除负面词（Watermark, frown）→ ShowText 可视化最终提示词；形成可追溯的提示词流水线。；特色:在流程中安排了两个 easy cleanGpuUsed 节点，可能是为了在抠图、PuLID 与采样阶段之间手动回收显存，避免 SDXL 大图批量生成时 OOM。；适合将普通人物照片快速转换为可爱儿童插画/绘本角色头像；也适合使用者替换其中的风格 LoRA（如换成其他画风）或修改风格前缀，复用于各类二次元/卡通风格化创作。；该工作流的目标是把真实人脸照片“流水线式”地变成儿童插画/漫画风格头像。它先用抠图和缩放把输入照片统一成干净的主体图像，再用 PuLID 锁定人脸身份，并通过两个 LoRA 与 RH_Captioner 自动提示词控制绘画风格；最后通过图层混合把生成结果贴到纯色背景上并保存。大量使"
+}

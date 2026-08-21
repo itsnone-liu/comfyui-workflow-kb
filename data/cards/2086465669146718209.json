@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "数字人",
+  "音频驱动视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人物照片（参考图/首帧/尾帧）和一段语音音频，端到端生成对口型、保持身份特征的单人数字人视频",
+   "kind": "fact"
+  },
+  {
+   "text": "通过多幅图片输入组织参考图与首尾帧，结合 MiniMaxH3ReferenceToVideo 实现人物外貌锁定与口型同步",
+   "kind": "inference"
+  },
+  {
+   "text": "支持音频长度修剪、自动计算视频帧数，并输出带音频的 mp4 视频文件",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频生成模型（ref2va）",
+  "音频驱动视频生成 / Lip Sync（VRGDG_MiniMaxH3AudioDrive）",
+  "参考图到视频生成（Reference-to-Video）",
+  "首帧/尾帧控制（FL2VA）",
+  "T8 LoRA 4步加速采样",
+  "SageAttention 显存优化",
+  "动态帧数计算与音频修剪",
+  "Euler 采样器 + SamplerCustomAdvanced"
+ ],
+ "special_features": [
+  {
+   "text": "使用 4 个 LoadImage 节点分别加载参考图、首帧、尾帧等多路图像，输入组织灵活",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 LoraLoaderBypassModelOnly 加载 T8 turbo LoRA，将采样降至 8 步以内，大幅提速",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 MiniMaxH3MemoryEfficientSageAttentionPatch 补丁优化注意力计算，降低显存占用",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 TrimAudioDuration + AudioToFPS + ComfyMathExpression 实现音频长度→视频帧数的自动换算，避免手动计算",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 PrimitiveStringMultiline 构建包含首尾帧占位符的提示词模板，方便统一控制参考图逻辑",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 VRGDG_MiniMaxH3AudioDrive 音频驱动节点，可能是为了更精确的嘴型和情感同步",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流旨在构建一条端到端的单人对口型数字人生产流水线。作者利用 MiniMax H3 的参考图能力锁定人物身份，通过音频驱动节点实现口型同步，并采用 T8 LoRA 与 SageAttention 补丁降低训练/推理成本。动态帧数计算和音频修剪模块将音频时长与视频帧数自动对齐，简化了人工调参流程，适合单人短视频/虚拟主播等场景。",
+ "use_case": "单人口播视频制作、虚拟主播、老照片说话、影视人物对口型等",
+ "limitation": "依赖特定 MiniMax H3 模型文件（minimax_h3_ref2va_int8、qwen3vl_32b、audio_vae、video_vae）、T8 LoRA 及相关自定义节点（MiniMax H3 节点、VRGDG、VHS），需较高显存；输入要求为人物照片和音频，音频过长需提前裁剪；分辨率受模型限制（示例为 1344x768，2:3 比例）。",
+ "dependencies": [
+  "minimax_h3_ref2va_int8_convrot.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "T8-minimax_h3_turbo_4步加速_comfyui.safetensors",
+  "ComfyUI 自定义节点：MiniMax H3 系列、VRGDG、VHS_VideoCombine"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "多张人物图片 + 一段音频",
+  "count": "4 张图片 + 1 个音频文件"
+ },
+ "output": {
+  "type": "带音频的 mp4 视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler/steps",
+   "how_to_tune": "默认 8 步，T8 turbo LoRA 可在 4-8 步间调整；追求画质用 8，追求速度可降至 4"
+  },
+  {
+   "param": "LoraLoaderBypassModelOnly/strength",
+   "how_to_tune": "默认约 1.0，可尝试 0.8-1.0；太高可能导致细节失真，太低加速效果减弱"
+  },
+  {
+   "param": "AudioToFPS/fps",
+   "how_to_tune": "默认 24，可改为 25/30 以适应不同视频标准；但需注意与模型训练的帧率一致"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "示例选择 2:3 竖屏肖像比例，适合手机端；可换 16:9 横屏或 1:1，但需匹配模型支持范围"
+  },
+  {
+   "param": "TrimAudioDuration/start & duration",
+   "how_to_tune": "用于截取音频片段，控制生成视频内容长度；建议根据语音自然停顿设置 10-20 秒"
+  }
+ ],
+ "summary_text": "能力:上传人物照片（参考图/首帧/尾帧）和一段语音音频，端到端生成对口型、保持身份特征的单人数字人视频；能力:通过多幅图片输入组织参考图与首尾帧，结合 MiniMaxH3ReferenceToVideo 实现人物外貌锁定与口型同步；能力:支持音频长度修剪、自动计算视频帧数，并输出带音频的 mp4 视频文件；特色:使用 4 个 LoadImage 节点分别加载参考图、首帧、尾帧等多路图像，输入组织灵活；特色:集成 LoraLoaderBypassModelOnly 加载 T8 turbo LoRA，将采样降至 8 步以内，大幅提速；特色:使用 MiniMaxH3MemoryEfficientSageAttentionPatch 补丁优化注意力计算，降低显存占用；特色:通过 TrimAudioDuration + AudioToFPS + ComfyMathExpression 实现音频长度→视频帧数的自动换算，避免手动计算；特色:使用 PrimitiveStringMultiline 构建包含首尾帧占位符的提示词模板，方便统一控制参考图逻辑；特色:引入 VRGDG_MiniMaxH3AudioDrive 音频驱动节点，可能是为了更精确的嘴型和情感同步；单人口播视频制作、虚拟主播、老照片说话、影视人物对口型等；该工作流旨在构建一条端到端的单人对口型数字人生产流水线。作者利用 MiniMax H3 的参考图能力锁定人物身份，通过音频驱动节点实现口型同步，并采用 T8 LoRA 与 SageAttention 补丁降低训练/推理成本。动态帧数计算和音频修剪模块将音频时长与视频帧数自动对齐，简化了人工调参流程，适合单人短视频/虚拟主播等场景。"
+}

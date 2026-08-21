@@ -1,0 +1,111 @@
+{
+ "domain": [
+  "换装",
+  "AI 视频生成",
+  "虚拟试衣",
+  "人像后处理"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物照片，结合中文提示词（如“一个穿着华丽的红色汉服的中年女人在雪山之巅的半身”）生成一段 21 帧的 AI 换装短视频，在保持人物身份的同时更换服装与场景。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动去除原图背景（InSPyReNet Rembg），并用 GroundingDINO + SAM 分割原服装/人物，生成精细掩码，作为换装区域约束。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用低步数采样（6/8 step）与 CFG=1 配置，配合 LightX2V 蒸馏 LoRA 和 WanVideoNAG，显著降低视频生成耗时。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ColorMatch 色彩匹配和 4x-ClearRealityV1 超分辨率放大，对生成帧做色彩统一与画质增强，提高最终出图质量。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Upscale-Hires",
+  "Wan2.1 T2V/I2V 视频生成",
+  "VACE 视频编辑/换装",
+  "GroundingDINO + SAM 掩码分割",
+  "InSPyReNet 背景移除",
+  "LightX2V CFG 蒸馏 LoRA",
+  "WanVideoNAG 低步数采样",
+  "SageAttention 注意力加速",
+  "ColorMatch 颜色匹配",
+  "4x-ClearRealityV1 超分"
+ ],
+ "special_features": [
+  {
+   "text": "双 UNET 并行：同时加载 Wan2_1-T2V-14B 基础和 wan2.1_vace_14B 编辑模型，通过 WanVaceToVideo 把静态图像扩展为 21 帧视频，实现“文生视频+图像控制”双路径。",
+   "kind": "fact"
+  },
+  {
+   "text": "条件保护分支：使用 easy ifElse + easy isMaskEmpty 判断分割掩码是否为空，空掩码时走备用路径，避免因分割失败而中断整个流程。",
+   "kind": "inference"
+  },
+  {
+   "text": "三个 LoRA 混用：LightX2V T2V/I2V 蒸馏 LoRA 分别降低两个采样阶段的步数，FusionX LoRA 增强多条件融合，并加载到不同模型路径。",
+   "kind": "fact"
+  },
+  {
+   "text": "隐藏布线复用：通过 GetNode/SetNode + RHHiddenNodes 在图中传递 VAE、con+/con- 信号，减少长距离连线的冗余，提升工作流可读性。",
+   "kind": "inference"
+  },
+  {
+   "text": "后处理控制回路：背景移除 → 服装精细分割 → GrowMaskWithBlur 掩码扩展 → ColorMatch 校色 → 4x 放大，形成“分割-换装-校色-放大”的完整质量保障链。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流把“单图换装视频”拆解为图像分割、视频化、换装重绘、后处理增强四个阶段：先用 Rembg/SAM 把人和原服装精确分离，再用 Wan2.1 VACE 将静态照片变成 21 帧视频并按文本提示重绘服装；同时用 LightX2V 蒸馏 LoRA、NAG 和 SageAttention 压低采样成本，最后用 ColorMatch 和 4x 放大保证色彩与清晰度。整体似乎是一个“高速、低成本、可交互”的 AI 换装视频流水线。",
+ "use_case": "适合电商模特换装展示、虚拟试衣间、短视频创作者等场景：只需一张人物照片，就能快速生成多套服装/多个场景的短视频素材。",
+ "limitation": "严重依赖 Wan2.1-14B 大模型和 fp8 精度，显存需求高；需要安装大量自定义节点（如 WanVideoWrapper、Wan-VACE、LayerStyle、VideoHelperSuite、Easy-Use、rgthree 等）；输入为静态图片，人物姿态复杂、遮挡或多人时分割误差会被放大；输出的是图像序列而非 mp4 视频，需要自行合成；CFG=1 的蒸馏采样设定限制了采样器/模型组合的自由度。",
+ "dependencies": [
+  "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "wan2.1_vace_14B_fp16.safetensors",
+  "lightx2v_T2V_14B_cfg_step_distill_v2_lora_rank128_bf16.safetensors",
+  "lightx2v_I2V_14B_480p_cfg_step_distill_rank256_bf16.safetensors",
+  "Wan2.1_T2V_14B_FusionX_LoRA.safetensors",
+  "4x-ClearRealityV1.pth",
+  "wan_2.1_vae.safetensors",
+  "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "SAM ViT-H + GroundingDINO SwinB 模型（由 LayerMask 加载）",
+  "自定义节点：WanVideoWrapper、Wan-VACE、ComfyUI-Easy-Use、ComfyUI-LayerStyle、VideoHelperSuite、rgthree、SegmentAnything、ComfyUI-KJNodes（SageAttention）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人物照片（PNG/JPG），两个 LoadImage 默认共用同一图像",
+  "count": "1~2"
+ },
+ "output": {
+  "type": "21 帧图像序列（576x1024，可扩展），通过 SaveImage 保存",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps（第一采样器=8，第二采样器=6）",
+   "how_to_tune": "步数决定生成质量；可上调到 10/8 提升细节，下调到 6/4 加速；因使用 LightX2V 蒸馏，不建议超过 20。"
+  },
+  {
+   "param": "FusionX LoRA 强度（当前 0.5）",
+   "how_to_tune": "控制多条件融合强度；换装后身份漂移可调大，出现鬼影/伪影则调小。"
+  },
+  {
+   "param": "SegmentAnythingUltra V3 参数（0.3, VITMatte, 6, 6, 0.15, 0.99）",
+   "how_to_tune": "可调 box_threshold（0.15）与 mask_threshold（0.99）；复杂服装可降低 box_threshold 以扩大候选框，提升分割召回率。"
+  },
+  {
+   "param": "GrowMaskWithBlur 扩展像素/模糊（2, 1）",
+   "how_to_tune": "控制换装区域的外扩与羽化；新旧服装差异大时可加到 5-10，并适当增加模糊半径让边缘过渡自然。"
+  },
+  {
+   "param": "ColorMatch 强度（0.2）",
+   "how_to_tune": "调节生成帧与原图的色彩一致程度；过大会吞掉新服装的颜色，过小会导致肤色/光影不连续，建议 0.1~0.4。"
+  },
+  {
+   "param": "WanVaceToVideo 帧数/分辨率（576, 1024, 21）",
+   "how_to_tune": "帧数和分辨率决定输出视频长度/画质；需同步调整 RepeatImageBatch 的重复次数和 TrimVideoLatent 的裁剪范围，且高分辨率需要更大显存。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物照片，结合中文提示词（如“一个穿着华丽的红色汉服的中年女人在雪山之巅的半身”）生成一段 21 帧的 AI 换装短视频，在保持人物身份的同时更换服装与场景。；能力:自动去除原图背景（InSPyReNet Rembg），并用 GroundingDINO + SAM 分割原服装/人物，生成精细掩码，作为换装区域约束。；能力:使用低步数采样（6/8 step）与 CFG=1 配置，配合 LightX2V 蒸馏 LoRA 和 WanVideoNAG，显著降低视频生成耗时。；能力:通过 ColorMatch 色彩匹配和 4x-ClearRealityV1 超分辨率放大，对生成帧做色彩统一与画质增强，提高最终出图质量。；特色:双 UNET 并行：同时加载 Wan2_1-T2V-14B 基础和 wan2.1_vace_14B 编辑模型，通过 WanVaceToVideo 把静态图像扩展为 21 帧视频，实现“文生视频+图像控制”双路径。；特色:条件保护分支：使用 easy ifElse + easy isMaskEmpty 判断分割掩码是否为空，空掩码时走备用路径，避免因分割失败而中断整个流程。；特色:三个 LoRA 混用：LightX2V T2V/I2V 蒸馏 LoRA 分别降低两个采样阶段的步数，FusionX LoRA 增强多条件融合，并加载到不同模型路径。；特色:隐藏布线复用：通过 GetNode/SetNode + RHHiddenNodes 在图中传递 VAE、con+/con- 信号，减少长距离连线的冗余，提升工作流可读性。；特色:后处理控制回路：背景移除 → 服装精细分割 → GrowMaskWithBlur 掩码扩展 → ColorMatch 校色 → 4x 放大，形成“分割-换装-校色-放大”的完整质量保障链。；适合电商模特换装展示、虚拟试衣间、短视频创作者等场景：只需一张人物照片，就能快速生成多套服装/多个场景的短视频素材。；该工作流把“单图换装视频”拆解为图像分割、视频化、换装重绘、后处理增强四个阶段：先用 Rembg/SAM 把人和原服装精确分离，再用 Wan2.1 VACE 将静态照片变成 21 帧视频并按文本提示重绘服装；同时用 LightX2V 蒸馏 LoRA、NAG 和 SageAttention 压低采样成本，最后用 ColorMatch 和 4x 放大保证色彩与清晰度。整体似乎是一个“高速、低成本、可交互”的 AI 换装视频流水线。"
+}

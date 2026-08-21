@@ -1,0 +1,127 @@
+{
+ "domain": [
+  "电商产品图",
+  "美妆产品精修",
+  "商业摄影后期"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张产品照片后，自动用 BiRefNet 抠出产品主体，再经 FLUX.2 Klein 9B + flux2美妆精修 LoRA 重绘/打光，输出商业级精修产品图。",
+   "kind": "fact"
+  },
+  {
+   "text": "用两组相同的 Flux 管道并行生成“顺滑质感”和“金属质感”两个版本，并可用 Image Comparer 对比选择。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 TTP 分块重绘 + 4xNomos8kSCHAT-L 放大，输出高分辨率电商大图/详情页细节图。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持瓶子、罐子、化妆品等产品类目，并可在最后调整亮度/对比度/色温完成校色。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 Klein 9B (flux-2-klein-9b.safetensors)",
+  "LoRA: flux2美妆精修.safetensors",
+  "BiRefNetUltraV2 + VITMatte 高精度抠图",
+  "ReferenceLatent 参考图/结构保持",
+  "ModelSamplingSD3 shift=8 + FluxGuidance=4",
+  "TTP_Image_Tile_Batch / TTP_Image_Assy 分块重绘",
+  "4xNomos8kSCHAT-L 模型放大 (Hires/Upscale)",
+  "rgthree Image Comparer / Fast Groups Bypasser 分组对比",
+  "Wan2.2 T2V low-noise 14B 分支（可能是实验/备用）"
+ ],
+ "special_features": [
+  {
+   "text": "双 FLUX.2 平行分支：同一产品图分别走两套 UNETLoader+LoRA+KSampler，提示词分别强调“突出顺滑质感”和“突出金属质感”，再并排比较。",
+   "kind": "fact"
+  },
+  {
+   "text": "BiRefNet 抠图 + GrowMask/InvertMask + JoinImageWithAlpha 的蒙版控制：可只修产品主体、单独控制背景，避免重绘导致产品轮廓崩坏。",
+   "kind": "fact"
+  },
+  {
+   "text": "Tile 分块高清重绘：TTP_Image_Tile_Batch 切成 1024 分块，批量处理后用 TTP_Image_Assy 拼回，兼顾大图细节与显存占用。",
+   "kind": "fact"
+  },
+  {
+   "text": "多段 denoise 控制：多个 Float（0.4/0.99/0.6/0.5）分别送入 KSampler，形成“低噪保形 + 高噪重涂背景”的多阶段精修。",
+   "kind": "inference"
+  },
+  {
+   "text": "Fast Groups Bypasser ×5 可快速开关各组，一键跳过 Wan 分支、顺滑/金属分支或放大分支，便于试效果。",
+   "kind": "fact"
+  },
+  {
+   "text": "多个 easy cleanGpuUsed 分散在流程中，阶段间清理显存，降低多模型并行加载带来的爆显存风险。",
+   "kind": "fact"
+  },
+  {
+   "text": "同图混入 Wan2.2 T2V low-noise 14B 模型分支，但没有完整视频输出节点，疑似实验性/遗留分支。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流似乎把商业产品修图拆成可并行比较的两条 FLUX.2 Klein 管道：先统一用 BiRefNet 抠主体，再用不同质感提示词分别处理“顺滑”和“金属”；中间用 Tile 分块和 4x 放大解决高分辨率细节，最后用后处理色彩统一和 Image Comparer 做验收。整体意图是在“保真产品结构”和“可感商业质感”之间做控制，同时让修图师一次拿到多个版本。",
+ "use_case": "电商/美妆产品修图师拿到瓶子、罐子或化妆品原图后，生成顺滑/金属两版商业精修图；选择满意版本后输出 4K 放大结果，用于主图、详情页或广告素材。",
+ "limitation": "依赖大量外部模型/自定义节点：需 flux-2-klein-9b、flux2-vae、wan_2.1_vae、qwen_3_8b_fp8mixed、umt5_xxl_fp8、BiRefNet-General、flux2美妆精修 LoRA、4xNomos8kSCHAT-L 等文件；并依赖 rgthree、ComfyUI_LayerStyle、EasyUse、pysssss、Impact、TTP 等插件。并行加载多个大模型显存压力大，建议 24GB 以上。输入图片需有清晰产品主体，透明瓶/玻璃/反光材质抠图可能不稳。模板中多处 LoadImage 均指向同一张示例图，替换时应保持同一产品图，否则各分支结果可能不一致。Wan2.2 分支无明确输出，建议整组 bypass 避免空耗。",
+ "dependencies": [
+  "自定义节点: rgthree (Fast Groups Bypasser, Image Comparer)",
+  "自定义节点: ComfyUI_LayerStyle (LayerMask/LayerColor/LayerUtility)",
+  "自定义节点: ComfyUI-Easy-Use (easy promptConcat/imageBatchToImageList/cleanGpuUsed)",
+  "自定义节点: pysssss MathExpression",
+  "自定义节点: Impact Pack (ImpactInt)",
+  "自定义节点: TTP 分块/拼块节点",
+  "模型: flux-2-klein-9b.safetensors",
+  "模型: flux2-vae.safetensors / wan_2.1_vae.safetensors",
+  "模型: qwen_3_8b_fp8mixed.safetensors / umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "模型: flux2美妆精修.safetensors",
+  "模型: 4xNomos8kSCHAT-L.pth",
+  "模型: BiRefNet-General"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张产品图片（建议主体完整、光线适中、像素不宜过低）",
+  "count": "1"
+ },
+ "output": {
+  "type": "两版 AI 精修产品图（顺滑/金属）+ 可选 4X 放大图",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps/cfg (Flux 分支)",
+   "how_to_tune": "默认 4 步、cfg=1；若细节不足可加到 6-8 步；cfg 不建议超过 2，容易过曝或塑料感。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 4，商业感不足或颜色灰暗时提高到 5-6；太高会产生过曝或硬边。"
+  },
+  {
+   "param": "ModelSamplingSD3 shift",
+   "how_to_tune": "默认 8；瓶子/玻璃类可试 8-12 增强边缘对比，但过高会噪点增多。"
+  },
+  {
+   "param": "flux2美妆精修 LoRA 强度",
+   "how_to_tune": "默认 1；质感过强或失真时降到 0.6-0.8，需要更明显美妆精修时可 1.1-1.2。"
+  },
+  {
+   "param": "Float denoise 强度",
+   "how_to_tune": "0.4 用于保形轻度精修；0.99 用于重绘背景或大幅改变光效；0.5-0.6 用于平衡版。建议第一遍保持 0.4 左右，最后一遍再用 0.99/0.6。"
+  },
+  {
+   "param": "TTP_Image_Tile_Batch tile size",
+   "how_to_tune": "默认 1024；显存不足可降至 768/512，但要注意接缝；显存充足可试 1344 提高连续性。"
+  },
+  {
+   "param": "GrowMask pixels",
+   "how_to_tune": "默认 2px，主要消除白边；需要更柔和边缘时可试 4-6px。"
+  },
+  {
+   "param": "4xNomos8kSCHAT-L 放大",
+   "how_to_tune": "最后一步放大；若原图较小，先保证主体占比大于 70%，否则放大后背景噪点也会被放大。"
+  }
+ ],
+ "summary_text": "能力:上传单张产品照片后，自动用 BiRefNet 抠出产品主体，再经 FLUX.2 Klein 9B + flux2美妆精修 LoRA 重绘/打光，输出商业级精修产品图。；能力:用两组相同的 Flux 管道并行生成“顺滑质感”和“金属质感”两个版本，并可用 Image Comparer 对比选择。；能力:通过 TTP 分块重绘 + 4xNomos8kSCHAT-L 放大，输出高分辨率电商大图/详情页细节图。；能力:支持瓶子、罐子、化妆品等产品类目，并可在最后调整亮度/对比度/色温完成校色。；特色:双 FLUX.2 平行分支：同一产品图分别走两套 UNETLoader+LoRA+KSampler，提示词分别强调“突出顺滑质感”和“突出金属质感”，再并排比较。；特色:BiRefNet 抠图 + GrowMask/InvertMask + JoinImageWithAlpha 的蒙版控制：可只修产品主体、单独控制背景，避免重绘导致产品轮廓崩坏。；特色:Tile 分块高清重绘：TTP_Image_Tile_Batch 切成 1024 分块，批量处理后用 TTP_Image_Assy 拼回，兼顾大图细节与显存占用。；特色:多段 denoise 控制：多个 Float（0.4/0.99/0.6/0.5）分别送入 KSampler，形成“低噪保形 + 高噪重涂背景”的多阶段精修。；特色:Fast Groups Bypasser ×5 可快速开关各组，一键跳过 Wan 分支、顺滑/金属分支或放大分支，便于试效果。；特色:多个 easy cleanGpuUsed 分散在流程中，阶段间清理显存，降低多模型并行加载带来的爆显存风险。；特色:同图混入 Wan2.2 T2V low-noise 14B 模型分支，但没有完整视频输出节点，疑似实验性/遗留分支。；电商/美妆产品修图师拿到瓶子、罐子或化妆品原图后，生成顺滑/金属两版商业精修图；选择满意版本后输出 4K 放大结果，用于主图、详情页或广告素材。；该工作流似乎把商业产品修图拆成可并行比较的两条 FLUX.2 Klein 管道：先统一用 BiRefNet 抠主体，再用不同质感提示词分别处理“顺滑”和“金属”；中间用 Tile 分块和 4x 放大解决高分辨率细节，最后用后处理色彩统一和 Image Comparer 做验收。整体意图是在“保真产品结构”和“可感商业质感”之间做控制，同时让修图师一次拿到多个版本。"
+}

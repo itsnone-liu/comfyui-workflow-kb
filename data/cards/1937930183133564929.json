@@ -1,0 +1,112 @@
+{
+ "domain": [
+  "视频生成",
+  "动作迁移",
+  "图生视频",
+  "动漫风格化"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成动作迁移：读取参考视频，经 WanVideoUniAnimateDWPoseDetector 自动提取 OpenPose 骨骼动作，结合文本提示与角色参考图，生成保持相同动作/姿态的竖屏动漫视频",
+   "kind": "fact"
+  },
+  {
+   "text": "支持图生视频/角色绑定：LoadImage 载入参考图后，经多轮 RMBG-1.4/RMBG-2.0 抠图、MaskBoundingBox 定位、ImagePadForOutpaint 扩边，作为外观参考注入 Wan2.1_T2V_14B_FusionX_VACE 生成",
+   "kind": "fact"
+  },
+  {
+   "text": "输出质量增强链路：生成帧经 ColorMatch 色彩匹配（与参考图色调对齐），再经 WanVideoEnhanceAVideo 两轮增强，最后由 VHS_VideoCombine 合成 mp4 成片",
+   "kind": "fact"
+  },
+  {
+   "text": "面向动漫打斗/招式参考：固定提示词『白色背景下，角色握着拳头挥出』，生成 480×848 竖屏、81 帧的动作参考短片，适合动画分镜预演",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "OpenPose 骨骼动作提取（WanVideoUniAnimateDWPoseDetector）",
+  "Wan2.1 T2V 14B VACE 可控视频生成（FusionX VACE 变体）",
+  "RMBG-1.4 / RMBG-2.0 背景抠除",
+  "TeaCache 推理缓存加速",
+  "WanVideoSLG 稀疏潜在引导",
+  "WanVideoBlockSwap 显存块换入换出",
+  "ColorMatch 色彩匹配（mkl 算法）",
+  "MaskBoundingBox + ImagePadForOutpaint 版面几何控制"
+ ],
+ "special_features": [
+  {
+   "text": "多段式四阶段管线：视频/图像双路输入 → OpenPose 动作提取 + 三路 RMBG 抠图 → VACE Encode + Text Encode 融合 → 采样/解码/ColorMatch/Enhance/合成，阶段边界清晰",
+   "kind": "fact"
+  },
+  {
+   "text": "三重加速 + FP8 量化叠加：Wan2_1-T2V-14B_fp8 与 FusionX VACE FP8 模型配合 TeaCache(0.20)、SLG(9/0.2/0.7)、BlockSwap(30)，明显是针对中端显卡显存/速度的极限调优方案",
+   "kind": "fact"
+  },
+  {
+   "text": "三段式抠图设计：RMBG-1.4 输出白底、RMBG-1.4 输出透明底、RMBG-2.0 输出白底，三路并行供不同下游使用（VACE 参考、遮罩计算等）",
+   "kind": "fact"
+  },
+  {
+   "text": "6 个 MathExpression|pysssss 节点串联几何推导（a/b*c 与 a-b-c），结合 easy imageSize(480×848)、easy cleanGpuUsed，自动计算缩放/裁剪/显存清理时机",
+   "kind": "fact"
+  },
+  {
+   "text": "双路质量控制回路：输出端 ColorMatch 色彩校准 + WanVideoEnhanceAVideo（2 轮增强、denoise=0、strength=1）逐级修复，形成『生成-校准-增强-输出』的闭环",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流把『动作迁移』拆成视频与图像两条参考线：视频线提取 OpenPose 骨骼提供运动结构，图像线经多轮 RMBG 抠图后提供角色外观，在 Wan2.1 T2V 14B VACE 中融合生成。设计上优先解决两个痛点：一是 14B 大模型在消费级显卡上的可运行性，所以叠加了 FP8、TeaCache、SLG、BlockSwap 四层降显存/提速方案；二是生成结果的可用性，输出端用 ColorMatch 统一色调并用两轮 EnhanceAVideo 增强细节。多路抠图与 MaskBoundingBox/MathExpression 的显式几何计算，说明作者希望精确控制参考角色在画面中的版面位置，而非完全交给模型自由发挥。",
+ "use_case": "适合动画/短视频创作者：给定一段真人或动画的动作视频（如挥手、出拳、走位），搭配指定角色参考图，自动生成竖屏动漫同动作视频，用于动作分镜预览、角色招式参考、风格化转绘或逐帧 Pose 参考。",
+ "limitation": "依赖模型与自定义节点较多：需下载 Wan2_1-T2V-14B_fp8_e4m3fn、Wan2.1_T2V_14B_FusionX_VACE-FP8、umt5-xxl-enc-bf16 共约 20GB+，且依赖 VHS、WanVideoWrapper、ComfyUI-easy-use、pysssss MathExpression、LayerStyle 等外部节点。必须同时提供参考视频与参考图；文本提示已写死为『拳头挥出』，换动作需改 PrimitiveStringMultiline 并重调 VACE 帧数/分辨率。14B 模型即使 FP8+三重加速仍建议 16GB 以上显存，BlockSwap 开启后推理速度明显下降。",
+ "dependencies": [
+  "checkpoint: Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "checkpoint: Wan2.1_T2V_14B_FusionX_VACE-FP8_e4m3fn.safetensors",
+  "text_encoder: umt5-xxl-enc-bf16.safetensors",
+  "vae: Wan2_1_VAE_fp32.safetensors",
+  "custom_nodes: ComfyUI-VideoHelperSuite(VHS)、ComfyUI-WanVideoWrapper、ComfyUI-easy-use、ComfyUI-MathExpression(pysssss)、ComfyUI_LayerStyle、AIGODLIKE rembg(RMBG-1.4/2.0)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "参考视频（动作源，VHS_LoadVideo 载入）+ 参考图片（角色外观源，LoadImage 载入）",
+  "count": "2（1 视频 + 1 图）"
+ },
+ "output": {
+  "type": "mp4 竖屏视频（480×848，约 81 帧），经 VHS_VideoCombine 输出",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler.steps",
+   "how_to_tune": "当前 6 步即可出图，若闪烁/动作不连贯可提升到 8-10 步；cfg 保持 1.0 附近，shift=5.0 符合 Wan T2V 推荐"
+  },
+  {
+   "param": "WanVideoTeaCache threshold",
+   "how_to_tune": "0.20 为速度/质量平衡点；显存小或求快可调至 0.25-0.30，追求画面细节则降到 0.15 以下"
+  },
+  {
+   "param": "WanVideoSLG（9, 0.2, 0.7）",
+   "how_to_tune": "控制稀疏潜在引导的 token 与阈值；显存不足时增大稀疏比例，生成质量下降则回调"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "值为 30 表示将 30 个 transformer block 换出到 CPU；爆显存时调大，但会显著减慢速度，建议以 10 为单位微调"
+  },
+  {
+   "param": "WanVideoEnhanceAVideo（2, 0, 1）",
+   "how_to_tune": "2 轮增强、denoise=0、strength=1；耗时过高可改 1 轮，画面过锐利/失真可降 strength 至 0.6-0.8"
+  },
+  {
+   "param": "WanVideoUniAnimateDWPoseDetector 阈值",
+   "how_to_tune": "当前 0.68 兼顾召回与精度；动作乱/误检时上调至 0.75+，骨骼漏检时下调"
+  },
+  {
+   "param": "WanVideoVACEEncode（832×480×81）",
+   "how_to_tune": "生成画布，增大分辨率或帧数会显著增加显存与耗时；需与 ImageResizeKJ(480×848) 及 aspect ratio 计算保持匹配"
+  },
+  {
+   "param": "easy imageRemBg 模型选择",
+   "how_to_tune": "RMBG-2.0 抠图质量更好但更慢；若角色边缘发丝残留可改 RMBG-2.0 白底分支，若背景复杂可串联两轮抠图"
+  }
+ ],
+ "summary_text": "能力:端到端完成动作迁移：读取参考视频，经 WanVideoUniAnimateDWPoseDetector 自动提取 OpenPose 骨骼动作，结合文本提示与角色参考图，生成保持相同动作/姿态的竖屏动漫视频；能力:支持图生视频/角色绑定：LoadImage 载入参考图后，经多轮 RMBG-1.4/RMBG-2.0 抠图、MaskBoundingBox 定位、ImagePadForOutpaint 扩边，作为外观参考注入 Wan2.1_T2V_14B_FusionX_VACE 生成；能力:输出质量增强链路：生成帧经 ColorMatch 色彩匹配（与参考图色调对齐），再经 WanVideoEnhanceAVideo 两轮增强，最后由 VHS_VideoCombine 合成 mp4 成片；能力:面向动漫打斗/招式参考：固定提示词『白色背景下，角色握着拳头挥出』，生成 480×848 竖屏、81 帧的动作参考短片，适合动画分镜预演；特色:多段式四阶段管线：视频/图像双路输入 → OpenPose 动作提取 + 三路 RMBG 抠图 → VACE Encode + Text Encode 融合 → 采样/解码/ColorMatch/Enhance/合成，阶段边界清晰；特色:三重加速 + FP8 量化叠加：Wan2_1-T2V-14B_fp8 与 FusionX VACE FP8 模型配合 TeaCache(0.20)、SLG(9/0.2/0.7)、BlockSwap(30)，明显是针对中端显卡显存/速度的极限调优方案；特色:三段式抠图设计：RMBG-1.4 输出白底、RMBG-1.4 输出透明底、RMBG-2.0 输出白底，三路并行供不同下游使用（VACE 参考、遮罩计算等）；特色:6 个 MathExpression|pysssss 节点串联几何推导（a/b*c 与 a-b-c），结合 easy imageSize(480×848)、easy cleanGpuUsed，自动计算缩放/裁剪/显存清理时机；特色:双路质量控制回路：输出端 ColorMatch 色彩校准 + WanVideoEnhanceAVideo（2 轮增强、denoise=0、strength=1）逐级修复，形成『生成-校准-增强-输出』的闭环；适合动画/短视频创作者：给定一段真人或动画的动作视频（如挥手、出拳、走位），搭配指定角色参考图，自动生成竖屏动漫同动作视频，用于动作分镜预览、角色招式参考、风格化转绘或逐帧 Pose 参考。；该工作流把『动作迁移』拆成视频与图像两条参考线：视频线提取 OpenPose 骨骼提供运动结构，图像线经多轮 RMBG 抠图后提供角色外观，在 Wan2.1 T2V 14B VACE 中融合生成。设计上优先解决两个痛点：一是 14B 大模型在消费级显卡上的可运行性"
+}

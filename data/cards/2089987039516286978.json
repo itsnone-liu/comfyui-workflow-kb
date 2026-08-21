@@ -1,0 +1,123 @@
+{
+ "domain": [
+  "图生视频",
+  "视频生视频",
+  "文生视频",
+  "多模态生成",
+  "视频超分"
+ ],
+ "capabilities": [
+  {
+   "text": "上传 1–9 张参考图、3 段参考视频、3 段参考音频，配合文本提示词，端到端生成带同步音频的全模态视频（参考图驱动视频生成，MiniMaxH3ReferenceToVideo 为生成核心）",
+   "kind": "fact"
+  },
+  {
+   "text": "纯文本提示词即可走完整的文生视频链路（提示词经 MiniMaxH3PromptEnhancer 强化后进入生成），参考素材可作为可选项增强画面一致性",
+   "kind": "inference"
+  },
+  {
+   "text": "内置 LLM 提示词强化：把口语化/简短的创作需求自动扩写为结构化 subject_definitions 提示词，提升多参考条件下的内容一致性",
+   "kind": "fact"
+  },
+  {
+   "text": "输出高分辨率成品视频：基础分辨率（0.5 档）生成 → 3D latent 放大 → SeedVR2 超分 → RTXVideoSuperResolution 超分，最终由 VHS_VideoCombine 合成封装",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 全模态视频生成（视频 VAE + 音频 VAE 联合建模，LTXVConcatAVLatent/LTXVSeparateAVLatent 音画 latent 拼接与分离）",
+  "Reference-to-Video 多参考引导（9 路图片 + 3 路视频 + 3 路音频作为条件输入）",
+  "两阶段采样/极速二采（SplitSigmas 切分噪声调度 + 双 SamplerCustomAdvanced + res_multistep 采样器接力）",
+  "Turbo LoRA 8 步加速（minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors）",
+  "3D Latent Upscale 潜空间放大（MinimaxH3LatentUpscalerNode3D，Hires-Upscale 技术）",
+  "视频超分修复（SeedVR2_ema_3b_fp8 + SeedVR2BlockSwap + RTXVideoSuperResolution）",
+  "LLM 提示词工程（MiniMaxH3PromptEnhancer，max_tokens=1400，temperature=0.7）",
+  "显存优化（MiniMaxH3MemoryEfficientSageAttentionPatch + UniBlockSwap + easy clearCacheAll）"
+ ],
+ "special_features": [
+  {
+   "text": "GetNode/SetNode 参数中枢架构：35 个 GetNode + 31 个 SetNode 把模型选择、双 VAE、9 图/3 视频/3 音频、帧数、步数、噪声、放大倍率等全部参数收口成统一'参数面板'，用户只需改面板即可控制全流程",
+   "kind": "fact"
+  },
+  {
+   "text": "全模态二采结构：LTXVSeparateAVLatent 先把音画 latent 分离，两段 SamplerCustomAdvanced 对同一基础 latent 接力采样（低噪声/高噪声两档，分别由 arg_low_noise/arg_high_noise 控制），再经 LTXVConcatAVLatent 合并，实现音画联合生成的'极速二采'",
+   "kind": "fact"
+  },
+  {
+   "text": "三级超分流水线：latent 3D 放大（2x）→ SeedVR2（配合 BlockSwap 块交换和 ExtraArgs 显存优化）→ RTXVideoSuperResolution（2x ULTRA），从 0.5 基础分辨率逐级拉高到高清",
+   "kind": "fact"
+  },
+  {
+   "text": "动态尺寸/帧数计算：ComfyMathExpression 按输入秒数 a 计算帧数 max(5, round(a*24))（24fps），并用 ceil(min(a,b)*2/32)*32 将放大后分辨率做 32 像素对齐，适配 VAE 约束",
+   "kind": "fact"
+  },
+  {
+   "text": "分段模型加载：MiniMaxH3GenerationTailLoader 单独载入 generation tail 权重（qwen3vl_32b_minimax_h3_generation_tail_50_63），配合 UniBlockSwap 块交换降低峰值显存，目标是在消费级显卡上运行大参数全模态模型",
+   "kind": "inference"
+  },
+  {
+   "text": "多段式防爆显存设计：两个 easy clearCacheAll 节点 + SageAttention 注意力后端 + 'comfy kitchen attention'，在超分/解码前后主动清缓存",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这是对官方 MiniMax H3 全模态流程的'极速化工程改造'。作者先用 8 步 turbo LoRA 把采样步数压到极低，再用 SplitSigmas 把采样拆成低/高噪声两段接力（即标题的'极速二采'），在提速的同时尽量保住细节；随后用 latent 3D 放大 + SeedVR2 + RTX 超分三级流水线把低分辨率生成结果还原为高清，弥补小分辨率生成的质量短板。全模态方面保留音频/视频双 VAE，通过 LTXV 分离/拼接节点实现音画联合。大量的 GetNode/SetNode 表明作者把所有输入（9 图、3 视频、3 音频、模型、步数、噪声、尺寸等）统一收口成'参数面板'，明显是想降低使用门槛；PromptEnhancer 则负责把口语化需求扩写成结构化提示词。整体似乎是一个'官方流加速 + 超分补强 + 提示词工程 + 参数面板化'的四合一整合包，可能主要面向显存有限的 RTX 用户。",
+ "use_case": "在单卡消费级显卡上快速生成带声音的短视频：输入产品图/人像图 + 一段参考视频/音频 + 一句话创意需求，输出 2 倍以上分辨率、带音频的视频片段；适合短视频创作者、广告素材试做、概念验证和 AIGC 内容批量探索。",
+ "limitation": "依赖大量自定义节点（ComfyUI-MiniMax-H3、VideoHelperSuite、rgthree、SeedVR2 系列、RTXVideoSuperResolution、UniBlockSwap、GetNode/SetNode、pysssss MathExpression 等）和指定模型文件名（int8 混合模型、FP8 upscaler、双 VAE、clip、turbo LoRA 等），环境与模型文件缺失无法运行；虽有 SageAttention/BlockSwap/缓存清理优化，但 132 节点 + 大模型仍需要较高显存，低显存下需调小分辨率/帧数；9 图/3 视频/3 音频端口在结构上全部接入，不用的素材也需要保留有效占位；RTXVideoSuperResolution 依赖 NVIDIA RTX 显卡；输出质量受参考素材、提示词增强效果和超分模型参数影响。",
+ "dependencies": [
+  "ComfyUI-MiniMax-H3 自定义节点（MiniMaxH3ReferenceToVideo / MiniMaxH3GenerationTailLoader / MiniMaxH3PromptEnhancer / MiniMaxH3LatentUpscalerNode3D / MiniMaxH3MemoryEfficientSageAttentionPatch）",
+  "VideoHelperSuite（VHS_LoadVideo / VHS_LoadAudioUpload / VHS_VideoCombine）",
+  "SeedVR2 系列节点（SeedVR2 / SeedVR2BlockSwap / SeedVR2ExtraArgs）",
+  "RTXVideoSuperResolution 节点",
+  "UniBlockSwap 节点",
+  "GetNode / SetNode 节点（参数中枢）",
+  "rgthree（Fast Groups Bypasser、Label）",
+  "ComfyMathExpression / MathExpression|pysssss",
+  "LTXV 系列节点（LTXVSeparateAVLatent / LTXVConcatAVLatent）",
+  "模型文件：minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors、qwen3vl_32b_minimax_h3_generation_tail_50_63_int8_convrot.safetensors、qwen3vl_32b_minimax_h3_ultra_uncensored_heretic_int8_convrot.safetensors、minimax_h3_video_vae_int8_convrot.safetensors、minimax_h3_audio_vae_fp32.safetensors、minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors、minimax_h3_latent_upscaler_3d_bf16.safetensors、seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+  "SageAttention / 'comfy kitchen attention' 注意力后端"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片×9（LoadImage）+ 视频×3（VHS_LoadVideo）+ 音频×3（VHS_LoadAudioUpload）+ 文本提示词 + 集中式参数面板（尺寸/帧数/步数/噪声/放大倍率/LoRA 强度等）",
+  "count": "9 图 + 3 视频 + 3 音频 + 1 提示词 + 批量参数"
+ },
+ "output": {
+  "type": "带音频的视频文件（VHS_VideoCombine 封装，可设 filename_prefix/crf/pix_fmt），另有 VAEDecodeAudio 输出的音频 latent 解码结果",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "arg_step_1 / arg_total_step",
+   "how_to_tune": "二采步数分配：arg_step_1 为低噪声段步数，arg_total_step 为总步数。配合 8 步 turbo LoRA 用 8 步即可，追求质量可提到 12–16，显存吃紧优先降总步数。"
+  },
+  {
+   "param": "arg_low_noise / arg_high_noise",
+   "how_to_tune": "两段采样噪声强度：低噪声段负责细节刻画，高噪声段负责整体构图。画面杂乱/抖动可降低 high_noise，画面发虚/细节不足可提高 low_noise。"
+  },
+  {
+   "param": "arg_upscale（MinimaxH3LatentUpscalerNode3D）",
+   "how_to_tune": "latent 3D 放大倍数，默认 2（以 0.5 基础分辨率为基准）。显存不足时降到 1.5，把超分任务更多交给后级 SeedVR2/RTX。"
+  },
+  {
+   "param": "lora 强度（minimax_h3_fl2v_turbo_8step）",
+   "how_to_tune": "加速 LoRA 默认 1.0；作者 Note 提示'人物油画'等重风格场景可调至 0.9，避免风格过载导致内容扭曲。"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "基础分辨率档位（16:9 宽屏 + 0.5 倍率 + 32 对齐）。倍率越高生成越清晰但越吃显存，最终清晰度由三级超分兜底，建议保持低倍率生成。"
+  },
+  {
+   "param": "帧数（ComfyMathExpression: max(5, round(a*24))）",
+   "how_to_tune": "帧数按输入秒数 a × 24fps 自动计算并保底 5 帧。片段越长显存占用越高，短视频建议不超过 5 秒。"
+  },
+  {
+   "param": "MiniMaxH3PromptEnhancer（max_tokens=1400, temperature=0.7）",
+   "how_to_tune": "提示词强化长度与随机性：需求复杂/多参考时提高 max_tokens；希望更贴近原文时可降低 temperature，反之提高创意发散。"
+  },
+  {
+   "param": "ref_image_size（1344×768 / max）",
+   "how_to_tune": "参考图编码尺寸，需与生成分辨率匹配；Note 中附了 megapixels/Aspect 对照表，人物变形或构图偏移时按表格切换档位或改 'max'。"
+  }
+ ],
+ "summary_text": "能力:上传 1–9 张参考图、3 段参考视频、3 段参考音频，配合文本提示词，端到端生成带同步音频的全模态视频（参考图驱动视频生成，MiniMaxH3ReferenceToVideo 为生成核心）；能力:纯文本提示词即可走完整的文生视频链路（提示词经 MiniMaxH3PromptEnhancer 强化后进入生成），参考素材可作为可选项增强画面一致性；能力:内置 LLM 提示词强化：把口语化/简短的创作需求自动扩写为结构化 subject_definitions 提示词，提升多参考条件下的内容一致性；能力:输出高分辨率成品视频：基础分辨率（0.5 档）生成 → 3D latent 放大 → SeedVR2 超分 → RTXVideoSuperResolution 超分，最终由 VHS_VideoCombine 合成封装；特色:GetNode/SetNode 参数中枢架构：35 个 GetNode + 31 个 SetNode 把模型选择、双 VAE、9 图/3 视频/3 音频、帧数、步数、噪声、放大倍率等全部参数收口成统一'参数面板'，用户只需改面板即可控制全流程；特色:全模态二采结构：LTXVSeparateAVLatent 先把音画 latent 分离，两段 SamplerCustomAdvanced 对同一基础 latent 接力采样（低噪声/高噪声两档，分别由 arg_low_noise/arg_high_noise 控制），再经 LTXVConcatAVLatent 合并，实现音画联合生成的'极速二采'；特色:三级超分流水线：latent 3D 放大（2x）→ SeedVR2（配合 BlockSwap 块交换和 ExtraArgs 显存优化）→ RTXVideoSuperResolution（2x ULTRA），从 0.5 基础分辨率逐级拉高到高清；特色:动态尺寸/帧数计算：ComfyMathExpression 按输入秒数 a 计算帧数 max(5, round(a*24))（24fps），并用 ceil(min(a,b)*2/32)*32 将放大后分辨率做 32 像素对齐，适配 VAE 约束；特色:分段模型加载：MiniMaxH3GenerationTailLoader 单独载入 generation tail 权重（qwen3vl_32b_minimax_h3_generation_tail_50_63），配合 UniBlockSwap 块交换降低峰值显存，目标是在消费级显卡上运行大参数全模态模型；特色:多段式防爆显存设计：两个 easy clearCacheAll 节点 + SageAttention 注意力后端 + 'comfy kitchen attention'，在超分/解码前后主动清缓存；在单卡消费级显卡上快速生成带声音的短视频：输"
+}

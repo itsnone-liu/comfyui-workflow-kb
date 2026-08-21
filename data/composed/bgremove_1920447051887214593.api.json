@@ -1,0 +1,294 @@
+{
+ "150": {
+  "class_type": "UpscaleModelLoader",
+  "inputs": {
+   "model_name": "4x_NMKD-Siax_200k.pth"
+  },
+  "_meta": {
+   "title": "放大模型加载器"
+  }
+ },
+ "151": {
+  "class_type": "ImageScaleBy",
+  "inputs": {
+   "image": [
+    "152",
+    0
+   ],
+   "scale_by": 0.7200000000000002,
+   "upscale_method": "lanczos"
+  },
+  "_meta": {
+   "title": "图像按系数缩放"
+  }
+ },
+ "152": {
+  "class_type": "ImageUpscaleWithModel",
+  "inputs": {
+   "image": [
+    "153",
+    0
+   ],
+   "upscale_model": [
+    "150",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像通过模型放大"
+  }
+ },
+ "142": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "151",
+    0
+   ],
+   "vae": [
+    "145",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "VAE编码"
+  }
+ },
+ "153": {
+  "class_type": "FaceDetailer",
+  "inputs": {
+   "sam_bbox_expansion": 0,
+   "feather": 5,
+   "force_inpaint": true,
+   "guide_size": 256,
+   "seed": 666686339940711,
+   "bbox_dilation": 10,
+   "cycle": 1,
+   "wildcard": "",
+   "scheduler": "sgm_uniform",
+   "negative": [
+    "137",
+    0
+   ],
+   "sam_mask_hint_use_negative": "False",
+   "sam_detection_hint": "center-1",
+   "sampler_name": "euler",
+   "tiled_decode": false,
+   "model": [
+    "149",
+    0
+   ],
+   "vae": [
+    "145",
+    2
+   ],
+   "guide_size_for": true,
+   "sam_mask_hint_threshold": 0.7,
+   "image": [
+    "158",
+    0
+   ],
+   "cfg": 1,
+   "sam_threshold": 0.93,
+   "noise_mask_feather": 20,
+   "inpaint_model": false,
+   "positive": [
+    "138",
+    0
+   ],
+   "steps": 20,
+   "max_size": 768,
+   "denoise": 0.3,
+   "sam_dilation": 0,
+   "drop_size": 10,
+   "noise_mask": true,
+   "bbox_threshold": 0.5,
+   "bbox_crop_factor": 3,
+   "tiled_encode": false,
+   "bbox_detector": [
+    "139",
+    0
+   ],
+   "clip": [
+    "145",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "面部细化"
+  }
+ },
+ "143": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "sgm_uniform",
+   "negative": [
+    "137",
+    0
+   ],
+   "denoise": 0.23000000000000004,
+   "latent_image": [
+    "142",
+    0
+   ],
+   "seed": 998418279728078,
+   "cfg": 1,
+   "sampler_name": "euler",
+   "model": [
+    "149",
+    0
+   ],
+   "positive": [
+    "138",
+    0
+   ],
+   "steps": 20
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ },
+ "145": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "flux1-dev-fp8.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "147": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "145",
+    2
+   ],
+   "samples": [
+    "143",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "158": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "117adfde8f8eeee1ed0611c9664420b378e06cc78fa75cb9d84acebe0000149e.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "137": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "",
+   "clip": [
+    "145",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "148": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "lora_name": "苏-FLUX皮肤细节增强去伪存真_v2.0.safetensors",
+   "strength_model": 0.6,
+   "model": [
+    "145",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "LoRA加载器(仅模型)"
+  }
+ },
+ "159": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "280",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "138": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "hand",
+   "clip": [
+    "145",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "149": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "lora_name": "aidmaFLUXPro1.1-FLUX-v0.3-sexy.safetensors",
+   "strength_model": 0.35000000000000003,
+   "model": [
+    "148",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "LoRA加载器(仅模型)"
+  }
+ },
+ "139": {
+  "class_type": "UltralyticsDetectorProvider",
+  "inputs": {
+   "model_name": "segm/yolov8s-seg.pt"
+  },
+  "_meta": {
+   "title": "检测加载器"
+  }
+ },
+ "280": {
+  "class_type": "LayerMask: BiRefNetUltraV2",
+  "inputs": {
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": false,
+   "detail_dilate": 2,
+   "detail_erode": 4,
+   "birefnet_model": [
+    "271",
+    0
+   ],
+   "white_point": 0.99,
+   "max_megapixels": 2,
+   "device": "cuda",
+   "image": [
+    "147",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "LayerMask: BiRefNet Ultra V2(Advance)"
+  }
+ },
+ "271": {
+  "class_type": "LayerMask: LoadBiRefNetModel",
+  "inputs": {
+   "model": "BiRefNet-general-epoch_244.pth"
+  },
+  "_meta": {
+   "title": "LayerMask: Load BiRefNet Model(Advance)"
+  }
+ }
+}

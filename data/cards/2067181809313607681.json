@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图生图",
+  "角色表演",
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人物参考图和一张姿势参考图，生成保持同一人物身份与背景、但动作/姿势迁移到目标姿势的结果图",
+   "kind": "fact"
+  },
+  {
+   "text": "对生成结果做 4x 高清放大并保存，输出可直接使用的高分辨率成图",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 GroundingDINO/YOLO 人体分割和 SDPoseOOD 全身姿态提取，把姿势参考图变成结构化姿势条件参与生成",
+   "kind": "inference"
+  },
+  {
+   "text": "提供多路 PreviewImage、Image Comparer 和双 SaveImage，便于生成前后对比与人工选图",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit-Plus 双图引导编辑",
+  "SDPoseOOD 全身姿势提取",
+  "GroundingDINO + YOLOv8m-seg 人物检测/分割",
+  "Qwen-Image-Lightning LoRA 8步加速采样",
+  "CFGNorm + ModelSamplingAuraFlow 采样参数适配",
+  "VAEEncodeTiled 分块编码",
+  "4xNomos8kSCHAT-L Hires 放大"
+ ],
+ "special_features": [
+  {
+   "text": "双 KSampler 两段式采样：第一个 8 步生成主图，第二个 4 步做修正/精修（也可能只是两路并行出图，图上未见直接串联）",
+   "kind": "inference"
+  },
+  {
+   "text": "用 SDPoseOOD 与 GroundingDINO/YOLO 组合，先做“人-景”分割再做全身姿势迁移，而不是简单图生图",
+   "kind": "inference"
+  },
+  {
+   "text": "所有输入图先统一到 4:3 画幅并缩放/裁剪，再进 Qwen-Image-Edit-Plus，规避多图输入尺寸不一致问题",
+   "kind": "inference"
+  },
+  {
+   "text": "配备 Image Comparer 与多个 PreviewImage，形成生成前后对比的人工质量控制回路",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者想用 Qwen-Image-Edit-Plus 的编辑能力做一个“角色姿势迁移”专用流：先用 SDPoseOOD 把姿势图变成姿态条件，再用人物分割强化主体身份，配合一句自然语言指令“图1女人参考图2姿势，保持图1人物和背景一致性”让模型同时锁住身份和场景；之后用 Lightning LoRA 快速采样并通过 4x 放大输出高清图。流程中大量的尺寸统一、分块 VAE、CFGNorm/AuraFlow 设置，似乎是为了让 Qwen-Image-Edit-Plus 在多变输入尺寸下也能稳定工作。",
+ "use_case": "适合角色表演、角色设计、动作迁移等场景：给一张已有角色/人物照片和一张目标姿势图，快速产出同一角色的姿势化参考图，用于分镜、立绘、动作预演等。",
+ "limitation": "需要同时提供两张输入图（人物图+姿势图），且人物图需要足够清晰以保持身份；依赖 SDPoseOOD、GroundingDINO/YOLO、TextEncodeQwenImageEditPlus 等自定义节点，部署门槛高；Qwen-Image-Edit-Plus FP8 + 7B CLIP 对显存要求高；姿势提取在遮挡、非常规视角或多人场景下可能不准；生成结果的身份保持并非像素级一致，人脸细节可能漂移。",
+ "dependencies": [
+  "Qwen_Image_Edit_PLUS_FP8.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "Qwen-Image-Lightning-8steps-V1.1.safetensors",
+  "person_yolov8m-seg.pt",
+  "GroundingDINO_SwinT_OGC",
+  "SDPoseOODLoader/Processor 自定义节点",
+  "TextEncodeQwenImageEditPlus 自定义节点",
+  "CFGNorm、Image Aspect Ratio、Image Comparer、ImageConcanate、ModelSamplingAuraFlow 等自定义节点",
+  "4xNomos8kSCHAT-L.pth"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "第一个 KSampler 使用 8 步配合 Lightning LoRA；出图太糙可试 10-12 步，但会牺牲加速效果。第二个 4 步采样若用于精修，只适合低 denoise 的微调，否则会产生新结构。"
+  },
+  {
+   "param": "CFGNorm 值/KSampler cfg",
+   "how_to_tune": "Qwen-Image 系模型推荐 CFG=1，配合 CFGNorm 归一化正负条件；若指令遵循不足可尝试 CFG 2-3，但可能出现过饱和/色彩漂移。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift",
+   "how_to_tune": "当前为 3.0，控制采样时间步分布；出现细节崩坏/伪影时可微调至 2.5-3.5，越高越偏重高噪声阶段细节。"
+  },
+  {
+   "param": "SDPoseOODProcessor 检测阈值",
+   "how_to_tune": "当前约 0.2；姿势目标较小或模糊时可降到 0.1-0.15，但可能引入错误关键点；多人/遮挡场景建议提高阈值并裁剪单人区域。"
+  },
+  {
+   "param": "ImageResize pad to ratio 4:3",
+   "how_to_tune": "统一输入画幅为 4:3；若要竖版角色图可改为 3:4 或 9:16，避免编辑时空间对齐错乱。"
+  },
+  {
+   "param": "VAEEncodeTiled tile size",
+   "how_to_tune": "当前 tile 512、overlap 64/64/8；显存不足时减小 tile 或增大 overlap，但会改变分块接缝处的连续性和细节。"
+  }
+ ],
+ "summary_text": "能力:上传一张人物参考图和一张姿势参考图，生成保持同一人物身份与背景、但动作/姿势迁移到目标姿势的结果图；能力:对生成结果做 4x 高清放大并保存，输出可直接使用的高分辨率成图；能力:通过 GroundingDINO/YOLO 人体分割和 SDPoseOOD 全身姿态提取，把姿势参考图变成结构化姿势条件参与生成；能力:提供多路 PreviewImage、Image Comparer 和双 SaveImage，便于生成前后对比与人工选图；特色:双 KSampler 两段式采样：第一个 8 步生成主图，第二个 4 步做修正/精修（也可能只是两路并行出图，图上未见直接串联）；特色:用 SDPoseOOD 与 GroundingDINO/YOLO 组合，先做“人-景”分割再做全身姿势迁移，而不是简单图生图；特色:所有输入图先统一到 4:3 画幅并缩放/裁剪，再进 Qwen-Image-Edit-Plus，规避多图输入尺寸不一致问题；特色:配备 Image Comparer 与多个 PreviewImage，形成生成前后对比的人工质量控制回路；适合角色表演、角色设计、动作迁移等场景：给一张已有角色/人物照片和一张目标姿势图，快速产出同一角色的姿势化参考图，用于分镜、立绘、动作预演等。；作者想用 Qwen-Image-Edit-Plus 的编辑能力做一个“角色姿势迁移”专用流：先用 SDPoseOOD 把姿势图变成姿态条件，再用人物分割强化主体身份，配合一句自然语言指令“图1女人参考图2姿势，保持图1人物和背景一致性”让模型同时锁住身份和场景；之后用 Lightning LoRA 快速采样并通过 4x 放大输出高清图。流程中大量的尺寸统一、分块 VAE、CFGNorm/AuraFlow 设置，似乎是为了让 Qwen-Image-Edit-Plus 在多变输入尺寸下也能稳定工作。"
+}

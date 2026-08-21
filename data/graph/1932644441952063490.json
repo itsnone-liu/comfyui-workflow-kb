@@ -1,0 +1,1638 @@
+{
+ "node_count": 35,
+ "link_count": 55,
+ "active_node_count": 35,
+ "nodes": [
+  {
+   "id": 165,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "text, watermark"
+   ],
+   "in_links": [
+    736
+   ],
+   "out_links": [
+    750,
+    758
+   ]
+  },
+  {
+   "id": 164,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "A girl with a perfect face\n"
+   ],
+   "in_links": [
+    735
+   ],
+   "out_links": [
+    751,
+    757
+   ]
+  },
+  {
+   "id": 215,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    504
+   ],
+   "out_links": [
+    331
+   ]
+  },
+  {
+   "id": 183,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    472
+   ],
+   "out_links": [
+    494,
+    760
+   ]
+  },
+  {
+   "id": 154,
+   "type": "ImageCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    0,
+    0
+   ],
+   "in_links": [
+    310,
+    213,
+    209,
+    210,
+    212
+   ],
+   "out_links": [
+    466
+   ]
+  },
+  {
+   "id": 314,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    522,
+    521
+   ],
+   "out_links": [
+    523,
+    525
+   ]
+  },
+  {
+   "id": 296,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    779
+   ],
+   "out_links": [
+    473,
+    761,
+    775
+   ]
+  },
+  {
+   "id": 190,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    523
+   ],
+   "out_links": [
+    284,
+    774
+   ]
+  },
+  {
+   "id": 161,
+   "type": "ImageResizeKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "nearest-exact",
+    true,
+    2,
+    0
+   ],
+   "in_links": [
+    331,
+    227,
+    228
+   ],
+   "out_links": [
+    329
+   ]
+  },
+  {
+   "id": 202,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinT_OGC (694MB)",
+    0.3,
+    "VITMatte",
+    6,
+    6,
+    0.15,
+    0.99,
+    true,
+    "face",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    726
+   ],
+   "out_links": [
+    531,
+    301
+   ]
+  },
+  {
+   "id": 145,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d318656d4c.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    726
+   ]
+  },
+  {
+   "id": 204,
+   "type": "Mask Crop Region",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    "dominant"
+   ],
+   "in_links": [
+    301
+   ],
+   "out_links": [
+    521,
+    306,
+    305,
+    303,
+    304
+   ]
+  },
+  {
+   "id": 205,
+   "type": "ImageCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    0,
+    0
+   ],
+   "in_links": [
+    531,
+    303,
+    304,
+    305,
+    306
+   ],
+   "out_links": [
+    522
+   ]
+  },
+  {
+   "id": 292,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    466,
+    484
+   ],
+   "out_links": [
+    472,
+    518
+   ]
+  },
+  {
+   "id": 308,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    525
+   ],
+   "out_links": [
+    512
+   ]
+  },
+  {
+   "id": 417,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d318656d4c.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    728,
+    732
+   ]
+  },
+  {
+   "id": 273,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d318656d4c.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    727
+   ]
+  },
+  {
+   "id": 146,
+   "type": "Mask Crop Region",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    "dominant"
+   ],
+   "in_links": [
+    733
+   ],
+   "out_links": [
+    484,
+    212,
+    231,
+    210,
+    232,
+    213,
+    227,
+    209,
+    228
+   ]
+  },
+  {
+   "id": 199,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    727,
+    732
+   ],
+   "out_links": [
+    310,
+    330,
+    733
+   ]
+  },
+  {
+   "id": 421,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    734,
+    739,
+    769,
+    773
+   ]
+  },
+  {
+   "id": 422,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    735,
+    736
+   ]
+  },
+  {
+   "id": 423,
+   "type": "AV_VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft",
+    "None"
+   ],
+   "in_links": [],
+   "out_links": [
+    737,
+    755,
+    759
+   ]
+  },
+  {
+   "id": 425,
+   "type": "PulidFluxModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "pulid_flux_v0.9.1.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    745
+   ]
+  },
+  {
+   "id": 426,
+   "type": "PulidFluxEvaClipLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    746
+   ]
+  },
+  {
+   "id": 427,
+   "type": "PulidFluxInsightFaceLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CPU"
+   ],
+   "in_links": [],
+   "out_links": [
+    747
+   ]
+  },
+  {
+   "id": 430,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    757,
+    758,
+    759,
+    760,
+    761
+   ],
+   "out_links": [
+    766,
+    763,
+    764
+   ]
+  },
+  {
+   "id": 431,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    766
+   ],
+   "out_links": [
+    767
+   ]
+  },
+  {
+   "id": 162,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    516618303588277,
+    "randomize",
+    25,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    778,
+    767,
+    763,
+    764
+   ],
+   "out_links": [
+    240
+   ]
+  },
+  {
+   "id": 309,
+   "type": "AddMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    512,
+    518
+   ],
+   "out_links": [
+    729,
+    779
+   ]
+  },
+  {
+   "id": 166,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    240,
+    737
+   ],
+   "out_links": [
+    504
+   ]
+  },
+  {
+   "id": 160,
+   "type": "ImageCompositeMasked",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    false
+   ],
+   "in_links": [
+    330,
+    329,
+    729,
+    232,
+    231
+   ],
+   "out_links": [
+    781
+   ]
+  },
+  {
+   "id": 424,
+   "type": "ApplyPulidFlux",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.0000000000000002,
+    0,
+    1
+   ],
+   "in_links": [
+    773,
+    745,
+    746,
+    747,
+    774,
+    775
+   ],
+   "out_links": [
+    778
+   ]
+  },
+  {
+   "id": 435,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    781
+   ],
+   "out_links": []
+  },
+  {
+   "id": 436,
+   "type": "Note",
+   "category": "utility",
+   "title": "Runninghub新用户注册福利",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH币可以免费生成好多图片视频哦！"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 126,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "联系我：15884404095（微信同号）。\n1.定制专属工作流（根据具体需求制作，更实用）\n2.定制Lora（让生成图片的模特、产品、风格等保持一致性）\n3.获取AI绘画视频教程（可在下面的更多中找到教程工作流）\n4.定制AI视频（根据具体需求生成特定视频）\n更多类似实用工作流可在个人主页获取，https://www.runninghub.cn/user-center/1913519461180006401/userPost?inviteCode=pyespett\n有其他需求可以评论出来，会根据需求考虑更新\nrunninghub新用户注册福利，打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH币可以免费生成好多图片视频哦！\n\n\n使用方法：进入对应的操作区，上传模特图片，涂抹脸部需要跟换的位置；上传要用的人脸图片，上传模特图片；点击右上角开始生图就能得到结果图片了。\n演示视频：https://www.douyin.com/user/self?from_tab_name=main&modal_id=7456621922391051560&showTab=post\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 145,
+   "to_node": 202,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 146,
+   "to_node": 154,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 154,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 154,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 154,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 160,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 160,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 161,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 161,
+   "type": "INT"
+  },
+  {
+   "from_node": 146,
+   "to_node": 292,
+   "type": "MASK"
+  },
+  {
+   "from_node": 154,
+   "to_node": 292,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 160,
+   "to_node": 435,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 161,
+   "to_node": 160,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 162,
+   "to_node": 166,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 164,
+   "to_node": 430,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 165,
+   "to_node": 430,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 166,
+   "to_node": 215,
+   "type": "*"
+  },
+  {
+   "from_node": 183,
+   "to_node": 430,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 190,
+   "to_node": 424,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 199,
+   "to_node": 146,
+   "type": "MASK"
+  },
+  {
+   "from_node": 199,
+   "to_node": 154,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 199,
+   "to_node": 160,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 202,
+   "to_node": 204,
+   "type": "MASK"
+  },
+  {
+   "from_node": 202,
+   "to_node": 205,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 204,
+   "to_node": 205,
+   "type": "INT"
+  },
+  {
+   "from_node": 204,
+   "to_node": 205,
+   "type": "INT"
+  },
+  {
+   "from_node": 204,
+   "to_node": 205,
+   "type": "INT"
+  },
+  {
+   "from_node": 204,
+   "to_node": 205,
+   "type": "INT"
+  },
+  {
+   "from_node": 204,
+   "to_node": 314,
+   "type": "MASK"
+  },
+  {
+   "from_node": 205,
+   "to_node": 314,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 215,
+   "to_node": 161,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 273,
+   "to_node": 199,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 292,
+   "to_node": 183,
+   "type": "*"
+  },
+  {
+   "from_node": 292,
+   "to_node": 309,
+   "type": "MASK"
+  },
+  {
+   "from_node": 296,
+   "to_node": 424,
+   "type": "MASK"
+  },
+  {
+   "from_node": 296,
+   "to_node": 430,
+   "type": "MASK"
+  },
+  {
+   "from_node": 308,
+   "to_node": 309,
+   "type": "MASK"
+  },
+  {
+   "from_node": 309,
+   "to_node": 160,
+   "type": "MASK"
+  },
+  {
+   "from_node": 309,
+   "to_node": 296,
+   "type": "*"
+  },
+  {
+   "from_node": 314,
+   "to_node": 190,
+   "type": "*"
+  },
+  {
+   "from_node": 314,
+   "to_node": 308,
+   "type": "*"
+  },
+  {
+   "from_node": 417,
+   "to_node": 199,
+   "type": "MASK"
+  },
+  {
+   "from_node": 421,
+   "to_node": 424,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 422,
+   "to_node": 164,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 422,
+   "to_node": 165,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 423,
+   "to_node": 166,
+   "type": "VAE"
+  },
+  {
+   "from_node": 423,
+   "to_node": 430,
+   "type": "VAE"
+  },
+  {
+   "from_node": 424,
+   "to_node": 162,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 425,
+   "to_node": 424,
+   "type": "PULIDFLUX"
+  },
+  {
+   "from_node": 426,
+   "to_node": 424,
+   "type": "EVA_CLIP"
+  },
+  {
+   "from_node": 427,
+   "to_node": 424,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 430,
+   "to_node": 162,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 430,
+   "to_node": 162,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 430,
+   "to_node": 431,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 431,
+   "to_node": 162,
+   "type": "CONDITIONING"
+  }
+ ],
+ "categories": {
+  "conditioning": 2,
+  "utility": 19,
+  "preprocessor": 1,
+  "image_io": 4,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "vae": 2,
+  "face": 4,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 421,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 423,
+   "node_type": "AV_VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 425,
+   "node_type": "PulidFluxModelLoader",
+   "kind": "aux_model",
+   "name": "pulid_flux_v0.9.1.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "FLUX"
+ ],
+ "param_face_size": 97,
+ "structure_hash": "13a92234957baa81",
+ "param_face": [
+  {
+   "node_id": 165,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "text, watermark"
+  },
+  {
+   "node_id": 164,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "A girl with a perfect face\n"
+  },
+  {
+   "node_id": 154,
+   "node_type": "ImageCrop",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 154,
+   "node_type": "ImageCrop",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 154,
+   "node_type": "ImageCrop",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 154,
+   "node_type": "ImageCrop",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 314,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinT_OGC (694MB)"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "face"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 145,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d31865"
+  },
+  {
+   "node_id": 145,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 145,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 204,
+   "node_type": "Mask Crop Region",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 204,
+   "node_type": "Mask Crop Region",
+   "widget_index": 1,
+   "value_preview": "dominant"
+  },
+  {
+   "node_id": 205,
+   "node_type": "ImageCrop",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 205,
+   "node_type": "ImageCrop",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 205,
+   "node_type": "ImageCrop",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 205,
+   "node_type": "ImageCrop",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 292,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 417,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d31865"
+  },
+  {
+   "node_id": 417,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 417,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 273,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "951a2265c30123e04720a9a90ebcea24f129e9b85aca9a80f06a40d31865"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 146,
+   "node_type": "Mask Crop Region",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 146,
+   "node_type": "Mask Crop Region",
+   "widget_index": 1,
+   "value_preview": "dominant"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 421,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors"
+  },
+  {
+   "node_id": 421,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 422,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 423,
+   "node_type": "AV_VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 423,
+   "node_type": "AV_VAELoader",
+   "widget_index": 1,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 425,
+   "node_type": "PulidFluxModelLoader",
+   "widget_index": 0,
+   "value_preview": "pulid_flux_v0.9.1.safetensors"
+  },
+  {
+   "node_id": 427,
+   "node_type": "PulidFluxInsightFaceLoader",
+   "widget_index": 0,
+   "value_preview": "CPU"
+  },
+  {
+   "node_id": 430,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 431,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "516618303588277"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 162,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 160,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 160,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 160,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 424,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 0,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 424,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 424,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 435,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 435,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 436,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "打开链接：https://www.runninghub.cn/?inviteCode=pyespett 注册领500RH"
+  }
+ ]
+}

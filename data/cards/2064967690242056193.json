@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "角色设计",
+  "图像风格迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "支持上传“画风参考”与“原图”两类图像，输出“单图编辑”和“双图编辑”的结果图",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 ReferenceLatent 将参考图编码为潜在空间条件，实现画风保持的图像生成",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 Qwen3VL_Chat 对参考图进行视觉理解，自动生成风格描述文本并参与条件生成",
+   "kind": "inference"
+  },
+  {
+   "text": "集成颜色匹配后处理（ImageColorMatch+），使输出图与参考图色调一致",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Qwen-Image",
+  "ReferenceLatent 参考图条件生成",
+  "Qwen3VL_Chat 视觉语言模型风格提取",
+  "ImageColorMatch+ 颜色匹配后处理",
+  "多分支采样（双 SamplerCustomAdvanced）"
+ ],
+ "special_features": [
+  {
+   "text": "使用 Qwen3VL_Chat 作为“风格提取器”，将视觉理解结果转化为生成条件，替代传统手工提示词",
+   "kind": "inference"
+  },
+  {
+   "text": "两个 SamplerCustomAdvanced 并行，分别处理单图编辑与双图编辑，支持多路输出对比",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 easy imageConcat、LayerUtility: ImageReel 和 Image Comparer 构建参考-结果对比图，形成人工质量检查回路",
+   "kind": "fact"
+  },
+  {
+   "text": "后处理阶段使用 ImageColorMatch+ 在 LUV 和 RGB 两个色彩空间进行颜色匹配，增强风格一致性",
+   "kind": "fact"
+  },
+  {
+   "text": "流程结束调用 PlaySound|pysssss 播放提示音，适合批量循环出图",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能旨在构建一个高度灵活的“画风自定义”AI编辑台：用户提供画风参考图和原图，系统先用 Qwen3VL_Chat 自动提取参考图的风格描述，再结合 FLUX/Qwen-Image 的生成能力和 ReferenceLatent 条件控制，将风格迁移到目标内容。通过双采样器分支同时生成单图编辑和双图编辑结果，并配合图像拼接、颜色匹配等节点让用户直观对比和微调，最终得到风格统一的高质量图像。",
+ "use_case": "适合角色设计场景：给出一张画风参考图和一张角色原图，快速生成保持该画风的角色设定图；也可用于双图对比编辑（如原图 vs 风格化结果），便于设计师批量探索不同画风。",
+ "limitation": "强依赖特定模型文件（flux-2-klein-9b.safetensors、qwen_3_8b_fp8mixed.safetensors、flux2-vae.safetensors）和 Qwen3-VL-4B 模型，需要较高显存；使用大量自定义节点（Easy-Use、rgthree、LayerStyle、pysssss 等），环境配置复杂；输入固定缩放为 1024x1024，可能丢失原始细节；采样步数默认为 4，生成精细度可能不足。",
+ "dependencies": [
+  "flux-2-klein-9b.safetensors",
+  "qwen_3_8b_fp8mixed.safetensors",
+  "flux2-vae.safetensors",
+  "Qwen3-VL-4B-Instruct",
+  "ComfyUI-Easy-Use (easy imageConcat)",
+  "ComfyUI_Comfyroll_CustomNodes (CR Text Concatenate)",
+  "rgthree-comfy (Image Comparer)",
+  "ComfyUI-Custom-Scripts (PlaySound|pysssss)",
+  "ComfyUI-LayerStyle (LayerUtility: ImageReel, ImageReelComposit, ImageScaleByAspectRatio V2)",
+  "Qwen3VL_Chat 自定义节点",
+  "JjkText 自定义节点",
+  "ImageColorMatch+ 自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像",
+  "count": "1-2（画风参考图 + 原图）"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Flux2Scheduler.steps (默认 4)",
+   "how_to_tune": "值越大生成细节越丰富，但耗时增加；建议从 8 起步，精细需求可调至 20"
+  },
+  {
+   "param": "CFGGuider.cfg (默认 1)",
+   "how_to_tune": "增大至 2~4 可提高生成与条件的一致性，但过高可能导致过曝或色彩异常"
+  },
+  {
+   "param": "ImageColorMatch+.strength (默认 0.5)",
+   "how_to_tune": "增大使结果图颜色更贴近参考，减小则保留原图色彩，适合微调风格浓度"
+  },
+  {
+   "param": "RandomNoise.seed (默认 580546616445459)",
+   "how_to_tune": "固定种子可保证可复现性；点击 randomize 可探索更多构图和风格变化"
+  },
+  {
+   "param": "LayerUtility: ImageScaleByAspectRatio V2.scale (默认 1,1)",
+   "how_to_tune": "可设置 1,1 保持原比例，或按需提高分辨率以获得更多细节"
+  }
+ ],
+ "summary_text": "能力:支持上传“画风参考”与“原图”两类图像，输出“单图编辑”和“双图编辑”的结果图；能力:利用 ReferenceLatent 将参考图编码为潜在空间条件，实现画风保持的图像生成；能力:通过 Qwen3VL_Chat 对参考图进行视觉理解，自动生成风格描述文本并参与条件生成；能力:集成颜色匹配后处理（ImageColorMatch+），使输出图与参考图色调一致；特色:使用 Qwen3VL_Chat 作为“风格提取器”，将视觉理解结果转化为生成条件，替代传统手工提示词；特色:两个 SamplerCustomAdvanced 并行，分别处理单图编辑与双图编辑，支持多路输出对比；特色:通过 easy imageConcat、LayerUtility: ImageReel 和 Image Comparer 构建参考-结果对比图，形成人工质量检查回路；特色:后处理阶段使用 ImageColorMatch+ 在 LUV 和 RGB 两个色彩空间进行颜色匹配，增强风格一致性；特色:流程结束调用 PlaySound|pysssss 播放提示音，适合批量循环出图；适合角色设计场景：给出一张画风参考图和一张角色原图，快速生成保持该画风的角色设定图；也可用于双图对比编辑（如原图 vs 风格化结果），便于设计师批量探索不同画风。；该工作流可能旨在构建一个高度灵活的“画风自定义”AI编辑台：用户提供画风参考图和原图，系统先用 Qwen3VL_Chat 自动提取参考图的风格描述，再结合 FLUX/Qwen-Image 的生成能力和 ReferenceLatent 条件控制，将风格迁移到目标内容。通过双采样器分支同时生成单图编辑和双图编辑结果，并配合图像拼接、颜色匹配等节点让用户直观对比和微调，最终得到风格统一的高质量图像。"
+}

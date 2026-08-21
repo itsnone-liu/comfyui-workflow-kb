@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "图像生成",
+  "角色一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张角色参考图像，结合文字提示词，端到端生成保持同一角色身份的新图像",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Kontext 模型将参考图像条件注入 Flux 采样过程，实现身份特征保留",
+   "kind": "inference"
+  },
+  {
+   "text": "支持通过 PrimitiveNode 外部设定输出宽高（默认 1024x1520）",
+   "kind": "fact"
+  },
+  {
+   "text": "固定随机种子，支持可复现的生成结果",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Kontext 参考图像条件注入",
+  "ReferenceLatent 潜变量参考",
+  "ModelSamplingFlux 自定义采样 shift",
+  "FluxGuidance 指导强度控制",
+  "BasicGuider + SamplerCustomAdvanced 灵活采样"
+ ],
+ "special_features": [
+  {
+   "text": "使用专用角色一致性模型 flux1-kontext-dev（FP8）驱动生成",
+   "kind": "fact"
+  },
+  {
+   "text": "组合 FluxKontextImageScale 和 ReferenceLatent，将参考图变为采样条件",
+   "kind": "inference"
+  },
+  {
+   "text": "用 BasicScheduler/BasicGuider/SamplerCustomAdvanced 替代常规 KSampler，精细化调度与引导",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ModelSamplingFlux 调节采样 shift（1.15）与潜在尺寸元组，适配 Flux 模型",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在为 Flux 模型赋予角色一致性能力。核心思路是在采样前把参考图像编码为潜变量条件，与 CLIP 文本条件一起送入 Flux Kontext 模型，使生成结果在遵循提示词的同时保留参考角色特征。通过 ModelSamplingFlux 和 FluxGuidance 调节采样分布，并在外部暴露宽高与种子参数，兼顾生成质量与可复用性。",
+ "use_case": "适合角色概念设计、系列插画、多视图人物生成等需要维持同一角色身份的创作场景。",
+ "limitation": "依赖 flux1-kontext-dev 等模型文件及 FluxKontextImageScale/ReferenceLatent 等自定义节点；仅支持单张参考图输入；输出分辨率受 PrimitiveNode 参数限制；对低质量参考图或复杂角色可能身份保持不足；需要足够显存运行 FP8 模型。",
+ "dependencies": [
+  "flux1-kontext-dev.safetensors (fp8_e4m3fn)",
+  "t5xxl_fp16.safetensors",
+  "clip_l.safetensors",
+  "ae.safetensors",
+  "自定义节点: FluxKontextImageScale, ReferenceLatent, ModelSamplingFlux, BasicScheduler/BasicGuider"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler steps (20)",
+   "how_to_tune": "采样步数，数值越高细节越好但耗时增加；常规 20-30，速度与质量平衡可在 20 左右。"
+  },
+  {
+   "param": "BasicScheduler cfg (1)",
+   "how_to_tune": "Flux 模型通常 cfg=1，无需太高；若提示词跟随不足可微调至 1.5-2，但过高易产生伪影。"
+  },
+  {
+   "param": "FluxGuidance (2.5)",
+   "how_to_tune": "控制文本引导强度，值越大越贴合提示词，但可能降低身份一致性；建议 2.0-4.0 之间尝试。"
+  },
+  {
+   "param": "ModelSamplingFlux shift (1.15)",
+   "how_to_tune": "采样噪声偏移，影响生成细节与对比度；可小范围调整（如 0.8-1.5）观察效果变化。"
+  },
+  {
+   "param": "width/height (1024/1520)",
+   "how_to_tune": "生成分辨率，需基于显存调整，低显存可降低至 768x1152，但可能影响角色细节。"
+  },
+  {
+   "param": "RandomNoise seed (2080)",
+   "how_to_tune": "随机种子，固定可复现结果；更换种子可尝试不同构图。"
+  }
+ ],
+ "summary_text": "能力:上传单张角色参考图像，结合文字提示词，端到端生成保持同一角色身份的新图像；能力:通过 Kontext 模型将参考图像条件注入 Flux 采样过程，实现身份特征保留；能力:支持通过 PrimitiveNode 外部设定输出宽高（默认 1024x1520）；能力:固定随机种子，支持可复现的生成结果；特色:使用专用角色一致性模型 flux1-kontext-dev（FP8）驱动生成；特色:组合 FluxKontextImageScale 和 ReferenceLatent，将参考图变为采样条件；特色:用 BasicScheduler/BasicGuider/SamplerCustomAdvanced 替代常规 KSampler，精细化调度与引导；特色:通过 ModelSamplingFlux 调节采样 shift（1.15）与潜在尺寸元组，适配 Flux 模型；适合角色概念设计、系列插画、多视图人物生成等需要维持同一角色身份的创作场景。；该工作流旨在为 Flux 模型赋予角色一致性能力。核心思路是在采样前把参考图像编码为潜变量条件，与 CLIP 文本条件一起送入 Flux Kontext 模型，使生成结果在遵循提示词的同时保留参考角色特征。通过 ModelSamplingFlux 和 FluxGuidance 调节采样分布，并在外部暴露宽高与种子参数，兼顾生成质量与可复用性。"
+}

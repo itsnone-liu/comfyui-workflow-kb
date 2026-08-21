@@ -1,0 +1,83 @@
+{
+ "domain": [
+  "图生视频",
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成「上传一张图片 → 用海螺H3图生视频模型生成2K/15秒短视频 → 预览并保存视频」的完整流程。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过预设提示词“镜头保持主观视角（POV），她笑着轻轻推了一下镜”实现第一人称POV推镜头的风格化视频生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时用easy showAnything做中间预览，并用SaveVideo和VHS_VideoCombine落盘，兼顾人工检查与多格式输出。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图生视频（Image-to-Video）生成",
+  "基于自然语言提示词控制镜头语言",
+  "视频IO与编码封装（VHS_VideoCombine / SaveVideo）",
+  "中间结果可视化预览（easy showAnything）",
+  "视频组件解析与检查（GetVideoComponents）"
+ ],
+ "special_features": [
+  {
+   "text": "输入只有单张图片，输出经过两个保存类节点，整体是一条面向“单图出片”的极简模板，适合直接复制改图改词。",
+   "kind": "fact"
+  },
+  {
+   "text": "模型节点自带中文POV提示词，说明该工作流不只是通用图生视频，还封装了一个“主观视角推镜”的镜头风格模板。",
+   "kind": "fact"
+  },
+  {
+   "text": "GetVideoComponents节点出现在链路中，可能用于拆解视频组件做检查或中间处理，但结构事实未展示完整连线，具体作用需要结合节点定义确认。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流的设计意图可能是一个面向海螺H3的“傻瓜式”风格化图生视频模板：用户只需换一张图片，保留POV提示词，就能得到一段2K、15秒、带第一人称推镜感的短视频。加入easy showAnything是为了在生成到保存之间做人眼检查；同时放SaveVideo和VHS_VideoCombine，可能是为了兼容不同使用习惯或后续视频处理需求。GetVideoComponents的出现则暗示创作者在调试时关注过视频内部组件的可用性，但整体结构仍以简单可直接复用为主。",
+ "use_case": "适合短视频素材生产、人像POV镜头生成、商品或场景的“一张图动起来”快速预览；也适合海螺H3创作者做固定风格镜头的批量出片模板。",
+ "limitation": "依赖RH_MinimaxHailuoH3ImageToVideo专用节点及其背后的海螺H3服务/API，缺少相关自定义节点或密钥会直接不可用；输入为单张静态图片，不能直接处理多图首帧或视频输入；生成时长、分辨率由节点参数固定为15秒和2K；提示词为中文自然语言，实际效果还取决于海螺H3对中文语义和POV指令的理解。",
+ "dependencies": [
+  "ComfyUI基础节点：LoadImage、SaveVideo",
+  "RH_MinimaxHailuoH3ImageToVideo（海螺H3图生视频专用节点）",
+  "VHS_VideoCombine（VideoHelperSuite）",
+  "easy showAnything（ComfyUI-Easy-Use）",
+  "GetVideoComponents（视频组件工具节点，需对应自定义节点包）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt / 文本提示词",
+   "how_to_tune": "这是镜头风格的核心：保留“POV、推镜”等描述维持第一人称感；换主题时替换人物、动作、环境和镜头调度，描述越具体越好。"
+  },
+  {
+   "param": "2K（分辨率）",
+   "how_to_tune": "追求清晰度用2K；快速测试或降低资源成本时可降至1080p/720p，但生成耗时和细节会相应变化。"
+  },
+  {
+   "param": "15（视频时长/帧数）",
+   "how_to_tune": "15秒适合完整短镜头；如果只验证效果，可尝试更短时长；若需要更复杂叙事，再逐步加长并观察画面稳定性。"
+  },
+  {
+   "param": "False（布尔开关）",
+   "how_to_tune": "具体含义需以节点定义为准，通常可能是增强/优化/首帧控制类开关；建议先保持模板原值，画面异常时再切换True做对比。"
+  },
+  {
+   "param": "seed / randomize",
+   "how_to_tune": "固定seed可复现同一结果；开启randomize可多抽几版找最佳镜头；确定满意结果后建议固定seed并保存。"
+  }
+ ],
+ "summary_text": "能力:端到端完成「上传一张图片 → 用海螺H3图生视频模型生成2K/15秒短视频 → 预览并保存视频」的完整流程。；能力:通过预设提示词“镜头保持主观视角（POV），她笑着轻轻推了一下镜”实现第一人称POV推镜头的风格化视频生成。；能力:同时用easy showAnything做中间预览，并用SaveVideo和VHS_VideoCombine落盘，兼顾人工检查与多格式输出。；特色:输入只有单张图片，输出经过两个保存类节点，整体是一条面向“单图出片”的极简模板，适合直接复制改图改词。；特色:模型节点自带中文POV提示词，说明该工作流不只是通用图生视频，还封装了一个“主观视角推镜”的镜头风格模板。；特色:GetVideoComponents节点出现在链路中，可能用于拆解视频组件做检查或中间处理，但结构事实未展示完整连线，具体作用需要结合节点定义确认。；适合短视频素材生产、人像POV镜头生成、商品或场景的“一张图动起来”快速预览；也适合海螺H3创作者做固定风格镜头的批量出片模板。；该工作流的设计意图可能是一个面向海螺H3的“傻瓜式”风格化图生视频模板：用户只需换一张图片，保留POV提示词，就能得到一段2K、15秒、带第一人称推镜感的短视频。加入easy showAnything是为了在生成到保存之间做人眼检查；同时放SaveVideo和VHS_VideoCombine，可能是为了兼容不同使用习惯或后续视频处理需求。GetVideoComponents的出现则暗示创作者在调试时关注过视频内部组件的可用性，但整体结构仍以简单可直接复用为主。"
+}

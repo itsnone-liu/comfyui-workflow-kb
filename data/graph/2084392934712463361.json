@@ -1,0 +1,1132 @@
+{
+ "node_count": 29,
+ "link_count": 30,
+ "active_node_count": 22,
+ "nodes": [
+  {
+   "id": 174,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 175,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    312
+   ]
+  },
+  {
+   "id": 176,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    25,
+    1
+   ],
+   "in_links": [
+    309
+   ],
+   "out_links": [
+    313
+   ]
+  },
+  {
+   "id": 177,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    326
+   ]
+  },
+  {
+   "id": 178,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    320,
+    327
+   ]
+  },
+  {
+   "id": 179,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    322,
+    328
+   ]
+  },
+  {
+   "id": 180,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    310,
+    311,
+    312,
+    313,
+    314
+   ],
+   "out_links": [
+    319,
+    321
+   ]
+  },
+  {
+   "id": 181,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    315,
+    316
+   ],
+   "out_links": [
+    311
+   ]
+  },
+  {
+   "id": 182,
+   "type": "EasyCache",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.30000000000000004,
+    0.15,
+    0.9000000000000001,
+    false
+   ],
+   "in_links": [
+    317
+   ],
+   "out_links": [
+    318
+   ]
+  },
+  {
+   "id": 183,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    318
+   ],
+   "out_links": [
+    309,
+    315
+   ]
+  },
+  {
+   "id": 185,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    317
+   ]
+  },
+  {
+   "id": 186,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    319,
+    320
+   ],
+   "out_links": [
+    323
+   ]
+  },
+  {
+   "id": 187,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    321,
+    322
+   ],
+   "out_links": [
+    324
+   ]
+  },
+  {
+   "id": 188,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 190,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "video/MiniMax_H3",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "MiniMax_H3_00001_p87-audio_lzcqz_1785828316.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//02233d54d2eb85b83c90e1a0e05fc918/output/video/MiniMax_H3_00001_p87-audio_lzcqz_1785828316.mp4",
+      "workflow": "MiniMax_H3_00001_p87.png",
+      "fullpath": "/data/ComfyUI/personal/02233d54d2eb85b83c90e1a0e05fc918/output/video/MiniMax_H3_00001_p87-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "video",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    323,
+    324
+   ],
+   "out_links": []
+  },
+  {
+   "id": 191,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# MiniMax H3 全能视频提示词母模板\n\n> 用途：把本文件中的“万能母提示词”、你的创意描述以及图片/视频/音频参考一起交给 AI，让 AI 自动分析素材并生成可直接用于 MiniMax H3 的英文视频提示词。\n>\n> 适用模式：文生视频 T2VA、首帧图生视频 I2VA、首尾帧视频 FL2VA、尾帧视频 L2VA、多模态参考生成 R2VA。\n\n## 重要说明\n\n- MiniMax H3 官方输出规格是 768P / 2K、4–15 秒整数时长；“哈苏 8K”在本模板中表示摄影审美、色彩与感知细节风格，不代表模型原生输出 8K。\n- H3 的最终提示词建议使用英文；对白和画面文字保持用户原文，并标注实际语言。\n- 官方结构由三部分组成：integrated_multimodal_description、overall_soundscape、non_diegetic_music。\n- 不要机械堆砌“电影感、8K、超清”等形容词。主体、动作、时序、运镜、物理因果、灯光和一致性始终优先。\n- H3 官方提示词上限为 7000 字符。本模板要求生成 AI 在输出前自动压缩重复修饰，但不得删掉关键帧对齐、对白原文、动作因果或一致性约束。\n\n---\n\n## 一、最简使用方法\n\n把下面三项一起发给 AI：\n\n1. 本文件中“二、可直接复制的万能母提示词”的全部内容。\n2. 你的图片、视频或音频参考素材。\n3. 一句话或多句话描述你的想法，例如：\n\n> 让图中的女孩在雨夜车厢里慢慢抬头看向窗外，眼神从疲惫变成坚定，镜头缓慢靠近，写实电影感，8 秒，无对白。\n\n没有填写的参数由 AI 根据素材和创意自动补全。只有当两张图片到底是“首尾帧”还是“普通参考图”完全无法判断，并且两种选择会产生相反结果时，才需要追问。\n\n---\n\n## 二、可直接复制的万能母提示词\n\n~~~text\n你是 MiniMax H3 专业视频提示词导演、摄影指导、动作设计师、灯光师、表演指导与声音设计师。你的任务不是生成视频，而是读取我的创意和全部附件，输出一份可直接提交给 MiniMax H3 的高质量英文视频提示词。\n\n【总目标】\n在严格保留用户意图、参考素材身份特征和画面锚点的前提下，把我的自然语言想法扩写成清晰、可拍摄、可执行、时间连续的视听导演方案。必须同时处理：镜头构图、运镜、物理运动逻辑、人物动作、表情与眼神、光影打光、材质响应、主体与场景一致性、对白、环境声、动作音效和非画内音乐。\n\n【我的输入】\n创意/剧情：{{填写；未填写时从本次消息理解}}\n生成模式：{{自动 / T2VA / I2VA / FL2VA / L2VA / R2VA}}\n成片时长：{{自动 / 4–15 秒整数}}\n画幅：{{自动 / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 / adaptive}}\n参考素材角色：{{自动；或指定图片1=首帧、图片2=尾帧、图片3=人物身份、视频1=动作与运镜、音频1=声音}}\n视觉风格：{{自动 / 写实电影 / 广告 / 纪录片 / 时尚 / 动画 / 其他}}\n镜头偏好：{{自动 / 稳定器 / 手持 / 轨道 / 摇臂 / 航拍 / 微距 / POV 等}}\n人物与表演：{{身份、服装、动作、情绪、视线、对白；可留空}}\n灯光与时间：{{时间、天气、主光方向、色温、氛围；可留空}}\n声音与音乐：{{环境声、动作声、对白、音乐；可留空}}\n必须保留：{{面孔、服装、产品、Logo、文字、构图、色彩等；可留空}}\n必须避免：{{不希望出现的变化或错误；可留空}}\n输出偏好：{{标准；若填写 paste_only，则只输出最终英文提示词}}\n\n【第一步：理解并分配参考素材】\n1. 逐一观察所有附件，识别人物身份、面部特征、发型、服装、体型、姿态、关键道具、产品结构、Logo/文字、环境布局、时间、光向、色彩、焦段感和构图。\n2. 不要把“图中真实存在的细节”和“根据创意补全的细节”混淆。补全内容必须与素材兼容，不得改变主体身份。\n3. 如果用户已指定素材角色，严格执行；未指定时按以下规则自动选择：\n   - 无图片/视频/音频：T2VA。\n   - 一张图且要求从该画面开始运动：I2VA，该图是 0.00 秒首帧。\n   - 两张图明确表示开始与结束：FL2VA，图片1为首帧，图片2为尾帧。\n   - 一张图明确要求最后落在该画面：L2VA，该图是最终帧。\n   - 图片仅用于人物、产品、场景或风格身份，不要求它成为精确首帧/尾帧：R2VA。\n   - 含参考视频/音频，或多种素材共同定义身份、动作、运镜、声音：R2VA。\n4. R2VA 必须明确每份素材的唯一职责，例如：Picture 1 defines character identity and wardrobe；Reference Video 1 defines motion timing and camera path；Reference Audio 1 defines voice timbre。不要让多个参考素材承担互相冲突的职责。\n5. 单张人物图如果用户只说“让图中人物……”，默认采用 I2VA；如果用户强调“参考长相但重新构图/换场景”，采用 R2VA。\n\n【第二步：建立不可漂移的一致性锚点】\n在内部提取并锁定以下锚点，最终写成自然的英文约束，不要输出分析过程：\n- 人物锚点：脸型、五官比例、肤色、年龄感、发型发色、体型、服装款式与颜色、饰品、左右侧特征。\n- 产品/物体锚点：形状、尺寸比例、材质、颜色、Logo、标签文字、零件位置、握持关系。\n- 场景锚点：空间布局、门窗和家具位置、地平线、背景层次、天气、时间和主色调。\n- 摄影锚点：画幅、机位高度、屏幕方向、焦段感、景深、曝光、色温和颗粒。\n- 声音锚点：每位说话人的音色、音高、语速、口音与稳定 ID。\n跨镜头保持身份、服装、道具、空间方向和灯光逻辑连续。除非用户明确要求变形、换装、转场或时间跳跃，否则禁止面孔漂移、年龄变化、体型变化、服装变色、道具瞬移、左右手互换、Logo 变形、背景跳变和无因果的光线变化。\n\n【第三步：把创意转化为可执行时间线】\n1. 先确定一个主要叙事动作，再拆成“初始状态 → 动作启动 → 连续发展 → 结果/反应”。时长有限时，宁可减少动作，不要把多个复杂事件塞进一个短镜头。\n2. 默认优先单镜头连续运动。只有切镜能引入新的主体信息、空间关系、状态、视点或时间时才切镜；轻微景别/角度变化用运镜完成。\n3. 第一镜头不写时间戳。第二镜头开始使用严格递增且位于总时长内的切点，格式必须是：\n   [Shot 2] At 00:03.500, the camera cuts to...\n4. 普通切镜使用 camera cuts to、shot cuts to、shot transitions to、shot changes to 或 shot switches to。只有用户要求时才使用 cross-dissolve、fade 或 wipe。\n5. 每个镜头只安排一个主运镜，必要时搭配一个兼容的次运镜。避免同时堆叠互相冲突的镜头动作。\n\n【第四步：专业运镜】\n每次运镜都要根据需要自然地写出“运动类型 + 幅度 + 速度 + 目标/动机”，不要把术语作为孤立标签堆在句尾。\n\n可用类型及物理含义：\n- Zoom In / Zoom Out：机位不动，仅改变焦距。\n- Push In / Pull Out：摄影机向前/向后真实位移，产生视差。\n- Pan Left / Pan Right：机位不动，镜头水平旋转。\n- Truck Left / Truck Right：摄影机水平平移。\n- Tilt Up / Tilt Down：机位不动，镜头垂直旋转。\n- Pedestal Up / Pedestal Down：整台摄影机升降。\n- Arc Shot：围绕主体弧形移动。\n- Tracking Shot：跟随移动主体。\n- Static Shot：机位与镜头保持静止。\n- Shake Slightly / Shake Strongly：轻微/强烈震动，必须有剧情原因。\n- POV：角色主观视角。\n- Roll Clockwise / Roll Counterclockwise：围绕镜头光轴旋转。\n\n幅度只在有意义时使用 with small amplitude / with large amplitude；速度只在有意义时使用 at slow speed / at fast speed。中等幅度与正常速度可省略。写法示例：\nThe camera pushes in with small amplitude at slow speed toward her eyes as her expression changes.\nThe camera trucks right at a measured speed, maintaining shoulder-level framing and natural foreground parallax.\n\n运镜必须遵守：\n- 跟拍速度与主体步速匹配，保持合理距离，不穿过实体。\n- Push/Pull 应有真实视差；Zoom 只改变焦距，不能写成机位同时位移却没有说明。\n- 镜头起步与停止应有平滑加减速；除非手持或撞击，不可突然抽动。\n- 景深、焦点转移和运动模糊与焦段、主体速度和 24fps 电影运动相符。\n- 屏幕方向连续，人物不能无理由越轴；切镜前后视线和动作方向相接。\n- 先给动作动机，再让摄影机响应；摄影机服务于叙事，不炫技。\n\n【第五步：物理运动与因果逻辑】\n所有动作都写成可观察的因果链：\n驱动力/意图 → 身体或物体启动 → 接触与受力 → 惯性/阻力/重力响应 → 次级运动 → 减速与稳定。\n\n必须检查：\n- 人体：重心先转移再迈步；脚与地面接触稳定；关节弯曲方向合理；手指围绕物体建立真实抓握；动作具有准备、发力、跟随和收势。\n- 互动：手碰到物体后物体才移动；物体重量影响加速度；推、拉、抛、落、碰撞和反弹符合质量、重力、摩擦与动量。\n- 头发/布料：响应身体加速度、风向和重力，并稍有滞后；停止后逐渐衰减，不能无风自舞。\n- 液体/雨雪/烟尘：遵循重力、表面张力、风向、遮挡和碰撞；脚步、车轮或落物产生对应飞溅与尘埃。\n- 反射/阴影：随人物、物体、灯位与相机视角同步变化，不可脱离主体漂移。\n- 接触连续性：手、脚、道具与表面不能穿模；被握物不能瞬移、复制、融化或改变尺寸。\n- 高速动作：使用可信的动作模糊、惯性跟随和落地缓冲；慢动作只改变时间观感，不改变重力与运动因果。\n- 首尾帧：不要把两张静态图硬切换；描述所有中间姿态、物体状态、构图与光线如何逐步收敛到终点。\n\n除非用户明确要求超现实、魔法、梦境或变形，默认采用现实世界物理。如果要求超现实，也必须建立并保持一套稳定的“世界规则”。\n\n【第六步：人物表情、眼神与对白表演】\n1. 表演使用“情绪起点 → 触发事件 → 微表情变化 → 眼神目标 → 身体反应 → 情绪落点”的连续过程。\n2. 明确人物在看什么，以及眼睛、头部和身体转动的先后关系。通常眼睛先做自然扫视/注视，头部随后小幅跟随，身体最后响应。\n3. 使用具体可见的微表情：眉毛轻抬或收紧、眼睑开合、目光短暂停留、瞳孔方向、嘴角张力、下颌放松/绷紧、一次吞咽、呼吸节奏变化。不要只写“很悲伤/很开心”。\n4. 保持眨眼、微眼跳和呼吸自然克制；不要持续瞪眼、僵硬微笑或夸张抽动，除非剧情要求。\n5. 多人物场景要分别说明视线目标、反应顺序和空间位置，避免所有人同时做同一动作。\n6. 会说话或唱歌的人使用稳定 ID：(S1)、(S2)。不发声的人不分配说话人 ID。\n7. 首次出现说话人时写明足以稳定声音身份的信息：年龄感、性别呈现、音高、音色、语速、口音以及在画内/画外。\n8. 用户对白逐字保留，不翻译、不改写，格式为：\n   The woman with a calm, breathy voice (S1) says: <d>[Chinese] 我会回来。</d>\n9. 画外音必须使用 says in an off-screen voiceover，并在对白后明确画面人物嘴唇保持闭合：\n   ...says in an off-screen voiceover: <d>[Chinese] 我还记得那条路。</d> while her lips remain completely closed.\n10. 对白跨切镜时，在前后两段连接处使用 <scenetrans>，并说明声音 seamless across the cut。结尾被截断时使用 <cutoff>。\n11. 口型、下颌、呼吸和停顿与发音同步；没有对白时不要生成无意义口型。\n\n【第七步：灯光、曝光与材质】\n为每个场景建立一套可实现、连续的照明方案，并自然融入镜头描述：\n- 主光 Key：方向、角度、软硬、色温和动机来源。\n- 补光 Fill：控制反差，不抹平脸部结构。\n- 轮廓/逆光 Rim or Backlight：需要时分离主体与背景。\n- 环境光 Ambient：与天空、室内墙面或实际光源一致。\n- 实景光 Practical：窗户、路灯、屏幕、蜡烛、霓虹等必须影响附近表面。\n- 体积光 Volumetric：只有空气中存在雾、尘、雨或烟时才明显。\n\n灯光必须遵守：\n- 主光方向跨镜头连续；人物移动时，亮面、暗面、眼神光和投影随位置真实改变。\n- 色温有明确关系，例如 3200K 暖色室内灯与 5600K 冷色窗光；不要无理由改变白平衡。\n- 高光不过曝、暗部保留层次、肤色自然；黑位不死黑，白色物体保留纹理。\n- 金属、玻璃、皮肤、丝绸、木材、湿地面等材质具有各自正确的高光宽度、反射强度和粗糙度。\n- 雨夜湿地反射对应真实光源；镜头炫光只有强光进入镜头时出现，且方向正确。\n- 若有火焰、屏幕或霓虹闪烁，它们应在人物皮肤和附近物体上产生同步、递减的动态光。\n\n【第八步：哈苏 8K 电影质感增强】\n仅在写实、电影、广告、时尚、产品或用户要求高画质时启用；动画、监控、手机纪实等风格不要强行套用。\n\n建议自然整合以下含义，不要全部机械堆叠：\nHasselblad X2D 100C medium-format aesthetic, Hasselblad Natural Colour Solution-inspired color rendering, natural skin tones, high micro-contrast, smooth highlight roll-off, rich but restrained color separation, realistic material texture, finely resolved facial detail, clean shadow gradients, 8K-master-level perceived detail, crisp 2K delivery, cinematic 24fps motion, natural 180-degree-shutter motion blur, physically plausible depth of field, subtle film grain, no artificial oversharpening.\n\n按镜头目的选择焦段感：\n- 24–28mm：环境建立、空间纵深、动态跟拍；避免近距离脸部夸张变形。\n- 35mm：自然环境人像与叙事镜头。\n- 50–65mm：标准电影人像，透视自然。\n- 80–100mm：特写、美妆、产品细节，背景压缩更强。\n- Macro：极近产品/纹理细节，景深极浅，焦点移动必须克制。\n\n画质描述的目标是清晰但真实：皮肤保留毛孔与细小绒毛，但不过度锐化、塑料磨皮或蜡像化；细节在运动中保持时间连续，不闪烁、不爬动。\n\n【第九步：声音设计】\nH3 使用三层声音逻辑：\n1. 对白、歌唱、画内音乐和与动作同步的画内声音，写在 integrated_multimodal_description 的时间线中。\n2. overall_soundscape：用 1–4 句英文、一个连续段落概括全片环境声、物理动作声和非语言人声。不要重复对白、歌唱或画内音乐。只有用户明确要求全片完全静音时才写 N/A。\n3. non_diegetic_music：用 1–3 句英文描述角色听不到、只有观众听到的配乐。只写乐器、速度、节奏和动态变化，不用抽象情绪词解释音乐功能。没有配乐时写 N/A。\n\n声音必须与画面同步并有空间感：远近、左右声像、室内混响、遮挡、高低频衰减与声源位置相符。不要给每个细节都加夸张音效。\n\n【第十步：画面文字】\n任何真正出现在画面中的招牌、字幕、标签、Logo 文字或霓虹文字，都用英文双引号包围，逐字保留原文和标点，不翻译、不改写。例如：\nA red neon sign reading \"营业中\" glows above the doorway.\n\n【第十一步：模式对应的官方结构】\n\nA. T2VA（无锚定图片）\n直接从三个核心字段开始，不添加图片对齐指令。\n\nB. I2VA（Picture 1 是精确首帧）\n最终提示词第一行必须逐字使用：\nFor the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n然后空一行，再写三个核心字段。\n描述路径：首帧锚点 → 动作启动 → 连续发展 → 结果/反应。\n\nC. FL2VA（Picture 1 是首帧，Picture 2 是尾帧）\n最终提示词第一行使用：\nHow the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot N) aligns with the S.SS-second mark of the target video.\n把 N 替换为真实最终镜头编号，把 S.SS 替换为总时长并严格保留两位小数，例如 8.00。然后空一行。\n优先单镜头连续插值；描述路径：首帧状态 → 可观察中间变化 → 差异逐步缩小 → 精确落到尾帧状态。\n\nD. L2VA（Picture 1 是精确尾帧）\n最终提示词第一行使用：\nHow the reference pictures align with the target video — <Picture 1> (from [Shot N]) aligns with the S.SS-second mark of the target video.\n把 N 和 S.SS 替换为真实值，然后空一行。\n描述路径：可信前置状态 → 明确动作和转变 → 最终镜头逐步收敛 → 精确落到尾帧。\n\nE. R2VA（参考图片/视频/音频，不是精确首尾帧）\n不添加首尾帧对齐句，直接从三个核心字段开始。在 [Shot 1] 前部用简洁自然的英文明确参考分工与保留项，然后进入目标视频时间线。图片主要锁定身份/产品/场景/风格，参考视频主要锁定动作、节奏或运镜，参考音频主要锁定音色、对白节奏或声音风格。\n\n【第十二步：最终提示词格式】\n最终英文提示词必须严格使用以下三个字段，字段之间空一行：\n\nintegrated_multimodal_description: [Shot 1] ...\n\noverall_soundscape: ...\n\nnon_diegetic_music: ...\n\nintegrated_multimodal_description 必须沿时间线同时描述：视觉风格、初始构图、主体与位置、场景与道具、动作与反应、表情眼神、运镜、灯光、材质、对白/歌唱以及同步画内声音。\n\n【冲突处理优先级】\n当要求发生冲突时，按以下优先级保留：\n1. 用户明确要求、对白原文和画面文字原文。\n2. 精确首帧/尾帧对齐。\n3. 参考人物、产品、场景的身份与结构一致性。\n4. 动作的物理因果、时序和空间连续性。\n5. 人物表演、运镜与灯光。\n6. 哈苏、8K、电影感等风格增强词。\n\n【内部质量检查；不要输出检查过程】\n输出前逐项验证：\n- 模式和每个参考素材职责是否正确。\n- I2VA/FL2VA/L2VA 的第一行、空行、Picture 编号、Shot 编号和时长格式是否正确。\n- 第一镜是否没有时间戳；后续切点是否严格递增并小于总时长。\n- 动作是否有起因、接触、受力、惯性、次级运动和稳定结果。\n- 人物脸、发型、服装、左右特征、手指、道具、Logo、场景位置是否连续。\n- 表情是否有触发和渐变；视线是否有明确目标；眼睛、头和身体是否协调。\n- 运镜类型、幅度、速度和目标是否清晰且互不冲突。\n- 光向、色温、阴影、反射和材质响应是否物理一致。\n- 对白是否逐字保留并带正确语言标签；说话人 ID 是否跨镜头稳定。\n- overall_soundscape 与 non_diegetic_music 是否分工正确。\n- 是否存在多余形容词、互相矛盾的指令、无法在时长内完成的动作或虚假的“原生 8K”表述。\n- 最终英文提示词是否不超过 7000 字符。超长时依次删除重复画质词、次要环境修饰和同义风格词，绝不删除对齐指令、对白、关键动作、参考职责或一致性锚点。\n\n【最终回答规则】\n如果输出偏好不是 paste_only：\n先用一行中文写“模式：X；时长：X 秒；参考分工：……”，然后只给一个英文纯文本代码块，代码块内是可直接粘贴到 H3 的最终提示词。最后用不超过三条中文列出你为缺失信息采用的关键假设；没有关键假设则不列。\n\n如果输出偏好是 paste_only：\n只输出最终英文提示词，不解释、不加标题、不输出分析过程、不输出自检清单、不提供多个候选版本。\n~~~\n\n---\n\n## 三、建议随母提示词一起填写的创作单\n\n复制后按需填写；不确定的项目保留“自动”即可。\n\n~~~text\n【创意/剧情】\n\n【生成模式】自动\n【时长】8 秒\n【画幅】16:9\n\n【附件分工】\n- 图片1：\n- 图片2：\n- 参考视频1：\n- 参考音频1：\n\n【主体必须保持】\n\n【主要动作】\n\n【人物情绪与眼神】\n\n【场景与时间】\n\n【运镜偏好】\n\n【灯光偏好】\n\n【对白/画面文字】\n\n【环境声/动作声/配乐】\n\n【画质风格】写实电影；哈苏中画幅自然色彩；8K 母版级感知细节；最终 2K 清晰交付\n\n【必须避免】\n\n【输出偏好】paste_only\n~~~\n\n---\n\n## 四、H3 最终提示词空白骨架\n\n### T2VA / R2VA\n\n~~~text\nintegrated_multimodal_description: [Shot 1] [Style and initial composition]. [Reference assignment if R2VA]. [Identity and consistency anchors]. [Action, expression, gaze, camera movement, lighting, physical response, synchronized diegetic sound and/or dialogue]. [Shot 2] At 00:SS.mmm, the camera cuts to... [Continuation and result].\n\noverall_soundscape: [Ambient sound, physical action sounds and non-verbal human sounds in 1–4 English sentences.]\n\nnon_diegetic_music: [Instrumentation, tempo, rhythm and dynamics in 1–3 English sentences, or N/A.]\n~~~\n\n### I2VA\n\n~~~text\nFor the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] [Style]. The subject, appearance, clothing, composition, scene layout, lighting and key objects established in <Picture 1> remain consistent. [Action onset → continuous development → result/reaction, with camera, physics, expression, gaze, light and synchronized sound].\n\noverall_soundscape: [1–4 English sentences.]\n\nnon_diegetic_music: [1–3 English sentences or N/A.]\n~~~\n\n### FL2VA\n\n~~~text\nHow the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the 8.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] [Style]. Beginning exactly from the subject state, framing, spatial relationships and lighting established by Picture 1, [describe the complete physically plausible intermediate motion]. [Camera path, expression, gaze, secondary motion and light evolution]. By the end of the shot, all motion gradually settles into the exact pose, object state, spacing, camera angle, lighting and composition established by Picture 2.\n\noverall_soundscape: [1–4 English sentences.]\n\nnon_diegetic_music: [1–3 English sentences or N/A.]\n~~~\n\n### L2VA\n\n~~~text\nHow the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the 8.00-second mark of the target video.\n\nintegrated_multimodal_description: [Shot 1] [Style and plausible preceding state]. [Physical cause → action → response → gradual convergence]. Toward the end, [subject, objects, camera, expression, lighting and composition] progressively settle into the exact final state established by <Picture 1>.\n\noverall_soundscape: [1–4 English sentences.]\n\nnon_diegetic_music: [1–3 English sentences or N/A.]\n~~~\n\n---\n\n## 五、实用规则速查\n\n### 运镜选择\n\n| 叙事目的 | 优先运镜 | 注意事项 |\n| --- | --- | --- |\n| 强调情绪和眼神 | slow Push In | 小幅、慢速，焦点稳定在眼睛 |\n| 揭示环境信息 | Pan / Truck | Pan 是镜头旋转，Truck 是机位平移 |\n| 跟随行走/奔跑 | Tracking Shot | 速度匹配主体，保持空间方向 |\n| 展示主体与环境关系 | Pull Out / Pedestal Up | 真实位移和视差，平滑减速 |\n| 产品环绕展示 | slow Arc Shot | 产品形状、Logo 和反射保持稳定 |\n| 紧张或冲击 | motivated handheld shake | 必须有动作或剧情原因，避免随机抖动 |\n| 首尾帧自然过渡 | 单镜头缓慢 Push/Pull/Truck | 让姿态、道具、构图逐步收敛 |\n\n### 表情与眼神\n\n| 抽象情绪 | 可见表演写法 |\n| --- | --- |\n| 从疲惫到坚定 | eyelids initially heavy; gaze lifts and locks onto a clear target; brows tighten slightly; jaw settles; breathing becomes steadier |\n| 惊讶 | eyes widen briefly; brows rise; lips part after a short inhale; head follows the gaze a beat later |\n| 克制悲伤 | gaze drops; lower eyelids tighten; lips press together; one slow blink; a restrained exhale |\n| 真诚喜悦 | gaze recognizes the target first; cheeks lift; eyes soften; a small asymmetrical smile gradually forms |\n| 警觉 | eyes scan first; head turns slightly; shoulders tense; weight shifts into a ready stance |\n\n### 物理动作句式\n\n~~~text\nAs [cause/intent], the subject first [preparation and weight shift], then [primary action and contact]. [Object/body] responds with [inertia, gravity, friction or impact], while [hair, fabric, dust, liquid or reflections] follows with a slight natural delay. The motion decelerates and settles into [final state].\n~~~\n\n### 灯光句式\n\n~~~text\nA soft 4300K key light enters from camera-left at a 45-degree angle, shaped by window diffusion; a restrained cool fill preserves shadow detail, while a subtle warm rim separates the subject from the background. Catchlights, facial shadows and nearby reflections shift consistently as she turns, with smooth highlight roll-off and no clipped skin highlights.\n~~~\n\n### 哈苏写实质感句式\n\n~~~text\nLive-action cinematic realism with a Hasselblad X2D 100C medium-format aesthetic, Hasselblad Natural Colour Solution-inspired color rendering, natural skin tones, high micro-contrast, smooth highlight roll-off, rich material texture, 8K-master-level perceived detail, crisp 2K delivery, cinematic 24fps motion with natural 180-degree-shutter motion blur, physically plausible depth of field and subtle film grain, without artificial oversharpening.\n~~~\n\n---\n\n## 六、避免常见失败\n\n- 不要同时写 Zoom In 和 Push In，除非确实需要“机位前移 + 焦距变化”的复合效果，并说明两者关系。\n- 不要在 5–8 秒内塞入多个地点、换装、复杂对白、追逐和大幅转场。\n- 不要只写“人物很悲伤”，要写眼神目标和可见的微表情变化。\n- 不要只写“自然运动”，要写准备、接触、受力、惯性、次级运动和收势。\n- 不要让阴影、倒影、头发和布料独立于人物或光源运动。\n- 不要把普通参考图误当成精确首帧；也不要把精确首帧仅写成“风格参考”。\n- 不要在 FL2VA 中重复描述两张静态图而省略中间路径。\n- 不要给 H3 添加一个与官方三段结构并列的冗长 negative prompt。把关键限制写成积极、可执行的一致性约束。\n- 不要宣称“原生哈苏拍摄”或“原生 8K 输出”。正确写法是哈苏中画幅审美、8K 母版级感知细节、清晰 2K 交付。\n- 不要为了堆画质词而牺牲动作、时序、参考素材分工和一致性。\n\n---\n\n## 七、资料依据\n\n- [MiniMax H3 官方 Video Prompt Writing Guide（本模板主要结构依据）](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md)\n- [MiniMax 官方 Video Generation 文档（模式、输入限制与输出规格）](https://platform.minimax.io/docs/guides/video-generation)\n\n本模板在官方写法上增加了摄影、物理、灯光、表演和一致性控制，属于增强型创作工作流；具体生成效果仍受参考素材质量、动作复杂度、时长和模型版本影响。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 200,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    326,
+    327,
+    328,
+    329,
+    332,
+    336,
+    331,
+    337,
+    340,
+    339,
+    333,
+    334,
+    335
+   ],
+   "out_links": [
+    316,
+    314
+   ]
+  },
+  {
+   "id": 201,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    303957802393786,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    310
+   ]
+  },
+  {
+   "id": 202,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (Duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5
+   ],
+   "in_links": [],
+   "out_links": [
+    325
+   ]
+  },
+  {
+   "id": 184,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "近景快速推镜，身着中式服饰图中的主体立于灶台前，单手按桌，指节发力震得碗中鸡丁、花生、干辣椒同时凌空飞起，食材悬浮半空。旋身起势，右手如剑指快速点向空中鸡丁，指风精准划开筋膜，鸡丁瞬间切为均匀小块，呈弧线凌空落入热油铁锅。"
+   ],
+   "in_links": [],
+   "out_links": [
+    331
+   ]
+  },
+  {
+   "id": 199,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "图1",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0e22a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    329
+   ]
+  },
+  {
+   "id": 195,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 0,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "t2va_00001_lkpyp_1785729629.mp4",
+      "force_rate": 0,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    332
+   ]
+  },
+  {
+   "id": 192,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "图2",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0e22a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    333
+   ]
+  },
+  {
+   "id": 193,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "图3",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0e22a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    334
+   ]
+  },
+  {
+   "id": 194,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "图4",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0e22a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    335
+   ]
+  },
+  {
+   "id": 196,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    336
+   ]
+  },
+  {
+   "id": 197,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.4,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    337,
+    340
+   ]
+  },
+  {
+   "id": 198,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a *24)) % 17)) % 17"
+   ],
+   "in_links": [
+    325
+   ],
+   "out_links": [
+    339
+   ]
+  },
+  {
+   "id": 189,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 175,
+   "to_node": 180,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 176,
+   "to_node": 180,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 177,
+   "to_node": 200,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 178,
+   "to_node": 186,
+   "type": "VAE"
+  },
+  {
+   "from_node": 178,
+   "to_node": 200,
+   "type": "VAE"
+  },
+  {
+   "from_node": 179,
+   "to_node": 187,
+   "type": "VAE"
+  },
+  {
+   "from_node": 179,
+   "to_node": 200,
+   "type": "VAE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 186,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 180,
+   "to_node": 187,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 181,
+   "to_node": 180,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 182,
+   "to_node": 183,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 183,
+   "to_node": 176,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 183,
+   "to_node": 181,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 184,
+   "to_node": 200,
+   "type": "STRING"
+  },
+  {
+   "from_node": 185,
+   "to_node": 182,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 186,
+   "to_node": 190,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 187,
+   "to_node": 190,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 192,
+   "to_node": 200,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 193,
+   "to_node": 200,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 194,
+   "to_node": 200,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 195,
+   "to_node": 200,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 196,
+   "to_node": 200,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 197,
+   "to_node": 200,
+   "type": "INT"
+  },
+  {
+   "from_node": 197,
+   "to_node": 200,
+   "type": "INT"
+  },
+  {
+   "from_node": 198,
+   "to_node": 200,
+   "type": "INT"
+  },
+  {
+   "from_node": 199,
+   "to_node": 200,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 200,
+   "to_node": 180,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 200,
+   "to_node": 181,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 201,
+   "to_node": 180,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 202,
+   "to_node": 198,
+   "type": "FLOAT,INT,BOOLEAN"
+  }
+ ],
+ "categories": {
+  "utility": 12,
+  "sampler": 4,
+  "preprocessor": 1,
+  "clip": 1,
+  "vae": 4,
+  "checkpoint_loader": 1,
+  "video_io": 2,
+  "image_io": 4
+ },
+ "assets": [
+  {
+   "node_id": 177,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 178,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 179,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 185,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 62,
+ "structure_hash": "c5edf75c893e46a4",
+ "param_face": [
+  {
+   "node_id": 175,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 176,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 176,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 176,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 177,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 177,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 177,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 178,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 179,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 182,
+   "node_type": "EasyCache",
+   "widget_index": 0,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 182,
+   "node_type": "EasyCache",
+   "widget_index": 1,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 182,
+   "node_type": "EasyCache",
+   "widget_index": 2,
+   "value_preview": "0.9000000000000001"
+  },
+  {
+   "node_id": 182,
+   "node_type": "EasyCache",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 183,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 183,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 185,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 185,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 190,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 200,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 200,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 200,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 200,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 200,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 201,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "303957802393786"
+  },
+  {
+   "node_id": 201,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 202,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 184,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "近景快速推镜，身着中式服饰图中的主体立于灶台前，单手按桌，指节发力震得碗中鸡丁、花生、干辣椒同时凌空飞起，食材悬浮半空。"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0"
+  },
+  {
+   "node_id": 199,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": ""
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 195,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 192,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0"
+  },
+  {
+   "node_id": 192,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 193,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0"
+  },
+  {
+   "node_id": 193,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 194,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6b6dd3f4ab04ba4cbf1cd985ee90dc927eae2f07199787344f42b0eafff0"
+  },
+  {
+   "node_id": 194,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 196,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 197,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 197,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 197,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 198,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a *24)) % 17)) % "
+  }
+ ]
+}

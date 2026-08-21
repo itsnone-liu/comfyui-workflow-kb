@@ -1,0 +1,823 @@
+{
+ "node_count": 21,
+ "link_count": 24,
+ "active_node_count": 20,
+ "nodes": [
+  {
+   "id": 185,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2.5
+   ],
+   "in_links": [
+    290
+   ],
+   "out_links": [
+    285
+   ]
+  },
+  {
+   "id": 187,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    292,
+    293
+   ],
+   "out_links": [
+    290
+   ]
+  },
+  {
+   "id": 195,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Bring a crown to the girl in the picture and hold a light sign with the words \"FLUX kontext\"",
+    "Dress the clothes on an 18-year-old beautiful Korean woman, keeping the details of the clothes unchanged"
+   ],
+   "in_links": [
+    307
+   ],
+   "out_links": []
+  },
+  {
+   "id": 202,
+   "type": "RH_Translator",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    972,
+    "randomize",
+    "auto"
+   ],
+   "in_links": [
+    306
+   ],
+   "out_links": [
+    307,
+    309
+   ]
+  },
+  {
+   "id": 194,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    301,
+    302
+   ],
+   "out_links": [
+    296
+   ]
+  },
+  {
+   "id": 197,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-dev-kontext_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    284
+   ]
+  },
+  {
+   "id": 183,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    288
+   ]
+  },
+  {
+   "id": 182,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    283,
+    295
+   ]
+  },
+  {
+   "id": 192,
+   "type": "ImageStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true,
+    0,
+    "white"
+   ],
+   "in_links": [
+    310
+   ],
+   "out_links": [
+    300,
+    301
+   ]
+  },
+  {
+   "id": 188,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    294,
+    295
+   ],
+   "out_links": [
+    287,
+    293
+   ]
+  },
+  {
+   "id": 184,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Using this elegant style, create a portrait of a swan wearing a pearl tiara and lace collar, maintaining the same refined quality and soft color tones."
+   ],
+   "in_links": [
+    288,
+    309
+   ],
+   "out_links": [
+    291,
+    292
+   ]
+  },
+  {
+   "id": 186,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    291
+   ],
+   "out_links": [
+    286
+   ]
+  },
+  {
+   "id": 181,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    380731000155198,
+    "randomize",
+    20,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    284,
+    285,
+    286,
+    287
+   ],
+   "out_links": [
+    282
+   ]
+  },
+  {
+   "id": 189,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "T8star-Aix",
+    ""
+   ],
+   "in_links": [
+    296
+   ],
+   "out_links": []
+  },
+  {
+   "id": 190,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "T8star-Aix",
+    ""
+   ],
+   "in_links": [
+    297
+   ],
+   "out_links": []
+  },
+  {
+   "id": 180,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    282,
+    283
+   ],
+   "out_links": [
+    297,
+    302,
+    311
+   ]
+  },
+  {
+   "id": 204,
+   "type": "PMRF",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    25,
+    319169144,
+    "randomize",
+    "lanczos4"
+   ],
+   "in_links": [
+    311
+   ],
+   "out_links": [
+    312
+   ]
+  },
+  {
+   "id": 205,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    312
+   ],
+   "out_links": []
+  },
+  {
+   "id": 203,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6f42ae228bc8135446755d7ff49e7df82169b42b9fd26c3c7fc5a4848238d448.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    310
+   ]
+  },
+  {
+   "id": 200,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "将衣服穿在一个18岁的韩国美丽女性身上，衣服保持细节不变"
+   ],
+   "in_links": [],
+   "out_links": [
+    306
+   ]
+  },
+  {
+   "id": 193,
+   "type": "FluxKontextImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    300
+   ],
+   "out_links": [
+    294
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 180,
+   "to_node": 190,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 194,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 204,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 181,
+   "to_node": 180,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 182,
+   "to_node": 180,
+   "type": "VAE"
+  },
+  {
+   "from_node": 182,
+   "to_node": 188,
+   "type": "VAE"
+  },
+  {
+   "from_node": 183,
+   "to_node": 184,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 184,
+   "to_node": 186,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 184,
+   "to_node": 187,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 185,
+   "to_node": 181,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 186,
+   "to_node": 181,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 187,
+   "to_node": 185,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 188,
+   "to_node": 181,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 188,
+   "to_node": 187,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 192,
+   "to_node": 193,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 192,
+   "to_node": 194,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 193,
+   "to_node": 188,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 194,
+   "to_node": 189,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 197,
+   "to_node": 181,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 200,
+   "to_node": 202,
+   "type": "STRING"
+  },
+  {
+   "from_node": 202,
+   "to_node": 184,
+   "type": "STRING"
+  },
+  {
+   "from_node": 202,
+   "to_node": 195,
+   "type": "STRING"
+  },
+  {
+   "from_node": 203,
+   "to_node": 192,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 204,
+   "to_node": 205,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 9,
+  "conditioning": 2,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "vae": 3,
+  "sampler": 1,
+  "image_io": 4
+ },
+ "assets": [
+  {
+   "node_id": 197,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux1-dev-kontext_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 182,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 43,
+ "structure_hash": "bfc1277613435e13",
+ "param_face": [
+  {
+   "node_id": 185,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 195,
+   "node_type": "ShowText|pysssss",
+   "widget_index": 0,
+   "value_preview": "Bring a crown to the girl in the picture and hold a light si"
+  },
+  {
+   "node_id": 195,
+   "node_type": "ShowText|pysssss",
+   "widget_index": 1,
+   "value_preview": "Dress the clothes on an 18-year-old beautiful Korean woman, "
+  },
+  {
+   "node_id": 202,
+   "node_type": "RH_Translator",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 202,
+   "node_type": "RH_Translator",
+   "widget_index": 1,
+   "value_preview": "972"
+  },
+  {
+   "node_id": 202,
+   "node_type": "RH_Translator",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 202,
+   "node_type": "RH_Translator",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 194,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 194,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 194,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 197,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-dev-kontext_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 197,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 183,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 182,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 192,
+   "node_type": "ImageStitch",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 192,
+   "node_type": "ImageStitch",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 192,
+   "node_type": "ImageStitch",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 192,
+   "node_type": "ImageStitch",
+   "widget_index": 3,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "380731000155198"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 181,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 189,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "T8star-Aix"
+  },
+  {
+   "node_id": 189,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 190,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "T8star-Aix"
+  },
+  {
+   "node_id": 190,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 204,
+   "node_type": "PMRF",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 204,
+   "node_type": "PMRF",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 204,
+   "node_type": "PMRF",
+   "widget_index": 2,
+   "value_preview": "319169144"
+  },
+  {
+   "node_id": 204,
+   "node_type": "PMRF",
+   "widget_index": 3,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 204,
+   "node_type": "PMRF",
+   "widget_index": 4,
+   "value_preview": "lanczos4"
+  },
+  {
+   "node_id": 205,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 205,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 203,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6f42ae228bc8135446755d7ff49e7df82169b42b9fd26c3c7fc5a4848238"
+  },
+  {
+   "node_id": 203,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 203,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 200,
+   "node_type": "Text Multiline",
+   "widget_index": 0,
+   "value_preview": "将衣服穿在一个18岁的韩国美丽女性身上，衣服保持细节不变"
+  }
+ ]
+}

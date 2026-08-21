@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "图像编辑",
+  "角色一致性",
+  "图生图"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人物照片，利用 OpenPose 提取姿势骨架，通过 Qwen-Image-Edit 模型按中文指令“改变女人的姿势”进行保持角色身份的图像编辑",
+   "kind": "fact"
+  },
+  {
+   "text": "同时输出两个图像：一个为最终编辑结果，另一个可能为 OpenPose 姿势预览或辅助参考图",
+   "kind": "inference"
+  },
+  {
+   "text": "端到端完成从原始图像到指定姿势编辑图像的生成，无需手动指定重绘区域或额外蒙版",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit 指令式图像编辑",
+  "ControlNet + OpenPose 姿势控制",
+  "SetUnionControlNetType 指定 ControlNet 类型为 openpose",
+  "ImageConcatMulti 多图拼接输入",
+  "ModelSamplingAuraFlow AuraFlow 采样适配",
+  "CFGNorm CFG 归一化",
+  "双路 TextEncodeQwenImageEdit 提示词编码"
+ ],
+ "special_features": [
+  {
+   "text": "三路 LoadImage 加载同一张输入图，分别用于 VAEEncode、OpenPose 预处理和 ImageConcatMulti 拼接，形成多路参考流",
+   "kind": "fact"
+  },
+  {
+   "text": "ControlNet 强度设为 2.0 且 end_percent=0.4，即可能在前 40% 去噪步内用极高强度锁定姿势，后期释放以让扩散模型自由细化纹理和细节",
+   "kind": "inference"
+  },
+  {
+   "text": "引入 ModelSamplingAuraFlow shift=3，针对 Qwen-Image 的 AuraFlow 家族进行采样移位，可能提升编辑质量",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 CFGNorm 归一化 CFG，避免高 CFG 导致颜色过饱和或分布偏移",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流意图发挥 Qwen-Image-Edit 的指令编辑能力，同时用 OpenPose ControlNet 精确约束人物姿势，并通过 ImageConcatMulti 将原图与条件图拼接作为视觉参考，以实现角色一致性。ControlNet 高强度和早停（0.4）的搭配可能是为了在早期强制姿势对齐，后期保留生成自由度；ModelSamplingAuraFlow 和 CFGNorm 则是对 Qwen-Image 模型特性的适配和稳定性优化。",
+ "use_case": "适用于需要保持人物身份特征的图像姿态编辑，如电商模特换姿势、虚拟角色姿态调整、摄影后期人物姿态修改等场景。",
+ "limitation": "依赖 Qwen-Image-Edit 系列专用模型和 InstantX_Qwen-Image-ControlNet-Union，以及 ComfyUI 自定义节点（ImageConcatMulti、TextEncodeQwenImageEdit、SetUnionControlNetType、CFGNorm、ModelSamplingAuraFlow 等）。输入图像需包含可被 OpenPose 检测出的人物，复杂遮挡或多人物场景可能失效。提示词当前固定为中文“改变女人的姿势”，若需其他指令需手动修改 JjkText 节点。ControlNet 强度 2.0 较高，对输入图质量和姿势匹配度敏感。",
+ "dependencies": [
+  "qwen_image_edit_fp8_e4m3fn.safetensors",
+  "qwen_image_vae.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "InstantX_Qwen-Image-ControlNet-Union.safetensors",
+  "ImageConcatMulti 自定义节点",
+  "TextEncodeQwenImageEdit 自定义节点",
+  "SetUnionControlNetType 自定义节点",
+  "CFGNorm 自定义节点",
+  "ModelSamplingAuraFlow 自定义节点",
+  "OpenposePreprocessor"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1（三路复用）"
+ },
+ "output": {
+  "type": "image（两个输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ControlNet strength",
+   "how_to_tune": "当前为 2.0，极高控制力。若姿势控制过强导致图像生硬，可降低至 0.8-1.5；若姿势不符合预期，可继续上调，但需注意过度控制可能破坏画质。"
+  },
+  {
+   "param": "ControlNet end_percent",
+   "how_to_tune": "当前为 0.4，即只在去噪前 40% 步内施加姿势控制。增大到 1.0 可全程控制姿势，但会限制细节和纹理自由；减小则控制力更前置，适合想要更多后期自由度的场景。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 20。若生成质量不足可增加到 30-40；若追求速度可降至 15 左右。"
+  },
+  {
+   "param": "KSampler CFG",
+   "how_to_tune": "当前为 2.5，配合 CFGNorm 使用。可尝试 2.0-4.0；过高的 CFG 容易导致过饱和或伪影。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift",
+   "how_to_tune": "当前为 3。若细节表现不佳，可尝试 2 或 4，观察对采样分布和最终画质的影响。"
+  },
+  {
+   "param": "OpenposePreprocessor 分辨率",
+   "how_to_tune": "当前为 512。分辨率过低可能丢失细小的姿态信息，可提升至 768 或 1024，但会增加计算开销。"
+  }
+ ],
+ "summary_text": "能力:上传一张人物照片，利用 OpenPose 提取姿势骨架，通过 Qwen-Image-Edit 模型按中文指令“改变女人的姿势”进行保持角色身份的图像编辑；能力:同时输出两个图像：一个为最终编辑结果，另一个可能为 OpenPose 姿势预览或辅助参考图；能力:端到端完成从原始图像到指定姿势编辑图像的生成，无需手动指定重绘区域或额外蒙版；特色:三路 LoadImage 加载同一张输入图，分别用于 VAEEncode、OpenPose 预处理和 ImageConcatMulti 拼接，形成多路参考流；特色:ControlNet 强度设为 2.0 且 end_percent=0.4，即可能在前 40% 去噪步内用极高强度锁定姿势，后期释放以让扩散模型自由细化纹理和细节；特色:引入 ModelSamplingAuraFlow shift=3，针对 Qwen-Image 的 AuraFlow 家族进行采样移位，可能提升编辑质量；特色:使用 CFGNorm 归一化 CFG，避免高 CFG 导致颜色过饱和或分布偏移；适用于需要保持人物身份特征的图像姿态编辑，如电商模特换姿势、虚拟角色姿态调整、摄影后期人物姿态修改等场景。；该工作流意图发挥 Qwen-Image-Edit 的指令编辑能力，同时用 OpenPose ControlNet 精确约束人物姿势，并通过 ImageConcatMulti 将原图与条件图拼接作为视觉参考，以实现角色一致性。ControlNet 高强度和早停（0.4）的搭配可能是为了在早期强制姿势对齐，后期保留生成自由度；ModelSamplingAuraFlow 和 CFGNorm 则是对 Qwen-Image 模型特性的适配和稳定性优化。"
+}

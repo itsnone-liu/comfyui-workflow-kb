@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图像生成",
+  "风格迁移",
+  "人脸风格化"
+ ],
+ "capabilities": [
+  {
+   "text": "加载一张人脸参考图和一张风格参考图，通过 PuLID 注入人脸身份、IP-Adapter 执行风格迁移，最终输出一张保持人物身份的风格化 SDXL 人像图。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持端到端的 one-shot 人像风格化：无需训练，只靠两张输入图即可将人物照片转变为特定画风/风格的人像。",
+   "kind": "inference"
+  },
+  {
+   "text": "输出为单张 768x1024 的静态图像，不支持视频、动画或批量结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID",
+  "IP-Adapter",
+  "IPAdapter style transfer 模式",
+  "SDXL checkpoint 采样",
+  "CLIP 正/负提示词控制",
+  "VAE 解码"
+ ],
+ "special_features": [
+  {
+   "text": "PuLID 与 IP-Adapter 双路径叠加：人脸身份由 ApplyPulid 控制，风格由 IPAdapterAdvanced 控制，在同一采样流程中共同影响生成结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "IPAdapterAdvanced 使用 style transfer + concat + V only 的组合，可能是有意让风格迁移只作用于风格相关特征，减少对人物结构/身份的破坏。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 IPAdapterUnifiedLoader 加载 PLUS (high strength) 模型，再配合 IPAdapterAdvanced 精细调节，似乎是“高强度底模 + 精细权重控制”的分层设计。",
+   "kind": "inference"
+  },
+  {
+   "text": "负面提示词明确包含 blurry, malformed, low quality 等质量关键词，形成基础质量控制。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从节点布局看，这个工作流想解决“既要换风格，又要保证还是这个人”的问题。PuLID 负责把人脸身份特征固定住，IP-Adapter 的 style transfer 模式负责把参考图的风格迁移过来；UnifiedLoader 先加载高强度 IPAdapter 基础模型，再由 Advanced 节点精细控制风格权重和生效区间。配合 closeup portrait 的正面提示词和 blurry/malformed 的负面质量词，以及 768x1024 竖版空 latent，似乎是为了生成高质量近景人像写真。fidelity 设为 0.8，说明作者在身份保留和风格自由度之间选择了偏保守的平衡；IPAdapter weight=1 且全程生效，说明风格迁移强度是优先保证的。",
+ "use_case": "适合做 AI 写真、头像风格化、创意人像海报，例如将证件照/生活照转换为赛博朋克、插画、3D 渲染等风格，同时让人脸仍可辨认。",
+ "limitation": "需要安装 ComfyUI PuLID 系列自定义节点及 IPAdapter_plus 节点；需要下载 ip-adapter_pulid_sdxl_fp16.safetensors、EVA-CLIP、InsightFace 模型、protovisionXLHighFidelity3D_releaseV660Bakedvae.safetensors 等模型文件；PulidInsightFaceLoader 使用 CPU，加载和推理可能较慢；两个 LoadImage 节点默认可能是同一张图，需要手动改为“人脸参考图”和“风格参考图”；输出为单张静态图像，不支持视频。",
+ "dependencies": [
+  "ComfyUI",
+  "ComfyUI PuLID 自定义节点",
+  "ComfyUI_IPAdapter_plus 自定义节点",
+  "ip-adapter_pulid_sdxl_fp16.safetensors",
+  "protovisionXLHighFidelity3D_releaseV660Bakedvae.safetensors",
+  "EVA-CLIP 模型",
+  "InsightFace 模型"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "图像",
+  "count": 2
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "fidelity (ApplyPulid)",
+   "how_to_tune": "当前为 0.8，表示人脸身份保留强度较高；值越接近 1 越像本人，但风格化程度可能变弱；降低到 0.5-0.7 可换得更强的风格自由，但可能不像本人。"
+  },
+  {
+   "param": "weight (IPAdapterAdvanced)",
+   "how_to_tune": "当前为 1，表示风格迁移强度较高；增大到 1.2-1.5 会让风格更明显，但可能损失人物结构和身份；降低到 0.5-0.8 会更自然、身份更稳。"
+  },
+  {
+   "param": "IPAdapterAdvanced mode",
+   "how_to_tune": "当前使用 style transfer 模式，适合做风格迁移；如果换成 transfer 或 composition 会改变特征注入逻辑，需要重新测试权重和效果。"
+  },
+  {
+   "param": "start/end (IPAdapterAdvanced)",
+   "how_to_tune": "当前 0 到 1，即风格注入全程生效；若希望先稳定构图再变风格，可将 start 设为 0.2-0.4，end 保持在 1。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 30，是 SDXL 常见迭代步数；画面细节不足时可提高到 35-40，但会变慢；超过 40 收益通常不大。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前为 6；cfg 过高会导致色彩过饱和、边缘发硬，建议在 4-8 之间调节；如果出现 prompt 不听话，可稍微提高到 7-8。"
+  },
+  {
+   "param": "EmptyLatentImage 尺寸",
+   "how_to_tune": "当前为 768x1024，适合竖版人像；若需要横构图或方形，可改为 1024x768 或 1024x1024，但要注意 SDXL 的常用尺寸，否则可能产生构图/比例问题。"
+  },
+  {
+   "param": "正/负提示词",
+   "how_to_tune": "正面提示词已偏向 closeup portrait，可继续补充具体风格词；负面提示词已有 blurry/malformed/low quality，建议追加 bad anatomy、extra fingers 等常见人像负面词。"
+  }
+ ],
+ "summary_text": "能力:加载一张人脸参考图和一张风格参考图，通过 PuLID 注入人脸身份、IP-Adapter 执行风格迁移，最终输出一张保持人物身份的风格化 SDXL 人像图。；能力:支持端到端的 one-shot 人像风格化：无需训练，只靠两张输入图即可将人物照片转变为特定画风/风格的人像。；能力:输出为单张 768x1024 的静态图像，不支持视频、动画或批量结果。；特色:PuLID 与 IP-Adapter 双路径叠加：人脸身份由 ApplyPulid 控制，风格由 IPAdapterAdvanced 控制，在同一采样流程中共同影响生成结果。；特色:IPAdapterAdvanced 使用 style transfer + concat + V only 的组合，可能是有意让风格迁移只作用于风格相关特征，减少对人物结构/身份的破坏。；特色:使用 IPAdapterUnifiedLoader 加载 PLUS (high strength) 模型，再配合 IPAdapterAdvanced 精细调节，似乎是“高强度底模 + 精细权重控制”的分层设计。；特色:负面提示词明确包含 blurry, malformed, low quality 等质量关键词，形成基础质量控制。；适合做 AI 写真、头像风格化、创意人像海报，例如将证件照/生活照转换为赛博朋克、插画、3D 渲染等风格，同时让人脸仍可辨认。；从节点布局看，这个工作流想解决“既要换风格，又要保证还是这个人”的问题。PuLID 负责把人脸身份特征固定住，IP-Adapter 的 style transfer 模式负责把参考图的风格迁移过来；UnifiedLoader 先加载高强度 IPAdapter 基础模型，再由 Advanced 节点精细控制风格权重和生效区间。配合 closeup portrait 的正面提示词和 blurry/malformed 的负面质量词，以及 768x1024 竖版空 latent，似乎是为了生成高质量近景人像写真。fidelity 设为 0.8，说明作者在身份保留和风格自由度之间选择了偏保守的平衡；IPAdapter weight=1 且全程生效，说明风格迁移强度是优先保证的。"
+}

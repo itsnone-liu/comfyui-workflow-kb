@@ -1,0 +1,1436 @@
+{
+ "node_count": 43,
+ "link_count": 37,
+ "active_node_count": 43,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    4
+   ]
+  },
+  {
+   "id": 13,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disable",
+    640192403516474,
+    "randomize",
+    3,
+    1,
+    "euler",
+    "simple",
+    0,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    116,
+    22,
+    21,
+    16,
+    24,
+    26
+   ],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 12,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    248211655870650,
+    "randomize",
+    3,
+    2,
+    "euler",
+    "simple",
+    0,
+    10000,
+    "enable"
+   ],
+   "in_links": [
+    11,
+    12,
+    13,
+    14,
+    23,
+    25
+   ],
+   "out_links": [
+    16
+   ]
+  },
+  {
+   "id": 17,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    9
+   ],
+   "in_links": [],
+   "out_links": [
+    23,
+    24
+   ]
+  },
+  {
+   "id": 18,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [],
+   "out_links": [
+    25,
+    26
+   ]
+  },
+  {
+   "id": 145,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_采样",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "采样"
+   ],
+   "in_links": [],
+   "out_links": [
+    171
+   ]
+  },
+  {
+   "id": 147,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_文本",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本"
+   ],
+   "in_links": [],
+   "out_links": [
+    173
+   ]
+  },
+  {
+   "id": 153,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_宽度",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "宽度"
+   ],
+   "in_links": [],
+   "out_links": [
+    179
+   ]
+  },
+  {
+   "id": 10,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1536,
+    1
+   ],
+   "in_links": [
+    179,
+    181
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    175,
+    177
+   ],
+   "out_links": [
+    12,
+    22
+   ]
+  },
+  {
+   "id": 19,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 2,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [
+    168
+   ],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 142,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_采样1",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "采样1"
+   ],
+   "in_links": [],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 155,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_高度",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "高度"
+   ],
+   "in_links": [],
+   "out_links": [
+    181
+   ]
+  },
+  {
+   "id": 141,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图像"
+   ],
+   "in_links": [
+    167
+   ],
+   "out_links": []
+  },
+  {
+   "id": 149,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_文本1",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本1"
+   ],
+   "in_links": [],
+   "out_links": [
+    175
+   ]
+  },
+  {
+   "id": 146,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本"
+   ],
+   "in_links": [
+    172
+   ],
+   "out_links": []
+  },
+  {
+   "id": 148,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本1"
+   ],
+   "in_links": [
+    174
+   ],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    96
+   ]
+  },
+  {
+   "id": 15,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "z_image_turbo_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_4b.safetensors",
+    "lumina2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    172,
+    174
+   ]
+  },
+  {
+   "id": 143,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "采样1"
+   ],
+   "in_links": [
+    169
+   ],
+   "out_links": []
+  },
+  {
+   "id": 144,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "采样"
+   ],
+   "in_links": [
+    170
+   ],
+   "out_links": []
+  },
+  {
+   "id": 75,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "zit_fdpo_v1.safetensors",
+    0.5000000000000001
+   ],
+   "in_links": [
+    96
+   ],
+   "out_links": [
+    169
+   ]
+  },
+  {
+   "id": 76,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Kook_Zimage_真实幻想_Turbo.safetensors",
+    0.5000000000000001
+   ],
+   "in_links": [
+    98
+   ],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    17,
+    4
+   ],
+   "out_links": [
+    167
+   ]
+  },
+  {
+   "id": 140,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_图像",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图像"
+   ],
+   "in_links": [],
+   "out_links": [
+    166
+   ]
+  },
+  {
+   "id": 16,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    20
+   ],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 152,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "宽度"
+   ],
+   "in_links": [
+    178
+   ],
+   "out_links": []
+  },
+  {
+   "id": 96,
+   "type": "INTConstant",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1920
+   ],
+   "in_links": [],
+   "out_links": [
+    180
+   ]
+  },
+  {
+   "id": 154,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "高度"
+   ],
+   "in_links": [
+    180
+   ],
+   "out_links": []
+  },
+  {
+   "id": 151,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_文本2",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本2"
+   ],
+   "in_links": [],
+   "out_links": [
+    177
+   ]
+  },
+  {
+   "id": 7,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "泛黄，发绿，模糊，低分辨率，低质量图像，扭曲的肢体，诡异的外观，丑陋，AI感，噪点，网格感，JPEG压缩条纹，异常的肢体，水印，乱码，意义不明的字符，泛蓝,模糊，低分辨率，马赛克，变形，五官扭曲，大小眼，面部崩坏，多余肢体，手指畸形，模糊发丝，假面皮肤，油光过重，色彩失真，水印，文字，杂物，构图杂乱，比例失调"
+   ],
+   "in_links": [
+    173
+   ],
+   "out_links": [
+    13,
+    20
+   ]
+  },
+  {
+   "id": 139,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    166
+   ],
+   "out_links": []
+  },
+  {
+   "id": 150,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本2"
+   ],
+   "in_links": [
+    190
+   ],
+   "out_links": []
+  },
+  {
+   "id": 159,
+   "type": "Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ".",
+    "true"
+   ],
+   "in_links": [
+    184,
+    188,
+    191
+   ],
+   "out_links": [
+    189
+   ]
+  },
+  {
+   "id": 158,
+   "type": "AILab_QwenVL",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3-VL-4B-Instruct",
+    "None (FP16)",
+    "Describe this image in detail.",
+    "",
+    1024,
+    true,
+    185292880671450,
+    "randomize",
+    "auto"
+   ],
+   "in_links": [
+    189
+   ],
+   "out_links": [
+    190
+   ]
+  },
+  {
+   "id": 161,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "角色设定\n你是一名专业的文生图提示词优化专家，专门为中文用户服务。你的任务是将用户简短、模糊的中文描述，转化为详细、精确且富有画面感的中文提示词，并确保其能够被文生图模型准确理解。\n\n核心任务\n将用户输入的“基础描述”转化为“优质中文提示词”。\n\n优化流程与规范\n1. 理解与分析\n识别核心要素：明确用户描述中的主体、动作、场景。\n\n判断风格倾向：分析用户潜在需求（如写实、动漫、国风、科幻等）。\n\n捕捉情绪氛围：理解画面需要传递的情绪（如宁静、震撼、欢乐、神秘）。\n\n2. 结构化扩展\n你将按照以下固定结构对提示词进行层层细化：\n\n【画面质量与类型】 + 【核心主体】 + 【场景与环境】 + 【艺术风格】 + 【构图与光影】 + 【色彩与氛围】\n\n每个部分的扩展原则如下：\n\n【画面质量与类型】：自动补充如“最高质量”、“8K分辨率”、“电影质感”、“细节丰富”、“照片级真实感”或“大师级绘画”等标签。\n\n【核心主体】：对人物、生物或主要物体的外观、神态、服饰、材质、动作进行具体描述。\n\n【场景与环境】：详细刻画背景、时间、天气、空间、道具等环境细节。\n\n【艺术风格】：指定如“赛博朋克”、“水墨丹青”、“吉卜力动画”、“蒸汽波”、“北欧极简”等具体风格。\n\n【构图与光影】：设计“全景”、“特写”、“黄金分割”等构图，以及“戏剧性灯光”、“柔光”、“逆光”等光影效果。\n\n【色彩与氛围】：定义“浓郁配色”、“柔和色调”、“冰冷科技感”、“温暖治愈”等色彩和整体氛围。\n\n3. 输出格式\n只需输出最终完整提示词，可直接粘贴给AI绘图工具使用的提示词部分。\n\n提供基础信息如下："
+   ],
+   "in_links": [],
+   "out_links": [
+    188
+   ]
+  },
+  {
+   "id": 162,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "半身照，面向镜头"
+   ],
+   "in_links": [],
+   "out_links": [
+    191
+   ]
+  },
+  {
+   "id": 95,
+   "type": "INTConstant",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1080
+   ],
+   "in_links": [],
+   "out_links": [
+    178
+   ]
+  },
+  {
+   "id": 164,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "古风短剧男主，俊美少年郎，眉眼温润，肤白如玉，墨色长发束起，身着素雅古风长衫，身姿清逸，古典妆容，中式古风布景，写实古风人像，柔光灯效，中景镜头，画质细腻\n\n\n古装侠客，英气男子，浓眉凤眼，眼神桀骜，长发半束，劲装黑衣，身形矫健，江湖氛围感，古风影视风格，动态姿态，面部神态生动，4K 超清\n\n\n皇子 / 王爷：贵气古风男子，面如冠玉，眉眼深沉，冠发锦袍，纹饰精美，宫廷布景，庄重神态，古典影视画质，侧颜特写\n\n\n妃嫔 / 贵女：古典宫廷美人，凤眸红唇，华丽发髻与珠翠头饰，重工古风宫装，仪态端庄，宫殿室内场景，浓淡相宜古妆\n\n\n当朝王爷，剑眉入鬓，冷眸深邃，神情淡漠不苟言笑，高束发髻配金冠，玄色织金锦袍，肩背挺拔气场威严，宫殿大殿场景，冷调光影，面部特写，影视级画质，衣纹精致\n\n\n世家公子，面如冠玉，眉目清和，眼含笑意，墨发束玉冠，身着月白锦衫，身姿修长清雅，气质温文尔雅，庭院廊下场景，古风影视写实，柔光灯效，半身近景，8K 超清，五官精致无变形\n\n\n文弱书生，眉眼俊秀，肤色白皙，长发简单束起，粗布青衫，手持书卷，神态淡然书卷气，古街书屋背景，自然光，画面柔和，细节清晰，真人古风质感\n\n名门贵女，鹅蛋脸丹凤眼，眉眼温柔恬静，乌发挽流云髻，点缀珍珠发簪，淡粉襦裙，身姿娉婷，立于雕花亭台，浅笑嫣然，柔光，古风写实，半身人像\n\n\n深宫贵妃，凤眸红唇，妆容华贵，繁复高髻插满金饰珠翠，重工织金凤袍，仪态雍容端庄，宫殿内殿场景，暖金光影，华丽质感，面部特写\n\n\n天真公主，明眸皓齿，娇俏灵动，垂鬓发髻配彩绳花饰，浅黄宫装，神态娇憨，皇宫御花园背景，明亮光线，色彩艳丽，少女感十足\n\n\n冷艳废妃，容貌绝美，眉眼含愁，发髻素雅，素色宫装，独自伫立窗前，神情落寞，深宫偏殿场景，冷调柔光，氛围感忧伤\n\n\n灵狐妖女，眉眼娇媚，眼波流转，长发蓬松挽狐耳发饰，轻纱薄裙，裙摆似流云，林间花海场景，柔光朦胧，妖气灵动，画面唯美\n\n\n贴身侍卫，面容英挺，神情严肃警惕，束发戴抹额，深色侍卫服，站姿笔直，眼神专注，宫殿走廊场景，写实古风，中景人像\n\n\n朝堂幕僚，中年文人，面容儒雅沉稳，胡须少许，束发戴儒巾，深色长衫，手持折扇，眼神睿智，府邸厅堂场景，温和光影\n\n\n宗门长老，中老年男子，面容慈和又威严，白发束冠，宽大道袍，身形微胖，仙山大殿场景，庄重氛围，古风仙侠风格\n\n\n暗夜刺客，容貌清丽，神色冷冽，面纱遮半脸，墨色夜行衣，长发紧束，隐匿于屋檐之上，暗夜环境，冷暗光影，氛围感神秘\n\n\n江湖侠女，眉眼英气飒爽，剑眉杏眼，高束马尾，红黑劲装罗裙，手持短刃，身姿利落，山林旷野场景，动态姿态，武侠风，光影凌厉"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 157,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上古神女，仙气缥缈，绝美空灵，丹凤眼，长发如瀑，头戴银饰珠冠，白色鎏金仙裙，轻纱飘逸，神光环绕，面部精致柔和，眼神纯净慈悲，古风神话美学，电影光影，柔光打光，8K超清，细节细腻，正脸平视，适合短剧配音，天庭云海背景\n\n\n天界战神，威严神性，剑眉星目，面容冷峻，黑发束金冠，黑金鎏金战神铠甲，气场强大，周身神光，眼神深邃霸气，面部高清立体，真实皮肤质感，电影写真，柔光侧影，8K，天庭云雾，适合短剧口型动画\n\n\n九尾狐仙，绝美妖媚，桃花眼，红唇微扬，白发或黑发，红色鎏金仙裙，九尾狐尾飘逸，气质魅惑又清冷，神光萦绕，面部精致，柔光唯美，神话古风，电影质感，8K高清，正脸，适合配音\n\n\n\n东海龙女，清冷绝美，蓝白色龙鳞仙裙，长发微卷，头戴珍珠发饰，周身水汽光晕，眼神温柔空灵，海底神光，面部细腻，古风神话，电影光影，8K超清，适合短剧配音\n\n\n龙族太子，俊美清冷，蓝黑长袍，龙纹刺绣，周身水光环绕，气质高贵疏离，五官立体精致，眼神淡漠，电影质感，柔光，8K，正脸，适合配音口型\n\n\n魔界至尊，邪魅冷峻，黑发狂放，黑红鎏金魔袍，周身黑雾红光，眼神凌厉霸气，面容俊美阴鸷，面部高清，暗调电影光影，压迫感强，8K超清，适合神话短剧反派\n\n\n天界仙娥，清纯柔美，杏眼温柔，浅粉浅蓝轻纱仙裙，发髻简单珠饰，仙气轻盈，柔光唯美，面部干净自然，神话古风，8K高清，正脸，适合短剧配音\n\n\n天庭云海，仙气缭绕，神光弥漫，云雾缥缈，鎏金宫殿，古风神话，宏大唯美，电影级光影，柔和光晕，超清细节，氛围感极强\n\n\n仙门弟子：仙逸少年，眉眼出尘，白衣广袖，长发飘逸，周身微光特效，云海仙山背景，仙侠影视风格，仙气氛围感，动态飞姿"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 100,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "二次元国风动漫鹅蛋脸动漫。瓜子脸，一位长发及腰、超现实主义，真人出镜，构图随意却尽显生活中的绚丽日常，害羞，感受风，与镜头互动，人像摄影，日常快照风格，非精心构图或打光，妖冶少女，冷白皮，瓜子脸尖下巴，皮肤白皙，真实摄影，倾斜构图，仰视角度拍摄，淡彩白调（泛轻微银白），白光氛围（侧光勾勒轮廓），有多重曝光（叠加半透明光影），失焦感觉，采用超广角，强透视（压缩背景空间），体现动态美学，细节生动完美如杰作，胶片摄影，镜头语言，淡彩，暗调，氛围低光，个性视角，奇妙融合意境，一位美人，真人，有着倾国倾城之貌、皮肤白皙嫩滑， 仿Bjd风格，头上戴着繁华的饰品，清冷感， 透光感，洛丽塔御姐范，梦幻色系，精美繁复服饰配饰，神秘，梦核，高级。高级，明亮，高颜值，高对比度，虚焦，既视感，情绪氛围感拉满，胶片颗粒质感，层次丰富，写意，光的美学，lomo效果，超现实，高级感，杰作ccd摄影，美人，怪诞奢华少女风格，端庄优雅花瓣元素，端庄优雅漂亮，服装造型精致灵动。风情妩媚天真而不自知，楚楚可怜，细节丰富，光线明暗交接，光，层次丰富，朦胧美学，光的美学，lomo效果，高级感，杰作。非常规构图，动漫版的衣服。"
+   ],
+   "in_links": [],
+   "out_links": [
+    184
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 4,
+   "type": "VAE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 12,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 100,
+   "to_node": 159,
+   "type": "STRING"
+  },
+  {
+   "from_node": 12,
+   "to_node": 13,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 13,
+   "to_node": 4,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 14,
+   "to_node": 75,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 140,
+   "to_node": 139,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 2,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 145,
+   "to_node": 19,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 147,
+   "to_node": 7,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 149,
+   "to_node": 5,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 15,
+   "to_node": 76,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 151,
+   "to_node": 5,
+   "type": "STRING"
+  },
+  {
+   "from_node": 153,
+   "to_node": 10,
+   "type": "INT"
+  },
+  {
+   "from_node": 155,
+   "to_node": 10,
+   "type": "INT"
+  },
+  {
+   "from_node": 158,
+   "to_node": 150,
+   "type": "*"
+  },
+  {
+   "from_node": 159,
+   "to_node": 158,
+   "type": "STRING"
+  },
+  {
+   "from_node": 16,
+   "to_node": 13,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 161,
+   "to_node": 159,
+   "type": "STRING"
+  },
+  {
+   "from_node": 162,
+   "to_node": 159,
+   "type": "STRING"
+  },
+  {
+   "from_node": 17,
+   "to_node": 12,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 13,
+   "type": "INT"
+  },
+  {
+   "from_node": 18,
+   "to_node": 12,
+   "type": "INT"
+  },
+  {
+   "from_node": 18,
+   "to_node": 13,
+   "type": "INT"
+  },
+  {
+   "from_node": 19,
+   "to_node": 13,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 2,
+   "to_node": 12,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 4,
+   "to_node": 141,
+   "type": "*"
+  },
+  {
+   "from_node": 5,
+   "to_node": 12,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 13,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 146,
+   "type": "*"
+  },
+  {
+   "from_node": 6,
+   "to_node": 148,
+   "type": "*"
+  },
+  {
+   "from_node": 7,
+   "to_node": 12,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 16,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 75,
+   "to_node": 143,
+   "type": "*"
+  },
+  {
+   "from_node": 76,
+   "to_node": 144,
+   "type": "*"
+  },
+  {
+   "from_node": 95,
+   "to_node": 152,
+   "type": "*"
+  },
+  {
+   "from_node": 96,
+   "to_node": 154,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "vae": 2,
+  "sampler": 2,
+  "utility": 30,
+  "conditioning": 3,
+  "checkpoint_loader": 2,
+  "clip": 1,
+  "lora": 2,
+  "image_io": 1
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 14,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "z_image_bf16.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 75,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "zit_fdpo_v1.safetensors"
+  },
+  {
+   "node_id": 76,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Kook_Zimage_真实幻想_Turbo.safetensors"
+  }
+ ],
+ "techniques": [
+  "Qwen-Image"
+ ],
+ "param_face_size": 71,
+ "structure_hash": "67b66e109aa6dbab",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "640192403516474"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 13,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "248211655870650"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 17,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "9"
+  },
+  {
+   "node_id": 18,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 145,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "采样"
+  },
+  {
+   "node_id": 147,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "文本"
+  },
+  {
+   "node_id": 153,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "宽度"
+  },
+  {
+   "node_id": 10,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 10,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 10,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 5,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 2,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 142,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "采样1"
+  },
+  {
+   "node_id": 155,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "高度"
+  },
+  {
+   "node_id": 141,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "图像"
+  },
+  {
+   "node_id": 149,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "文本1"
+  },
+  {
+   "node_id": 146,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "文本"
+  },
+  {
+   "node_id": 148,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "文本1"
+  },
+  {
+   "node_id": 14,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "z_image_bf16.safetensors"
+  },
+  {
+   "node_id": 14,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "z_image_turbo_bf16.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_4b.safetensors"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "lumina2"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 143,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "采样1"
+  },
+  {
+   "node_id": 144,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "采样"
+  },
+  {
+   "node_id": 75,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "zit_fdpo_v1.safetensors"
+  },
+  {
+   "node_id": 75,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 76,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Kook_Zimage_真实幻想_Turbo.safetensors"
+  },
+  {
+   "node_id": 76,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 140,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "图像"
+  },
+  {
+   "node_id": 152,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "宽度"
+  },
+  {
+   "node_id": 96,
+   "node_type": "INTConstant",
+   "widget_index": 0,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 154,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "高度"
+  },
+  {
+   "node_id": 151,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "文本2"
+  },
+  {
+   "node_id": 139,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 150,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "文本2"
+  },
+  {
+   "node_id": 159,
+   "node_type": "Text Concatenate",
+   "widget_index": 0,
+   "value_preview": "."
+  },
+  {
+   "node_id": 159,
+   "node_type": "Text Concatenate",
+   "widget_index": 1,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 0,
+   "value_preview": "Qwen3-VL-4B-Instruct"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 1,
+   "value_preview": "None (FP16)"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 2,
+   "value_preview": "Describe this image in detail."
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 6,
+   "value_preview": "185292880671450"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 158,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 8,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 162,
+   "node_type": "Text Multiline",
+   "widget_index": 0,
+   "value_preview": "半身照，面向镜头"
+  },
+  {
+   "node_id": 95,
+   "node_type": "INTConstant",
+   "widget_index": 0,
+   "value_preview": "1080"
+  }
+ ]
+}

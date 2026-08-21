@@ -1,0 +1,3687 @@
+{
+ "node_count": 84,
+ "link_count": 102,
+ "active_node_count": 82,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "Note Plus (mtb)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "<div class=\"startPage\">\n  <div class=\"hoverContainer\">\n    <a href=\"https://aix.studio\">\n      <span class=\"size-smallButton style-input\">🗃️ AIX官网</span>\n    </a>\n    <a href=\"https://t.zsxq.com/7F90A\">\n      <span class=\"size-smallButton style-input\">🪲 知识星球</span>\n    </a>\n    <a href=\"https://space.bilibili.com/385085361\">\n      <span class=\"size-smallButton style-input\">☕ B站首页</span>\n    </a>\n  </div>\n</div>",
+    "markdown",
+    "\r\n\r\n* {\r\n    font-family: Arial;\r\n  }\r\n\r\n\r\n  .startPage {\r\n    position: absolute;\r\n    width:auto;\r\n    z-index: 0;\r\n    transition: transform 0.3s ease;\r\n  }\r\n\r\n  .startPage:hover {\r\n    transform: translateY(-1%);\r\n  }\r\n\r\n  .hoverContainer {\r\n    background: black;\r\n    border-radius: 27px;\r\n    padding: 50px;\r\n    display: flex;\r\n    flex-direction: row;\r\n    margin: 12px auto;\r\n    position: relative;\r\n  }\r\n\r\n  .header {\r\n    padding-bottom: 24px;\r\n    margin-bottom: 24px;\r\n    border-bottom: 1px solid #3e3e3e;\r\n    width: 200%;\r\n    height: 72px;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n\r\n  .header_discrip {\r\n    font-size: 21px;\r\n    font-weight: 200;\r\n    color: #6f6f6f;\r\n  }\r\n\r\n  .size-smallButton {\r\n    font-size: 21px;\r\n    border-radius: 12px;\r\n    height: 48px;\r\n    min-width: 48px;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    width: 100%;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .style-input {\r\n    background: #2a2a2b;\r\n    padding: 12px;\r\n    transition: background 0.3s;\r\n  }\r\n\r\n  .style-input:hover {\r\n    background: #3b3b3c;\r\n  }\r\na:not(:first-child) {\r\n      margin-left:8px;}\r\n  a {\r\n    color: #b6b6b7;\r\n  }\r\n\r\n  a:hover,\r\n  a:hover .header_discrip {\r\n    color: #dddddd !important;\r\n  }",
+    "one_dark"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 2,
+   "type": "WanVideoVAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1_VAE_bf16.safetensors",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    15,
+    22
+   ]
+  },
+  {
+   "id": 3,
+   "type": "DownloadAndLoadDepthAnythingV2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "depth_anything_v2_vitl_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 4,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "值1是人物左右镜像图\n值2是原图"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "参考图"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 12,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "总帧数"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 13,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "参考视频"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 17,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": false,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00003_kvqtt_1748424435.mp4",
+      "workflow": "WanVideoWrapper_I2V_00003.png",
+      "fullpath": "/data/ComfyUI/personal/0c5e29f80acd84973c41e3a9c4cab22f/temp/WanVideoWrapper_I2V_00003.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "temp",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    9
+   ],
+   "out_links": []
+  },
+  {
+   "id": 18,
+   "type": "LoadWanVideoT5TextEncoder",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5-xxl-enc-bf16.safetensors",
+    "bf16",
+    "offload_device",
+    "disabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 23,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "最长边"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 26,
+   "type": "ImageFromBatch+",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3,
+    -1
+   ],
+   "in_links": [
+    14
+   ],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 27,
+   "type": "WanVideoDecode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    272,
+    272,
+    144,
+    128
+   ],
+   "in_links": [
+    15,
+    16
+   ],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 31,
+   "type": "WanVideoVACEEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    832,
+    480,
+    33,
+    1,
+    0,
+    1,
+    false
+   ],
+   "in_links": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+   ],
+   "out_links": [
+    42
+   ]
+  },
+  {
+   "id": 39,
+   "type": "WanVideoModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+    "bf16",
+    "fp8_e4m3fn",
+    "offload_device",
+    "sageattn"
+   ],
+   "in_links": [
+    37,
+    38,
+    39
+   ],
+   "out_links": [
+    40
+   ]
+  },
+  {
+   "id": 46,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    28,
+    1
+   ],
+   "in_links": [
+    48
+   ],
+   "out_links": [
+    58
+   ]
+  },
+  {
+   "id": 47,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    57
+   ]
+  },
+  {
+   "id": 48,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    526841747880726,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    55
+   ]
+  },
+  {
+   "id": 49,
+   "type": "ModelSamplingFlux",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.15,
+    0.5,
+    800,
+    1200
+   ],
+   "in_links": [
+    49,
+    50,
+    51
+   ],
+   "out_links": [
+    48,
+    86
+   ]
+  },
+  {
+   "id": 50,
+   "type": "NunchakuPulidApply",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.0000000000000002
+   ],
+   "in_links": [
+    52,
+    108,
+    54
+   ],
+   "out_links": [
+    49
+   ]
+  },
+  {
+   "id": 51,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    55,
+    56,
+    57,
+    58,
+    59
+   ],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 52,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    60
+   ],
+   "out_links": []
+  },
+  {
+   "id": 54,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    67
+   ]
+  },
+  {
+   "id": 55,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp16.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    77,
+    85
+   ]
+  },
+  {
+   "id": 58,
+   "type": "NunchakuPulidLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    66
+   ],
+   "out_links": [
+    75,
+    52
+   ]
+  },
+  {
+   "id": 59,
+   "type": "SetUnionControlNetType",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "canny/lineart/anime_lineart/mlsd"
+   ],
+   "in_links": [
+    67
+   ],
+   "out_links": [
+    92
+   ]
+  },
+  {
+   "id": 61,
+   "type": "JWImageResizeByLongerSide",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "bicubic"
+   ],
+   "in_links": [
+    70
+   ],
+   "out_links": [
+    73
+   ]
+  },
+  {
+   "id": 62,
+   "type": "JWImageResizeByLongerSide",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "bicubic"
+   ],
+   "in_links": [
+    71
+   ],
+   "out_links": [
+    72
+   ]
+  },
+  {
+   "id": 63,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    72
+   ],
+   "out_links": []
+  },
+  {
+   "id": 64,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    73,
+    74
+   ],
+   "out_links": [
+    71
+   ]
+  },
+  {
+   "id": 68,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    77,
+    78
+   ],
+   "out_links": [
+    90
+   ]
+  },
+  {
+   "id": 72,
+   "type": "ConcatTextOfUtils",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    ","
+   ],
+   "in_links": [
+    116,
+    115
+   ],
+   "out_links": [
+    78,
+    79
+   ]
+  },
+  {
+   "id": 77,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    85
+   ],
+   "out_links": [
+    91
+   ]
+  },
+  {
+   "id": 78,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    86,
+    87
+   ],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 79,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.5
+   ],
+   "in_links": [
+    88
+   ],
+   "out_links": [
+    87
+   ]
+  },
+  {
+   "id": 25,
+   "type": "DF_Integer",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    33
+   ],
+   "in_links": [],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 14,
+   "type": "OpenposePreprocessor",
+   "category": "pose",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    "enable",
+    "enable",
+    512,
+    "disable"
+   ],
+   "in_links": [
+    7
+   ],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 30,
+   "type": "WanVideoTextEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "一个穿蓝色衣服女人在屋里跳舞",
+    "bad quality video,",
+    true
+   ],
+   "in_links": [
+    21
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 10,
+   "type": "DepthAnything_V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    3,
+    4
+   ],
+   "out_links": [
+    5
+   ]
+  },
+  {
+   "id": 83,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    98
+   ],
+   "out_links": []
+  },
+  {
+   "id": 84,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    99
+   ],
+   "out_links": []
+  },
+  {
+   "id": 11,
+   "type": "Blend",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.8000000000000002,
+    "normal"
+   ],
+   "in_links": [
+    5,
+    6
+   ],
+   "out_links": [
+    9,
+    14,
+    99
+   ]
+  },
+  {
+   "id": 9,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    140
+   ],
+   "out_links": []
+  },
+  {
+   "id": 60,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "down",
+    true
+   ],
+   "in_links": [
+    109,
+    125
+   ],
+   "out_links": [
+    70
+   ]
+  },
+  {
+   "id": 56,
+   "type": "DF_Get_image_size",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    122
+   ],
+   "out_links": [
+    50,
+    51
+   ]
+  },
+  {
+   "id": 71,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "1 girl,,The individual is wearing a black leather jacket over a black crop top, paired with black studded shorts and fishnet stockings. She has thigh-high black boots on. Her hair appears to be long, styled in waves, with a portion pulled back. Her posture suggests she is standing or moving forward, with arms slightly extended outward. No visible facial expressions are discernible due to the lack of clarity in the image of the face. A necklace is visible, adding a subtle accessory to the outfit."
+   ],
+   "in_links": [
+    79
+   ],
+   "out_links": []
+  },
+  {
+   "id": 74,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    62,
+    65,
+    94
+   ]
+  },
+  {
+   "id": 69,
+   "type": "NunchakuFluxDiTLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "svdq-int4-flux.1-dev",
+    0.12500000000000003,
+    "nunchaku-fp16",
+    "auto",
+    0,
+    "bfloat16",
+    "enabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    66
+   ]
+  },
+  {
+   "id": 76,
+   "type": "RH_Captioner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "仅描述人物特征，穿着，动作，脸部表情，不要提到风格,不要提及背景，英文描述,150字内"
+   ],
+   "in_links": [
+    121
+   ],
+   "out_links": [
+    115
+   ]
+  },
+  {
+   "id": 57,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    124,
+    65
+   ],
+   "out_links": [
+    59
+   ]
+  },
+  {
+   "id": 65,
+   "type": "FlexLoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F.1_LoRA Ghibli Style吉卜力美学动漫_Ghibli.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    75
+   ],
+   "out_links": [
+    54
+   ]
+  },
+  {
+   "id": 70,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1 girl,"
+   ],
+   "in_links": [],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 81,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.6000000000000001,
+    0,
+    0.3500000000000001
+   ],
+   "in_links": [
+    90,
+    91,
+    92,
+    93,
+    94
+   ],
+   "out_links": [
+    88
+   ]
+  },
+  {
+   "id": 86,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    101
+   ],
+   "out_links": []
+  },
+  {
+   "id": 82,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    95
+   ],
+   "out_links": []
+  },
+  {
+   "id": 66,
+   "type": "AnyLinePreprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    123
+   ],
+   "out_links": [
+    93,
+    95
+   ]
+  },
+  {
+   "id": 24,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 0,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 81,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "5af10b3f62e2df59aaeb47a04015a015a9ebfa8bbca6b5f8776a5a8db6d0d03d.mp4",
+      "force_rate": 0,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 81,
+      "format": "video/mp4",
+      "skip_first_frames": 90,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "5af10b3f62e2df59aaeb47a04015a015a9ebfa8bbca6b5f8776a5a8db6d0d03d.mp4",
+    "skip_first_frames": 90,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [
+    13
+   ],
+   "out_links": [
+    28,
+    119,
+    27
+   ]
+  },
+  {
+   "id": 41,
+   "type": "WanVideoSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    50,
+    1.0000000000000002,
+    5,
+    0,
+    "fixed",
+    true,
+    "euler/accvideo",
+    0,
+    1,
+    false,
+    "comfy"
+   ],
+   "in_links": [
+    40,
+    41,
+    42
+   ],
+   "out_links": [
+    16
+   ]
+  },
+  {
+   "id": 85,
+   "type": "GetImageRangeFromBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1
+   ],
+   "in_links": [
+    119
+   ],
+   "out_links": [
+    101,
+    120
+   ]
+  },
+  {
+   "id": 28,
+   "type": "ImageFromBatch+",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5,
+    -1
+   ],
+   "in_links": [
+    17
+   ],
+   "out_links": [
+    19,
+    47,
+    126
+   ]
+  },
+  {
+   "id": 32,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    640,
+    "#000000"
+   ],
+   "in_links": [
+    28,
+    29
+   ],
+   "out_links": [
+    4,
+    7,
+    18,
+    127,
+    25,
+    35,
+    26,
+    36
+   ]
+  },
+  {
+   "id": 20,
+   "type": "VHS_MergeImages",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "merge_strategy": "match A",
+    "scale_method": "nearest-exact",
+    "crop": "disabled"
+   },
+   "in_links": [
+    11,
+    12
+   ],
+   "out_links": [
+    10,
+    20,
+    23,
+    128
+   ]
+  },
+  {
+   "id": 34,
+   "type": "ImageRepeat",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    33
+   ],
+   "out_links": [
+    1,
+    11,
+    129
+   ]
+  },
+  {
+   "id": 92,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    127,
+    126
+   ],
+   "out_links": [
+    130
+   ]
+  },
+  {
+   "id": 93,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    128,
+    129
+   ],
+   "out_links": [
+    131
+   ]
+  },
+  {
+   "id": 95,
+   "type": "PDIMAGE_LongerSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "bicubic"
+   ],
+   "in_links": [
+    131
+   ],
+   "out_links": [
+    133
+   ]
+  },
+  {
+   "id": 42,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00006_llcer_1748424741.mp4",
+      "workflow": "WanVideoWrapper_I2V_00006.png",
+      "fullpath": "/data/ComfyUI/personal/0c5e29f80acd84973c41e3a9c4cab22f/output/WanVideoWrapper_I2V_00006.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    135
+   ],
+   "out_links": []
+  },
+  {
+   "id": 94,
+   "type": "PDIMAGE_LongerSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "bicubic"
+   ],
+   "in_links": [
+    130
+   ],
+   "out_links": [
+    132
+   ]
+  },
+  {
+   "id": 96,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "down",
+    true,
+    null
+   ],
+   "in_links": [
+    132,
+    133
+   ],
+   "out_links": [
+    134
+   ]
+  },
+  {
+   "id": 97,
+   "type": "PDIMAGE_LongerSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "bicubic"
+   ],
+   "in_links": [
+    134
+   ],
+   "out_links": [
+    135
+   ]
+  },
+  {
+   "id": 8,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": []
+  },
+  {
+   "id": 44,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00005_ppzmt_1748424621.mp4",
+      "workflow": "WanVideoWrapper_I2V_00005.png",
+      "fullpath": "/data/ComfyUI/personal/0c5e29f80acd84973c41e3a9c4cab22f/output/WanVideoWrapper_I2V_00005.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    47
+   ],
+   "out_links": []
+  },
+  {
+   "id": 29,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    18,
+    19,
+    20
+   ],
+   "out_links": []
+  },
+  {
+   "id": 38,
+   "type": "WanVideoVACEModelSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    39
+   ]
+  },
+  {
+   "id": 36,
+   "type": "WanVideoBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30,
+    false,
+    false,
+    true,
+    10
+   ],
+   "in_links": [],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 40,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan21_AccVid_T2V_14B_lora_rank32_fp16.safetensors",
+    1.0000000000000002,
+    true
+   ],
+   "in_links": [],
+   "out_links": [
+    38
+   ]
+  },
+  {
+   "id": 35,
+   "type": "ImageResizeKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    384,
+    "lanczos",
+    false,
+    2,
+    "center"
+   ],
+   "in_links": [
+    141,
+    35,
+    36
+   ],
+   "out_links": [
+    24,
+    33
+   ]
+  },
+  {
+   "id": 16,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    832
+   ],
+   "in_links": [],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 88,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    108,
+    109
+   ]
+  },
+  {
+   "id": 91,
+   "type": "PDIMAGE_LongerSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    "bicubic"
+   ],
+   "in_links": [
+    120
+   ],
+   "out_links": [
+    121,
+    122,
+    123,
+    124,
+    125
+   ]
+  },
+  {
+   "id": 19,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00004_opnfe_1748424446.mp4",
+      "workflow": "WanVideoWrapper_I2V_00004.png",
+      "fullpath": "/data/ComfyUI/personal/0c5e29f80acd84973c41e3a9c4cab22f/output/WanVideoWrapper_I2V_00004.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    10
+   ],
+   "out_links": []
+  },
+  {
+   "id": 80,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    137
+   ],
+   "out_links": []
+  },
+  {
+   "id": 53,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    61,
+    62
+   ],
+   "out_links": [
+    60,
+    74,
+    98,
+    136
+   ]
+  },
+  {
+   "id": 6,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2
+   ],
+   "in_links": [],
+   "out_links": [
+    32
+   ]
+  },
+  {
+   "id": 98,
+   "type": "PMRF",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    25,
+    1220129503,
+    "randomize",
+    "lanczos4"
+   ],
+   "in_links": [
+    136
+   ],
+   "out_links": [
+    137,
+    140,
+    141
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 17,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 26,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 84,
+   "type": "*"
+  },
+  {
+   "from_node": 14,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 32,
+   "type": "INT"
+  },
+  {
+   "from_node": 18,
+   "to_node": 30,
+   "type": "WANTEXTENCODER"
+  },
+  {
+   "from_node": 2,
+   "to_node": 27,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 31,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 19,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 20,
+   "to_node": 93,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 31,
+   "type": "INT"
+  },
+  {
+   "from_node": 24,
+   "to_node": 32,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 85,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 25,
+   "to_node": 24,
+   "type": "INT"
+  },
+  {
+   "from_node": 26,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 44,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 92,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 10,
+   "type": "DAMODEL"
+  },
+  {
+   "from_node": 30,
+   "to_node": 41,
+   "type": "WANVIDEOTEXTEMBEDS"
+  },
+  {
+   "from_node": 31,
+   "to_node": 41,
+   "type": "WANVIDIMAGE_EMBEDS"
+  },
+  {
+   "from_node": 32,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 31,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 31,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 35,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 35,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 92,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 93,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 36,
+   "to_node": 39,
+   "type": "BLOCKSWAPARGS"
+  },
+  {
+   "from_node": 38,
+   "to_node": 39,
+   "type": "VACEPATH"
+  },
+  {
+   "from_node": 39,
+   "to_node": 41,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 40,
+   "to_node": 39,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 41,
+   "to_node": 27,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 46,
+   "to_node": 51,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 47,
+   "to_node": 51,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 48,
+   "to_node": 51,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 46,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 49,
+   "to_node": 78,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 50,
+   "to_node": 49,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 51,
+   "to_node": 53,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 53,
+   "to_node": 52,
+   "type": "*"
+  },
+  {
+   "from_node": 53,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 83,
+   "type": "*"
+  },
+  {
+   "from_node": 53,
+   "to_node": 98,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 59,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 55,
+   "to_node": 68,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 55,
+   "to_node": 77,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 56,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 56,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 57,
+   "to_node": 51,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 58,
+   "to_node": 50,
+   "type": "PULID"
+  },
+  {
+   "from_node": 58,
+   "to_node": 65,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 59,
+   "to_node": 81,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 6,
+   "to_node": 33,
+   "type": "INT"
+  },
+  {
+   "from_node": 60,
+   "to_node": 61,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 61,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 62,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 64,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 65,
+   "to_node": 50,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 66,
+   "to_node": 81,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 66,
+   "to_node": 82,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 81,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 69,
+   "to_node": 58,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 72,
+   "type": "STRING"
+  },
+  {
+   "from_node": 72,
+   "to_node": 68,
+   "type": "STRING"
+  },
+  {
+   "from_node": 72,
+   "to_node": 71,
+   "type": "STRING"
+  },
+  {
+   "from_node": 74,
+   "to_node": 53,
+   "type": "VAE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 57,
+   "type": "VAE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 81,
+   "type": "VAE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 72,
+   "type": "STRING"
+  },
+  {
+   "from_node": 77,
+   "to_node": 81,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 78,
+   "to_node": 51,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 79,
+   "to_node": 78,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 81,
+   "to_node": 79,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 85,
+   "to_node": 86,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 85,
+   "to_node": 91,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 88,
+   "to_node": 50,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 88,
+   "to_node": 60,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 56,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 57,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 60,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 66,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 76,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 94,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 93,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 96,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 96,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 97,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 97,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 98,
+   "to_node": 35,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 98,
+   "to_node": 80,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 98,
+   "to_node": 9,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 45,
+  "vae": 4,
+  "video_io": 5,
+  "batch": 3,
+  "preprocessor": 2,
+  "sampler": 4,
+  "face": 2,
+  "controlnet": 2,
+  "clip": 1,
+  "image_io": 7,
+  "conditioning": 7,
+  "pose": 1,
+  "lora": 1
+ },
+ "assets": [
+  {
+   "node_id": 2,
+   "node_type": "WanVideoVAELoader",
+   "kind": "vae",
+   "name": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DownloadAndLoadDepthAnythingV2Model",
+   "kind": "checkpoint",
+   "name": "depth_anything_v2_vitl_fp32.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "kind": "checkpoint",
+   "name": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "kind": "checkpoint",
+   "name": "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 54,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 74,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 65,
+   "node_type": "FlexLoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "F.1_LoRA Ghibli Style吉卜力美学动漫_Ghibli.safetensors"
+  },
+  {
+   "node_id": 38,
+   "node_type": "WanVideoVACEModelSelect",
+   "kind": "checkpoint",
+   "name": "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 40,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "Wan21_AccVid_T2V_14B_lora_rank32_fp16.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "ControlNet",
+  "OpenPose",
+  "FLUX"
+ ],
+ "param_face_size": 228,
+ "structure_hash": "f0a8ddb5b3238b0f",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "Note Plus (mtb)",
+   "widget_index": 1,
+   "value_preview": "markdown"
+  },
+  {
+   "node_id": 1,
+   "node_type": "Note Plus (mtb)",
+   "widget_index": 3,
+   "value_preview": "one_dark"
+  },
+  {
+   "node_id": 2,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 3,
+   "node_type": "DownloadAndLoadDepthAnythingV2Model",
+   "widget_index": 0,
+   "value_preview": "depth_anything_v2_vitl_fp32.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "值1是人物左右镜像图\n值2是原图"
+  },
+  {
+   "node_id": 5,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "参考图"
+  },
+  {
+   "node_id": 12,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "总帧数"
+  },
+  {
+   "node_id": 13,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "参考视频"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 17,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 0,
+   "value_preview": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 18,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 23,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "最长边"
+  },
+  {
+   "node_id": 26,
+   "node_type": "ImageFromBatch+",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 26,
+   "node_type": "ImageFromBatch+",
+   "widget_index": 1,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoDecode",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoDecode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoDecode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoDecode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoDecode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 0,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 1,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 2,
+   "value_preview": "33"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 31,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 2,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 4,
+   "value_preview": "sageattn"
+  },
+  {
+   "node_id": 46,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 46,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "28"
+  },
+  {
+   "node_id": 46,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 47,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 48,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "526841747880726"
+  },
+  {
+   "node_id": 48,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 0,
+   "value_preview": "1.15"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 2,
+   "value_preview": "800"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 3,
+   "value_preview": "1200"
+  },
+  {
+   "node_id": 50,
+   "node_type": "NunchakuPulidApply",
+   "widget_index": 0,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 52,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 52,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 54,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 55,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 59,
+   "node_type": "SetUnionControlNetType",
+   "widget_index": 0,
+   "value_preview": "canny/lineart/anime_lineart/mlsd"
+  },
+  {
+   "node_id": 61,
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 61,
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 62,
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 62,
+   "node_type": "JWImageResizeByLongerSide",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 63,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 64,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 64,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 68,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "ConcatTextOfUtils",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "ConcatTextOfUtils",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "ConcatTextOfUtils",
+   "widget_index": 2,
+   "value_preview": ","
+  },
+  {
+   "node_id": 77,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 79,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 25,
+   "node_type": "DF_Integer",
+   "widget_index": 0,
+   "value_preview": "33"
+  },
+  {
+   "node_id": 14,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 14,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 1,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 14,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 2,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 14,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 14,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 4,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 30,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 0,
+   "value_preview": "一个穿蓝色衣服女人在屋里跳舞"
+  },
+  {
+   "node_id": 30,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 1,
+   "value_preview": "bad quality video,"
+  },
+  {
+   "node_id": 30,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 83,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 83,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 11,
+   "node_type": "Blend",
+   "widget_index": 0,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 11,
+   "node_type": "Blend",
+   "widget_index": 1,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 9,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 60,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 60,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 71,
+   "node_type": "ShowText|pysssss",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 74,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 0,
+   "value_preview": "svdq-int4-flux.1-dev"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 1,
+   "value_preview": "0.12500000000000003"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 2,
+   "value_preview": "nunchaku-fp16"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 5,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 69,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 6,
+   "value_preview": "enabled"
+  },
+  {
+   "node_id": 76,
+   "node_type": "RH_Captioner",
+   "widget_index": 0,
+   "value_preview": "仅描述人物特征，穿着，动作，脸部表情，不要提到风格,不要提及背景，英文描述,150字内"
+  },
+  {
+   "node_id": 65,
+   "node_type": "FlexLoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "F.1_LoRA Ghibli Style吉卜力美学动漫_Ghibli.safetensors"
+  },
+  {
+   "node_id": 65,
+   "node_type": "FlexLoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 70,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "1 girl,"
+  },
+  {
+   "node_id": 81,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 81,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 81,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "0.3500000000000001"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "81"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "5af10b3f62e2df59aaeb47a04015a015a9ebfa8bbca6b5f8776a5a8db6d0"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "90"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 0,
+   "value_preview": "50"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 2,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 4,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 6,
+   "value_preview": "euler/accvideo"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 41,
+   "node_type": "WanVideoSampler",
+   "widget_index": 10,
+   "value_preview": "comfy"
+  },
+  {
+   "node_id": 85,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 85,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ImageFromBatch+",
+   "widget_index": 0,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 28,
+   "node_type": "ImageFromBatch+",
+   "widget_index": 1,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "640"
+  },
+  {
+   "node_id": 32,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 20,
+   "node_type": "VHS_MergeImages",
+   "widget_name": "merge_strategy",
+   "value_preview": "match A"
+  },
+  {
+   "node_id": 20,
+   "node_type": "VHS_MergeImages",
+   "widget_name": "scale_method",
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 20,
+   "node_type": "VHS_MergeImages",
+   "widget_name": "crop",
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 34,
+   "node_type": "ImageRepeat",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 92,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 92,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 92,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 93,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 93,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 93,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 95,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 95,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 42,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 94,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 94,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 96,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 96,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 96,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 97,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 97,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 8,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 44,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 38,
+   "node_type": "WanVideoVACEModelSelect",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 36,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 36,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 36,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 36,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 36,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 4,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 40,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "Wan21_AccVid_T2V_14B_lora_rank32_fp16.safetensors"
+  },
+  {
+   "node_id": 40,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 40,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 1,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 35,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 16,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 88,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 91,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 91,
+   "node_type": "PDIMAGE_LongerSize",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 19,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 80,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 80,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 98,
+   "node_type": "PMRF",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 98,
+   "node_type": "PMRF",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 98,
+   "node_type": "PMRF",
+   "widget_index": 2,
+   "value_preview": "1220129503"
+  },
+  {
+   "node_id": 98,
+   "node_type": "PMRF",
+   "widget_index": 3,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 98,
+   "node_type": "PMRF",
+   "widget_index": 4,
+   "value_preview": "lanczos4"
+  }
+ ]
+}

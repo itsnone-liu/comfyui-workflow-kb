@@ -1,0 +1,125 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "MiniMax H3",
+  "量化加速"
+ ],
+ "capabilities": [
+  {
+   "text": "上传首帧和尾帧两张图片，生成首尾帧之间过渡的视频，并可通过 CR Prompt Text 输入文本描述来控制内容与动作。",
+   "kind": "fact"
+  },
+  {
+   "text": "以 INT8 量化模型（minimax_h3_fl2va_int8_convrot / pruned）加载 MiniMax H3，降低显存占用，使大型视频生成模型能在消费级硬件上运行。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过两个 Turbo LoRA（8 步 / 4 步）实现少步数采样加速，在质量与速度之间提供可切换档位。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Video VAE 和独立的 Audio VAE（h3_audio_vae_fp32）同时解码视频与音频，输出带声音的视频。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频扩散模型（首尾帧条件生成）",
+  "INT8 量化部署（minimax_h3_fl2va_int8_convrot）",
+  "LoRA 蒸馏加速（minimax_h3_fl2v_turbo_8step / minimax_h3_turbo_4step）",
+  "SageAttention 内存高效注意力加速",
+  "Qwen3VL 32B 多模态 CLIP 文本编码",
+  "Video VAE + Audio VAE 双解码",
+  "图像预缩放 / 像素总量控制"
+ ],
+ "special_features": [
+  {
+   "text": "双 UNETLoader 并行装载 pruned 与完整两个 INT8 检查点，构成模型档位切换（mode4），便于在更低显存和更高画质之间选择。",
+   "kind": "fact"
+  },
+  {
+   "text": "叠加 MiniMaxH3MemoryEfficientSageAttentionPatch 与 PathchSageAttentionKJ 两重注意力优化节点，进一步压缩显存占用。",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 8step 和 4step 两个 Turbo LoRA 加载器，配合 BasicScheduler 步数设置可快速切换加速档。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ComfyMathExpression 和 GetImageSize 根据输入图像尺寸与目标时长动态计算生成参数，工作流具备像素自适应能力。",
+   "kind": "inference"
+  },
+  {
+   "text": "音频链路由独立的 minimax_h3_audio_vae_fp32 解码，并接入 SaveMP4 / SaveVideo，输出含音频轨的视频而非纯画面。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 DuckHideNode 隐藏调试中间量，并挂接 ZML_SwitchOutput 作为最终导出开关，使主流程更干净。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流明显以“在有限显存环境中最大化 MiniMax H3 视频生成可用性”为核心目标。作者通过 INT8 量化、SageAttention 补丁、双 LoRA 少步数采样三管齐下，将 H3 的部署门槛大幅拉低；同时保留首尾帧控制、文本提示和音视频双 VAE，使输出形式完整可用。双模型 / 双 LoRA 的设计可能意图让用户按显存和画质需求自行权衡，而自动帧数 / 像素计算则让工作流对不同输入图像更鲁棒。整体是一个面向真实落地、刻意做减法优化的生产型工作流。",
+ "use_case": "适合需要在本地或以低显存 GPU 环境将两张图片（如人物首尾姿态、场景起止画面）快速生成短视频的创作者；量化与多级加速使长视频生成在非旗舰显卡上成为可能。",
+ "limitation": "依赖 MiniMax H3 官方/社区自定义节点（MiniMaxH3ImageToVideo、MiniMaxH3MemoryEfficientSageAttentionPatch），且必须手动放置 7 个模型文件到 models/checkpoints、loras、clip、vae 目录；INT8 量化相较 FP16 有细节损失；4step LoRA 在复杂场景下内容稳定性下降；输入首尾帧会被强制 Resize 至 512×512，长宽比不同的图片会产生裁剪；MiniMaxH3ImageToVideo 固定帧数为 73 帧（约 3 秒@24fps），更长视频需自行拼接或依赖外部扩展。",
+ "dependencies": [
+  "ComfyUI 自定义节点：MiniMax H3（MiniMaxH3ImageToVideo 等）",
+  "ComfyUI-VideoHelperSuite（CreateVideo / SaveVideo）",
+  "ComfyUI-KJNodes（ImageResizeKJv2 / PathchSageAttentionKJ / GetVideoComponents）",
+  "sageattention Python 运行库",
+  "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+  "minimax_h3_fl2va_int8_convrot.safetensors",
+  "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+  "minimax_h3_turbo_4step-convertedByAIEverything.safetensors",
+  "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（首帧 + 尾帧，各一张）",
+  "count": "2"
+ },
+ "output": {
+  "type": "视频（MP4 / video/MiniMax_H3 前缀文件，含音频轨）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler / steps",
+   "how_to_tune": "默认 8 步，对应 8step Turbo LoRA；若切换到 4step LoRA，可将步数降为 4-6 以换取更快速度，但画质和运动连贯性会有所下降。"
+  },
+  {
+   "param": "BasicScheduler / scheduler 类型（beta）",
+   "how_to_tune": "默认 beta 是视频扩散场景下较稳的噪声调度；若发现生成闪烁或色彩漂移，可尝试 linear 并适当增加步数。"
+  },
+  {
+   "param": "KSamplerSelect / sampler",
+   "how_to_tune": "默认 euler 在低步数和量化模型上表现稳定；追求细节可换 dpmpp_2m_sde，但生成时间更长且显存压力更大。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 分辨率",
+   "how_to_tune": "默认 1344×768 是 H3 的推荐生成分辨率；显存紧张时可尝试 1024×576，但需注意与首尾帧的 512×512 预处理尺寸匹配，处置不当会导致画面畸变。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 帧数",
+   "how_to_tune": "默认 73 帧（约 3 秒@24fps）；想生成更长视频需结合 ComfyMathExpression 重新计算，但过长视频可能出现首尾约束失效或人物漂移，建议分段生成后拼接。"
+  },
+  {
+   "param": "ImageResizeKJv2（512×512）",
+   "how_to_tune": "输入图像会统一裁剪到 512×512；若想减少裁切损失，应先手动将首尾帧裁剪为相同长宽比再上传。"
+  },
+  {
+   "param": "ImageScaleToTotalPixels",
+   "how_to_tune": "默认 0.4 的低缩放系数用于降低显存占用；提升到 0.5-0.6 可见细节增加，但采样更慢、显存需求更高，INT8 模型下收益会递减。"
+  },
+  {
+   "param": "LoraLoaderModelOnly 权重",
+   "how_to_tune": "两个 LoRA 权重默认均为 1；当出现过度风格化、形变或运动僵硬时，可将 8step LoRA 权重降至 0.7-0.85 重新试跑。"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "默认随机化；需要复现同一结果时固定种子，同时关闭 randomize。"
+  }
+ ],
+ "summary_text": "能力:上传首帧和尾帧两张图片，生成首尾帧之间过渡的视频，并可通过 CR Prompt Text 输入文本描述来控制内容与动作。；能力:以 INT8 量化模型（minimax_h3_fl2va_int8_convrot / pruned）加载 MiniMax H3，降低显存占用，使大型视频生成模型能在消费级硬件上运行。；能力:通过两个 Turbo LoRA（8 步 / 4 步）实现少步数采样加速，在质量与速度之间提供可切换档位。；能力:使用 Video VAE 和独立的 Audio VAE（h3_audio_vae_fp32）同时解码视频与音频，输出带声音的视频。；特色:双 UNETLoader 并行装载 pruned 与完整两个 INT8 检查点，构成模型档位切换（mode4），便于在更低显存和更高画质之间选择。；特色:叠加 MiniMaxH3MemoryEfficientSageAttentionPatch 与 PathchSageAttentionKJ 两重注意力优化节点，进一步压缩显存占用。；特色:内置 8step 和 4step 两个 Turbo LoRA 加载器，配合 BasicScheduler 步数设置可快速切换加速档。；特色:通过 ComfyMathExpression 和 GetImageSize 根据输入图像尺寸与目标时长动态计算生成参数，工作流具备像素自适应能力。；特色:音频链路由独立的 minimax_h3_audio_vae_fp32 解码，并接入 SaveMP4 / SaveVideo，输出含音频轨的视频而非纯画面。；特色:使用 DuckHideNode 隐藏调试中间量，并挂接 ZML_SwitchOutput 作为最终导出开关，使主流程更干净。；适合需要在本地或以低显存 GPU 环境将两张图片（如人物首尾姿态、场景起止画面）快速生成短视频的创作者；量化与多级加速使长视频生成在非旗舰显卡上成为可能。；该工作流明显以“在有限显存环境中最大化 MiniMax H3 视频生成可用性”为核心目标。作者通过 INT8 量化、SageAttention 补丁、双 LoRA 少步数采样三管齐下，将 H3 的部署门槛大幅拉低；同时保留首尾帧控制、文本提示和音视频双 VAE，使输出形式完整可用。双模型 / 双 LoRA 的设计可能意图让用户按显存和画质需求自行权衡，而自动帧数 / 像素计算则让工作流对不同输入图像更鲁棒。整体是一个面向真实落地、刻意做减法优化的生产型工作流。"
+}

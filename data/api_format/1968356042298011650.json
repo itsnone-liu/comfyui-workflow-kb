@@ -1,0 +1,389 @@
+{
+ "34": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "DreamShaper XL v2.1 Turbo 闪电_v2.1 Turbo.safetensors"
+  },
+  "_meta": {
+   "title": "Load Checkpoint"
+  }
+ },
+ "45": {
+  "class_type": "ApplyInstantID",
+  "inputs": {
+   "instantid": [
+    "42",
+    0
+   ],
+   "end_at": 1,
+   "image": [
+    "49",
+    0
+   ],
+   "negative": [
+    "53",
+    1
+   ],
+   "control_net": [
+    "43",
+    0
+   ],
+   "insightface": [
+    "342",
+    0
+   ],
+   "image_kps": [
+    "330",
+    1
+   ],
+   "weight": 1,
+   "model": [
+    "34",
+    0
+   ],
+   "positive": [
+    "53",
+    0
+   ],
+   "start_at": 0
+  },
+  "_meta": {
+   "title": "Apply InstantID"
+  }
+ },
+ "56": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "329",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Preview Image"
+  }
+ },
+ "35": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "sgm_uniform",
+   "negative": [
+    "26",
+    1
+   ],
+   "denoise": 0.6,
+   "latent_image": [
+    "26",
+    2
+   ],
+   "seed": 92332524608602,
+   "cfg": 1.5,
+   "sampler_name": "euler_ancestral",
+   "model": [
+    "45",
+    0
+   ],
+   "positive": [
+    "26",
+    0
+   ],
+   "steps": 15
+  },
+  "_meta": {
+   "title": "KSampler"
+  }
+ },
+ "25": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "34",
+    2
+   ],
+   "samples": [
+    "35",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "26": {
+  "class_type": "InpaintModelConditioning",
+  "inputs": {
+   "negative": [
+    "45",
+    2
+   ],
+   "pixels": [
+    "330",
+    1
+   ],
+   "noise_mask": true,
+   "positive": [
+    "45",
+    1
+   ],
+   "vae": [
+    "34",
+    2
+   ],
+   "mask": [
+    "337",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "InpaintModelConditioning"
+  }
+ },
+ "27": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "",
+   "clip": [
+    "34",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "49": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "069ab0e83c863a708207823e96541910dba10c77349d16959a4448b883e94386.jpg"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "28": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "Perfect skin",
+   "clip": [
+    "34",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "271": {
+  "class_type": "LayerMask: PersonMaskUltra V2",
+  "inputs": {
+   "detail_dilate": 6,
+   "images": [
+    "40",
+    0
+   ],
+   "detail_erode": 6,
+   "accessories": false,
+   "confidence": 0.4,
+   "max_megapixels": 2,
+   "body": false,
+   "clothes": false,
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": true,
+   "face": true,
+   "hair": false,
+   "white_point": 0.99,
+   "background": false,
+   "device": "cuda"
+  },
+  "_meta": {
+   "title": "LayerMask: PersonMaskUltra V2(Advance)"
+  }
+ },
+ "164": {
+  "class_type": "ImageColorMatch+",
+  "inputs": {
+   "reference": [
+    "40",
+    0
+   ],
+   "image": [
+    "332",
+    0
+   ],
+   "batch_size": 0,
+   "color_space": "LAB",
+   "factor": 1,
+   "device": "auto"
+  },
+  "_meta": {
+   "title": "🔧 Image Color Match"
+  }
+ },
+ "330": {
+  "class_type": "InpaintCrop",
+  "inputs": {
+   "blur_mask_pixels": 16,
+   "force_height": 1024,
+   "padding": 32,
+   "image": [
+    "40",
+    0
+   ],
+   "context_expand_pixels": 20,
+   "fill_mask_holes": true,
+   "force_width": 1024,
+   "max_height": 768,
+   "rescale_algorithm": "bicubic",
+   "mode": "ranged size",
+   "max_width": 768,
+   "invert_mask": false,
+   "min_height": 512,
+   "rescale_factor": 1,
+   "context_expand_factor": 1,
+   "blend_pixels": 16,
+   "min_width": 512,
+   "mask": [
+    "271",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "inpaint crop node"
+  }
+ },
+ "342": {
+  "class_type": "InstantIDFaceAnalysis",
+  "inputs": {
+   "provider": "CUDA"
+  },
+  "_meta": {
+   "title": "InstantID Face Analysis"
+  }
+ },
+ "332": {
+  "class_type": "InpaintStitch",
+  "inputs": {
+   "stitch": [
+    "330",
+    0
+   ],
+   "inpainted_image": [
+    "25",
+    0
+   ],
+   "rescale_algorithm": "bislerp"
+  },
+  "_meta": {
+   "title": "(OLD 💀, use the new ✂️ Inpaint Stitch node)"
+  }
+ },
+ "337": {
+  "class_type": "MaskBlur+",
+  "inputs": {
+   "amount": 10,
+   "device": "auto",
+   "mask": [
+    "330",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "🔧 Mask Blur"
+  }
+ },
+ "328": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "164",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "329": {
+  "class_type": "AnyLineArtPreprocessor_aux",
+  "inputs": {
+   "object_connectivity": 1,
+   "image": [
+    "330",
+    1
+   ],
+   "merge_with_lineart": "lineart_standard",
+   "lineart_lower_bound": 0,
+   "lineart_upper_bound": 1,
+   "object_min_size": 36,
+   "resolution": 1280
+  },
+  "_meta": {
+   "title": "AnyLine Lineart"
+  }
+ },
+ "40": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "922c537d8abbd26978304df8428a475ea300a135b7f6e098c831b5f1e6af7a7c.jpg"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "42": {
+  "class_type": "InstantIDModelLoader",
+  "inputs": {
+   "instantid_file": "ip-adapter.bin"
+  },
+  "_meta": {
+   "title": "Load InstantID Model"
+  }
+ },
+ "53": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "329",
+    0
+   ],
+   "negative": [
+    "27",
+    0
+   ],
+   "control_net": [
+    "54",
+    0
+   ],
+   "strength": 0.45,
+   "start_percent": 0,
+   "positive": [
+    "28",
+    0
+   ],
+   "end_percent": 0.6
+  },
+  "_meta": {
+   "title": "Apply ControlNet"
+  }
+ },
+ "43": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  "_meta": {
+   "title": "Load ControlNet Model"
+  }
+ },
+ "54": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "mistoLine_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "Load ControlNet Model"
+  }
+ }
+}

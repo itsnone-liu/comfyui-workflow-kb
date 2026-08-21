@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "图像修复",
+  "超分辨率",
+  "图像增强",
+  "8K放大"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张图片 → 自动完成 TTP 分块、SeedVR2 逐块放大修复、FlashVSR 增强、锐化 → 输出 8K 级高清大图（名称中的商业级大片方向）。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 TTP_Image_Tile_Batch → SeedVR2VideoUpscaler → TTP_Image_Assy 的分块流水线，突破单次模型推理的尺寸/显存限制，可处理超大分辨率输入。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 FlashVSR 作为补充增强，可能用于稳定图像序列/减少放大伪影，使画面更干净。",
+   "kind": "inference"
+  },
+  {
+   "text": "内置两个 Image Comparer，可并排对比原图/中间结果/最终输出，形成人工质检闭环。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Upscale-Hires",
+  "Tiling/分块超分",
+  "SeedVR2 DiT 扩散模型",
+  "VAE 解码",
+  "CASharpening 锐化",
+  "动态尺寸计算/还原",
+  "显存主动清理 (PurgeVRAM)"
+ ],
+ "special_features": [
+  {
+   "text": "多段式 Tile 处理：用 TTP_Image_Tile_Batch 切块、TTP_Image_Assy 合并，并用 TTP_Tile_image_size 控制 tile 行列与重叠率；配合 NumberCalculatorV2 动态计算尺寸，保证最终分辨率精确还原。",
+   "kind": "fact"
+  },
+  {
+   "text": "显存洁癖式设计：在关键阶段插入了 4 个 PurgeVRAM/PurgeVRAM V2，主动释放显存，使得 7B 模型+超大图分块成为可能。",
+   "kind": "fact"
+  },
+  {
+   "text": "双阶段锐化：两个 ImageCASharpening+ 连续对结果做细节强化，得到更锐利的商业级观感。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 SeedVR2LoadDiTModel + SeedVR2LoadVAEModel 显式加载大模型，并指定 CUDA 设备与 attention 优化方式，属于偏底层的定制玩法。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 FlashVSR（模型 FlashVSR-v1.1）做时序稳定/伪影抑制，与 SeedVR2 形成“修复+稳定”双引擎，可能对应命名中‘极速修复’的卖点。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流的整体思路可能是针对超大分辨率（8K）图像处理中的显存瓶颈，采用 TTP 分块-逐块放大-组装的工程化流水线，把 7B 级 SeedVR2 DiT 模型的高画质修复能力落地到更可控的显存占用下；同时用 FlashVSR 补充稳定/修复能力，用双重锐化拉高最终锐度，并用多个 PurgeVRAM 和动态尺寸计算保证长流程稳定运行。整体设计偏向商业级高可调、可质检的 8K 放大方案。",
+ "use_case": "适用于商业广告大图、老照片修复、人像/风景高清放大、摄影作品细节增强等需要输出 8K 级高清晰度图像、且对细节还原要求较高的场景。",
+ "limitation": "依赖较多自定义节点（SeedVR2、TTP、FlashVSR、rgthree、LayerUtility、Impact 等）及其对应模型文件；对显存要求较高（运行 7B DiT + 分块，作者未标注最低要求，但通常需要大显存）；默认输入为单张图像，视频使用需额外适配；实际速度受分块尺寸、tile 重叠和显卡性能影响。",
+ "dependencies": [
+  "SeedVR2 自定义节点",
+  "seedvr2_ema_7b_fp16.safetensors",
+  "ema_vae_fp16.safetensors",
+  "TTP 系列自定义节点（TTP_Image_Tile_Batch / TTP_Image_Assy / TTP_Tile_image_size）",
+  "FlashVSR 节点及模型 FlashVSR-v1.1",
+  "rgthree 节点（Image Comparer）",
+  "LayerUtility 节点（ComfyUI_LayerStyle）",
+  "Impact Pack（ImpactFloat）",
+  "easy-use（easy imageSize / easy int）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "TTP_Image_Tile_Batch 的 tile 尺寸 (2048, 2048)",
+   "how_to_tune": "核心内存控制旋钮：OOM 时调小（如 1024），显存充裕且想减少拼缝时调大。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler 的种子 (198654975) / randomize",
+   "how_to_tune": "固定种子可复现确定性结果；randomize 开启则每次生成不同细节纹理。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler 中的 1024",
+   "how_to_tune": "可能是扩散处理的基准分辨率/分块尺寸，提高可望获得更多细节，但显存消耗同步上升。"
+  },
+  {
+   "param": "TTP_Tile_image_size 的重叠率 (0.05)",
+   "how_to_tune": "增大重叠（如 0.1~0.2）可减轻 tile 接缝，但计算量增大；0.05 是兼顾效率的默认值。"
+  },
+  {
+   "param": "ImageCASharpening+ 强度 (0.4)",
+   "how_to_tune": "控制输出锐化力度：偏低更自然，偏高会导致白边/噪点；可在 0.2~0.6 间调节以满足商业出图。"
+  },
+  {
+   "param": "ImpactFloat 数值 (2)",
+   "how_to_tune": "疑似整体放大倍数锚点，需与 ImageScaleRestore 的 0.25 配合，保证放大后还原到预期尺寸。"
+  }
+ ],
+ "summary_text": "能力:上传一张图片 → 自动完成 TTP 分块、SeedVR2 逐块放大修复、FlashVSR 增强、锐化 → 输出 8K 级高清大图（名称中的商业级大片方向）。；能力:通过 TTP_Image_Tile_Batch → SeedVR2VideoUpscaler → TTP_Image_Assy 的分块流水线，突破单次模型推理的尺寸/显存限制，可处理超大分辨率输入。；能力:集成 FlashVSR 作为补充增强，可能用于稳定图像序列/减少放大伪影，使画面更干净。；能力:内置两个 Image Comparer，可并排对比原图/中间结果/最终输出，形成人工质检闭环。；特色:多段式 Tile 处理：用 TTP_Image_Tile_Batch 切块、TTP_Image_Assy 合并，并用 TTP_Tile_image_size 控制 tile 行列与重叠率；配合 NumberCalculatorV2 动态计算尺寸，保证最终分辨率精确还原。；特色:显存洁癖式设计：在关键阶段插入了 4 个 PurgeVRAM/PurgeVRAM V2，主动释放显存，使得 7B 模型+超大图分块成为可能。；特色:双阶段锐化：两个 ImageCASharpening+ 连续对结果做细节强化，得到更锐利的商业级观感。；特色:使用 SeedVR2LoadDiTModel + SeedVR2LoadVAEModel 显式加载大模型，并指定 CUDA 设备与 attention 优化方式，属于偏底层的定制玩法。；特色:集成 FlashVSR（模型 FlashVSR-v1.1）做时序稳定/伪影抑制，与 SeedVR2 形成“修复+稳定”双引擎，可能对应命名中‘极速修复’的卖点。；适用于商业广告大图、老照片修复、人像/风景高清放大、摄影作品细节增强等需要输出 8K 级高清晰度图像、且对细节还原要求较高的场景。；该工作流的整体思路可能是针对超大分辨率（8K）图像处理中的显存瓶颈，采用 TTP 分块-逐块放大-组装的工程化流水线，把 7B 级 SeedVR2 DiT 模型的高画质修复能力落地到更可控的显存占用下；同时用 FlashVSR 补充稳定/修复能力，用双重锐化拉高最终锐度，并用多个 PurgeVRAM 和动态尺寸计算保证长流程稳定运行。整体设计偏向商业级高可调、可质检的 8K 放大方案。"
+}

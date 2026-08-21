@@ -1,0 +1,117 @@
+{
+ "domain": [
+  "虚拟试衣",
+  "电商服饰",
+  "AI人像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人物照片与服装图，端到端生成该人物穿上目标服装后的效果图，并通过 PuLID 保持人脸身份一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 clothes_remover 与 mytryon4 两个 LoRA 形成“先去原衣、再穿新衣”的换装链路，同时用 CLIP 提示词 remove the clothes And r... 控制去衣语义。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动用 BEN_Base + VITMatte 对人物/服装进行抠像，并通过 CropByMask V2 裁出关键区域，后续只对主体做换装生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 JoyCaption 自动生成服装描述，并通过 TextInput_/Text Concatenate 拼成“Have this person put on ...”这类自然语言换装指令。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ImageStitch/ImageReel/ImageReelComposit 输出带文字标签的换装对比图集，便于直接预览和保存。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev Kontext fp8 条件生成",
+  "PuLID Flux 人脸身份保持",
+  "LoRA 组合：clothes_remover_v0、mytryon4_comfy、Flux-Turbo-Alpha",
+  "BEN_Base / VITMatte 人像抠图",
+  "CropByMask V2 局部裁切",
+  "JoyCaption 自动服装描述",
+  "ReferenceLatent / ConditioningZeroOut 参考条件控制",
+  "FluxKontextImageScale + ImageStitch 上下文拼接",
+  "euler / simple 25 步采样"
+ ],
+ "special_features": [
+  {
+   "text": "双 LoRA 分工：clothes_remover 负责删除原衣物，mytryon4 负责把目标服装“穿”到人物身上，形成先脱后穿的组合逻辑。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 BEN_Base/VITMatte 做高精度人像 alpha 抠像，再接 CropByMask V2 局部化处理，比普通 inpaint 更可控。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Flux-Kontext 专属 checkpoint，配合 FluxKontextImageScale 与 ImageStitch，把人物/服装参考图拼接为上下文输入，而不是传统 mask inpaint。",
+   "kind": "inference"
+  },
+  {
+   "text": "JoyCaption 将服装图片自动转为文本描述，再接入提示词工程，替代手动写 prompt。",
+   "kind": "fact"
+  },
+  {
+   "text": "双 KSampler 设计：一个固定种子用于可复现/稳定预览，一个 randomize 用于抽卡扩散，兼顾确定性与多样性。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 ConditioningZeroOut + 两个 ReferenceLatent 形成参考潜空间分支，弱化空文本干扰，让模型更依赖参考图像。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "作者可能想做一条“人物照 + 服装照 → 自动换装成片”的一站式流水线。它没有走传统文生图/简单 inpaint，而是用 BEN/VITMatte 先抠出人物，用 clothes_remover 去掉原衣，再用 mytryon4 把目标服装穿上；PuLID 负责锁住人脸身份，JoyCaption 负责自动描写服装并生成换装提示词，最后用 ImageReel 拼出对比图集。整体看起来是“抠像—去衣—穿衣—拼图”的多段式结构，目标很可能是电商穿搭展示。",
+ "use_case": "适用于电商模特换装、穿搭预览、个人写真快速试衣等场景：输入一张人物照和一张服装图，输出保持身份感的“穿上该衣服”的效果图与对比图集。",
+ "limitation": "依赖较多自定义节点与外部模型，部署门槛高；显存需求较大，FLUX fp8 + PuLID + BEN + JoyCaption 同时运行需要较高 GPU 配置；结果质量依赖输入人物正面/清晰度和服装图完整度；复杂服装或遮挡严重的人体姿态可能换装不自然；output 分辨率固定为 1536x1152，没有额外高清放大分支。",
+ "dependencies": [
+  "flux1-dev-kontext_fp8_scaled.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "BEN_Base.pth",
+  "pulid_flux_v0.9.1.safetensors",
+  "clothes_remover_v0.safetensors",
+  "mytryon4_comfy.safetensors",
+  "Flux-Turbo-Alpha.safetensors",
+  "ComfyUI-PuLID-Flux",
+  "ComfyUI LayerStyle/LayerUtility",
+  "JPS Text Concatenate",
+  "easy showAnything",
+  "JoyCaptionBeta1 模型 fancyfeast/llama-joycaption"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（人物照、服装照、参考照，共 3 个 LoadImage 输入）",
+  "count": "3"
+ },
+ "output": {
+  "type": "image（PreviewImage/SaveImage + ImageReel 对比图集）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "mytryon4_comfy LoRA strength",
+   "how_to_tune": "当前 0.85，是换装保真度与自然度的平衡点；越接近 1.0 衣服越像原图，但可能出现穿模/硬贴感，可降至 0.7-0.8 提高自然度。"
+  },
+  {
+   "param": "clothes_remover_v0 LoRA strength",
+   "how_to_tune": "当前 1.0，用于去除原衣物；若人物原本穿的衣服残留，可保持 1.0；若背景被过度改动，可降到 0.8 左右。"
+  },
+  {
+   "param": "KSampler seed",
+   "how_to_tune": "第一分支 fixed seed 用于稳定预览，第二分支 randomize 用于多次抽卡；发现满意构图后可将 randomize 改为固定 seed 复现。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前 2.5，属于 FLUX 较稳区间；若提示词/换装语义不够强，可提升到 3-4；若色彩/质感变差则回退。"
+  },
+  {
+   "param": "EmptyLatentImage 1536x1152",
+   "how_to_tune": "显存不足时可降到 1024x768 或 1152x1152；想要更高清成片则需要另接放大节点，不应直接暴力改到很大。"
+  }
+ ],
+ "summary_text": "能力:上传人物照片与服装图，端到端生成该人物穿上目标服装后的效果图，并通过 PuLID 保持人脸身份一致性。；能力:使用 clothes_remover 与 mytryon4 两个 LoRA 形成“先去原衣、再穿新衣”的换装链路，同时用 CLIP 提示词 remove the clothes And r... 控制去衣语义。；能力:自动用 BEN_Base + VITMatte 对人物/服装进行抠像，并通过 CropByMask V2 裁出关键区域，后续只对主体做换装生成。；能力:用 JoyCaption 自动生成服装描述，并通过 TextInput_/Text Concatenate 拼成“Have this person put on ...”这类自然语言换装指令。；能力:通过 ImageStitch/ImageReel/ImageReelComposit 输出带文字标签的换装对比图集，便于直接预览和保存。；特色:双 LoRA 分工：clothes_remover 负责删除原衣物，mytryon4 负责把目标服装“穿”到人物身上，形成先脱后穿的组合逻辑。；特色:使用 BEN_Base/VITMatte 做高精度人像 alpha 抠像，再接 CropByMask V2 局部化处理，比普通 inpaint 更可控。；特色:使用 Flux-Kontext 专属 checkpoint，配合 FluxKontextImageScale 与 ImageStitch，把人物/服装参考图拼接为上下文输入，而不是传统 mask inpaint。；特色:JoyCaption 将服装图片自动转为文本描述，再接入提示词工程，替代手动写 prompt。；特色:双 KSampler 设计：一个固定种子用于可复现/稳定预览，一个 randomize 用于抽卡扩散，兼顾确定性与多样性。；特色:两个 ConditioningZeroOut + 两个 ReferenceLatent 形成参考潜空间分支，弱化空文本干扰，让模型更依赖参考图像。；适用于电商模特换装、穿搭预览、个人写真快速试衣等场景：输入一张人物照和一张服装图，输出保持身份感的“穿上该衣服”的效果图与对比图集。；作者可能想做一条“人物照 + 服装照 → 自动换装成片”的一站式流水线。它没有走传统文生图/简单 inpaint，而是用 BEN/VITMatte 先抠出人物，用 clothes_remover 去掉原衣，再用 mytryon4 把目标服装穿上；PuLID 负责锁住人脸身份，JoyCaption 负责自动描写服装并生成换装提示词，最后用 ImageReel 拼出对比图集。整体看起来是“抠像—去衣—穿衣—拼图”的多段式结构，目标很可能是电商穿搭展示。"
+}

@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "图像生成",
+  "角色一致性",
+  "多分镜叙事",
+  "Qwen-Image/FLUX 生态"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成“上传单张参考图 + 输入一段剧情/分镜描述 → 生成保持角色一致性的连续多分镜图片序列”，并同时保存为单图、拼图和文本。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Qwen3_VQA_Plus 与 RH_LLMAPI_NODE 把用户描述扩展成多个“Next Scene:”分镜提示词，工作流示例中可见 6 条分镜提示词，因此可批量生成 6 个连续镜头。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 FL_ImageBatchToGrid(3) 把批量生成结果拼成 3 列多图网格，便于一次查看整套分镜。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit 图像编辑/生成模型（UNETLoader: qwen_image_edit_2511_bf16）",
+  "FLUX Kontext 生态的 FluxKontextMultiReferenceLatentMethod 多参考 latent 注入（出现两次，index_timestep_zero）",
+  "LoRA 叠加：next-scene_lora-v2-3000（场景延续/剧情推进）、qe2511_consis_alpha_patched（一致性）、Qwen-Image-Edit-2511-Lightning-4steps（少步蒸馏加速）",
+  "Qwen2.5-VL 7B 文本编码（CLIPLoader: qwen_2.5_vl_7b_fp8_scaled, qwen_image）",
+  "少步采样配置：KSampler(steps=8, cfg=1, euler/simple) + ModelSamplingAuraFlow(shift=3.1)",
+  "VLM/LLM 驱动提示词工程：Qwen3_VQA_Plus + RH_LLMAPI_NODE + StringFunction(pysssss)"
+ ],
+ "special_features": [
+  {
+   "text": "多段式提示词流水线：Qwen3_VQA_Plus 和 RH_LLMAPI_NODE 先解析/扩写剧情，easy showAnything 中保存了 6 条“Next Scene:”分镜提示词，再交给 TextEncodeQwenImageEditPlus 编码；easy saveText 会把中间文本落地成 txt，形成可回看的分镜剧本。",
+   "kind": "inference"
+  },
+  {
+   "text": "三 LoRA 同时叠加在 UNET 上：场景延续 LoRA(0.7) + 一致性 LoRA(1.0) + Lightning 加速 LoRA(1.0)，配合 CFGNorm(mode4) 使用参数 1 和 KSampler cfg=1，是“多 LoRA 协同控制角色一致性与分镜变化”的典型设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "两次使用 FluxKontextMultiReferenceLatentMethod(index_timestep_zero) 注入多参考 latent，可能是把参考角色图和上一张生成图同时作为上下文，用来抑制长序列生成中的身份漂移。",
+   "kind": "inference"
+  },
+  {
+   "text": "分辨率管理侧链：GetImageSizeAndCount 出现 3 次，配合 Int(720) 和 LayerUtility: ImageScaleByAspectRatio V2 在采样前统一尺寸；easy seed 设为 increment，每镜自动换种子但保持可复现起点。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整套设计意图是用 Qwen-Image-Edit 作为底层模型，通过“一致性 LoRA + FluxKontext 多参考 latent”锁住人物/场景身份，再由 VLM/LLM 把单条剧情描述自动扩写为多个 Next Scene 分镜提示词，最后用 Lightning LoRA 低步数批量出图并拼成看图稿。这样用户只需一张参考图和一句话，就能得到一组镜头连贯、人物一致的叙事图集；双 SaveImage 与 saveText 可能用于同时保存单张分镜、网格拼图和可复用的分镜文本。",
+ "use_case": "故事板/分镜脚本可视化、角色一致性多图生成、短视频/漫画/电商概念图：上传一张定妆照或场景图，输入一句剧情，即可批量生成多个连续镜头的图像序列。",
+ "limitation": "依赖大量第三方自定义节点（ComfyUI-Easy-Use、ComfyMath、pysssss、LayerStyle、FluxKontext、Qwen3_VQA_Plus/RH_LLMAPI_NODE 等）以及 Qwen-Image-Edit 系列模型文件；缺少任何 checkpoint/CLIP/VAE/LoRA 都会导致加载失败。RH_LLMAPI_NODE 可能需要额外配置 LLM API Key；显存不足以跑 Qwen-Image-Edit + Qwen2.5-VL 7B 时容易 OOM。",
+ "dependencies": [
+  "qwen_image_edit_2511_bf16.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "next-scene_lora-v2-3000.safetensors",
+  "qe2511_consis_alpha_patched.safetensors",
+  "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors",
+  "Qwen3-VL-4B-Instruct-FP8（Qwen3_VQA_Plus 使用）",
+  "FluxKontextMultiReferenceLatentMethod 所在的自定义节点",
+  "FL_ImageBatchToGrid / ImageListToBatch+ / LayerUtility / Easy-Use / pysssss 等自定义节点",
+  "RH_LLMAPI_NODE 对应的 LLM API 配置"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张参考图 + 一段剧情/分镜描述文本",
+  "count": "1 image + 1 text（可扩展为 6 个分镜）"
+ },
+ "output": {
+  "type": "多张分镜图 + 3 列网格拼图 + 分镜文本文件",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "next-scene_lora-v2-3000 权重",
+   "how_to_tune": "当前 0.7；调大更强调“下一场景”的剧情推进和场景变化，调小更贴近参考图场景，但要注意与角色一致性的平衡。"
+  },
+  {
+   "param": "qe2511_consis_alpha_patched 权重",
+   "how_to_tune": "当前 1.0，是角色一致性的主控项；若人物漂移就保持 1.0，若画面过于同质化/姿势雷同，可降到 0.6-0.8。"
+  },
+  {
+   "param": "Qwen-Image-Edit-2511-Lightning LoRA 权重",
+   "how_to_tune": "当前 1.0，建议保持以享受 4 步加速；若出现结构崩坏，可降到 0.8-0.9，并适当增加 KSampler steps。"
+  },
+  {
+   "param": "KSampler steps / cfg",
+   "how_to_tune": "当前 steps=8, cfg=1, euler/simple，是 Lightning/蒸馏模型友好配置；cfg 不建议大幅超过 1-2，否则容易过饱和；细节不足时可把 steps 提到 12-16。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift",
+   "how_to_tune": "当前 3.1；若高光/阴影失衡或噪点明显，可在 3.0-3.5 间微调，变化幅度不宜太大。"
+  },
+  {
+   "param": "Int(720) 与 ImageScaleByAspectRatio V2",
+   "how_to_tune": "720 是统一边长基准；显存有限可降到 512-640，追求细节可升到 768-1024，但需注意 Qwen-Image-Edit 的最佳分辨率范围。"
+  },
+  {
+   "param": "分镜数量 Int(6) / JWIntegerToString",
+   "how_to_tune": "当前为 6 个分镜；增加数量会线性增加耗时和显存，且需要让 VLM/LLM 生成的 Next Scene 提示词数量与之一致。"
+  },
+  {
+   "param": "easy seed(increment)",
+   "how_to_tune": "起始 14，当前为 increment（每镜换种子）；需要精确复现时关掉 increment 并使用固定种子，需要更多随机变化时保留。"
+  }
+ ],
+ "summary_text": "能力:端到端完成“上传单张参考图 + 输入一段剧情/分镜描述 → 生成保持角色一致性的连续多分镜图片序列”，并同时保存为单图、拼图和文本。；能力:通过 Qwen3_VQA_Plus 与 RH_LLMAPI_NODE 把用户描述扩展成多个“Next Scene:”分镜提示词，工作流示例中可见 6 条分镜提示词，因此可批量生成 6 个连续镜头。；能力:用 FL_ImageBatchToGrid(3) 把批量生成结果拼成 3 列多图网格，便于一次查看整套分镜。；特色:多段式提示词流水线：Qwen3_VQA_Plus 和 RH_LLMAPI_NODE 先解析/扩写剧情，easy showAnything 中保存了 6 条“Next Scene:”分镜提示词，再交给 TextEncodeQwenImageEditPlus 编码；easy saveText 会把中间文本落地成 txt，形成可回看的分镜剧本。；特色:三 LoRA 同时叠加在 UNET 上：场景延续 LoRA(0.7) + 一致性 LoRA(1.0) + Lightning 加速 LoRA(1.0)，配合 CFGNorm(mode4) 使用参数 1 和 KSampler cfg=1，是“多 LoRA 协同控制角色一致性与分镜变化”的典型设计。；特色:两次使用 FluxKontextMultiReferenceLatentMethod(index_timestep_zero) 注入多参考 latent，可能是把参考角色图和上一张生成图同时作为上下文，用来抑制长序列生成中的身份漂移。；特色:分辨率管理侧链：GetImageSizeAndCount 出现 3 次，配合 Int(720) 和 LayerUtility: ImageScaleByAspectRatio V2 在采样前统一尺寸；easy seed 设为 increment，每镜自动换种子但保持可复现起点。；故事板/分镜脚本可视化、角色一致性多图生成、短视频/漫画/电商概念图：上传一张定妆照或场景图，输入一句剧情，即可批量生成多个连续镜头的图像序列。；整套设计意图是用 Qwen-Image-Edit 作为底层模型，通过“一致性 LoRA + FluxKontext 多参考 latent”锁住人物/场景身份，再由 VLM/LLM 把单条剧情描述自动扩写为多个 Next Scene 分镜提示词，最后用 Lightning LoRA 低步数批量出图并拼成看图稿。这样用户只需一张参考图和一句话，就能得到一组镜头连贯、人物一致的叙事图集；双 SaveImage 与 saveText 可能用于同时保存单张分镜、网格拼图和可复用的分镜文本。"
+}

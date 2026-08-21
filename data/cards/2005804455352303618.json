@@ -1,0 +1,95 @@
+{
+ "domain": [
+  "换脸",
+  "视频处理",
+  "补帧",
+  "人脸增强"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成视频换脸：从VHS_LoadVideo读取目标视频，以LoadImage加载的图片作为源人脸，通过ReActorFaceSwap对每一帧进行换脸，并输出处理后的视频帧序列。",
+   "kind": "fact"
+  },
+  {
+   "text": "将换脸后的视频帧用RIFE VFI插帧补帧到60fps，再通过VHS_VideoCombine合成视频文件，得到更流畅的换脸视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "可生成对比视频：利用ImageConcanate将原帧和换脸帧水平拼接，形成换脸前后对比，便于直接检查效果。",
+   "kind": "inference"
+  },
+  {
+   "text": "双视频输出：两个VHS_VideoCombine节点可同时保存两个不同规格或版本的视频文件，提高效率。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "ReActor/inswapper 人脸替换",
+  "GFPGANv1.4 人脸修复/增强",
+  "RIFE VFI 光流补帧",
+  "VHS VideoHelperSuite 视频加载与合成",
+  "ImageConcanate 图像拼接",
+  "ImageResizeKJ 图像缩放"
+ ],
+ "special_features": [
+  {
+   "text": "双VHS_VideoCombine输出：两个视频合成节点并列，可能用于同时输出不同参数或不同内容的视频（如补帧版与对比版），提高产出灵活性。",
+   "kind": "inference"
+  },
+  {
+   "text": "参数计算与显示回路：用CR Text、CR Value设定原始数值，SimpleMath+计算a/b，配合easy showAnything可视化中间结果，实现对帧率/帧数的动态调控。",
+   "kind": "fact"
+  },
+  {
+   "text": "换脸+补帧级联：先换脸后补帧，使最终视频在人脸替换后依然保持运动流畅性，减少帧间闪烁。",
+   "kind": "fact"
+  },
+  {
+   "text": "灵活的分辨率预处理：ImageResizeKJ可将视频帧统一缩放到2048x1024，适应补帧模型对输入尺寸的要求，但也可能带来分辨率损失。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这套工作流希望在一个ComfyUI管线内完成“换脸 → 增强 → 补帧 → 输出”的完整视频生产，并通过VHS Video Helper Suite处理视频帧序列。为了达到“精准版”效果，设计者引入了GFPGAN对人脸进行修复、RIFE VFI提升帧率，同时保留了拼接、缩放、简单算术计算等工具，以便灵活调整输出规格和调试参数。双VideoCombine大概率是为了同时产出不同格式或不同内容的版本，减少手动重跑。",
+ "use_case": "适用于需要高质量、高帧率换脸视频的场景，例如虚拟主播形象替换、影视剪辑换脸、短视频二创，以及需要输出对比视频用于效果验收的后期环节。",
+ "limitation": "依赖ReActor和VHS等非官方自定义节点，以及inswapper_128.onnx、GFPGANv1.4.pth、rife47.pth等外部模型，部署成本高。视频处理需要较大显存，若帧分辨率或帧数过高时容易爆显存。ReActor对侧脸、遮挡、多人脸场景可能误检，且GFPGAN的增强强度固定为0.4，无法在界面直接调节。",
+ "dependencies": [
+  "ComfyUI-ReActor",
+  "ComfyUI-VideoHelperSuite",
+  "RIFE VFI 自定义节点（如ComfyUI-RIFE）",
+  "模型: inswapper_128.onnx",
+  "模型: GFPGANv1.4.pth",
+  "模型: rife47.pth"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人脸图像（LoadImage） + 一段视频（VHS_LoadVideo）",
+  "count": "2"
+ },
+ "output": {
+  "type": "视频（两个VHS_VideoCombine）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "restore_visibility",
+   "how_to_tune": "GFPGAN人脸增强强度，当前为0.4。数值越高修复细节越强，但可能降低与源人脸的相似度；通常0~0.6之间调节，若原视频模糊可适当调高。"
+  },
+  {
+   "param": "RIFE VFI 的 multiplier（值2）",
+   "how_to_tune": "补帧倍数：2表示将帧数翻倍，配合目标帧率60得到流畅画面。倍数越高越耗显存和耗时，可能出现插帧伪影，建议2~4。"
+  },
+  {
+   "param": "select_every_nth",
+   "how_to_tune": "VHS_LoadVideo的跳帧抽取参数：1表示处理全部帧；若为2则每2帧取1帧，可降低换脸计算量，再通过补帧补回帧率。适合处理长视频或网络资源紧张时。"
+  },
+  {
+   "param": "frame_load_cap",
+   "how_to_tune": "限制从视频读取的最大帧数，设为较小值（如100）可快速试跑，验证流程后再全量处理。"
+  },
+  {
+   "param": "ImageResizeKJ 的 width/height",
+   "how_to_tune": "当前设置为2048x1024，改变分辨率会影响后期补帧的速度和画质；调小可省显存，调大则细节更多但可能超过模型承受范围。"
+  }
+ ],
+ "summary_text": "能力:端到端完成视频换脸：从VHS_LoadVideo读取目标视频，以LoadImage加载的图片作为源人脸，通过ReActorFaceSwap对每一帧进行换脸，并输出处理后的视频帧序列。；能力:将换脸后的视频帧用RIFE VFI插帧补帧到60fps，再通过VHS_VideoCombine合成视频文件，得到更流畅的换脸视频。；能力:可生成对比视频：利用ImageConcanate将原帧和换脸帧水平拼接，形成换脸前后对比，便于直接检查效果。；能力:双视频输出：两个VHS_VideoCombine节点可同时保存两个不同规格或版本的视频文件，提高效率。；特色:双VHS_VideoCombine输出：两个视频合成节点并列，可能用于同时输出不同参数或不同内容的视频（如补帧版与对比版），提高产出灵活性。；特色:参数计算与显示回路：用CR Text、CR Value设定原始数值，SimpleMath+计算a/b，配合easy showAnything可视化中间结果，实现对帧率/帧数的动态调控。；特色:换脸+补帧级联：先换脸后补帧，使最终视频在人脸替换后依然保持运动流畅性，减少帧间闪烁。；特色:灵活的分辨率预处理：ImageResizeKJ可将视频帧统一缩放到2048x1024，适应补帧模型对输入尺寸的要求，但也可能带来分辨率损失。；适用于需要高质量、高帧率换脸视频的场景，例如虚拟主播形象替换、影视剪辑换脸、短视频二创，以及需要输出对比视频用于效果验收的后期环节。；这套工作流希望在一个ComfyUI管线内完成“换脸 → 增强 → 补帧 → 输出”的完整视频生产，并通过VHS Video Helper Suite处理视频帧序列。为了达到“精准版”效果，设计者引入了GFPGAN对人脸进行修复、RIFE VFI提升帧率，同时保留了拼接、缩放、简单算术计算等工具，以便灵活调整输出规格和调试参数。双VideoCombine大概率是为了同时产出不同格式或不同内容的版本，减少手动重跑。"
+}

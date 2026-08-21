@@ -1,0 +1,1619 @@
+{
+ "node_count": 39,
+ "link_count": 50,
+ "active_node_count": 33,
+ "nodes": [
+  {
+   "id": 25,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Runninghub LLM API Node是RH独有，本地推荐使用其他LLM大模型插件：\nhttps://github.com/111496583yzy/comfyui-zhipu"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 44,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 945, height: 1664\n batch size: 1ecf62a95aebe046cb3f1a438bf3034b5"
+   ],
+   "in_links": [
+    64
+   ],
+   "out_links": [
+    65,
+    66
+   ]
+  },
+  {
+   "id": 66,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1.0000000000000002,
+    1
+   ],
+   "in_links": [
+    117
+   ],
+   "out_links": [
+    118,
+    119
+   ]
+  },
+  {
+   "id": 67,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    118
+   ],
+   "out_links": [
+    122,
+    123
+   ]
+  },
+  {
+   "id": 65,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c119a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    117
+   ]
+  },
+  {
+   "id": 69,
+   "type": "ImpactMinMax",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    122,
+    123
+   ],
+   "out_links": [
+    121
+   ]
+  },
+  {
+   "id": 45,
+   "type": "ImpactMinMax",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    65,
+    66
+   ],
+   "out_links": [
+    68
+   ]
+  },
+  {
+   "id": 46,
+   "type": "QwenEditConfigPreparer",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true,
+    1536,
+    "pad",
+    "lanczos",
+    true,
+    true,
+    384,
+    "center",
+    "bicubic"
+   ],
+   "in_links": [
+    67,
+    68
+   ],
+   "out_links": [
+    79
+   ]
+  },
+  {
+   "id": 51,
+   "type": "ImpactMinMax",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    74,
+    75
+   ],
+   "out_links": [
+    77
+   ]
+  },
+  {
+   "id": 21,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "# Edit Instruction Rewriter\nYou are a professional edit instruction rewriter. Your task is to generate a precise, concise, and visually achievable professional-level edit instruction based on the user-provided instruction and the image to be edited.  \nPlease strictly follow the rewriting rules below:\n## 1. General Principles\n- Keep the rewritten prompt **concise**. Avoid overly long sentences and reduce unnecessary descriptive language.  \n- If the instruction is contradictory, vague, or unachievable, prioritize reasonable inference and correction, and supplement details when necessary.  \n- Keep the core intention of the original instruction unchanged, only enhancing its clarity, rationality, and visual feasibility.  \n- All added objects or modifications must align with the logic and style of the edited input image’s overall scene.  \n## 2. Task Type Handling Rules\n### 1. Add, Delete, Replace Tasks\n- If the instruction is clear (already includes task type, target entity, position, quantity, attributes), preserve the original intent and only refine the grammar.  \n- If the description is vague, supplement with minimal but sufficient details (category, color, size, orientation, position, etc.). For example:  \n    > Original: \"Add an animal\"  \n    > Rewritten: \"Add a light-gray cat in the bottom-right corner, sitting and facing the camera\"  \n- Remove meaningless instructions: e.g., \"Add 0 objects\" should be ignored or flagged as invalid.  \n- For replacement tasks, specify \"Replace Y with X\" and briefly describe the key visual features of X.  \n### 2. Text Editing Tasks\n- All text content must be enclosed in English double quotes \" \". Do not translate or alter the original language of the text, and do not change the capitalization.  \n- **For text replacement tasks, always use the fixed template:**\n    - Replace \"xx\" to \"yy\".  \n    - Replace the xx bounding box to \"yy\".  \n- If the user does not specify text content, infer and add concise text based on the instruction and the input image’s context. For example:  \n    > Original: \"Add a line of text\" (poster)  \n    > Rewritten: \"Add text \\\"LIMITED EDITION\\\" at the top center with slight shadow\"  \n- Specify text position, color, and layout in a concise way.  \n### 3. Human Editing Tasks\n- Maintain the person’s core visual consistency (ethnicity, gender, age, hairstyle, expression, outfit, etc.).  \n- If modifying appearance (e.g., clothes, hairstyle), ensure the new element is consistent with the original style.  \n- **For expression changes, they must be natural and subtle, never exaggerated.**  \n- If deletion is not specifically emphasized, the most important subject in the original image (e.g., a person, an animal) should be preserved.\n    - For background change tasks, emphasize maintaining subject consistency at first.  \n- Example:  \n    > Original: \"Change the person’s hat\"  \n    > Rewritten: \"Replace the man’s hat with a dark brown beret; keep smile, short hair, and gray jacket unchanged\"  \n### 4. Style Transformation or Enhancement Tasks\n- If a style is specified, describe it concisely with key visual traits. For example:  \n    > Original: \"Disco style\"  \n    > Rewritten: \"1970s disco: flashing lights, disco ball, mirrored walls, colorful tones\"  \n- If the instruction says \"use reference style\" or \"keep current style,\" analyze the input image, extract main features (color, composition, texture, lighting, art style), and integrate them concisely.  \n- **For coloring tasks, including restoring old photos, always use the fixed template:** \"Restore old photograph, remove scratches, reduce noise, enhance details, high resolution, realistic, natural skin tones, clear facial features, no distortion, vintage photo restoration\"  \n- If there are other changes, place the style description at the end.\n## 3. Rationality and Logic Checks\n- Resolve contradictory instructions: e.g., \"Remove all trees but keep all trees\" should be logically corrected.  \n- Add missing key information: if position is unspecified, choose a reasonable area based on composition (near subject, empty space, center/edges).  \n# Output Format Example\njson\n{\n   \"Rewritten\": \"...\"\n}\n'''\n結果輸出简体中文文本格式，不要json格式，不要双引号\"\"",
+    "",
+    0.6,
+    1530339265,
+    "randomize"
+   ],
+   "in_links": [
+    35
+   ],
+   "out_links": [
+    31,
+    133
+   ]
+  },
+  {
+   "id": 41,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen-Rapid-AIO-NSFW-v18.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    115,
+    83,
+    84,
+    101
+   ]
+  },
+  {
+   "id": 64,
+   "type": "CFGNorm",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    115
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 47,
+   "type": "TextEncodeQwenImageEditPlusCustom_lrzjason",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "重新照明，使用黄昏阳光（色温偏橙红，阴影拉长）的光线对图片进行重新照明\n",
+    true,
+    "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate."
+   ],
+   "in_links": [
+    83,
+    84,
+    124,
+    133
+   ],
+   "out_links": [
+    90,
+    134,
+    104,
+    70
+   ]
+  },
+  {
+   "id": 48,
+   "type": "QwenEditOutputExtractor",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    70
+   ],
+   "out_links": [
+    82
+   ]
+  },
+  {
+   "id": 55,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    90
+   ],
+   "out_links": [
+    135
+   ]
+  },
+  {
+   "id": 54,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    909594584064707,
+    "randomize",
+    4,
+    1,
+    "euler_ancestral",
+    "beta",
+    1
+   ],
+   "in_links": [
+    116,
+    134,
+    135,
+    107
+   ],
+   "out_links": [
+    100
+   ]
+  },
+  {
+   "id": 9,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1080,
+    1440,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    105
+   ]
+  },
+  {
+   "id": 10,
+   "type": "FluxResolutionNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1.5",
+    "4:3 (Classic Landscape)",
+    "8",
+    false,
+    "1:1"
+   ],
+   "in_links": [],
+   "out_links": [
+    19,
+    20
+   ]
+  },
+  {
+   "id": 73,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    131
+   ]
+  },
+  {
+   "id": 57,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    100,
+    101
+   ],
+   "out_links": [
+    103,
+    130
+   ]
+  },
+  {
+   "id": 60,
+   "type": "ImpactSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    104,
+    131,
+    105,
+    106
+   ],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 11,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    1
+   ],
+   "in_links": [
+    19,
+    20
+   ],
+   "out_links": [
+    98,
+    106
+   ]
+  },
+  {
+   "id": 15,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    129,
+    130
+   ],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 74,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "分辨率有三种选择\n\n选择1：根据图一来缩放，像素调整参数来控制大小\n\n选择2：自定义分辨率，自己设定宽高\n\n选择3：设定分辨率比例，默认9:16"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 53,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    82
+   ],
+   "out_links": []
+  },
+  {
+   "id": 50,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1.0000000000000002,
+    1
+   ],
+   "in_links": [
+    143
+   ],
+   "out_links": [
+    72,
+    76
+   ]
+  },
+  {
+   "id": 49,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 768, height: 1365\n batch size: 1ecf62a95aebe046cb3f1a438bf3034b5"
+   ],
+   "in_links": [
+    72
+   ],
+   "out_links": [
+    74,
+    75
+   ]
+  },
+  {
+   "id": 52,
+   "type": "QwenEditConfigPreparer",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    1536,
+    "pad",
+    "lanczos",
+    true,
+    true,
+    384,
+    "center",
+    "bicubic"
+   ],
+   "in_links": [
+    76,
+    79,
+    77
+   ],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 68,
+   "type": "QwenEditConfigPreparer",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    1536,
+    "pad",
+    "lanczos",
+    true,
+    true,
+    384,
+    "center",
+    "bicubic"
+   ],
+   "in_links": [
+    119,
+    125,
+    121
+   ],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 78,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "OpenposePreprocessor",
+    512
+   ],
+   "in_links": [
+    142
+   ],
+   "out_links": [
+    143
+   ]
+  },
+  {
+   "id": 70,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 72,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "down",
+    true,
+    null
+   ],
+   "in_links": [
+    127,
+    128
+   ],
+   "out_links": [
+    129
+   ]
+  },
+  {
+   "id": 43,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1.5000000000000002,
+    1
+   ],
+   "in_links": [
+    71
+   ],
+   "out_links": [
+    64,
+    67
+   ]
+  },
+  {
+   "id": 59,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    103
+   ],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c119a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    71,
+    127
+   ]
+  },
+  {
+   "id": 7,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c119a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    128,
+    142
+   ]
+  },
+  {
+   "id": 20,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "将图2的男孩移至图1的场景中，调整其姿势为递送鲜花的动作，并在其手中添加一束鲜花，同时保持图1女孩的姿势和表情不变，调整视角和光影使其自然融入图1的环境。"
+   ],
+   "in_links": [
+    31
+   ],
+   "out_links": []
+  },
+  {
+   "id": 22,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图2的男孩给图1的女孩一束鲜花"
+   ],
+   "in_links": [],
+   "out_links": [
+    35
+   ]
+  },
+  {
+   "id": 16,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    28
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "INT"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "INT"
+  },
+  {
+   "from_node": 11,
+   "to_node": 56,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 11,
+   "to_node": 60,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 16,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 20,
+   "type": "*"
+  },
+  {
+   "from_node": 21,
+   "to_node": 47,
+   "type": "STRING"
+  },
+  {
+   "from_node": 22,
+   "to_node": 21,
+   "type": "STRING"
+  },
+  {
+   "from_node": 41,
+   "to_node": 47,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 41,
+   "to_node": 47,
+   "type": "VAE"
+  },
+  {
+   "from_node": 41,
+   "to_node": 57,
+   "type": "VAE"
+  },
+  {
+   "from_node": 41,
+   "to_node": 64,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 43,
+   "to_node": 44,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 43,
+   "to_node": 46,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "*"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "*"
+  },
+  {
+   "from_node": 45,
+   "to_node": 46,
+   "type": "INT"
+  },
+  {
+   "from_node": 46,
+   "to_node": 52,
+   "type": "LIST"
+  },
+  {
+   "from_node": 47,
+   "to_node": 48,
+   "type": "ANY"
+  },
+  {
+   "from_node": 47,
+   "to_node": 54,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 47,
+   "to_node": 55,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 47,
+   "to_node": 60,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 51,
+   "type": "*"
+  },
+  {
+   "from_node": 49,
+   "to_node": 51,
+   "type": "*"
+  },
+  {
+   "from_node": 50,
+   "to_node": 49,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 50,
+   "to_node": 52,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 51,
+   "to_node": 52,
+   "type": "INT"
+  },
+  {
+   "from_node": 52,
+   "to_node": 68,
+   "type": "LIST"
+  },
+  {
+   "from_node": 54,
+   "to_node": 57,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 55,
+   "to_node": 54,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 57,
+   "to_node": 15,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 59,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 60,
+   "to_node": 54,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 64,
+   "to_node": 54,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 65,
+   "to_node": 66,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 66,
+   "to_node": 67,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 66,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 67,
+   "to_node": 69,
+   "type": "*"
+  },
+  {
+   "from_node": 67,
+   "to_node": 69,
+   "type": "*"
+  },
+  {
+   "from_node": 68,
+   "to_node": 47,
+   "type": "LIST"
+  },
+  {
+   "from_node": 69,
+   "to_node": 68,
+   "type": "INT"
+  },
+  {
+   "from_node": 7,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 7,
+   "to_node": 78,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 15,
+   "type": "*"
+  },
+  {
+   "from_node": 73,
+   "to_node": 60,
+   "type": "INT"
+  },
+  {
+   "from_node": 78,
+   "to_node": 50,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 60,
+   "type": "LATENT"
+  }
+ ],
+ "categories": {
+  "utility": 28,
+  "image_io": 6,
+  "checkpoint_loader": 1,
+  "sampler": 1,
+  "vae": 1,
+  "preprocessor": 1,
+  "conditioning": 1
+ },
+ "assets": [
+  {
+   "node_id": 41,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "Qwen-Rapid-AIO-NSFW-v18.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Qwen-Image"
+ ],
+ "param_face_size": 96,
+ "structure_hash": "91785d5b973d3c8b",
+ "param_face": [
+  {
+   "node_id": 25,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "Runninghub LLM API Node是RH独有，本地推荐使用其他LLM大模型插件：\nhttps://githu"
+  },
+  {
+   "node_id": 44,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 945, height: 1664\n batch size: 1ecf62a95aebe046cb3f1a"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c"
+  },
+  {
+   "node_id": 65,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImpactMinMax",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 45,
+   "node_type": "ImpactMinMax",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 2,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 3,
+   "value_preview": "pad"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 7,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 8,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 46,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 9,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 51,
+   "node_type": "ImpactMinMax",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "1530339265"
+  },
+  {
+   "node_id": 21,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 41,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "Qwen-Rapid-AIO-NSFW-v18.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "CFGNorm",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 64,
+   "node_type": "CFGNorm",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 47,
+   "node_type": "TextEncodeQwenImageEditPlusCustom_lrzjason",
+   "widget_index": 0,
+   "value_preview": "重新照明，使用黄昏阳光（色温偏橙红，阴影拉长）的光线对图片进行重新照明\n"
+  },
+  {
+   "node_id": 47,
+   "node_type": "TextEncodeQwenImageEditPlusCustom_lrzjason",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "909594584064707"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 54,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 9,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "1080"
+  },
+  {
+   "node_id": 9,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1440"
+  },
+  {
+   "node_id": 9,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 10,
+   "node_type": "FluxResolutionNode",
+   "widget_index": 0,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 10,
+   "node_type": "FluxResolutionNode",
+   "widget_index": 1,
+   "value_preview": "4:3 (Classic Landscape)"
+  },
+  {
+   "node_id": 10,
+   "node_type": "FluxResolutionNode",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 10,
+   "node_type": "FluxResolutionNode",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "FluxResolutionNode",
+   "widget_index": 4,
+   "value_preview": "1:1"
+  },
+  {
+   "node_id": 73,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 60,
+   "node_type": "ImpactSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 60,
+   "node_type": "ImpactSwitch",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 11,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 15,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 15,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 74,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "分辨率有三种选择\n\n选择1：根据图一来缩放，像素调整参数来控制大小\n\n选择2：自定义分辨率，自己设定宽高\n\n选择3：设定"
+  },
+  {
+   "node_id": 50,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 50,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 50,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 49,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 768, height: 1365\n batch size: 1ecf62a95aebe046cb3f1a"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 2,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 3,
+   "value_preview": "pad"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 7,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 8,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 52,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 9,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 2,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 3,
+   "value_preview": "pad"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 7,
+   "value_preview": "384"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 8,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 68,
+   "node_type": "QwenEditConfigPreparer",
+   "widget_index": 9,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 78,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "OpenposePreprocessor"
+  },
+  {
+   "node_id": 78,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 72,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 72,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 72,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 43,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 43,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1.5000000000000002"
+  },
+  {
+   "node_id": 43,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 59,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 8,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c"
+  },
+  {
+   "node_id": 8,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 7,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "ee71f7ece4e6d8af9326abba0234a0285c15b58eb36906de2999ac4a8a7c"
+  },
+  {
+   "node_id": 7,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 20,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "将图2的男孩移至图1的场景中，调整其姿势为递送鲜花的动作，并在其手中添加一束鲜花，同时保持图1女孩的姿势和表情不变，调整"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Text Multiline",
+   "widget_index": 0,
+   "value_preview": "图2的男孩给图1的女孩一束鲜花"
+  },
+  {
+   "node_id": 16,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  }
+ ]
+}

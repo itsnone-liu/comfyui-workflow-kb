@@ -1,0 +1,811 @@
+{
+ "22": {
+  "class_type": "SDXLEmptyLatentSizePicker+",
+  "inputs": {
+   "batch_size": 1,
+   "height_override": [
+    "9",
+    4
+   ],
+   "width_override": [
+    "9",
+    3
+   ],
+   "resolution": "768x1280 (0.6)"
+  },
+  "_meta": {
+   "title": "SDXL空Latent尺寸选择"
+  }
+ },
+ "171": {
+  "class_type": "ShowText|pysssss",
+  "inputs": {
+   "text": [
+    "188",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "展示文本"
+  }
+ },
+ "172": {
+  "class_type": "RH_Translator",
+  "inputs": {
+   "seed": 213,
+   "prompt": "",
+   "advanced_options": "auto"
+  },
+  "_meta": {
+   "title": "Runninghub Translator"
+  }
+ },
+ "179": {
+  "class_type": "CR Text",
+  "inputs": {
+   "text": ""
+  },
+  "_meta": {
+   "title": "文本"
+  }
+ },
+ "92": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "6",
+    2
+   ],
+   "samples": [
+    "20",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "93": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "92",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "94": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_djeni_00001_xqsia_1780283361.jpg&type=temp&subfolder=&rand=0.8003368688168028&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_djeni_00002_ucyzh_1780283362.jpg&type=temp&subfolder=&rand=0.8482197257405305&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     }
+    ]
+   },
+   "image_a": [
+    "9",
+    0
+   ],
+   "image_b": [
+    "92",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像对比"
+  }
+ },
+ "51": {
+  "class_type": "LoraLoader",
+  "inputs": {
+   "lora_name": "SDXL 厚涂艺术 LORA.safetensors",
+   "strength_model": 1,
+   "model": [
+    "6",
+    0
+   ],
+   "clip": [
+    "6",
+    1
+   ],
+   "strength_clip": 1
+  },
+  "_meta": {
+   "title": "LoRA加载器"
+  }
+ },
+ "95": {
+  "class_type": "CoreMLDetailerHookProvider",
+  "inputs": {
+   "mode": "768x768"
+  },
+  "_meta": {
+   "title": "CoreML细化约束器"
+  }
+ },
+ "52": {
+  "class_type": "StringFunction|pysssss",
+  "inputs": {
+   "result": "void arcanist,hyper detailed,volumetric lighting,fantasy art,octane render),\nwatercolor_(medium),transparent",
+   "tidy_tags": "yes",
+   "text_a": "",
+   "text_c": [
+    "172",
+    0
+   ],
+   "action": "append",
+   "text_b": [
+    "55",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "字符串操作"
+  }
+ },
+ "96": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "102",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "53": {
+  "class_type": "LoraLoader",
+  "inputs": {
+   "lora_name": "SDXL 极炫幻彩 幻彩高质量光影 _v1.0 LORA.safetensors",
+   "strength_model": 0.7,
+   "model": [
+    "51",
+    0
+   ],
+   "clip": [
+    "51",
+    1
+   ],
+   "strength_clip": 0.7
+  },
+  "_meta": {
+   "title": "LoRA加载器"
+  }
+ },
+ "97": {
+  "class_type": "MaskPreview+",
+  "inputs": {
+   "mask": [
+    "102",
+    3
+   ]
+  },
+  "_meta": {
+   "title": "遮罩预览"
+  }
+ },
+ "54": {
+  "class_type": "CR Text Concatenate",
+  "inputs": {
+   "text1": [
+    "52",
+    0
+   ],
+   "text2": [
+    "171",
+    0
+   ],
+   "separator": ","
+  },
+  "_meta": {
+   "title": "文本联结"
+  }
+ },
+ "98": {
+  "class_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+  "inputs": {
+   "right_eye": false,
+   "right_pupil": false,
+   "face": true,
+   "max_faces": 10,
+   "mouth": false,
+   "left_pupil": false,
+   "left_eye": false,
+   "right_eyebrow": false,
+   "left_eyebrow": false
+  },
+  "_meta": {
+   "title": "MediaPipe面部网格检测"
+  }
+ },
+ "11": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "18",
+    0
+   ],
+   "negative": [
+    "2",
+    1
+   ],
+   "control_net": [
+    "1",
+    0
+   ],
+   "strength": 0.8,
+   "start_percent": 0,
+   "positive": [
+    "2",
+    0
+   ],
+   "vae": [
+    "6",
+    2
+   ],
+   "end_percent": 1
+  },
+  "_meta": {
+   "title": "ControlNet应用（旧版高级）"
+  }
+ },
+ "55": {
+  "class_type": "CR Text",
+  "inputs": {
+   "text": "void arcanist,hyper detailed,volumetric lighting,fantasy art,octane render),\nwatercolor_(medium),transparent\n"
+  },
+  "_meta": {
+   "title": "文本"
+  }
+ },
+ "99": {
+  "class_type": "UltralyticsDetectorProvider",
+  "inputs": {
+   "model_name": "bbox/face_yolov8m.pt"
+  },
+  "_meta": {
+   "title": "检测加载器"
+  }
+ },
+ "14": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "3",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "18": {
+  "class_type": "AIO_Preprocessor",
+  "inputs": {
+   "image": [
+    "9",
+    0
+   ],
+   "preprocessor": "DepthAnythingV2Preprocessor",
+   "resolution": 1024
+  },
+  "_meta": {
+   "title": "Aux集成预处理器"
+  }
+ },
+ "19": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "18",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "160": {
+  "class_type": "Any Switch (rgthree)",
+  "inputs": {
+   "any_01": [
+    "92",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "任意切换"
+  }
+ },
+ "186": {
+  "class_type": "llama_cpp_parameters",
+  "inputs": {
+   "mirostat_eta": 0.1,
+   "max_tokens": 4096,
+   "presence_penalty": 1,
+   "mirostat_mode": 0,
+   "top_p": 0.9,
+   "min_p": 0.05,
+   "frequency_penalty": 0,
+   "state_uid": -1,
+   "mirostat_tau": 5,
+   "top_k": 30,
+   "temperature": 0.8,
+   "repeat_penalty": 1,
+   "typical_p": 1
+  },
+  "_meta": {
+   "title": "Llama-cpp Parameters"
+  }
+ },
+ "187": {
+  "class_type": "llama_cpp_model_loader",
+  "inputs": {
+   "image_min_tokens": 0,
+   "vram_limit": -1,
+   "mmproj": "Qwen3.5-9B-mmproj-F16.gguf",
+   "model": "Qwen3.5-9B-Q8_0.gguf",
+   "n_ctx": 8192,
+   "chat_handler": "Qwen3.5",
+   "image_max_tokens": 0
+  },
+  "_meta": {
+   "title": "Llama-cpp Model Loader"
+  }
+ },
+ "1": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  "_meta": {
+   "title": "ControlNet加载器"
+  }
+ },
+ "100": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "102",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "188": {
+  "class_type": "llama_cpp_instruct_adv",
+  "inputs": {
+   "images": [
+    "9",
+    0
+   ],
+   "max_frames": 24,
+   "seed": 998737890695841,
+   "inference_mode": "one by one",
+   "custom_prompt": [
+    "189",
+    0
+   ],
+   "force_offload": true,
+   "system_prompt": "",
+   "save_states": false,
+   "preset_prompt": "Prompt Style - Extreme Detailed",
+   "llama_model": [
+    "187",
+    0
+   ],
+   "parameters": [
+    "186",
+    0
+   ],
+   "max_size": 256
+  },
+  "_meta": {
+   "title": "Llama-cpp Instruct"
+  }
+ },
+ "2": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "3",
+    0
+   ],
+   "negative": [
+    "5",
+    0
+   ],
+   "control_net": [
+    "1",
+    0
+   ],
+   "strength": 1,
+   "start_percent": 0,
+   "positive": [
+    "4",
+    0
+   ],
+   "vae": [
+    "6",
+    2
+   ],
+   "end_percent": 1
+  },
+  "_meta": {
+   "title": "ControlNet应用（旧版高级）"
+  }
+ },
+ "101": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "102",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "189": {
+  "class_type": "RHHiddenNodes",
+  "inputs": {
+   "text_a_1": [
+    "179",
+    0
+   ],
+   "pwd": ""
+  },
+  "_meta": {
+   "title": "Group Nodes(Password)"
+  }
+ },
+ "3": {
+  "class_type": "AIO_Preprocessor",
+  "inputs": {
+   "image": [
+    "9",
+    0
+   ],
+   "preprocessor": "LineArtPreprocessor",
+   "resolution": 1024
+  },
+  "_meta": {
+   "title": "Aux集成预处理器"
+  }
+ },
+ "102": {
+  "class_type": "FaceDetailer",
+  "inputs": {
+   "sam_bbox_expansion": 0,
+   "feather": 5,
+   "force_inpaint": true,
+   "guide_size": 512,
+   "seed": 705318595431729,
+   "sam_model_opt": [
+    "108",
+    0
+   ],
+   "bbox_dilation": 10,
+   "cycle": 1,
+   "wildcard": "",
+   "scheduler": "karras",
+   "negative": [
+    "5",
+    0
+   ],
+   "sam_mask_hint_use_negative": "False",
+   "sam_detection_hint": "center-1",
+   "sampler_name": "dpmpp_2m_sde",
+   "detailer_hook": [
+    "95",
+    0
+   ],
+   "tiled_decode": false,
+   "model": [
+    "53",
+    0
+   ],
+   "vae": [
+    "6",
+    2
+   ],
+   "guide_size_for": true,
+   "sam_mask_hint_threshold": 0.7,
+   "image": [
+    "160",
+    0
+   ],
+   "cfg": 4,
+   "sam_threshold": 0.93,
+   "noise_mask_feather": 20,
+   "inpaint_model": false,
+   "positive": [
+    "4",
+    0
+   ],
+   "steps": 28,
+   "max_size": 1024,
+   "denoise": 0.5,
+   "sam_dilation": 0,
+   "drop_size": 10,
+   "noise_mask": true,
+   "bbox_threshold": 0.5,
+   "bbox_crop_factor": 3,
+   "segm_detector_opt": [
+    "98",
+    1
+   ],
+   "tiled_encode": false,
+   "bbox_detector": [
+    "99",
+    0
+   ],
+   "clip": [
+    "53",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "面部细化"
+  }
+ },
+ "4": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": [
+    "54",
+    0
+   ],
+   "clip": [
+    "53",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "103": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "105",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "5": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "(worst quality:2), (low quality:2), normal quality, deformed, distorted, disfigured, bad anatomy, ugly, blurry, extra limbs, missing limbs, floating limbs, bad hands, mutated hands, poorly drawn hands, poorly drawn face, extra fingers, missing fingers, cross-eyed, watermark, text, signature, cropped\n",
+   "clip": [
+    "53",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "104": {
+  "class_type": "UpscaleModelLoader",
+  "inputs": {
+   "model_name": "RealESRGAN_x4plus_anime_6B.pth"
+  },
+  "_meta": {
+   "title": "放大模型加载器"
+  }
+ },
+ "6": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "waiNsfwIllustrious16.bhnI.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "105": {
+  "class_type": "UltimateSDUpscale",
+  "inputs": {
+   "seed": 516297713881884,
+   "tile_height": 1024,
+   "tile_padding": 32,
+   "seam_fix_denoise": 1,
+   "seam_fix_padding": 16,
+   "scheduler": "normal",
+   "negative": [
+    "5",
+    0
+   ],
+   "sampler_name": "euler_ancestral",
+   "tiled_decode": false,
+   "model": [
+    "53",
+    0
+   ],
+   "vae": [
+    "6",
+    2
+   ],
+   "seam_fix_mask_blur": 8,
+   "upscale_by": 2,
+   "image": [
+    "102",
+    0
+   ],
+   "cfg": 4,
+   "force_uniform_tiles": false,
+   "mode_type": "Linear",
+   "upscale_model": [
+    "104",
+    0
+   ],
+   "positive": [
+    "4",
+    0
+   ],
+   "steps": 30,
+   "tile_width": 1024,
+   "seam_fix_width": 64,
+   "denoise": 0.25,
+   "seam_fix_mode": "Band Pass",
+   "mask_blur": 8
+  },
+  "_meta": {
+   "title": "SD放大"
+  }
+ },
+ "106": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_pzsju_00001_ozuec_1780283379.jpg&type=temp&subfolder=&rand=0.6913311523047778&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_pzsju_00002_lvvjm_1780283381.jpg&type=temp&subfolder=&rand=0.8730418182954955&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     }
+    ]
+   },
+   "image_a": [
+    "160",
+    0
+   ],
+   "image_b": [
+    "102",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像对比"
+  }
+ },
+ "8": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "a6ca5b763b0a262f9138bb3d9d2f0c91430b2f4276de7a522e1b07286dd45f84.webp"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "107": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_fzzhe_00001_qbpip_1780283423.jpg&type=temp&subfolder=&rand=0.21656858413999258&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_fzzhe_00002_ocfdk_1780283424.jpg&type=temp&subfolder=&rand=0.3543686845102382&Rh-Comfy-Auth=eyJ1c2VySWQiOiI5YzEzNTY5ZTYwNjBiMWNkZmIwMmI0Mzg4OWUyYTBiZCIsInNpZ25FeHBpcmUiOjE3ODA4ODc3MjQxNjQsInRzIjoxNzgwMjgyOTI0MTY0LCJzaWduIjoiMzBkNTVmMmVhNmEzYzlhZTFhMDU3YWIyNDYyNDJkM2YifQ==&Rh-Identify=9c13569e6060b1cdfb02b43889e2a0bd"
+     }
+    ]
+   },
+   "image_a": [
+    "102",
+    0
+   ],
+   "image_b": [
+    "105",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像对比"
+  }
+ },
+ "9": {
+  "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+  "inputs": {
+   "fit": "letterbox",
+   "aspect_ratio": "original",
+   "image": [
+    "8",
+    0
+   ],
+   "method": "lanczos",
+   "background_color": "#000000",
+   "round_to_multiple": "8",
+   "scale_to_side": "longest",
+   "proportional_height": 1,
+   "proportional_width": 1,
+   "scale_to_length": 1024
+  },
+  "_meta": {
+   "title": "按宽高比缩放_V2"
+  }
+ },
+ "108": {
+  "class_type": "SAMLoader",
+  "inputs": {
+   "model_name": "sam_vit_h_4b8939.pth",
+   "device_mode": "AUTO"
+  },
+  "_meta": {
+   "title": "SAM加载器"
+  }
+ },
+ "20": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "karras",
+   "negative": [
+    "11",
+    1
+   ],
+   "denoise": 1,
+   "latent_image": [
+    "22",
+    0
+   ],
+   "seed": 134456880657139,
+   "cfg": 5,
+   "sampler_name": "dpmpp_2m",
+   "model": [
+    "53",
+    0
+   ],
+   "positive": [
+    "11",
+    0
+   ],
+   "steps": 30
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ }
+}

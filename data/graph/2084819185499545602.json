@@ -1,0 +1,806 @@
+{
+ "node_count": 22,
+ "link_count": 23,
+ "active_node_count": 22,
+ "nodes": [
+  {
+   "id": 123,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    233
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    256,
+    237
+   ],
+   "out_links": [
+    232
+   ]
+  },
+  {
+   "id": 117,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Model Links",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## Model Links\n\n**vae**\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors)\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors)\n\n**diffusion_models**\n\n- [minimax_h3_fl2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 vae/\n│   │   ├── minimax_h3_video_vae_fp16.safetensors\n│   │   └── minimax_h3_audio_vae_fp32.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── minimax_h3_fl2va_pruned_int8_convrot.safetensors\n│   └── 📂 text_encoders/\n│       └── qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 116,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: MiniMax H3",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## MiniMax H3\n\n[MiniMax H3](https://www.minimax.io/blog/minimax-h3) is MiniMax's general-purpose, omni-modal generation model. It jointly understands text, image, video, and audio, and generates video with **native stereo audio**: voice, sound effects, and music are modeled jointly in a single forward pass, not layered on afterward. Output is up to 2K resolution, 24fps, and up to about 15 seconds.\n\n## ComfyUI links\n- [ComfyUI#15224](https://github.com/Comfy-Org/ComfyUI/pull/15224)\n- [🤗 Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3)\n\n## About this workflow\n\n**Key inputs**\n\n- **prompt**: describe the shots, camera moves, and the accompanying audio (dialogue, SFX, music) in one block\n- **width / height**: set via Resolution Selector. H3's native canvas is a 768px short edge, capped at 768x1344 pixels, rounded to a multiple of 32\n- **duration (seconds)**: converted to a valid frame `length` by the Math Expression node, snapping up to the model's 17-frame-per-block (17k+5) grid at 24fps\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 119,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    229,
+    241
+   ]
+  },
+  {
+   "id": 120,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    228
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    247,
+    229
+   ],
+   "out_links": [
+    249
+   ]
+  },
+  {
+   "id": 121,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    248,
+    228
+   ],
+   "out_links": [
+    250
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    231,
+    232,
+    233,
+    234,
+    235
+   ],
+   "out_links": [
+    247,
+    248
+   ]
+  },
+  {
+   "id": 124,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    20,
+    1
+   ],
+   "in_links": [
+    230
+   ],
+   "out_links": [
+    234
+   ]
+  },
+  {
+   "id": 133,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5
+   ],
+   "in_links": [],
+   "out_links": [
+    246
+   ]
+  },
+  {
+   "id": 132,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    246
+   ],
+   "out_links": [
+    243
+   ]
+  },
+  {
+   "id": 129,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    494566939884758,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    231
+   ]
+  },
+  {
+   "id": 134,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "video/MiniMax_H3",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "MiniMax_H3_00001_p80-audio_bvvpk_1785738125.mp4",
+      "cos_url": "https://rh-images.xiaoyaoyou.com//fd1b43fb37d78874b150f79ecde63621/output/video/MiniMax_H3_00001_p80-audio_bvvpk_1785738125.mp4",
+      "workflow": "MiniMax_H3_00001_p80.png",
+      "fullpath": "/data/ComfyUI/personal/fd1b43fb37d78874b150f79ecde63621/output/video/MiniMax_H3_00001_p80-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "video",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    249,
+    250
+   ],
+   "out_links": []
+  },
+  {
+   "id": 135,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    251
+   ],
+   "out_links": [
+    255
+   ]
+  },
+  {
+   "id": 118,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 127,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    230,
+    251
+   ]
+  },
+  {
+   "id": 128,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    240
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PainterVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "auto",
+    true
+   ],
+   "in_links": [
+    255
+   ],
+   "out_links": [
+    256
+   ]
+  },
+  {
+   "id": 131,
+   "type": "MiniMaxH3ImageToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "镜头一：开场【视觉奇观 + 剪婚纱唱词】（00:00 - 00:07.2）\n歌词：“你我 怎么两清 怎么忍心 / 怎么做回甲乙丙丁”\n\n提示词 (Prompt)： 电影感中景至特写。背景为一座废弃破败的复古画室室内，墙面为剥落的深灰色水泥墙，角落堆叠着蒙尘的旧画框，整体处于极暗影调并深景深虚化。一束4000K强追光顶光打下。角色身穿一件抹胸纯白拖地蕾丝婚纱，裙摆带有多层网纱与破损剪口。前3秒她对着镜头精准对口型演唱，眼神绝望；在第3.5秒重音处，她动作幅度变大，双手拿着银色剪刀狠狠剪断身上的白色蕾丝。白色纱屑与羽毛在光束中纷飞。4K超高清，8k分辨率，60fps慢镜头，伦勃朗光影，极致破败美感。\n\n🔴 镜头二：【爆发卡点 / 烧回忆】（00:07.2 - 00:14.6）\n歌词：“难道 非要耗尽 所有委屈 / 再赔上这一条烂命”\n\n提示词 (Prompt)： 中景推进镜头。背景为昏暗无人的工业风冷调房间，背景深处是带有雨滴划痕的巨大落地玻璃窗，窗外是模糊漆黑的城市雨夜霓虹，背景整体呈8000K冷蓝调并大幅虚化。前景为复古黑色铁桶。角色换穿一件黑色真丝细吊带连衣裙，面料带有光泽感。在00:09.5秒（“委屈”唱毕）瞬间，她将手里的合照与信件扔进铁桶；00:11秒（“赔上”）火焰猛烈爆发腾起，在她脸上投下摇曳的暖光。她泪流满面，120fps高帧率慢动作，微火星与烟雾飘散，强烈冷暖色温对比。\n\n🔴 镜头三：【微距特写 / 感情克制与窒息】（00:14.6 - 00:22.4）\n歌词：“爱情 这场酷刑 教人看清 / 爱与不爱之间的差距”\n\n提示词 (Prompt)： 极近距离面部与锁骨特写（Extreme Close-up）。背景为极简的黑洞般纯黑虚无空间，无任何杂物，仅有极弱的冷蓝色边缘光勾勒角色轮廓。低饱和度冷调光影。角色身穿黑色真丝细吊带连衣裙，细肩带落在锁骨处，黑色布料质感细腻。侧脸极度贴近镜头，光影在面部缓缓流动。她眼神深邃，对着镜头悲伤而精准地对口型演唱，嘴唇轻微颤动。电影级微距视角，唇纹与眼部细节清晰可见，克制而窒息的情感表达。\n\n🔴 镜头四：【高潮泪滴 / 情绪冷笑收尾】（00:22.4 - 00:30.0）\n歌词：“若我落下泪滴 能否换来 一点同情”\n\n提示词 (Prompt)： 面部特写镜头。背景延续漆黑无界限的暗室空间，仅有微弱的水汽烟雾在背景深处缓缓漂浮，极致的高级电影级大光圈虚化。角色身穿黑色真丝细吊带连衣裙，面部带有湿润水汽。在00:23秒（“若我落下泪滴”）瞬间，一滴硕大的泪珠顺着左脸颊慢动作划落（120fps慢镜头）；00:26秒唱毕“一点同情”时，她的眼神从极度绝望转为一抹自嘲的冷笑。暗光折射出泪滴光泽，极细腻的微表情控制，以凝固的自嘲与破碎感收尾，8k超高清细节。",
+    1344,
+    768,
+    73
+   ],
+   "in_links": [
+    240,
+    241,
+    260,
+    244,
+    245,
+    243
+   ],
+   "out_links": [
+    237,
+    235
+   ]
+  },
+  {
+   "id": 137,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "镜头一：开场【视觉奇观 + 剪婚纱唱词】（00:00 - 00:07.2）\n歌词：“你我 怎么两清 怎么忍心 / 怎么做回甲乙丙丁”\n\n提示词 (Prompt)： 电影感中景至特写。背景为一座废弃破败的复古画室室内，墙面为剥落的深灰色水泥墙，角落堆叠着蒙尘的旧画框，整体处于极暗影调并深景深虚化。一束4000K强追光顶光打下。角色身穿一件抹胸纯白拖地蕾丝婚纱，裙摆带有多层网纱与破损剪口。前3秒她对着镜头精准对口型演唱，眼神绝望；在第3.5秒重音处，她动作幅度变大，双手拿着银色剪刀狠狠剪断身上的白色蕾丝。白色纱屑与羽毛在光束中纷飞。4K超高清，8k分辨率，60fps慢镜头，伦勃朗光影，极致破败美感。\n\n🔴 镜头二：【爆发卡点 / 烧回忆】（00:07.2 - 00:14.6）\n歌词：“难道 非要耗尽 所有委屈 / 再赔上这一条烂命”\n\n提示词 (Prompt)： 中景推进镜头。背景为昏暗无人的工业风冷调房间，背景深处是带有雨滴划痕的巨大落地玻璃窗，窗外是模糊漆黑的城市雨夜霓虹，背景整体呈8000K冷蓝调并大幅虚化。前景为复古黑色铁桶。角色换穿一件黑色真丝细吊带连衣裙，面料带有光泽感。在00:09.5秒（“委屈”唱毕）瞬间，她将手里的合照与信件扔进铁桶；00:11秒（“赔上”）火焰猛烈爆发腾起，在她脸上投下摇曳的暖光。她泪流满面，120fps高帧率慢动作，微火星与烟雾飘散，强烈冷暖色温对比。\n\n🔴 镜头三：【微距特写 / 感情克制与窒息】（00:14.6 - 00:22.4）\n歌词：“爱情 这场酷刑 教人看清 / 爱与不爱之间的差距”\n\n提示词 (Prompt)： 极近距离面部与锁骨特写（Extreme Close-up）。背景为极简的黑洞般纯黑虚无空间，无任何杂物，仅有极弱的冷蓝色边缘光勾勒角色轮廓。低饱和度冷调光影。角色身穿黑色真丝细吊带连衣裙，细肩带落在锁骨处，黑色布料质感细腻。侧脸极度贴近镜头，光影在面部缓缓流动。她眼神深邃，对着镜头悲伤而精准地对口型演唱，嘴唇轻微颤动。电影级微距视角，唇纹与眼部细节清晰可见，克制而窒息的情感表达。\n\n🔴 镜头四：【高潮泪滴 / 情绪冷笑收尾】（00:22.4 - 00:30.0）\n歌词：“若我落下泪滴 能否换来 一点同情”\n\n提示词 (Prompt)： 面部特写镜头。背景延续漆黑无界限的暗室空间，仅有微弱的水汽烟雾在背景深处缓缓漂浮，极致的高级电影级大光圈虚化。角色身穿黑色真丝细吊带连衣裙，面部带有湿润水汽。在00:23秒（“若我落下泪滴”）瞬间，一滴硕大的泪珠顺着左脸颊慢动作划落（120fps慢镜头）；00:26秒唱毕“一点同情”时，她的眼神从极度绝望转为一抹自嘲的冷笑。暗光折射出泪滴光泽，极细腻的微表情控制，以凝固的自嘲与破碎感收尾，8k超高清细节。"
+   ],
+   "in_links": [],
+   "out_links": [
+    260
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "分辨率设置",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.6,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    244,
+    245
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 131,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 131,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 119,
+   "to_node": 131,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 121,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 134,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 122,
+   "to_node": 134,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 125,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 125,
+   "to_node": 121,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 125,
+   "to_node": 122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 126,
+   "to_node": 125,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 127,
+   "to_node": 124,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 127,
+   "to_node": 135,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 128,
+   "to_node": 131,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 129,
+   "to_node": 125,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 125,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 131,
+   "to_node": 126,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 132,
+   "to_node": 131,
+   "type": "INT"
+  },
+  {
+   "from_node": 133,
+   "to_node": 132,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 135,
+   "to_node": 138,
+   "type": "*"
+  },
+  {
+   "from_node": 137,
+   "to_node": 131,
+   "type": "STRING"
+  },
+  {
+   "from_node": 138,
+   "to_node": 126,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "sampler": 4,
+  "utility": 10,
+  "vae": 4,
+  "preprocessor": 1,
+  "video_io": 1,
+  "checkpoint_loader": 1,
+  "clip": 1
+ },
+ "assets": [
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 38,
+ "structure_hash": "c30ff26bf760a746",
+ "param_face": [
+  {
+   "node_id": 123,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 133,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 132,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "494566939884758"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 134,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 135,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 135,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 138,
+   "node_type": "PainterVRAM",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 138,
+   "node_type": "PainterVRAM",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 138,
+   "node_type": "PainterVRAM",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 131,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 131,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 131,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 3,
+   "value_preview": "73"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  }
+ ]
+}

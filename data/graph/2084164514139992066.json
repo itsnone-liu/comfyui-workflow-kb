@@ -1,0 +1,343 @@
+{
+ "node_count": 7,
+ "link_count": 8,
+ "active_node_count": 7,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    4
+   ],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "430317718e6ee36c0080e7a9b2596a09452d3f878d31b40ffdae7e6d9e2a18b5.jpg",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "type": "RH_MinimaxHailuoH3ImageToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "镜头保持主观视角（POV），她笑着轻轻推了一下镜头，伴随着衣袖摩擦的细微`沙沙`声，语气娇嗔：`哼，小样。`\n\n随即，她放下了挡在镜头前的手，身体不再后退，反而主动前倾凑近镜头，直到精致的面孔占据了大半个画面。她眼里的笑意加深，直视着镜头，压低声音，语气变得暧昧且充满挑逗：`别拍了……我们来做点别的事吧？（停顿）毕竟……我是你生成的AI，你想对我干嘛……就可以干嘛呀。` 说完，她轻轻咬了一下下唇，呼吸声清晰可闻。背景中窗外的城市喧嚣被隔绝，只有室内安静暧昧的空气流动声。",
+    "2K",
+    "15",
+    false,
+    570749232,
+    "randomize"
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": [
+    2,
+    9,
+    3,
+    4
+   ]
+  },
+  {
+   "id": 4,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/ComfyUI",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "GetVideoComponents",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9
+   ],
+   "out_links": [
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "id": 9,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "AnimateDiff_00002_p86-audio_abays_1770465410.mp4",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//0c5e29f80acd84973c41e3a9c4cab22f/output/AnimateDiff_00002_p86-audio_abays_1770465410.mp4",
+      "workflow": "AnimateDiff_00002_p86.png",
+      "fullpath": "/data/ComfyUI/personal/0c5e29f80acd84973c41e3a9c4cab22f/output/AnimateDiff_00002_p86-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 30
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 8,
+    "pingpong": false
+   },
+   "in_links": [
+    6,
+    7,
+    8
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 2,
+   "to_node": 4,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 2,
+   "to_node": 5,
+   "type": "*"
+  },
+  {
+   "from_node": 2,
+   "to_node": 6,
+   "type": "*"
+  },
+  {
+   "from_node": 2,
+   "to_node": 8,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 3,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "FLOAT"
+  }
+ ],
+ "categories": {
+  "utility": 4,
+  "image_io": 1,
+  "video_io": 2
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 22,
+ "structure_hash": "2990805f5fc3e46a",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "430317718e6ee36c0080e7a9b2596a09452d3f878d31b40ffdae7e6d9e2a"
+  },
+  {
+   "node_id": 3,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3ImageToVideo",
+   "widget_index": 1,
+   "value_preview": "2K"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3ImageToVideo",
+   "widget_index": 2,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3ImageToVideo",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3ImageToVideo",
+   "widget_index": 4,
+   "value_preview": "570749232"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3ImageToVideo",
+   "widget_index": 5,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 4,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/ComfyUI"
+  },
+  {
+   "node_id": 4,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 4,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "8"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  }
+ ]
+}

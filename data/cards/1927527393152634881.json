@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "视频生成",
+  "图像动画"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张参考图和一段驱动视频，使用Wan2.1-14B + VACE + AccVid LoRA，端到端生成外观与参考图一致、动作由驱动视频控制的新视频（默认29帧，480x832）。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1-T2V-14B",
+  "VACE (Visual Anchoring Conditioning Environment)",
+  "AccVid LoRA",
+  "DepthAnythingV2 深度提取",
+  "WanVideoTeaCache (推理缓存加速)",
+  "WanVideoSLG (稀疏化加速)",
+  "WanVideoBlockSwap (显存块交换)",
+  "TorchCompile (inductor)",
+  "SageAttention",
+  "fp8 量化加载",
+  "T5-xxl 文本编码"
+ ],
+ "special_features": [
+  {
+   "text": "多段式加速组合：fp8 + TeaCache + SLG + BlockSwap + TorchCompile + SageAttention 同时作用于Wan2.1-14B，明显降低延迟和显存占用，是本工作流最大亮点。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时挂载3个VHS_VideoCombine输出节点，可能分别输出生成视频、驱动视频和深度可视化，便于效果对比与后期合成。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用rgthree Fast Groups Bypasser，可将整组节点一键旁路，方便做消融试验或临时跳过某些模块。",
+   "kind": "fact"
+  },
+  {
+   "text": "大量使用GetNode/SetNode（WanModel、WanVAE、reference_image、control_video等）组织全局对象，减少连线冗余，提升工作流复用性。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时提供 AIOPreprocessor(DWPreprocessor) 和 DepthAnything_V2 两条深度提取路径，用户可根据硬件/效果选择。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过ImageConcatMulti按down/left方向拼接图像，用于组合参考图与多路控制帧，实现多条件视觉注入。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "此工作流的核心目标是让14B级别的Wan2.1视频生成模型在消费级GPU上可用，同时保持可控性和质量。作者通过fp8量化、TeaCache、SLG、BlockSwap、TorchCompile和SageAttention等机制叠加，最大化采样效率；再利用VACE模块注入深度控制，用AccVid LoRA强化参考图特征，从而实现‘参考图+动作驱动’的视频生成。大量标签节点和GetNode/SetNode组织也表明作者希望工作流不仅可运行，还可灵活修改复用。",
+ "use_case": "适用于短视频创作、动作迁移、照片动画化。用户提供一张静态参考图（如人物/商品）和一段驱动视频（如舞蹈、运动），即可在较短时间内生成与参考图外观一致、动作照搬的新视频；也适合在显存受限设备上体验14B视频生成模型。",
+ "limitation": "需要额外下载多个大型模型文件，包括Wan2.1-T2V-14B fp8、VACE模块、UMT5-xxl、VAE、AccVid LoRA以及DepthAnythingV2，总存储占用较大。依赖ComfyUI-VideoHelperSuite、KJNodes、rgthree、Crystools等自定义节点，缺失会导致流程报错。实际控制路径仅实现了深度引导（Depth），注释中提到人物可使用Pose但工作流并未内置姿态估计节点，需自行扩展。默认输出29帧短视频，增加帧数会显著提高显存压力。",
+ "dependencies": [
+  "checkpoint: Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "checkpoint: Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors",
+  "checkpoint: umt5-xxl-enc-fp8_e4m3fn.safetensors",
+  "checkpoint: depth_anything_v2_vitl_fp16.safetensors",
+  "vae: Wan2_1_VAE_bf16.safetensors",
+  "lora: Wan21_AccVid_T2V_14B_lora_rank32_fp16.safetensors",
+  "custom nodes: ComfyUI-VideoHelperSuite",
+  "custom nodes: comfyui-kjnodes",
+  "custom nodes: rgthree-comfy",
+  "custom nodes: crystools",
+  "custom nodes: ComfyUI-pysssss"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张参考图 + 驱动视频 + 文本提示",
+  "count": "3"
+ },
+ "output": {
+  "type": "视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler.steps",
+   "how_to_tune": "默认50步，兼顾质量与速度。若追求更快可降至20~30，若细节不足可提升到60~80，注意耗时线性增加。"
+  },
+  {
+   "param": "WanVideoSampler.cfg",
+   "how_to_tune": "当前约1.0，属于低引导系数，适合需要保留输入特征（如参考图）的生成。若发现内容漂移或对齐不充分，可尝试调至4~8；若过度饱和可降低。"
+  },
+  {
+   "param": "WanVideoTeaCache.rel_l1_thresh",
+   "how_to_tune": "TeaCache相似度阈值，默认0.1。增大（如0.15~0.2）加速更多但可能产生闪烁；减小（如0.05）更保守但加速减少。"
+  },
+  {
+   "param": "WanVideoBlockSwap.threshold",
+   "how_to_tune": "控制显存换入换出的块阈值，默认10。显存不足（OOM）时可增大，但速度会降低；显存充裕时减小可提升速度。"
+  },
+  {
+   "param": "WanVideoVACEEncode.frames",
+   "how_to_tune": "默认29帧，决定输出视频长度。增加帧数会线性提高显存占用和时间；若显存余量小，可先保持29帧，再通过视频插帧扩展。"
+  },
+  {
+   "param": "WanVideoSLG",
+   "how_to_tune": "稀疏化参数，通常保持默认(8, 0.3, 0.7)。新手不建议调整；若画面质量下降，可先关闭SLG测试是否是稀疏化导致。"
+  }
+ ],
+ "summary_text": "能力:输入一张参考图和一段驱动视频，使用Wan2.1-14B + VACE + AccVid LoRA，端到端生成外观与参考图一致、动作由驱动视频控制的新视频（默认29帧，480x832）。；特色:多段式加速组合：fp8 + TeaCache + SLG + BlockSwap + TorchCompile + SageAttention 同时作用于Wan2.1-14B，明显降低延迟和显存占用，是本工作流最大亮点。；特色:同时挂载3个VHS_VideoCombine输出节点，可能分别输出生成视频、驱动视频和深度可视化，便于效果对比与后期合成。；特色:使用rgthree Fast Groups Bypasser，可将整组节点一键旁路，方便做消融试验或临时跳过某些模块。；特色:大量使用GetNode/SetNode（WanModel、WanVAE、reference_image、control_video等）组织全局对象，减少连线冗余，提升工作流复用性。；特色:同时提供 AIOPreprocessor(DWPreprocessor) 和 DepthAnything_V2 两条深度提取路径，用户可根据硬件/效果选择。；特色:通过ImageConcatMulti按down/left方向拼接图像，用于组合参考图与多路控制帧，实现多条件视觉注入。；适用于短视频创作、动作迁移、照片动画化。用户提供一张静态参考图（如人物/商品）和一段驱动视频（如舞蹈、运动），即可在较短时间内生成与参考图外观一致、动作照搬的新视频；也适合在显存受限设备上体验14B视频生成模型。；此工作流的核心目标是让14B级别的Wan2.1视频生成模型在消费级GPU上可用，同时保持可控性和质量。作者通过fp8量化、TeaCache、SLG、BlockSwap、TorchCompile和SageAttention等机制叠加，最大化采样效率；再利用VACE模块注入深度控制，用AccVid LoRA强化参考图特征，从而实现‘参考图+动作驱动’的视频生成。大量标签节点和GetNode/SetNode组织也表明作者希望工作流不仅可运行，还可灵活修改复用。"
+}

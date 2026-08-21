@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "图像抠图",
+  "图像合成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张包含主体的图像，自动使用BiRefNet模型抠出前景主体，并通过TTP_Expand_And_Mask去除边缘白边，输出透明背景或纯色背景的结果图。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持先手动裁剪图像中某区域，再对该区域内的主体进行抠图，解决多人物/多主体互相干扰的问题。",
+   "kind": "fact"
+  },
+  {
+   "text": "可生成指定颜色的纯色背景（通过CR Draw Shape）与抠图结果合成，便于预览或直接出图。",
+   "kind": "inference"
+  },
+  {
+   "text": "提供遮罩预览（MaskPreview+）和多个保存节点，方便人工检查抠图质量并输出中间结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "BiRefNet（高精度二值抠图模型，LoadBiRefNetModelV2 + BiRefNetUltraV2）",
+  "遮罩裁剪与主体提取（Mask Crop Region）",
+  "图像合成（ImageCompositeMasked）",
+  "边缘去白边（TTP_Expand_And_Mask）",
+  "透明通道拆分（SplitImageWithAlpha）",
+  "几何变换/裁剪（Image Crop Location, GetImageSizeAndCount）"
+ ],
+ "special_features": [
+  {
+   "text": "双LoadImage输入结构，可能支持同时输入原始图和背景图/参考图，配合多个SaveImage分支输出不同处理结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "包含'当图像中有多个人物的时候可以先裁剪'提示，说明工作流设计了手动裁剪预处理分支，可与自动抠图串联。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用LayerMask系列自定义节点封装BiRefNet，并通过Mask Crop Region的'dominant'模式只保留最大连通区域，减少干扰噪声。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用TTP_Expand_And_Mask对遮罩进行膨胀/腐蚀式后处理，专门用于消除白色边缘残边。",
+   "kind": "inference"
+  },
+  {
+   "text": "Note提示分辨率为8的倍数，说明工作流对尺寸有显式约束，可能通过GetImageSizeAndCount进行尺寸感知。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流旨在解决自动抠图后常见的白边问题，同时兼顾多主体场景的用户干预需求。它先用BiRefNet做高精度分割，再借助Mask Crop Region和手动裁剪接口来集中处理目标主体，最后通过TTP_Expand_And_Mask等后处理去除边缘残白，并利用ImageCompositeMasked将结果合成到用户可选的纯色背景上，形成一套完整的'抠图+去白边+换底色'流水线。",
+ "use_case": "电商商品图、人像照片、设计素材的快速抠图与白边清理，尤其适合需要在纯色背景上输出素材的场景。",
+ "limitation": "依赖BiRefNet模型文件（需在LoadBiRefNetModelV2中选择模型），并需要安装LayerMask、TTP等自定义节点；输入图像中若含有多主体，需要手动先裁剪；输出分辨率应为8的倍数，否则遮罩可能与图像错位；去白边效果可能受主体边缘复杂度和模型精度影响。",
+ "dependencies": [
+  "ComfyUI-LayerMask（LayerMask: BiRefNetUltraV2, LayerMask: LoadBiRefNetModelV2）",
+  "ComfyUI_TTP_Toolbox（TTP_Expand_And_Mask）",
+  "SplitImageWithAlpha（自定义节点）",
+  "Mask Crop Region（自定义节点）",
+  "CR Draw Shape（ComfyUI_essentials 或类似扩展）",
+  "ComfyUI 内置节点（LoadImage, SaveImage, PreviewImage, ImageCompositeMasked, GetImageSizeAndCount, Image Crop Location, MaskPreview+ 等）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "图像",
+  "count": "2"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LayerMask: BiRefNetUltraV2 的模型选择与阈值参数",
+   "how_to_tune": "第一个参数可选'VITMatte'（更适合人像）或'General'（通用物体）；阈值类参数调节前景/背景判断的严格程度，值越小保留的细节越多，但可能引入更多背景噪点。"
+  },
+  {
+   "param": "TTP_Expand_And_Mask 参数",
+   "how_to_tune": "可尝试调整扩展方向和颜色阈值（如白色#ffffff），以平衡去白边效果与细节丢失；若边缘修复过度，可减小膨胀值。"
+  },
+  {
+   "param": "Mask Crop Region 参数",
+   "how_to_tune": "padding 值'24'用于控制裁剪区域向外扩的像素数，'dominant'模式只保留最大连通区域；在多主体时先手动裁剪出目标，可提高准确性。"
+  },
+  {
+   "param": "Image Crop Location 参数",
+   "how_to_tune": "两组坐标（0,0,256,256 和 500,1200,1800,1000）分别对应不同预处理分支，可根据实际输入尺寸调整裁剪位置，避免裁掉主体。"
+  }
+ ],
+ "summary_text": "能力:上传一张包含主体的图像，自动使用BiRefNet模型抠出前景主体，并通过TTP_Expand_And_Mask去除边缘白边，输出透明背景或纯色背景的结果图。；能力:支持先手动裁剪图像中某区域，再对该区域内的主体进行抠图，解决多人物/多主体互相干扰的问题。；能力:可生成指定颜色的纯色背景（通过CR Draw Shape）与抠图结果合成，便于预览或直接出图。；能力:提供遮罩预览（MaskPreview+）和多个保存节点，方便人工检查抠图质量并输出中间结果。；特色:双LoadImage输入结构，可能支持同时输入原始图和背景图/参考图，配合多个SaveImage分支输出不同处理结果。；特色:包含'当图像中有多个人物的时候可以先裁剪'提示，说明工作流设计了手动裁剪预处理分支，可与自动抠图串联。；特色:使用LayerMask系列自定义节点封装BiRefNet，并通过Mask Crop Region的'dominant'模式只保留最大连通区域，减少干扰噪声。；特色:使用TTP_Expand_And_Mask对遮罩进行膨胀/腐蚀式后处理，专门用于消除白色边缘残边。；特色:Note提示分辨率为8的倍数，说明工作流对尺寸有显式约束，可能通过GetImageSizeAndCount进行尺寸感知。；电商商品图、人像照片、设计素材的快速抠图与白边清理，尤其适合需要在纯色背景上输出素材的场景。；该工作流旨在解决自动抠图后常见的白边问题，同时兼顾多主体场景的用户干预需求。它先用BiRefNet做高精度分割，再借助Mask Crop Region和手动裁剪接口来集中处理目标主体，最后通过TTP_Expand_And_Mask等后处理去除边缘残白，并利用ImageCompositeMasked将结果合成到用户可选的纯色背景上，形成一套完整的'抠图+去白边+换底色'流水线。"
+}

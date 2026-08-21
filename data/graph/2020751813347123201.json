@@ -1,0 +1,495 @@
+{
+ "node_count": 14,
+ "link_count": 12,
+ "active_node_count": 14,
+ "nodes": [
+  {
+   "id": 16,
+   "type": "Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "根据参考图和以下提示词生成图像"
+   ],
+   "in_links": [],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 13,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9
+   ],
+   "out_links": []
+  },
+  {
+   "id": 15,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "，"
+   ],
+   "in_links": [
+    13,
+    23
+   ],
+   "out_links": [
+    14,
+    21
+   ]
+  },
+  {
+   "id": 6,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    4
+   ],
+   "out_links": []
+  },
+  {
+   "id": 12,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "提取输入文本中 \"### E) Master Contact Sheet Image\"中的input里面的内容",
+    "Hello",
+    0.6,
+    1053141435,
+    "randomize"
+   ],
+   "in_links": [
+    16
+   ],
+   "out_links": [
+    9,
+    23
+   ]
+  },
+  {
+   "id": 21,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    21
+   ],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 26,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    28
+   ],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "87850bebc9e6662840fbf697cd587877795b220e7fd911ac04a72cc79421e0cc.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    3,
+    11
+   ]
+  },
+  {
+   "id": 30,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "自行输入分镜故事内容脚本\n其他的选项默认不变"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 17,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    15
+   ],
+   "out_links": []
+  },
+  {
+   "id": 29,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aspectRatio：选择生成图片的尺寸\nresolution：图片的质量（1k情况下api免费，2k收取0.2元api费用）\n其他的选项默认不变"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "RH_Nano_Banana2_Image2Image",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1893690876,
+    "randomize",
+    "9:16",
+    "1k",
+    "Third-party",
+    true
+   ],
+   "in_links": [
+    11,
+    14
+   ],
+   "out_links": [
+    15,
+    28
+   ]
+  },
+  {
+   "id": 2,
+   "type": "RH_LLMAPI_Pro_Node",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemini-3-pro-preview",
+    "You are a helpful assistant",
+    "在水母捕手训练营，海绵宝宝用三次完美叠被子换来一块珍贵的 “海洋能量棒”。他本想独自享用，却在小蜗的软声恳求下掰出一半。小蜗吃完后，没有模仿海胆，反而拉着海绵宝宝来到一片珊瑚丛，将他引向一只迷路又饥饿的小海马。海绵宝宝见状，把剩下的半块能量棒也分给了小海马。最终，他虽未获得勋章，却收获了小蜗用海草编织的小奖章，以及小海马送的发光珊瑚碎片，明白了分享与善意的真正意义",
+    0.6,
+    541493211,
+    "randomize"
+   ],
+   "in_links": [
+    29,
+    3
+   ],
+   "out_links": [
+    4,
+    16
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 12,
+   "to_node": 13,
+   "type": "*"
+  },
+  {
+   "from_node": 12,
+   "to_node": 15,
+   "type": "STRING"
+  },
+  {
+   "from_node": 14,
+   "to_node": 17,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 26,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 14,
+   "type": "STRING"
+  },
+  {
+   "from_node": 15,
+   "to_node": 21,
+   "type": "*"
+  },
+  {
+   "from_node": 16,
+   "to_node": 15,
+   "type": "STRING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 12,
+   "type": "STRING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 6,
+   "type": "*"
+  },
+  {
+   "from_node": 27,
+   "to_node": 2,
+   "type": "STRING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 2,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 10,
+  "conditioning": 1,
+  "image_io": 3
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 28,
+ "structure_hash": "0013237258478f76",
+ "param_face": [
+  {
+   "node_id": 16,
+   "node_type": "Text",
+   "widget_index": 0,
+   "value_preview": "根据参考图和以下提示词生成图像"
+  },
+  {
+   "node_id": 15,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": "，"
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 3,
+   "value_preview": "提取输入文本中 \"### E) Master Contact Sheet Image\"中的input里面的内容"
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": "Hello"
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "1053141435"
+  },
+  {
+   "node_id": 12,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 26,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "87850bebc9e6662840fbf697cd587877795b220e7fd911ac04a72cc79421"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 30,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "自行输入分镜故事内容脚本\n其他的选项默认不变"
+  },
+  {
+   "node_id": 29,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "aspectRatio：选择生成图片的尺寸\nresolution：图片的质量（1k情况下api免费，2k收取0.2元ap"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 1,
+   "value_preview": "1893690876"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 3,
+   "value_preview": "9:16"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 4,
+   "value_preview": "1k"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 5,
+   "value_preview": "Third-party"
+  },
+  {
+   "node_id": 14,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 0,
+   "value_preview": "gemini-3-pro-preview"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 1,
+   "value_preview": "You are a helpful assistant"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 3,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 4,
+   "value_preview": "541493211"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 5,
+   "value_preview": "randomize"
+  }
+ ]
+}

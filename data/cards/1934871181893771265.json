@@ -1,0 +1,115 @@
+{
+ "domain": [
+  "图像局部重绘",
+  "图片修复对比",
+  "FLUX 工作流"
+ ],
+ "capabilities": [
+  {
+   "text": "上传图片及遮罩，自动生成多路局部重绘结果，用于横向比较不同 FLUX 模型（Flex.2-preview vs flux1-fill-dev）与不同采样参数下的修复效果",
+   "kind": "fact"
+  },
+  {
+   "text": "结合 DepthAnythingV2 深度估计与 InpaintModelConditioning，疑似在重绘时保留原始几何/结构信息",
+   "kind": "inference"
+  },
+  {
+   "text": "支持自动将非英文提示词翻译为英文，并输出多张预览/保存图，便于对比评审",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "局部重绘/Inpainting",
+  "多模型对比",
+  "深度先验（DepthAnythingV2）",
+  "差分扩散（DifferentialDiffusion）",
+  "条件置零（ConditioningZeroOut）",
+  "VAE 编码/解码"
+ ],
+ "special_features": [
+  {
+   "text": "双 UNETLoader 同时加载 Flex.2-preview 和 flux1-fill-dev 两个 FLUX 模型，并共享同一套 CLIP 与 VAE，构造面向修复任务的模型对比",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 GetNode/SetNode 作为参数集散中心，将 flex 模型、图片、vae、重绘遮罩、正负面提示等命名变量跨分支传递，极大方便统一调控",
+   "kind": "fact"
+  },
+  {
+   "text": "4 个 KSampler 分别采用不同采样器（deis/euler）和步数（25/20），并以种子 999/1000 构成多路对照实验",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 DeepTranslatorTextNode 自动翻译提示词，输入非英文文本也能正常驱动模型",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 Image Comparer (rgthree) 和多个 PreviewImage/SaveImage 节点，形成视觉对比看板",
+   "kind": "fact"
+  },
+  {
+   "text": "前置 AIO_Preprocessor（DepthAnythingV2）提取深度图，可能作为结构先验融入修复过程",
+   "kind": "inference"
+  },
+  {
+   "text": "应用 DifferentialDiffusion 与 ConditioningZeroOut 对条件分支做差异化处理，疑似用于控制修复区域对全文生成的影响程度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流似乎是为了系统比较不同 FLUX 变体在局部重绘任务上的效果差异。设计者把模型、图片、遮罩、文本等核心要素通过 Get/Set 节点抽象成语义变量，再用多个采样器构成正交试验，同时加入深度估计和差分扩散等技巧，试图在同一画布上直观对比修复质量，以辅助选择最优模型/参数或进行模型研究。",
+ "use_case": "适合需要为同一张图与遮罩快速测试多种局部重绘方案（不同模型、不同采样器/步数）的场景，也可作为 FLUX 修复模型对比评测的模板。",
+ "limitation": "依赖外部下载的多个模型（Flex.2-preview、flux1-fill-dev、clip_l、t5xxl_fp8、ae.safetensors）；需要安装自定义节点（rgthree 的 Get/Set/Image Comparer、Flex2Conditioner、DifferentialDiffusion、AIO_Preprocessor、DeepTranslatorTextNode 等）；在线翻译需要网络；多个 FLUX 模型与 4 路采样对显存和计算性能要求很高，低配置 GPU 可能无法流畅运行；输入图片必须带有遮罩通道（LoadImage 的 mask）。",
+ "dependencies": [
+  "Flex.2-preview.safetensors",
+  "flux1-fill-dev.safetensors",
+  "ae.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ComfyUI 自定义节点：rgthree、Flex2Conditioner、DifferentialDiffusion、AIO_Preprocessor、DeepTranslatorTextNode"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像 + 遮罩（RGB + mask）",
+  "count": "1（LoadImage, 可包含 mask 通道）"
+ },
+ "output": {
+  "type": "4 个 PreviewImage + 4 个 SaveImage，另有 Image Comparer 对比结果",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "对比工作流中 25/20 步；若显存或时间有限可降至 15-20 步，效果粗糙时再升至 30-40 步"
+  },
+  {
+   "param": "KSampler.sampler_name",
+   "how_to_tune": "deis/euler 与 scheduler beta 影响生成纹理与收敛速度；deis 较稳较快，euler 偏向风格化，可替换 dpmpp_2m 等观察差异"
+  },
+  {
+   "param": "FluxGuidance.value",
+   "how_to_tune": "默认 10，数值越高越严格遵循提示；局部重绘过强时可降到 5-8，过弱则提高到 10-15"
+  },
+  {
+   "param": "Flex2Conditioner 首参",
+   "how_to_tune": "当前设为 'no'，可能控制是否启用额外条件；若修复结构不稳定，可切换为其他模式测试"
+  },
+  {
+   "param": "GrowMaskWithBlur.expand",
+   "how_to_tune": "当前为 0，可适当增大以扩展修复区域，覆盖边缘伪影；但过大会改动非目标区域"
+  },
+  {
+   "param": "GrowMaskWithBlur.blur",
+   "how_to_tune": "当前为 60，值越大遮罩边缘过渡越柔和，但过大可能导致修复范围过度羽化，混入背景信息"
+  },
+  {
+   "param": "ImageScaleToMegapixels.megapixels",
+   "how_to_tune": "当前为 1 百万像素，速度优先；若需要更高细节可提升至 1.5 或 2，显存压力也会增加"
+  },
+  {
+   "param": "AIO_Preprocessor.Resolution",
+   "how_to_tune": "默认 512，控制深度图分辨率；与最终图像分辨率匹配时效果通常更好，过高则增加计算量"
+  }
+ ],
+ "summary_text": "能力:上传图片及遮罩，自动生成多路局部重绘结果，用于横向比较不同 FLUX 模型（Flex.2-preview vs flux1-fill-dev）与不同采样参数下的修复效果；能力:结合 DepthAnythingV2 深度估计与 InpaintModelConditioning，疑似在重绘时保留原始几何/结构信息；能力:支持自动将非英文提示词翻译为英文，并输出多张预览/保存图，便于对比评审；特色:双 UNETLoader 同时加载 Flex.2-preview 和 flux1-fill-dev 两个 FLUX 模型，并共享同一套 CLIP 与 VAE，构造面向修复任务的模型对比；特色:使用 GetNode/SetNode 作为参数集散中心，将 flex 模型、图片、vae、重绘遮罩、正负面提示等命名变量跨分支传递，极大方便统一调控；特色:4 个 KSampler 分别采用不同采样器（deis/euler）和步数（25/20），并以种子 999/1000 构成多路对照实验；特色:集成 DeepTranslatorTextNode 自动翻译提示词，输入非英文文本也能正常驱动模型；特色:内置 Image Comparer (rgthree) 和多个 PreviewImage/SaveImage 节点，形成视觉对比看板；特色:前置 AIO_Preprocessor（DepthAnythingV2）提取深度图，可能作为结构先验融入修复过程；特色:应用 DifferentialDiffusion 与 ConditioningZeroOut 对条件分支做差异化处理，疑似用于控制修复区域对全文生成的影响程度；适合需要为同一张图与遮罩快速测试多种局部重绘方案（不同模型、不同采样器/步数）的场景，也可作为 FLUX 修复模型对比评测的模板。；该工作流似乎是为了系统比较不同 FLUX 变体在局部重绘任务上的效果差异。设计者把模型、图片、遮罩、文本等核心要素通过 Get/Set 节点抽象成语义变量，再用多个采样器构成正交试验，同时加入深度估计和差分扩散等技巧，试图在同一画布上直观对比修复质量，以辅助选择最优模型/参数或进行模型研究。"
+}

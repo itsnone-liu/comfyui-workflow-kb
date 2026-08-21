@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "人像",
+  "妆容",
+  "图像增强"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照片，通过 2x3 分块（带 overlap）进行低噪声重绘，再经 4x_RealisticRescaler 高清放大并输出",
+   "kind": "inference"
+  },
+  {
+   "text": "利用正负提示词强化皮肤质感（Realistic skin texture），去除文字、水印和雀斑（text, watermark, freckle）",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ImageScaleToTotalPixels 将图像缩放至约 6 百万像素量级，统一输出分辨率",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Upscale-Hires",
+  "Tile-based sampling",
+  "VAE Tiled Decode",
+  "Image list/batch conversion",
+  "Low denoise refinement",
+  "Multi-stage resolution scaling"
+ ],
+ "special_features": [
+  {
+   "text": "TTP_Image_Tile_Batch + TTP_Tile_image_size + TTP_Image_Assy 构成可配置分块重绘管线：2x3块、overlap_rate=0.05，将整图采样拆解为 tile 级采样，显著降低显存压力",
+   "kind": "fact"
+  },
+  {
+   "text": "ImageListToImageBatch 与 ImpactImageBatchToImageList 在 tile 图像列表和 batch 之间转换，使分块图像可直接送入采样器批次处理",
+   "kind": "fact"
+  },
+  {
+   "text": "VAEDecodeTiled 使用 tile_size=320、overlap=128 进行分块解码，进一步控制显存占用并减少拼接伪影",
+   "kind": "fact"
+  },
+  {
+   "text": "多张 Note 节点记录了手算分块与分辨率换算（如 576x768 → 3456x4608），体现了对分块尺寸与最终分辨率的显式规划",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能想要在有限显存下对大分辨率人像进行高质量细节增强。设计者似乎将整图先切分为 2x3 带重叠的 tile，对每个 tile 进行低 denoise（0.15）重绘，以保持原构图的同时用提示词强化皮肤质感、去除瑕疵；随后通过 TTP_Image_Assy 拼回再经 4x 模型放大，从而兼顾细节质量与显存效率。整体结构使用了多个自定义分块/拼装节点，属于针对性较强的大图精修方案。",
+ "use_case": "适用于人像/妆容类照片的高清放大、皮肤细节增强与瑕疵修复，尤其适合原始分辨率较高或需要批量处理分块场景。",
+ "limitation": "依赖 ComfyUI 自定义节点 TTP 系列（TTP_Image_Tile_Batch、TTP_Tile_image_size、TTP_Image_Assy）以及 Impact 节点的 ImageListToImageBatch/ImpactImageBatchToImageList；需自行准备 checkpoint（LEOSAM HelloWorld 新世界 - V7.safetensors）和 upscale model（4x_RealisticRescaler_100000_G.pth）。输入为单张图像，分块数（2x3）与 overlap 比例需匹配目标分辨率，否则可能出现拼接接缝或显存不足；ImageScaleToTotalPixels 的参数注释与实际换算存在歧义，输出尺寸需要实际测试确认。",
+ "dependencies": [
+  "ComfyUI 自定义节点 TTP（TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy）",
+  "ComfyUI Impact 节点（ImageListToImageBatch / ImpactImageBatchToImageList）",
+  "Checkpoint: LEOSAM HelloWorld 新世界 - V7.safetensors",
+  "Upscale model: 4x_RealisticRescaler_100000_G.pth"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "TTP_Tile_image_size (2, 3, 0.05)",
+   "how_to_tune": "前两个参数控制将图像分为 2 行 3 列，第三个参数是 tile 间重叠率。增加分块数可降低单块显存压力，但可能增加拼接工作量；增大 overlap_rate 可减少接缝，但会降低效率，建议 0.05~0.15。"
+  },
+  {
+   "param": "BasicScheduler (denoise=0.15)",
+   "how_to_tune": "控制重绘强度。0.15 属于轻量精修，能在保持原图结构的同时增强皮肤细节；若需要更大风格变化可提高到 0.25-0.35，但过高可能丢失人物特征。"
+  },
+  {
+   "param": "SamplerCustom (cfg=8)",
+   "how_to_tune": "提示词引导强度。cfg 越高越贴合正负提示词，但过高容易产生过饱和或伪影；若效果太‘硬’可降到 5-7，若提示词响应不足可升到 9-10。"
+  },
+  {
+   "param": "ImageScaleToTotalPixels (megapixels=6)",
+   "how_to_tune": "目标总像素，单位百万。6 约对应 3000x2000 左右的分辨率；调高可提升输出尺寸但会显著增加显存和耗时，建议根据 GPU 显存平衡。"
+  },
+  {
+   "param": "VAEDecodeTiled (tile_size=320, overlap=128)",
+   "how_to_tune": "tile_size 是解码分块尺寸，overlap 是相邻块重叠像素。增大 overlap 可减少拼接痕迹，但会增加计算量；内存不足时可适当减小 tile_size。"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照片，通过 2x3 分块（带 overlap）进行低噪声重绘，再经 4x_RealisticRescaler 高清放大并输出；能力:利用正负提示词强化皮肤质感（Realistic skin texture），去除文字、水印和雀斑（text, watermark, freckle）；能力:通过 ImageScaleToTotalPixels 将图像缩放至约 6 百万像素量级，统一输出分辨率；特色:TTP_Image_Tile_Batch + TTP_Tile_image_size + TTP_Image_Assy 构成可配置分块重绘管线：2x3块、overlap_rate=0.05，将整图采样拆解为 tile 级采样，显著降低显存压力；特色:ImageListToImageBatch 与 ImpactImageBatchToImageList 在 tile 图像列表和 batch 之间转换，使分块图像可直接送入采样器批次处理；特色:VAEDecodeTiled 使用 tile_size=320、overlap=128 进行分块解码，进一步控制显存占用并减少拼接伪影；特色:多张 Note 节点记录了手算分块与分辨率换算（如 576x768 → 3456x4608），体现了对分块尺寸与最终分辨率的显式规划；适用于人像/妆容类照片的高清放大、皮肤细节增强与瑕疵修复，尤其适合原始分辨率较高或需要批量处理分块场景。；该工作流可能想要在有限显存下对大分辨率人像进行高质量细节增强。设计者似乎将整图先切分为 2x3 带重叠的 tile，对每个 tile 进行低 denoise（0.15）重绘，以保持原构图的同时用提示词强化皮肤质感、去除瑕疵；随后通过 TTP_Image_Assy 拼回再经 4x 模型放大，从而兼顾细节质量与显存效率。整体结构使用了多个自定义分块/拼装节点，属于针对性较强的大图精修方案。"
+}

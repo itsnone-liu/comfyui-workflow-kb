@@ -1,0 +1,83 @@
+{
+ "domain": [
+  "图片生成",
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张参考图，通过RH_RhartImageG2OfficialImageToImage以提示词'A film-level character p'生成一张2K分辨率、3:4比例的电影级角色图像，并保存输出。",
+   "kind": "fact"
+  },
+  {
+   "text": "加载Lock_8.32模型并应用CLIP编码，为生成提供模型基础（但CLIP提示词为空，可能未生效或被核心节点忽略）。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图像到图像（img2img）生成",
+  "Checkpoint模型加载（Lock_8.32.safetensors）",
+  "CLIP文本编码",
+  "rgthree工具节点（Fast Groups Bypasser, SetNode）",
+  "自定义节点RH_RhartImageG2OfficialImageToImage",
+  "提示词'film-level character'控制电影角色风格"
+ ],
+ "special_features": [
+  {
+   "text": "核心生成逻辑被封装在单个自定义节点RH_RhartImageG2OfficialImageToImage中，外部只需传图、写提示词即可，形成了全流程只有2个IO节点的极简结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "工作流内嵌5个MarkdownNote和1个TextInput，记录了相同的提示词示例和作者联系方式（v：bz29596），带有明显的教程/分享性质。",
+   "kind": "fact"
+  },
+  {
+   "text": "包含Fast Groups Bypasser和SetNode，但链接极少，推测为模板预留的控制节点，未参与核心生成。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "因为节点数量极少、连接简单，但使用了高度封装的官方图生图节点，所以可能是为降低用户门槛而设计的流水线模板：用户只需替换输入图和调整提示词参数，即可快速得到电影级角色图。作者通过MarkdownNote放入示例文本和联系方式，可能还承担了推广引流的功能。",
+ "use_case": "电影角色概念设计、游戏角色卡图生成、短视频人物造型参考，以及作为ComfyUI新手学习图生图基本流程的示例。",
+ "limitation": "依赖自定义节点RH_RhartImageG2OfficialImageToImage（可能需要对应扩展或云端API访问）；依赖rgthree节点包；需要Lock_8.32.safetensors模型文件；仅支持单张图像输入；固定输出比例3:4和分辨率2k，如果想改变需修改节点内参数或调整流程；当前CLIPTextEncode的提示词为空，可能造成文本条件未生效。",
+ "dependencies": [
+  "Lock_8.32.safetensors",
+  "RH_RhartImageG2OfficialImageToImage（自定义节点）",
+  "rgthree（Fast Groups Bypasser / SetNode）",
+  "ComfyUI标准节点（LoadImage / SaveImage / CheckpointLoaderSimple / CLIPTextEncode）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": 1
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_RhartImageG2OfficialImageToImage的提示词参数（当前为'A film-level character p'）",
+   "how_to_tune": "这是控制生成内容的最直接参数，可通过修改角色描述和风格关键词来调整输出；保留'film-level character'可维持电影质感。"
+  },
+  {
+   "param": "分辨率（当前为'2k'）",
+   "how_to_tune": "若生成速度慢或显存不足，可降为'1k'；追求更高细节可尝试'4k'但受模型限制。"
+  },
+  {
+   "param": "质量（当前为'high'）",
+   "how_to_tune": "控制细节采样精细程度，可尝试'medium'/'low'以加速，但会损失细节。"
+  },
+  {
+   "param": "宽高比（当前为'3:4'）",
+   "how_to_tune": "按用途调整，如'1:1'适合头像，'9:16'适合手机壁纸。"
+  },
+  {
+   "param": "布尔开关（当前为False）",
+   "how_to_tune": "含义未明，可能是'保持输入构图'或'开启安全过滤'等开关，建议在相同提示词下对比切换效果。"
+  },
+  {
+   "param": "种子（当前为586904472）",
+   "how_to_tune": "固定种子可复现相同结果，修改种子获得不同随机构图。"
+  }
+ ],
+ "summary_text": "能力:上传一张参考图，通过RH_RhartImageG2OfficialImageToImage以提示词'A film-level character p'生成一张2K分辨率、3:4比例的电影级角色图像，并保存输出。；能力:加载Lock_8.32模型并应用CLIP编码，为生成提供模型基础（但CLIP提示词为空，可能未生效或被核心节点忽略）。；特色:核心生成逻辑被封装在单个自定义节点RH_RhartImageG2OfficialImageToImage中，外部只需传图、写提示词即可，形成了全流程只有2个IO节点的极简结构。；特色:工作流内嵌5个MarkdownNote和1个TextInput，记录了相同的提示词示例和作者联系方式（v：bz29596），带有明显的教程/分享性质。；特色:包含Fast Groups Bypasser和SetNode，但链接极少，推测为模板预留的控制节点，未参与核心生成。；电影角色概念设计、游戏角色卡图生成、短视频人物造型参考，以及作为ComfyUI新手学习图生图基本流程的示例。；因为节点数量极少、连接简单，但使用了高度封装的官方图生图节点，所以可能是为降低用户门槛而设计的流水线模板：用户只需替换输入图和调整提示词参数，即可快速得到电影级角色图。作者通过MarkdownNote放入示例文本和联系方式，可能还承担了推广引流的功能。"
+}

@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "数字人",
+  "图像编辑",
+  "虚拟试穿"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人物照与服装照，切换至“换装”模式，生成人物穿着指定服装的试穿效果图。",
+   "kind": "inference"
+  },
+  {
+   "text": "上传人物照，切换至“提取服装”模式，将人物身上的服装从图中分离/提取出来。",
+   "kind": "inference"
+  },
+  {
+   "text": "以FireRed-Image-Edit为底模，结合Qwen2.5-VL文本编码，执行文本引导的图像局部编辑（换装/提取）。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FireRed-Image-Edit",
+  "Qwen-Image/Qwen2.5-VL",
+  "LoRA（Lightning加速 + Outfit提取）",
+  "文本引导图像编辑",
+  "双模式条件切换",
+  "4步快速采样"
+ ],
+ "special_features": [
+  {
+   "text": "通过 Switch string [Crystools] + LazySwitch2way 实现“换装”和“提取服装”两种任务模式的即时切换。",
+   "kind": "fact"
+  },
+  {
+   "text": "串联两个 LoRA：Qwen-Image-Lightning-8steps-V2.0 用于将采样步数降至4步，QIE-2511-Extract-Outfit-4200 用于增强服装提取能力。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ConditioningZeroOut 对部分条件向量置零，可能用于控制CFG/引导强度或隔离条件分支。",
+   "kind": "inference"
+  },
+  {
+   "text": "引入 Image Comparer (rgthree) 用于双图对比，但无自动质量回馈，仅辅助人工筛选。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能旨在以最轻量、快速的方式提供数字人相关的换装/服装提取服务。作者选择 FireRed-Image-Edit 作为像素级编辑模型，使用 Qwen2.5-VL 将自然语言指令（固定模板）编码为条件，并通过一个开关节点将两种常见的服装处理任务整合进同一条管线。Lightning LoRA 大幅减少采样步数（4步），使生成速度更快，可能面向粉丝福利场景。整体结构紧凑，参数预先配好，用户只需上传图片选择模式即可。",
+ "use_case": "粉丝福利/数字人生成：给一张人物照和一张服装照，快速合成人物穿着该服装的展示效果；或从人物照中提取服装素材，用于换装游戏、电商展示等。",
+ "limitation": "需要下载多个模型文件（FireRed-Image-Edit 1.1、Qwen2.5-VL CLIP、qwen_image_vae、两个LoRA），且必须安装自定义节点（rgthree、Crystools、ComfyUI-Edit-Utils 等）。输入为图片文件，需按模式准备一张（人物）或两张（人物+服装）图像；固定提示词模板，扩展自定义指令需要改动节点。",
+ "dependencies": [
+  "FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors",
+  "QIE-2511-Extract-Outfit-4200.safetensors",
+  "rgthree",
+  "Crystools",
+  "ComfyUI-Edit-Utils"
+ ],
+ "geek_rating": 3.5,
+ "input": {
+  "type": "image",
+  "count": "2（视模式可仅为1）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前为4步，依赖Lightning LoRA；若显存充足或追求细节，可适当提高至8-12步，但速度下降。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "当前为1，表示几乎无条件缩放；若需要更强文本控制，可尝试调至2-4，但可能过曝。"
+  },
+  {
+   "param": "LoraLoaderModelOnly 强度",
+   "how_to_tune": "Lightning LoRA 和 Extract-Outfit LoRA 均为1.0；Lightning 强度建议保持1.0，Extract-Outfit 可按任务微调0.7-1.2。"
+  },
+  {
+   "param": "Switch string [Crystools] 的布尔值",
+   "how_to_tune": "切换 True/False 选择“TRYON Replace the outfit”或“Extract the clothing and”模式，决定任务类型。"
+  },
+  {
+   "param": "INTConstant",
+   "how_to_tune": "设为2560，可能用于图像最大边长/分辨率；大图更精细但更耗显存，可降低至1920或2048。"
+  },
+  {
+   "param": "QwenEditTextEncode_EditUtils 提示词",
+   "how_to_tune": "内置模板已能完成常规任务；可修改文本获得更具体的编辑指令，注意token限制（1280）。"
+  }
+ ],
+ "summary_text": "能力:上传人物照与服装照，切换至“换装”模式，生成人物穿着指定服装的试穿效果图。；能力:上传人物照，切换至“提取服装”模式，将人物身上的服装从图中分离/提取出来。；能力:以FireRed-Image-Edit为底模，结合Qwen2.5-VL文本编码，执行文本引导的图像局部编辑（换装/提取）。；特色:通过 Switch string [Crystools] + LazySwitch2way 实现“换装”和“提取服装”两种任务模式的即时切换。；特色:串联两个 LoRA：Qwen-Image-Lightning-8steps-V2.0 用于将采样步数降至4步，QIE-2511-Extract-Outfit-4200 用于增强服装提取能力。；特色:使用 ConditioningZeroOut 对部分条件向量置零，可能用于控制CFG/引导强度或隔离条件分支。；特色:引入 Image Comparer (rgthree) 用于双图对比，但无自动质量回馈，仅辅助人工筛选。；粉丝福利/数字人生成：给一张人物照和一张服装照，快速合成人物穿着该服装的展示效果；或从人物照中提取服装素材，用于换装游戏、电商展示等。；该工作流可能旨在以最轻量、快速的方式提供数字人相关的换装/服装提取服务。作者选择 FireRed-Image-Edit 作为像素级编辑模型，使用 Qwen2.5-VL 将自然语言指令（固定模板）编码为条件，并通过一个开关节点将两种常见的服装处理任务整合进同一条管线。Lightning LoRA 大幅减少采样步数（4步），使生成速度更快，可能面向粉丝福利场景。整体结构紧凑，参数预先配好，用户只需上传图片选择模式即可。"
+}

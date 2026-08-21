@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图像生成",
+  "风格迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张动漫/二次元图像，端到端生成保持构图与人物特征的真人摄影风格照片，并输出高清大图",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Qwen3_VQA 对输入图像进行视觉问答分析，自动生成/优化用于转换的提示词",
+   "kind": "fact"
+  },
+  {
+   "text": "借助 WD14Tagger 反推图像标签，为提示词工程提供补充特征描述",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image 图像编辑",
+  "多阶段采样（三个 KSampler 串联）",
+  "LoRA 加速（Qwen-Image-Lightning）",
+  "SeedVR2 超分辨率放大",
+  "VQA 提示词生成",
+  "WD14 标签反推",
+  "VAE 编解码"
+ ],
+ "special_features": [
+  {
+   "text": "多段式生成管线：先由 Qwen-Image 编辑模型配合 LoRA 进行低步数快速转换，再通过两个附加 KSampler 分别精修，最后用 SeedVR2 超分",
+   "kind": "inference"
+  },
+  {
+   "text": "引入 Qwen3_VQA 作为提示词自动生成器，使工作流具备『看图写提示词』能力",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载多个基础模型（z_image_turbo、Qwen-image 动漫转真人、SeedVR2 3B）并将各自 VAE/CLIP 分离使用，实现不同阶段专用模型",
+   "kind": "fact"
+  },
+  {
+   "text": "内置显存管理节点（PurgeVRAM V2、easy cleanGpuUsed、easy clearCacheAll），应对长流程多模型加载的显存压力",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整体设计围绕『动漫转真人』这一核心任务，利用 Qwen-Image 系列在指令编辑上的优势，将二次元图像重绘成写实风格；通过 Lightning LoRA 大幅降低采样步数以提升效率；为弥补小步数可能带来的细节不足，采用三个 KSampler 分段细化，并最后引入 SeedVR2 超分模型来增强真实质感和去除 AI 感。提示词层面使用 WD14Tagger 和 Qwen3_VQA 自动构建，减少手动干预，适合批量处理。",
+ "use_case": "适用于二次元插画、动漫截图转真人写实照片，或对已有生成图做『去AI感』的洗图场景；也可用于内容创作者快速将动漫角色真人化，生成高分辨率人像素材。",
+ "limitation": "需要下载并放置多个大型模型（Qwen-Image 系列、SeedVR2 3B 等）及依赖若干自定义节点（如 Qwen3_VQA、SeedVR2、LayerUtility、pysssss 等）；工作流对显存要求较高，建议 24GB 以上；输入应尽量为清晰的动漫/二次元图像，且源图内容会影响转换效果；由于包含多个随机种子，可能需要多次尝试才能获得满意结果。",
+ "dependencies": [
+  "qwen_3_4b.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "UltraFlux-v1_model.safetensors",
+  "ema_vae_fp16.safetensors",
+  "z_image_turbo_bf16.safetensors",
+  "seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+  "Qwen-image Edit Anything to Real Characters动漫转真人.safetensors",
+  "Qwen-Image-Lightning-8steps-V2.0 bf16.safetensors",
+  "ComfyUI 内置节点",
+  "Qwen3_VQA 自定义节点",
+  "WD14Tagger|pysssss",
+  "SeedVR2 系列节点",
+  "LayerUtility 系列节点",
+  "easy 系列节点",
+  "ShowText|pysssss"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler 步骤（steps）",
+   "how_to_tune": "第一个 KSampler 用 5 步快速出图，第二个用 10 步精修，第三个用 8 步最终增强；若画面细节不足可适当增加 steps，但会增加耗时。"
+  },
+  {
+   "param": "KSampler 的 CFG",
+   "how_to_tune": "三个采样器 CFG 分别设为 1、1.6、1，Qwen-Image 模型通常建议低 CFG，若概念漂移可微调至 2-4。"
+  },
+  {
+   "param": "LoRA 强度（LoraLoaderModelOnly）",
+   "how_to_tune": "当前为 1.0，用于 Lightning 加速；若生成结果出现过拟合或质量不稳，可尝试 0.7-1.1。"
+  },
+  {
+   "param": "Qwen3_VQA 的 temperature 与 max_tokens",
+   "how_to_tune": "温度 0.7 时提示词生成较稳定；若需更多创意可调高至 0.9，若偏离主题可调低。max_tokens 控制提示词长度，按需调整。"
+  },
+  {
+   "param": "WD14Tagger 阈值",
+   "how_to_tune": "threshold 0.4、character_threshold 0.85 控制标签过滤；阈值越低标签越丰富，越高越精简，可根据词敏感度调整。"
+  },
+  {
+   "param": "SeedVR2 超分尺寸",
+   "how_to_tune": "widght/height 设置为 2048/3800，决定了输出分辨率；应根据硬件显存和用途调整，显存不足时降低。"
+  }
+ ],
+ "summary_text": "能力:输入单张动漫/二次元图像，端到端生成保持构图与人物特征的真人摄影风格照片，并输出高清大图；能力:使用 Qwen3_VQA 对输入图像进行视觉问答分析，自动生成/优化用于转换的提示词；能力:借助 WD14Tagger 反推图像标签，为提示词工程提供补充特征描述；特色:多段式生成管线：先由 Qwen-Image 编辑模型配合 LoRA 进行低步数快速转换，再通过两个附加 KSampler 分别精修，最后用 SeedVR2 超分；特色:引入 Qwen3_VQA 作为提示词自动生成器，使工作流具备『看图写提示词』能力；特色:同时加载多个基础模型（z_image_turbo、Qwen-image 动漫转真人、SeedVR2 3B）并将各自 VAE/CLIP 分离使用，实现不同阶段专用模型；特色:内置显存管理节点（PurgeVRAM V2、easy cleanGpuUsed、easy clearCacheAll），应对长流程多模型加载的显存压力；适用于二次元插画、动漫截图转真人写实照片，或对已有生成图做『去AI感』的洗图场景；也可用于内容创作者快速将动漫角色真人化，生成高分辨率人像素材。；整体设计围绕『动漫转真人』这一核心任务，利用 Qwen-Image 系列在指令编辑上的优势，将二次元图像重绘成写实风格；通过 Lightning LoRA 大幅降低采样步数以提升效率；为弥补小步数可能带来的细节不足，采用三个 KSampler 分段细化，并最后引入 SeedVR2 超分模型来增强真实质感和去除 AI 感。提示词层面使用 WD14Tagger 和 Qwen3_VQA 自动构建，减少手动干预，适合批量处理。"
+}

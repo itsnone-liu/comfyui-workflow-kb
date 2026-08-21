@@ -1,0 +1,114 @@
+{
+ "domain": [
+  "图生视频",
+  "动漫角色",
+  "AI视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张动漫角色参考图（如立绘/插画），自动生成一段 1344x768 的短视频，并尽量保持角色身份特征一致。",
+   "kind": "fact"
+  },
+  {
+   "text": "用户只需给出一句话描述（如“女人在哭泣”），工作流会通过内置本地 LLM（Gemma 4 26B）自动扩写为带 subject_definitions 的详细视频提示词，再送生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过叠加 4-step / 8-step turbo LoRA 和 H3 Sigma Refiner，将 MiniMax H3 采样步数压缩到 8 步以内，大幅降低生成耗时。",
+   "kind": "fact"
+  },
+  {
+   "text": "采用两阶段渐进式采样（3步粗采 + 8步细采），先用低步数确定整体构图，再用高步数精修细节，平衡速度与质量。",
+   "kind": "fact"
+  },
+  {
+   "text": "可能支持视频与音频的联合生成（存在 audio VAE 和 AV Latent 拼接节点），但音频输出并非主流程保障。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 Ref2VA 视频扩散模型（双 UNET 加载：ref2va_pruned + hybrid_fl2va）",
+  "图生视频（单图参考）",
+  "多阶段采样：BasicScheduler(beta,3,0.2) + BasicScheduler(beta,8,1)，两套 SamplerCustomAdvanced",
+  "加速 LoRA 组合：minimax_h3_turbo_4step + minimax_h3_fl2v_turbo_8step + VBVR_H3_attn_only + MysticXXX_MMH3-V2",
+  "H3SigmaRefiner 噪声调度重整",
+  "本地 LLM 提示词工程：llama.cpp + gemma-4-26b-a4b-it-heretic，执行反推/扩写指令",
+  "多模态 VAE：video_vae + audio_vae，通过 PT_H3ConcatAVLatent 拼接视频与音频 latent",
+  "注意力后端优化：ModelAttentionBackend (comfy kitchen attention)",
+  "条件控制开关：Fast Groups Bypasser / ImpactSwitch / SP_SwitchBooleanAny / ZML_SwitchOutputFive"
+ ],
+ "special_features": [
+  {
+   "text": "两段式渐进采样：先用 3 步 beta scheduler 粗采得到基准 latent，再经 H3SigmaRefiner 用 8 步 euler 精修；这种“粗模+细模”结构可显著提升加速模型的稳定性。",
+   "kind": "fact"
+  },
+  {
+   "text": "双 VAE（视频+音频）联合采样：PT_H3ConcatAVLatent 将视频和音频潜在表示拼接在一起送入模型，暗示模型可能具备音视频同步建模能力。",
+   "kind": "inference"
+  },
+  {
+   "text": "内置本地 LLM 提示词反推与结构化注入：llama_cpp_instruct_adv 配合多段 Text Multiline 模板（Role/Task/技能），将用户一句话扩写为“subject_definitions”等结构化指令，属于生成链路与 NLP 深度耦合的设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "模块化旁路控制：Fast Groups Bypasser + 多个 Switch 节点让用户可单独禁用 LLM 或二次采样模块，满足不同画质/速度诉求。",
+   "kind": "fact"
+  },
+  {
+   "text": "暴力加速工程：同时叠加 4 个 LoRA + comfy kitchen attention + easy cleanGpuUsed/clearCacheAll，几乎榨干单卡性能。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流像是“零门槛角色动态视频生成器”：用本地 LLM 替代用户写提示词，用多段 turbo LoRA 降低步数以适配消费级 GPU，再用两阶段采样和 SigmaRefiner 弥补低步数带来的质量损失。大量旁路开关是为了让用户在不同硬件/需求下按需裁剪模块。整体设计意图是让“单张动漫图 → 可动视频”变得又快又简单。",
+ "use_case": "动漫 IP 二创、角色立绘动态化、短视频素材批量生成；也可作为学习 MiniMax H3 多阶段采样和 LoRA 加速方案的技术参考。",
+ "limitation": "模型权重巨大（多个 UNET checkpoint、Qwen3VL CLIP、video/audio VAE、Gemma 4 26B LLM），显存和内存占用极高；需要安装一般 ComfyUI 官方包不含的自定义节点（如 llama_cpp、ComfyUI-VideoHelperSuite、KJNodes、rgthree、Impact Pack 等）；输出分辨率/帧数有硬性上限（默认 1344x768 @124 帧），修改需谨慎；音频输出可能不完整或缺少真正声音。",
+ "dependencies": [
+  "minimax_h3_ref2va_pruned.safetensors",
+  "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors",
+  "qwen3vl_32b_minimax_h3_ultra_uncensored_heretic_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_turbo_4step-convertedByAIEverything.safetensors",
+  "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+  "VBVR_H3_attn_only.safetensors",
+  "MysticXXX_MMH3-V2.safetensors",
+  "gemma-4-26b-a4b-it-heretic.Q4_K_M.gguf（或类似格式）",
+  "自定义节点：ComfyUI-llama_cpp, VideoHelperSuite, KJNodes, rgthree-comfy, ComfyUI-Impact-Pack"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ReferenceToVideo (width/height/frames)",
+   "how_to_tune": "核心生成尺寸与帧数：1344x768/124 是默认值，越大越吃显存和耗时；若 OOM 可降到 1024x576 或减少帧数。"
+  },
+  {
+   "param": "BasicScheduler（第一段）steps=3, beta, denoise=0.2",
+   "how_to_tune": "控制粗采阶段，步数过低可能导致构图不稳定；若出现明显闪烁/变体，可提升到 4-5 步。"
+  },
+  {
+   "param": "BasicScheduler（第二段）steps=8, beta, denoise=1",
+   "how_to_tune": "决定细节与连贯性，建议 8-10 步；若想更快可降到 6，若质量不佳可升到 12。"
+  },
+  {
+   "param": "LoRA 权重（turbo_4step=0.65, turbo_8step=0.8, VBVR_attn_only=1.0, MysticXXX=0.5）",
+   "how_to_tune": "4step/8step 是加速主 LoRA，权重过高易产生伪影，过低则降速；VBVR 影响注意力结构，MysticXXX 是风格强度，可微调 0.3~0.7。"
+  },
+  {
+   "param": "H3SigmaRefiner (1, 0.7, 0, cosine)",
+   "how_to_tune": "控制两阶段采样之间的 sigma 过渡；0.7 是第二阶段参与强度，调低则第二阶段更温和，调高则更激进。"
+  },
+  {
+   "param": "ComfyMathExpression (max(5, round(a * 24)) + ...)",
+   "how_to_tune": "其中 a 代表视频时长（秒），24 代表 fps；若生成过慢可降低帧率（例如 18fps）或缩短时长。"
+  }
+ ],
+ "summary_text": "能力:输入一张动漫角色参考图（如立绘/插画），自动生成一段 1344x768 的短视频，并尽量保持角色身份特征一致。；能力:用户只需给出一句话描述（如“女人在哭泣”），工作流会通过内置本地 LLM（Gemma 4 26B）自动扩写为带 subject_definitions 的详细视频提示词，再送生成。；能力:通过叠加 4-step / 8-step turbo LoRA 和 H3 Sigma Refiner，将 MiniMax H3 采样步数压缩到 8 步以内，大幅降低生成耗时。；能力:采用两阶段渐进式采样（3步粗采 + 8步细采），先用低步数确定整体构图，再用高步数精修细节，平衡速度与质量。；能力:可能支持视频与音频的联合生成（存在 audio VAE 和 AV Latent 拼接节点），但音频输出并非主流程保障。；特色:两段式渐进采样：先用 3 步 beta scheduler 粗采得到基准 latent，再经 H3SigmaRefiner 用 8 步 euler 精修；这种“粗模+细模”结构可显著提升加速模型的稳定性。；特色:双 VAE（视频+音频）联合采样：PT_H3ConcatAVLatent 将视频和音频潜在表示拼接在一起送入模型，暗示模型可能具备音视频同步建模能力。；特色:内置本地 LLM 提示词反推与结构化注入：llama_cpp_instruct_adv 配合多段 Text Multiline 模板（Role/Task/技能），将用户一句话扩写为“subject_definitions”等结构化指令，属于生成链路与 NLP 深度耦合的设计。；特色:模块化旁路控制：Fast Groups Bypasser + 多个 Switch 节点让用户可单独禁用 LLM 或二次采样模块，满足不同画质/速度诉求。；特色:暴力加速工程：同时叠加 4 个 LoRA + comfy kitchen attention + easy cleanGpuUsed/clearCacheAll，几乎榨干单卡性能。；动漫 IP 二创、角色立绘动态化、短视频素材批量生成；也可作为学习 MiniMax H3 多阶段采样和 LoRA 加速方案的技术参考。；该工作流像是“零门槛角色动态视频生成器”：用本地 LLM 替代用户写提示词，用多段 turbo LoRA 降低步数以适配消费级 GPU，再用两阶段采样和 SigmaRefiner 弥补低步数带来的质量损失。大量旁路开关是为了让用户在不同硬件/需求下按需裁剪模块。整体设计意图是让“单张动漫图 → 可动视频”变得又快又简单。"
+}

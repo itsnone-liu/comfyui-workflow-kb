@@ -1,0 +1,223 @@
+{
+ "node_count": 6,
+ "link_count": 6,
+ "active_node_count": 6,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "参考图片形象，生成一组动作分镜"
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 1,
+   "type": "RH_Nano_Banana_Image2Image",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    894794577,
+    "randomize"
+   ],
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    3,
+    6
+   ]
+  },
+  {
+   "id": 6,
+   "type": "ImageStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true,
+    0,
+    "white"
+   ],
+   "in_links": [
+    5,
+    6
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 5,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "7cb34a447a5049867dcba156b30a8283619cc0955226ae2c2e8955e06242cde9.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1,
+    5
+   ]
+  },
+  {
+   "id": 7,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    7
+   ],
+   "out_links": []
+  },
+  {
+   "id": 2,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 1,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 1,
+   "type": "STRING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 1,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 7,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 3,
+  "image_io": 3
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 11,
+ "structure_hash": "96fe2fdccb215115",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "参考图片形象，生成一组动作分镜"
+  },
+  {
+   "node_id": 1,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 1,
+   "value_preview": "894794577"
+  },
+  {
+   "node_id": 1,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 6,
+   "node_type": "ImageStitch",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 6,
+   "node_type": "ImageStitch",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 6,
+   "node_type": "ImageStitch",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 6,
+   "node_type": "ImageStitch",
+   "widget_index": 3,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "7cb34a447a5049867dcba156b30a8283619cc0955226ae2c2e8955e06242"
+  },
+  {
+   "node_id": 5,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 2,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  }
+ ]
+}

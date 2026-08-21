@@ -1,0 +1,117 @@
+{
+ "domain": [
+  "图像生成",
+  "线稿上色",
+  "AI绘画"
+ ],
+ "capabilities": [
+  {
+   "text": "基于线稿输入，端到端生成完成上色和风格化的彩色插画；流程以 SDXL 为底座，最终通过 SaveImage 保存结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时存在两个 LoadImage 输入，推测可传入线稿图和风格/参考图；通过 IPAdapter、Qwen3.5-9B 多模态解析与 LoRA 完成参考画风迁移。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动生成并翻译提示词：Florence2 生成 detailed caption，llama_cpp 加载 Qwen3.5-9B 对目标图深度解析，RH_Translator 翻译后进入正/负向提示词。",
+   "kind": "fact"
+  },
+  {
+   "text": "用多路 ControlNet 同时约束线稿结构、深度、语义分区和颜色倾向，使最终图像不偏离输入线稿。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 FaceDetailer + SAM + MediaPipe FaceMesh 精细修脸，再用 UltimateSDUpscale + RealESRGAN 放大，输出高清大图。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "SDXL：waiNsfwIllustrious16.bhn.safetensors",
+  "ControlNet-Union SDXL + 多预处理器：LineArt / DepthAnythingV2 / UniFormer-SemSeg / Color",
+  "IP-Adapter：ip-adapter-plus_sdxl_vit-h，strong style transfer，V only",
+  "LoRA 堆叠：SDXL 厚涂艺术 LORA、SDXL 极炫幻彩 幻彩高质量光影 LORA、sai_xl_recolor_256lora",
+  "FaceDetailer + UltralyticsDetectorProvider + SAM ViT-H + MediaPipeFaceMeshDetectorProvider",
+  "Hires/放大：UltimateSDUpscale + RealESRGAN_x4plus_anime_6B",
+  "多模态提示词链：Florence2 detailed caption + Qwen3.5-9B GGUF + RH_Translator",
+  "SDXLEmptyLatentSizePicker+ 与 LayerUtility 宽高比缩放"
+ ],
+ "special_features": [
+  {
+   "text": "用 SetNode/GetNode 以 latent1、latent2 为键暂存并取出中间 latent，配合多个 rgthree Fast Groups Bypasser 与 Any Switch 搭出可旁路/可切换的多分支生成链路。",
+   "kind": "inference"
+  },
+  {
+   "text": "Qwen3.5-9B 多模态模型 + llama.cpp 与 Florence2 串成文本分析链：先对目标图做完整深度解析，再经 StringFunction/CR Text Concatenate 拼接，由 RH_Translator 翻译进入采样提示词。",
+   "kind": "fact"
+  },
+  {
+   "text": "一组 AIO_Preprocessor 同时产出 LineArt、Depth、SemSeg、Color 等特征，并以不同 ControlNet 权重（1、0.8、0.8、1、0.35）叠加到 SDXL 采样中。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 KSampler + UltimateSDUpscale + FaceDetailer 构成“初采样→放大→局部精修”的质量控制链路；多组 Image Comparer 用于前后对比。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 IPAdapterNoise 的 fade 模式对 IPAdapter 参考图像做噪声注入，可能用于增强风格化时的笔触自由度。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流的核心思路是“叠条件、控风格、再精修”：先用 LineArt/Depth/SemSeg/Color 多路 ControlNet 把线稿结构、空间关系、语义分区和颜色方向同时锚定到 SDXL，再用 IPAdapter 与厚涂/幻彩 LoRA 控制美术风格；同时用 Qwen3.5-9B + Florence2 自动生成并翻译提示词，减少手工写提示词的负担。后段用 FaceDetailer 修脸、UltimateSDUpscale 放大，显然是为了让最终图直接可用。多个 Fast Groups、Any Switch、SetNode/GetNode 说明作者在做一个可切换、可旁路的实验台，可能想对比不同 ControlNet/LoRA/采样组合，而不是只跑一条固定管线。",
+ "use_case": "适合插画师/设计师把黑白线稿快速变成彩色成稿；也可作为风格参考图转绘、多方案配色对比的基底工作流。",
+ "limitation": "依赖大量第三方自定义节点与外部模型；首次运行需要下载 Qwen3.5-9B GGUF、Florence2、SAM ViT-H、IPAdapter、ControlNet、RealESRGAN 等大模型，显存压力高；输入线稿质量（纯白底、黑线闭合）会明显影响 ControlNet 效果；包含 LLM 调用与多路 ControlNet，单次生成耗时较长，不适合实时交互；模型名含 NSFW 标记，部署时需遵守平台与当地内容规范。",
+ "dependencies": [
+  "ComfyUI-Impact-Pack：FaceDetailer、SAMLoader、CoreMLDetailerHookProvider",
+  "ComfyUI_IPAdapter_plus：IPAdapterAdvanced、IPAdapterModelLoader、IPAdapterNoise",
+  "ComfyUI-Advanced-ControlNet：ControlNetApplyAdvanced",
+  "ComfyUI-ControlNet-Aux：AIO_Preprocessor",
+  "rgthree-comfy：Fast Groups Bypasser、Any Switch、Image Comparer",
+  "ComfyUI-UltimateSDUpscale：UltimateSDUpscale",
+  "ComfyUI_LLaMA_Cpp 节点族：llama_cpp_model_loader、llama_cpp_instruct_adv、llama_cpp_parameters",
+  "ComfyUI-Florence2：Florence2Run、DownloadAndLoadFlorence2Model",
+  "ComfyUI-Inspire-Pack：MediaPipeFaceMeshDetectorProvider",
+  "ComfyUI_LayerStyle：LayerUtility: ImageScaleByAspectRatio V2",
+  "SetNode/GetNode 相关自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片（两个 LoadImage；推测为线稿图 + 风格/参考图）",
+  "count": "2"
+ },
+ "output": {
+  "type": "图片（PreviewImage 多路预览；SaveImage 保存 PNG，filename_prefix: ComfyUI）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler / KSampler(mode4): steps, cfg, sampler_name, scheduler",
+   "how_to_tune": "当前为 30 步、cfg 5、dpmpp_2m + karras。线稿边缘糊可适当增加到 35 步；颜色过浓或发灰可在 cfg 4-6 之间试验。"
+  },
+  {
+   "param": "ControlNetApplyAdvanced: weight, start_percent, end_percent",
+   "how_to_tune": "结构 ControlNet 用 1.0 锁线稿，深度/语义约 0.8，Color 约 0.35 且在 60% 采样步数后停止。若结果偏离线稿，提高 lineart ControlNet 权重或恢复 end_percent 到 1；若色彩被压得太死，降低 color 权重或提前结束。"
+  },
+  {
+   "param": "IPAdapterAdvanced: weight=0.8, strong style transfer, concat, V only",
+   "how_to_tune": "想还原参考图画风可把 weight 提到 1.0；想保留更多线稿笔触则降到 0.6。V only 偏向只迁移风格，若希望构图也参考，可调整 combine_embeds/embeds_scaling。"
+  },
+  {
+   "param": "LoraLoader：SDXL 厚涂艺术 LORA、SDXL 极炫幻彩 LORA",
+   "how_to_tune": "厚涂 LoRA 权重可在 0.8-1.2 之间调，决定笔触厚度；幻彩光影 LoRA 当前为 0.7，可调 0.5-0.8 避免过曝或塑料感。"
+  },
+  {
+   "param": "FaceDetailer：guide_size/max_size/steps 当前约为 512/1024/28",
+   "how_to_tune": "脸部崩或五官模糊时可提高 max_size 到 1536，或增大精修步数；面部过修变假时降低 denoise 或减小 bbox dilation。"
+  },
+  {
+   "param": "UltimateSDUpscale：scale=2, cfg=4, euler_ancestral",
+   "how_to_tune": "放大 2 倍较稳妥，显存允许可尝试 4 倍。放大后涂抹感强时降低 UltimateSDUpscale 的 denoise 到 0.2-0.35；想要更自由重绘细节则调到 0.4-0.5。"
+  },
+  {
+   "param": "llama_cpp_parameters：max_tokens=4096, temp=0.9, top_p=0.8",
+   "how_to_tune": "希望提示词解析更发散可把 temp 提到 1.0；希望稳定复现同一画风则降到 0.7；复杂参考图可提高 max_tokens 到 8192。"
+  }
+ ],
+ "summary_text": "能力:基于线稿输入，端到端生成完成上色和风格化的彩色插画；流程以 SDXL 为底座，最终通过 SaveImage 保存结果。；能力:同时存在两个 LoadImage 输入，推测可传入线稿图和风格/参考图；通过 IPAdapter、Qwen3.5-9B 多模态解析与 LoRA 完成参考画风迁移。；能力:自动生成并翻译提示词：Florence2 生成 detailed caption，llama_cpp 加载 Qwen3.5-9B 对目标图深度解析，RH_Translator 翻译后进入正/负向提示词。；能力:用多路 ControlNet 同时约束线稿结构、深度、语义分区和颜色倾向，使最终图像不偏离输入线稿。；能力:通过 FaceDetailer + SAM + MediaPipe FaceMesh 精细修脸，再用 UltimateSDUpscale + RealESRGAN 放大，输出高清大图。；特色:用 SetNode/GetNode 以 latent1、latent2 为键暂存并取出中间 latent，配合多个 rgthree Fast Groups Bypasser 与 Any Switch 搭出可旁路/可切换的多分支生成链路。；特色:Qwen3.5-9B 多模态模型 + llama.cpp 与 Florence2 串成文本分析链：先对目标图做完整深度解析，再经 StringFunction/CR Text Concatenate 拼接，由 RH_Translator 翻译进入采样提示词。；特色:一组 AIO_Preprocessor 同时产出 LineArt、Depth、SemSeg、Color 等特征，并以不同 ControlNet 权重（1、0.8、0.8、1、0.35）叠加到 SDXL 采样中。；特色:两个 KSampler + UltimateSDUpscale + FaceDetailer 构成“初采样→放大→局部精修”的质量控制链路；多组 Image Comparer 用于前后对比。；特色:使用 IPAdapterNoise 的 fade 模式对 IPAdapter 参考图像做噪声注入，可能用于增强风格化时的笔触自由度。；适合插画师/设计师把黑白线稿快速变成彩色成稿；也可作为风格参考图转绘、多方案配色对比的基底工作流。；这个工作流的核心思路是“叠条件、控风格、再精修”：先用 LineArt/Depth/SemSeg/Color 多路 ControlNet 把线稿结构、空间关系、语义分区和颜色方向同时锚定到 SDXL，再用 IPAdapter 与厚涂/幻彩 LoRA 控制美术风格；同时用 Qwen3.5-9B + Florence2 自动生成并翻译提示词，减少手工写提示词的负担。后段用 FaceDetailer 修脸、UltimateSDUp"
+}

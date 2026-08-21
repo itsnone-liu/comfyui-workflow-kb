@@ -1,0 +1,95 @@
+{
+ "domain": [],
+ "capabilities": [
+  {
+   "text": "使用一张人脸参考图和一张目标图，通过 InstantID 将参考人脸的身份迁移到目标图面部，输出保留原图姿态、背景和构图的换脸图。",
+   "kind": "fact"
+  },
+  {
+   "text": "可对换脸结果进行 SUPIR 超分放大，并用 ColorMatch 与原图进行色彩匹配，得到高清且色调一致的成图。",
+   "kind": "inference"
+  },
+  {
+   "text": "由于标签含“妆容”，且工作流包含人脸参考图输入，该工作流也可能用于妆容参考、写真风格化或局部面部替换创作。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID（ip-adapter.bin 人脸身份注入）",
+  "InsightFace / FaceAnalysis 人脸检测与对齐",
+  "ControlNet（Canny/LineArt 线稿控制 + SDXL-EcomID-ControlNet 身份控制）",
+  "InpaintModelConditioning 局部重绘",
+  "PersonMaskUltra V2 人像分割",
+  "FaceBoundingBox + CropByMask/RestoreCropBox 面部局部裁剪与恢复",
+  "SUPIR 超分放大",
+  "ColorMatch 色彩一致性匹配"
+ ],
+ "special_features": [
+  {
+   "text": "局部面区换脸回路：FaceBoundingBox + GrowMask(40) + MaskBlur+(60) + CropByMask V2 + RestoreCropBox 组合，先定位并裁剪面部区域，生成后再把结果放回原图，减少对背景和身体的改动。",
+   "kind": "inference"
+  },
+  {
+   "text": "双 ControlNet 结构：AIO_Preprocessor(LineArtPreprocessor) 生成线稿后接到 ControlNetApplyAdvanced(controlnet-canny-sdxl, strength=0.45, end=0.6)；另一个 SDXL-EcomID-controlnet 供 ApplyInstantID 使用；从结构看是用线稿锁构图、用 InstantID 锁身份。",
+   "kind": "inference"
+  },
+  {
+   "text": "多段式质量增强链路：SUPIR_Upscale(SUPIR-v0F + juggernautXL, 2x) 负责高清化，ColorMatch 把生成图颜色匹配回原图，并有两个 Image Comparer (rgthree) 用于对比预览，形成“生成→放大→校色→对比”的质量闭环。",
+   "kind": "inference"
+  },
+  {
+   "text": "InpaintModelConditioning + PersonMaskUltra V2 组合使重绘范围由人像 mask 约束，而不是全图扩散；MaskPreview 节点用于观察 mask 效果。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从节点构成看，设计者把换脸拆成三个层面：先用 FaceAnalysis 和 InstantID 做人脸身份注入，用 ControlNet 线稿保持目标图结构/姿态，再用 inpaint + mask 把修改限制在面部局部；最后用 SUPIR 和 ColorMatch 做放大与色彩统一。这样可以避免整图重绘导致的背景漂移和人物不像问题，同时提升输出分辨率与自然度。",
+ "use_case": "适合 AI 写真、短视频人物换脸、电商模特图替换/试妆、虚拟模特换头等。需要用户准备一张正脸清晰、光线均匀的人脸参考图，以及一张目标人像图。",
+ "limitation": "需要手动通过两个 LoadImage 分别选择参考图和目标图，当前默认指向同一张演示图；强依赖 InsightFace、InstantID、LayerStyle、SUPIR 等自定义节点；需要下载大量模型，显存压力较大；参考人脸模糊、遮挡、大角度或光照差时身份一致性可能下降；InstantID strength 固定为 1 可能过度改变面部纹理；SUPIR 放大可能引入不自然细节。",
+ "dependencies": [
+  "ComfyUI_InstantID 自定义节点",
+  "ComfyUI_LayerStyle 自定义节点（PersonMaskUltra V2、LayerUtility）",
+  "ComfyUI-SUPIR 自定义节点",
+  "KJNodes 或类似节点（MaskBlur+、ImageResize+ 等，推测）",
+  "comfyui_controlnet_aux（AIO_Preprocessor）",
+  "rgthree 节点（Image Comparer）",
+  "模型：DreamShaper XL v2.1 Turbo 闪电.safetensors",
+  "模型：ip-adapter.bin",
+  "模型：controlnet-canny-sdxl-1.0-v2-xinsir.safetensors",
+  "模型：SDXL-EcomID-controlnet.safetensors",
+  "模型：SUPIR-v0F_fp16.safetensors",
+  "模型：juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors",
+  "insightface 模型与 CUDA 环境"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片",
+  "count": "2（人脸参考图 + 目标底图）"
+ },
+ "output": {
+  "type": "图片",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID: strength / start / end",
+   "how_to_tune": "当前为 1, 0, 1，表示全程强注入身份。若换脸后不像参考人，可提高 strength；若面部僵硬或材质感被改掉，可降低到 0.7-0.9，或把 end 调到 0.8 左右，让最后几步回归普通采样以保留细节。"
+  },
+  {
+   "param": "ControlNetApplyAdvanced: strength=0.45, end=0.6",
+   "how_to_tune": "0.45 是中等偏低的线稿控制强度，可在保持原构图的同时不限制得太死；若生成结果偏离原图姿态/构图，可提高到 0.6-0.8；若线条感过重或构图僵硬，可降到 0.3。end=0.6 表示后期不参与，保留更多生成细节。"
+  },
+  {
+   "param": "KSampler: steps=15, cfg=1.5, euler_ancestral / sgm_uniform",
+   "how_to_tune": "该配置适合 Turbo/Lightning 低步数模型：步骤少、CFG 低。若追求更精细质量，可加到 20-25 步；CFG 一般保持 1.0-2.0，太高容易过饱和、色彩崩溃。"
+  },
+  {
+   "param": "GrowMask: 40 + MaskBlur+: 60",
+   "how_to_tune": "GrowMask 40 会把面罩向外扩展，使发际线、下颌缘纳入过渡区；若发现背景被改得太多，可减小到 20；若出现明显接缝或肤色断层，可增大扩展值并提高 MaskBlur 模糊强度。"
+  },
+  {
+   "param": "SUPIR_Upscale: upscale=2, SUPIR-v0F + juggernautXL",
+   "how_to_tune": "2x 是性价比较高的放大倍数；若想进一步放大可尝试 4x，但会更慢且可能改变面部细节。建议先保持 randomize，满意后固定 seed；denoise 不宜过高，否则会破坏 InstantID 的人脸相似度。"
+  }
+ ],
+ "summary_text": "能力:使用一张人脸参考图和一张目标图，通过 InstantID 将参考人脸的身份迁移到目标图面部，输出保留原图姿态、背景和构图的换脸图。；能力:可对换脸结果进行 SUPIR 超分放大，并用 ColorMatch 与原图进行色彩匹配，得到高清且色调一致的成图。；能力:由于标签含“妆容”，且工作流包含人脸参考图输入，该工作流也可能用于妆容参考、写真风格化或局部面部替换创作。；特色:局部面区换脸回路：FaceBoundingBox + GrowMask(40) + MaskBlur+(60) + CropByMask V2 + RestoreCropBox 组合，先定位并裁剪面部区域，生成后再把结果放回原图，减少对背景和身体的改动。；特色:双 ControlNet 结构：AIO_Preprocessor(LineArtPreprocessor) 生成线稿后接到 ControlNetApplyAdvanced(controlnet-canny-sdxl, strength=0.45, end=0.6)；另一个 SDXL-EcomID-controlnet 供 ApplyInstantID 使用；从结构看是用线稿锁构图、用 InstantID 锁身份。；特色:多段式质量增强链路：SUPIR_Upscale(SUPIR-v0F + juggernautXL, 2x) 负责高清化，ColorMatch 把生成图颜色匹配回原图，并有两个 Image Comparer (rgthree) 用于对比预览，形成“生成→放大→校色→对比”的质量闭环。；特色:InpaintModelConditioning + PersonMaskUltra V2 组合使重绘范围由人像 mask 约束，而不是全图扩散；MaskPreview 节点用于观察 mask 效果。；适合 AI 写真、短视频人物换脸、电商模特图替换/试妆、虚拟模特换头等。需要用户准备一张正脸清晰、光线均匀的人脸参考图，以及一张目标人像图。；从节点构成看，设计者把换脸拆成三个层面：先用 FaceAnalysis 和 InstantID 做人脸身份注入，用 ControlNet 线稿保持目标图结构/姿态，再用 inpaint + mask 把修改限制在面部局部；最后用 SUPIR 和 ColorMatch 做放大与色彩统一。这样可以避免整图重绘导致的背景漂移和人物不像问题，同时提升输出分辨率与自然度。"
+}

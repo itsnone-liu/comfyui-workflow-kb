@@ -1,0 +1,81 @@
+{
+ "domain": [
+  "图像生成",
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张角色/人物照片，自动生成卡通风格的表情包图像（多张输出便于挑选）",
+   "kind": "inference"
+  },
+  {
+   "text": "支持大图分块处理：将输入分割为2×3网格分别重绘后合并，提升细节并降低显存占用",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 FLUX.1-Turbo-Alpha LoRA 以2步低步数快速完成风格迁移",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "LoRA (FLUX.1-Turbo-Alpha)",
+  "Tiled VAE (VAEEncodeTiled/VAEDecodeTiled)",
+  "分块重绘 (TTP_Image_Tile_Batch/TTP_Image_Assy)",
+  "图生图 (RH_Nano_Banana_Image2Image)",
+  "低步数采样 (steps=2, cfg=1)",
+  "Upscale-Hires (4xFFHQDAT)"
+ ],
+ "special_features": [
+  {
+   "text": "使用 TTP 节点将输入图切成 2×3 块分别重绘再组装，是典型的大图分块修复/重绘设计",
+   "kind": "fact"
+  },
+  {
+   "text": "KSampler 设置为 steps=2, cfg=1，配合 Turbo LoRA 实现极速采样——这是 FLUX Turbo 系列的标志性用法",
+   "kind": "fact"
+  },
+  {
+   "text": "同时挂载两个 LoadImage，可能支持双图输入（例如原图+风格参考）或批量切换",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "工作流旨在平衡生成质量与运行速度：利用 FLUX.1-Turbo-Alpha 将推理步数压缩到2步，通过分块重绘（TTP + Tiled VAE）在有限显存下保持高分辨率细节，最后用 4xFFHQDAT 放大输出。整体设计面向非专业用户的“一键式”操作，同时隐藏了底层复杂度。",
+ "use_case": "角色设计师或个人用户快速将普通照片/角色原画转换为卡通风格表情包头像，可批量生成候选图。",
+ "limitation": "依赖固定模型：flux1-krea-dev.safetensors、ae.sft、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、FLUX.1-Turbo-Alpha.safetensors、4xFFHQDAT.pth；需要 TTP、RH_Nano_Banana_Image2Image 等自定义节点；输入类型为图像，建议使用正脸/清晰角色照；分块参数固定为2×3，若源图比例差异过大会有缝；平台限制每天前五次免费，之后每次0.05元。",
+ "dependencies": [
+  "flux1-krea-dev.safetensors",
+  "ae.sft",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "FLUX.1-Turbo-Alpha.safetensors",
+  "4xFFHQDAT.pth"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前2步，配合Turbo LoRA速度最快；若生成不稳定可尝试4步，但会明显变慢。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.weight",
+   "how_to_tune": "当前为1.0，控制卡通化程度；调大（如1.2）角色特征保留减弱、风格更强，调小（0.8）则更接近原图。"
+  },
+  {
+   "param": "TTP_Tile_image_size",
+   "how_to_tune": "三个值分别表示宽分块数=2、高分块数=3、重叠比例=0.1；分块越多细节越好但耗时和拼接风险增加，重叠比例越大越不易出现接缝。"
+  },
+  {
+   "param": "ImageScaleBy",
+   "how_to_tune": "当前缩放系数0.5，将1280px缩到640px再处理；若源图本身较小，可改为1.0跳过降采样。"
+  }
+ ],
+ "summary_text": "能力:上传一张角色/人物照片，自动生成卡通风格的表情包图像（多张输出便于挑选）；能力:支持大图分块处理：将输入分割为2×3网格分别重绘后合并，提升细节并降低显存占用；能力:使用 FLUX.1-Turbo-Alpha LoRA 以2步低步数快速完成风格迁移；特色:使用 TTP 节点将输入图切成 2×3 块分别重绘再组装，是典型的大图分块修复/重绘设计；特色:KSampler 设置为 steps=2, cfg=1，配合 Turbo LoRA 实现极速采样——这是 FLUX Turbo 系列的标志性用法；特色:同时挂载两个 LoadImage，可能支持双图输入（例如原图+风格参考）或批量切换；角色设计师或个人用户快速将普通照片/角色原画转换为卡通风格表情包头像，可批量生成候选图。；工作流旨在平衡生成质量与运行速度：利用 FLUX.1-Turbo-Alpha 将推理步数压缩到2步，通过分块重绘（TTP + Tiled VAE）在有限显存下保持高分辨率细节，最后用 4xFFHQDAT 放大输出。整体设计面向非专业用户的“一键式”操作，同时隐藏了底层复杂度。"
+}

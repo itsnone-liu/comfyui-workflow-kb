@@ -1,0 +1,106 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "文生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "输入首帧图片和提示词，经 MiniMaxH3ImageToVideo + UNETLoader(fl2va) + SamplerCustomAdvanced 端到端生成视频并通过 SaveVideo 保存。",
+   "kind": "fact"
+  },
+  {
+   "text": "输入参考视频/参考图，经 MiniMaxH3ReferenceToVideo + UNETLoader(ref2va) 生成参考驱动的视频，适合保持角色/场景一致性。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持自动/手动提示词切换：自动模式由 RHLLMChatNode 调用 qwen3.7-max 扩写提示词，手动模式直接使用 PrimitiveStringMultiline；通过 rgthree Any Switch 选路。",
+   "kind": "fact"
+  },
+  {
+   "text": "可加载外部音频并解码音频 VAE，输出带音频的视频文件（视频/音频双 VAE 结构）。",
+   "kind": "inference"
+  },
+  {
+   "text": "内置多个质量/速度控制点：分辨率选择、步数/调度器设置、缓存与注意力 patch 开关，可调节输出时长与画质。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频生成模型：UNETLoader 加载 fl2va/ref2va 两个 pruned fp8 checkpoint",
+  "多模态文本编码：CLIPLoader 加载 qwen3vl_32b_minimax_h3_int8_convrot",
+  "图生视频 / 参考视频生成：MiniMaxH3ImageToVideo / MiniMaxH3ReferenceToVideo",
+  "LLM 提示词扩写：RHLLMChatNode + StringFunction/pysssss 拼接时长信息",
+  "自动/手动提示词切换：rgthree Any Switch + Fast Groups Bypasser",
+  "扩散采样管线：BasicScheduler + BasicGuider + KSamplerSelect(res_multistep) + RandomNoise + SamplerCustomAdvanced",
+  "视频/音频 VAE 分离解码：minimax_h3_video_vae_fp16 + minimax_h3_audio_vae_fp32",
+  "速度/显存优化：MiniMaxH3BlockCacheT8、SageAttention patch、SolAttnPatch、UniBlockSwap",
+  "动态参数计算：ComfyMathExpression + PrimitiveFloat + ResolutionSelector"
+ ],
+ "special_features": [
+  {
+   "text": "一台工作流封装 ImageToVideo 和 ReferenceToVideo 两条生成链，并用 Fast Groups Bypasser 做一键旁路切换，避免维护两份流程。",
+   "kind": "fact"
+  },
+  {
+   "text": "4 个 rgthree Any Switch 构成自动/手动提示词选路，并配合 StringFunction/pysssss 将“视频长度是xx秒”动态追加进提示词上下文。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存/速度优化四件套同框：MiniMaxH3BlockCacheT8 + MiniMaxH3MemoryEfficientSageAttentionPatch + SolAttnPatch + UniBlockSwap，属于面向长视频/低显存的极客级加速设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 easy showAnything 监视中间数值，用 MarkdownNote 内置 B站/模型链接说明，形成带调试面板的“多功能说明书式”工作流。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者似乎想把 MiniMax H3 的多种生成方式做进同一个“母版”流程：底模用 fl2va/ref2va 双 checkpoint 分别覆盖首帧驱动和参考驱动的视频生成，再用 Fast Groups Bypasser / Any Switch 让用户在不拆图的情况下切换子图；自动模式交给 qwen3.7-max 扩写提示词，手动模式保留原始输入，兼顾省心和可控；同时把 BlockCache、SageAttention、SolAttnPatch、UniBlockSwap 等优化直接串进采样链，使其成为强调“速度/显存友好”的 Speed 版。整体设计意图可能是一个可复用的 H3 视频生成控制台，而不是单一任务的硬编码脚本。",
+ "use_case": "适合需要在 ComfyUI 中快速产出短视频素材的创作者：先放一张首帧图/参考图，选好分辨率、时长和采样参数，再让 LLM 自动扩写提示词或手动输入文案，最后导出带音频的视频。可用于短视频脚本预演、角色一致性测试、多风格/多提示词对比，以及作为本地 H3 模型效果评估入口。",
+ "limitation": "依赖 MiniMax H3 系列模型权重和 RHLLMChatNode 的 qwen3.7-max API；需要安装 rgthree、ComfyMath、pysssss、easy-showAnything、VideoHelperSuite(VHS) 等自定义节点；默认带占位图，使用前需要替换为实际图片；长视频/高分辨率对显存仍有压力，且音频生成需要对应 audio VAE 与外部音频输入。",
+ "dependencies": [
+  "minimax_h3_fl2va_pruned_fp8_scaled.safetensors",
+  "minimax_h3_ref2va_pruned_fp8_scaled.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "MiniMax H3 节点包（MiniMaxH3ImageToVideo / MiniMaxH3ReferenceToVideo / MiniMaxH3BlockCacheT8 / MiniMaxH3MemoryEfficientSageAttentionPatch）",
+  "ComfyUI 自定义节点：rgthree (Any Switch / Fast Groups Bypasser)",
+  "ComfyMath (ComfyMathExpression)",
+  "pysssss (StringFunction)",
+  "easy-showAnything",
+  "VideoHelperSuite / VHS_LoadVideo"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片、提示词，可选参考视频/音频",
+  "count": "6 个 LoadImage 输入口 + 1 个 VHS_LoadVideo + 1 个 LoadAudio + 手动/LLM 提示词"
+ },
+ "output": {
+  "type": "视频文件（.mp4，可能含音频）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler.steps（当前 25）",
+   "how_to_tune": "步数越大通常越精细但耗时更长；Speed 版可降至 15-20，追求质量可升到 30-40。"
+  },
+  {
+   "param": "MiniMaxH3BlockCacheT8（0.12/0.08/0.95/2/cpu/8）",
+   "how_to_tune": "这些是 block cache/offload 参数；显存不足时增大 offload 范围，画质劣化时降低缓存强度或层数。"
+  },
+  {
+   "param": "SolAttnPatch（1.2/0.2/0.9/4096/True/exact_kv）",
+   "how_to_tune": "用于注意力 patch；出现闪烁或构图不稳时调低 scale 或关闭 exact_kv，细节不足时可小幅上调。"
+  },
+  {
+   "param": "RHLLMChatNode.temperature（0.6）",
+   "how_to_tune": "降低到 0.3-0.4 让 LLM 扩写更贴近原意；提高到 0.8-1.0 增加用词多样性和随机感。"
+  },
+  {
+   "param": "ResolutionSelector（16:9/1/32）",
+   "how_to_tune": "按目标发布平台选画幅；同显存下优先选模型原生分辨率（如 1344x768 附近），分辨率过高易爆显存。"
+  }
+ ],
+ "summary_text": "能力:输入首帧图片和提示词，经 MiniMaxH3ImageToVideo + UNETLoader(fl2va) + SamplerCustomAdvanced 端到端生成视频并通过 SaveVideo 保存。；能力:输入参考视频/参考图，经 MiniMaxH3ReferenceToVideo + UNETLoader(ref2va) 生成参考驱动的视频，适合保持角色/场景一致性。；能力:支持自动/手动提示词切换：自动模式由 RHLLMChatNode 调用 qwen3.7-max 扩写提示词，手动模式直接使用 PrimitiveStringMultiline；通过 rgthree Any Switch 选路。；能力:可加载外部音频并解码音频 VAE，输出带音频的视频文件（视频/音频双 VAE 结构）。；能力:内置多个质量/速度控制点：分辨率选择、步数/调度器设置、缓存与注意力 patch 开关，可调节输出时长与画质。；特色:一台工作流封装 ImageToVideo 和 ReferenceToVideo 两条生成链，并用 Fast Groups Bypasser 做一键旁路切换，避免维护两份流程。；特色:4 个 rgthree Any Switch 构成自动/手动提示词选路，并配合 StringFunction/pysssss 将“视频长度是xx秒”动态追加进提示词上下文。；特色:显存/速度优化四件套同框：MiniMaxH3BlockCacheT8 + MiniMaxH3MemoryEfficientSageAttentionPatch + SolAttnPatch + UniBlockSwap，属于面向长视频/低显存的极客级加速设计。；特色:使用 easy showAnything 监视中间数值，用 MarkdownNote 内置 B站/模型链接说明，形成带调试面板的“多功能说明书式”工作流。；适合需要在 ComfyUI 中快速产出短视频素材的创作者：先放一张首帧图/参考图，选好分辨率、时长和采样参数，再让 LLM 自动扩写提示词或手动输入文案，最后导出带音频的视频。可用于短视频脚本预演、角色一致性测试、多风格/多提示词对比，以及作为本地 H3 模型效果评估入口。；作者似乎想把 MiniMax H3 的多种生成方式做进同一个“母版”流程：底模用 fl2va/ref2va 双 checkpoint 分别覆盖首帧驱动和参考驱动的视频生成，再用 Fast Groups Bypasser / Any Switch 让用户在不拆图的情况下切换子图；自动模式交给 qwen3.7-max 扩写提示词，手动模式保留原始输入，兼顾省心和可控；同时把 BlockCache、SageAttention、SolAttnPatch、UniBlockSwap 等优化直接串进采样链，"
+}

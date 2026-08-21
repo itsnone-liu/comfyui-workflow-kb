@@ -1,0 +1,861 @@
+{
+ "node_count": 22,
+ "link_count": 22,
+ "active_node_count": 17,
+ "nodes": [
+  {
+   "id": 56,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_4b_fp8_scaled.safetensors",
+    "krea2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    72,
+    109
+   ]
+  },
+  {
+   "id": 57,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    79
+   ]
+  },
+  {
+   "id": 81,
+   "type": "AILab_QwenVL",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3-VL-4B-Instruct",
+    "None (FP16)",
+    "🖼️ Detailed Description",
+    "",
+    512,
+    false,
+    731301305416949,
+    "randomize",
+    "auto"
+   ],
+   "in_links": [
+    134
+   ],
+   "out_links": [
+    173
+   ]
+  },
+  {
+   "id": 95,
+   "type": "AILab_QwenVL_PromptEnhancer",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3-VL-4B-Instruct",
+    "None (FP16)",
+    "auto",
+    false,
+    "auto",
+    "",
+    "📝 Detailed Visual",
+    "",
+    512,
+    0.7,
+    0.9,
+    1.1,
+    true,
+    3127511660,
+    "randomize"
+   ],
+   "in_links": [
+    169
+   ],
+   "out_links": [
+    180
+   ]
+  },
+  {
+   "id": 53,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    993177999172957,
+    "randomize",
+    8,
+    1,
+    "er_sde",
+    "simple",
+    1
+   ],
+   "in_links": [
+    126,
+    75,
+    176,
+    137
+   ],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 76,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lowres, bad anatomy, bad hands, text, error, missing fingers, \nextra digit, fewer digits, cropped, worst quality, low quality, \nnormal quality, jpeg artifacts, signature, watermark, username, \nblurry, bad feet, mutation, deformed, extra limbs, extra arms, \nextra legs, malformed limbs, fused fingers, too many fingers, \nlong neck, cross-eyed, mutated hands, polar lowres, bad face, \nout of frame, oversaturated, overexposed"
+   ],
+   "in_links": [
+    109,
+    178
+   ],
+   "out_links": [
+    177
+   ]
+  },
+  {
+   "id": 99,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    177
+   ],
+   "out_links": [
+    176
+   ]
+  },
+  {
+   "id": 54,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    78,
+    79
+   ],
+   "out_links": [
+    97
+   ]
+  },
+  {
+   "id": 93,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    173,
+    179,
+    180
+   ],
+   "out_links": [
+    172
+   ]
+  },
+  {
+   "id": 51,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The warrior’s thick, dark beard is coarse and tangled at the jawline with fine hairs catching light like static filaments; his hair, tied in a high ponytail, flares violently behind him as if whipped by wind or sudden motion. His skin bears deep-set creases around knuckles and brow, sunken cheeks revealing scars that ripple faintly under harsh illumination—his left ear glows with an unnatural crimson hue like embedded metal. The black gi fabric clings to his muscular frame in heavy folds: the sleeve’s weave appears coarse cotton or hemp, frayed at the cuffs where it scrapes against skin; the red obi is vibrant and saturated, its edges torn unevenly as if ripped by force, fluttering with dynamic motion like a living ribbon. His right fist grips tightly into a mallet shape—knuckles swollen from impact—with leather wraps that show wear along seams and dirt-stained fibers. The background features towering trees rendered in charcoal gray strokes; their bark textures are rough and scaly, etched by wind or time, while the ground beneath is obscured but suggests mossy earth underfoot with scattered leaves caught mid-fall. Light pours from above like shafts of watercolor wash: brilliant white beams slice through the canopy, casting long shadows that stretch diagonally across his body—soft edges blurred into mist at their ends. The camera captures him low-angle, almost head-on but slightly tilted upward; a shallow depth-of-field blurs the surrounding foliage while keeping focus razor-sharp on every muscle and fiber of his form. Leading lines radiate from tree trunks toward center-frame, guiding eyes to his raised leg—its knee bent sharply with tendon cords straining against fabric—and trailing red obi that arcs across midground like a visual anchor point between foreground trees. Negative space dominates the upper half where light floods through leaves; asymmetry is intentional: left side of frame holds more texture and detail than right, balancing tension without symmetry. The scene pulses with kinetic energy—the warrior suspended in air as if frozen during combat—his expression fierce yet focused, eyes narrowed into slits that reflect nothing but determination. Shadows fall sharply beneath his limbs like inkblots on parchment; the lighting is harsh overhead sun filtered through canopy leaves, creating high-contrast highlights along shoulders and fists while leaving crevices of darkness to emphasize power and isolation. The composition’s visual hierarchy elevates him as central icon—his red obi a bold focal point against monochrome tones. The camera lens feels like an intimate close-up: shallow"
+   ],
+   "in_links": [
+    72,
+    142
+   ],
+   "out_links": [
+    75
+   ]
+  },
+  {
+   "id": 83,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    172
+   ],
+   "out_links": [
+    171
+   ]
+  },
+  {
+   "id": 29,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "Krea2_turbo"
+   ],
+   "in_links": [
+    97
+   ],
+   "out_links": []
+  },
+  {
+   "id": 85,
+   "type": "easy stylesSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fooocus_styles",
+    "sai-photographic,sai-enhance"
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": [
+    142,
+    161,
+    178
+   ]
+  },
+  {
+   "id": 94,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": "Text w/Style",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cinematic photo The subject’s mohawk is rendered in hyper-detailed, almost crystalline strands of black hair that stand rigidly erect against a flat gray backdrop; each individual strand exhibits sharp, angular tips and subtle textural variation along its length. A radiant spectrum—composed of thin, fractured bands of cyan, magenta, yellow, and white light—is sliced across the mohawk’s center like an optical lens flare or digital glitch effect, illuminating the hair from within with a radial burst that casts sharp highlights on some strands while leaving others in deep shadow. The subject's skin tone is porcelain-white, smooth as polished marble, with faintly visible pores and subtle contouring along the cheekbone and jawline; lips are softly closed, their surface glossy but not reflective like glass, catching only gentle ambient light. Around the neck, a high collar made of dense black fur-like material—each fiber individually rendered—with fine white specks embedded within it creates an almost tactile texture that contrasts with the smooth skin above. The garment beneath features metallic embroidery or sequins in irregular clusters; these elements catch and scatter light into tiny prismatic flares across their surfaces, suggesting a synthetic fabric under tension rather than natural weave. A faint pinkish border frames the entire composition like a digital artifact or screen edge, subtly dividing foreground from background. Lighting originates from behind and slightly to one side of the subject’s head, casting long shadows that define facial structure while simultaneously causing intense specular highlights on each strand; this directional light creates hard-edged shadow shapes along hairlines and cheek contours. The camera is positioned at eye level but angled just enough to emphasize profile symmetry without being frontal—depth-of-field renders both foreground strands and distant background equally sharp, with no discernible blur or bokeh. Negative space dominates the upper right quadrant of frame, allowing visual weight to rest on the subject’s silhouette; leading lines are absent due to composition's minimalism but implied through radial light streaks emanating from center-left toward edges. The overall effect is a surreal fusion between hyper-realistic detail and glitch aesthetics, where every strand behaves as if it were both organic yet manufactured.\n\n . 35mm photograph, film, bokeh, professional, 4k, highly detailed, breathtaking  . award-winning, professional, highly detailed"
+   ],
+   "in_links": [
+    161
+   ],
+   "out_links": []
+  },
+  {
+   "id": 55,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "krea2Edition_nsfw.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    182
+   ]
+  },
+  {
+   "id": 78,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.0000000000000004
+   ],
+   "in_links": [
+    181
+   ],
+   "out_links": [
+    126
+   ]
+  },
+  {
+   "id": 90,
+   "type": "YANC.MultilineString",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Extreme close-up of a woman's mouth with soft light peach-colored lips, realistic skin texture, light skin tone, an orange carot gently held between her lips, subtle view of front teeth behind the carrot, no visible background - just skin tones filling the frame, high-fashion editorial style, sharp focus, studio lighting, beauty campaign aesthetic, ultra high-resolution, cinematic detail"
+   ],
+   "in_links": [],
+   "out_links": [
+    169
+   ]
+  },
+  {
+   "id": 84,
+   "type": "Krea2SizePreset",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2K",
+    "3:4",
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    137
+   ]
+  },
+  {
+   "id": 82,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cb1366e627c401cf90e052940489f1ba5dc8bd001e53a7684a89868638382328.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    134
+   ]
+  },
+  {
+   "id": 96,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 100,
+   "type": "YANC.MultilineString",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The subject’s mohawk is rendered in hyper-detailed, almost crystalline strands of black hair that stand rigidly erect against a flat gray backdrop; each individual strand exhibits sharp, angular tips and subtle textural variation along its length. A radiant spectrum—composed of thin, fractured bands of cyan, magenta, yellow, and white light—is sliced across the mohawk’s center like an optical lens flare or digital glitch effect, illuminating the hair from within with a radial burst that casts sharp highlights on some strands while leaving others in deep shadow. The subject's skin tone is porcelain-white, smooth as polished marble, with faintly visible pores and subtle contouring along the cheekbone and jawline; lips are softly closed, their surface glossy but not reflective like glass, catching only gentle ambient light. Around the neck, a high collar made of dense black fur-like material—each fiber individually rendered—with fine white specks embedded within it creates an almost tactile texture that contrasts with the smooth skin above. The garment beneath features metallic embroidery or sequins in irregular clusters; these elements catch and scatter light into tiny prismatic flares across their surfaces, suggesting a synthetic fabric under tension rather than natural weave. A faint pinkish border frames the entire composition like a digital artifact or screen edge, subtly dividing foreground from background. Lighting originates from behind and slightly to one side of the subject’s head, casting long shadows that define facial structure while simultaneously causing intense specular highlights on each strand; this directional light creates hard-edged shadow shapes along hairlines and cheek contours. The camera is positioned at eye level but angled just enough to emphasize profile symmetry without being frontal—depth-of-field renders both foreground strands and distant background equally sharp, with no discernible blur or bokeh. Negative space dominates the upper right quadrant of frame, allowing visual weight to rest on the subject’s silhouette; leading lines are absent due to composition's minimalism but implied through radial light streaks emanating from center-left toward edges. The overall effect is a surreal fusion between hyper-realistic detail and glitch aesthetics, where every strand behaves as if it were both organic yet manufactured.\n\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    179
+   ]
+  },
+  {
+   "id": 101,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Purple_Grainy_Kr2_AM.safetensors",
+    0.5000000000000001
+   ],
+   "in_links": [
+    182
+   ],
+   "out_links": [
+    181
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 100,
+   "to_node": 93,
+   "type": "STRING"
+  },
+  {
+   "from_node": 101,
+   "to_node": 78,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 51,
+   "to_node": 53,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 53,
+   "to_node": 54,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 54,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 55,
+   "to_node": 101,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 56,
+   "to_node": 51,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 56,
+   "to_node": 76,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 57,
+   "to_node": 54,
+   "type": "VAE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 99,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 78,
+   "to_node": 53,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 81,
+   "to_node": 93,
+   "type": "STRING"
+  },
+  {
+   "from_node": 82,
+   "to_node": 81,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 83,
+   "to_node": 85,
+   "type": "STRING"
+  },
+  {
+   "from_node": 84,
+   "to_node": 53,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 85,
+   "to_node": 51,
+   "type": "STRING"
+  },
+  {
+   "from_node": 85,
+   "to_node": 76,
+   "type": "STRING"
+  },
+  {
+   "from_node": 85,
+   "to_node": 94,
+   "type": "*"
+  },
+  {
+   "from_node": 90,
+   "to_node": 95,
+   "type": "STRING"
+  },
+  {
+   "from_node": 93,
+   "to_node": 83,
+   "type": "*"
+  },
+  {
+   "from_node": 95,
+   "to_node": 93,
+   "type": "STRING"
+  },
+  {
+   "from_node": 99,
+   "to_node": 53,
+   "type": "CONDITIONING"
+  }
+ ],
+ "categories": {
+  "clip": 1,
+  "vae": 2,
+  "utility": 12,
+  "sampler": 1,
+  "conditioning": 2,
+  "image_io": 2,
+  "checkpoint_loader": 1,
+  "lora": 1
+ },
+ "assets": [
+  {
+   "node_id": 56,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 57,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "krea2Edition_nsfw.safetensors"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Purple_Grainy_Kr2_AM.safetensors"
+  }
+ ],
+ "techniques": [
+  "Qwen-Image"
+ ],
+ "param_face_size": 48,
+ "structure_hash": "296b749f21239bdb",
+ "param_face": [
+  {
+   "node_id": 56,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 56,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "krea2"
+  },
+  {
+   "node_id": 56,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 57,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 0,
+   "value_preview": "Qwen3-VL-4B-Instruct"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 1,
+   "value_preview": "None (FP16)"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 2,
+   "value_preview": "🖼️ Detailed Description"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 4,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 6,
+   "value_preview": "731301305416949"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 81,
+   "node_type": "AILab_QwenVL",
+   "widget_index": 8,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 0,
+   "value_preview": "Qwen3-VL-4B-Instruct"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 1,
+   "value_preview": "None (FP16)"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 4,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 5,
+   "value_preview": ""
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 6,
+   "value_preview": "📝 Detailed Visual"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 7,
+   "value_preview": ""
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 8,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 9,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 10,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 11,
+   "value_preview": "1.1"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 13,
+   "value_preview": "3127511660"
+  },
+  {
+   "node_id": 95,
+   "node_type": "AILab_QwenVL_PromptEnhancer",
+   "widget_index": 14,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "993177999172957"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "er_sde"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 53,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 29,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "Krea2_turbo"
+  },
+  {
+   "node_id": 85,
+   "node_type": "easy stylesSelector",
+   "widget_index": 0,
+   "value_preview": "fooocus_styles"
+  },
+  {
+   "node_id": 85,
+   "node_type": "easy stylesSelector",
+   "widget_index": 1,
+   "value_preview": "sai-photographic,sai-enhance"
+  },
+  {
+   "node_id": 55,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "krea2Edition_nsfw.safetensors"
+  },
+  {
+   "node_id": 55,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 78,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3.0000000000000004"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Krea2SizePreset",
+   "widget_index": 0,
+   "value_preview": "2K"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Krea2SizePreset",
+   "widget_index": 1,
+   "value_preview": "3:4"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Krea2SizePreset",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 82,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "cb1366e627c401cf90e052940489f1ba5dc8bd001e53a7684a8986863838"
+  },
+  {
+   "node_id": 82,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Purple_Grainy_Kr2_AM.safetensors"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  }
+ ]
+}

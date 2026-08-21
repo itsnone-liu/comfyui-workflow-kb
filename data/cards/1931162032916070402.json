@@ -1,0 +1,79 @@
+{
+ "domain": [
+  "AI图像生成",
+  "产品多视角展示",
+  "电商设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张产品参考图并输入中文提示词，自动生成包含正面/侧面/背面的产品三视图（16:9 宽幅）并保存",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 DeepTranslatorTextNode，可将中文等自然语言提示词自动翻译成英文后送入 FLUX，降低非英文输入门槛",
+   "kind": "fact"
+  },
+  {
+   "text": "通过单一 Kontext 节点完成条件图像生成，省略 ControlNet 等附加控制，结构极简",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX（flux-kontext-pro）",
+  "参考图条件图像生成",
+  "提示词自动翻译（DeepTranslatorTextNode + GoogleTranslator）",
+  "单画布多视图版面生成"
+ ],
+ "special_features": [
+  {
+   "text": "4 节点极简实现三视图生成：翻译节点直连 Flux Kontext Pro，无多模型堆叠或后处理回路",
+   "kind": "fact"
+  },
+  {
+   "text": "可能依赖 Kontext 模型对“正面/侧面/背面”的语义理解在 16:9 单画布中一次性完成版面排布，而非逐角度生成后拼接",
+   "kind": "inference"
+  },
+  {
+   "text": "平台标签为“老照片修复”，与实际产品三视图生成任务不符，可能是复用模板或误标",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "从节点拓扑看，这是一条刻意保持极简的生成链路：用户只需提供一张产品原图和中文需求，系统经自动翻译后交给 FLUX Kontext Pro，在 16:9 画布上一次性生成三视图。设计者可能想避免 ControlNet 等多模型堆叠带来的复杂度和失败率，转而依靠 Kontext 对图像-文本关系的原生理解；标签“老照片修复”与实际能力不匹配，可能只是发布时的误标。",
+ "use_case": "产品设计师或电商运营上传一张实物产品照片，输入“生成正面/侧面/背面三视图”，快速得到用于商品详情页、设计提案或展会展示的多视角效果图。",
+ "limitation": "依赖 Comfly_Flux_Kontext 与 DeepTranslatorTextNode 两个自定义节点，且需要预先获取 flux-kontext-pro 模型权重；翻译器走 GoogleTranslator，需要联网；LoadImage 仅支持单张输入，输出固定为 16:9 比例，缺少裁剪/拆分为独立三张图的后处理；无质量控制回路，生成结果依赖人工筛选；标签“老照片修复”与任务不一致，若实际是修复场景需要替换模型和参数。",
+ "dependencies": [
+  "ComfyUI",
+  "Comfly_Flux_Kontext 自定义节点",
+  "DeepTranslatorTextNode 自定义节点",
+  "flux-kontext-pro 模型权重",
+  "GoogleTranslator（联网）"
+ ],
+ "geek_rating": 1.0,
+ "input": {
+  "type": "1 张产品参考图（LoadImage）+ 1 段文本提示词（支持中文，自动翻译为英文）",
+  "count": "2（1图 + 1文本）"
+ },
+ "output": {
+  "type": "1 张 16:9 合成图像，内含产品正面/侧面/背面三个视角",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Comfly_Flux_Kontext: aspect_ratio（默认 16:9）",
+   "how_to_tune": "三视图横排时可保持 16:9；若需要单视角特写或竖版排版，改为 1:1 或 3:4 等比例"
+  },
+  {
+   "param": "Comfly_Flux_Kontext: strength/guidance（默认 3.5）",
+   "how_to_tune": "控制文本指令与参考图的融合强度：值偏低更接近原图，偏高更遵循“三视图”指令；建议 3.0~4.5 之间微调，避免过度变形"
+  },
+  {
+   "param": "Comfly_Flux_Kontext: seed（默认 1）",
+   "how_to_tune": "固定种子可复现版面；更换种子可获取不同构图/细节，适合批量生成备选方案"
+  },
+  {
+   "param": "DeepTranslatorTextNode: target_lang（默认 english）",
+   "how_to_tune": "保持 english 以适配 FLUX 模型；若替换为其他语言模型可同步修改目标语言"
+  }
+ ],
+ "summary_text": "能力:上传单张产品参考图并输入中文提示词，自动生成包含正面/侧面/背面的产品三视图（16:9 宽幅）并保存；能力:内置 DeepTranslatorTextNode，可将中文等自然语言提示词自动翻译成英文后送入 FLUX，降低非英文输入门槛；能力:通过单一 Kontext 节点完成条件图像生成，省略 ControlNet 等附加控制，结构极简；特色:4 节点极简实现三视图生成：翻译节点直连 Flux Kontext Pro，无多模型堆叠或后处理回路；特色:可能依赖 Kontext 模型对“正面/侧面/背面”的语义理解在 16:9 单画布中一次性完成版面排布，而非逐角度生成后拼接；特色:平台标签为“老照片修复”，与实际产品三视图生成任务不符，可能是复用模板或误标；产品设计师或电商运营上传一张实物产品照片，输入“生成正面/侧面/背面三视图”，快速得到用于商品详情页、设计提案或展会展示的多视角效果图。；从节点拓扑看，这是一条刻意保持极简的生成链路：用户只需提供一张产品原图和中文需求，系统经自动翻译后交给 FLUX Kontext Pro，在 16:9 画布上一次性生成三视图。设计者可能想避免 ControlNet 等多模型堆叠带来的复杂度和失败率，转而依靠 Kontext 对图像-文本关系的原生理解；标签“老照片修复”与实际能力不匹配，可能只是发布时的误标。"
+}

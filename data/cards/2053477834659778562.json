@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "文生图",
+  "角色一致性",
+  "摄影写实"
+ ],
+ "capabilities": [
+  {
+   "text": "不依赖外部输入，从固定模板生成一张 768×1024 的照片风格图像：将正向提示 this is a photograph of 与中文负面提示送入 CLIPLoader(lumina2) 编码，再经 z_image_bf16 扩散模型采样、VAEDecode 解码并 SaveImage 输出。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 THE.safetensors 人物 LoRA 将生成结果约束到某个角色/人物先验上，作为角色一致性任务的基底生成步骤。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用负面提示压制低分辨率、模糊、穿模、背景杂乱、光线过曝或过暗等常见图像质量缺陷。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Lumina2 + Qwen3-4B 文本编码（CLIPLoader type=lumina2）",
+  "DiT 模型加载（UNETLoader z_image_bf16.safetensors）",
+  "LoRA 模型注入（LoraLoaderModelOnly THE.safetensors, strength=0.8）",
+  "Negative prompt 负向提示",
+  "ModelSamplingAuraFlow shift=3 采样移位",
+  "Euler + simple 采样配置",
+  "EmptySD3LatentImage 768×1024 latent 生成",
+  "VAE 解码（VAELoader ae.safetensors）"
+ ],
+ "special_features": [
+  {
+   "text": "正向提示被固定为 this is a photograph of 这个模板短语，没有连接用户输入文本节点，保存的图本质上是一个固定基底 prompt 的验证工作流。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 LoraLoaderModelOnly 只把 THE LoRA 注入扩散模型权重，不经过 CLIP 文本编码器，可能用于避免 LoRA 干扰 Lumina2 文本语义。",
+   "kind": "inference"
+  },
+  {
+   "text": "在 KSampler 前插入 ModelSamplingAuraFlow shift=3，针对 flow-based/AuraFlow 类模型调整采样分布，以适配 768×1024 这种中高分辨率生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "整个图没有 ControlNet、IPAdapter、参考图或人脸对齐模块，却带有“角色一致性”标签；它可能只是角色一致性流程的第一段，真正身份控制依赖 THE LoRA 和后级工作流。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流看起来是一个最小化的文生图基底生成器，服务于角色一致性方向。作者用 z_image_bf16 + qwen_3_4b(lumina2) 搭建了一条现代 DiT 文本生成图像管线，并用 THE.safetensors LoRA 注入角色先验；固定的 this is a photograph of 与中文负面提示构成通用的写实照片模板。加入 ModelSamplingAuraFlow shift=3 和 SD3 尺寸 latent，可能是为了稳定 Lumina/AuraFlow 类模型在 768×1024 下的采样质量。由于没有参考图或条件控制分支，它更像角色一致性项目的“第一步/基底验证”而非完整方案。",
+ "use_case": "适合作为角色一致性项目的前置生成器：使用同一个 THE LoRA 和固定摄影模板，先快速生成一张角色基底图，再放到后续工作流中做换脸、姿态控制、局部重绘或多视角生成。",
+ "limitation": "没有用户提示词输入接口，也没有参考图/条件图输入，无法直接控制具体人物身份或姿态；输出尺寸固定为 768×1024；随机种子默认 randomize，角色一致性需要外部固定种子配合；质量依赖 THE.safetensors 的强度与 z_image_bf16 模型兼容性；需要本地准备模型文件 z_image_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors、THE.safetensors。",
+ "dependencies": [
+  "z_image_bf16.safetensors",
+  "qwen_3_4b.safetensors",
+  "ae.safetensors",
+  "THE.safetensors",
+  "ComfyUI 内置节点：UNETLoader、CLIPLoader、LoraLoaderModelOnly、ModelSamplingAuraFlow、KSampler、VAEDecode"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "无外部图像/提示输入；使用 EmptySD3LatentImage 生成 768×1024×1 的 latent，并使用固定文本条件",
+  "count": "1"
+ },
+ "output": {
+  "type": "单张 PNG 图像（SaveImage，文件名前缀 z-image）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "当前为固定值但启用 randomize；角色一致性若要复现，需关闭随机并固定 seed；随机种子适合批量探索构图。"
+  },
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "30 步兼顾速度与质量；细节不足可增至 40，追求速度可降至 20-25，但需注意采样稳定性。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "CFG=4 适合 DiT/flow 模型；值过小提示跟随弱，过大容易过曝/饱和，可尝试 2.5-6 区间。"
+  },
+  {
+   "param": "KSampler.sampler/scheduler",
+   "how_to_tune": "euler/simple 是稳定组合；若出现步进伪影可换 dpmpp_2m_sde 或调整 scheduler 为 normal/karras 微调。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength",
+   "how_to_tune": "当前 0.8 偏强，能强化 THE 角色特征；若出现过拟合、背景僵化或人物同质化，可降到 0.5-0.7。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow.shift",
+   "how_to_tune": "shift=3 是针对 flow-based 模型的高分辨率采样偏移；输出尺寸越大往往需要更高 shift，但过高会破坏构图，可试 3-5。"
+  },
+  {
+   "param": "EmptySD3LatentImage.width/height",
+   "how_to_tune": "固定 768×1024 竖构图；可调整长宽比，但需同时验证模型、LoRA 和 shift 的适配性。"
+  }
+ ],
+ "summary_text": "能力:不依赖外部输入，从固定模板生成一张 768×1024 的照片风格图像：将正向提示 this is a photograph of 与中文负面提示送入 CLIPLoader(lumina2) 编码，再经 z_image_bf16 扩散模型采样、VAEDecode 解码并 SaveImage 输出。；能力:通过 THE.safetensors 人物 LoRA 将生成结果约束到某个角色/人物先验上，作为角色一致性任务的基底生成步骤。；能力:使用负面提示压制低分辨率、模糊、穿模、背景杂乱、光线过曝或过暗等常见图像质量缺陷。；特色:正向提示被固定为 this is a photograph of 这个模板短语，没有连接用户输入文本节点，保存的图本质上是一个固定基底 prompt 的验证工作流。；特色:使用 LoraLoaderModelOnly 只把 THE LoRA 注入扩散模型权重，不经过 CLIP 文本编码器，可能用于避免 LoRA 干扰 Lumina2 文本语义。；特色:在 KSampler 前插入 ModelSamplingAuraFlow shift=3，针对 flow-based/AuraFlow 类模型调整采样分布，以适配 768×1024 这种中高分辨率生成。；特色:整个图没有 ControlNet、IPAdapter、参考图或人脸对齐模块，却带有“角色一致性”标签；它可能只是角色一致性流程的第一段，真正身份控制依赖 THE LoRA 和后级工作流。；适合作为角色一致性项目的前置生成器：使用同一个 THE LoRA 和固定摄影模板，先快速生成一张角色基底图，再放到后续工作流中做换脸、姿态控制、局部重绘或多视角生成。；该工作流看起来是一个最小化的文生图基底生成器，服务于角色一致性方向。作者用 z_image_bf16 + qwen_3_4b(lumina2) 搭建了一条现代 DiT 文本生成图像管线，并用 THE.safetensors LoRA 注入角色先验；固定的 this is a photograph of 与中文负面提示构成通用的写实照片模板。加入 ModelSamplingAuraFlow shift=3 和 SD3 尺寸 latent，可能是为了稳定 Lumina/AuraFlow 类模型在 768×1024 下的采样质量。由于没有参考图或条件控制分支，它更像角色一致性项目的“第一步/基底验证”而非完整方案。"
+}

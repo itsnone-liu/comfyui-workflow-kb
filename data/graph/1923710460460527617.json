@@ -1,0 +1,2835 @@
+{
+ "node_count": 71,
+ "link_count": 89,
+ "active_node_count": 71,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "String Literal",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The face of the portrait on the left should be copied and pasted onto the face of the young Asian woman on the right so that they have the same face"
+   ],
+   "in_links": [],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 9,
+   "type": "MaskPreview+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    5
+   ],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "String Literal",
+   "category": "utility",
+   "title": "String Literal  解释两张图片的关系",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "this is a pair of images，the left side highlights [prompt]"
+   ],
+   "in_links": [],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 27,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    29
+   ],
+   "out_links": [
+    34
+   ]
+  },
+  {
+   "id": 32,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    31,
+    32
+   ],
+   "out_links": [
+    35
+   ]
+  },
+  {
+   "id": 33,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "low quality,blurry,"
+   ],
+   "in_links": [
+    33
+   ],
+   "out_links": [
+    40
+   ]
+  },
+  {
+   "id": 37,
+   "type": "StyleModelApply",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "multiply"
+   ],
+   "in_links": [
+    35,
+    36,
+    37
+   ],
+   "out_links": [
+    38
+   ]
+  },
+  {
+   "id": 38,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40
+   ],
+   "in_links": [
+    38
+   ],
+   "out_links": [
+    39
+   ]
+  },
+  {
+   "id": 40,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    39,
+    40,
+    41,
+    42,
+    43
+   ],
+   "out_links": [
+    81,
+    82,
+    83
+   ]
+  },
+  {
+   "id": 41,
+   "type": "CLIPVisionEncode",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "center"
+   ],
+   "in_links": [
+    44,
+    45
+   ],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 47,
+   "type": "PrimitiveNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    54
+   ]
+  },
+  {
+   "id": 49,
+   "type": "ImageCrop+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    256,
+    256,
+    "top-right",
+    0,
+    0
+   ],
+   "in_links": [
+    53,
+    54,
+    55,
+    56
+   ],
+   "out_links": [
+    27,
+    47,
+    57
+   ]
+  },
+  {
+   "id": 50,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 344 , Height: 512"
+   ],
+   "in_links": [
+    57
+   ],
+   "out_links": []
+  },
+  {
+   "id": 58,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 2640 , Height: 1488"
+   ],
+   "in_links": [
+    66
+   ],
+   "out_links": []
+  },
+  {
+   "id": 61,
+   "type": "preview_mask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    67
+   ],
+   "out_links": []
+  },
+  {
+   "id": 62,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    -3,
+    0,
+    true,
+    false,
+    5,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    68
+   ],
+   "out_links": [
+    67,
+    86
+   ]
+  },
+  {
+   "id": 68,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    76,
+    77
+   ],
+   "out_links": [
+    46,
+    50,
+    53,
+    78
+   ]
+  },
+  {
+   "id": 73,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    100,
+    20,
+    20,
+    30,
+    "8"
+   ],
+   "in_links": [
+    85,
+    86
+   ],
+   "out_links": [
+    19,
+    24,
+    90,
+    23,
+    87,
+    88,
+    22
+   ]
+  },
+  {
+   "id": 74,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    87
+   ],
+   "out_links": [
+    91
+   ]
+  },
+  {
+   "id": 75,
+   "type": "preview_mask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    88
+   ],
+   "out_links": []
+  },
+  {
+   "id": 76,
+   "type": "image_concat_mask(rh)",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    89,
+    90,
+    91
+   ],
+   "out_links": [
+    3,
+    42,
+    73,
+    5,
+    43,
+    75
+   ]
+  },
+  {
+   "id": 7,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    4
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    2
+   ],
+   "out_links": []
+  },
+  {
+   "id": 15,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "A photo-realistic portrait of a young asian man with short black hair and brown eyes, wearing a black leather jacket. he appears to be in his late teens or early twenties, with a neutral expression and a slight smile on his lips. his hair is styled in a neat and tidy manner, and his brown eyes are looking directly at the viewer. he is positioned in the middle of the image, with his upper body visible to the camera. the background is a plain white, and the lighting is soft and even, highlighting his facial features and clothing. the image is a close-up shot, focusing on the man's face and upper body."
+   ],
+   "in_links": [
+    14
+   ],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "LayerUtility: TextJoin",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    6,
+    7
+   ],
+   "out_links": [
+    9,
+    11
+   ]
+  },
+  {
+   "id": 12,
+   "type": "Replace Text _O",
+   "category": "utility",
+   "title": "Replace {Image1_desc}",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "[prompt]",
+    ""
+   ],
+   "in_links": [
+    9,
+    10
+   ],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 11,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "this is a pair of images，the left side highlights A photo-realistic portrait of a young asian man with short black hair and brown eyes, wearing a black leather jacket. he appears to be in his late teens or early twenties, with a neutral expression and a slight smile on his lips. his hair is styled in a neat and tidy manner, and his brown eyes are looking directly at the viewer. he is positioned in the middle of the image, with his upper body visible to the camera. the background is a plain white, and the lighting is soft and even, highlighting his facial features and clothing. the image is a close-up shot, focusing on the man's face and upper body., The face of the portrait on the left should be copied and pasted onto the face of the young Asian woman on the right so that they have the same face"
+   ],
+   "in_links": [
+    8
+   ],
+   "out_links": [
+    32
+   ]
+  },
+  {
+   "id": 13,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "this is a pair of images，the left side highlights [prompt], The face of the portrait on the left should be copied and pasted onto the face of the young Asian woman on the right so that they have the same face"
+   ],
+   "in_links": [
+    11
+   ],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "第一个是反推出来的提示词自动填入，不用改。第二个，描述两张图片的关系，基本也不用改"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 69,
+   "type": "LayerUtility: PurgeVRAM V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    78
+   ],
+   "out_links": []
+  },
+  {
+   "id": 42,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1,
+   "type": "LayerMask: LoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "base-PromptGen-v2.0"
+   ],
+   "in_links": [],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 36,
+   "type": "StyleModelLoader",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-redux-dev.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    36
+   ]
+  },
+  {
+   "id": 30,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp16.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    31,
+    33
+   ]
+  },
+  {
+   "id": 31,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    41,
+    77
+   ]
+  },
+  {
+   "id": 78,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "原始照片最好高清化处理一下再换脸，手动画遮罩。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 18,
+   "type": "CropFace",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "retinaface_resnet50"
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": [
+    15,
+    16
+   ]
+  },
+  {
+   "id": 59,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cbc3d5c858e27c9638158af6824560ae257b18e99eca62a9595aaedf81f6aca5.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    18,
+    17
+   ]
+  },
+  {
+   "id": 16,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    15
+   ],
+   "out_links": []
+  },
+  {
+   "id": 20,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    19
+   ],
+   "out_links": []
+  },
+  {
+   "id": 22,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 384 , Height: 568"
+   ],
+   "in_links": [
+    24
+   ],
+   "out_links": [
+    94,
+    95
+   ]
+  },
+  {
+   "id": 43,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    47
+   ],
+   "out_links": []
+  },
+  {
+   "id": 23,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 384 , Height: 568"
+   ],
+   "in_links": [
+    25
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "ImageResizeKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "nearest-exact",
+    false,
+    2,
+    0
+   ],
+   "in_links": [
+    27,
+    94,
+    95
+   ],
+   "out_links": [
+    21,
+    25
+   ]
+  },
+  {
+   "id": 48,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "344"
+   ],
+   "in_links": [
+    52
+   ],
+   "out_links": []
+  },
+  {
+   "id": 45,
+   "type": "GetImageSize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    50
+   ],
+   "out_links": [
+    48,
+    51
+   ]
+  },
+  {
+   "id": 46,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "856"
+   ],
+   "in_links": [
+    51
+   ],
+   "out_links": []
+  },
+  {
+   "id": 44,
+   "type": "MathExpression|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a-b"
+   ],
+   "in_links": [
+    48,
+    49
+   ],
+   "out_links": [
+    52,
+    55
+   ]
+  },
+  {
+   "id": 53,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "None",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    60,
+    61
+   ],
+   "out_links": [
+    4,
+    20,
+    66,
+    70,
+    85,
+    2,
+    68
+   ]
+  },
+  {
+   "id": 63,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    69,
+    70
+   ],
+   "out_links": [
+    71
+   ]
+  },
+  {
+   "id": 77,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    92
+   ],
+   "out_links": []
+  },
+  {
+   "id": 34,
+   "type": "TeaCache",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux",
+    0.20000000000000004,
+    3
+   ],
+   "in_links": [
+    34
+   ],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 60,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cbc3d5c858e27c9638158af6824560ae257b18e99eca62a9595aaedf81f6aca5.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    60,
+    61
+   ]
+  },
+  {
+   "id": 66,
+   "type": "ImitationHueNode",
+   "category": "utility",
+   "title": "Imitation Hue   追色的",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.7000000000000001,
+    0.2,
+    true,
+    0.1,
+    false,
+    0.5,
+    false,
+    0.5,
+    false,
+    0.5
+   ],
+   "in_links": [
+    73,
+    74,
+    75
+   ],
+   "out_links": [
+    69,
+    92
+   ]
+  },
+  {
+   "id": 28,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "portrait_lora64.safetensors",
+    1
+   ],
+   "in_links": [
+    30
+   ],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 35,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sigclip_vision_patch14_384.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    44
+   ]
+  },
+  {
+   "id": 29,
+   "type": "UnetLoaderGGUF",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-fill-dev-Q8_0.gguf"
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 71,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    137884495897054,
+    "randomize",
+    30,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    80,
+    81,
+    82,
+    83
+   ],
+   "out_links": [
+    76
+   ]
+  },
+  {
+   "id": 17,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "None",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    16,
+    17
+   ],
+   "out_links": [
+    62,
+    96,
+    49,
+    56
+   ]
+  },
+  {
+   "id": 54,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 512 , Height: 512"
+   ],
+   "in_links": [
+    62
+   ],
+   "out_links": []
+  },
+  {
+   "id": 56,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    98
+   ],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "LayerUtility: Florence2Image2Prompt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "more detailed caption",
+    "",
+    1024,
+    3,
+    false,
+    true
+   ],
+   "in_links": [
+    12,
+    13
+   ],
+   "out_links": [
+    10,
+    14
+   ]
+  },
+  {
+   "id": 2,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": []
+  },
+  {
+   "id": 64,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": "Preview Image    对比图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    71
+   ],
+   "out_links": []
+  },
+  {
+   "id": 72,
+   "type": "TTP_Expand_And_Mask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "white",
+    "right",
+    "FFFFFF",
+    false,
+    false,
+    false,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "in_links": [
+    99
+   ],
+   "out_links": [
+    1,
+    13,
+    45,
+    89
+   ]
+  },
+  {
+   "id": 21,
+   "type": "LayerUtility: RestoreCropBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    20,
+    21,
+    22,
+    23
+   ],
+   "out_links": [
+    58,
+    74,
+    100
+   ]
+  },
+  {
+   "id": 81,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    100
+   ],
+   "out_links": []
+  },
+  {
+   "id": 51,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    58
+   ],
+   "out_links": []
+  },
+  {
+   "id": 80,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinT_OGC (694MB)",
+    0.3,
+    "VITMatte",
+    6,
+    6,
+    0.15,
+    0.99,
+    true,
+    "people",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    96
+   ],
+   "out_links": [
+    98,
+    99
+   ]
+  },
+  {
+   "id": 26,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "这里的数据基本不用调，有时发现脸部有遮挡时，需要调整下数据。自己按需要调整。"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 14,
+   "type": "FLORENCE2"
+  },
+  {
+   "from_node": 10,
+   "to_node": 12,
+   "type": "STRING"
+  },
+  {
+   "from_node": 10,
+   "to_node": 13,
+   "type": "*"
+  },
+  {
+   "from_node": 11,
+   "to_node": 32,
+   "type": "STRING"
+  },
+  {
+   "from_node": 12,
+   "to_node": 11,
+   "type": "*"
+  },
+  {
+   "from_node": 14,
+   "to_node": 12,
+   "type": "STRING"
+  },
+  {
+   "from_node": 14,
+   "to_node": 15,
+   "type": "STRING"
+  },
+  {
+   "from_node": 17,
+   "to_node": 44,
+   "type": "INT,FLOAT,IMAGE,LATENT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 54,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 17,
+   "to_node": 80,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 18,
+   "to_node": 16,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 18,
+   "to_node": 17,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 19,
+   "to_node": 10,
+   "type": "STRING"
+  },
+  {
+   "from_node": 21,
+   "to_node": 51,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 66,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 81,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 25,
+   "type": "INT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 25,
+   "type": "INT"
+  },
+  {
+   "from_node": 25,
+   "to_node": 21,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 25,
+   "to_node": 23,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 34,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 28,
+   "to_node": 27,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 29,
+   "to_node": 28,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 30,
+   "to_node": 32,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 30,
+   "to_node": 33,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 31,
+   "to_node": 40,
+   "type": "VAE"
+  },
+  {
+   "from_node": 31,
+   "to_node": 68,
+   "type": "VAE"
+  },
+  {
+   "from_node": 32,
+   "to_node": 37,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 33,
+   "to_node": 40,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 71,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 35,
+   "to_node": 41,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 36,
+   "to_node": 37,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 37,
+   "to_node": 38,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 38,
+   "to_node": 40,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 71,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 71,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 71,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 41,
+   "to_node": 37,
+   "type": "CLIP_VISION_OUTPUT"
+  },
+  {
+   "from_node": 44,
+   "to_node": 48,
+   "type": "*"
+  },
+  {
+   "from_node": 44,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 45,
+   "to_node": 44,
+   "type": "INT,FLOAT,IMAGE,LATENT"
+  },
+  {
+   "from_node": 45,
+   "to_node": 46,
+   "type": "*"
+  },
+  {
+   "from_node": 47,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 49,
+   "to_node": 25,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 50,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 21,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 4,
+   "type": "MASK"
+  },
+  {
+   "from_node": 53,
+   "to_node": 58,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 62,
+   "type": "MASK"
+  },
+  {
+   "from_node": 53,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 7,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 73,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 59,
+   "to_node": 17,
+   "type": "MASK"
+  },
+  {
+   "from_node": 59,
+   "to_node": 18,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 60,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 60,
+   "to_node": 53,
+   "type": "MASK"
+  },
+  {
+   "from_node": 62,
+   "to_node": 61,
+   "type": "MASK"
+  },
+  {
+   "from_node": 62,
+   "to_node": 73,
+   "type": "MASK"
+  },
+  {
+   "from_node": 63,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 66,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 66,
+   "to_node": 77,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 45,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 49,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 69,
+   "type": "*"
+  },
+  {
+   "from_node": 71,
+   "to_node": 68,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 41,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 76,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 21,
+   "type": "BOX"
+  },
+  {
+   "from_node": 73,
+   "to_node": 21,
+   "type": "MASK"
+  },
+  {
+   "from_node": 73,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 74,
+   "type": "MASK"
+  },
+  {
+   "from_node": 73,
+   "to_node": 75,
+   "type": "MASK"
+  },
+  {
+   "from_node": 73,
+   "to_node": 76,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 76,
+   "type": "MASK"
+  },
+  {
+   "from_node": 76,
+   "to_node": 40,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 40,
+   "type": "MASK"
+  },
+  {
+   "from_node": 76,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 66,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 66,
+   "type": "MASK"
+  },
+  {
+   "from_node": 76,
+   "to_node": 9,
+   "type": "MASK"
+  },
+  {
+   "from_node": 8,
+   "to_node": 10,
+   "type": "STRING"
+  },
+  {
+   "from_node": 80,
+   "to_node": 56,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 80,
+   "to_node": 72,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 14,
+  "utility": 43,
+  "conditioning": 5,
+  "clip": 3,
+  "postprocess": 1,
+  "vae": 2,
+  "lora": 1,
+  "sampler": 1,
+  "preprocessor": 1
+ },
+ "assets": [
+  {
+   "node_id": 36,
+   "node_type": "StyleModelLoader",
+   "kind": "checkpoint",
+   "name": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 31,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  },
+  {
+   "node_id": 28,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 35,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "sigclip_vision_patch14_384.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 161,
+ "structure_hash": "afd0b1b7a5a9baf4",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 9,
+   "node_type": "MaskPreview+",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "String Literal",
+   "widget_index": 0,
+   "value_preview": "this is a pair of images，the left side highlights [prompt]"
+  },
+  {
+   "node_id": 32,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 33,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "low quality,blurry,"
+  },
+  {
+   "node_id": 37,
+   "node_type": "StyleModelApply",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 37,
+   "node_type": "StyleModelApply",
+   "widget_index": 1,
+   "value_preview": "multiply"
+  },
+  {
+   "node_id": 38,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 40,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 41,
+   "node_type": "CLIPVisionEncode",
+   "widget_index": 0,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 47,
+   "node_type": "PrimitiveNode",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 47,
+   "node_type": "PrimitiveNode",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 0,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 1,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 2,
+   "value_preview": "top-right"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 50,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 344 , Height: 512"
+  },
+  {
+   "node_id": 58,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 2640 , Height: 1488"
+  },
+  {
+   "node_id": 61,
+   "node_type": "preview_mask",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "-3"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "100"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 73,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 75,
+   "node_type": "preview_mask",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 7,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 15,
+   "node_type": "ShowText|pysssss",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "Replace Text _O",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 12,
+   "node_type": "Replace Text _O",
+   "widget_index": 1,
+   "value_preview": "[prompt]"
+  },
+  {
+   "node_id": 12,
+   "node_type": "Replace Text _O",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "第一个是反推出来的提示词自动填入，不用改。第二个，描述两张图片的关系，基本也不用改"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LayerUtility: PurgeVRAM V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 1,
+   "node_type": "LayerMask: LoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "base-PromptGen-v2.0"
+  },
+  {
+   "node_id": 36,
+   "node_type": "StyleModelLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 30,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 31,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 78,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "原始照片最好高清化处理一下再换脸，手动画遮罩。"
+  },
+  {
+   "node_id": 18,
+   "node_type": "CropFace",
+   "widget_index": 0,
+   "value_preview": "retinaface_resnet50"
+  },
+  {
+   "node_id": 59,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "cbc3d5c858e27c9638158af6824560ae257b18e99eca62a9595aaedf81f6"
+  },
+  {
+   "node_id": 59,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 59,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 16,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 20,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 384 , Height: 568"
+  },
+  {
+   "node_id": 43,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 23,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 384 , Height: 568"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 48,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "344"
+  },
+  {
+   "node_id": 46,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "856"
+  },
+  {
+   "node_id": 44,
+   "node_type": "MathExpression|pysssss",
+   "widget_index": 0,
+   "value_preview": "a-b"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "16:9"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 77,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 77,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 34,
+   "node_type": "TeaCache",
+   "widget_index": 0,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 34,
+   "node_type": "TeaCache",
+   "widget_index": 1,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 34,
+   "node_type": "TeaCache",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "cbc3d5c858e27c9638158af6824560ae257b18e99eca62a9595aaedf81f6"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 0,
+   "value_preview": "0.7000000000000001"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 1,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 3,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 5,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 7,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 66,
+   "node_type": "ImitationHueNode",
+   "widget_index": 9,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 28,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 28,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 35,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 29,
+   "node_type": "UnetLoaderGGUF",
+   "widget_index": 0,
+   "value_preview": "flux1-fill-dev-Q8_0.gguf"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "137884495897054"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 71,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 54,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 512 , Height: 512"
+  },
+  {
+   "node_id": 56,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 0,
+   "value_preview": "more detailed caption"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 3,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LayerUtility: Florence2Image2Prompt",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 2,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 0,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 2,
+   "value_preview": "FFFFFF"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 72,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 21,
+   "node_type": "LayerUtility: RestoreCropBox",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 81,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 51,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinT_OGC (694MB)"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "people"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 80,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 26,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "这里的数据基本不用调，有时发现脸部有遮挡时，需要调整下数据。自己按需要调整。"
+  }
+ ]
+}

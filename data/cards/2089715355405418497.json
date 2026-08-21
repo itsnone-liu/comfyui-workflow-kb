@@ -1,0 +1,110 @@
+{
+ "domain": [
+  "视频生视频",
+  "文生视频",
+  "图生视频",
+  "多模态视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "提供 9 个 LoadImage 图像输入、3 个 VHS_LoadVideo 视频输入和 3 个 LoadAudio 音频输入槽位，配合两个 MiniMaxH3ReferenceToVideo 与 VHS_VideoCombine 输出节点，可完成“多路素材 + 文本 → 视频/音频”的多模态生成管线。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 MiniMax H3 FL2VA 单模型（int8 checkpoint + Qwen3VL-32B CLIP + 独立 video/audio VAE）将视频与音频 latent 在 PT_H3ConcatAVLatent 中拼接，从而在同一个采样循环中生成带音频的视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 RHLLMChatNode（openai/gpt-5.5）把用户口语化描述改写为带 subject_definitions 的 MiniMax 结构化提示词，并借助 StringFunction/ComfyMathExpression 将目标时长等参数拼入提示词和帧数计算。",
+   "kind": "inference"
+  },
+  {
+   "text": "采用“2 步低噪草稿 + 12 步高清重绘”的两段式采样：BasicScheduler 一组 steps=2/denoise=0.2 配 euler，另一组 steps=12/denoise=1 配 res_multistep，结合 turbo LoRA（strength 0.65）和 ImageResizeKJv2 的高清重绘完成从快速预览到精修出片。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 FL2VA 单模型加载：UNETLoader(minimax_h3_fl2va_int8_convrot) + CLIPLoader(qwen3vl_32b_minimax_h3_int8_convrot) + audio/video 双 VAE",
+  "音视频联合 latent：PT_H3ConcatAVLatent 将视频 latent 与 VAEEncodeAudio 编码的音频 latent 拼接，最后用 VAEDecodeAudio 解码",
+  "Reference-to-Video：MiniMaxH3ReferenceToVideo ×2（1344×768，124 帧）从参考图/视频初始化视频生成",
+  "两段式采样：BasicScheduler(beta, steps=2, denoise=0.2) + euler 快速草稿；BasicScheduler(beta, steps=12, denoise=1) + res_multistep 高清重绘",
+  "turbo LoRA 加速：LoraLoaderBypassModelOnly(minimax_h3_fl2v_turbo_4step_v1.0_768p, strength=0.65)",
+  "图像预处理/重绘：ImageResizeKJv2(512×512, nvidia_rtx_vsr)",
+  "性能优化组合：MiniMaxH3BlockCacheT8、MiniMaxH3MemoryEfficientSageAttentionPatch、SolAttnPatch、UniBlockSwap、PathchSageAttentionKJ、EasyCache、easy clearCacheAll",
+  "LLM 提示词工程：RHLLMChatNode(openai/gpt-5.5) + StringFunction + subject_definitions 模板"
+ ],
+ "special_features": [
+  {
+   "text": "9 图 / 3 视频 / 3 音频的大型输入矩阵，并配有 rgthree Any Switch 与 Fast Groups Bypasser，可对不使用的素材槽整组旁路，实现多项目/多角色素材的快速切换。",
+   "kind": "inference"
+  },
+  {
+   "text": "音频与视频不仅在条件编码时并存，还在同一采样循环中通过 PT_H3ConcatAVLatent 联合生成，最终由 VAEDecodeAudio 解码音频；这是多模态单模型工作流中比较少见的设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "双采样器/双 Scheduler 的低步草稿 + 高步重绘结构：2 步 euler 负责快速看效果，12 步 res_multistep 负责最终成片，中间用 cache/清 cache 管理显存。",
+   "kind": "inference"
+  },
+  {
+   "text": "深度性能 hack：BlockCacheT8、SageAttention patch、SolAttnPatch、UniBlockSwap、EasyCache 同时上阵，明显是为 int8 长视频/高分辨率场景做显存与速度优化。",
+   "kind": "fact"
+  },
+  {
+   "text": "嵌入大语言模型节点（RHLLMChatNode）和动态字符串拼接，将“视频长度是 XX 秒”这类即时参数实时写入提示词，体现「LLM as prompt compiler」的玩法。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流的核心设计思路是“一个模型吃多种模态素材，再分粗精两遍出片”。作者用 9 图/3 视频/3 音频的素材插槽让单个工作流覆盖多人设、多镜头和多音轨场景；PT_H3ConcatAVLatent 把音频/视频 latent 放进同一采样空间，使模型在生成视频时同步考虑音频条件。为了保证 int8 模型在长视频/高分辨率下的可用性，作者叠加了 block cache、SageAttention、SolAttnPatch 等大量优化，并用 2 步草稿 + 12 步高清重绘的两段式策略降低试错成本。LLM 节点的作用可能是把用户口语描述自动转换为 MiniMax H3 需要的 subject_definitions 提示词，减少手动写结构化 prompt 的门槛。",
+ "use_case": "适合短视频创作者、虚拟偶像/MV、叙事短片等场景：一次准备多张角色图、若干动作视频和音轨，生成带音频的高一致性视频；也可用于需要先 2 步快速预览、再 12 步高清成片的生产流程。",
+ "limitation": "依赖指定模型文件与大量自定义节点（MiniMax H3 系列、rgthree、VHS、KJNodes、EasyUse、pysssss、ComfyMath、RH LLM 等），缺失任一环节都无法直接运行；RHLLMChatNode 需要可访问的 openai/gpt-5.5 API。9 图/3 视频/3 音频只是预置插槽数量，未全部填资源也可以运行，需通过 Switch/Bypasser 关掉空分支；其中两个 LoadAudio 默认是 None，需要自行提供音频路径。长视频和高分辨率（如 1344×768、124 帧）在 int8 下仍有显存与耗时压力，需按显卡调整 ResolutionSelector、步数和帧数。",
+ "dependencies": [
+  "模型：minimax_h3_fl2va_int8_convrot.safetensors",
+  "CLIP：qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "VAE：minimax_h3_video_vae_fp16.safetensors、minimax_h3_audio_vae_fp32.safetensors",
+  "LoRA：minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+  "自定义节点：ComfyUI-MiniMax-H3（MiniMaxH3ReferenceToVideo、MiniMaxH3BlockCacheT8、PT_H3ConcatAVLatent 等）",
+  "rgthree-comfy（Any Switch、Fast Groups Bypasser）",
+  "ComfyUI-VideoHelperSuite（VHS_LoadVideo、VHS_VideoCombine）",
+  "KJNodes（ImageResizeKJv2、PathchSageAttentionKJ）",
+  "ComfyUI-Easy-Use（easy showAnything、easy clearCacheAll）",
+  "pysssss（StringFunction）、ComfyMath（ComfyMathExpression）、RH LLM（RHLLMChatNode）",
+  "OpenAI 兼容 API key（gpt-5.5）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "9 个 LoadImage 图像插槽 + 3 个 VHS_LoadVideo 视频插槽 + 3 个 LoadAudio 音频插槽 + 文本提示（含 LLM 可选输入）",
+  "count": "9 images / 3 videos / 3 audio / 1 text（可用 Switch/Bypasser 部分旁路）"
+ },
+ "output": {
+  "type": "视频文件（VHS_VideoCombine OUT；另有 SaveVideo/CreateVideo）与音频解码结果（VAEDecodeAudio），以及 easy showAnything 预览/信息展示",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderBypassModelOnly strength=0.65",
+   "how_to_tune": "控制 turbo LoRA 的影响强度。增大更偏 turbo 加速/风格化，减小更接近底模；草稿阶段可 0.6~0.7，高清精修遇到崩坏可降到 0.5~0.6。"
+  },
+  {
+   "param": "BasicScheduler steps=2 / denoise=0.2 与 steps=12 / denoise=1",
+   "how_to_tune": "2 步是低噪声草稿，用来快速看构图和运动；12 步是正式重绘，复杂度高或运动大时可升到 16~20 步，速度优先可降到 8 步。"
+  },
+  {
+   "param": "ResolutionSelector scale=0.4 / 1（16:9，32 对齐）",
+   "how_to_tune": "0.4 用于低分辨率草稿，1.0 用于全分辨率高清；显存不足时降低高清段倍率，画质不足时提高并配合 ImageResizeKJv2。"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo width/height/frames=1344/768/124",
+   "how_to_tune": "决定生成视频分辨率和帧数。帧数增加会线性增加采样步数和显存；长视频建议配合 MiniMaxH3BlockCacheT8，或降低分辨率/裁剪长度。"
+  },
+  {
+   "param": "RHLLMChatNode temperature=0.6",
+   "how_to_tune": "控制 LLM 改写提示词的随机性。需要严格遵循素材/角色一致性时调低到 0.3~0.5，需要更有创意/可变化的描述时可调高到 0.8~1.0。"
+  },
+  {
+   "param": "PrimitiveFloat=15（秒）与 CreateVideo fps=24",
+   "how_to_tune": "目标视频时长（秒），会被 ComfyMathExpression 换算成帧数。时长越长显存和耗时越大；可先从 5~8 秒试跑，再逐步加长。"
+  }
+ ],
+ "summary_text": "能力:提供 9 个 LoadImage 图像输入、3 个 VHS_LoadVideo 视频输入和 3 个 LoadAudio 音频输入槽位，配合两个 MiniMaxH3ReferenceToVideo 与 VHS_VideoCombine 输出节点，可完成“多路素材 + 文本 → 视频/音频”的多模态生成管线。；能力:使用 MiniMax H3 FL2VA 单模型（int8 checkpoint + Qwen3VL-32B CLIP + 独立 video/audio VAE）将视频与音频 latent 在 PT_H3ConcatAVLatent 中拼接，从而在同一个采样循环中生成带音频的视频。；能力:通过 RHLLMChatNode（openai/gpt-5.5）把用户口语化描述改写为带 subject_definitions 的 MiniMax 结构化提示词，并借助 StringFunction/ComfyMathExpression 将目标时长等参数拼入提示词和帧数计算。；能力:采用“2 步低噪草稿 + 12 步高清重绘”的两段式采样：BasicScheduler 一组 steps=2/denoise=0.2 配 euler，另一组 steps=12/denoise=1 配 res_multistep，结合 turbo LoRA（strength 0.65）和 ImageResizeKJv2 的高清重绘完成从快速预览到精修出片。；特色:9 图 / 3 视频 / 3 音频的大型输入矩阵，并配有 rgthree Any Switch 与 Fast Groups Bypasser，可对不使用的素材槽整组旁路，实现多项目/多角色素材的快速切换。；特色:音频与视频不仅在条件编码时并存，还在同一采样循环中通过 PT_H3ConcatAVLatent 联合生成，最终由 VAEDecodeAudio 解码音频；这是多模态单模型工作流中比较少见的设计。；特色:双采样器/双 Scheduler 的低步草稿 + 高步重绘结构：2 步 euler 负责快速看效果，12 步 res_multistep 负责最终成片，中间用 cache/清 cache 管理显存。；特色:深度性能 hack：BlockCacheT8、SageAttention patch、SolAttnPatch、UniBlockSwap、EasyCache 同时上阵，明显是为 int8 长视频/高分辨率场景做显存与速度优化。；特色:嵌入大语言模型节点（RHLLMChatNode）和动态字符串拼接，将“视频长度是 XX 秒”这类即时参数实时写入提示词，体现「LLM as prompt compiler」的玩法。；适合短视频创作者、虚拟偶像/MV、叙事短片等场景：一次准备多张角色图、若干动作视频和音轨，生成带音频的高"
+}

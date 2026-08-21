@@ -1,0 +1,81 @@
+{
+ "domain": [
+  "视频生成",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张图像作为首帧，配合文本提示词，生成一段带音频的短视频（MiniMax H3 图生视频，4步LoRA加速）",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 图生视频（Image-to-Video）",
+  "4步 Turbo LoRA 加速采样",
+  "BasicGuider + KSamplerSelect (euler) 采样引导",
+  "SigmaShift 噪声调度",
+  "双VAE解码（视频+音频）",
+  "动态帧数计算（ComfyMathExpression）",
+  "分辨率自适应（ResolutionSelector + ImageScaleToTotalPixels）"
+ ],
+ "special_features": [
+  {
+   "text": "采用双VAE分别解码视频和音频，实现生成视频自带音轨",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ComfyMathExpression 动态计算帧数（max(5, round(a*24))），可根据用户输入自动决定视频长度",
+   "kind": "fact"
+  },
+  {
+   "text": "MiniMaxH3SigmaShift 节点用于调整采样过程中的噪声偏移，可能改善时间一致性或运动效果",
+   "kind": "inference"
+  },
+  {
+   "text": "搭配 MarkdownNote 节点嵌入技术说明，工作流自带文档，便于分享和教学",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在用一张静态图像快速生成具有完整音视频的短视频。通过加载 MiniMax H3 专属 checkpoint 和 4步 Turbo LoRA，将采样步数压缩至 4 步，大幅缩短生成时间；同时引入 SigmaShift 调整噪声调度以提升视频质量；双 VAE 解码器分别还原视频画面和音轨，让结果直接可用；动态计算帧数和分辨率选择则增强了灵活性，适配不同时长与画面比例。",
+ "use_case": "适用于将照片/概念图转为动态场景，例如制作动态壁纸、预告片标题序列、创意短视频，或快速生成带音效的内容草稿。",
+ "limitation": "依赖 MiniMax H3 专属模型文件（checkpoint、LoRA、CLIP、Video VAE、Audio VAE）；需要 ComfyUI 支持 MiniMaxH3 系列自定义节点；输入必须是单张图像（通过 LoadImage 加载）；视频分辨率和比例受 ResolutionSelector 限制；生成时长受帧数计算限制；提示词与模型应使用英文以获得更稳定效果。",
+ "dependencies": [
+  "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+  "minimax_h3_fl2v_turbo_4step_v1.1_768p_comfyui_bf16.safetensors",
+  "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ImageToVideo 提示词",
+   "how_to_tune": "控制视频内容与风格，建议使用描述性英文短语，如 'Vaporwave title sequence'"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "选择目标宽高比和总像素，影响输出画幅与清晰度，如 16:9 宽屏"
+  },
+  {
+   "param": "BasicScheduler 步数/CFG",
+   "how_to_tune": "步数越高画质越细但耗时增加；CFG 影响文本引导强度，一般 1-4 之间"
+  },
+  {
+   "param": "ComfyMathExpression 表达式",
+   "how_to_tune": "调整变量 a（可能为视频秒数）控制视频长度，公式按 24fps 计算帧数，结果影响输出视频帧数"
+  },
+  {
+   "param": "RandomNoise.seed",
+   "how_to_tune": "固定种子可复现相同结果，设为 randomize 可每次获得随机视频"
+  }
+ ],
+ "summary_text": "能力:输入单张图像作为首帧，配合文本提示词，生成一段带音频的短视频（MiniMax H3 图生视频，4步LoRA加速）；特色:采用双VAE分别解码视频和音频，实现生成视频自带音轨；特色:通过 ComfyMathExpression 动态计算帧数（max(5, round(a*24))），可根据用户输入自动决定视频长度；特色:MiniMaxH3SigmaShift 节点用于调整采样过程中的噪声偏移，可能改善时间一致性或运动效果；特色:搭配 MarkdownNote 节点嵌入技术说明，工作流自带文档，便于分享和教学；适用于将照片/概念图转为动态场景，例如制作动态壁纸、预告片标题序列、创意短视频，或快速生成带音效的内容草稿。；该工作流旨在用一张静态图像快速生成具有完整音视频的短视频。通过加载 MiniMax H3 专属 checkpoint 和 4步 Turbo LoRA，将采样步数压缩至 4 步，大幅缩短生成时间；同时引入 SigmaShift 调整噪声调度以提升视频质量；双 VAE 解码器分别还原视频画面和音轨，让结果直接可用；动态计算帧数和分辨率选择则增强了灵活性，适配不同时长与画面比例。"
+}

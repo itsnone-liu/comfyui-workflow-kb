@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "人像写真",
+  "图生图",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张清晰人脸参考图 + 一张目标人物图，端到端生成保留参考人脸身份、保持目标姿态/场景/构图的换脸写真",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 PersonMaskUltra V2 人像分割 + InpaintCrop/InpaintModelConditioning/InpaintStitch 将重绘限制在人脸局部区域，避免全局重绘导致背景和肢体被破坏",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 AnyLineArtPreprocessor_aux 提取线稿，配合 mistoLine ControlNet 约束输出结构与轮廓，使换脸后的姿态与构图更稳定",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID（身份保持）",
+  "ControlNet（mistoLine 线稿引导）",
+  "局部重绘 / Inpainting",
+  "人像分割 PersonMaskUltra V2",
+  "LAB 色彩匹配 ImageColorMatch+",
+  "线稿预处理器 AnyLineArtPreprocessor_aux",
+  "SDXL Turbo 低步数采样（DreamShaper XL v2.1 Turbo）",
+  "euler_ancestral + sgm_uniform 采样配置"
+ ],
+ "special_features": [
+  {
+   "text": "双 ControlNet 叠加驱动：同时加载 instantid/diffusion_pytorch_model.safetensors 与 mistoLine_fp16.safetensors，一个负责身份锚定、一个负责线稿结构约束，形成身份+姿态的双重控制",
+   "kind": "fact"
+  },
+  {
+   "text": "多段式局部重绘闭环：人像分割 → InpaintCrop 裁剪 → InpaintModelConditioning 条件化 → KSampler 采样 → InpaintStitch 缝合 → ImageColorMatch+ 色调统一，既保留原图背景又保证换脸质量",
+   "kind": "inference"
+  },
+  {
+   "text": "后处理环节使用 LAB 色彩空间匹配 + MaskBlur+ 边缘羽化，专门处理换脸区域与原图之间的肤色/光线过渡，提升换脸的和谐自然度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "以 InstantID 为身份锚点、以 SDXL Turbo 为加速底模，并通过 PersonMaskUltra V2 将重绘范围收紧到人像分割出的局部区域，形成 InpaintCrop→KSampler→InpaintStitch 的局部重绘闭环；再用 mistoLine 线稿 ControlNet 稳定姿态与轮廓，最后以 LAB 色彩匹配消除拼接痕迹。这种设计可能是在保证身份相似度的前提下，最大限度地避免全局重绘对原图背景、肢体和景物的意外破坏，同时用 Turbo 模型降低采样成本。",
+ "use_case": "适用于保持目标图构图和背景的快速换脸/换头写真，例如将模特面部替换为用户肖像、影视剧角色换脸、多张目标图批量替换为同一人脸等。",
+ "limitation": "依赖大量第三方自定义节点和外部模型（InstantID 的 ip-adapter.bin 与 diffusion_pytorch_model.safetensors、mistoLine_fp16.safetensors、DreamShaper XL v2.1 Turbo 等）；必须同时上传人脸参考图和目标人物图，且参考图需为正脸、清晰、光照均匀；InstantID 是免训练方案，对极侧脸、大角度俯仰、重度遮挡的鲁棒性有限；Turbo 模型低步数下在皮肤质感、细节锐度方面有妥协；InpaintCrop 等自定义节点版本差异可能导致参数不兼容。",
+ "dependencies": [
+  "ComfyUI_InstantID",
+  "comfyui_controlnet_aux",
+  "ComfyUI_LayerMask (PersonMaskUltra V2)",
+  "ComfyUI_KJNodes (InpaintCrop / InpaintStitch)",
+  "ComfyUI_ColorMate (ImageColorMatch+)",
+  "ComfyUI mask (MaskBlur+)",
+  "ip-adapter.bin",
+  "instantid/diffusion_pytorch_model.safetensors",
+  "mistoLine_fp16.safetensors",
+  "DreamShaper XL v2.1 Turbo 闪电_v2.1 Turbo.safetensors"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image x2（人脸参考图 + 目标人物图）",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ControlNetApplyAdvanced（strength=0.45, start=0, end=0.6）",
+   "how_to_tune": "strength 控制线稿约束力，一般 0.3~0.7 范围；end=0.6 表示仅在前 60% 采样步数生效，后 40% 步数让位给细节生成；若构图跑偏可增大 strength 或提高 end 至 0.8"
+  },
+  {
+   "param": "ApplyInstantID（weight=1, start=0, end=1）",
+   "how_to_tune": "weight 是身份保真度总控：相似度不足时提高到 1.2~1.5，脸部生硬/伪影严重时降低到 0.6~0.9；start/end 通常保持 0→1 全程生效"
+  },
+  {
+   "param": "KSampler（steps=15, cfg=1.5, euler_ancestral, sgm_uniform）",
+   "how_to_tune": "DreamShaper XL Turbo 适合低步数采样，15 步为常见选择；cfg 过高会导致过饱和/过曝，建议 1.2~1.8 之间微调，过低则细节流失"
+  },
+  {
+   "param": "MaskBlur+（blur=10）",
+   "how_to_tune": "控制换脸边缘羽化半径；边界明显或有硬边时可增加到 15~20，想保留发丝细节则降低到 5 左右"
+  },
+  {
+   "param": "AnyLineArtPreprocessor_aux（resolution=1280, mode=lineart_standard）",
+   "how_to_tune": "分辨率越高线稿细节越丰富，但太高会让复杂背景线稿过乱；若输出结构约束过强，可降低分辨率或切换 lineart_realistic 模式"
+  },
+  {
+   "param": "ImageColorMatch+（mode=LAB, weight=1）",
+   "how_to_tune": "LAB 模式在亮度与色彩分离空间做匹配，过渡更自然；weight 控制色彩迁移强度，若原图颜色被过度拉偏可降到 0.5~0.7"
+  }
+ ],
+ "summary_text": "能力:上传一张清晰人脸参考图 + 一张目标人物图，端到端生成保留参考人脸身份、保持目标姿态/场景/构图的换脸写真；能力:通过 PersonMaskUltra V2 人像分割 + InpaintCrop/InpaintModelConditioning/InpaintStitch 将重绘限制在人脸局部区域，避免全局重绘导致背景和肢体被破坏；能力:使用 AnyLineArtPreprocessor_aux 提取线稿，配合 mistoLine ControlNet 约束输出结构与轮廓，使换脸后的姿态与构图更稳定；特色:双 ControlNet 叠加驱动：同时加载 instantid/diffusion_pytorch_model.safetensors 与 mistoLine_fp16.safetensors，一个负责身份锚定、一个负责线稿结构约束，形成身份+姿态的双重控制；特色:多段式局部重绘闭环：人像分割 → InpaintCrop 裁剪 → InpaintModelConditioning 条件化 → KSampler 采样 → InpaintStitch 缝合 → ImageColorMatch+ 色调统一，既保留原图背景又保证换脸质量；特色:后处理环节使用 LAB 色彩空间匹配 + MaskBlur+ 边缘羽化，专门处理换脸区域与原图之间的肤色/光线过渡，提升换脸的和谐自然度；适用于保持目标图构图和背景的快速换脸/换头写真，例如将模特面部替换为用户肖像、影视剧角色换脸、多张目标图批量替换为同一人脸等。；以 InstantID 为身份锚点、以 SDXL Turbo 为加速底模，并通过 PersonMaskUltra V2 将重绘范围收紧到人像分割出的局部区域，形成 InpaintCrop→KSampler→InpaintStitch 的局部重绘闭环；再用 mistoLine 线稿 ControlNet 稳定姿态与轮廓，最后以 LAB 色彩匹配消除拼接痕迹。这种设计可能是在保证身份相似度的前提下，最大限度地避免全局重绘对原图背景、肢体和景物的意外破坏，同时用 Turbo 模型降低采样成本。"
+}

@@ -1,0 +1,94 @@
+{
+ "domain": [
+  "人像编辑",
+  "美妆",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物图后，通过 FLUX.1 Kontext-dev 的参考图 + 指令编辑机制，在保持原图身份/构图的前提下生成“把人物变纤细”的编辑结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "结合 slender_first_lora_v1 强化瘦身效果，并复用同一管线快速产出可用于妆容/形象预览的人像底图（平台 tag 为“妆容”）。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Kontext-dev 指令式编辑",
+  "ReferenceLatent 参考图潜变量注入",
+  "Nunchaku SVDQuant (svdq-int4) 低比特量化推理",
+  "GGUF Q2_K 模型加载",
+  "LoRA 定向风格/体型控制",
+  "DualCLIPLoader (CLIP-L + T5-XXL FP8)",
+  "FluxGuidance 分离式引导"
+ ],
+ "special_features": [
+  {
+   "text": "同时出现 NunchakuFluxDiTLoader（svdq-int4_r32-flux.1-kontext-dev）和 UnetLoaderGGUF（flux1-kontext-dev-Q2_K.g），似乎是同一 Kontext 模型的两条低比特量化加载路径，可能作为不同显存/硬件环境下的方案。",
+   "kind": "inference"
+  },
+  {
+   "text": "没有使用 EmptyLatent，而是 FluxKontextImageScale -> VAEEncode -> ReferenceLatent 直接把输入图编码成生成起点，使输出跟随原图分辨率与构图。",
+   "kind": "inference"
+  },
+  {
+   "text": "提示词节点中有一条英文指令“Change the person to sle...”（被截断，结合 LoRA 名推断为 slender），另一条提示词为空，形成“指令正样本 + 空负样本”的极简 conditioning 组合。",
+   "kind": "inference"
+  },
+  {
+   "text": "FluxGuidance 单独作用于 conditioning，且 KSampler.cfg=1，符合 FLUX 蒸馏式采样的标准引导设置。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者想用一条尽量短的路径完成“参考人像 → 瘦身编辑 → 出图”：用 Kontext 的参考图能力保持身份一致，用 LoRA 锁住审美方向，再用 Nunchaku/GGUF 低比特量化降低本地部署门槛。整体没有做复杂分支和后处理，更像是一个为固定需求准备的极简模板，值得学习的点集中在量化加载方式与 ReferenceLatent 的参考图控制上。",
+ "use_case": "美妆/模特图快速改型：给一张正脸或全身人像照，快速生成体型更纤细的版本；也可作为拍摄前概念图、社交平台出图或妆容搭配效果预览。",
+ "limitation": "依赖 FLUX.1 Kontext-dev 量化模型、Nunchaku/GGUF 自定义加载器和 LoRA，普通 ComfyUI 安装无法直接运行；Nunchaku 通常需要支持 bfloat16 的 NVIDIA GPU 和特定 CUDA 环境。提示词固定在“瘦身”方向，想换其他编辑意图需改 CLIPTextEncode 文本或 LoRA。输出直接保存，没有高清放大、人脸修复或局部重绘等质量控制环节，复杂细节可能不稳定。",
+ "dependencies": [
+  "ae.safetensors",
+  "svdq-int4_r32-flux.1-kontext-dev.safetensors",
+  "flux1-kontext-dev-Q2_K.g",
+  "slender_first_lora_v1.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ComfyUI-Nunchaku 自定义节点",
+  "ComfyUI-GGUF 自定义节点",
+  "Flux Kontext 相关自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人物图像（LoadImage）",
+  "count": "1"
+ },
+ "output": {
+  "type": "编辑后图像（SaveImage）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前 20 步。追求更高细节可调 25-30，追求速度可 16-18；FLUX 量化模型一般不建议低于 15。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "保持 1。FLUX 蒸馏式采样依赖 guidance 而非 cfg，调大 cfg 容易过曝/产生伪影。"
+  },
+  {
+   "param": "FluxGuidance.guidance",
+   "how_to_tune": "当前 3。值越大越贴近 prompt，但过大会让皮肤/纹理看起来不自然；可在 2.5-4.0 之间微调。"
+  },
+  {
+   "param": "NunchakuFluxLoraLoader.strength",
+   "how_to_tune": "当前 1。瘦身/风格过猛可降到 0.6-0.8；不足则微调 1.0-1.2，太高会破坏身份和结构。"
+  },
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "randomize 用于探索多样性；固定 seed 可复现同一结果，适合找到满意构图后锁定。"
+  },
+  {
+   "param": "KSampler.sampler / scheduler",
+   "how_to_tune": "默认 euler/simple 是 FLUX 常见稳定组合；若出现条带/噪点可尝试 dpmpp_2m/simple，但当前设置一般较稳妥。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物图后，通过 FLUX.1 Kontext-dev 的参考图 + 指令编辑机制，在保持原图身份/构图的前提下生成“把人物变纤细”的编辑结果。；能力:结合 slender_first_lora_v1 强化瘦身效果，并复用同一管线快速产出可用于妆容/形象预览的人像底图（平台 tag 为“妆容”）。；特色:同时出现 NunchakuFluxDiTLoader（svdq-int4_r32-flux.1-kontext-dev）和 UnetLoaderGGUF（flux1-kontext-dev-Q2_K.g），似乎是同一 Kontext 模型的两条低比特量化加载路径，可能作为不同显存/硬件环境下的方案。；特色:没有使用 EmptyLatent，而是 FluxKontextImageScale -> VAEEncode -> ReferenceLatent 直接把输入图编码成生成起点，使输出跟随原图分辨率与构图。；特色:提示词节点中有一条英文指令“Change the person to sle...”（被截断，结合 LoRA 名推断为 slender），另一条提示词为空，形成“指令正样本 + 空负样本”的极简 conditioning 组合。；特色:FluxGuidance 单独作用于 conditioning，且 KSampler.cfg=1，符合 FLUX 蒸馏式采样的标准引导设置。；美妆/模特图快速改型：给一张正脸或全身人像照，快速生成体型更纤细的版本；也可作为拍摄前概念图、社交平台出图或妆容搭配效果预览。；作者想用一条尽量短的路径完成“参考人像 → 瘦身编辑 → 出图”：用 Kontext 的参考图能力保持身份一致，用 LoRA 锁住审美方向，再用 Nunchaku/GGUF 低比特量化降低本地部署门槛。整体没有做复杂分支和后处理，更像是一个为固定需求准备的极简模板，值得学习的点集中在量化加载方式与 ReferenceLatent 的参考图控制上。"
+}

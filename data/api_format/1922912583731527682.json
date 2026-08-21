@@ -1,0 +1,338 @@
+{
+ "190": {
+  "class_type": "GrowMaskWithBlur",
+  "inputs": {
+   "expand": 4,
+   "decay_factor": 1,
+   "incremental_expandrate": 2,
+   "flip_input": false,
+   "lerp_alpha": 1,
+   "tapered_corners": true,
+   "blur_radius": 2,
+   "fill_holes": false,
+   "mask": [
+    "188",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Grow Mask With Blur"
+  }
+ },
+ "180": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "normal",
+   "negative": [
+    "177",
+    1
+   ],
+   "denoise": 1,
+   "latent_image": [
+    "177",
+    2
+   ],
+   "seed": 781544576618805,
+   "cfg": 1,
+   "sampler_name": "euler",
+   "model": [
+    "189",
+    0
+   ],
+   "positive": [
+    "178",
+    0
+   ],
+   "steps": 20
+  },
+  "_meta": {
+   "title": "KSampler"
+  }
+ },
+ "181": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "174",
+    0
+   ],
+   "samples": [
+    "180",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE Decode"
+  }
+ },
+ "192": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "196",
+    0
+   ],
+   "negative": [
+    "176",
+    0
+   ],
+   "control_net": [
+    "194",
+    0
+   ],
+   "strength": [
+    "198",
+    0
+   ],
+   "start_percent": 0,
+   "positive": [
+    "175",
+    0
+   ],
+   "vae": [
+    "174",
+    0
+   ],
+   "end_percent": [
+    "198",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Apply ControlNet"
+  }
+ },
+ "182": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "181",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "172": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "weight_dtype": "fp8_e4m3fn",
+   "unet_name": "flux1-dev-fp8.safetensors"
+  },
+  "_meta": {
+   "title": "Load Diffusion Model"
+  }
+ },
+ "183": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "clipspace/2c0d2053869b5d0554601cdeb4bf4277_f83bd24b7083aea110b6921a55956ef18ffc47953f677a29190001352738197a.png [input]"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "194": {
+  "class_type": "SetShakkerLabsUnionControlNetType",
+  "inputs": {
+   "control_net": [
+    "195",
+    0
+   ],
+   "type": "depth"
+  },
+  "_meta": {
+   "title": "Set Shakker Labs Union ControlNet Type"
+  }
+ },
+ "173": {
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "clip_l.safetensors",
+   "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+   "type": "flux",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "DualCLIPLoader"
+  }
+ },
+ "184": {
+  "class_type": "ImageResizeKJ",
+  "inputs": {
+   "image": [
+    "179",
+    0
+   ],
+   "divisible_by": 8,
+   "width": 1024,
+   "keep_proportion": true,
+   "upscale_method": "lanczos",
+   "crop": 0,
+   "height": 1024
+  },
+  "_meta": {
+   "title": "Resize Image (deprecated)"
+  }
+ },
+ "195": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+  },
+  "_meta": {
+   "title": "Load ControlNet Model"
+  }
+ },
+ "174": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ae.sft"
+  },
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "196": {
+  "class_type": "AIO_Preprocessor",
+  "inputs": {
+   "image": [
+    "179",
+    0
+   ],
+   "preprocessor": "DepthAnythingPreprocessor",
+   "resolution": 768
+  },
+  "_meta": {
+   "title": "AIO Aux Preprocessor"
+  }
+ },
+ "175": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "A person is taking ID photos, wearing a black suit on the outside and a white shirt on the inside.",
+   "clip": [
+    "189",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "176": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "",
+   "clip": [
+    "189",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP Text Encode (Prompt)"
+  }
+ },
+ "198": {
+  "class_type": "Float",
+  "inputs": {
+   "value": "0.6"
+  },
+  "_meta": {
+   "title": "Float"
+  }
+ },
+ "177": {
+  "class_type": "InpaintModelConditioning",
+  "inputs": {
+   "negative": [
+    "176",
+    0
+   ],
+   "pixels": [
+    "184",
+    0
+   ],
+   "noise_mask": true,
+   "positive": [
+    "175",
+    0
+   ],
+   "vae": [
+    "174",
+    0
+   ],
+   "mask": [
+    "190",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "InpaintModelConditioning"
+  }
+ },
+ "188": {
+  "class_type": "JWMaskResize",
+  "inputs": {
+   "interpolation_mode": "bicubic",
+   "width": [
+    "184",
+    1
+   ],
+   "height": [
+    "184",
+    2
+   ],
+   "mask": [
+    "183",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "Mask Resize"
+  }
+ },
+ "178": {
+  "class_type": "FluxGuidance",
+  "inputs": {
+   "guidance": 3.5,
+   "conditioning": [
+    "177",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "FluxGuidance"
+  }
+ },
+ "189": {
+  "class_type": "LoraLoader",
+  "inputs": {
+   "lora_name": "F.1 证件照_v1.safetensors",
+   "strength_model": 0.8,
+   "model": [
+    "172",
+    0
+   ],
+   "clip": [
+    "173",
+    0
+   ],
+   "strength_clip": 1
+  },
+  "_meta": {
+   "title": "Load LoRA"
+  }
+ },
+ "179": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "f2f88d723146b721ef9854b902c1ca571dac7cc640ff13b5b6db6184f9d73044.png"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ }
+}

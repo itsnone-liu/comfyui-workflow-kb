@@ -1,0 +1,87 @@
+{
+ "domain": [
+  "图像局部重绘",
+  "手部修复",
+  "AI图像修复"
+ ],
+ "capabilities": [
+  {
+   "text": "输入原图与遮罩图，自动利用 FLUX Fill 模型对指定区域（如手部）进行局部重绘/修复，并输出拼接后的完整图像",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Joy_caption 自动为输入图像生成描述性文字，并作为正向提示词参与采样，降低手动写提示词的门槛",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Fill 局部重绘（Inpaint/Outpaint）",
+  "InpaintCrop / InpaintStitch 裁剪与拼接",
+  "InpaintModelConditioning 条件注入",
+  "DualCLIPLoader + CLIPTextEncode 文本编码",
+  "Joy_caption 图像描述生成",
+  "FluxGuidance 引导强度控制",
+  "VAE 编码/解码"
+ ],
+ "special_features": [
+  {
+   "text": "使用 Joy_caption 自动生成提示词，并配合 ShowText 节点可视化展示结果，形成“看图说话→用于生成”的自动化链路",
+   "kind": "fact"
+  },
+  {
+   "text": "采用 InpaintCrop 裁剪区域→修复→InpaintStitch 拼接的多段式结构，可能用于减少计算量并提升局部修复精度",
+   "kind": "inference"
+  },
+  {
+   "text": "负向提示词中显式写入 'text, watermark'，同时正向写入 'Masterpiece, High Defini'，体现对去除水印/文字与追求高画质的定制意图",
+   "kind": "inference"
+  },
+  {
+   "text": "工作流内嵌 Note 节点包含联系方式与链接，属于定制分发场景",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流面向非专业用户，主打“手部修复”这一细分需求。设计者将 FLUX Fill 修复能力与 Joy_caption 自动打标能力结合，使用户只需上传原图和遮罩即可完成修复，无需手动编写提示词。InpaintCrop/Stitch 分段处理可能是为了降低显存压力或聚焦修复区域，提升局部效果。整体设计偏实用型，适合作为可分发的工作流模板。",
+ "use_case": "适用于人像照片中手部畸形、手指扭曲或局部瑕疵的快速修复，也可泛用于任意区域的局部重绘/消除水印等场景。",
+ "limitation": "依赖 FLUX.1 Fill 专用修复模型（F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors）及对应 T5/CLIP 文本编码器；需要额外安装 Joy_caption 自定义节点（Orenguteng/Llama-3.1-8B-...）；需用户自行准备原图与遮罩图，且遮罩需覆盖待修复区域；修复效果受模型能力与采样参数影响较大。",
+ "dependencies": [
+  "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "ComfyUI 自定义节点：Joy_caption / Joy_caption_two_load",
+  "ComfyUI 自定义节点：ShowText|pysssss"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两张图片（原图 + 遮罩图）",
+  "count": "2"
+ },
+ "output": {
+  "type": "修复后的完整图片",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为20步，属中等迭代次数。若修复效果不充分可增至30-40步，但耗时增加；若追求速度可减至15步左右。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前为1，这是 FLUX 模型典型的 cfg 设置。增大 cfg 可能引入过饱和或伪影，建议保持 1 或微调至 1.5 以内。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前为30，控制文本对生成的影响强度。若希望修复结果更贴近原图结构可调低（如20-25），若更强调提示词中的细节描述可调高（如35-40）。"
+  },
+  {
+   "param": "InpaintResize 尺寸",
+   "how_to_tune": "当前为1024，FLUX Fill 原生支持分辨率。若显存不足可调至768，但可能损失细节；若硬件允许并需要更高清晰度可试1536。"
+  },
+  {
+   "param": "Joy_caption 文本长度",
+   "how_to_tune": "当前为 'very short'，生成的提示词简短。若希望更丰富地描述图像内容，可选 'short' 或 'long'，但可能引入次要信息干扰修复。"
+  }
+ ],
+ "summary_text": "能力:输入原图与遮罩图，自动利用 FLUX Fill 模型对指定区域（如手部）进行局部重绘/修复，并输出拼接后的完整图像；能力:通过 Joy_caption 自动为输入图像生成描述性文字，并作为正向提示词参与采样，降低手动写提示词的门槛；特色:使用 Joy_caption 自动生成提示词，并配合 ShowText 节点可视化展示结果，形成“看图说话→用于生成”的自动化链路；特色:采用 InpaintCrop 裁剪区域→修复→InpaintStitch 拼接的多段式结构，可能用于减少计算量并提升局部修复精度；特色:负向提示词中显式写入 'text, watermark'，同时正向写入 'Masterpiece, High Defini'，体现对去除水印/文字与追求高画质的定制意图；特色:工作流内嵌 Note 节点包含联系方式与链接，属于定制分发场景；适用于人像照片中手部畸形、手指扭曲或局部瑕疵的快速修复，也可泛用于任意区域的局部重绘/消除水印等场景。；该工作流面向非专业用户，主打“手部修复”这一细分需求。设计者将 FLUX Fill 修复能力与 Joy_caption 自动打标能力结合，使用户只需上传原图和遮罩即可完成修复，无需手动编写提示词。InpaintCrop/Stitch 分段处理可能是为了降低显存压力或聚焦修复区域，提升局部效果。整体设计偏实用型，适合作为可分发的工作流模板。"
+}

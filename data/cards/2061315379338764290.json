@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "AI短剧",
+  "角色一致性",
+  "角色视觉资产"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张或多张人物参考图，一键生成可用于 seedance2.0 的角色/短剧角色可视化资产（经由 RH_RhartImageG2 系列图生图节点）",
+   "kind": "fact"
+  },
+  {
+   "text": "未上传图时，可通过 Fast Groups Bypasser 旁路图像输入，使用 CR Text 提供的中文人设提示词走文生角色图模式",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 Any Switch 在低价渠道版与官方稳定版两个 RH 生成通道之间切换，输出同一角色的不同渠道结果",
+   "kind": "fact"
+  },
+  {
+   "text": "自动生成“原图/生成图”对照的角色卡，并分别以 ComfyUI、ML-Star 前缀保存为两路图片输出",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "图生图（Image-to-Image）：RH_RhartImageG2ImageToImage / RH_RhartImageG2OfficialImageToImage",
+  "文生图回退：CR Text 提示词 + Fast Groups Bypasser 旁路输入图组",
+  "双通道模式切换：Any Switch 控制低价渠道版与官方稳定版",
+  "角色一致性控制：以上传参考图约束人物身份特征",
+  "分辨率/宽高比控制：PrimitiveNode(2k/3:4) + ImageScaleByAspectRatio V2",
+  "角色卡排版：LayerUtility ImageReel + ImageReelComposit 合成中文标注图"
+ ],
+ "special_features": [
+  {
+   "text": "Any Switch 做渠道级切换，并用 MarkdownNote 明确写出“低价渠道版模式和官方稳定版模式只能 2 选 1”，避免误用",
+   "kind": "fact"
+  },
+  {
+   "text": "Fast Groups Bypasser 允许手动旁路上传图组，从而在‘图生图’和‘文生图’两种输入模式间切换",
+   "kind": "inference"
+  },
+  {
+   "text": "GetNode/SetNode 使用变量名（图1_0、提示词_0）传递图像与文本，减少跨区域长连线，方便复用",
+   "kind": "inference"
+  },
+  {
+   "text": "LayerUtility ImageReel + ImageReelComposit 自动把原图/生成图合成带中文标签的角色卡，并使用 Alibaba-PuHuiTi-Heavy 字体",
+   "kind": "fact"
+  },
+  {
+   "text": "RHHiddenNodes 集成 RunningHub 平台隐藏参数，使外部上传图/提示词可注入工作流，适配平台入口",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这似乎是一条面向短剧制作者的一键式角色卡生产链路：用上传图锁定人物特征，再通过 seedance2.0 相关的 RH_RhartImageG2 图生图接口生成角色可视化资产；没有参考图时则用 CR Text 提示词走文生图。为了让结果更接近“角色卡资产”，工作流把原图和生成图排版成带中文标签的对照图并双路保存。双通道（低价/官方稳定）设计是在成本与质量之间做显式取舍；GetNode/SetNode 与 PrimitiveNode 则把常用变量集中起来，降低操作门槛。",
+ "use_case": "AI短剧导演/角色设定师在立项前快速生成角色卡：上传人设参考图，得到可用于分镜、选角、跨镜头一致性参考的角色视觉资产；也可作为角色 IP 的批量可视化模板。",
+ "limitation": "依赖 RH_Rhart 系列外部 API 服务与配额，且需要安装 rgthree、LayerStyle、CR Text、RH_Rhart、GetNode/SetNode 等自定义节点；上传图并不保证严格身份锁定，最终一致性受模型能力与提示词影响；未上传图时只能使用 CR Text 里预置的两个模板人设，需手动改成自己的角色；SaveImage 固定以 ComfyUI/ML-Star 前缀保存，输出目录需按实际环境调整。",
+ "dependencies": [
+  "rgthree-comfy（Any Switch、Fast Groups Bypasser）",
+  "ComfyUI_LayerStyle（LayerUtility: ImageReel、ImageReelComposit、ImageScaleByAspectRatio V2）",
+  "ComfyUI_Comfyroll_CustomNodes（CR Text、CR Text Replace）",
+  "RH_Rhart 系列节点（RH_RhartImageG2ImageToImage、RH_RhartImageG2OfficialImageToImage、RHHiddenNodes）",
+  "GetNode/SetNode 对应自定义节点"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "上传图像（1-2张，可选）+ 文本提示词",
+  "count": "2个图像输入 + 2组默认文本输入"
+ },
+ "output": {
+  "type": "角色卡对照图/单张生成图（图片）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Any Switch 模式",
+   "how_to_tune": "对稳定性要求高时选官方稳定版；预算有限或快速试错时选低价渠道版。"
+  },
+  {
+   "param": "Fast Groups Bypasser",
+   "how_to_tune": "有参考图需要锁定角色时保持组启用；没有参考图时旁路上传图组，让 CR Text 提示词走文生图。"
+  },
+  {
+   "param": "PrimitiveNode: 2k / 3:4 / low",
+   "how_to_tune": "短剧人物卡建议 2k + 3:4；质量优先时把 low 调高，速度/成本优先时保持 low。"
+  },
+  {
+   "param": "Seed / randomize",
+   "how_to_tune": "出现满意构图时固定 seed（如 1666459007 或 64016441）便于复现；需要多样候选时保持 randomize。"
+  }
+ ],
+ "summary_text": "能力:上传一张或多张人物参考图，一键生成可用于 seedance2.0 的角色/短剧角色可视化资产（经由 RH_RhartImageG2 系列图生图节点）；能力:未上传图时，可通过 Fast Groups Bypasser 旁路图像输入，使用 CR Text 提供的中文人设提示词走文生角色图模式；能力:通过 Any Switch 在低价渠道版与官方稳定版两个 RH 生成通道之间切换，输出同一角色的不同渠道结果；能力:自动生成“原图/生成图”对照的角色卡，并分别以 ComfyUI、ML-Star 前缀保存为两路图片输出；特色:Any Switch 做渠道级切换，并用 MarkdownNote 明确写出“低价渠道版模式和官方稳定版模式只能 2 选 1”，避免误用；特色:Fast Groups Bypasser 允许手动旁路上传图组，从而在‘图生图’和‘文生图’两种输入模式间切换；特色:GetNode/SetNode 使用变量名（图1_0、提示词_0）传递图像与文本，减少跨区域长连线，方便复用；特色:LayerUtility ImageReel + ImageReelComposit 自动把原图/生成图合成带中文标签的角色卡，并使用 Alibaba-PuHuiTi-Heavy 字体；特色:RHHiddenNodes 集成 RunningHub 平台隐藏参数，使外部上传图/提示词可注入工作流，适配平台入口；AI短剧导演/角色设定师在立项前快速生成角色卡：上传人设参考图，得到可用于分镜、选角、跨镜头一致性参考的角色视觉资产；也可作为角色 IP 的批量可视化模板。；这似乎是一条面向短剧制作者的一键式角色卡生产链路：用上传图锁定人物特征，再通过 seedance2.0 相关的 RH_RhartImageG2 图生图接口生成角色可视化资产；没有参考图时则用 CR Text 提示词走文生图。为了让结果更接近“角色卡资产”，工作流把原图和生成图排版成带中文标签的对照图并双路保存。双通道（低价/官方稳定）设计是在成本与质量之间做显式取舍；GetNode/SetNode 与 PrimitiveNode 则把常用变量集中起来，降低操作门槛。"
+}

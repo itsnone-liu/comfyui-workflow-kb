@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "多模态音视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "提供 3 个参考图输入插槽，结合文本提示生成一段带原生立体声的视频：流程中 LoadImage(IN) 出现 3 次，音频条件模块启用 Ref2VA（参考生音视频）模式。",
+   "kind": "fact"
+  },
+  {
+   "text": "端到端完成“参考图 + 文本 → 带音频视频”的推理：10Eros H3 检查点 + Qwen3VL-32B 文本编码 + 双时钟采样 + 视频/音频 VAE 解码 + VHS_VideoCombine 输出。",
+   "kind": "fact"
+  },
+  {
+   "text": "能够生成原生立体声/音效的视频，而非静默视频：单独加载了 minimax_h3_audio_vae_fp32，并通过 MiniMaxH3AVDecodeT8 进行音视频联合解码。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 架构下的参考图条件视频生成（10Eros H3 checkpoint）",
+  "DualClock 双时钟采样（dual_clock_euler / native_flow）",
+  "Qwen3VL-32B 文本编码",
+  "Turbo 4-step LoRA 加速采样",
+  "视频 VAE 与音频 VAE 联合解码",
+  "Ref2VA 参考音视频同步生成",
+  "ComfyMathExpression 动态帧数计算",
+  "Sage Attention 显存优化补丁",
+  "固定种子复现策略"
+ ],
+ "special_features": [
+  {
+   "text": "使用 MiniMaxH3DualClockSamplerT8 双时钟采样器（widgets: 8 / 12 / 3 / dual_clock_euler / native_flow），同一采样器同时控制画面与音频去噪进程，属于非常规采样结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载视频 VAE 和音频 VAE，并在末端使用 MiniMaxH3AVDecodeT8 联合解码音画，创建设置为“Ref2VA — 参考生音视频”，直接输出带音频的视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "三个 LoadImage(IN) 图像输入槽位，推测用于多角度/多参考图身份保持或场景一致性，因为参数名为“参考生视频”且图片输入数超过常规单参考图工作流。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ComfyMathExpression 以 max(5, round(a * 24)) 这种表达式自动换算时长/帧数，避免手工计算视频长度。",
+   "kind": "fact"
+  },
+  {
+   "text": "LoRA 加载使用 LoraLoaderBypassModelOnly，仅旁路注入 Turbo 4-step LoRA 到模型，不加载额外 CLIP/VAE，属于轻量加速注入设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "加入 MiniMaxH3MemoryEfficientSageAttentionPatch 显存优化补丁，使 1344x768 这类较高分辨率视频生成在有限显存环境下更容易运行。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者围绕 MiniMax H3 的“双时钟”能力设计了一条高可控参考生视频链路：用 3 个参考图槽位提供多视角/风格条件，用 Qwen3VL-32B 理解文本提示，用 DualClockSampler 同步生成画面与音频，再用 Turbo LoRA 降低所需步数以换取速度。通过 ComfyMathExpression 自动换算帧数、固定种子增强可复现性，并用 SageAttention 补丁缓解高分辨率长视频的显存压力。整体意图似乎是让用户输入参考图和一句话，就能稳定产出带原生声音的高清短视频。",
+ "use_case": "适合从静态参考图生成短视频，如人物写、产品展示、角色动态演示，并要求同步得到音效/环境音/旁白；也可用于快速预览“10 秒”级视频创意。",
+ "limitation": "依赖体积较大的 qwen3vl_32b 文本编码器与 10Eros H3 检查点，推理显存/内存要求高；需要 MiniMaxH3 系列、CR Prompt Text、ComfyMathExpression、ResolutionSelector、VHS_VideoCombine 等自定义节点；输入为参考图 + 文本提示，不能直接输入任意视频作为主剪辑；AudioConditioning 的参考音频路径为空，实际未必使用外部参考音频；Turbo LoRA 为 4 步加速，可能在复杂运动上损失细节。",
+ "dependencies": [
+  "10Eros_Max_h3_fl2va_bf16_test4_pruned_B.safetensors",
+  "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_turbo_4step_10ErosMax_test4_pruned_curveproj1025_exp_v001-T8.safetensors",
+  "自定义节点：MiniMaxH3 系列、ComfyUI_VideoHelperSuite、ComfyUI_Comfyroll_CustomNodes、ComfyMathExpression、ResolutionSelector"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "3 个参考图输入插槽 + 1 个文本提示（CR Prompt Text 可编辑）",
+  "count": "3 图像 + 1 文本"
+ },
+ "output": {
+  "type": "带音频的视频（经 VHS_VideoCombine 输出，通常为 mp4 容器）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3DualClockSamplerT8.steps（widgets 第1个=8）",
+   "how_to_tune": "增加步数可提高画质与稳定性，但耗时成倍上升；本流配合 Turbo LoRA 用 8 步已经能出可用结果，若追求细节可尝试 10-12 步。"
+  },
+  {
+   "param": "MiniMaxH3DualClockSamplerT8.cfg（widgets 第2个=12）",
+   "how_to_tune": "12 是较高引导强度，文字从属性会更强，但容易出现过曝/色彩伪影；若画面偏硬或饱和度过高，可降低到 6-8。"
+  },
+  {
+   "param": "MiniMaxH3DualClockSamplerT8.双时钟控制参数（widgets 第3个=3）",
+   "how_to_tune": "该值疑似控制音画双时钟切换或参考条件强度；增大可能让动作/声音更贴合参考，但过大会导致抖动或音画不同步，建议小范围试验。"
+  },
+  {
+   "param": "MiniMaxH3DualClockSamplerT8.sampler / scheduler（dual_clock_euler / native_flow）",
+   "how_to_tune": "这是 H3 模型配套的专用采样组合，建议保持默认；随意更换 sampler 可能导致音频与画面不同步或生成崩溃。"
+  },
+  {
+   "param": "MiniMaxH3AudioConditioningT8 的 width / height / frames（1344 / 768 / 124）",
+   "how_to_tune": "宽高决定输出分辨率，frames 决定视频长度；应与 ComfyMathExpression 计算的帧数一致，否则可能出现截断或黑帧。"
+  },
+  {
+   "param": "LoraLoaderBypassModelOnly 权重（当前为 1）",
+   "how_to_tune": "Turbo LoRA 权重通常保持 1；调低会减弱加速/风格效果，调高可能引入伪影或过拟合感。"
+  },
+  {
+   "param": "RandomNoise seed（123456789）",
+   "how_to_tune": "固定种子用于复现同一结果；需要换构图或动态效果时改动种子即可。"
+  }
+ ],
+ "summary_text": "能力:提供 3 个参考图输入插槽，结合文本提示生成一段带原生立体声的视频：流程中 LoadImage(IN) 出现 3 次，音频条件模块启用 Ref2VA（参考生音视频）模式。；能力:端到端完成“参考图 + 文本 → 带音频视频”的推理：10Eros H3 检查点 + Qwen3VL-32B 文本编码 + 双时钟采样 + 视频/音频 VAE 解码 + VHS_VideoCombine 输出。；能力:能够生成原生立体声/音效的视频，而非静默视频：单独加载了 minimax_h3_audio_vae_fp32，并通过 MiniMaxH3AVDecodeT8 进行音视频联合解码。；特色:使用 MiniMaxH3DualClockSamplerT8 双时钟采样器（widgets: 8 / 12 / 3 / dual_clock_euler / native_flow），同一采样器同时控制画面与音频去噪进程，属于非常规采样结构。；特色:同时加载视频 VAE 和音频 VAE，并在末端使用 MiniMaxH3AVDecodeT8 联合解码音画，创建设置为“Ref2VA — 参考生音视频”，直接输出带音频的视频。；特色:三个 LoadImage(IN) 图像输入槽位，推测用于多角度/多参考图身份保持或场景一致性，因为参数名为“参考生视频”且图片输入数超过常规单参考图工作流。；特色:通过 ComfyMathExpression 以 max(5, round(a * 24)) 这种表达式自动换算时长/帧数，避免手工计算视频长度。；特色:LoRA 加载使用 LoraLoaderBypassModelOnly，仅旁路注入 Turbo 4-step LoRA 到模型，不加载额外 CLIP/VAE，属于轻量加速注入设计。；特色:加入 MiniMaxH3MemoryEfficientSageAttentionPatch 显存优化补丁，使 1344x768 这类较高分辨率视频生成在有限显存环境下更容易运行。；适合从静态参考图生成短视频，如人物写、产品展示、角色动态演示，并要求同步得到音效/环境音/旁白；也可用于快速预览“10 秒”级视频创意。；作者围绕 MiniMax H3 的“双时钟”能力设计了一条高可控参考生视频链路：用 3 个参考图槽位提供多视角/风格条件，用 Qwen3VL-32B 理解文本提示，用 DualClockSampler 同步生成画面与音频，再用 Turbo LoRA 降低所需步数以换取速度。通过 ComfyMathExpression 自动换算帧数、固定种子增强可复现性，并用 SageAttention 补丁缓解高分辨率长视频的显存压力。整体意图似乎是让用户输入参考图和一句话，就能稳定产出带原生声音的高清短视频。"
+}

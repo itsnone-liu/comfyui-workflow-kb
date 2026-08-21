@@ -1,0 +1,111 @@
+{
+ "domain": [
+  "图像生成",
+  "人像换脸",
+  "风格迁移",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成人像换脸/重绘：输入参考人脸图与控制结构图，生成保持人脸身份且姿态/布局受控的真实感图像。",
+   "kind": "inference"
+  },
+  {
+   "text": "多路身份保真：PuLID、InstantID、IPAdapter FaceID 同时注入人脸特征，提升跨姿态、跨风格下的人脸一致性。",
+   "kind": "inference"
+  },
+  {
+   "text": "深度/姿态控制：用 DepthAnythingV2 生成深度图并送入 ControlNet-Union，约束人物姿势、景深与空间结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动提示词生成：WD14Tagger 对输入图自动反推标签，作为提示词来源，降低手工写 prompt 成本。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出 PNG 结果：PreviewImage/SaveImage 提供预览与保存，便于接入后续 ComfyUI 流程。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "PuLID（ApplyPulid + PulidModelLoader + PulidEvaClipLoader + PulidInsightFaceLoader）",
+  "InstantID（ApplyInstantID + InstantIDFaceAnalysis + InstantIDModelLoader）",
+  "IPAdapter FaceID（IPAdapterFaceID + IPAdapterUnifiedLoaderFaceID）",
+  "ControlNet-Union（ControlNetLoader + ControlNetApplyAdvanced）",
+  "DepthAnythingV2 深度估计（AIO_Preprocessor）",
+  "WD14Tagger 标签反推提示词",
+  "SDXL 写实底模 Juggernaut_X_RunDiffusion",
+  "VAE Encode/Decode"
+ ],
+ "special_features": [
+  {
+   "text": "同时堆叠 PuLID、InstantID、IPAdapter FaceID 三条人脸身份注入链路，将不同方法的身份特征都施加到同一生成过程；可提高身份保真度，但也需要调平衡以防特征冲突/过拟合。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 AIO_Preprocessor 内置的 DepthAnythingV2（512）提取深度图，再由 controlnet-union-sdxl-1.0 的 ControlNetApplyAdvanced 施加全程深度控制。",
+   "kind": "fact"
+  },
+  {
+   "text": "WD14Tagger（wd-v1-4-moat-tagger-v2）自动打标生成提示词，同时图中出现 ConditioningZeroOut，疑似用于构造零条件/负向条件，减少非目标概念混入。",
+   "kind": "inference"
+  },
+  {
+   "text": "输入图先经 LayerUtility: ImageScaleByAspectRatio V2 等比缩放和 letterbox 处理，使不同长宽比的图片在深度估计/ControlNet 前保持一致画布。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这是一个“多保险”式身份保持换脸方案：先让 WD14Tagger 自动理解输入图内容，再用 DepthAnythingV2 + ControlNet-Union 固定人物姿态和画面结构，同时把 PuLID、InstantID、IPAdapter FaceID 三套适配器叠加到条件网络中以最大化保留目标人脸身份。这样设计可能就是为了在风格迁移/局部重绘中兼顾“换的是谁”的身份特征和“摆什么姿势/在什么场景”的结构控制；使用 Juggernaut_X_RunDiffusion 底模则是为了给最终写实效果打底。",
+ "use_case": "适合把一张参考人脸应用到另一张姿态/场景参考图上，生成多姿态、多风格的写实人像；可用于模特换脸、角色一致性写真、姿势迁移和以 ControlNet 约束的人像重绘等场景。",
+ "limitation": "依赖较多自定义节点和专用模型，部署门槛高；模板里 4 个 LoadImage 都用同一张占位图，运行时必须替换为真实输入。人脸不清晰、非正脸或被遮挡时，PuLID/InstantID 的身份保真度会明显下降；同时加载多套人脸适配器和 ControlNet 会占用较多显存，生成速度较慢。模型版本需匹配 SDXL：controlnet-union-sdxl-1.0、ip-adapter.bin、ip-adapter_pulid_sdxl_fp16.safetensors 不能混用。",
+ "dependencies": [
+  "自定义节点：ComfyUI_PuLID",
+  "自定义节点：ComfyUI_InstantID",
+  "自定义节点：ComfyUI_IPAdapter_plus",
+  "自定义节点：ComfyUI_ControlNet_Union",
+  "自定义节点：ComfyUI_AIO_Preprocessor（DepthAnythingV2）",
+  "自定义节点：ComfyUI_WD14_Tagger",
+  "自定义节点：ComfyUI_LayerStyle",
+  "模型：Juggernaut_X_RunDiffusion.safetensors",
+  "模型：controlnet-union-sdxl-1.0.safetensors",
+  "模型：ip-adapter.bin",
+  "模型：ip-adapter_pulid_sdxl_fp16.safetensors",
+  "模型：wd-v1-4-moat-tagger-v2"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（参考人脸/结构控制图等，4 个 LoadImage 输入）",
+  "count": "4（模板中为同一占位图，需替换）"
+ },
+ "output": {
+  "type": "image（PNG；PreviewImage + SaveImage）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID / weight=0.8",
+   "how_to_tune": "控制 InstantID 身份注入强度。若与 PuLID/FaceID 叠加导致面部僵硬、塑料感，降到 0.4-0.6；若身份不够像，可提高到 0.9-1.0。"
+  },
+  {
+   "param": "ApplyPulid / method=fidelity, weight=1.0",
+   "how_to_tune": "fidelity 模式更偏身份保真；做风格化时可尝试切到 style，并把 weight 从 1.0 降到 0.5-0.8，以换取更多生成自由度。"
+  },
+  {
+   "param": "IPAdapterFaceID / weight=1.0, weight_face=2.0",
+   "how_to_tune": "weight_face=2.0 是很强的 ID 约束。若表情不自然或过拟合，先降到 1.0-1.5；若整体提示词跟随变弱，再微调 weight。"
+  },
+  {
+   "param": "ControlNetApplyAdvanced / strength=1.0",
+   "how_to_tune": "1.0 表示严格跟随深度图。若姿态/构图太死板，或与提示词冲突，降到 0.6-0.8；start/end 保持 0-1 为全程控制。"
+  },
+  {
+   "param": "WD14Tagger / threshold=0.35",
+   "how_to_tune": "阈值越低标签越多但噪声也越多。自动 prompt 太杂时提高到 0.4-0.5，或手动补写关键词；阈值过高会漏掉重要描述词。"
+  },
+  {
+   "param": "KSampler / steps=25, cfg=7",
+   "how_to_tune": "写实出图的常用起步值。追求细节可 steps=30，cfg 不宜超过 9；若饱和/对比过高，把 cfg 降到 6-6.5。"
+  }
+ ],
+ "summary_text": "能力:端到端完成人像换脸/重绘：输入参考人脸图与控制结构图，生成保持人脸身份且姿态/布局受控的真实感图像。；能力:多路身份保真：PuLID、InstantID、IPAdapter FaceID 同时注入人脸特征，提升跨姿态、跨风格下的人脸一致性。；能力:深度/姿态控制：用 DepthAnythingV2 生成深度图并送入 ControlNet-Union，约束人物姿势、景深与空间结构。；能力:自动提示词生成：WD14Tagger 对输入图自动反推标签，作为提示词来源，降低手工写 prompt 成本。；能力:输出 PNG 结果：PreviewImage/SaveImage 提供预览与保存，便于接入后续 ComfyUI 流程。；特色:同时堆叠 PuLID、InstantID、IPAdapter FaceID 三条人脸身份注入链路，将不同方法的身份特征都施加到同一生成过程；可提高身份保真度，但也需要调平衡以防特征冲突/过拟合。；特色:使用 AIO_Preprocessor 内置的 DepthAnythingV2（512）提取深度图，再由 controlnet-union-sdxl-1.0 的 ControlNetApplyAdvanced 施加全程深度控制。；特色:WD14Tagger（wd-v1-4-moat-tagger-v2）自动打标生成提示词，同时图中出现 ConditioningZeroOut，疑似用于构造零条件/负向条件，减少非目标概念混入。；特色:输入图先经 LayerUtility: ImageScaleByAspectRatio V2 等比缩放和 letterbox 处理，使不同长宽比的图片在深度估计/ControlNet 前保持一致画布。；适合把一张参考人脸应用到另一张姿态/场景参考图上，生成多姿态、多风格的写实人像；可用于模特换脸、角色一致性写真、姿势迁移和以 ControlNet 约束的人像重绘等场景。；这是一个“多保险”式身份保持换脸方案：先让 WD14Tagger 自动理解输入图内容，再用 DepthAnythingV2 + ControlNet-Union 固定人物姿态和画面结构，同时把 PuLID、InstantID、IPAdapter FaceID 三套适配器叠加到条件网络中以最大化保留目标人脸身份。这样设计可能就是为了在风格迁移/局部重绘中兼顾“换的是谁”的身份特征和“摆什么姿势/在什么场景”的结构控制；使用 Juggernaut_X_RunDiffusion 底模则是为了给最终写实效果打底。"
+}

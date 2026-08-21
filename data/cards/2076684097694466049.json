@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "输入多张参考图、文本提示词与可选用音频，端到端生成 10 秒 9:16 竖屏、2K、超写实且带原生立体声的 MiniMax-H3 角色视频",
+   "kind": "inference"
+  },
+  {
+   "text": "内置 5 秒/10 秒/15 秒三套提示词模板，并通过 ComfyMathExpression 自动换算帧数，可快速切换不同视频时长",
+   "kind": "fact"
+  },
+  {
+   "text": "提供 8 个图像输入节点，支持多参考图同时注入，用于保持角色身份、服装、姿态或风格一致",
+   "kind": "fact"
+  },
+  {
+   "text": "工作流内包含 4 个 checkpoint 加载器和 6 个 LoRA 加载器（MysticXXX、furry、HMNSFW_AIO_V2 等），具备同一工作流内多模型/多风格调用能力",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMaxH3ReferenceToVideo 多参考图条件生成",
+  "Video VAE + Audio VAE 双解码",
+  "LoRA 堆叠（6 个 LoraLoaderModelOnly）",
+  "多 checkpoint 加载/切换（4 个 UNETLoader）",
+  "res_multistep 采样器 + BasicGuider/BasicScheduler",
+  "SageAttention 注意力优化（PathchSageAttentionKJ）",
+  "EasyCache 模型缓存与清理",
+  "Fast Groups Bypasser 组件级快速 bypass"
+ ],
+ "special_features": [
+  {
+   "text": "4 个 UNETLoader 并列加载 FeiHou_MiniMax-H3_Remix、10Eros 系列等多个底模，并在下游连接 6 个 LoRA 加载器，形成庞大的多模型/多风格加载区，推断是为了风格叠加或快速切换不同底模效果",
+   "kind": "inference"
+  },
+  {
+   "text": "ComfyMathExpression 使用表达式 max(5, round(a * 24)) 根据秒数 a 动态计算视频帧数，配合 PrimitiveFloat 可一键切换 5/10/15 秒等时长",
+   "kind": "fact"
+  },
+  {
+   "text": "具备完整音频链路：2 个 LoadAudio 节点 + minimax_h3_audio_vae 解码，能够生成或混入背景音并输出原生立体声",
+   "kind": "fact"
+  },
+  {
+   "text": "大量交互控制组件：Fast Groups Bypasser (rgthree)、Switch any [Crystools]、DuckHideNode，便于对不同模型/LoRA/参考图组合做 A/B 对比和快速启用/禁用",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 EasyCache、easy clearCacheAll 与 PathchSageAttentionKJ 协同优化注意力计算和显存缓存，降低大模型多 LoRA 场景下的显存压力",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕 MiniMax-H3 多图参考视频生成构建：用 8 路图像输入锁定角色身份和风格，用多个底模 checkpoint 与 LoRA 堆叠扩展画面风格；同时通过 5/10/15 秒提示词模板和动态帧数计算来适配短视频创作节奏。加入音频 VAE 和 LoadAudio 是为了在一段流程中同时产出音画同步视频。大量 bypass/switch/缓存节点也表明作者相当注重调试效率，可能需要在不同模型和参数组合之间频繁对比。",
+ "use_case": "适合短视频创作者批量制作角色一致、风格鲜明的竖屏 AI 视频，例如虚拟主播短片、同人角色小剧场、带配音的 10 秒动态海报等。",
+ "limitation": "依赖 MiniMax-H3 系列专用模型文件（多个 Remix/10Eros checkpoint、video/audio VAE、Qwen3-VL CLIP）和若干自定义节点；其中包含成人向 LoRA，需注意使用场景。输入建议为竖屏参考图，输出 9:16 视频；实际启用哪几路图像输入由 Fast Groups Bypasser 控制，不一定要全部填满。由于同时加载多个模型和 LoRA，显存压力大，必须配合 SageAttention / EasyCache 优化。",
+ "dependencies": [
+  "checkpoint: FeiHou_MiniMax-H3_Remix_v0.6.safetensors",
+  "checkpoint: FeiHou_MiniMax-H3_Remix_v0.6_int8_convrot.safetensors",
+  "checkpoint: 10erosMaxInt8Ref2va_tenstripRef2vaInt8.safetensors",
+  "checkpoint: 10Eros_Max_h3_TURBO_ref2va_beta2.safetensors",
+  "vae: minimax_h3_video_vae_fp16.safetensors",
+  "vae: minimax_h3_audio_vae_fp32.safetensors",
+  "lora: minimax_h3_fl2v_lightx2v_turbo_8step_v1.0_resized_avg_rank_24_bf16.safetensors",
+  "lora: minimax_h3_fl2v_turbo_8step_v1_comfyui_bf16.safetensors",
+  "lora: MysticXXX_MMH3-V1.safetensors",
+  "lora: furry_lora_epoch31.safetensors",
+  "clip: qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "自定义节点: rgthree (Fast Groups Bypasser), Crystools, pysssss, EasyCache, SageAttention 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "多张参考图（8 路 LoadImage）+ 文本提示词（PrimitiveStringMultiline / JjkText）+ 可选音频（LoadAudio）+ 时长/分辨率控制参数",
+  "count": "8 个图像输入，2 个音频输入，1 个主提示词，3 个时长模板"
+ },
+ "output": {
+  "type": "视频文件（含视频轨 + 音频轨，VAEDecode + VAEDecodeAudio），可另存为 ZIP",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler.steps / denoise",
+   "how_to_tune": "当前默认 steps=20、denoise=0.98；若画面闪烁或不稳定，可将 steps 提到 24-30，或适当降低 denoise 到 0.95-0.96，以更贴近参考图构图。"
+  },
+  {
+   "param": "LoraLoaderModelOnly 的 model_strength",
+   "how_to_tune": "多个 LoRA 叠加时，核心风格 LoRA 可设 0.6-1.0，次要/细节 LoRA 建议 0.3-0.5（如当前 MysticXXX=0.4、Pussy4nus=0.5），避免互相干扰导致内容崩坏。"
+  },
+  {
+   "param": "ComfyMathExpression 变量 a / PrimitiveFloat",
+   "how_to_tune": "a 表示目标视频秒数，公式自动按 24fps 计算帧数；MiniMax-H3 原生效果较好的时长为 5/10/15 秒，改得太短或太长容易出现不连贯或运动不合理。"
+  },
+  {
+   "param": "ResolutionSelector 比例 / 缩放",
+   "how_to_tune": "9:16 竖屏适合手机短视频；scale 从 0.4 起步，若显存足够可逐步提高以换取细节；注意输入参考图最好裁成与输出一致的比例，否则会被拉伸或裁剪。"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "固定 seed 可复现同一构图；需要更多随机性时切换为 randomize；当视频出现重复闪烁时，更换 seed 是简单的第一排查手段。"
+  }
+ ],
+ "summary_text": "能力:输入多张参考图、文本提示词与可选用音频，端到端生成 10 秒 9:16 竖屏、2K、超写实且带原生立体声的 MiniMax-H3 角色视频；能力:内置 5 秒/10 秒/15 秒三套提示词模板，并通过 ComfyMathExpression 自动换算帧数，可快速切换不同视频时长；能力:提供 8 个图像输入节点，支持多参考图同时注入，用于保持角色身份、服装、姿态或风格一致；能力:工作流内包含 4 个 checkpoint 加载器和 6 个 LoRA 加载器（MysticXXX、furry、HMNSFW_AIO_V2 等），具备同一工作流内多模型/多风格调用能力；特色:4 个 UNETLoader 并列加载 FeiHou_MiniMax-H3_Remix、10Eros 系列等多个底模，并在下游连接 6 个 LoRA 加载器，形成庞大的多模型/多风格加载区，推断是为了风格叠加或快速切换不同底模效果；特色:ComfyMathExpression 使用表达式 max(5, round(a * 24)) 根据秒数 a 动态计算视频帧数，配合 PrimitiveFloat 可一键切换 5/10/15 秒等时长；特色:具备完整音频链路：2 个 LoadAudio 节点 + minimax_h3_audio_vae 解码，能够生成或混入背景音并输出原生立体声；特色:大量交互控制组件：Fast Groups Bypasser (rgthree)、Switch any [Crystools]、DuckHideNode，便于对不同模型/LoRA/参考图组合做 A/B 对比和快速启用/禁用；特色:使用 EasyCache、easy clearCacheAll 与 PathchSageAttentionKJ 协同优化注意力计算和显存缓存，降低大模型多 LoRA 场景下的显存压力；适合短视频创作者批量制作角色一致、风格鲜明的竖屏 AI 视频，例如虚拟主播短片、同人角色小剧场、带配音的 10 秒动态海报等。；该工作流围绕 MiniMax-H3 多图参考视频生成构建：用 8 路图像输入锁定角色身份和风格，用多个底模 checkpoint 与 LoRA 堆叠扩展画面风格；同时通过 5/10/15 秒提示词模板和动态帧数计算来适配短视频创作节奏。加入音频 VAE 和 LoadAudio 是为了在一段流程中同时产出音画同步视频。大量 bypass/switch/缓存节点也表明作者相当注重调试效率，可能需要在不同模型和参数组合之间频繁对比。"
+}

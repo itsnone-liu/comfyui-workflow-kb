@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "视频生成",
+  "角色一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物照片，自动生成包含多个景别（远景/中景/特写等）的角色一致性短视频片段，并最终拼接为完整视频",
+   "kind": "inference"
+  },
+  {
+   "text": "结合本地 Wan 2.1 I2V 与云端 RH_Nano_Banana2_Image2Image 生成关键帧，实现多镜头叙事且保持人物身份一致",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan 2.1 Image-to-Video (I2V)",
+  "关键帧到视频生成 (WanFirstMiddleLastFrameToVideo)",
+  "多阶段交替采样 (KSamplerAdvanced enable/disable)",
+  "LoRA 蒸馏加速 (Wan21_I2V_14B_lightx2v_cfg_step_distill_lora)",
+  "ModelSamplingSD3 shift 适配",
+  "SageAttention 注意力加速 (PathchSageAttentionKJ)",
+  "显存 Block Swap (wanBlockSwap)",
+  "分辨率自适应处理 (ImageResize+ / GetImageSize / Compare / easy ifElse)",
+  "云 API 图像生成 (RH_Nano_Banana2_Image2Image)",
+  "视频编码合成 (VHS_VideoCombine)"
+ ],
+ "special_features": [
+  {
+   "text": "5 个镜头各自有独立的 CLIPTextEncode 提示词和采样链，并用 ShowText 标注场景名称，实现多段叙事结构",
+   "kind": "fact"
+  },
+  {
+   "text": "8 个 KSamplerAdvanced 以 enable/disable 交替排列，可能对应不同关键帧（首帧/中间帧/末帧）的多阶段去噪控制",
+   "kind": "inference"
+  },
+  {
+   "text": "集成 RH_Nano_Banana2_Image2Image 云 API 节点，与本地 Wan 流程串联，用外部生成辅助关键帧/参考图",
+   "kind": "fact"
+  },
+  {
+   "text": "组合 ModelSamplingSD3(shift=8)、SageAttention、wanBlockSwap、PurgeVRAM 等显存优化手段，降低大模型运行门槛",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 GetImageSize/Compare/easy ifElse 实现横竖屏自适应尺寸，用户只需输入宽或高中的一个维度",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整套工作流面向多镜头角色一致性视频创作，先用云端 API 生成不同景别的关键帧，再用 Wan 2.1 I2V 本地动画化，并利用交替采样和关键帧节点来增强镜头连续性；同时通过多种显存优化让消费级显卡也能运行大模型视频生成流程。",
+ "use_case": "用户提供一张人像照片，即可获得一段包含不同景别、角色保持同一人的短视频（如人物介绍、MV片段、故事板动态预览）。",
+ "limitation": "需要下载多个大模型文件（Wan 2.1 I2V、VAE、UMT5-XXL、LoRA），依赖一系列自定义节点；RH_Nano_Banana2_Image2Image 云 API 有每日免费次数限制，超出后按次收费；输入仅支持单张图像，输出帧数固定（如 121 帧），增加镜头数需手动修改分支。",
+ "dependencies": [
+  "ComfyUI-VideoHelperSuite (VHS)",
+  "ComfyUI-easy-use",
+  "ComfyUI-KJNodes (PathchSageAttentionKJ)",
+  "ComfyUI-LayerStyle (LayerUtility PurgeVRAM)",
+  "RHHiddenNodes",
+  "Wan 2.1 I2V 模型 (smoothMixWan22I2V14B_i2vHigh/Low)",
+  "Wan 2.1 VAE (wan_2.1_vae_Comfy-Org.safetensors)",
+  "UMT5-XXL CLIP (umt5_xxl_fp8_e4m3fn_scaled.safetensors)",
+  "lightx2v LoRA (Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetensors)",
+  "Banana 云端 API"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像 (image)",
+  "count": "1"
+ },
+ "output": {
+  "type": "视频 (video)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSamplerAdvanced (steps=43, cfg=8, sampler=euler)",
+   "how_to_tune": "画面不稳定时可提高 steps 至 50；若提示词过拟合可降低 cfg 至 6-7；也可尝试 dpmpp_2m 等采样器，需注意耗时与质量平衡。"
+  },
+  {
+   "param": "ModelSamplingSD3 shift=8",
+   "how_to_tune": "用于 Wan 模型的采样偏移调整。高分辨率或长视频可尝试 6-10；过低可能导致画质异常，过高可能引入噪声。"
+  },
+  {
+   "param": "LoraLoaderModelOnly weight=1.0",
+   "how_to_tune": "LoRA 权重为 1 时完全启用蒸馏加速；若出现细节损失可下调至 0.8-0.9。"
+  },
+  {
+   "param": "WanFirstMiddleLastFrameToVideo (1280x720, 121帧)",
+   "how_to_tune": "降低分辨率如 1024x512 可显著减少显存占用；帧数决定视频时长，增加帧数会延长推理时间并增加显存压力。"
+  },
+  {
+   "param": "ImageResize+ 宽/高（一个为0）",
+   "how_to_tune": "竖图只填高（如 1024），横图只填宽（如 1024），另一个填 0；数值控制输入图像长边，影响最终生成画幅。"
+  },
+  {
+   "param": "RH_Nano_Banana2_Image2Image",
+   "how_to_tune": "可调整随机种子和模型参数以获得不同关键帧风格；注意每次调用消耗 Banana 配额，建议先本地小规模试跑再批量使用。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物照片，自动生成包含多个景别（远景/中景/特写等）的角色一致性短视频片段，并最终拼接为完整视频；能力:结合本地 Wan 2.1 I2V 与云端 RH_Nano_Banana2_Image2Image 生成关键帧，实现多镜头叙事且保持人物身份一致；特色:5 个镜头各自有独立的 CLIPTextEncode 提示词和采样链，并用 ShowText 标注场景名称，实现多段叙事结构；特色:8 个 KSamplerAdvanced 以 enable/disable 交替排列，可能对应不同关键帧（首帧/中间帧/末帧）的多阶段去噪控制；特色:集成 RH_Nano_Banana2_Image2Image 云 API 节点，与本地 Wan 流程串联，用外部生成辅助关键帧/参考图；特色:组合 ModelSamplingSD3(shift=8)、SageAttention、wanBlockSwap、PurgeVRAM 等显存优化手段，降低大模型运行门槛；特色:通过 GetImageSize/Compare/easy ifElse 实现横竖屏自适应尺寸，用户只需输入宽或高中的一个维度；用户提供一张人像照片，即可获得一段包含不同景别、角色保持同一人的短视频（如人物介绍、MV片段、故事板动态预览）。；整套工作流面向多镜头角色一致性视频创作，先用云端 API 生成不同景别的关键帧，再用 Wan 2.1 I2V 本地动画化，并利用交替采样和关键帧节点来增强镜头连续性；同时通过多种显存优化让消费级显卡也能运行大模型视频生成流程。"
+}

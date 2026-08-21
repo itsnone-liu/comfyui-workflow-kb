@@ -1,0 +1,84 @@
+{
+ "domain": [
+  "图像生成",
+  "人像换装"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人物照片和服装参考图，自动移除背景并生成该人物穿着指定服装的写实图像（换装）",
+   "kind": "inference"
+  },
+  {
+   "text": "支持中文自然语言提示词，通过内置翻译自动转为英文后参与生成",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Kontext-dev 图像生成",
+  "DualCLIP 文本编码（CLIP-L + T5-XXL）",
+  "TransparentBackgroundUltra 背景移除",
+  "easy imageConcat 多图拼接",
+  "ReferenceLatent 参考潜空间",
+  "FluxGuidance 条件引导"
+ ],
+ "special_features": [
+  {
+   "text": "双路图像输入：人物图先经LayerMask抠图，再与服装图通过easy imageConcat拼接成组合视觉条件",
+   "kind": "inference"
+  },
+  {
+   "text": "引入ReferenceLatent将参考图编码到潜空间，辅助保持人物身份/构图一致",
+   "kind": "inference"
+  },
+  {
+   "text": "使用RH_Translator将中文提示词自动翻译为英文，降低中文用户使用门槛",
+   "kind": "inference"
+  },
+  {
+   "text": "ConditioningZeroOut与FluxGuidance组合，对条件强度/分支进行控制",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流面向人物换装这一时尚电商需求，以FLUX Kontext-dev为生成核心。先利用TransparentBackgroundUltra去除人物背景，获得干净前景；再通过easy imageConcat将服装参考图与人物主体拼接，使生成模型在同一画面中同时感知人物与目标服装，从而引导生成保持身份、姿态和服装效果的图像。ReferenceLatent的加入进一步增强了人物一致性；RH_Translator让中文用户可以用自然语言描述编辑目标，简化了提示词编写。整体呈现多层条件驱动的图生图设计。",
+ "use_case": "输入人物照片和服装商品图，在提示词中用中文描述期望效果（如“让图片高清化，这个女人是个时尚模特穿着连衣裙”），运行后得到该人物穿着指定服装的写实照片。适用于电商模特换装、虚拟试衣、服装设计预览等。",
+ "limitation": "依赖较多自定义节点与模型文件（见dependencies），部署门槛高；显存占用大；背景移除效果依赖输入图质量；FLUX生成非实时，迭代慢；中文提示词依赖翻译节点，离线时可能失效。",
+ "dependencies": [
+  "flux1-kontext-dev.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn_scaled.safetensors",
+  "ae.safetensors",
+  "ckpt_base.pth（TransparentBackgroundUltra/VITMatte）",
+  "comfyui-easy-use （easy imageConcat）",
+  "ComfyUI-MTB （Colored Image）",
+  "RH_Translator 自定义节点",
+  "FastCanvas / FastCanvasTool 自定义节点"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "图像+文本",
+  "count": "2 张图像 + 1 条提示词"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前20步，兼顾质量与速度；若需更精细细节可提高至30~40，但耗时增加"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "当前为1，符合FLUX推荐；如需更强文本约束可少量上调，但过高易产生伪影"
+  },
+  {
+   "param": "FluxGuidance.amount",
+   "how_to_tune": "当前3.5，数值越大越贴近提示词，但过高可能导致过曝/失真"
+  },
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "随机模式每次生成不同；固定seed可复现结果，用于偏好筛选"
+  }
+ ],
+ "summary_text": "能力:上传人物照片和服装参考图，自动移除背景并生成该人物穿着指定服装的写实图像（换装）；能力:支持中文自然语言提示词，通过内置翻译自动转为英文后参与生成；特色:双路图像输入：人物图先经LayerMask抠图，再与服装图通过easy imageConcat拼接成组合视觉条件；特色:引入ReferenceLatent将参考图编码到潜空间，辅助保持人物身份/构图一致；特色:使用RH_Translator将中文提示词自动翻译为英文，降低中文用户使用门槛；特色:ConditioningZeroOut与FluxGuidance组合，对条件强度/分支进行控制；输入人物照片和服装商品图，在提示词中用中文描述期望效果（如“让图片高清化，这个女人是个时尚模特穿着连衣裙”），运行后得到该人物穿着指定服装的写实照片。适用于电商模特换装、虚拟试衣、服装设计预览等。；该工作流面向人物换装这一时尚电商需求，以FLUX Kontext-dev为生成核心。先利用TransparentBackgroundUltra去除人物背景，获得干净前景；再通过easy imageConcat将服装参考图与人物主体拼接，使生成模型在同一画面中同时感知人物与目标服装，从而引导生成保持身份、姿态和服装效果的图像。ReferenceLatent的加入进一步增强了人物一致性；RH_Translator让中文用户可以用自然语言描述编辑目标，简化了提示词编写。整体呈现多层条件驱动的图生图设计。"
+}

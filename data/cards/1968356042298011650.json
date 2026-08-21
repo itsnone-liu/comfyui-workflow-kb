@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "人像写真",
+  "图生图",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人脸参考图和一张模特背景图，生成保持人脸身份并融合到模特图像中的换脸写真",
+   "kind": "fact"
+  },
+  {
+   "text": "通过局部重绘保留原图背景与姿态，自动进行颜色匹配和边缘羽化，输出自然无痕的换脸结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID 身份保持",
+  "ControlNet 双控制（mistoLine 线稿 + InstantID）",
+  "局部重绘 Inpainting（InpaintCrop / InpaintModelConditioning / InpaintStitch）",
+  "人物自动分割（PersonMaskUltra V2）",
+  "线稿提取（AnyLineArtPreprocessor_aux）",
+  "颜色匹配（ImageColorMatch+ LAB）",
+  "图生图采样（euler_ancestral / sgm_uniform）"
+ ],
+ "special_features": [
+  {
+   "text": "双 ControlNet 并行控制：mistoLine 线稿与 InstantID 身份同时参与去噪，分别约束结构与身份",
+   "kind": "fact"
+  },
+  {
+   "text": "三段式 Inpaint 流程（InpaintCrop → InpaintModelConditioning → InpaintStitch）实现只重绘人物区域的局部重绘",
+   "kind": "fact"
+  },
+  {
+   "text": "PersonMaskUltra V2 自动提取人物 Mask，经 MaskBlur+ 柔化边缘，再用 ImageColorMatch+ 做 LAB 空间颜色匹配，形成完整后处理链",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流将 InstantID 的身份保持能力与 ControlNet 的结构控制结合，通过 Inpaint 局部重绘最大化保留原模特图的背景与姿态，同时用颜色匹配和 Mask 边缘柔化消除换脸痕迹。这样设计可能是为了在保证身份一致性的前提下，输出自然、高保真的换脸写真，而无需重新生成整个场景。",
+ "use_case": "适用于电商模特换脸、个人写真定制、影视/广告角色替换等场景，用户只需提供一张清晰人脸和一张目标模特图即可生成自然换脸效果。",
+ "limitation": "依赖 DreamShaper XL v2.1 Turbo 模型、InstantID 专用模型（ip-adapter.bin、instantid/diffusion_pytorch_model.safetensors）、mistoLine ControlNet 模型，以及若干自定义节点（InstantID、ControlNet Aux、Impact Pack 等）；需要至少一张五官清晰的正脸参考图，且对目标图中的人脸大小、角度、遮挡敏感；运行需 CUDA GPU，显存不足时可能无法处理高分辨率图。",
+ "dependencies": [
+  "DreamShaper XL v2.1 Turbo 闪电_v2.1 Turbo.safetensors",
+  "instantid/diffusion_pytorch_model.safetensors",
+  "mistoLine_fp16.safetensors",
+  "ip-adapter.bin",
+  "ComfyUI_InstantID 自定义节点",
+  "ComfyUI_ControlNet_Aux 自定义节点",
+  "ComfyUI_Impact_Pack 自定义节点（PersonMaskUltra V2）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2（人脸参考图 + 模特背景图）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID (weight=1, start=0, end=1)",
+   "how_to_tune": "weight 控制身份保留强度，建议 0.8~1.2；start/end 控制身份注入的采样区间，若希望身份在后期才介入可调小 end。"
+  },
+  {
+   "param": "ControlNetApplyAdvanced (strength=0.45, end_percent=0.6)",
+   "how_to_tune": "strength 为线稿控制强度，增大可增强构图结构保持，但可能降低自由度；end_percent=0.6 表示仅在前 60% 采样步数生效，可适当延长以加强结构约束。"
+  },
+  {
+   "param": "KSampler (steps=15, cfg=1.5, sampler=euler_ancestral, scheduler=sgm_uniform)",
+   "how_to_tune": "Turbo 模型步数 15 已足够，cfg 较低以保持稳定；若生成过饱和或失真，可在 1.2~2.0 之间微调 cfg。"
+  },
+  {
+   "param": "MaskBlur+ (blur=10)",
+   "how_to_tune": "控制 mask 边缘羽化半径，值越大过渡越柔和，但过大可能重绘到背景；一般 5~20 范围内调节。"
+  },
+  {
+   "param": "ImageColorMatch+ (mode=LAB)",
+   "how_to_tune": "选择颜色匹配色彩空间，LAB 适合自然色调；若肤色偏差明显，可尝试其它色彩空间或调整匹配强度。"
+  },
+  {
+   "param": "AnyLineArtPreprocessor_aux (lineart_standard, resolution=1280)",
+   "how_to_tune": "线稿提取分辨率，越高线稿细节越丰富但耗时增加，建议 1000~1600；过大可能引入噪点。"
+  }
+ ],
+ "summary_text": "能力:上传一张人脸参考图和一张模特背景图，生成保持人脸身份并融合到模特图像中的换脸写真；能力:通过局部重绘保留原图背景与姿态，自动进行颜色匹配和边缘羽化，输出自然无痕的换脸结果；特色:双 ControlNet 并行控制：mistoLine 线稿与 InstantID 身份同时参与去噪，分别约束结构与身份；特色:三段式 Inpaint 流程（InpaintCrop → InpaintModelConditioning → InpaintStitch）实现只重绘人物区域的局部重绘；特色:PersonMaskUltra V2 自动提取人物 Mask，经 MaskBlur+ 柔化边缘，再用 ImageColorMatch+ 做 LAB 空间颜色匹配，形成完整后处理链；适用于电商模特换脸、个人写真定制、影视/广告角色替换等场景，用户只需提供一张清晰人脸和一张目标模特图即可生成自然换脸效果。；该工作流将 InstantID 的身份保持能力与 ControlNet 的结构控制结合，通过 Inpaint 局部重绘最大化保留原模特图的背景与姿态，同时用颜色匹配和 Mask 边缘柔化消除换脸痕迹。这样设计可能是为了在保证身份一致性的前提下，输出自然、高保真的换脸写真，而无需重新生成整个场景。"
+}

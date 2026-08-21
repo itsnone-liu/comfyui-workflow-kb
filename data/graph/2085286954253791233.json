@@ -1,0 +1,785 @@
+{
+ "node_count": 24,
+ "link_count": 26,
+ "active_node_count": 23,
+ "nodes": [
+  {
+   "id": 92,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/MiniMax_H3",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    260
+   ],
+   "out_links": []
+  },
+  {
+   "id": 116,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: MiniMax H3",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## MiniMax H3\n\n[MiniMax H3](https://www.minimax.io/blog/minimax-h3) is MiniMax's general-purpose, omni-modal generation model. It jointly understands text, image, video, and audio, and generates video with **native stereo audio**: voice, sound effects, and music are modeled jointly in a single forward pass, not layered on afterward. Output is up to 2K resolution, 24fps, and up to about 15 seconds.\n\n## ComfyUI links\n- [ComfyUI#15224](https://github.com/Comfy-Org/ComfyUI/pull/15224)\n- [🤗 Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3)\n\n## About this workflow\n\nThis template runs the **reference-to-video (ref2va)** task using the `MiniMaxH3ReferenceToVideo` node. It takes any mix of reference images, videos, and standalone audio, and weaves them into the generation to lock in a character's identity, a style, a motion, a camera move, or a voice.\n\n**Key inputs**\n\n- **ref_images / ref_videos / ref_video_audios / ref_audios**: up to 9 reference images, 3 reference videos (each may carry its own paired soundtrack), and 3 standalone reference audio clips\n- **prompt**: reference the inputs by tag, in the exact order they were connected, for example `<Picture 1>`, `<Video 1>`, `<Audio 1>`, then describe the target scene, motion, and audio\n- **ref_image_size**: `match` scales references down to the generation's resolution (faster); `max` keeps up to a 2048px short edge for stronger identity fidelity, at the cost of speed since reference tokens ride along every sampling step\n- **width / height**: set via Resolution Selector.\n- **duration (seconds)**: converted to a valid frame `length` by the Math Expression node\n\n**Sampling and decode**\n\n- Sampler: `res_multistep`. `beta` or `normal` scheduler tends to outperform `simple` for reference-heavy prompts like this one\n- The sampler's joint audio+video `LATENT` output feeds directly into both `VAEDecode` (video, `minimax_h3_video_vae_fp16`) and `VAEDecodeAudio` (audio, `minimax_h3_audio_vae_fp32`); each decode node automatically pulls its own half out of the packed latent. `CreateVideo` then muxes the two into a single MP4 with synced sound\n- The diffusion model here is `minimax_h3_ref2va_pruned_int8_convrot.safetensors`, a different set of weights from the `fl2va` model used by the t2v/i2v templates\n\nRef2va's output is very sensitive to prompt wording; matching the reference tags precisely and being explicit about which reference drives which part of the shot tends to work best."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 117,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Model Links",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## Model Links\n[🤗 Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3)\n\n**vae**\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors)\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors)\n\n**diffusion_models**\n\n- [minimax_h3_ref2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 vae/\n│   │   ├── minimax_h3_video_vae_fp16.safetensors\n│   │   └── minimax_h3_audio_vae_fp32.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── minimax_h3_ref2va_pruned_int8_convrot.safetensors\n│   └── 📂 text_encoders/\n│       └── qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 121,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    281,
+    250
+   ],
+   "out_links": [
+    259
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    280,
+    251
+   ],
+   "out_links": [
+    258
+   ]
+  },
+  {
+   "id": 123,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    255
+   ]
+  },
+  {
+   "id": 124,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    20,
+    1
+   ],
+   "in_links": [
+    283
+   ],
+   "out_links": [
+    256
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    253,
+    254,
+    255,
+    256,
+    271
+   ],
+   "out_links": [
+    280,
+    281
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    284,
+    270
+   ],
+   "out_links": [
+    254
+   ]
+  },
+  {
+   "id": 129,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    476540952845103,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    253
+   ]
+  },
+  {
+   "id": 130,
+   "type": "CreateVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8
+   ],
+   "in_links": [
+    258,
+    259
+   ],
+   "out_links": [
+    260
+   ]
+  },
+  {
+   "id": 140,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 127,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    285
+   ]
+  },
+  {
+   "id": 128,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_bf16.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    272
+   ]
+  },
+  {
+   "id": 119,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    251,
+    273
+   ]
+  },
+  {
+   "id": 120,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    250,
+    274
+   ]
+  },
+  {
+   "id": 131,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    261
+   ],
+   "out_links": [
+    275
+   ]
+  },
+  {
+   "id": 132,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (Duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    15
+   ],
+   "in_links": [],
+   "out_links": [
+    261
+   ]
+  },
+  {
+   "id": 141,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    285
+   ],
+   "out_links": [
+    283,
+    284
+   ]
+  },
+  {
+   "id": 139,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    282
+   ]
+  },
+  {
+   "id": 136,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "max"
+   ],
+   "in_links": [
+    272,
+    273,
+    274,
+    278,
+    282,
+    279,
+    276,
+    277,
+    275
+   ],
+   "out_links": [
+    270,
+    271
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "subject_definitions:\n<Subject 1> is the anthropomorphic dog-headed football player defined by <Picture 1>, a single character turnaround sheet containing front, side, and back views. Preserve the light tan curly dog head, pointed ears, muscular adult male build, fitted red football jersey with dark green trim, dark green shorts with red piping, deep red knee socks with green cuffs, and pale football cleats. Keep the kit free of logos, crests, player names, and numbers.\n<Subject 2> is a generic opposing football defender in an unbranded plain white kit.\n<Subject 3> is a generic football referee in a black referee uniform.\n\nsummary:\n[reference generation] A 15-second live-action football-broadcast parody uses <Subject 1> as the consistent character reference. Inside a penalty area, <Subject 2> barely brushes past <Subject 1>, who immediately performs an absurdly theatrical dive, then leaps up unharmed to angrily demand a penalty from <Subject 3>. The visual joke clearly satirizes exaggerated football diving.\n\nretention_analysis:\n<Subject 1> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - preserve the dog-headed player's facial identity, tan curly fur, pointed ears, muscular body proportions, red-and-green kit design, socks, and pale cleats from <Picture 1>.\n<Subject 2> (appears in [Shot 1], [Shot 2]): weak_reference - retain only a generic opposing defender role in a plain white kit without identifiable branding.\n<Subject 3> (appears in [Shot 3]): weak_reference - retain only a generic referee role in a black uniform with a calm, unimpressed reaction.\n\ndetailed_description:\nThe target video uses realistic live-action sports-broadcast cinematography with late-afternoon stadium lighting, detailed green grass, a full but defocused crowd, natural handheld sideline-camera movement, and a dry satirical comedy tone. The football action is harmless and clearly exaggerated; no one is injured.\n\n[Shot 1] A medium-wide sideline tracking shot establishes a busy penalty area. <Subject 1>, the muscular tan curly dog-headed footballer from <Picture 1>, wears the preserved fitted red jersey with dark green trim, dark green shorts, deep red socks with green cuffs, and pale cleats. He dribbles a football slowly near the penalty spot, keeping the ball close to his right foot. <Subject 2>, a defender in a plain white kit, runs alongside and makes only a tiny, clearly harmless shoulder-to-shoulder brush while reaching toward the ball. The ball continues rolling freely forward. <Subject 1> suddenly stops, looks toward the referee with widened eyes, raises both arms above his head, and begins an excessively slow backward fall. The camera tracks left with small amplitude, keeping his full body and the insignificant contact visible in frame. Nearby crowd noise rises with a surprised but amused reaction.\n\n[Shot 2] At 00:05.000, the camera cuts to a low-angle medium close-up from the grass. <Subject 1> lands softly, performs one exaggerated sideways roll, then clutches his completely untouched shin with both hands. His pointed ears flatten against the turf as he kicks his legs upward in a melodramatic pose. He briefly opens one eye to check whether <Subject 3> noticed, then instantly closes it and resumes the performance with even more theatrical body language. <Subject 2> stops two meters away with both palms open, confused, and does not touch him again. The camera pushes in with small amplitude at slow speed toward <Subject 1>'s suspicious one-eyed glance, while scattered spectators laugh and a few people gasp in disbelief.\n\n[Shot 3] At 00:10.000, the camera cuts to a medium front-facing shot of <Subject 1> suddenly springing upright with no sign of pain and marching toward <Subject 3>. He points first at the penalty spot, then dramatically at his unharmed leg, while <Subject 3> stands still with a neutral expression. <Subject 1>, using an aggrieved, loud adult male voice (S1), shouts in Mandarin, <d>[Chinese] 裁判！他骗你！点球！必须点球！</d> Immediately after the line, <Subject 3> gives a calm “play on” hand gesture. <Subject 1> freezes in an indignant open-mouthed pose, then looks directly into the broadcast camera for half a second as the crowd breaks into laughter. The final frame holds on his offended dog-faced expression.\n\noverall_soundscape:\nContinuous outdoor stadium ambience includes distant crowd chatter, light wind across the open pitch, football boot steps on grass, and the soft roll of the ball. The fall produces a gentle turf impact and fabric rustle rather than a violent collision. Crowd reactions progress from a small gasp to scattered laughter and a larger laugh at the referee's dismissal.\n\nnon_diegetic_music:\nLight pizzicato strings and muted brass accents play at a moderate tempo. A short comic percussion flourish rises during the fake fall, then stops abruptly when the referee signals play on."
+   ],
+   "in_links": [],
+   "out_links": [
+    279
+   ]
+  },
+  {
+   "id": 137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    278
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "Resolution Selector (Size)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    1,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    276,
+    277
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 119,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 121,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 130,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 122,
+   "to_node": 130,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 125,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 125,
+   "to_node": 121,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 125,
+   "to_node": 122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 126,
+   "to_node": 125,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 127,
+   "to_node": 141,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 128,
+   "to_node": 136,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 129,
+   "to_node": 125,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 130,
+   "to_node": 92,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 131,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 132,
+   "to_node": 131,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 125,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 126,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 137,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 138,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 139,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 141,
+   "to_node": 124,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 141,
+   "to_node": 126,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "video_io": 1,
+  "utility": 10,
+  "vae": 4,
+  "sampler": 4,
+  "preprocessor": 1,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "image_io": 2
+ },
+ "assets": [
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_bf16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_bf16.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 30,
+ "structure_hash": "9cec77bfb0d7846c",
+ "param_face": [
+  {
+   "node_id": 92,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 92,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 92,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 123,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "476540952845103"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CreateVideo",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CreateVideo",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_bf16.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_bf16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 131,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 132,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 139,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "max"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  }
+ ]
+}

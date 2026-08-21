@@ -1,0 +1,3598 @@
+{
+ "node_count": 73,
+ "link_count": 146,
+ "active_node_count": 72,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "Compare",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a < b"
+   ],
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 2,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 832, height: 1248\n batch size: 1bdb929a96a486608cc401bbe69b99191"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": [
+    1,
+    2
+   ]
+  },
+  {
+   "id": 42,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    53
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1024,
+    "lanczos",
+    "keep proportion",
+    "always",
+    16
+   ],
+   "in_links": [
+    5
+   ],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 3,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    0,
+    "lanczos",
+    "keep proportion",
+    "always",
+    16
+   ],
+   "in_links": [
+    4
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 82,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [
+    462
+   ],
+   "out_links": []
+  },
+  {
+   "id": 83,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip"
+   ],
+   "in_links": [
+    463
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "wan",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    463
+   ]
+  },
+  {
+   "id": 34,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "smoothMixWan22I2V14B_i2vHigh.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    137
+   ]
+  },
+  {
+   "id": 70,
+   "type": "ModelSamplingSD3",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    137
+   ],
+   "out_links": [
+    135
+   ]
+  },
+  {
+   "id": 40,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan_2.1_vae_Comfy-Org.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    462
+   ]
+  },
+  {
+   "id": 22,
+   "type": "WanFirstMiddleLastFrameToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    720,
+    121,
+    1,
+    "SINGLE_PERSON",
+    0.5,
+    0.5000000000000001,
+    1,
+    0,
+    0,
+    1
+   ],
+   "in_links": [
+    27,
+    28,
+    470,
+    773,
+    777,
+    780,
+    73,
+    74,
+    76
+   ],
+   "out_links": [
+    32,
+    38,
+    36,
+    37,
+    93
+   ]
+  },
+  {
+   "id": 87,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    471
+   ]
+  },
+  {
+   "id": 88,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    472
+   ]
+  },
+  {
+   "id": 86,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    470
+   ]
+  },
+  {
+   "id": 85,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    469
+   ]
+  },
+  {
+   "id": 20,
+   "type": "easy imageListToImageBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    808
+   ],
+   "out_links": [
+    22
+   ]
+  },
+  {
+   "id": 75,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    142
+   ],
+   "out_links": [
+    143
+   ]
+  },
+  {
+   "id": 74,
+   "type": "wanBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    141
+   ],
+   "out_links": [
+    142
+   ]
+  },
+  {
+   "id": 95,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    479
+   ]
+  },
+  {
+   "id": 54,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    84
+   ],
+   "out_links": []
+  },
+  {
+   "id": 96,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    488
+   ],
+   "out_links": []
+  },
+  {
+   "id": 43,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    468,
+    767
+   ],
+   "out_links": [
+    57
+   ]
+  },
+  {
+   "id": 97,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    530,
+    768
+   ],
+   "out_links": [
+    495
+   ]
+  },
+  {
+   "id": 106,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    525
+   ]
+  },
+  {
+   "id": 72,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    136
+   ],
+   "out_links": [
+    138
+   ]
+  },
+  {
+   "id": 133,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    614
+   ]
+  },
+  {
+   "id": 134,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    602
+   ],
+   "out_links": []
+  },
+  {
+   "id": 138,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    608
+   ]
+  },
+  {
+   "id": 24,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走, censored, mosaic censoring, bar censor, pixelated, glowing, bloom, blurry, out of focus, low detail, bad anatomy, ugly, overexposed, underexposed, distorted face, extra limbs, cartoonish, 3d render artifacts, duplicate people, unnatural lighting, bad composition, missing shadows, low resolution, poorly textured, glitch, noise, grain, static, motionless, still frame, overall grayish, worst quality, low quality, JPEG compression artifacts, subtitles, stylized, artwork, painting, illustration, cluttered background, many people in background, three legs, walking backward, zoom out, zoom in, mouth speaking, moving mouth, talking, speaking, mute speaking, unnatural skin tone, discolored eyelid, red eyelids, red upper eyelids, no red eyeshadow, closed eyes, no wide-open innocent eyes, poorly drawn hands, extra fingers, fused fingers, poorly drawn face, deformed, disfigured, malformed limbs, thighs, fog, mist, voluminous eyelashes, blush,"
+   ],
+   "in_links": [
+    467
+   ],
+   "out_links": [
+    28,
+    58,
+    494,
+    627
+   ]
+  },
+  {
+   "id": 84,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_clip",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip"
+   ],
+   "in_links": [],
+   "out_links": [
+    466,
+    467,
+    468,
+    530,
+    638
+   ]
+  },
+  {
+   "id": 76,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    143
+   ],
+   "out_links": [
+    145,
+    146,
+    492,
+    639
+   ]
+  },
+  {
+   "id": 73,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    138
+   ],
+   "out_links": [
+    139,
+    140,
+    493,
+    640
+   ]
+  },
+  {
+   "id": 137,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    638,
+    791
+   ],
+   "out_links": [
+    607
+   ]
+  },
+  {
+   "id": 6,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "id": 77,
+   "type": "ModelSamplingSD3",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    475
+   ],
+   "out_links": [
+    141
+   ]
+  },
+  {
+   "id": 44,
+   "type": "WanFirstMiddleLastFrameToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    720,
+    121,
+    1,
+    "SINGLE_PERSON",
+    0.5,
+    0.5000000000000001,
+    1,
+    0,
+    0,
+    1
+   ],
+   "in_links": [
+    57,
+    58,
+    469,
+    781,
+    784,
+    787,
+    71,
+    72,
+    75
+   ],
+   "out_links": [
+    62,
+    64,
+    63,
+    65,
+    66
+   ]
+  },
+  {
+   "id": 23,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    466,
+    766
+   ],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 176,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "smoothMixWan22I2V14B_i2vLow.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    720
+   ]
+  },
+  {
+   "id": 89,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetensors",
+    1
+   ],
+   "in_links": [
+    720
+   ],
+   "out_links": [
+    475
+   ]
+  },
+  {
+   "id": 39,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    50,
+    472
+   ],
+   "out_links": [
+    53,
+    723
+   ]
+  },
+  {
+   "id": 49,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    77,
+    471
+   ],
+   "out_links": [
+    84,
+    727
+   ]
+  },
+  {
+   "id": 94,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    480,
+    479
+   ],
+   "out_links": [
+    488,
+    731
+   ]
+  },
+  {
+   "id": 141,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    613,
+    614
+   ],
+   "out_links": [
+    602,
+    734
+   ]
+  },
+  {
+   "id": 26,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    0,
+    4,
+    "enable"
+   ],
+   "in_links": [
+    139,
+    32,
+    36,
+    93
+   ],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 27,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    4,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    145,
+    38,
+    37,
+    31
+   ],
+   "out_links": [
+    50
+   ]
+  },
+  {
+   "id": 45,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    0,
+    4,
+    "enable"
+   ],
+   "in_links": [
+    140,
+    62,
+    63,
+    66
+   ],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 46,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    4,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    146,
+    64,
+    65,
+    61
+   ],
+   "out_links": [
+    77
+   ]
+  },
+  {
+   "id": 91,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    0,
+    4,
+    "enable"
+   ],
+   "in_links": [
+    493,
+    481,
+    483,
+    484
+   ],
+   "out_links": [
+    486
+   ]
+  },
+  {
+   "id": 58,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    807
+   ],
+   "out_links": []
+  },
+  {
+   "id": 21,
+   "type": "VHS_Unbatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {},
+   "in_links": [
+    22
+   ],
+   "out_links": [
+    765,
+    769,
+    770,
+    789,
+    790
+   ]
+  },
+  {
+   "id": 180,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    765,
+    769,
+    770,
+    771,
+    772,
+    775,
+    776,
+    778,
+    779,
+    782,
+    783,
+    785,
+    786,
+    789,
+    790,
+    792,
+    793,
+    795,
+    796,
+    799,
+    800,
+    802,
+    803
+   ],
+   "out_links": [
+    766,
+    767,
+    768,
+    773,
+    774,
+    777,
+    780,
+    781,
+    784,
+    787,
+    788,
+    791,
+    794,
+    797,
+    798,
+    801,
+    804
+   ]
+  },
+  {
+   "id": 47,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 848, height: 1280\n batch size: 1bdb929a96a486608cc401bbe69b99191"
+   ],
+   "in_links": [
+    774
+   ],
+   "out_links": [
+    71,
+    73,
+    528,
+    644,
+    72,
+    74,
+    527,
+    645
+   ]
+  },
+  {
+   "id": 146,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    0,
+    4,
+    "enable"
+   ],
+   "in_links": [
+    640,
+    616,
+    617,
+    618
+   ],
+   "out_links": [
+    606
+   ]
+  },
+  {
+   "id": 136,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    4,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    639,
+    604,
+    605,
+    606
+   ],
+   "out_links": [
+    613
+   ]
+  },
+  {
+   "id": 135,
+   "type": "easy batchAnything",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    731,
+    734
+   ],
+   "out_links": [
+    648
+   ]
+  },
+  {
+   "id": 71,
+   "type": "wanBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    135
+   ],
+   "out_links": [
+    136
+   ]
+  },
+  {
+   "id": 53,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "AnimateDiff_00001_p81_dpnhc_1768039453.mp4",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//05710eb46f60072c2b77ca2bb3e2bf79/output/AnimateDiff_00001_p81_dpnhc_1768039453.mp4",
+      "workflow": "AnimateDiff_00001_p81.png",
+      "fullpath": "/data/ComfyUI/personal/05710eb46f60072c2b77ca2bb3e2bf79/output/AnimateDiff_00001_p81.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    654
+   ],
+   "out_links": []
+  },
+  {
+   "id": 93,
+   "type": "easy batchAnything",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    577,
+    648
+   ],
+   "out_links": [
+    654
+   ]
+  },
+  {
+   "id": 92,
+   "type": "KSamplerAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "disable",
+    43,
+    "fixed",
+    8,
+    1,
+    "euler",
+    "simple",
+    4,
+    10000,
+    "disable"
+   ],
+   "in_links": [
+    492,
+    482,
+    485,
+    486
+   ],
+   "out_links": [
+    480
+   ]
+  },
+  {
+   "id": 178,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    736
+   ],
+   "out_links": [
+    735
+   ]
+  },
+  {
+   "id": 90,
+   "type": "WanFirstMiddleLastFrameToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    720,
+    121,
+    1,
+    "SINGLE_PERSON",
+    0.5,
+    0.5000000000000001,
+    1,
+    0,
+    0,
+    1
+   ],
+   "in_links": [
+    495,
+    494,
+    525,
+    788,
+    794,
+    797,
+    528,
+    527,
+    529
+   ],
+   "out_links": [
+    481,
+    482,
+    483,
+    485,
+    484
+   ]
+  },
+  {
+   "id": 140,
+   "type": "WanFirstMiddleLastFrameToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    720,
+    121,
+    1,
+    "SINGLE_PERSON",
+    0.5,
+    0.5000000000000001,
+    1,
+    0,
+    0,
+    1
+   ],
+   "in_links": [
+    607,
+    627,
+    608,
+    798,
+    801,
+    804,
+    644,
+    645,
+    746
+   ],
+   "out_links": [
+    616,
+    604,
+    605,
+    617,
+    618
+   ]
+  },
+  {
+   "id": 179,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    771,
+    775,
+    778,
+    782,
+    785,
+    792,
+    795,
+    799,
+    802
+   ]
+  },
+  {
+   "id": 160,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280
+   ],
+   "in_links": [],
+   "out_links": [
+    772,
+    776,
+    779,
+    783,
+    786,
+    793,
+    796,
+    800,
+    803
+   ]
+  },
+  {
+   "id": 181,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "竖图：只填高\n\n横图：只填宽\n\n其中一个为：0"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 48,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": "整数",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    121
+   ],
+   "in_links": [],
+   "out_links": [
+    75,
+    76,
+    529,
+    746
+   ]
+  },
+  {
+   "id": 182,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "帧数\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 50,
+   "type": "easy batchAnything",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    723,
+    727
+   ],
+   "out_links": [
+    577
+   ]
+  },
+  {
+   "id": 11,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Banana价格是0.05一次。每天5次免费\n\n如果报错了，就是这一步有一张尺寸不匹配，需重新生成。\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "easy ifElse",
+   "category": "utility",
+   "title": "判断",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    6,
+    7,
+    8
+   ],
+   "out_links": [
+    736,
+    805
+   ]
+  },
+  {
+   "id": 7,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Next Scene: [1], [Wide shot], [Low angle], the protagonist stands in a dense forest clearing under the moonlight, silhouetted against the towering ruins of an ancient temple, cautiously gripping her glowing bow, unified in a cold, mystical blue tone.",
+    "Next Scene: [2], [Medium shot], [Over-the-shoulder angle], the protagonist surveys the temple's crumbling entrance, her glowing arrows illuminating faint carvings of ancient symbols on the moss-covered stone walls, emphasizing a suspenseful and ominous mood.",
+    "Next Scene: [3], [Close-up], [Eye level], the protagonist’s hand reaches into her quiver, pulling out a single glowing arrow as raindrops begin to fall, the light reflecting off her armor and the wet stone floor, creating a dramatic and tense atmosphere.",
+    "Next Scene: [4], [Extreme close-up], [Low angle], the glowing arrow is nocked into the bowstring as the protagonist’s fingers tighten around it, her armored hands glistening with raindrops, the lighting intensifying the focus on the weapon.",
+    "Next Scene: [5], [Medium shot], [Side angle], the protagonist steps forward, her cape flowing behind her as she draws the bowstring, aiming toward the shadowy temple entrance, the rain falling harder, enhancing the dramatic tension.",
+    "Next Scene: [6], [Close-up], [Front angle], the protagonist’s determined eyes pierce through the darkness, rain dripping down her face as the glowing light from her bow and arrow illuminates her expression, emphasizing her resolve.",
+    "Next Scene: [7], [Wide shot], [High angle], the protagonist releases the glowing arrow, which streaks through the rain-filled air toward the temple’s entrance, leaving a trail of purple light against the dark, stormy backdrop.",
+    "Next Scene: [8], [Medium shot], [Front angle], the arrow strikes the temple door, creating a burst of magical light that sends shockwaves through the ruins, shaking loose stones and scattering the rain in all directions.",
+    "Next Scene: [9], [Wide shot], [Low angle], the temple door creaks open as the glowing magic subsides, revealing a dark, swirling void within, while the protagonist stands in the foreground, bow lowered, her silhouette framed against the ominous light."
+   ],
+   "in_links": [
+    735
+   ],
+   "out_links": [
+    806
+   ]
+  },
+  {
+   "id": 183,
+   "type": "RH_Nano_Banana2_Image2Image",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1203871505,
+    "randomize",
+    "auto",
+    "1k",
+    "Third-party"
+   ],
+   "in_links": [
+    805,
+    806
+   ],
+   "out_links": [
+    807,
+    808
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 5,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 106,
+   "to_node": 90,
+   "type": "VAE"
+  },
+  {
+   "from_node": 133,
+   "to_node": 141,
+   "type": "VAE"
+  },
+  {
+   "from_node": 135,
+   "to_node": 93,
+   "type": "*"
+  },
+  {
+   "from_node": 136,
+   "to_node": 141,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 137,
+   "to_node": 140,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 138,
+   "to_node": 140,
+   "type": "VAE"
+  },
+  {
+   "from_node": 140,
+   "to_node": 136,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 140,
+   "to_node": 136,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 140,
+   "to_node": 146,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 140,
+   "to_node": 146,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 140,
+   "to_node": 146,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 141,
+   "to_node": 134,
+   "type": "*"
+  },
+  {
+   "from_node": 141,
+   "to_node": 135,
+   "type": "*"
+  },
+  {
+   "from_node": 146,
+   "to_node": 136,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 160,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 176,
+   "to_node": 89,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 178,
+   "to_node": 7,
+   "type": "STRING"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "INT"
+  },
+  {
+   "from_node": 180,
+   "to_node": 137,
+   "type": "STRING"
+  },
+  {
+   "from_node": 180,
+   "to_node": 140,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 140,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 140,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 22,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 23,
+   "type": "STRING"
+  },
+  {
+   "from_node": 180,
+   "to_node": 43,
+   "type": "STRING"
+  },
+  {
+   "from_node": 180,
+   "to_node": 44,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 44,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 44,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 47,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 180,
+   "to_node": 97,
+   "type": "STRING"
+  },
+  {
+   "from_node": 183,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 183,
+   "to_node": 58,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 1,
+   "type": "*"
+  },
+  {
+   "from_node": 2,
+   "to_node": 1,
+   "type": "*"
+  },
+  {
+   "from_node": 20,
+   "to_node": 21,
+   "type": "*"
+  },
+  {
+   "from_node": 21,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 21,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 22,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 22,
+   "to_node": 26,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 22,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 23,
+   "to_node": 22,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 140,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 22,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 44,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 24,
+   "to_node": 90,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 25,
+   "to_node": 83,
+   "type": "*"
+  },
+  {
+   "from_node": 26,
+   "to_node": 27,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 27,
+   "to_node": 39,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 3,
+   "to_node": 5,
+   "type": "*"
+  },
+  {
+   "from_node": 34,
+   "to_node": 70,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 39,
+   "to_node": 42,
+   "type": "*"
+  },
+  {
+   "from_node": 39,
+   "to_node": 50,
+   "type": "*"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "*"
+  },
+  {
+   "from_node": 40,
+   "to_node": 82,
+   "type": "*"
+  },
+  {
+   "from_node": 43,
+   "to_node": 44,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 44,
+   "to_node": 46,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 44,
+   "to_node": 46,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 45,
+   "to_node": 46,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 46,
+   "to_node": 49,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 140,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 140,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 22,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 22,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 44,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 44,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 90,
+   "type": "INT"
+  },
+  {
+   "from_node": 47,
+   "to_node": 90,
+   "type": "INT"
+  },
+  {
+   "from_node": 48,
+   "to_node": 140,
+   "type": "INT"
+  },
+  {
+   "from_node": 48,
+   "to_node": 22,
+   "type": "INT"
+  },
+  {
+   "from_node": 48,
+   "to_node": 44,
+   "type": "INT"
+  },
+  {
+   "from_node": 48,
+   "to_node": 90,
+   "type": "INT"
+  },
+  {
+   "from_node": 49,
+   "to_node": 50,
+   "type": "*"
+  },
+  {
+   "from_node": 49,
+   "to_node": 54,
+   "type": "*"
+  },
+  {
+   "from_node": 5,
+   "to_node": 178,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 183,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 50,
+   "to_node": 93,
+   "type": "*"
+  },
+  {
+   "from_node": 6,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 3,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 4,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 7,
+   "to_node": 183,
+   "type": "STRING"
+  },
+  {
+   "from_node": 70,
+   "to_node": 71,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 71,
+   "to_node": 72,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 72,
+   "to_node": 73,
+   "type": "*"
+  },
+  {
+   "from_node": 73,
+   "to_node": 146,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 73,
+   "to_node": 26,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 73,
+   "to_node": 45,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 73,
+   "to_node": 91,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 74,
+   "to_node": 75,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 75,
+   "to_node": 76,
+   "type": "*"
+  },
+  {
+   "from_node": 76,
+   "to_node": 136,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 76,
+   "to_node": 27,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 76,
+   "to_node": 46,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 76,
+   "to_node": 92,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 77,
+   "to_node": 74,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 84,
+   "to_node": 137,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 84,
+   "to_node": 23,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 84,
+   "to_node": 24,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 84,
+   "to_node": 43,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 84,
+   "to_node": 97,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 85,
+   "to_node": 44,
+   "type": "VAE"
+  },
+  {
+   "from_node": 86,
+   "to_node": 22,
+   "type": "VAE"
+  },
+  {
+   "from_node": 87,
+   "to_node": 49,
+   "type": "VAE"
+  },
+  {
+   "from_node": 88,
+   "to_node": 39,
+   "type": "VAE"
+  },
+  {
+   "from_node": 89,
+   "to_node": 77,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 90,
+   "to_node": 91,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 90,
+   "to_node": 91,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 90,
+   "to_node": 91,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 90,
+   "to_node": 92,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 90,
+   "to_node": 92,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 91,
+   "to_node": 92,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 92,
+   "to_node": 94,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 93,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 135,
+   "type": "*"
+  },
+  {
+   "from_node": 94,
+   "to_node": 96,
+   "type": "*"
+  },
+  {
+   "from_node": 95,
+   "to_node": 94,
+   "type": "VAE"
+  },
+  {
+   "from_node": 97,
+   "to_node": 90,
+   "type": "CONDITIONING"
+  }
+ ],
+ "categories": {
+  "utility": 43,
+  "clip": 1,
+  "checkpoint_loader": 2,
+  "vae": 5,
+  "batch": 5,
+  "conditioning": 5,
+  "image_io": 2,
+  "lora": 1,
+  "sampler": 8,
+  "video_io": 1
+ },
+ "assets": [
+  {
+   "node_id": 25,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "smoothMixWan22I2V14B_i2vHigh.safetensors"
+  },
+  {
+   "node_id": 40,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "wan_2.1_vae_Comfy-Org.safetensors"
+  },
+  {
+   "node_id": 176,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "smoothMixWan22I2V14B_i2vLow.safetensors"
+  },
+  {
+   "node_id": 89,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 206,
+ "structure_hash": "7c5104fc8dcace6b",
+ "param_face": [
+  {
+   "node_id": 1,
+   "node_type": "Compare",
+   "widget_index": 0,
+   "value_preview": "a < b"
+  },
+  {
+   "node_id": 2,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 832, height: 1248\n batch size: 1bdb929a96a486608cc401"
+  },
+  {
+   "node_id": 42,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 3,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 82,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 83,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "clip"
+  },
+  {
+   "node_id": 25,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 25,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "wan"
+  },
+  {
+   "node_id": 25,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 34,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "smoothMixWan22I2V14B_i2vHigh.safetensors"
+  },
+  {
+   "node_id": 34,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ModelSamplingSD3",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 40,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "wan_2.1_vae_Comfy-Org.safetensors"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 2,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 4,
+   "value_preview": "SINGLE_PERSON"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 5,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 6,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 87,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 88,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 86,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 85,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 75,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 75,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 95,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 43,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 97,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 106,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 72,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 72,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 133,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 134,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 134,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 138,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "vae"
+  },
+  {
+   "node_id": 84,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "clip"
+  },
+  {
+   "node_id": 137,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 77,
+   "node_type": "ModelSamplingSD3",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 2,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 4,
+   "value_preview": "SINGLE_PERSON"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 5,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 6,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 44,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 23,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 176,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "smoothMixWan22I2V14B_i2vLow.safetensors"
+  },
+  {
+   "node_id": 176,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 89,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetens"
+  },
+  {
+   "node_id": 89,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 26,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 27,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 45,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 46,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 91,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 180,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 47,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 848, height: 1280\n batch size: 1bdb929a96a486608cc401"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 146,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 136,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 53,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 0,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 1,
+   "value_preview": "43"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 3,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 5,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 6,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 7,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 8,
+   "value_preview": "10000"
+  },
+  {
+   "node_id": 92,
+   "node_type": "KSamplerAdvanced",
+   "widget_index": 9,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 178,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 2,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 4,
+   "value_preview": "SINGLE_PERSON"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 5,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 6,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 2,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 4,
+   "value_preview": "SINGLE_PERSON"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 5,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 6,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 140,
+   "node_type": "WanFirstMiddleLastFrameToVideo",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 179,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 160,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 181,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "竖图：只填高\n\n横图：只填宽\n\n其中一个为：0"
+  },
+  {
+   "node_id": 48,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 182,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "帧数\n"
+  },
+  {
+   "node_id": 11,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "Banana价格是0.05一次。每天5次免费\n\n如果报错了，就是这一步有一张尺寸不匹配，需重新生成。\n"
+  },
+  {
+   "node_id": 5,
+   "node_type": "easy ifElse",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 1,
+   "value_preview": "1203871505"
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 4,
+   "value_preview": "1k"
+  },
+  {
+   "node_id": 183,
+   "node_type": "RH_Nano_Banana2_Image2Image",
+   "widget_index": 5,
+   "value_preview": "Third-party"
+  }
+ ]
+}

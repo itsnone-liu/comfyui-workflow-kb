@@ -1,0 +1,1042 @@
+{
+ "node_count": 29,
+ "link_count": 34,
+ "active_node_count": 29,
+ "nodes": [
+  {
+   "id": 122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    280,
+    251
+   ],
+   "out_links": [
+    285
+   ]
+  },
+  {
+   "id": 117,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Model Links",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## Model Links\n[🤗 Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3)\n\n**vae**\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors)\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors)\n\n**diffusion_models**\n\n- [minimax_h3_ref2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 vae/\n│   │   ├── minimax_h3_video_vae_fp16.safetensors\n│   │   └── minimax_h3_audio_vae_fp32.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── minimax_h3_ref2va_pruned_int8_convrot.safetensors\n│   └── 📂 text_encoders/\n│       └── qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 172,
+   "type": "VRGDG_MiniMaxH3AudioDrive",
+   "category": "utility",
+   "title": "LOCK SOURCE AUDIO / GENERATE VIDEO ONLY",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    335,
+    387,
+    337
+   ],
+   "out_links": [
+    338,
+    339
+   ]
+  },
+  {
+   "id": 142,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 10,
+      "filename": "AnimateDiff_00001_p80-audio_djzfo_1787124900.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//1a6d6a466b7706e960adf62ef0ef018d/output/AnimateDiff_00001_p80-audio_djzfo_1787124900.mp4",
+      "workflow": "AnimateDiff_00001_p80.png",
+      "fullpath": "/data/ComfyUI/personal/1a6d6a466b7706e960adf62ef0ef018d/output/AnimateDiff_00001_p80-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    285,
+    339
+   ],
+   "out_links": []
+  },
+  {
+   "id": 129,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    121918437767075,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    253
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    253,
+    254,
+    255,
+    256,
+    338
+   ],
+   "out_links": [
+    280
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    392,
+    270
+   ],
+   "out_links": [
+    254
+   ]
+  },
+  {
+   "id": 123,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    255
+   ]
+  },
+  {
+   "id": 171,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": "SOURCE AUDIO — drives lips and final soundtrack",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "8244767ff17544ce4e2bf336c3e159ff7eb3536f48be687ad8c1e6fe4bdc7447.mp3",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    357
+   ]
+  },
+  {
+   "id": 131,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    261
+   ],
+   "out_links": [
+    275
+   ]
+  },
+  {
+   "id": 132,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (Duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    360
+   ],
+   "out_links": [
+    261
+   ]
+  },
+  {
+   "id": 140,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 179,
+   "type": "SoundFlow_GetLength",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    384
+   ],
+   "out_links": [
+    360
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "Resolution Selector (Size)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    276,
+    277
+   ]
+  },
+  {
+   "id": 188,
+   "type": "PreviewAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    385
+   ],
+   "out_links": []
+  },
+  {
+   "id": 175,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    349
+   ],
+   "out_links": [
+    352
+   ]
+  },
+  {
+   "id": 176,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    352
+   ],
+   "out_links": [
+    391
+   ]
+  },
+  {
+   "id": 137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "30d43eaf9cf0269149a82b48224358badac85047a75848259f115bd7448e12d4.gif",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    278
+   ]
+  },
+  {
+   "id": 136,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    272,
+    273,
+    274,
+    278,
+    390,
+    394,
+    276,
+    277,
+    275
+   ],
+   "out_links": [
+    270,
+    335
+   ]
+  },
+  {
+   "id": 174,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    349
+   ]
+  },
+  {
+   "id": 197,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_turbo_4步加速_comfyui_T8.safetensors",
+    1
+   ],
+   "in_links": [
+    391
+   ],
+   "out_links": [
+    392,
+    393
+   ]
+  },
+  {
+   "id": 128,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    272
+   ]
+  },
+  {
+   "id": 120,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    274,
+    337
+   ]
+  },
+  {
+   "id": 119,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    251,
+    273
+   ]
+  },
+  {
+   "id": 124,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    12,
+    1
+   ],
+   "in_links": [
+    393
+   ],
+   "out_links": [
+    256
+   ]
+  },
+  {
+   "id": 199,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Character reference image: \"ref_images.ref_image_0\" — maintain highly consistent facial features, identical facial structure, and same identity, and clothing outfit throughout the entire video. Face matches and clothing outfit reference image precisely. \n\nShot 1 [0:00-0:03] Frontal Medium Close-up: A woman faces the camera directly, standing at a microphone, holding it with both hands. Her expression is deeply engaged, eyes focused. Warm frontal lighting softly illuminates her face. Recording studio equipment in the background is softly blurred.\n\nShot 2 [0:03-0:06] high-Angle Medium Close-up: Low-angle shot looking up at the woman. She tilts her head slightly upward while singing. The microphone is positioned higher in the frame. Studio ceiling lights create a halo effect, emphasizing her presence and charisma.\n\nShot 3 [0:06-0:09] low-Angle Medium Close-up: High-angle shot looking down at the woman. She tilts her head slightly downward while singing. Studio ceiling lights cascade down. Her hair catches golden rim light in the backlight, creating a gentle, intimate atmosphere.\n\nShot 4 [0:09-0:12] Profile Medium Close-up: The woman's profile faces the microphone. Her facial silhouette is clear and elegant — nose bridge and lips beautifully defined. Microphone stand and cables in the background create depth. Warm side lighting outlines her facial contours.\n\nShot 5 [0:12-0:15] Orbiting Shot: The camera performs a smooth 360-degree orbit around the woman. She maintains her singing pose, stationary. The recording studio equipment in the background shifts as the camera circles. Dynamic lighting changes with each angle. The camera movement is fluid and cinematic."
+   ],
+   "in_links": [],
+   "out_links": [
+    395
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Character reference image: \"ref_images.ref_image_0\" — maintain highly consistent facial features, identical facial structure, and same identity, and clothing outfit throughout the entire video. Face matches and clothing outfit reference image precisely. \n\nShot 1 [0:00-0:03] Eye and Brow Close-up: Extreme close-up on the woman's eyes and eyebrows. Her gaze is deeply focused, eyes slightly narrowed in concentration. Warm frontal lighting catches the subtle texture of her skin and the curve of her brow. The microphone is visible in soft focus at the edge of the frame. Her eyelashes cast delicate shadows. Shallow depth of field blurs the recording studio behind her.\n\nShot 2 [0:03-0:06] Waist Close-up: Close-up on the woman's waist as she stands at the microphone. Her torso is slightly arched forward while singing. The curve of her waist is softly defined, fabric of her clothing gently compressed. Warm side lighting outlines the contour of her midsection. The microphone stand and cables create depth in the blurred background. Subtle breathing movement causes the fabric to shift naturally.\n\nShot 3 [0:06-0:09] Shoulder and Neck Close-up: Close-up on the woman's shoulder and neck area. Her head tilts slightly to the side, elongating the line of her neck. Golden rim light traces the curve of her collarbone and shoulder. The warm backlight creates a soft glow along her hairline and nape. Studio ceiling lights cascade down, catching the smooth texture of her skin. The microphone is partially visible in the foreground, out of focus.\n\nShot 4 [0:09-0:12] Profile Close-up: Side profile close-up of the woman's face at the microphone. Her facial silhouette is elegant — nose bridge, lips, and chin clearly defined. Her lips are slightly parted as she sings. Warm side lighting outlines her profile with a golden edge. The microphone stand and cables in the background create layered depth. Shallow depth of field keeps only her features sharp.\n\nShot 5 [0:12-0:15] Orbiting Close-up: The camera performs a smooth 360-degree orbit around the woman's face and upper shoulders in close-up. She maintains her singing pose, stationary. The recording studio equipment in the background shifts as the camera circles. Dynamic lighting changes with each angle — warm frontal, golden rim, soft backlight. Her hair catches the shifting light. The camera movement is fluid and cinematic, maintaining intimate framing throughout.\n\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    397
+   ]
+  },
+  {
+   "id": 198,
+   "type": "easy anythingIndexSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    395,
+    397
+   ],
+   "out_links": [
+    394
+   ]
+  },
+  {
+   "id": 177,
+   "type": "AudioCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0",
+    "10"
+   ],
+   "in_links": [
+    357
+   ],
+   "out_links": [
+    384,
+    385,
+    387,
+    390
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 119,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 172,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 142,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 125,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 125,
+   "to_node": 122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 126,
+   "to_node": 125,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 128,
+   "to_node": 136,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 129,
+   "to_node": 125,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 132,
+   "to_node": 131,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 126,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 136,
+   "to_node": 172,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 137,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 138,
+   "to_node": 198,
+   "type": "*"
+  },
+  {
+   "from_node": 171,
+   "to_node": 177,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 172,
+   "to_node": 125,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 172,
+   "to_node": 142,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 174,
+   "to_node": 175,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 175,
+   "to_node": 176,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 176,
+   "to_node": 197,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 177,
+   "to_node": 136,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 177,
+   "to_node": 172,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 177,
+   "to_node": 179,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 177,
+   "to_node": 188,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 179,
+   "to_node": 132,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 197,
+   "to_node": 124,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 197,
+   "to_node": 126,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 198,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 199,
+   "to_node": 198,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "vae": 3,
+  "utility": 16,
+  "video_io": 1,
+  "sampler": 4,
+  "image_io": 1,
+  "checkpoint_loader": 1,
+  "lora": 1,
+  "clip": 1,
+  "preprocessor": 1
+ },
+ "assets": [
+  {
+   "node_id": 174,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 197,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_turbo_4步加速_comfyui_T8.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 45,
+ "structure_hash": "40b40095ee45e165",
+ "param_face": [
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 10, '"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 142,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "121918437767075"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 123,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 171,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "8244767ff17544ce4e2bf336c3e159ff7eb3536f48be687ad8c1e6fe4bdc"
+  },
+  {
+   "node_id": 131,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 132,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 175,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 175,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "30d43eaf9cf0269149a82b48224358badac85047a75848259f115bd7448e"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 174,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 174,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 197,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_turbo_4步加速_comfyui_T8.safetensors"
+  },
+  {
+   "node_id": 197,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 198,
+   "node_type": "easy anythingIndexSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 177,
+   "node_type": "AudioCrop",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 177,
+   "node_type": "AudioCrop",
+   "widget_index": 1,
+   "value_preview": "10"
+  }
+ ]
+}

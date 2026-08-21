@@ -1,0 +1,884 @@
+{
+ "node_count": 23,
+ "link_count": 30,
+ "active_node_count": 23,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "CFGNorm",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 4,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [
+    24
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_edit_fp8_e4m3fn.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    24
+   ]
+  },
+  {
+   "id": 16,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    14
+   ],
+   "out_links": []
+  },
+  {
+   "id": 15,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 23,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc04d9d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openart.ai:https://openart.ai/workflows/profile/wwrs?tab=workflows&sort=latest\ncivitai:https://civitai.com/user/ksxh0524736\nx: https://x.com/hydra_ksxh\ntg:https://t.me/wwrs1\nwx:wwrs_AIstudio\nintroduction video:"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 26,
+   "type": "SetUnionControlNetType",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openpose"
+   ],
+   "in_links": [
+    31
+   ],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    4,
+    7,
+    10,
+    26,
+    35
+   ]
+  },
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3,
+    25
+   ]
+  },
+  {
+   "id": 7,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    6,
+    7
+   ],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 21,
+   "type": "TextEncodeQwenImageEdit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    25,
+    26,
+    27,
+    30
+   ],
+   "out_links": [
+    36
+   ]
+  },
+  {
+   "id": 6,
+   "type": "TextEncodeQwenImageEdit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    3,
+    4,
+    5
+   ],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 25,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "InstantX_Qwen-Image-ControlNet-Union.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 22,
+   "type": "JjkText",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "改变女人的姿势"
+   ],
+   "in_links": [],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 12,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lanczos",
+    1
+   ],
+   "in_links": [
+    8
+   ],
+   "out_links": [
+    5,
+    6,
+    27,
+    42
+   ]
+  },
+  {
+   "id": 28,
+   "type": "OpenposePreprocessor",
+   "category": "pose",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    "enable",
+    "enable",
+    512,
+    "disable"
+   ],
+   "in_links": [
+    32
+   ],
+   "out_links": [
+    34,
+    44
+   ]
+  },
+  {
+   "id": 13,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9,
+    10
+   ],
+   "out_links": [
+    14,
+    45
+   ]
+  },
+  {
+   "id": 30,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    42,
+    44,
+    45
+   ],
+   "out_links": [
+    46
+   ]
+  },
+  {
+   "id": 29,
+   "type": "ControlNetApplySD3",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2.0000000000000004,
+    0,
+    0.4000000000000001
+   ],
+   "in_links": [
+    36,
+    37,
+    33,
+    35,
+    34
+   ],
+   "out_links": [
+    38,
+    39
+   ]
+  },
+  {
+   "id": 20,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    20716690346670,
+    "randomize",
+    20,
+    2.5,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    20,
+    38,
+    39,
+    23
+   ],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 11,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc04d9d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 27,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc04d9d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    32
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 4,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 11,
+   "to_node": 12,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 21,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 30,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 7,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 16,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 30,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 21,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 2,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 20,
+   "to_node": 13,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 21,
+   "to_node": 29,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 22,
+   "to_node": 21,
+   "type": "STRING"
+  },
+  {
+   "from_node": 25,
+   "to_node": 26,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 26,
+   "to_node": 29,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 27,
+   "to_node": 28,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 30,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 29,
+   "to_node": 20,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 20,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 13,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 21,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 29,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 6,
+   "type": "VAE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 7,
+   "type": "VAE"
+  },
+  {
+   "from_node": 30,
+   "to_node": 15,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 5,
+   "to_node": 20,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 6,
+   "to_node": 29,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 20,
+   "type": "LATENT"
+  }
+ ],
+ "categories": {
+  "utility": 8,
+  "checkpoint_loader": 1,
+  "image_io": 5,
+  "vae": 3,
+  "clip": 1,
+  "controlnet": 2,
+  "pose": 1,
+  "conditioning": 1,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "qwen_image_edit_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 25,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "InstantX_Qwen-Image-ControlNet-Union.safetensors"
+  }
+ ],
+ "techniques": [
+  "ControlNet",
+  "OpenPose",
+  "Qwen-Image"
+ ],
+ "param_face_size": 41,
+ "structure_hash": "cd1c2d2ebcffc506",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "CFGNorm",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 4,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_edit_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 16,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 15,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc0"
+  },
+  {
+   "node_id": 23,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 26,
+   "node_type": "SetUnionControlNetType",
+   "widget_index": 0,
+   "value_preview": "openpose"
+  },
+  {
+   "node_id": 3,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 2,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 21,
+   "node_type": "TextEncodeQwenImageEdit",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "TextEncodeQwenImageEdit",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 25,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "InstantX_Qwen-Image-ControlNet-Union.safetensors"
+  },
+  {
+   "node_id": 22,
+   "node_type": "JjkText",
+   "widget_index": 0,
+   "value_preview": "改变女人的姿势"
+  },
+  {
+   "node_id": 12,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 12,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 28,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 28,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 1,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 28,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 2,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 28,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 28,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 4,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 0,
+   "value_preview": "2.0000000000000004"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ControlNetApplySD3",
+   "widget_index": 2,
+   "value_preview": "0.4000000000000001"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "20716690346670"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc0"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "2fc18a296412d519e9f504faffafaf7d41af123c6f3a06ca95c1b01edfc0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

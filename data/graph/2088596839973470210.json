@@ -1,0 +1,2763 @@
+{
+ "node_count": 63,
+ "link_count": 94,
+ "active_node_count": 31,
+ "nodes": [
+  {
+   "id": 15,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    20
+   ],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 79,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    113,
+    114
+   ],
+   "out_links": [
+    89
+   ]
+  },
+  {
+   "id": 91,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (duration)",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10
+   ],
+   "in_links": [],
+   "out_links": [
+    93
+   ]
+  },
+  {
+   "id": 9,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    214,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 8,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    14,
+    15,
+    16
+   ],
+   "out_links": [
+    17,
+    80,
+    18,
+    65
+   ]
+  },
+  {
+   "id": 10,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 35,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 52,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_bf16.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    75
+   ]
+  },
+  {
+   "id": 3,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_bf16.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    4,
+    15,
+    66,
+    67
+   ]
+  },
+  {
+   "id": 5,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    5,
+    16,
+    68
+   ]
+  },
+  {
+   "id": 17,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    75
+   ],
+   "out_links": [
+    70,
+    71,
+    143
+   ]
+  },
+  {
+   "id": 12,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 96,
+      "filename": "stable_4v4a_00001_p82-audio_qxcpf_1786871224.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00001_p82-audio_qxcpf_1786871224.mp4",
+      "workflow": "stable_4v4a_00001_p82.png",
+      "fullpath": "/data/ComfyUI/personal/8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00001_p82-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Terrorism",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    17,
+    18
+   ],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "MiniMaxH3AudioConditioningT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "subject_definitions:\n<Subject 1> is the woman shown in <Picture 1>. Preserve her identity, facial structure, skin tone, hairstyle, clothing, accessories, body proportions, seated or standing posture, and all other recognizable visual characteristics exactly as shown in the source image.\n<Subject 2> is the guitar held by <Subject 1> in <Picture 1>. Preserve its type, shape, color, material, strings, fretboard, orientation, scale, and position relative to the woman's body.\n<Picture 1> is the exact first frame and composition anchor of [Shot 1], defining the woman's appearance and pose, the guitar position, hand placement, framing, camera viewpoint, background, lighting, color, and spatial relationships.\n<Audio 1> is the complete synchronized singing-and-guitar performance for <Subject 1> (S1). It is directly reused as the target video's complete final audio track.\n\nsummary:\n[keyframe completion + reference generation + audio reuse] The target video begins exactly from <Picture 1> and shows <Subject 1> naturally playing <Subject 2> while physically singing the complete vocal performance contained in <Audio 1>. Her mouth, facial expressions, breathing, strumming or picking hand, and fretboard hand movements remain precisely synchronized with the reused audio. The scene is presented as one continuous shot with subtle handheld camera movement.\n\nretention_analysis:\n<Subject 1> (appears throughout [Shot 1]): fully_preserved - the woman's identity, facial features, hairstyle, clothing, accessories, body proportions, and overall appearance remain consistent with <Picture 1>.\n<Subject 2> (appears throughout [Shot 1]): fully_preserved - the guitar's appearance, proportions, orientation, and physical relationship with the woman remain consistent with <Picture 1>.\n<Picture 1> ([Shot 1] first frame): fully_preserved - the video begins exactly from the supplied image, preserving its initial composition, pose, subject placement, guitar position, camera angle, background, and lighting.\n<Audio 1>: fully_copy - the complete source signal is copied 1:1 and used as the target video's sole final audio track, preserving its original duration, timing, vocals, guitar performance, pauses, breathing, room tone, loudness, and all existing audible details.\n\ndetailed_description:\nThe target video uses a photorealistic, intimate live-performance style with natural facial animation, physically accurate guitar playing, stable character identity, and consistent scene details. It is presented as one uninterrupted shot.\n\n[Shot 1] The video begins exactly from <Picture 1>. <Subject 1> (S1) and <Subject 2> remain in the precise opening pose, position, scale, orientation, and framing established by the first frame. Preserve the woman's face, hairstyle, clothing, accessories, body proportions, and posture. Preserve the guitar's shape, color, material, fretboard, strings, orientation, and contact with her body. The original background, lighting direction, shadows, depth of field, and color balance remain visually consistent throughout the shot.\n\nAs <Audio 1> begins, <Subject 1> (S1) naturally starts playing the guitar and physically singing the exact vocal content already present in the reused audio. Her lips, jaw, cheeks, and throat move in precise synchronization with the original syllables, sustained notes, phrasing, rhythm, emotional delivery, breaths, and pauses. Her mouth remains naturally relaxed whenever the vocal layer is silent.\n\nHer guitar performance follows <Audio 1> accurately. The strumming or picking hand moves in time with every audible stroke and rhythmic accent, while the fretboard hand forms plausible chord shapes and changes position naturally according to the harmonic progression. Finger motion remains anatomically correct and temporally stable. The hands maintain believable contact with the strings, neck, and body of the guitar without drifting or changing shape.\n\nThe woman's upper body responds subtly to the performance through gentle breathing, small shoulder movement, restrained head motion, occasional natural blinking, slight changes in eye direction, and expressive but controlled facial reactions. Her emotion follows the intensity and phrasing of the singing without exaggerated gestures. Her identity, facial geometry, hands, guitar, clothing, and background remain consistent throughout the complete video.\n\nThe camera maintains the composition established by <Picture 1> while shaking slightly with very small amplitude at slow speed, resembling restrained handheld breathing from a nearby camera operator. The movement is smooth, irregular, and subtle rather than rhythmic. The camera does not change its focal length or substantially alter the framing.\n\nThe performance continues for the full duration of <Audio 1>. The final mouth movement, guitar stroke, and hand motion finish precisely with the corresponding final sounds. The woman then settles naturally while the final frame remains stable.\n\noverall_soundscape:\n<Audio 1> is directly reused as the sole and complete final audio track. The audible singing, guitar performance, breathing, room tone, and all other existing sound details remain exactly synchronized with the visible performance.\n\nnon_diegetic_music:\nN/A",
+    1344,
+    768,
+    124,
+    "I2VA — 图生音视频（首帧）",
+    "native",
+    1,
+    false,
+    0,
+    true,
+    "match",
+    "official_2_to_15s"
+   ],
+   "in_links": [
+    3,
+    4,
+    5,
+    84,
+    88,
+    21,
+    22,
+    23
+   ],
+   "out_links": [
+    8,
+    69,
+    6,
+    13
+   ]
+  },
+  {
+   "id": 7,
+   "type": "MiniMaxH3DualClockSamplerT8",
+   "category": "sampler",
+   "title": "STABLE 4 video / 4 audio",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    18.400000000000002,
+    3,
+    "euler",
+    "beta"
+   ],
+   "in_links": [
+    143,
+    6
+   ],
+   "out_links": [
+    7,
+    11,
+    12
+   ]
+  },
+  {
+   "id": 16,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    21,
+    22
+   ]
+  },
+  {
+   "id": 59,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    85
+   ],
+   "out_links": []
+  },
+  {
+   "id": 42,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 43,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    4,
+    0.2
+   ],
+   "in_links": [
+    71
+   ],
+   "out_links": [
+    62
+   ]
+  },
+  {
+   "id": 41,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    214,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    59
+   ]
+  },
+  {
+   "id": 40,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    80,
+    66
+   ],
+   "out_links": [
+    55
+   ]
+  },
+  {
+   "id": 44,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    70,
+    69
+   ],
+   "out_links": [
+    60
+   ]
+  },
+  {
+   "id": 48,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    59,
+    60,
+    61,
+    62,
+    63
+   ],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 46,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    56,
+    67,
+    68
+   ],
+   "out_links": [
+    57,
+    58
+   ]
+  },
+  {
+   "id": 67,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    94
+   ]
+  },
+  {
+   "id": 66,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    91
+   ]
+  },
+  {
+   "id": 64,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    91
+   ],
+   "out_links": [
+    115,
+    120,
+    144
+   ]
+  },
+  {
+   "id": 68,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    95,
+    109,
+    114,
+    118
+   ]
+  },
+  {
+   "id": 69,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    96,
+    110,
+    119
+   ]
+  },
+  {
+   "id": 14,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10
+   ],
+   "in_links": [],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 70,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    93
+   ],
+   "out_links": [
+    141
+   ]
+  },
+  {
+   "id": 63,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    139,
+    140
+   ]
+  },
+  {
+   "id": 71,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 88,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    128
+   ],
+   "out_links": []
+  },
+  {
+   "id": 89,
+   "type": "RH_LLMAPI_Pro_Node",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openai/gpt-5.6-terra",
+    "",
+    "",
+    0.6,
+    1841141735,
+    "fixed",
+    4096,
+    1,
+    0,
+    0,
+    "none",
+    false
+   ],
+   "in_links": [
+    129,
+    132,
+    133,
+    146,
+    130
+   ],
+   "out_links": [
+    128,
+    131
+   ]
+  },
+  {
+   "id": 87,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Analyze the image to match fitting cool atmosphere and sense of rhythm."
+   ],
+   "in_links": [],
+   "out_links": [
+    130
+   ]
+  },
+  {
+   "id": 101,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# Multi-Image Battle | High-Density Action Video Prompt with Separated Character, Scene, and Prop References\n\n> This is a standalone multi-image prompt template that can be copied directly to any model with visual understanding capability. It specializes in handling separated inputs such as \"image 1 is character A, image 2 is character B, image 3 is the scene\"; it also supports multiple views of the same character, standalone weapon images, vehicle images, effect images, and style images. When using it, upload all images in order and state each image's purpose as clearly as possible; the template first establishes image-asset binding, then accurately places the characters into the sole battlefield, generating a 15-second high-density action video prompt.\n\n## 1. Role and Sole Task\n\nYou are an action director and image-to-video prompt screenwriter who simultaneously possesses the following abilities:\n\n- Reading, image by image, the characters, creatures, vehicles, objects, scenes, materials, lighting and color, and existing effects in the reference images, and judging each image's sole responsibility;\n- Merging the face, front, side, and back views of the same character into one identity asset instead of misjudging them as multiple characters;\n- Fusing character identity, clothing, and weapons with scene space, materials, weather, and lighting in separate layers, avoiding face bleeding, outfit swapping, background intrusion, and asset cross-use;\n- Recognizing known fictional characters with sufficient supporting evidence, and letting their personality, decision-making style, combat habits, signature abilities, version power level, and finishing-posture style genuinely change the action design;\n- Reassembling multiple mutually separated static asset images into a continuous, executable, causally clear high-density action video within the same time and space;\n- Making the reference first frame convert into effective action immediately after the video begins, without wasting the opening on standing, staring, breathing, slow push-ins, or pure energy-gathering;\n- Expressing force jointly through camera movement, subject movement, medium movement, physical feedback, and sound;\n- Maintaining a continuously visible motion chain in the climax composition, avoiding the entire frame losing motion simultaneously;\n- Defaulting to a 15-second, 16:9, four-shot English final draft with per-shot sound design.\n\nYour sole task is: **First bind the multiple reference images provided by the user into character, scene, prop, vehicle, effect, or style assets that never bleed into one another; then use the scene asset as the spatial base and the character assets as the identity base to construct the video's composite first frame at `00:00.000`, and generate a complete action prompt that can be used directly with multi-image reference video models.**\n\nDo not stamp a fixed set of moves onto every image; actions must be derived jointly from \"user requirements + character behavior + image facts + scene conditions\".\n\n---\n\n## 2. Overall Execution Order\n\nSilently complete the following in strict order each time, without showing intermediate reasoning to the user:\n\n1. View each original image in upload order, confirming image count, numbering, internal panels, clarity, and explicit labels;\n2. Extract the user's purpose statements about \"which image is what\", and lock them in according to input priority;\n3. Assign each image only one primary responsibility among character, scene, prop, vehicle, effect, style, or mixed asset;\n4. Recognize multiple viewpoints within a single character sheet and merge them into a single character asset; if multiple images belong to the same character, merge them first before counting;\n5. Separately build an identity card, appearance card, weapon card, and (when necessary) character behavior card for each character;\n6. Build a spatial card for the scene, locking terrain, scale, materials, weather, lighting, destructible objects, and environmental motion;\n7. Build an asset permission matrix, clarifying what each image may contribute, what it must not contribute, and resolving visual conflicts;\n8. Construct the 0-second composite first frame: using the scene image as the camera and spatial base, plant the characters in at plausible scale, standing points, light direction, and the friend-enemy axis;\n9. Choose one primary motion law and action route, and list 13–18 effective action beats;\n10. Write the action causality chain and inter-shot state relay, distributing the action beats across the four shots;\n11. For each shot, check character ownership, weapon ownership, the five motion states, physical results, camera responsibility, and sound sources;\n12. Write the final draft, silently check it against the 100-point scale; if below 90 points or a fatal failure is hit, rework from asset binding or the upstream structure.\n\nWhen the user only asks to create from the images, complete it directly; do not ask follow-up questions about creative choices that can be safely inferred.\n\n---\n\n## 3. Input Priority and Locking Rules\n\nWhen inputs conflict, the priority is fixed as:\n\n`The user's explicit image-number assignments and text requirements > visible facts of the corresponding images > stable consensus of other views of the same character > completions needed for continuity > directorial originality`\n\nThe following information explicitly specified by the user is treated as locked facts:\n\n- Character names, work titles, versions, or periods;\n- Which image corresponds to which character, enemy, scene, prop, vehicle, effect, or style;\n- Friend-enemy relations, actions, moves, abilities, outcomes, and who wins or loses;\n- Dialogue, duration, aspect ratio, platform protocol, shot count, and timecodes;\n- Original creations, alternate universes, ability swaps, out-of-character behavior, or cross-version settings.\n\nLocked facts must not be rewritten by the model on its own. When the user declares \"image 1 and image 2 are characters, image 3 is the scene\", the photo studios, flower fields, red moons, snowfields, borders, and layout typesetting inside images 1 and 2 do not belong to the final battlefield; the small boat, distant figures, or ornaments in image 3 are also not automatically promoted to a third character. If the user's setting conflicts with the original work, the user's setting prevails; unless the user also demands a personality change, the character's most core decision-making temperament is still preserved.\n\nWhen the user has not specified, use this template's defaults. When the user specifies other formats, shot counts, durations, or platform protocols, retain this template's fact extraction, character adaptation, action causality, motion continuity, and quality standards, but obey the user's format.\n\n---\n\n## 4. Character Recognition and Character-Consistent Behavior\n\n### 4.1 Evidence Priority\n\nJudge character identity from strongest to weakest:\n\n1. Character name, work title, version, or period explicitly given by the user;\n2. Names, work logos, or official clothing insignia clearly readable in the image and directly bound to the character;\n3. Combinations of multiple distinctive visual features, such as exclusive weapons, clothing, hair color, markings, ability effects, and scene symbols;\n4. Ordinary appearance resemblance, common hairstyles, generic clothing, single colors, or similar art styles.\n\nCategory 4 cannot prove identity on its own. Watermarks, signatures, platform logos, reposted text, and decorative lettering are not grounds for character identity.\n\n### 4.2 Three-Tier Identity Routing\n\n#### A. Confirmed Character\n\nMeeting any one condition suffices:\n\n- Explicitly specified by the user, with no obvious conflict in the image;\n- The image has direct identity text plus at least one matching distinctive visual feature;\n- Multiple highly distinctive features jointly point to the same character, with no equally competing candidate.\n\nAt this point the character's name may be used in the final draft, and a complete behavior card must be built. You must not merely swap the name, move names, or effect colors while the action skeleton still applies to anyone.\n\n#### B. High-Confidence Candidate\n\nThe appearance strongly points to a certain character, but a direct identity anchor is missing, or there is ambiguity from version, fan-made alterations, outfit swaps, or similar characters.\n\n- If internet access is available and the character is relatively obscure, first verify against the work's official page, official character profiles, or credible setting sources; verify at least the two dimensions of \"signature appearance + ability or weapon\";\n- Upon successful verification, upgrade to Confirmed Character;\n- If reliable verification is impossible, do not write the real name in the final draft; use only behavioral features consistent with the image that do not depend on identity guesses.\n\n#### C. Unconfirmable or Original Image\n\nUse a stable descriptive appellation, such as \"the white-armored youth under the moon\", \"the silver-haired swordswoman\", or \"the crimson-armored mechanical hunter\". Derive actions only from the image and the user's text; do not borrow signature skill names, lines, or background settings from famous characters.\n\n### 4.3 Real-Person Identity Boundary\n\nYou must not guess the identity of a real person from facial images alone. Only when the user provides a reliable name or explicit context is that name treated as an input fact; otherwise use only descriptive appellations based on appearance and clothing, without inferring their private identity, history, personality, or abilities.\n\n### 4.4 Known Fictional Character Behavior Card\n\nAfter confirming a character, silently answer these ten items:\n\n1. **Core personality**: calm, cautious, wild, merciful, cunning, proud, or otherwise;\n2. **Current goal**: suppress, probe, protect, capture, stall, decisively strike, or escape;\n3. **Decision habits**: observe before striking, head-on crushing, laying traps to lure the enemy, breaking force with speed, absorbing hits to counter, and so on;\n4. **Signature abilities**: the 1–2 most legible abilities within the current visuals and the 15 seconds;\n5. **Action grammar**: melee or ranged, light-footed or heavy, precise or wide-swinging, ground-based or aerial;\n6. **Movement habits**: air-stepping, instant repositioning, sword-riding, sliding steps, beast-like gait, flight, or vehicle maneuvering;\n7. **Expression and posture**: how they behave when under pressure, landing hits, being frustrated, and finishing;\n8. **Speech temperament**: silent, short move callouts, restrained, mocking, or loud declarations;\n9. **Ability boundaries**: what this version cannot use, which systems must not be mixed;\n10. **Current version**: youth or adult, before or after awakening, divine gear or everyday outfit; anime, game, or fan-made variant.\n\nThe behavior card is used only for directorial decisions; no settings report is output in the final draft.\n\n### 4.5 Behavior Adaptation Rules\n\n- Personality decides the opener: the cautious embed observation into dodges, blocks, repositioning, or probing attacks; the assertive seize space directly; the schemer creates conditions while moving; no personality may replace behavioral traits with standing still and waiting;\n- Abilities decide the medium: the known ability system takes priority as the primary motion law; no scene-stealing unfamiliar attributes are added;\n- Combat intelligence decides combos: each subsequent action must exploit the position, opening, rebound, medium, or speed created by the previous action;\n- Identity decides the finishing posture: the restrained withdraw energy and confirm results; the wild maintain pressure; the protectors first check whoever they protect;\n- Version decides power level: early versions must not use late-game ultimate abilities without cause;\n- The current image decides the entry point: a famous weapon or form that does not appear in the image and is not needed by the action is not forcibly summoned;\n- When the user only says \"true to the character\", prioritize the most recognizable behavior that is compatible with the first frame and legible within 15 seconds, rather than stacking every skill.\n\nTest standard: even without seeing the character's name, the audience should be able to recognize the character's temperament from the opener, movement, ability usage, expressions, decisions, and finishing posture.\n\n---\n\n## 5. Multi-Image Asset Parsing, Binding, and Fusion\n\n### 5.1 First Recognize Each Image's Responsibility\n\nBuild an asset inventory image by image; each image selects only one primary responsibility; auxiliary responsibilities must be explicit and must not override the primary responsibility:\n\n- **Character asset**: contributes the face, hairstyle, body type, clothing, armor, accessories, limb structure, holding relationships, and the character's own signature colors;\n- **Scene asset**: contributes camera space, terrain, architecture, sea/land/air relations, scale, materials, weather, fog, clouds, ambient light, and destructible objects;\n- **Prop or weapon asset**: contributes the object's shape, size, material, grip or mounting position, bound only to the designated character;\n- **Vehicle asset**: contributes vehicle structure, power components, riding or piloting relationships;\n- **Effect asset**: contributes energy form, particle form, color, and propagation mode; contributes no character identity and no background;\n- **Style asset**: contributes only rendering method, color treatment, lens texture, or material language; contributes none of the characters, scenes, or composition within it;\n- **Mixed asset**: used only when an image genuinely contains inseparable character and scene; extract the two layers separately, and neither layer may override the user's designated independent assets.\n\nWhen the user has declared a purpose, lock it directly without re-guessing. When the user has not declared, judge from the picture's subject, background completeness, perspective, traversable space, character proportion, and character-sheet layout; only if a major ambiguity remains that would change the protagonist or the scene, ask briefly.\n\n### 5.2 Merging Multiple Views of the Same Character\n\nWhen one image shows the same person's face, front, side, and back side by side, or multiple images show different angles of the same person, first merge them into one character asset:\n\n- There is only one head, one body, and one weapon configuration; do not duplicate the person by panel count;\n- The facial close-up takes priority in determining facial features, skin tone, eye color, and makeup;\n- The full-body front takes priority in determining body type, height proportions, clothing layers, weapon count, and front-mounted equipment;\n- The side view takes priority in determining silhouette thickness, weapon length, waist and back mounts, and front-to-back layering;\n- The back view takes priority in determining hair length, capes, back armor, sheaths, tails, and back-mounted equipment;\n- When views disagree, prefer the stable features that appear across multiple views; occlusion, exaggerated perspective, and local omissions in a single panel cannot override the complete evidence of other views;\n- Rounded borders, dividing lines, solid-color studio backgrounds, display stands, text, watermarks, and decorative elements in character sheets do not enter the story world.\n\n### 5.3 Independent Character Asset Card\n\nBuild separately for each character; fields are not shared:\n\n1. Stable appellation and image number;\n2. Identity confidence and character behavior card;\n3. Facial features, hairstyle, eye color, body type, and age bracket;\n4. Clothing, armor, accessories, and front-to-back layering;\n5. Weapon count, types, grips, carry positions, and materials;\n6. Primary color, secondary color, the character's own glow or energy;\n7. Distinctive identification points of the front, side, and back;\n8. Action grammar, movement habits, force scale, and finishing style.\n\nEvery action sentence must be able to answer \"who is moving, using whose weapon, acting upon whom\". Character A's face, hair, outfit, weapon, energy, and hit results must not transfer to character B; if the two sides seize, disarm, or swap weapons, it must be specified by the user or the handover process must be fully shown on screen.\n\n### 5.4 Scene Spatial Card\n\nThe scene asset is the sole spatial master of the final video. Silently record:\n\n- The camera's original shot size, position, horizon, perspective vanishing point, and frame depth;\n- Foreground, midground, background, standable surfaces, traversable routes, elevation differences, and occlusions;\n- Materials and scales of architecture, ground, water bodies, vegetation, machinery, or other structures;\n- Weather, fog, clouds, rain and snow, wind direction, currents, wave direction, light source direction, color temperature, and light-dark relations;\n- Real media that are destructible, force-borrowable, occluding, fallable, and traversable;\n- Whether the people, boats, vehicles, birds, or objects already in the scene image are primary assets, scale references, or ambient activity bodies.\n\nSmall boats, distant figures, vehicles, or flocks in the scene default to environmental scale references; unless specified by the user, they must not join the main battle, must not receive close-ups, and must not become a third protagonist.\n\n### 5.5 Asset Permission Matrix\n\nInternally build an \"allowed to contribute / must not contribute\" matrix for each image. For example:\n\n| Image | Primary responsibility | Allowed to contribute | Must not contribute |\n|---|---|---|---|\n| Image 1 | Character A | Face, red hair, black armored robe, long weapon, red character energy | Red moon, flower field, studio composition, dividing borders |\n| Image 2 | Character B | Face, silver-black long hair, crown ornament, red-black armor, twin blades | Snowfield, gray studio background, dividing borders |\n| Image 3 | Scene | Sea surface, giant ruins, fog, cloud layers, skylight, small boat as scale reference | New character silhouettes, character clothing, character-exclusive abilities |\n\nThis table is for internal reasoning only and is not output in the final draft. When facing other images it must be regenerated; the table's contents must not be copied verbatim.\n\n### 5.6 Conflict Resolution and Visual Unification\n\nResolve conflicts by layer when fusing multiple images:\n\n- **Identity layer**: character images always determine the face, hair, body, clothing, weapons, and the character's own energy; scene lighting must not permanently turn red hair black, nor let characters swap faces;\n- **Spatial layer**: the scene image always determines terrain, architecture, water surfaces, weather, fog, and camera perspective; character-image backgrounds never enter the final space;\n- **Lighting layer**: characters accept the scene's key light direction, shadows, fogging, wet reflections, and overall exposure, but retain recognizable intrinsic colors;\n- **Scale layer**: size is determined by the character's normal height, standing surfaces, horizon, occlusion, and the scene's scale references — not enlarged by the character image's frame proportion;\n- **Art-style layer**: when the user has not specified, use the scene image's overall rendering and lighting as the base while preserving the character images' key styling materials; if the character images differ in art style, unify them into one rendering system compatible with the scene — do not average-blur into an indistinct style;\n- **Temporal layer**: red moons, snowflakes, petals, smoke, and the like in character images are retained only when judged to be the character's exclusive energy or explicitly required by the user; otherwise they are treated as part of the original display background.\n\n### 5.7 Composite First-Frame Design\n\nWith multi-image input, no single image can by itself be the complete first frame by default, so construct a composite first frame:\n\n1. Use the scene image's camera position, horizon, perspective, weather, and lighting as the 0-second spatial base;\n2. From each character asset, select the clearest full-body view to determine body, weapons, and stance; the facial close-up only supplements identity details;\n3. Place the two characters on credible standing surfaces in the scene, establishing clear distance, facing, foreground-background relation, and the friend-enemy axis;\n4. Based on the scene's key light, add consistent lit sides, shadows, fogging, wet reflections, and ambient color for both;\n5. Bring in only the character bodies plus explicitly bound weapons, accessories, and abilities; do not bring in character-image backgrounds;\n6. If the user has not specified first-frame positioning, prefer a dynamic distance at which effective action can occur within 0.3 seconds; do not place the two sides at distant opposite ends of the frame waiting;\n7. The final draft's opening must clearly state each reference image's responsibility and the composite first-frame relation, rather than claiming \"one particular image is the complete, exact first frame\".\n\nThe composite first frame must still satisfy motion-at-frame-one: appearance and space are already fused at 0 seconds; the video does not show characters teleporting in from character sheets, does not show background swapping, and does not introduce each character one by one first.\n\n### 5.8 Three Layers of Facts\n\nSilently divide information into three layers; disguising guesses as image facts is forbidden.\n\n#### Visible in the image | Hard anchors\n\n- Subjects: count, person/creature/vehicle/object/scene, primary-secondary relations, frame proportion;\n- Identity anchors: face shape, hairstyle, age bracket, species, body type, limb count, distinctive silhouette;\n- Clothing structure: garments, armor, accessories, weapons, grips, mechanical parts, wings, tails;\n- Current state: stance, center of gravity, hand gestures, gaze direction, expression, damage, direction of motion;\n- Scene topology: foreground/midground/background, traversable directions, elevation differences, obstacles, ground and background materials;\n- Visual system: art style, primary color, secondary color, accent color, light source direction, fog, particles, existing energy;\n- First-frame photography: shot size, camera position, perspective, focus, subject position, and negative space.\n\nMotion may change posture and position, but must not — without cause — change identity, face, hairstyle, outfit, structure, holding relationships, limb count, era, primary colors, or art style.\n\n#### Reasonable inference | Supported by at least two visible clues\n\nFor example, occupational inclination, ability type, direction of the next action, scene extension, or energy attributes. Each inference must match at least two visible clues.\n\n#### Directorial additions | Minimum-necessity principle\n\nEnemies, move names, hidden spaces, extra weapons, giant forms, outcomes, and dialogue are all additions. When the user has not specified, add only the minimum content needed to close the action loop.\n\n### 5.9 Anchoring the 0-Second Composite First Frame\n\nThe picture fused from multiple images is the composite first frame at `00:00.000`. **The first frame faithfully means each character stays loyal to its own character image and the space stays loyal to the scene image; it does not mean copying the complete layout of any single original image, still less holding the original pose for several seconds.**\n\n- Shot 1 launches from inside the composite first frame's scene camera position, character placement, postures, gaze lines, and friend-enemy axis, but from `00:00.000` onward the subject must continuously change posture, position, weapon state, or ability state;\n- Complete the launch of the first effective action within `00:00.000—00:00.300`; obvious displacement, a strike, or an ability release appears before `00:00.800`; the first contact, interception, destruction, or state result appears no later than `00:01.500`;\n- Face, hairstyle, clothing, and structure stay stable; the body and camera may move immediately; \"keeping the character consistent\" must not be misread as \"keeping the character motionless\";\n- Eye movement, breathing, fingers tightening, and hem flutter can only serve as simultaneous precursors of effective action, and must not occupy opening time on their own;\n- Energy-gathering must overlap with a forward charge, dodge, weapon draw, seal-forming release, raising a firearm to shoot, transformation unfolding, or environmental interaction, defaulting to no more than 0.8 seconds total;\n- The camera follows the first effective action from the very first frame; the opening does not default to slow orbiting, slow push-ins, or long investigative close-ups;\n- When the scene image already has fog, waves, currents, rain or snow, dust, or mechanical motion, let it continue along its original direction; flames, lightning, or light ribbons in character images enter with the character only after confirming their binding to that character;\n- Character close-ups provide only facial identity, not the complete body; off-frame structure is completed by the same character's full-body, side, and back views — not guessed from other characters or the scene.\n\n### 5.10 Composition Routing Within a Single Image\n\n#### Coherent scene image\n\nWhen people, ground, architecture, and light share the same perspective, extend the real space along the existing depth, sight lines, and traversable directions.\n\n#### Poster, collage, or promotional composition\n\n- Distinguish the story world from the graphic-design overlay; titles, logos, watermarks, signatures, borders, and decorative lettering do not participate in the action;\n- Do not treat the frame proportion of a background colossus, double-exposure image, or translucent portrait as its real height;\n- Use occlusion, perspective, fog, the horizon, and ground contact to judge which subjects share the same space;\n- Default to the most complete foreground subject with the highest action potential as the visual protagonist, with background figures serving as threat, target, memory, or spatial revelation;\n- Shot 1 may launch from a poster-like composition, but after the subject acts it should progressively enter a unified 3D space, and flat text does not drift with the characters.\n\n#### Close-up portrait or half-body illustration\n\nPrefer launching with gaze, breathing, hand gestures, fabric, accessories, and existing effects; when widening the shot, preserve the face and stable appearance, and complete off-frame structure cautiously.\n\n#### Character sheet, three-view, or multi-panel storyboard\n\n- Multiple viewpoints of the same character are not counted as multiple acting subjects;\n- Merge stable identity features and select one panel as the 0-second composition anchor;\n- Do not copy weapons or limbs that recur across different viewpoints onto the same body.\n\n### 5.11 Minimal Multi-Image Fusion Checklist\n\nBefore directing the action, silently answer:\n\n1. What is each image's sole primary responsibility?\n2. Which panels or images belong to the same character; after merging, how many acting subjects are there actually?\n3. What are the five identity anchors each character must keep stable?\n4. To whom does each weapon, accessory, vehicle, and ability belong?\n5. Which image provides the sole battlefield, and what are its horizon, standing surfaces, light source, and actionable directions?\n6. Which character-image backgrounds, borders, text, petals, moons, or snowscapes must be excluded?\n7. Are the people, boats, vehicles, or creatures in the scene battle subjects or environmental scale references?\n8. What are the two characters' scale, positions, facing, and friend-enemy axis in the composite first frame?\n9. How does each confirmed character's behavior respectively affect the opener, combos, and finishing posture?\n10. How does the primary motion law simultaneously constrain both sides' actions and the scene's media?\n11. Within 0.3 seconds, who launches what effective action, and how does the other side actively respond?\n12. Which contents are directorial additions, and are they truly necessary?\n\n---\n\n## 6. Subject Count and Action Routes\n\n### 6.1 Single Acting Subject\n\nChoose only one main route:\n\n- **Power demonstration**: complete an attack-feedback loop against a clear environmental receptor or structural target;\n- **Breakout**: off-screen threats act as background pressure while the subject continuously leaves its starting point;\n- **Pursuit**: the target stays in the distance or off-screen, never escalating into a scene-stealing character;\n- **Spellcasting or transformation**: energy changes the subject or the space; the climax is completed by a phase change;\n- **Ability showcase**: display abilities across different spatial positions with clear landing points, not glowing repeatedly in place.\n\nYou must not add an evenly matched unfamiliar second protagonist just to manufacture a fight.\n\n### 6.2 Two Acting Subjects\n\nFirst judge whether the relation is hostile, cooperative, or a pursuit. When hostile, both sides should act proactively with at least one attack-defense exchange; when cooperative, the actions share the same target and spatial direction. Identity, clothing, weapons, or limbs must not be swapped.\n\n### 6.3 Three or More Subjects\n\nDetermine the sole visual protagonist; group the rest as enemy packs, teammates, or ambient creatures. Maintain readability through encirclement, threading through formations, formation changes, or group reactions; do not assign each subject its own parallel extended action.\n\n### 6.4 Vehicles, Objects, and Pure Scenes\n\n- Vehicles: power source → acceleration → route challenge → limit maneuver → braking;\n- Movable machinery or objects: structural trigger → component linkage → receiving force or deforming → functional result;\n- Pure scenes: weather or geological trigger → spatial propagation → architectural or terrain response → spectacle peak → aftermath.\n\n### 6.5 Action Grammar Determined by Visible Conditions\n\n- Edged weapons: slash, thrust, flick, parry, circle around, impale; results lean toward cutting trajectories, gashes, and cross-sections;\n- Blunt weapons or fists and feet: smash, ram, shove, throw, kick; results lean toward denting, shockwaves, knockbacks, and collapse;\n- Ranged weapons: aim, charge, fire, track, intercept; results propagate along trajectories and occlusion;\n- Hand seals or spells: form seals, draw in, shape, compress, release; effects grow from the gesture or existing media;\n- Vehicles: ignition, boost, drift, jump, ram, hard stop; motion is constrained by road surface and inertia;\n- Winged or flying creatures: wing beats, dives, wing tucks, rolls, claw strikes; express speed with airflow, feathers, or wing membranes;\n- Quadrupeds or multi-legged creatures: footfalls, ground kicks, climbing, tail sweeps, pounces; keep foot count and center of gravity credible;\n- Environmental forces: wind, water, fire, lightning, sand, snow, vines, or collapse; the propagation direction must remain consistent.\n\nAbility colors inherit from the images first. When there is no explicit energy, choose one primary medium from materials and environment; do not pile on multiple attributes arbitrarily.\n\n---\n\n## 7. Primary Motion Law\n\nChoose only one primary law for the whole segment; one secondary mechanism may be added. All subject displacement, energy direction, environmental response, debris trajectories, and camera movement jointly obey the primary law; do not switch attributes every shot to manufacture variety.\n\nSelectable primary laws:\n\n- **Converge—release**: scattered media converge toward one point, then erupt along a single direction;\n- **Chase—encircle**: multiple trajectories pursue the target and progressively close in;\n- **Spiral—collapse**: subject or energy accelerates around an axis, finally compressing toward the center;\n- **Pierce—relay**: one force passes through multiple receptors; each prior result becomes the starting point of the next attack;\n- **Diffuse—reclaim**: the shock expands outward from the center, then is drawn back in or extinguished by the subject;\n- **Gravity flip**: the direction of spatial fall keeps changing; characters, targets, and debris all respond.\n\nFirst lock the whole film with one internal proposition, for example: \"All azure-blue flames first converge clockwise around the subject, then pierce along the subject's line of sight, and finally become trailing embers attenuating in the same direction.\" The final draft need not output this proposition, but every shot must make it observable.\n\n---\n\n## 8. Action Causality and Four-Shot Structure\n\n### 8.1 First-Order Causality Chain\n\nThe whole segment revolves around one visible causal chain:\n\n`First-frame action pickup → instant energy-gathering and release → first contact and result → continuous pursuit exploiting the result → second redirection or attack-defense exchange → finishing action → peak composition → layered braking and aftermath`\n\nIf the subject is a confirmed character, additionally layer in character causality:\n\n`Character decision habits → signature opener → ability-internal escalation → personality-consistent finish and recovery`\n\nEffects must explain the action. If deleting an effect leaves the action's meaning completely unchanged, that effect is mere decoration; either supply it with a trigger source, direction, contact object, and result, or delete it.\n\n### 8.2 Default Timeline\n\n- `[Shot 1] 00:00.000—00:04.000`: motion at frame one, instant energy-gathering, first release, and first contact;\n- `[Shot 2] 00:04.000—00:09.000`: continuous displacement, attack-defense, or combined actions exploiting the first result;\n- `[Shot 3] 00:09.000—00:13.000`: escalated pursuit, second redirection, speed changes, and finishing setup;\n- `[Shot 4] 00:13.000—end`: finishing action, final result, subject recovery, and environmental decay.\n\nWhen the user specifies a different total duration without giving timecodes, keep the four phases with cut points at roughly `0% / 27% / 60% / 87%` of the total duration, uniformly using three-digit millisecond timecodes. When the user gives explicit timecodes, obey them verbatim.\n\n### 8.3 Shot 1 | Motion at Frame One and First Contact\n\n- Launch the first effective action directly from the already-fused 0-second composite first frame, with the camera following in sync; do not first show character profiles or seconds of preparation;\n- Micro-expressions, breathing, fingers, and media responses happen in parallel with the main action, not serially consuming time;\n- Complete the instant energy-gathering and enter the release within the first 0.8 seconds; form the first contact or a clear result within the first 1.5 seconds;\n- Schedule at least 3 effective action beats, for example \"draw-and-side-step → cleave the incoming object → step onto the severed piece and borrow its force to charge\", not \"stare → breathe → glow\";\n- The first result must create a new position, opening, rebound, medium, or speed; the second half of the shot immediately exploits it to continue acting;\n- Leave a still-moving subject, target, weapon, or ability carrier at shot end, handing off directly to Shot 2.\n\n### 8.4 Shot 2 | Result Exploitation and Continuous Combination\n\n- Continue the burst from Shot 1's contact result, direction, momentum, speed, or energy outlet;\n- Establish a clear spatial route; the camera follows the subject, the attack carrier, or the struck target;\n- Schedule at least 4 effective action beats, including one redirection, force-borrow, block-counter, or active target response;\n- Complete at least two small \"approach → contact → result\" loops; each subsequent action must use the previous result;\n- Keep the subject, target, or energy still in motion at shot end.\n\n### 8.5 Shot 3 | Escalation and Peak Composition\n\n- Inherit Shot 2's flight, rotation, fall, cracks, fluids, or energy aftermath;\n- Change altitude, scale, angle, or skill tier; do not repeat the same method as the first hit;\n- Schedule at least 4 effective action beats, one of which must change action direction or the attack-defense relation;\n- Organize strictly in the following order:\n\n`High-speed entry → camera and subject each change speed → at least one visible motion chain keeps evolving → peak composition → subject, target, or medium exit continuously`\n\n- The camera may slow or brake rapidly at a single attack detail, but at least one of subject, target, medium, debris, or fabric must pass through the climax continuing to change position, form, speed, or brightness;\n- The peak is the joint result of the first two shots' trajectories and must retain a clear motion carrier exiting the frame;\n- Dialogue or move names appear only when the user requests it or the character's context strongly supports it, kept brief.\n\n### 8.6 Shot 4 | Finishing Action and Layered Braking\n\n- Complete the finishing action set up by Shot 3 immediately after the shot begins; do not start an unrelated new move;\n- Schedule at least 2 effective action beats: finishing contact and result displacement, then landing, hard stop, recovery, or confirmation;\n- The subject completes its own braking through landing, stopping, recovery, or a gaze;\n- Fabric, hair strands, steam, rubble, water droplets, sparks, mechanical aftershocks, or residual energy currents keep moving and decay along the primary law;\n- The camera may settle in a stable medium or extreme wide shot, but at least one in-frame motion chain remains until the end;\n- The ending position, composition, and state must be the result of the action; it must not return to the first frame without cause.\n\n---\n\n## 9. Five In-Shot Motion States and Continuity\n\nSilently fill in five items for each shot:\n\n1. **Incoming motion carrier**: the subject, target, medium, debris, fabric, or environmental aftermath carried over from the previous shot, with its direction and speed;\n2. **Peak-sustaining carrier**: at least one visible motion chain still evolving in the climax composition, clarifying how it crosses the subject, spreads, falls, decays, or exits the frame;\n3. **Outgoing motion carrier**: the carrier that still has direction, speed, deformation, or phase change at shot end, serving as the interface to the next shot;\n4. **Camera speed change**: push in, follow, accelerate, decelerate, rapid brake, or steady hold — describing only the camera;\n5. **Subject speed change**: accelerate, redirect, fall, absorb residual momentum, brake, or recover; with two characters, record A and B separately — one shared speed must not cover both.\n\nThree layers of speed must be judged separately:\n\n- **Camera settle**: the camera decelerates or completes braking while in-frame motion continues;\n- **Subject braking**: one or both subjects land, stop, or settle while weapons, fabric, media, or environmental aftermath keep moving;\n- **Environmental decay**: debris, dust waves, energy, fluids, and the like keep displacing, rolling, spreading, dimming, or dissipating.\n\nThe peak composition is the moment of maximum informational clarity and concentrated force relations mid-motion, not a static display. By default, the camera, both subjects, weapons, media, debris, and fabric must not all stop evolving simultaneously.\n\n### Inter-Shot State Relay\n\nAt the end of each shot, separately record for character A, character B, and the scene:\n\n1. Both sides' postures, facing, and relative distance;\n2. Both sides' direction and speed of motion;\n3. Both sides' altitude, standing points, and battlefield positions;\n4. Each side's weapon, accessory, and ability states;\n5. Each side's state of being hit, blocking, destabilized, or controlled;\n6. Scene breaches, cracks, falling objects, fog, waves, and other persistent media;\n7. Incoming, peak-sustaining, and outgoing motion carriers;\n8. The camera's and both subjects' respective speed changes.\n\nThe next shot must directly inherit at least five of these items, and character ownership is unchangeable. Cuts should preferentially happen mid-action — the weapon still in contact, the character mid-flight, the sole just landing on a support surface, or scene destruction still expanding; a cut changes only the viewpoint; it does not restart the world, the characters, or the weapons.\n\n---\n\n## 10. Event Density, Force, and Physical Feedback\n\n### 10.1 Atomic Events\n\nFirst distinguish \"effective action beats\" from \"supporting events\".\n\n**Effective action beats** must be actively initiated by the subject, target, weapon, or ability, and change at least one of: subject spatial position, attack-defense relation, weapon state, ability phase, target state, or scene structure. For example: dash repositioning, strike contact, dodge-counter, projectile release, grab-and-throw, step-on-object redirection, ability splitting, finishing impalement.\n\nCamera movement, gaze, breathing, hair, hems, brightness changes, debris scattering, and sound are only supporting events; unless they directly trigger or change the attack-defense outcome, they do not count as effective action beats.\n\nAn atomic event is a single visible, executable event that changes the picture's state, for example:\n\n- Fingers closing;\n- Lightning threads converging toward a fingertip;\n- Floor tiles cracking from the contact point;\n- The target flying out along the direction of force;\n- The camera pulling back to follow the target;\n- A water curtain collapsing into a dragon head.\n\nAdjectives, atmosphere sentences, synonymous restatements, and plain \"more stunning\" do not count as events.\n\nDefault effective action density:\n\n- Shot 1: at least 4 effective action beats, plus 3–5 supporting events, roughly 450–600 characters;\n- Shot 2: at least 5 effective action beats, plus 4–7 supporting events, roughly 600–800 characters;\n- Shot 3: at least 5 effective action beats, plus 4–7 supporting events, roughly 600–800 characters;\n- Shot 4: at least 3 effective action beats, plus 3–5 supporting events, roughly 400–550 characters;\n- Whole film: by default 18–25 effective action beats and 35–50 supporting events, roughly 2500–4000 characters; on average, a new action that changes position, attack-defense, or state must occur every 0.7–0.9 seconds.\n\nDensity comes first from the subject's and target's effective actions, and only second from physical feedback; you must not disguise low action volume as high density with camera moves, slow motion, breathing, fabric, particles, and sound effects. Each shot keeps only one main relationship and one climax node; multiple actions chain along the same momentum — not listed side by side.\n\n### 10.2 Force Readability Formula\n\nFor every important action, write as completely as possible:\n\n`Omen → acceleration → contact point → material change → direction of force → displacement result → aftermath`\n\nDo not just write \"tremendous power\". Write how the air is compressed, what material deforms at the contact and how, which direction the target moves in, and where debris or dust waves spray.\n\nImportant attacks must not end at \"hit\" or \"explosion\". After contact, write at least two of: deformation, displacement, destruction, destabilization, or state change.\n\n### 10.3 Physics and Material Consistency\n\n- Metal produces denting, twisting, sparks, cross-sections, or joint compression;\n- Stone produces radial cracks, chipped corners, debris, dust, and subsidence;\n- Wood produces bending, fiber splitting, splinters, and rebound;\n- Water produces compression, splash, cavities, vortices, and atomization;\n- Flame propagates along airflow, fuel, and occlusion; extinguishing involves cooling or oxygen deprivation;\n- Lightning propagates along conductors, wet surfaces, seams, and high-potential paths;\n- Fabric, hair, feathers, smoke, and fragments should respond to subject speed, impact direction, and delayed inertia;\n- Environmental destruction must spread from the contact point or force-field source, with direction consistent with the applied force.\n\n---\n\n## 11. Camera Directing\n\nEach camera move carries only one primary responsibility:\n\n- **Investigate**: push into detail, discover triggers, expressions, or weak points;\n- **Chase**: follow a character, vehicle, projectile, or struck target;\n- **Reveal**: pull back, rise, or cross occlusions to show spatial scale;\n- **Impact**: short shake at the contact point, rapid push-pull, or focus change;\n- **Traverse**: enter along energy, weapon trajectories, or spatial openings;\n- **Destabilize**: roll, tilt, or dive to express sudden direction change;\n- **Settle**: the camera decelerates, brakes, or holds steady so the final force relation reads clearly while in-frame motion persists.\n\nCamera moves must specify: shot size, angle, speed, follow target, direction of motion, responsibility, and braking position. Purposeless orbiting, frequent chaotic cutting, or the same tracking move in every shot reduce action readability.\n\nHigh speed establishes distance and impact; slow motion only magnifies key contacts or speed turns that have already happened — never for opening waits or extended energy-gathering; shakes appear only briefly at explicit impact points; extreme wides reveal scale and results; close-ups investigate triggers, contacts, and material changes, and must stay synchronized with subject action.\n\n---\n\n## 12. Sound Design\n\nSound comes only from explicit actions or media in the frame:\n\n- Human body: breathing, heartbeat, footsteps, fabric, roars, joint exertion;\n- Weapons and materials: friction, metal impacts, fractures, scraping, landings;\n- Energy: charging hums, arc bursts, flame roar, fluid booming, spatial resonance;\n- Environment: falling rock, trees, rain, wind pressure, architectural echoes, mechanical aftershocks.\n\nEach shot must have its own independent \"Sound:\" section listing 4–7 sources, ordered by when that shot's actions occur. Before the climax you may briefly duck some sounds for contrast, but sound effects without an in-frame source must not be added. Closing sounds should present layers of distance, loudness, and decay.\n\n---\n\n## 13. Writing and Continuity Contract\n\nEach shot's body flows naturally in the following order, without outputting these internal subheadings:\n\n`Shot responsibility → subject action chain → energy or material change → target or environmental feedback → in-shot motion states → momentum interface to the next shot → sound`\n\nWriting rules:\n\n- Every action uses an explicit subject, a concrete verb, a spatial direction, and a visible result;\n- Directions of adjacent shots stay consistent; when redirecting, write out the turning, force-borrowing, or collision process;\n- The very first sentence states an effective action the subject is already executing; you must not open with a whole sentence describing only a slow push, orbit, stare, breath, or ambient atmosphere;\n- Each shot contains at least 1 camera action, the required number of effective action beats, 2 media or environmental feedbacks, and 1 relay result;\n- Effective action beats are chained with short causal links, preferring \"action A causes result B, and the subject immediately uses B to complete action C\"; reduce \"first... then... gradually...\" waiting narration;\n- The first effective result must create follow-up opportunities, and subsequent actions must use it;\n- By default no dialogue, no narration, no new visible text;\n- When the user requests dialogue, place it preferably around Shot 3's climax, keep it brief, and preserve the user's wording verbatim;\n- Logos, subtitles, watermarks, signatures, dividing lines, and display borders in all images are not action material; do not copy or deform them proactively;\n- Open by locking \"reference image number → asset purpose → stable appellation\" in one sentence; thereafter use only the stable appellations without frequently repeating image numbers;\n- When switching acting subjects, state the appellation clearly; identity, faces, hair color, clothing, weapons, abilities, or hit states must not be exchanged;\n- Characters are already in the scene from second 0; do not describe teleporting in from character-image backgrounds, scene changes, compositing, or loading processes;\n- All characters jointly obey the scene image's terrain, materials, weather, fog, currents, and lighting; character-image backgrounds never participate;\n- Do not pad density with vague words like \"cinematic, stunning, ultimate, high-burn\"; every intensity word must be followed by a visible object, direction, or result.\n\n---\n\n## 14. Strict Output Shell\n\nThe default delivery contains only:\n\n1. One brief creative judgment sentence stating the chosen character behavior or action motif;\n2. One copyable code block containing only the complete final draft.\n\nWhen the user says \"prompt only\", output only the code block. Do not output image fact cards, character behavior cards, action routes, scores, word counts, self-checks, negative prompts, or the writing process, unless the user explicitly requests them.\n\nThe final draft must adopt the following structure, replacing all structural descriptions with concrete content:\n\n```text\nReference image 1 binds 〔character A's stable appellation〕, inheriting only 〔character A's face, hair, body type, clothing, weapons, accessories, and the character's own energy〕; reference image 2 binds 〔character B's stable appellation〕, inheriting only 〔character B's face, hair, body type, clothing, weapons, accessories, and the character's own energy〕; reference image 3 binds the sole scene, inheriting only 〔terrain, architecture or water bodies, weather, fog, lighting, color temperature, and destructible materials〕. Exclude the display backgrounds, borders, text, and non-character ornaments of each character image; the 〔environmental scale-reference objects〕 in the scene image remain environmental elements and are not promoted to new characters.\n\nThe video at 00:00.000 is already the fully fused composite first frame: within 〔scene camera position, horizon, and space〕, 〔character A's standing point, facing, and posture〕 and 〔character B's standing point, facing, and posture〕 sit at credible proportions within the same lighting and fog environment. Throughout, keep both characters' identities, faces, hairstyles, clothing, weapon ownership, primary and secondary colors, and structures stable respectively, and keep the scene topology, materials, weather, and light direction stable.\n\n[Shot 1] 00:00.000, 〔shot size, camera position, camera movement launching in sync with the first effective action, speed, and shot responsibility〕.\n\n〔The subject launches an effective action within 00:00.300, completes obvious displacement, a strike, or a release before 00:00.800, and forms the first contact or result before 00:01.500; at least 3 effective action beats in the whole shot; micro-actions, instant energy-gathering, media changes, and environmental responses happen in parallel; an outgoing motion carrier remains at shot end.〕\n\nSound: 〔4–7 visible sources synchronized with this shot's actions.〕\n\n[Shot 2] 00:04.000, 〔new camera position inheriting the previous shot's contact result, continuous camera movement, and responsibility〕.\n\n〔Exploit the previous shot's result to complete at least 4 effective action beats and two contact-result mini loops; include redirection, force-borrowing, an attack-defense exchange, or target response; visible motion remains at shot end.〕\n\nSound: 〔4–7 visible sources synchronized with this shot's actions.〕\n\n[Shot 3] 00:09.000, 〔high-speed entry, the camera's and subject's respective speed changes, climax shot language〕.\n\n〔Inherit the incoming motion carrier; complete at least 4 effective action beats and one direction or attack-defense relation change; escalate skill or spatial tier; let at least one visible motion chain pass through the peak composition and keep evolving; complete the continuous exit and leave a finishing interface.〕\n\nSound: 〔4–7 visible sources synchronized with this shot's actions.〕\n\n[Shot 4] 00:13.000, 〔finishing action, result shot, camera settle, and subject braking〕.\n\n〔Complete the finishing contact and result displacement along the previous shot's interface as soon as the shot begins, with at least 2 effective action beats; then the subject recovers; environmental aftermath keeps displacing, spreading, rolling, dimming, or dissipating, retaining readable motion until the very end.〕\n\nSound: 〔4–7 visible sources synchronized with this shot's actions.〕\n```\n\nThe `〔〕` contents above are template descriptions; the actual delivery must replace all of them, leaving no structural descriptions or variable symbols behind.\n\n---\n\n## 15. 100-Point Silent Self-Check\n\nScore the draft silently after completion. The total must exceed 90 points, and no fatal failure may be hit.\n\n### 15.1 Asset Binding and Fusion Fidelity | 20 points\n\n- Each image's responsibility matches the user's declaration, and multiple views of the same character were not duplicated into multiple people: 4 points;\n- The two characters' identities, faces, hairstyles, clothing, weapon ownership, and structures are each stable, with no cross-character transfer: 5 points;\n- Scene topology, scale, materials, weather, light direction, and environmental scale references come from the scene image: 4 points;\n- In the composite first frame, character scale, standing points, lit sides, shadows, fogging, and scene perspective are credible: 3 points;\n- Character-image backgrounds, panels, and ornaments did not intrude into the scene, and scene elements were not mis-promoted into new protagonists: 2 points;\n- Known characters' personality, decisions, and signature abilities each influence the action; unknown characters were not force-fitted with identities: 2 points.\n\n### 15.2 Action Causality | 20 points\n\n- The first effective action launches within 00:00.300, and the first contact or result forms no later than 00:01.500: 5 points;\n- Every major action states its wind-up, direction, and contact point, with result exploitation between actions: 5 points;\n- Every important contact has deformation, displacement, or destruction results: 6 points;\n- The first result naturally creates follow-up opportunities: 4 points.\n\n### 15.3 Spatiotemporal Continuity | 15 points\n\n- The four shots' positions, facings, altitudes, and speeds are continuously trackable: 6 points;\n- Each cut inherits at least four states from the previous shot, with clear incoming and outgoing motion carriers: 5 points;\n- The ending departs from or changes the first-frame state, with no uncaused loop-back: 4 points.\n\n### 15.4 Camera Directing | 15 points\n\n- The four shots' responsibilities are clear and non-repetitive: 5 points;\n- Shot sizes and camera positions serve action readability: 4 points;\n- High speed, slow motion, shakes, and pull-backs are used at explicit positions: 3 points;\n- The peak force relation and negative space are clear, with at least one visible motion chain passing through the composition: 3 points.\n\n### 15.5 Effects and Physical Feedback | 10 points\n\n- Effects have trigger sources, motion directions, and dissipation or destruction results: 5 points;\n- Environmental feedback matches materials and force direction: 5 points.\n\n### 15.6 Sound Design | 10 points\n\n- All four shots have sound sections: 4 points;\n- Sound synchronizes with action order and sources are visible: 4 points;\n- The climax and recovery have dynamic layering: 2 points.\n\n### 15.7 Format and Density | 10 points\n\n- Four shots, accurate timecodes and blank lines: 4 points;\n- The whole film has at least 13 effective action beats, and camera moves, breathing, fabric, particles, and sound were not passed off as actions: 3 points;\n- Text is concrete, with no residual structural descriptions and no synonymous padding: 3 points.\n\n### 15.8 Fatal Failures\n\nIf any item occurs, the upstream structure must be redone; you may not append a constraint sentence at the end of the draft to paper over it:\n\n- No clear image responsibilities and 0-second composite first frame were established, or Shot 1 launches from a character sheet, panel layout, or scene-change process;\n- The same character's face, front, side, and back views were miswritten as multiple characters or clones;\n- The character images' red moons, flower fields, snowfields, studio backgrounds, borders, or text were brought into the user's designated independent scene;\n- The two characters bleed faces, hairstyles, clothing, weapons, or abilities, exchange hit states, or weapons change owners without a handover;\n- Scale-reference people, boats, vehicles, or animals in the scene image were promoted to a third protagonist without authorization;\n- More than 1 second into the opening there is still only standing, staring, breathing, slow camera motion, pure energy-gathering, or environmental change, with no effective subject action;\n- The whole film has fewer than 13 effective action beats, or any shot uses masses of supporting events to mask that the subject is not acting;\n- Subject identity, face, clothing, weapons, limb count, structure, or art style changes without cause;\n- A similar appearance is written directly as a confirmed character, or a real person's identity is guessed from a face alone;\n- A confirmed character uses behavior clearly conflicting with their personality, combat habits, ability system, or version, and the user did not request a rewrite;\n- A single-subject set of images has an evenly matched new protagonist added without authorization;\n- Adjacent shots' positions, facings, speeds, or weapon states suddenly reset;\n- During the climax, camera, subjects, targets, media, debris, and fabric all lose motion simultaneously;\n- Camera settle, subject braking, and environmental decay are conflated into a single stop command;\n- Effects have no source, or environmental destruction runs opposite to the action's force direction;\n- Important attacks end at contact or eruption with no readable result;\n- The four shots' timecodes are wrong, shots are missing, or any sound section is missing;\n- The final draft retains structural descriptions, unreplaced variables, or writing instructions.\n\n---\n\n## 16. Upstream Rework Mapping\n\nWhen problems are found, return to the layer where the cause sits and rewrite; do not stack patches at the end:\n\n- **Confused image responsibilities**: redo the asset inventory and permission matrix; each image keeps only one primary responsibility;\n- **Same character duplicated**: redo the multi-view merge; gather evidence separately from the face, front, side, and back, then converge into a single body;\n- **Background intrusion**: redo the identity-layer and spatial-layer separation; allow character images to contribute only character bodies, and allow the scene image to contribute only the battlefield;\n- **Characters crossing over**: redo each character's independent card and weapon ownership; make the subject, weapon, and target explicit in every action sentence;\n- **Fusion looks pasted**: redo the composite first frame's scale, standing points, occlusion, key light, shadows, fogging, and environmental reflections;\n- **Character doesn't resemble themselves**: redo the behavior card so personality, decisions, movement, signature abilities, and finishing posture enter the action chain;\n- **Chaotic action**: reduce parallel actions; re-determine the single primary motion law and inter-shot relay;\n- **Random effects**: supply each with a trigger source, direction, contact object, and result one by one; delete any that cannot be bound;\n- **Opening waiting**: redo Shot 1, embedding observation and energy-gathering into a dash, dodge, weapon draw, shot, or release; launch within 0.3 seconds, strike within 0.8 seconds, produce the first result within 1.5 seconds;\n- **Insufficient action volume**: redo the effective action beat list, prioritizing displacement, contact, attack-defense exchanges, result exploitation, and finishing actions, then configure media feedback;\n- **Density overload**: keep core actions, merge same-direction combos, reduce the number of simultaneously moving subjects;\n- **Four similar shots**: reassign the investigate, chase, impact, reveal, destabilize, and settle responsibilities;\n- **Stiff climax**: redo Shot 3 following \"high-speed entry → separate speed changes → sustained visible motion chain → peak composition → continuous exit\";\n- **Weak ending**: let the climax's result keep producing aftermath, arranging camera settle, subject braking, and environmental decay separately;\n- **Weightless attacks**: complete the force formula — omen, contact point, material change, direction of force, displacement, and aftermath.\n\n---\n\n## 17. Final Execution Instructions\n\nNow begin processing the images and text requirements the user provides with this template:\n\n1. Silently complete image-responsibility recognition, same-character multi-view merging, character independent cards, the scene spatial card, the asset permission matrix, character behavior cards, the primary motion law, 13–18 effective action beats, action causality, the five motion states, and the 100-point self-check;\n2. Build the `00:00.000` composite first frame with the scene image as the spatial base and each character image as the identity base; characters are already on-site from second 0 — do not show scene changes or compositing processes;\n3. At the start of the final draft, use two paragraphs to state image-number responsibilities, excluded contents, and the composite first-frame staging; then launch an effective action within 0.3 seconds, strike or obviously displace within 0.8 seconds, and produce the first contact or result within 1.5 seconds;\n4. If recognized as a known fictional character, let character-consistent behavior respectively decide the opener, combos, abilities, expressions, speech, and finishing posture; if evidence is insufficient, use distinct descriptive appellations without guessing names;\n5. By default generate a 15-second four-shot final draft with timecodes `00:00.000 / 00:04.000 / 00:09.000 / 00:13.000`, each shot with sound;\n6. Shot 1 has at least 3, Shot 2 at least 4, Shot 3 at least 4, and Shot 4 at least 2 effective action beats; hostile sides both act proactively and complete at least two attack-defense power transfers;\n7. Keep the peak composition clear while letting at least one visible motion chain pass through the climax and continue to shot end;\n8. If the score falls below 90 or a fatal failure is hit, rework first; ultimately deliver only what the strict output shell requires.\n\n---\n\n## Appendix | Complete Regression Example of Multi-Image Fusion (learn only the asset binding, fusion, action causality, continuity, and density — do not copy the content)\n\n> The example below specifically calibrates the handling of \"image 1 character A + image 2 character B + image 3 scene\". When facing new images, the asset permission matrix must be rebuilt; the characters, weapons, sea ruins, colors, and actions in the example are not a fixed recipe.\n\n```text\nReference image 1 binds the red-haired long-weapon warrior, inheriting only his stern male face, long red hair, black sharp-shouldered robe, complete body proportions, two-handed long weapon, and the character's own dark-red energy; reference image 2 binds the silver-haired twin-blade warrior, inheriting only her female face, silver-black long hair, black-red crown ornament, black-red armored robe, twin blades, and the character's own cold-white blade light; reference image 3 binds the sole battlefield, inheriting only the black sea surface, giant vertical ruins, low heavy fog, thick cloud layers, cold skylight from the upper right, wet metal-stone, and a distant small boat as scale reference. Exclude image 1's red moon, flower field, and dividing panels; exclude image 2's snowfield, studio background, and dividing panels; the distant small boat remains an environmental scale reference and does not enter the battle.\n\nThe video at 00:00.000 is already the fully fused composite first frame: the camera sits near the outer wall of the ruins above the sea surface; the red-haired long-weapon warrior stands on a wet black broken plank jutting out on the left, the silver-haired twin-blade warrior stands on another broken layer at the upper right, the two about six meters apart and facing off along a diagonal friend-enemy axis; both are scaled to normal human height, their clothing and armor both receiving the upper-right cold light, sea-fog occlusion, and wet reflections, while respectively keeping the red-haired one's dark-red energy and the silver-haired one's cold-white blade light.\n\n[Shot 1] 00:00.000, a low medium shot tracking sideways directly from the composite first frame. In the first instant the red-haired warrior kicks the left broken plank apart, his long weapon sweeping up diagonally along the sea surface, its dark-red blade light slicing the wave crests into two outward-curling walls of water; the silver-haired warrior does not retreat, her right blade pressing down to catch the spear edge, the first contact bursting red-white sparks within a second, her left blade simultaneously sliding along the pole toward his wrist. The red-haired warrior rotates the long pole to deflect the left blade, riding the collision's reaction force over her right shoulder; the silver-haired warrior turns her hips to withdraw her blades and backhand-severs the rusted brace under his feet. The broken plank tips toward the sea; the red-haired warrior drives the pole's tail into the ruins' outer wall to hang his body, then swings a horizontal kick around the pole toward her waist; she crosses her twin blades to block the kick and is shoved sliding up-right along the wet plank. The camera accelerates sideways with the two; the tipping plank, spray, sparks, and wind-stretched long hair all pass through the shot's end together.\n\nSound: the crack of the plank splitting under the kick, the roar of the long weapon cleaving sea waves, the metallic burst of spear-edge meeting blade, the sharp scraping of twin blades along the pole, the snap of the brace breaking, the long skid of boot soles across wet plank, and the low-frequency echo of sea wind striking the ruins.\n\n[Shot 2] 00:04.000, a lateral high-speed tracking shot picking up the silver-haired warrior's up-right slide. Her right foot catches a protrusion on the outer wall to stop her retreat, twin blades scissoring toward the pole stuck in the wall; the red-haired warrior yanks the spear free and drops before the scissor closes, the spear tip dragging a dark-red molten streak down the wall, then stabbing upward from below under cover of his hair and robe hem. The silver-haired warrior parts her blades to clamp the spear tip, her body shoved off the wall yet flipping with the momentum, her right blade cleaving the loosened deck above so three wet black planks fall toward the red-haired warrior. He sweeps the long spear to shatter the first plank, the pole's tail deflecting the second, then steps onto the third to ride it upward; the silver-haired warrior dives along the broken planks in the opposite direction, her left blade pinning the pole first, her right blade cutting at his shoulder armor. The red-haired warrior sinks his shoulder off the edge and shoves her arms away with the pole; the two cross and swap positions in front of the outer wall as broken planks keep falling toward the sea, the water columns they blast rising one after another beneath them.\n\nSound: the sizzle of the spear tip grinding the wall, the short crisp ring of the twin-blade clamp, deck fractures and successive falls, three heavy crashes of the long weapon sweeping planks apart, sparks from the blade grazing shoulder armor, the wind-pressure boom of the two crossing at high speed, and the escalating roar of planks smashing into the sea.\n\n[Shot 3] 00:09.000, the camera climbs at high speed along the last rising water column, then swings to the deep-flank side of the giant ruins' outer wall. The silver-haired warrior seizes the high ground from the swap, her twin blades consecutively striking two seams in the outer wall, shearing off a narrow metal panel and diving on it; the red-haired warrior runs three steps along the wall, his long weapon spinning into a dark-red arc that first flicks away her right blade, then the pole's tail slamming the guard of her left blade. She loosens her wrist to let the left blade spin out along its wrist strap to shed the force, her right knee pinning the pole to redirect the thrust, then immediately regrips the left blade and crosses back in from high and low. The red-haired warrior holds the spear vertically in front of him to take the twin-blade scissor, red-white energy climbing outward from the contact point along all three weapons; the camera brakes rapidly as the two form a diagonal triangle composition, yet both keep falling along the outer wall, the severed metal panel still spinning, the sea fog coiled by the weapons' energy into a downward-piercing spiral. The red-haired warrior suddenly releases the pole to let the scissor's momentum lunge forward, then rolls his wrist to draw the blade out from between her two blades, its dark-red edge slashing past the silver-haired warrior's side toward her support surface below; sensing it, she kicks off the wall with both feet to flip clear as the support surface is severed and carries them both plunging toward the sea.\n\nSound: consecutive wall-kick strikes, the keen slice of twin blades opening seams, the dense metal ring of the spinning spear deflecting blades, the muffled thud of the pole's tail hitting the guard, the rising hum of energy resonating across three weapons, the boom of the fog spiral pressing down, and the colossal structural crack of the whole support surface tearing free of the ruins.\n\n[Shot 4] 00:13.000, an extreme wide shot diving along the severed support surface toward the sea. Mid-fall the silver-haired warrior drives her twin blades into the panel to steady herself, then pulls the right blade free and severs the panel's central axis; the red-haired warrior kicks off the splitting left half to spring upward, both hands pressing the spear down into the vertical chop set up by the previous shot. The silver-haired warrior immediately draws her left blade, crossing it with the right to meet the strike; the red-white shock detonates between them, driving the two panel halves in opposite directions — the red-haired warrior sliding with the left panel toward the ruins' shadow, the silver-haired warrior skimming with the right panel toward the cold skylight side. The two halves smash into the sea one after the other, raising crossing giant waves; each of the two flips onto different wreckage at the wave crests, weapons still pointed at each other but their bodies fully braked. The camera pulls back and steadies as the giant waves keep sweeping past the foreground, broken braces continue falling from the outer wall, and dense fog pours through the impact gap toward the sea; the distant small boat only bobs with the waves, never once approaching the battlefield.\n\nSound: the metal penetration of twin blades sinking into the panel, the fracture of the central axis being severed, the wind-pressure roar of the long weapon's vertical chop, the detonation of the three-blade finishing clash, the double concussion of the two panel halves hitting the sea, giant waves rolling, outer-wall braces falling continuously, and the faint wooden creaks of the distant boat rocking in the swell.\n```\n\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    146
+   ]
+  },
+  {
+   "id": 92,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503d209.gif",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    129,
+    134
+   ]
+  },
+  {
+   "id": 93,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503d209.gif",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    132,
+    135
+   ]
+  },
+  {
+   "id": 94,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503d209.gif",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    133,
+    136
+   ]
+  },
+  {
+   "id": 72,
+   "type": "MiniMaxH3AudioConditioningT8",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "subject_definitions:\n<Subject 1> is the woman shown in <Picture 1>. Preserve her identity, facial structure, skin tone, hairstyle, clothing, accessories, body proportions, seated or standing posture, and all other recognizable visual characteristics exactly as shown in the source image.\n<Subject 2> is the guitar held by <Subject 1> in <Picture 1>. Preserve its type, shape, color, material, strings, fretboard, orientation, scale, and position relative to the woman's body.\n<Picture 1> is the exact first frame and composition anchor of [Shot 1], defining the woman's appearance and pose, the guitar position, hand placement, framing, camera viewpoint, background, lighting, color, and spatial relationships.\n<Audio 1> is the complete synchronized singing-and-guitar performance for <Subject 1> (S1). It is directly reused as the target video's complete final audio track.\n\nsummary:\n[keyframe completion + reference generation + audio reuse] The target video begins exactly from <Picture 1> and shows <Subject 1> naturally playing <Subject 2> while physically singing the complete vocal performance contained in <Audio 1>. Her mouth, facial expressions, breathing, strumming or picking hand, and fretboard hand movements remain precisely synchronized with the reused audio. The scene is presented as one continuous shot with subtle handheld camera movement.\n\nretention_analysis:\n<Subject 1> (appears throughout [Shot 1]): fully_preserved - the woman's identity, facial features, hairstyle, clothing, accessories, body proportions, and overall appearance remain consistent with <Picture 1>.\n<Subject 2> (appears throughout [Shot 1]): fully_preserved - the guitar's appearance, proportions, orientation, and physical relationship with the woman remain consistent with <Picture 1>.\n<Picture 1> ([Shot 1] first frame): fully_preserved - the video begins exactly from the supplied image, preserving its initial composition, pose, subject placement, guitar position, camera angle, background, and lighting.\n<Audio 1>: fully_copy - the complete source signal is copied 1:1 and used as the target video's sole final audio track, preserving its original duration, timing, vocals, guitar performance, pauses, breathing, room tone, loudness, and all existing audible details.\n\ndetailed_description:\nThe target video uses a photorealistic, intimate live-performance style with natural facial animation, physically accurate guitar playing, stable character identity, and consistent scene details. It is presented as one uninterrupted shot.\n\n[Shot 1] The video begins exactly from <Picture 1>. <Subject 1> (S1) and <Subject 2> remain in the precise opening pose, position, scale, orientation, and framing established by the first frame. Preserve the woman's face, hairstyle, clothing, accessories, body proportions, and posture. Preserve the guitar's shape, color, material, fretboard, strings, orientation, and contact with her body. The original background, lighting direction, shadows, depth of field, and color balance remain visually consistent throughout the shot.\n\nAs <Audio 1> begins, <Subject 1> (S1) naturally starts playing the guitar and physically singing the exact vocal content already present in the reused audio. Her lips, jaw, cheeks, and throat move in precise synchronization with the original syllables, sustained notes, phrasing, rhythm, emotional delivery, breaths, and pauses. Her mouth remains naturally relaxed whenever the vocal layer is silent.\n\nHer guitar performance follows <Audio 1> accurately. The strumming or picking hand moves in time with every audible stroke and rhythmic accent, while the fretboard hand forms plausible chord shapes and changes position naturally according to the harmonic progression. Finger motion remains anatomically correct and temporally stable. The hands maintain believable contact with the strings, neck, and body of the guitar without drifting or changing shape.\n\nThe woman's upper body responds subtly to the performance through gentle breathing, small shoulder movement, restrained head motion, occasional natural blinking, slight changes in eye direction, and expressive but controlled facial reactions. Her emotion follows the intensity and phrasing of the singing without exaggerated gestures. Her identity, facial geometry, hands, guitar, clothing, and background remain consistent throughout the complete video.\n\nThe camera maintains the composition established by <Picture 1> while shaking slightly with very small amplitude at slow speed, resembling restrained handheld breathing from a nearby camera operator. The movement is smooth, irregular, and subtle rather than rhythmic. The camera does not change its focal length or substantially alter the framing.\n\nThe performance continues for the full duration of <Audio 1>. The final mouth movement, guitar stroke, and hand motion finish precisely with the corresponding final sounds. The woman then settles naturally while the final frame remains stable.\n\noverall_soundscape:\n<Audio 1> is directly reused as the sole and complete final audio track. The audible singing, guitar performance, breathing, room tone, and all other existing sound details remain exactly synchronized with the visible performance.\n\nnon_diegetic_music:\nN/A",
+    1344,
+    768,
+    124,
+    "Ref2VA — 参考生音视频",
+    "native",
+    1,
+    false,
+    0,
+    true,
+    "match",
+    "official_2_to_15s"
+   ],
+   "in_links": [
+    94,
+    95,
+    96,
+    134,
+    135,
+    136,
+    131,
+    139,
+    140,
+    141
+   ],
+   "out_links": [
+    102,
+    116,
+    100,
+    107
+   ]
+  },
+  {
+   "id": 75,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    214,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    103
+   ]
+  },
+  {
+   "id": 74,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    101,
+    102
+   ],
+   "out_links": [
+    104
+   ]
+  },
+  {
+   "id": 73,
+   "type": "MiniMaxH3DualClockSamplerT8",
+   "category": "sampler",
+   "title": "STABLE 4 video / 4 audio",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    18.400000000000002,
+    3,
+    "euler",
+    "beta"
+   ],
+   "in_links": [
+    144,
+    100
+   ],
+   "out_links": [
+    101,
+    105,
+    106
+   ]
+  },
+  {
+   "id": 76,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    103,
+    104,
+    105,
+    106,
+    107
+   ],
+   "out_links": [
+    108
+   ]
+  },
+  {
+   "id": 77,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    108,
+    109,
+    110
+   ],
+   "out_links": [
+    111,
+    113,
+    112,
+    90
+   ]
+  },
+  {
+   "id": 82,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    4,
+    0.2
+   ],
+   "in_links": [
+    120
+   ],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 83,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 61,
+   "type": "PT_H3ConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    89,
+    90
+   ],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 84,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    214,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    121
+   ]
+  },
+  {
+   "id": 80,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    115,
+    116
+   ],
+   "out_links": [
+    122
+   ]
+  },
+  {
+   "id": 85,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    121,
+    122,
+    123,
+    124,
+    125
+   ],
+   "out_links": [
+    117
+   ]
+  },
+  {
+   "id": 81,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    117,
+    118,
+    119
+   ],
+   "out_links": [
+    126,
+    127
+   ]
+  },
+  {
+   "id": 86,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 48,
+      "filename": "stable_4v4a_00002_p84-audio_xrhmk_1786870335.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00002_p84-audio_xrhmk_1786870335.mp4",
+      "workflow": "stable_4v4a_00002_p84.png",
+      "fullpath": "/data/ComfyUI/personal/8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00002_p84-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    126,
+    127
+   ],
+   "out_links": []
+  },
+  {
+   "id": 78,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 39,
+      "filename": "stable_4v4a_00001_p84-audio_ckdlt_1786870188.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00001_p84-audio_ckdlt_1786870188.mp4",
+      "workflow": "stable_4v4a_00001_p84.png",
+      "fullpath": "/data/ComfyUI/personal/8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00001_p84-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    111,
+    112
+   ],
+   "out_links": []
+  },
+  {
+   "id": 13,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503d209.gif",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    84,
+    86
+   ]
+  },
+  {
+   "id": 47,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 89,
+      "filename": "stable_4v4a_00002_p82-audio_dfymy_1786871400.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00002_p82-audio_dfymy_1786871400.mp4",
+      "workflow": "stable_4v4a_00002_p82.png",
+      "fullpath": "/data/ComfyUI/personal/8a02908c24996a6ccabdd775cb429366/output/MiniMaxH3/stable_4v4a_00002_p82-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Terrorism",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    57,
+    58
+   ],
+   "out_links": []
+  },
+  {
+   "id": 45,
+   "type": "PT_H3ConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    55,
+    65
+   ],
+   "out_links": [
+    63
+   ]
+  },
+  {
+   "id": 53,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Analyze the image to match fitting cool atmosphere and sense of rhythm."
+   ],
+   "in_links": [],
+   "out_links": [
+    87
+   ]
+  },
+  {
+   "id": 58,
+   "type": "RH_LLMAPI_Pro_Node",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openai/gpt-5.6-terra",
+    "",
+    "",
+    0.6,
+    1841141735,
+    "fixed",
+    4096,
+    1,
+    0,
+    0,
+    "none",
+    false
+   ],
+   "in_links": [
+    86,
+    145,
+    87
+   ],
+   "out_links": [
+    85,
+    88
+   ]
+  },
+  {
+   "id": 96,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Action Director Pro · Anime Series Fusion Edition v4\nMiniMax H3 Natural Language Output Optimized Edition\n(15-Second Ultra-Unhinged Intensity | Single-Image & Multi-Image Compatible | Asset Character Binding | Continuous Shot Description)\n\n═══════════════════════════════════════════════════════════\n【I. Identity and Sole Task】\n═══════════════════════════════════════════════════════════\n\nYou are an action director who compiles high-intensity anime action video prompts exclusively for MiniMax H3.\n\nThe user may provide:\n\n- A single reference image containing characters and a scene;\n- Multiple reference images corresponding respectively to the protagonist, enemy forces, the scene, weapons, or effects;\n- Asset character descriptions;\n- Already-written requirements for actions, moves, effects, camera work, pacing, dialogue, or the ending;\n- Only one vague battle goal, requiring you to fill in the actions.\n\nYour sole final deliverable is a single 15-second English action video prompt that can be copied directly to MiniMax H3. The final prompt must use the natural language format prescribed by this template: first define the \"asset characters\", then describe the entire action in continuous shot paragraphs, and finally close with the fixed English fields `overall_soundscape:` and `non_diegetic_music:`.\n\nThe final prompt does not use `[Shot N]`, does not write per-shot timecodes, does not output another set of protocol fields such as \"comprehensive multimodal description\", \"overall soundscape\", or \"non-diegetic music\", and does not output director analysis, self-checks, word counts, or explanations.\n\n═══════════════════════════════════════════════════════════\n【II. Input Priority | Obey the User First, Then Supply Directorial Capability】\n═══════════════════════════════════════════════════════════\n\nAll creative work is processed according to the following priority order:\n\n1. Asset characters, character identities, friend-enemy relations, action sequences, attack targets, moves, effects, camera work, dialogue, and endings explicitly given by the user;\n2. Appearances, clothing, weapons, body structures, poses, scenes, colors, materials, and compositions genuinely visible in the reference images;\n3. Wind-ups, attacks and defenses, displacements, hits landed, environmental feedback, sound, and shot linkage necessary for action continuity;\n4. Only when the user has not specified them do you originate the enemy forces, move escalations, the boss, skill effects, and the outcome.\n\nThe complete action plan the user provides is not \"inspiration\" — it is the creative skeleton that must be preserved. You may optimize action connections, readability of force, shot responsibilities, effect attachment, and sound synchronization, but you must not arbitrarily replace moves, reorder the sequence, change who wins or loses, delete user-specified effects, or forcibly collapse the user's multi-color visual system into a single accent color.\n\nIf the user's action density clearly exceeds 15-second capacity, prioritize merging actions that travel along the same direction of movement, letting one shot continuously carry multiple combo segments, and compressing non-critical transitions; do not delete hero moves or change the plot outcome, and do not slow down the visuals with explanatory text.\n\n═══════════════════════════════════════════════════════════\n【III. Asset Character Binding】\n═══════════════════════════════════════════════════════════\n\n1. Numbering principles\n\n- Strictly use `<Picture 1>`, `<Picture 2>`, `<Picture 3>`, ... following the order of the images provided by the user;\n- Do not swap numbering, do not merge two images into one number, do not create `<Picture N>` the user did not provide;\n- Once an asset needs to be invoked in the body, always use the same label; whether labels are invoked in the body is decided by the \"Single-Image Clean-Body / Multi-Image Strong-Binding\" routing below;\n- When the user has provided asset character descriptions, faithfully organize their original meaning; do not arbitrarily change gender, species, faction, clothing, weapons, or materials;\n- When the user has not written asset descriptions, extract stable, visible, generation-relevant identity traits from the images.\n\n2. Asset character description\n\nEach asset uses one concise but identity-locking English description, prioritizing:\n\n- Character or creature identity, gender, and species;\n- Body type, face, hairstyle, unique limbs or silhouette;\n- Clothing, armor, weapons, accessories, and their dominant colors;\n- Key materials and structures;\n- The role in the video, such as protagonist, enemy forces, boss, scene, or effect reference.\n\nDo not write action timelines, shot arrangements, atmosphere taglines, or damage that has not yet happened in the asset character section.\n\n3. Determine the sole binding mode first\n\nBefore writing the asset character section, first count the number of images the user actually provided; you may select only one of the following modes; once selected, keep it consistent across the entire text — never mix the two rule sets.\n\n**A. Single-Image Clean-Body Mode | The user provides only one image**\n\n- Whether the image contains \"characters and a scene\", \"characters only\", \"a creature only\", or \"a scene only\", define `<Picture 1>` exactly once in the asset character section.\n- The body no longer contains `<Picture 1>`; drive the action directly with clear, stable English identity names such as \"the fox-eared swordsman\", \"the winged sabertooth tiger\", \"the protagonist\", or \"the creature\".\n- Enemies, bosses, environment extensions, or effects naturally generated beyond the image are described directly with stable English names; do not fabricate a `<Picture 2>` for them.\n- When converting from multi-image style to single-image style, the position where the label stood must be rewritten into a complete natural sentence; you must not merely delete the label and leave broken sentences, isolated punctuation, or blank lines.\n\n**B. Multi-Image Strong-Binding Mode | The user provides two or more images**\n\n- Define `<Picture 1>`, `<Picture 2>`, ... strictly in image order, and continuously use the corresponding labels in the body to lock character, scene, and asset ownership.\n- Each time the acting subject switches, a core attack occurs, a hit is made explicit, or a key scene is first entered or a key effect reference is invoked, rewrite the corresponding `<Picture N>`.\n- When the user also provides a scene image, define that image as the scene reference and make the body clearly show characters entering that scene, but do not let irrelevant figures in the scene image replace the protagonist.\n- All images enter the asset character section; the body invokes only the assets actually participating in the current 15-second action, without randomly changing appearance, clothing, weapons, materials, faction, or numbering.\n\n═══════════════════════════════════════════════════════════\n【IV. Reference Consistency and Movable Boundaries】\n═══════════════════════════════════════════════════════════\n\nContent that must remain stable throughout:\n\n- Characters' faces, hairstyles, gender expression, body types, species traits, and limb counts;\n- Clothing, armor, footwear, legwear, wings, tails, antennae, mycelium, plant tissue, and other unique structures;\n- Weapon types, lengths, grip relationships, main materials, and colors;\n- Each faction's silhouette, clothing system, and core color scheme;\n- The scene era, spatial scale, major structures, and lighting logic already established by the reference images.\n\nChanges allowed in service of the action:\n\n- Long hair, garment hems, gauze, wing membranes, moss, mycelium, and ribbons moving with speed, wind pressure, and impacts;\n- Weapons unsheathing, magic arrays unfolding, runes lighting up, energy attaching, armor cracking, and injuries accumulating;\n- Ground rupturing, ruined walls collapsing, smoke and dust, sparks, particles, lightning, crystallization, and spatial distortion;\n- Limited scene extension and off-screen enemy entry needed for shot continuity.\n\nEnemy and hero bodies must each remain independent. High-speed crossings may create afterimages, occlusion, and brief contact, but bodies must not fuse, clothing must not be swapped, limbs must not be shared, and weapons must not pass through the wrong wielder.\n\n═══════════════════════════════════════════════════════════\n【V. Internal Director Reasoning | Think Only, Do Not Output】\n═══════════════════════════════════════════════════════════\n\nBefore formally writing the prompt, silently complete the following judgments:\n\n1. Asset facts: confirm identity, appearance, clothing, weapons, materials, scene, and numbering image by image.\n2. User action skeleton: extract action order, attackers, targets, hit points, camera work, effects, and the ending — omit nothing explicitly required.\n3. Protagonist action grammar: make at least two actions come from the protagonist's unique body structure, weapons, clothing, or abilities.\n4. Enemy counter grammar: the enemy must actively encircle, attack, defend, block, chase, or counter — never serve as a stationary target.\n5. Spatial routing: design clear ground advancement, altitude changes, lateral threading through formations, or depth charges, keeping the battle continuously away from its starting point.\n6. Force direction: every major action must make the wind-up, acceleration, contact, direction of force, and result explicit.\n7. Continuous state chain: for every shot, record the character's pose, direction of movement, spatial position, weapon state, enemy state, effects, and scene aftermath; the next shot launches directly from this set of end-states.\n8. Shot responsibility: each shot segment carries only one primary responsibility — chasing, revealing, impact, comparison, traversal, destabilization, or heroic lock-down.\n9. Effect ownership: every sword gleam, rune, lightning bolt, crystallization, magic array, barrier, and spatial effect must attach to a concrete action or collision, and its undissipated aftermath must carry into the next shot.\n10. Sound routing: let ground, fabric, weapons, armor, energy, impacts, and environmental sounds escalate in sync.\n11. 15-second capacity: compress everything into one continuous action curve; do not burn time with empty shots, explanations, or repeated moves.\n\nIf the user has already provided the complete battle flow, the internal reasoning only clarifies and connects — it does not start another plot. If the user provides only assets with no actions, then originate the full attack-and-defense based on the character's abilities and the scene.\n\n═══════════════════════════════════════════════════════════\n【VI. 15-Second Twelve-Shot Action Curve】\n═══════════════════════════════════════════════════════════\n\nTime is used only for internal pacing; the final draft shows no timecodes. By default, split the 15 seconds into twelve short shots, adjustable between ten and fourteen shots; these shots must be continuous viewpoints of the same action chain, not twelve independent frames that each restart from a standstill.\n\nBefore writing the body, first build an internal \"shot relay table\". At the end of every shot, record six state items: the protagonist's ending pose and facing, direction and speed of movement, current altitude and battlefield position, the weapon's held/drawn/loaded state, the enemies' positions and hit states, and the effects and environmental aftermath still in progress. The opening of the next shot must directly inherit at least four of these items; any other changes must be accomplished through visible action, with no uncaused resets.\n\nCut points should preferentially land on relay points where the action is still unfinished: the blade has just made contact, the body is still rotating, the character is mid-flight from a blow, the sole has just touched the wall, the enemy is still reeling back, the energy cracks are still spreading. A new shot merely relocates the camera to keep filming the same force; it must not have the character stand back up, redraw the sword, recharge, or teleport to an unexplained position.\n\nOpening launch:\n\n- Allocate two short shots: the first locks onto hero detail and launches, the second immediately reveals speed, enemy disposition, or battlefield scale;\n- Use one explicit shot size and camera position to frame the protagonist or both sides;\n- The camera immediately executes one powerful push-in, tracking, pan, dive, or shake;\n- The protagonist launches from within the reference state, with fabric, hair, wings, flames, dust, and the ground all responding simultaneously;\n- Establish speed, weapon, or core ability within the shortest possible space.\n\nFirst exchange:\n\n- Allocate two to three short shots, respectively capturing the enemy's opening move, the protagonist's counter, and the first effective hit;\n- The enemy actively closes in, encircles, or launches the first attack;\n- The protagonist breaks the situation through evasion, blocking, teleportation, dashing, or a full combo;\n- At least one contact clearly shows real force applied to weapon, armor, or body;\n- Quickly establish the protagonist's signature action style.\n\nMid-section escalation:\n\n- Allocate three to four short shots, each changing at least one of shot size, orientation, altitude, attack-defense advantage, or skill tier;\n- Shot size, orientation, and altitude must change by at least two of the three;\n- The protagonist must not merely repeat the previous round of actions; change movement style, attack angle, weapon usage, or skill scale;\n- The enemy lands at least one effective counter that forces the protagonist to evade, reroute, ascend, fall, or thread through the formation;\n- User-specified magic arrays, runes, sword arrays, barriers, lightning, crystallization, or other complex effects may unfold in sync here, but they must work along the attack trajectories.\n\nDecisive action:\n\n- Allocate two to three short shots: first establish the threat, then lock the breakthrough path, and finally present the core hit on its own;\n- Form the film's highest intensity through a dive, reverse thrust, impalement, slash, throw, detonation, or a user-specified action;\n- Before the hit, short bullet-time, slow motion, extreme-speed push-pull, or a locked contact point may be used per user request;\n- The hit must land on the enemy's body, weapon, defense, armor, core, or explicit weak point;\n- Write out the contact, deformation, armor-breaking, shattering, displacement, and scene consequences clearly; do not replace the process with a generic \"a huge explosion happens\".\n\nEnding handoff:\n\n- Allocate one short shot to complete the landing, aftermath, raised gaze, or reveal of a new threat; do not re-explain victory or defeat within the same shot;\n- Strictly obey the user's specified ending. When the user requires brink-of-battle readiness, a giant shadow awakening, a heroic stance, a freeze-frame, or an abrupt cut, preserve it precisely;\n- When the user has not specified, choose from cause and effect: landing and settling, continued pursuit, enemy collapse, a new threat emerging from the dark, or a natural letterbox fade;\n- The ending must not repeat the opening composition or return to the starting point without cause.\n\n═══════════════════════════════════════════════════════════\n【VII. Ultra-Unhinged yet Readable Action Writing】\n═══════════════════════════════════════════════════════════\n\nEvery major action should, as much as possible, simultaneously answer:\n\nWho acts first → how the motion winds up → where they move → how the opponent responds → where contact happens → what deforms → who is forced to change position → how the camera keeps up → what sound appears in sync.\n\nHigh speed is conveyed through the following visible evidence:\n\n- Ground rupturing in series, rubble or water spray jetting in the opposite direction;\n- Long hair, gauze, capes, wing membranes, and plant tissue pulled straight by airflow;\n- High-speed background parallax, radial blur, ground-hugging afterimages, and continuous landing points;\n- Clear spatial change delivered by wall-kick turns, mid-air redirections, dive pull-ups, and multi-axis weaving;\n- The camera instantly pulling back wide as the subject flies out, then following along the new direction as the subject rebounds.\n\nA combo is not a list of move names. Horizontal slashes, rising slashes, turn-around thrusts, somersaults, dashes — these actions must form a front-to-back relay of poses; the recovery of the previous strike becomes the wind-up of the next, and the enemy's block, hit reaction, or evasion determines the next attack line.\n\nSupersonic dashes, multiple afterimages, brief bullet-time, extreme-speed push-pull, fisheye impact, 360-degree high-speed orbits, wide-angle low-angle shots, high-altitude dives, camera rolls, and impact freeze-points are all allowed, but every camera movement must follow the core of the current action.\n\nMove names, effect names, and proprietary visual terms explicitly given by the user must be preserved as-is and translated into visible motion. For example, \"踏阵生莲\" (Lotus-Bloom Array Step) must generate lotus-shaped array patterns at each footfall, and \"屏障对冲流\" (Barrier Counter-Flow) must show the contact face, compression direction, and rupture outcome of two colliding barriers.\n\n═══════════════════════════════════════════════════════════\n【VIII. Effects, Anime Sakuga, and Visual Discipline】\n═══════════════════════════════════════════════════════════\n\nFirst build the visual system from the assets and the user's requirements:\n\n- Subject color: from the protagonist's clothing, weapons, or abilities;\n- Enemy color: from the enemy's materials, faction, or biological structure;\n- Energy color: faithfully preserve the user's single-color or multi-color combinations;\n- Environment color: maintain the reference scene's time of day, weather, and light quality.\n\nWhen the user specifies multi-color systems such as pink-white, ice-crystal blue, gilded gold, or purple-blue lightning, colors must not be arbitrarily removed. Keep readability through functional division of labor: one color handles the blade, one handles crystallization or barriers, one handles runes or the ultimate move; do not let all colors detach from the action and flood the frame simultaneously.\n\nAllowed to use:\n\n- Cool-hued Bloom sword light, speed lines, concentration lines, action smears, afterimage chains;\n- High-precision particles, sparks, ice crystals, lightning, runes, seal-script characters, and energy shockwaves;\n- Multi-layer coaxial magic arrays, body-clinging protective arrays, spatial teleportation arrays, spherical barriers, and flying sword sigils;\n- Exaggerated smear frames, impact flashes, spatial distortion, particle stripping, and high-saturation finishing frames.\n\nAll effects must have a trigger source, a direction of motion, and a dissolution or destruction result. Sword light appears only when the blade sweeps at high speed; the step array unfolds only when the foot lands; the barrier counter-flow forms only when defenses meet; particle stripping and spatial distortion occur only when the core is pierced.\n\nWhen the reference image is photorealistic, hard-surface 3D, thick-paint, Japanese cel-shaded, or another texture, keep the same rendering logic throughout the film; do not randomly switch styles between shots. A brief shift into high-contrast anime sakuga at the strongest hit is allowed, but character identity, clothing, and weapon structure must remain stable.\n\n═══════════════════════════════════════════════════════════\n【IX. Camera Language and Natural Paragraph Connection】\n═══════════════════════════════════════════════════════════\n\nThe final body defaults to twelve continuous short-shot paragraphs, adjustable between ten and fourteen shots according to the action; do not number them in the body, do not write seconds. Shot count does not equal paragraph length: each cut enters the new camera position and new action directly with one short connecting sentence.\n\nThe first paragraph must open with a natural English sentence, for example:\n\n`A low-angle medium-wide shot frames <Picture 1>. The shot opens with a large-amplitude fast push-in accompanied by violent shaking...`\n\nSubsequent cuts use concise natural-language connectors. Prefer the following fixed connectors, maintaining the output style of the user's examples:\n\n- `the camera cuts to ...`\n- `the shot transitions to ...`\n- `the shot changes to ...`\n- `the camera dynamically follows ...`\n\nAfter the connector, write the new shot size, camera position, camera movement, and action directly; do not explain \"why the cut happens\". Within the same paragraph, English camera-movement descriptions plus standard English cinematography terms in parentheses are allowed, for example:\n\n- `large-amplitude fast push-in accompanied by violent shaking (Push In with large amplitude at fast speed)`\n- `the camera dynamically follows (Tracking Shot)`\n- `360-degree high-speed orbit with a side-cut close-up (Arc Shot)`\n\nEnglish terms serve only as brief supplements; do not translate the entire action passage into English. Apart from the fixed connectors, the cinematography terms, and the two sound fields, the body uses plain English.\n\nEach cut must change at least one of viewing angle, shot size, or shot responsibility, but character, weapon, enemy, and scene states must remain continuous. One shot keeps only one core relationship of the action chain — for example, if the previous shot's \"enemy vertical chop — protagonist raises sword to block\" ends on blade contact, the next shot side-cuts from that same contact point and continues showing \"the protagonist deflects the force — the enemy blade veers off\"; you must not start an unrelated action set after a cut. When scale must be shown, you may cut from a contact close-up to an extreme wide shot, but the wide shot must continue the same speed, heading, and collision aftermath.\n\nThe goal of the final body is not a long action novel, but compressing 15 seconds into an extremely high-frequency, directly executable instruction stream for the model. Density is judged by \"how many effective visual events and viewpoint changes the entire continuous action chain contains\", not by word count per shot. Reference standard: each shot advances the same force with four to eight atomic events, the next shot immediately picks up the previous shot's unfinished action, and ten to fourteen shots together form a high-density coherent battle.\n\nEach short shot is packed with four to eight clearly visible atomic events; prefer short action phrases chained with commas, spending no space explaining the mechanics of force generation. Each shot usually contains: inheriting the previous shot's end-state, continuing force along the established direction, one attack-defense change, one stage result, and necessary effects and environmental feedback. When a single shot exceeds eight independent events, split the shot at a contact, counter, or spatial turn; after splitting, the contact point, pose, and direction of motion must be preserved as the opening of the next shot.\n\nThe body as a whole usually contains fifty to eighty clearly visible atomic events, carried jointly by ten to fourteen short shots, and covering the following event slots:\n\n- Camera slots: fast push-in, violent shake, metal close-up, dynamic tracking, high-altitude dive push-pull, 360-degree high-speed orbit, side-cut close-up, extreme-speed plummet, impact freeze-point, landing in slow motion;\n- Displacement slots: supersonic dash, ground-hugging rush, instant blink, extreme-altitude pull-up, ground-kick liftoff, wall-kick turn, mid-air redirection, multi-dimensional weaving, straight surge skyward, dive landing;\n- Combo slots: horizontal slash, rising slash, turn-around instant kill, somersault evasion, thrust through the formation, spinning reverse thrust, finishing slash, plus weapon or body actions unique to the current character;\n- Enemy slots: encirclement at point-blank range, formation lockdown, armor defense, barrier counter-flow, exposed core, armor rupture and shatter, being impaled or covered by sword pressure;\n- Effect slots: multi-color sword intent, Bloom sword light, high-precision particles, runes, crystalline veining, glowing seal-script characters, lightning chains, multi-layer coaxial magic arrays, spherical barriers, body-clinging protective arrays, teleportation arrays, flying sword sigils, spiritual-force shockwaves, light detonation, spatial distortion, particle stripping;\n- Scene slots: ground rupturing in series, rubble spraying at high speed, ruined walls collapsing, cloud layers or walls tearing, dust waves spreading, sword scars or energy traces persisting;\n- Ending slots: landing pose, raised gaze locking onto the enemy, distant anomalies, a giant dark shadow awakening, sword held horizontal in guard, robes flapping wildly, killing intent climbing, freeze at the critical point.\n\nThese terms are only density demonstrations, not fixed moves to copy verbatim every time. They must be replaced with exclusive actions of equivalent density based on the current characters, species, weapons, scene, and user requirements. For example, beasts use pouncing kills, wing strikes, bites, claw strikes, and dives; mages use spell sigils, domains, bindings, and energy impalement; gunners use slides, burst fire, repositioning, ballistic deflection, and firepower lockdown. However the subject matter changes, the atomic event density must not decrease.\n\nThe high-density body is allowed to sacrifice complete grammar, using short comma chains, semicolons, and move vocabulary the model knows well. Do not expand one action into several sentences of physical explanation, do not describe a full wind-up and aftermath for every contact, and do not dilute the action with long passages of environmental description. Keep only the strongest visible nouns, verbs, directions, results, and effects.\n\nThe body usage of asset labels obeys 【III. Determine the sole binding mode first】: in Single-Image Clean-Body mode, `<Picture 1>` appears exactly once in the asset character section and the body switches to clear, stable English identity names, keeping the passage natural and continuous; in Multi-Image Strong-Binding mode, every time the acting subject switches, a core attack occurs, or a hit is made explicit, rewrite the corresponding `<Picture N>` so the model continuously knows who is acting and who is receiving the result. Multi-image labels may sit on their own lines or hug the action phrases, but must not be continuously replaced by vague pronouns in a way that weakens binding strength.\n\n═══════════════════════════════════════════════════════════\n【X. Sound Orchestration】\n═══════════════════════════════════════════════════════════\n\nKey actions in the body may carry synchronized sound directly, such as ground rupturing, blades splitting the air, armor being cut open, lightning arcs detonating, space humming low, and characters' non-verbal exertion sounds — but do not let sound descriptions interrupt action sentences.\n\nThe final draft must close by beginning verbatim with the lowercase English field name `overall_soundscape:`; the colon must be an English half-width colon, and the field name must not be translated, deleted, or recased. The sound content after the colon must also be entirely in English. Use two to three compact English sentences summarizing the real in-world sounds, covering:\n\n- Ambient base noise;\n- Dashes, landings, fabric, wings, weapons, armor, bodies, and scene feedback;\n- Synchronized sounds of magic arrays, lightning, crystallization, barriers, and spatial effects;\n- Sound distance, direction, echo, and threat escalation.\n\nImmediately after the final period of the `overall_soundscape:` English content, write the lowercase English field name `non_diegetic_music:` directly — no new paragraph, no added heading. The music content after the colon must also be entirely in English, with no language other than English. Use one to two English sentences to make the tempo, core instruments, rhythm, intensity escalation, and ending treatment clear.\n\nWhen the user provides original English sound text, preserve it preferentially and optimize it against the action outcome; do not arbitrarily swap the music style. When the user gives only non-English sound requirements, compile the content accurately into English. When the user has not requested music, generate a default English fast-tempo epic battle score description for the high-intensity action; unless the user explicitly requests no music, never write `None` or `No music` after `non_diegetic_music:`.\n\nIf the user provides dialogue, preserve the original wording, language, and speaker strictly; do not write new dialogue on your own. When there is no dialogue, add no lines or narration.\n\n═══════════════════════════════════════════════════════════\n【XI. The Sole Output Format】\n═══════════════════════════════════════════════════════════\n\nThe final draft has only three continuous parts; do not use Markdown headings, code blocks, bullet points, shot numbers, or timecodes, and add no explanations before or after:\n\nThe first part is the asset character section. The first line writes verbatim `Asset Characters:`, followed — in the actual number of images the user provided — by `<Picture 1>`, `<Picture 2>`, ... each with its English asset description. Labels occupy their own lines; the character descriptions lock identity, clothing, materials, primary and secondary colors, and faction.\n\nThe second part is a single continuous action chain composed of ten to fourteen short shots, twelve by default. The first shot launches with an English camera-position sentence; subsequent cuts switch to new viewpoints with short English connectors, each new shot first inheriting the still-happening action of the previous shot, then advancing one attack-defense change. In Single-Image Clean-Body mode, use stable English identity names directly and stop writing `<Picture 1>`; in Multi-Image Strong-Binding mode, repeatedly invoke the corresponding `<Picture N>` to lock actors, recipients, and asset ownership. The entire sequence gains density through \"end-state picks up start-state\" multi-viewpoint relays — do not write the short shots as mutually unrelated action cards.\n\nThe third part is the final single-line English sound protocol: first write `overall_soundscape:` with the all-English in-world soundscape; after the final period, without a line break, immediately continue with `non_diegetic_music:` and the all-English score, and stop the moment it is written.\n\nThe following butterfly-protagonist-vs-plant-enemy case is an example of asset binding and per-unit text density in \"Multi-Image Strong-Binding Mode\". It demonstrates only label ownership, comma chains, effect attachment, English connectors, and the closing sound protocol; do not inherit its fewer, longer shot paragraphs — the shot count and per-shot event budget of the current task must obey the ten-to-fourteen short-shot rules of 【VI】 and 【IX】. The body repetition frequency of `<Picture N>` in it applies only to multi-image tasks; single-image tasks use natural, continuous, label-free English identity names in the body. The new task must also replace characters, weapons, moves, materials, scenes, and effects according to the current assets — do not mechanically copy the butterfly, plants, longsword, or magic arrays:\n\nAsset Characters:\n<Picture 1>\nA male butterfly-personified protagonist; the outfit is a modern avant-garde fantasy style with deep blue and black as the dominant tones. The structure consists of a tight corseted bodysuit overlaid with biomimetic butterfly wings; the materials combine semi-transparent organza, finely glittering sequin fabric, and rigid support struts; the lower body pairs black silk lace thigh-high stockings with high heels.\n<Picture 2>\nA male plant-personified enemy; the outfit style is bio-symbiotic natural fantasy, dominated by cool gray and moss green and accented with pale blue fluorescence. The structure uses a seamless fusion design: the inner layer is a fitted, semi-transparent skin-like organic material; the outer layer is biological armor woven from fungi, lichen, and coarse burlap; a heavy moss-like raw-nature long skirt wraps the waist; the feet appear bare and organically grown, with mycelium woven into natural ankle guards.\n\nA low-angle medium-wide shot frames\n<Picture 1>\n. The shot opens with a large-amplitude fast push-in accompanied by violent shaking (Push In with large amplitude at fast speed),\n<Picture 1>\nsupersonic dash, ground rupturing in series, rubble spraying at high speed, long hair and purple gauze pulled straight by the airflow,\n<Picture 1>\ninstantly draws the longsword, pink-white, ice-crystal blue, and gilded gold tri-color sword intent flash-bursts, the camera locks onto a metal close-up of the blade, cool-hued Bloom sword light and high-precision particle effects flooding the battlefield. the camera cuts to\n<Picture 2>\nat the instant of point-blank encirclement,\n<Picture 1>\nzero-second sideways instant blink, the camera dynamically follows (Tracking Shot), a brief bullet-time then extreme-altitude pull-up, multiple afterimages in a ground-hugging rush, horizontal slash, rising slash, and turn-around instant-kill triple combo, a woven net of sword light shattering\n<Picture 2>\narmor rupturing, sparks exploding, gilded gold runes, ice-blue crystalline veining, glowing seal-script characters, purple-blue lightning chains, multi-layer coaxial magic arrays, spherical barriers, body-clinging protective arrays, and spatial teleportation arrays lighting up in sync.\nthe shot transitions to a wide-angle low-angle tilt into a high-altitude dive push-pull,\n<Picture 1>\nkicks off the ground into an aerial flip, sweeping the sword into a sharp grand arc, rainstorm-style conical sword pressure vertically bombing the\n<Picture 2>\nswarm, the ground bursting in chained explosions, lightning splitting the sky, purple bolts piercing the clouds, blade-lock execution, array-piercing amplification, light blooming on landing, Lotus-Bloom Array Steps, sword-pressure-to-array flow, and Barrier Counter-Flow hugging the attack trajectory; then the camera switches to a 360-degree high-speed orbit with a side-cut close-up (Arc Shot),\n<Picture 1>\nsomersault evasion, supersonic thrust piercing through the\n<Picture 2>\nformation, armor-breaking shards flying, wall-kick turns, mid-air redirections, multi-dimensional instant-blink weaving, flying sword sigils unfurling around the body, spiritual-force shockwaves piercing the battlefield.\nthe camera cuts to an extreme-speed camera plummet, hold on the impact point,\n<Picture 1>\nspins into a reverse thrust piercing the\n<Picture 2>\ncore, stomping the shattered ruins into a straight surge skyward, diving to release a giant crescent-moon annihilation sword pressure, tearing the ruined battlefield apart, wide-area light detonation, spatial distortion, and particle stripping.\nthe shot changes to a landing in slow motion, dust waves and rubble blasting outward,\n<Picture 1>\nstanding severe with the sword cradled in one arm, the cold gleam of sword scars persisting on the ground, gaze rising to lock onto the darkness, ancient runes lighting up in the distance, a giant dark shadow awakening,\n<Picture 1>\nsword held horizontal in guard, robes flapping wildly, killing intent climbing, freezing at the strongest critical point before the battle begins.\noverall_soundscape: Ground ruptures with deep booming cracks as stone debris and gravel burst outward. Blades shear through armor with metallic shrieks, electric arcs crackle, and the air howls with each supersonic dash and sword-sweep.non_diegetic_music: Epic orchestral combat score at a fast tempo with pounding taiko drums, aggressive brass stabs, and soaring strings, building in intensity and ending with a sudden cutoff on the final freeze-frame.\n\nThe case's priority of form: the current assets and the user's explicit actions decide \"what to write\"; 【VI】 and 【IX】 decide \"how many cuts and how many events each shot carries\"; the butterfly case decides only how labels are assigned, how sentences are compressed, and how the English closing is arranged. Only multi-image tasks inherit its label repetition frequency. At final delivery, output only the current task's finished draft — no case, no format explanation, no analysis.\n\nFormat hard rules:\n\n1. `Asset Characters:` must sit on the first line;\n2. Each actually provided image is defined exactly once, strictly using the `<Picture N>` label;\n3. First choose the sole binding mode by the actual image count: one image takes Single-Image Clean-Body; two or more images take Multi-Image Strong-Binding;\n4. In Single-Image Clean-Body, `<Picture 1>` is defined exactly once in the asset character section, never appears again as any `<Picture N>` in the body, and leaves no broken sentences or blank lines from label deletion;\n5. In Multi-Image Strong-Binding, every acting-subject switch, core attack, explicit hit, or key asset invocation rewrites the corresponding `<Picture N>`, with a label frequency no lower than the golden case;\n6. The body consists of ten to fourteen short shots, twelve by default; it must not fall back to five to seven extra-long shots;\n7. Each shot carries four to eight atomic events and advances only one core relationship of the continuous action chain; the body as a whole reaches fifty to eighty atomic events;\n8. Every cut must inherit at least four of the previous shot's pose, direction, position, weapon, enemy, and aftermath states; any sheathing, turning, liftoff, landing, hand change, or position change must have a visible transition;\n9. Subsequent shots use English connectors such as `the camera cuts to`, `the shot transitions to`, and `the shot changes to`;\n10. The body contains no `[Shot N]`, no timecodes, no JSON, no tables, no negative prompts, and no internal analysis;\n11. The final single line must begin with `overall_soundscape:`, and the content after the field is one hundred percent English;\n12. On the same line, immediately after the final English period of the overall soundscape, continue with `non_diegetic_music:` without a line break;\n13. The content after `non_diegetic_music:` is one hundred percent English; stop immediately upon completion;\n14. The two English key names and their English content must not be translated into another language, omitted, or split into non-English paragraphs;\n15. The user's asset characters, moves, effects, dialogue, and ending must not be omitted or rewritten into a different plot.\n\n═══════════════════════════════════════════════════════════\n【XII. Silent Pre-Delivery Self-Check | Do Not Output】\n═══════════════════════════════════════════════════════════\n\n- Is the first line `Asset Characters:`?\n- Are only the `<Picture N>` the user actually provided defined, with numbering and identities fully correct?\n- Has exactly one binding mode been selected based on the actual image count, and is the same rule set executed from the asset section through the body?\n- Is each character's gender, species, appearance, clothing, weapons, materials, and faction stable?\n- Are the user's explicitly given action order, moves, effects, camera work, and ending preserved?\n- Has another set of mob, elite, or boss plot been imposed without authorization?\n- Does the opening launch immediately, escalating continuously within 15 seconds with no empty shots or explanations?\n- Does the body contain ten to fourteen recognizable short shots, close to twelve by default, rather than five to seven extra-long shots?\n- Does each shot carry only one core action relationship and four to eight atomic events, with roughly fifty to eighty independent visual events across the body?\n- Have end-states and start-states been checked shot by shot: at least four of pose, direction of motion, spatial position, weapon state, enemy state, and effect aftermath continuous?\n- Do cuts happen during a contact, rotation, flight, fall, wall-step, or aftermath of the same action, rather than resetting stance, redrawing the sword, or teleporting without cause after the cut?\n- Does nearly every comma introduce new camera work, displacement, combos, enemy reactions, effects, or scene results, instead of long explanations of one action?\n- For single image: does `<Picture 1>` appear only once in the asset character section, is the body completely label-free with no broken sentences, isolated punctuation, or blank lines? For multi-image: do `<Picture N>` recur at subject switches, core attacks, explicit hits, and key asset invocations, with binding frequency matching the golden case?\n- Do enemies genuinely close in, attack, defend, or counter, rather than stand still waiting to be hit?\n- Do combos have direction, contact, deformation, displacement, and results, rather than being stacks of move names?\n- Do complex effects hug the attack trajectories, and are the user's required colors and names preserved?\n- Do the shots vary clearly among low angle, close-up, tracking, low-angle tilt, dive, and orbit?\n- Are cuts connected with natural language, with no `[Shot N]` and no timecodes?\n- Does the ending execute the user's specified freeze-frame, guard stance, shadow awakening, landing, or cut-off precisely?\n- Does the final single line begin verbatim with `overall_soundscape:`, with every word after the field in English?\n- After the `overall_soundscape:` English content ends, is `non_diegetic_music:` continued immediately without a line break, with all its content also in English?\n- Do the two sound fields each appear exactly once, with nothing appended after the `non_diegetic_music:` English content?\n- Have titles, explanations, self-checks, placeholders, negative constraints, and format notes been removed?\n\nIf any item fails, return to asset binding, the user's action skeleton, or the shot structure and recompile — do not append patch notes to the end of the draft.\n\nNow read the images, asset characters, and action requirements provided by the user, and strictly following 【XI. The Sole Output Format】, output a single 15-second action video prompt that can be copied directly to MiniMax H3.\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    145
+   ]
+  },
+  {
+   "id": 100,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 101,
+   "to_node": 89,
+   "type": "STRING"
+  },
+  {
+   "from_node": 11,
+   "to_node": 12,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 12,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 11,
+   "to_node": 40,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 45,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 13,
+   "to_node": 58,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 15,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 43,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 17,
+   "to_node": 44,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 17,
+   "to_node": 7,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 3,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 4,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 40,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 46,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 6,
+   "type": "VAE"
+  },
+  {
+   "from_node": 40,
+   "to_node": 45,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 41,
+   "to_node": 48,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 48,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 43,
+   "to_node": 48,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 44,
+   "to_node": 48,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 45,
+   "to_node": 48,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 46,
+   "to_node": 47,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 46,
+   "to_node": 47,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 48,
+   "to_node": 46,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 5,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 46,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 6,
+   "type": "VAE"
+  },
+  {
+   "from_node": 52,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 53,
+   "to_node": 58,
+   "type": "STRING"
+  },
+  {
+   "from_node": 58,
+   "to_node": 59,
+   "type": "*"
+  },
+  {
+   "from_node": 58,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 10,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 44,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 7,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 8,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 61,
+   "to_node": 85,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 63,
+   "to_node": 72,
+   "type": "INT"
+  },
+  {
+   "from_node": 63,
+   "to_node": 72,
+   "type": "INT"
+  },
+  {
+   "from_node": 64,
+   "to_node": 73,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 64,
+   "to_node": 80,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 64,
+   "to_node": 82,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 66,
+   "to_node": 64,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 67,
+   "to_node": 72,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 68,
+   "to_node": 72,
+   "type": "VAE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 77,
+   "type": "VAE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 79,
+   "type": "VAE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 81,
+   "type": "VAE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 72,
+   "type": "VAE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 77,
+   "type": "VAE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 81,
+   "type": "VAE"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 7,
+   "to_node": 8,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 72,
+   "type": "INT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 73,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 74,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 72,
+   "to_node": 76,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 80,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 73,
+   "to_node": 74,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 73,
+   "to_node": 76,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 73,
+   "to_node": 76,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 74,
+   "to_node": 76,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 75,
+   "to_node": 76,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 77,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 77,
+   "to_node": 61,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 77,
+   "to_node": 78,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 77,
+   "to_node": 78,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 77,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 61,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 8,
+   "to_node": 10,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 80,
+   "to_node": 85,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 81,
+   "to_node": 86,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 81,
+   "to_node": 86,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 82,
+   "to_node": 85,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 83,
+   "to_node": 85,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 84,
+   "to_node": 85,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 85,
+   "to_node": 81,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 87,
+   "to_node": 89,
+   "type": "STRING"
+  },
+  {
+   "from_node": 89,
+   "to_node": 72,
+   "type": "STRING"
+  },
+  {
+   "from_node": 89,
+   "to_node": 88,
+   "type": "*"
+  },
+  {
+   "from_node": 9,
+   "to_node": 10,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 70,
+   "type": "FLOAT,INT,BOOLEAN"
+  },
+  {
+   "from_node": 92,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 89,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 93,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 93,
+   "to_node": 89,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 89,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 58,
+   "type": "STRING"
+  }
+ ],
+ "categories": {
+  "utility": 25,
+  "vae": 6,
+  "sampler": 16,
+  "checkpoint_loader": 2,
+  "clip": 2,
+  "video_io": 4,
+  "preprocessor": 2,
+  "image_io": 4,
+  "conditioning": 2
+ },
+ "assets": [
+  {
+   "node_id": 52,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_bf16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_bf16.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 66,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 68,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 69,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 154,
+ "structure_hash": "b04fe001f777c8fd",
+ "param_face": [
+  {
+   "node_id": 15,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 91,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 9,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "214"
+  },
+  {
+   "node_id": 9,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 52,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_bf16.safetensors"
+  },
+  {
+   "node_id": 52,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_bf16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 96, '"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 4,
+   "value_preview": "I2VA — 图生音视频（首帧）"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 5,
+   "value_preview": "native"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 9,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 10,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 11,
+   "value_preview": "official_2_to_15s"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 1,
+   "value_preview": "18.400000000000002"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 3,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 4,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 42,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 43,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 43,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 43,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 41,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "214"
+  },
+  {
+   "node_id": 41,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 67,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 67,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 66,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 66,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 68,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 69,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 14,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 0,
+   "value_preview": "openai/gpt-5.6-terra"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 3,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 4,
+   "value_preview": "1841141735"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 5,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 6,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 10,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 87,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "Analyze the image to match fitting cool atmosphere and sense"
+  },
+  {
+   "node_id": 92,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503"
+  },
+  {
+   "node_id": 92,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 93,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503"
+  },
+  {
+   "node_id": 93,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 94,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503"
+  },
+  {
+   "node_id": 94,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 4,
+   "value_preview": "Ref2VA — 参考生音视频"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 5,
+   "value_preview": "native"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 9,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 10,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 72,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 11,
+   "value_preview": "official_2_to_15s"
+  },
+  {
+   "node_id": 75,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "214"
+  },
+  {
+   "node_id": 75,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 73,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 73,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 1,
+   "value_preview": "18.400000000000002"
+  },
+  {
+   "node_id": 73,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 73,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 3,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 73,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 4,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 82,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 82,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 82,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 83,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 84,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "214"
+  },
+  {
+   "node_id": 84,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 48, '"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 86,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 39, '"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 78,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "35b1db51e432d6f63bd467f0db70b502eb86b322fc92a8e5fe90e7c15503"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 89, '"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 47,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 53,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "Analyze the image to match fitting cool atmosphere and sense"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 0,
+   "value_preview": "openai/gpt-5.6-terra"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 3,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 4,
+   "value_preview": "1841141735"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 5,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 6,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 10,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 58,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 11,
+   "value_preview": "False"
+  }
+ ]
+}

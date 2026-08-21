@@ -1,0 +1,90 @@
+{
+ "domain": [
+  "老照片修复",
+  "图像上色",
+  "AI图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张老照片 → 自动执行修复与上色，输出一张彩色修复后的照片。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 RH_Translator 支持中/英文提示词补充描述主体，控制 FLUX 生成细节。",
+   "kind": "fact"
+  },
+  {
+   "text": "对含人像的老照片，可通过 FaceAnalysisModels + FaceEmbedDistance 量化比较结果与原图人脸相似度，作为人工/自动筛选依据。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出经过 PreviewImage / SaveImage 提供预览与保存，端到端完成修复工作流。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX 生成（flux-kontext-max）",
+  "人脸检测与 Embedding 提取（insightface）",
+  "人脸相似度度量（FaceEmbedDistance）",
+  "提示词翻译（RH_Translator）",
+  "输入分辨率缩放（easy imageScaleDownToSize）"
+ ],
+ "special_features": [
+  {
+   "text": "直接用 FLUX 生成式大模型完成老照片修复+上色，而非传统 GAN/CNN 修复模型（如 DeOldify/GFPGAN），生成结果更接近真实光影。",
+   "kind": "inference"
+  },
+  {
+   "text": "流程内嵌人脸相似度量化（FaceEmbedDistance），形成生成结果与原始人脸的身份保持校验回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "RH_ComfyFluxKontext 提供 aspect_ratio 可选参数，可根据源照片比例灵活控制输出宽高比，而不是固定正方形画布。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 RH_Translator 将中文/英文提示词统一转给 FLUX，降低中文用户使用门槛。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "设计者把老照片修复拆成“生成 + 校验”两部分：先由 FLUX 进行画面修复和色彩重建，再用人脸 Embedding 距离做原图/结果相似度校验，确保修复后的头像还是同一个人。工作流刻意保留 prompt 输入和比例选择，让用户能针对不同照片做定制修复，而非全自动黑盒。所有这些集中在一个 ComfyUI 流程内，便于调试和观察中间结果。",
+ "use_case": "面向老照片/纸质照片翻拍图的修复与上色场景，用户上传照片后可选择比例与提示词，得到可保存的彩色修复图，并用相似度判断是否需要重做。",
+ "limitation": "依赖 Run-Hybrid/RH_* 系列自定义节点（RH_ComfyFluxKontext、RH_Translator）与 easy imageScaleDownToSize、FaceAnalysisModels 等节点，需预先下载 flux-kontext-max、insightface 等模型；FLUX 模型体积大、需要较高显存/GPU（CUDA）。FaceEmbedDistance 依赖人脸检测，在侧面/遮挡/极小面部照片上可能不太可靠，生成效果也很大程度依赖 prompt 描述，不能保证对重度破损细节准确复原。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_ComfyFluxKontext（flux-kontext-max）",
+  "RH_Translator",
+  "easy imageScaleDownToSize",
+  "FaceAnalysisModels + FaceEmbedDistance",
+  "insightface 模型",
+  "CUDA GPU"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张图片（老照片/扫描图），可选提示词",
+  "count": "1"
+ },
+ "output": {
+  "type": "修复上色后的彩色图片（预览/保存）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_ComfyFluxKontext / aspect_ratio",
+   "how_to_tune": "根据原照片方向选择：竖构图人像用 2:3 或 3:4，横构图用 4:3 或 16:9；尽量匹配原始画面比例，避免人物被裁切。"
+  },
+  {
+   "param": "RH_Translator 提示词",
+   "how_to_tune": "用英文描述主体、环境与修复目标，例如“restore and colorize this damaged photo, keep the face identity, natural skin tones”；描述越具体，FLUX 输出越符合预期。"
+  },
+  {
+   "param": "FaceEmbedDistance 阈值",
+   "how_to_tune": "数值越低表示与原始人脸越接近；阈值设置越低越严格。若相似度不符合要求，可修改 prompt 或调整 aspect_ratio 后重新生成。"
+  },
+  {
+   "param": "easy imageScaleDownToSize / 尺寸",
+   "how_to_tune": "默认 1024，常规老照片扫描分辨率足够；高显存可尝试 1344 提升细节，显存较小可降到 768。"
+  }
+ ],
+ "summary_text": "能力:上传单张老照片 → 自动执行修复与上色，输出一张彩色修复后的照片。；能力:通过 RH_Translator 支持中/英文提示词补充描述主体，控制 FLUX 生成细节。；能力:对含人像的老照片，可通过 FaceAnalysisModels + FaceEmbedDistance 量化比较结果与原图人脸相似度，作为人工/自动筛选依据。；能力:输出经过 PreviewImage / SaveImage 提供预览与保存，端到端完成修复工作流。；特色:直接用 FLUX 生成式大模型完成老照片修复+上色，而非传统 GAN/CNN 修复模型（如 DeOldify/GFPGAN），生成结果更接近真实光影。；特色:流程内嵌人脸相似度量化（FaceEmbedDistance），形成生成结果与原始人脸的身份保持校验回路。；特色:RH_ComfyFluxKontext 提供 aspect_ratio 可选参数，可根据源照片比例灵活控制输出宽高比，而不是固定正方形画布。；特色:通过 RH_Translator 将中文/英文提示词统一转给 FLUX，降低中文用户使用门槛。；面向老照片/纸质照片翻拍图的修复与上色场景，用户上传照片后可选择比例与提示词，得到可保存的彩色修复图，并用相似度判断是否需要重做。；设计者把老照片修复拆成“生成 + 校验”两部分：先由 FLUX 进行画面修复和色彩重建，再用人脸 Embedding 距离做原图/结果相似度校验，确保修复后的头像还是同一个人。工作流刻意保留 prompt 输入和比例选择，让用户能针对不同照片做定制修复，而非全自动黑盒。所有这些集中在一个 ComfyUI 流程内，便于调试和观察中间结果。"
+}

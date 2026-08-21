@@ -1,0 +1,114 @@
+{
+ "domain": [
+  "文生视频",
+  "数字人",
+  "人物特效"
+ ],
+ "capabilities": [
+  {
+   "text": "输入中文分镜脚本（如“镜头一：开场…”），生成带同步音频的短视频片段",
+   "kind": "fact"
+  },
+  {
+   "text": "基于MiniMax H3模型将文本提示词转换为1344x768分辨率的视频",
+   "kind": "fact"
+  },
+  {
+   "text": "支持9:16竖屏等分辨率模板选择，适配短视频平台",
+   "kind": "fact"
+  },
+  {
+   "text": "通过int8量化、SageAttention与VRAM管理降低显存占用，加速推理",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 文本到视频生成",
+  "Qwen3VL 文本编码",
+  "视频VAE与音频VAE双路径解码",
+  "res_multistep 采样器",
+  "BasicScheduler 调度",
+  "SageAttention 加速注意力",
+  "PainterVRAM 显存管理",
+  "VHS_VideoCombine 视频合成"
+ ],
+ "special_features": [
+  {
+   "text": "视频/音频双VAE独立解码，最终合成为带音轨视频",
+   "kind": "fact"
+  },
+  {
+   "text": "集成PainterVRAM和PathchSageAttentionKJ，实现显存管理和注意力加速，构成“加速”版核心",
+   "kind": "fact"
+  },
+  {
+   "text": "使用ComfyMathExpression动态计算视频帧数（如 max(5, round(a*24))）",
+   "kind": "inference"
+  },
+  {
+   "text": "通过ResolutionSelector快速切换9:16等竖屏分辨率，适配短视频平台",
+   "kind": "fact"
+  },
+  {
+   "text": "CR Text中预置分镜脚本，便于模板化生成",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在为MiniMax H3文生视频模型提供一个开源且加速的推理方案。作者通过引入int8量化模型、SageAttention及PainterVRAM显存管理，降低大模型在消费级显卡上的运行门槛。同时，工作流拆分了视频和音频解码路径，使生成结果自带音轨，契合数字人、人物特效等场景。整体结构可能面向短视频创作者，通过分辨率选择器和分镜模板提高创作效率。",
+ "use_case": "短视频创作、数字人内容生成、人物特效预览、影视预可视化等。",
+ "limitation": "依赖特定int8量化模型文件和多个自定义节点（如MiniMaxH3ImageToVideo、PainterVRAM、PathchSageAttentionKJ等）；当前文本输入为硬编码的单分镜脚本，需手动编辑CR Text；输出视频帧数固定（73帧），长度有限；运行需较高显存，且SageAttention可能要求特定GPU（如RTX 30系以上）。",
+ "dependencies": [
+  "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "ComfyUI-KJNodes",
+  "ComfyUI-VideoHelperSuite",
+  "ComfyUI_Comfyroll_CustomNodes (CR Text)",
+  "MiniMaxH3ImageToVideo 自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "文本（提示词）",
+  "count": "1（CR Text单节点）"
+ },
+ "output": {
+  "type": "视频文件（MP4）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "CR Text（提示词）",
+   "how_to_tune": "修改分镜脚本可改变视频内容；建议保持描述简洁具体，包含镜头运动与主体动作"
+  },
+  {
+   "param": "BasicScheduler steps（默认20）",
+   "how_to_tune": "步数影响采样质量与速度；生成模糊时可升至25-30，追求速度可降至15左右"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 分辨率（1344x768）",
+   "how_to_tune": "降低分辨率（如1024x576）可显著减少显存占用，但画质会下降"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 帧数（73）",
+   "how_to_tune": "帧数由ComfyMathExpression按时长计算；可调整MathExpression中的乘数（如24）来改变帧率或长度"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "固定seed可复现同一视频；randomize每次生成不同随机结果"
+  },
+  {
+   "param": "ResolutionSelector（9:16等）",
+   "how_to_tune": "选择不同宽高比模板以适配发布平台；参数0.6和32可能控制缩放/步长，具体可查阅节点文档"
+  },
+  {
+   "param": "PainterVRAM",
+   "how_to_tune": "在低显存环境下可调整级别（当前为2）或开启auto，以平衡显存占用与速度"
+  },
+  {
+   "param": "PathchSageAttentionKJ",
+   "how_to_tune": "若GPU不支持SageAttention，可关闭该节点以兼容；开启时加速但显存占用可能下降"
+  }
+ ],
+ "summary_text": "能力:输入中文分镜脚本（如“镜头一：开场…”），生成带同步音频的短视频片段；能力:基于MiniMax H3模型将文本提示词转换为1344x768分辨率的视频；能力:支持9:16竖屏等分辨率模板选择，适配短视频平台；能力:通过int8量化、SageAttention与VRAM管理降低显存占用，加速推理；特色:视频/音频双VAE独立解码，最终合成为带音轨视频；特色:集成PainterVRAM和PathchSageAttentionKJ，实现显存管理和注意力加速，构成“加速”版核心；特色:使用ComfyMathExpression动态计算视频帧数（如 max(5, round(a*24))）；特色:通过ResolutionSelector快速切换9:16等竖屏分辨率，适配短视频平台；特色:CR Text中预置分镜脚本，便于模板化生成；短视频创作、数字人内容生成、人物特效预览、影视预可视化等。；该工作流旨在为MiniMax H3文生视频模型提供一个开源且加速的推理方案。作者通过引入int8量化模型、SageAttention及PainterVRAM显存管理，降低大模型在消费级显卡上的运行门槛。同时，工作流拆分了视频和音频解码路径，使生成结果自带音轨，契合数字人、人物特效等场景。整体结构可能面向短视频创作者，通过分辨率选择器和分镜模板提高创作效率。"
+}

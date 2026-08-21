@@ -1,0 +1,2515 @@
+{
+ "node_count": 71,
+ "link_count": 85,
+ "active_node_count": 71,
+ "nodes": [
+  {
+   "id": 668,
+   "type": "LTXVLatentUpsampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1649,
+    1605,
+    1616
+   ],
+   "out_links": [
+    1607
+   ]
+  },
+  {
+   "id": 667,
+   "type": "LatentUpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1605
+   ]
+  },
+  {
+   "id": 671,
+   "type": "LTXVCropGuides",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1612,
+    1613,
+    1648
+   ],
+   "out_links": [
+    1635,
+    1636
+   ]
+  },
+  {
+   "id": 675,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️output_image",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output_image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1618
+   ]
+  },
+  {
+   "id": 670,
+   "type": "LTXVImgToVideoInplace",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    false
+   ],
+   "in_links": [
+    1617,
+    1618,
+    1607,
+    1619
+   ],
+   "out_links": [
+    1606
+   ]
+  },
+  {
+   "id": 669,
+   "type": "LTXVConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1606,
+    1650
+   ],
+   "out_links": [
+    1637
+   ]
+  },
+  {
+   "id": 674,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️video vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1616,
+    1617
+   ]
+  },
+  {
+   "id": 688,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    312541010517558,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    1630
+   ]
+  },
+  {
+   "id": 685,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler_cfg_pp"
+   ],
+   "in_links": [],
+   "out_links": [
+    1632
+   ]
+  },
+  {
+   "id": 684,
+   "type": "ManualSigmas",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "0.85, 0.7250, 0.4219, 0.0"
+   ],
+   "in_links": [],
+   "out_links": [
+    1633
+   ]
+  },
+  {
+   "id": 686,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1630,
+    1631,
+    1632,
+    1633,
+    1637
+   ],
+   "out_links": [
+    1638
+   ]
+  },
+  {
+   "id": 681,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️audio vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1624
+   ]
+  },
+  {
+   "id": 673,
+   "type": "LTXVSeparateAVLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1638
+   ],
+   "out_links": [
+    1627,
+    1628
+   ]
+  },
+  {
+   "id": 680,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️video vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1623
+   ]
+  },
+  {
+   "id": 678,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1627,
+    1623
+   ],
+   "out_links": [
+    1699
+   ]
+  },
+  {
+   "id": 679,
+   "type": "LTXVAudioVAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1628,
+    1624
+   ],
+   "out_links": [
+    1700
+   ]
+  },
+  {
+   "id": 663,
+   "type": "LTXVImgToVideoConditionOnly",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    true
+   ],
+   "in_links": [
+    1598,
+    1600,
+    1591,
+    1602
+   ],
+   "out_links": [
+    1590
+   ]
+  },
+  {
+   "id": 660,
+   "type": "LTXVEmptyLatentAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    97,
+    25,
+    1
+   ],
+   "in_links": [
+    1601,
+    1593,
+    1594
+   ],
+   "out_links": [
+    1588
+   ]
+  },
+  {
+   "id": 709,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    1664
+   ],
+   "out_links": [
+    1701
+   ]
+  },
+  {
+   "id": 591,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24
+   ],
+   "in_links": [],
+   "out_links": [
+    1480,
+    1485,
+    1594
+   ]
+  },
+  {
+   "id": 687,
+   "type": "CFGGuider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    1634,
+    1635,
+    1636
+   ],
+   "out_links": [
+    1631
+   ]
+  },
+  {
+   "id": 164,
+   "type": "LTXVConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    379,
+    1202,
+    1491
+   ],
+   "out_links": [
+    1438,
+    1612,
+    1439,
+    1613
+   ]
+  },
+  {
+   "id": 414,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1684
+   ]
+  },
+  {
+   "id": 705,
+   "type": "VRAMReserver",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    false
+   ],
+   "in_links": [
+    1684
+   ],
+   "out_links": [
+    1693
+   ]
+  },
+  {
+   "id": 629,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Ltx2.3-Licon-VBVR-I2V-390K-R32.safetensors",
+    1
+   ],
+   "in_links": [
+    1693
+   ],
+   "out_links": [
+    1682
+   ]
+  },
+  {
+   "id": 702,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX-2.3-OmniNFT-RL-Lora_bf16.safetensors",
+    1
+   ],
+   "in_links": [
+    1682
+   ],
+   "out_links": [
+    1683
+   ]
+  },
+  {
+   "id": 542,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    1683
+   ],
+   "out_links": [
+    1654,
+    1655
+   ]
+  },
+  {
+   "id": 515,
+   "type": "ModelSamplingSD3",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    1654
+   ],
+   "out_links": [
+    1362
+   ]
+  },
+  {
+   "id": 514,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "linear_quadratic",
+    8,
+    1
+   ],
+   "in_links": [
+    1362
+   ],
+   "out_links": [
+    1364
+   ]
+  },
+  {
+   "id": 553,
+   "type": "VAELoaderKJ",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_video_vae_bf16.safetensors",
+    "main_device",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    1526
+   ]
+  },
+  {
+   "id": 416,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemma_3_12B_it.safetensors",
+    "ltx-2.3_text_projection_bf16.safetensors",
+    "ltxv",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1528
+   ]
+  },
+  {
+   "id": 619,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️video vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video vae"
+   ],
+   "in_links": [
+    1526
+   ],
+   "out_links": []
+  },
+  {
+   "id": 620,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️audio vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio vae"
+   ],
+   "in_links": [
+    1527
+   ],
+   "out_links": []
+  },
+  {
+   "id": 621,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️CLIP",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CLIP"
+   ],
+   "in_links": [
+    1528
+   ],
+   "out_links": []
+  },
+  {
+   "id": 470,
+   "type": "VAELoaderKJ",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_audio_vae_bf16.safetensors",
+    "main_device",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    1527
+   ]
+  },
+  {
+   "id": 628,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️CLIP",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CLIP"
+   ],
+   "in_links": [],
+   "out_links": [
+    1534,
+    1535
+   ]
+  },
+  {
+   "id": 420,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1522
+   ],
+   "out_links": [
+    1202
+   ]
+  },
+  {
+   "id": 566,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cartoon, still image, bad quality, subtitles, text, watermark, overlay effects,pc game, console game, video game, cartoon, childish, ugly,subtitles, caption, captions, closed captions, CC, on-screen text, text overlay, words, letters, characters, readable text, typography, subtitles bar, karaoke lyrics, lyric video, lower third, title card, UI, HUD, watermark, logo, signature, timestamp, sticker, banner, scrolling text, low quality, lowres, blurry, flicker, jitter, shaky camera, ghosting, frame doubling, temporal inconsistency, face warp, face melt, asymmetrical eyes, bad teeth, extra teeth, tongue artifact, mouth deformation, lip-sync mismatch, over-smoothing, plastic skin, heavy beauty filter, harsh sharpening, banding, noise, extra fingers, extra hands，字幕,text,Subtitles,Oily skin, reflective skin, strained expression, contorted expression, blurry, oversaturated, pixelated, low resolution, grainy, distorted, noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo, signature, copyright, subtitles, distorted sound, saturated sound, loud"
+   ],
+   "in_links": [
+    1535
+   ],
+   "out_links": [
+    1450,
+    1522,
+    1523
+   ]
+  },
+  {
+   "id": 565,
+   "type": "LTX2_NAG",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    11,
+    0.25,
+    2.5,
+    false
+   ],
+   "in_links": [
+    1655,
+    1450,
+    1523
+   ],
+   "out_links": [
+    1476
+   ]
+  },
+  {
+   "id": 169,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    1534,
+    1692
+   ],
+   "out_links": [
+    379
+   ]
+  },
+  {
+   "id": 588,
+   "type": "LTX2SamplingPreviewOverride",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    1476,
+    1477
+   ],
+   "out_links": [
+    1475,
+    1634
+   ]
+  },
+  {
+   "id": 592,
+   "type": "DF_Int_to_Float",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    1480
+   ],
+   "out_links": [
+    1491,
+    1664,
+    1698
+   ]
+  },
+  {
+   "id": 358,
+   "type": "VisualizeSigmasKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    -1
+   ],
+   "in_links": [
+    1364
+   ],
+   "out_links": [
+    1445
+   ]
+  },
+  {
+   "id": 652,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️output_image",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output_image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1600
+   ]
+  },
+  {
+   "id": 154,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lcm"
+   ],
+   "in_links": [],
+   "out_links": [
+    1444
+   ]
+  },
+  {
+   "id": 662,
+   "type": "LTXVConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1590,
+    1588
+   ],
+   "out_links": [
+    1597
+   ]
+  },
+  {
+   "id": 624,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️audio vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1601
+   ]
+  },
+  {
+   "id": 594,
+   "type": "SimpleMath+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a*b+1"
+   ],
+   "in_links": [
+    1482,
+    1485
+   ],
+   "out_links": [
+    1592,
+    1593
+   ]
+  },
+  {
+   "id": 561,
+   "type": "SamplerCustom",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    126548958664283,
+    "fixed",
+    1
+   ],
+   "in_links": [
+    1475,
+    1438,
+    1439,
+    1444,
+    1445,
+    1597
+   ],
+   "out_links": [
+    1442
+   ]
+  },
+  {
+   "id": 626,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️video vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1532
+   ]
+  },
+  {
+   "id": 549,
+   "type": "LTXVSeparateAVLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1442
+   ],
+   "out_links": [
+    1443,
+    1648,
+    1649,
+    1416,
+    1650
+   ]
+  },
+  {
+   "id": 627,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️audio vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1533
+   ]
+  },
+  {
+   "id": 664,
+   "type": "PrimitiveBoolean",
+   "category": "utility",
+   "title": "开启文生视频",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    1602,
+    1619
+   ]
+  },
+  {
+   "id": 651,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️output_image",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output_image"
+   ],
+   "in_links": [
+    1579
+   ],
+   "out_links": []
+  },
+  {
+   "id": 586,
+   "type": "LTXVPreprocess",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    1490
+   ],
+   "out_links": [
+    1579
+   ]
+  },
+  {
+   "id": 596,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "lanczos",
+    "resize",
+    "0, 0, 0",
+    "center",
+    32,
+    "cpu",
+    "<tr><td>Output: </td><td><b>1</b> x <b>1280</b> x <b>736 | 10.78MB</b></td></tr>cb36cea27753837072c0c8b06fe613a7"
+   ],
+   "in_links": [
+    1486,
+    1487,
+    1488
+   ],
+   "out_links": [
+    1490,
+    1694,
+    1695
+   ]
+  },
+  {
+   "id": 625,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️video vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1598
+   ]
+  },
+  {
+   "id": 589,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "taeltx2_3.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1477
+   ]
+  },
+  {
+   "id": 661,
+   "type": "EmptyLTXVLatentVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    960,
+    544,
+    121,
+    1
+   ],
+   "in_links": [
+    1694,
+    1695,
+    1592
+   ],
+   "out_links": [
+    1591
+   ]
+  },
+  {
+   "id": 713,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# https://space.bilibili.com/353000653?spm_id_from=333.1007.0.0"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 714,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 471,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1443,
+    1532
+   ],
+   "out_links": [
+    1696
+   ]
+  },
+  {
+   "id": 550,
+   "type": "LTXVAudioVAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1416,
+    1533
+   ],
+   "out_links": [
+    1697
+   ]
+  },
+  {
+   "id": 584,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1486
+   ]
+  },
+  {
+   "id": 712,
+   "type": "Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "动态壁纸，火焰熊熊的烈火燃烧，大风吹动服装快速的飘动。人物眨眼睛。"
+   ],
+   "in_links": [],
+   "out_links": [
+    1692
+   ]
+  },
+  {
+   "id": 593,
+   "type": "PrimitiveInt",
+   "category": "utility",
+   "title": "生成秒数",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    1482
+   ]
+  },
+  {
+   "id": 703,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 716,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "AnimateDiff_00002_p83-audio_mjpop_1779292012.mp4",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//6a013efba3ed3a282b144f1fafb42635/output/AnimateDiff_00002_p83-audio_mjpop_1779292012.mp4",
+      "workflow": "AnimateDiff_00002_p83.png",
+      "fullpath": "/data/ComfyUI/personal/6a013efba3ed3a282b144f1fafb42635/output/AnimateDiff_00002_p83-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 8,
+    "pingpong": false
+   },
+   "in_links": [
+    1699,
+    1700,
+    1701
+   ],
+   "out_links": []
+  },
+  {
+   "id": 715,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "AnimateDiff_00001_p83-audio_rhctx_1779291859.mp4",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//6a013efba3ed3a282b144f1fafb42635/output/AnimateDiff_00001_p83-audio_rhctx_1779291859.mp4",
+      "workflow": "AnimateDiff_00001_p83.png",
+      "fullpath": "/data/ComfyUI/personal/6a013efba3ed3a282b144f1fafb42635/output/AnimateDiff_00001_p83-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 8,
+    "pingpong": false
+   },
+   "in_links": [
+    1696,
+    1697,
+    1698
+   ],
+   "out_links": []
+  },
+  {
+   "id": 708,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# 视频高清放大：https://www.runninghub.cn/post/2057112467372863489/?inviteCode=ptdf2euu"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 595,
+   "type": "PrimitiveInt",
+   "category": "utility",
+   "title": "最大分辨率-最长边",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    1487,
+    1488
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 154,
+   "to_node": 561,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 164,
+   "to_node": 561,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 164,
+   "to_node": 561,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 164,
+   "to_node": 671,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 164,
+   "to_node": 671,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 169,
+   "to_node": 164,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 358,
+   "to_node": 561,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 414,
+   "to_node": 705,
+   "type": "*"
+  },
+  {
+   "from_node": 416,
+   "to_node": 621,
+   "type": "*"
+  },
+  {
+   "from_node": 420,
+   "to_node": 164,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 470,
+   "to_node": 620,
+   "type": "*"
+  },
+  {
+   "from_node": 471,
+   "to_node": 715,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 514,
+   "to_node": 358,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 515,
+   "to_node": 514,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 542,
+   "to_node": 515,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 542,
+   "to_node": 565,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 549,
+   "to_node": 471,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 550,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 668,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 669,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 671,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 550,
+   "to_node": 715,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 553,
+   "to_node": 619,
+   "type": "*"
+  },
+  {
+   "from_node": 561,
+   "to_node": 549,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 565,
+   "to_node": 588,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 566,
+   "to_node": 420,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 566,
+   "to_node": 565,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 566,
+   "to_node": 565,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 584,
+   "to_node": 596,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 586,
+   "to_node": 651,
+   "type": "*"
+  },
+  {
+   "from_node": 588,
+   "to_node": 561,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 588,
+   "to_node": 687,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 589,
+   "to_node": 588,
+   "type": "VAE"
+  },
+  {
+   "from_node": 591,
+   "to_node": 592,
+   "type": "INT"
+  },
+  {
+   "from_node": 591,
+   "to_node": 594,
+   "type": "INT"
+  },
+  {
+   "from_node": 591,
+   "to_node": 660,
+   "type": "INT"
+  },
+  {
+   "from_node": 592,
+   "to_node": 164,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 592,
+   "to_node": 709,
+   "type": "*"
+  },
+  {
+   "from_node": 592,
+   "to_node": 715,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 593,
+   "to_node": 594,
+   "type": "INT"
+  },
+  {
+   "from_node": 594,
+   "to_node": 660,
+   "type": "INT"
+  },
+  {
+   "from_node": 594,
+   "to_node": 661,
+   "type": "INT"
+  },
+  {
+   "from_node": 595,
+   "to_node": 596,
+   "type": "INT"
+  },
+  {
+   "from_node": 595,
+   "to_node": 596,
+   "type": "INT"
+  },
+  {
+   "from_node": 596,
+   "to_node": 586,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 596,
+   "to_node": 661,
+   "type": "INT"
+  },
+  {
+   "from_node": 596,
+   "to_node": 661,
+   "type": "INT"
+  },
+  {
+   "from_node": 624,
+   "to_node": 660,
+   "type": "VAE"
+  },
+  {
+   "from_node": 625,
+   "to_node": 663,
+   "type": "VAE"
+  },
+  {
+   "from_node": 626,
+   "to_node": 471,
+   "type": "VAE"
+  },
+  {
+   "from_node": 627,
+   "to_node": 550,
+   "type": "VAE"
+  },
+  {
+   "from_node": 628,
+   "to_node": 169,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 628,
+   "to_node": 566,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 629,
+   "to_node": 702,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 652,
+   "to_node": 663,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 660,
+   "to_node": 662,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 661,
+   "to_node": 663,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 662,
+   "to_node": 561,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 663,
+   "to_node": 662,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 664,
+   "to_node": 663,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 664,
+   "to_node": 670,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 667,
+   "to_node": 668,
+   "type": "LATENT_UPSCALE_MODEL"
+  },
+  {
+   "from_node": 668,
+   "to_node": 670,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 669,
+   "to_node": 686,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 670,
+   "to_node": 669,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 671,
+   "to_node": 687,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 671,
+   "to_node": 687,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 673,
+   "to_node": 678,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 673,
+   "to_node": 679,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 674,
+   "to_node": 668,
+   "type": "VAE"
+  },
+  {
+   "from_node": 674,
+   "to_node": 670,
+   "type": "VAE"
+  },
+  {
+   "from_node": 675,
+   "to_node": 670,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 678,
+   "to_node": 716,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 679,
+   "to_node": 716,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 680,
+   "to_node": 678,
+   "type": "VAE"
+  },
+  {
+   "from_node": 681,
+   "to_node": 679,
+   "type": "VAE"
+  },
+  {
+   "from_node": 684,
+   "to_node": 686,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 685,
+   "to_node": 686,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 686,
+   "to_node": 673,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 687,
+   "to_node": 686,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 688,
+   "to_node": 686,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 702,
+   "to_node": 542,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 705,
+   "to_node": 629,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 709,
+   "to_node": 716,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 712,
+   "to_node": 169,
+   "type": "STRING"
+  }
+ ],
+ "categories": {
+  "utility": 45,
+  "upscale": 1,
+  "conditioning": 4,
+  "sampler": 5,
+  "vae": 7,
+  "checkpoint_loader": 1,
+  "lora": 2,
+  "preprocessor": 1,
+  "clip": 1,
+  "image_io": 2,
+  "video_io": 2
+ },
+ "assets": [
+  {
+   "node_id": 667,
+   "node_type": "LatentUpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 629,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Ltx2.3-Licon-VBVR-I2V-390K-R32.safetensors"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX-2.3-OmniNFT-RL-Lora_bf16.safetensors"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "kind": "vae",
+   "name": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "gemma_3_12B_it.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "kind": "vae",
+   "name": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 589,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "taeltx2_3.safetensors"
+  }
+ ],
+ "techniques": [
+  "Upscale-Hires"
+ ],
+ "param_face_size": 113,
+ "structure_hash": "e37461c744e24730",
+ "param_face": [
+  {
+   "node_id": 667,
+   "node_type": "LatentUpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+  },
+  {
+   "node_id": 675,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "output_image"
+  },
+  {
+   "node_id": 670,
+   "node_type": "LTXVImgToVideoInplace",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 670,
+   "node_type": "LTXVImgToVideoInplace",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 674,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "video vae"
+  },
+  {
+   "node_id": 688,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "312541010517558"
+  },
+  {
+   "node_id": 688,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 685,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler_cfg_pp"
+  },
+  {
+   "node_id": 684,
+   "node_type": "ManualSigmas",
+   "widget_index": 0,
+   "value_preview": "0.85, 0.7250, 0.4219, 0.0"
+  },
+  {
+   "node_id": 681,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "audio vae"
+  },
+  {
+   "node_id": 680,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "video vae"
+  },
+  {
+   "node_id": 663,
+   "node_type": "LTXVImgToVideoConditionOnly",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 663,
+   "node_type": "LTXVImgToVideoConditionOnly",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 660,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 0,
+   "value_preview": "97"
+  },
+  {
+   "node_id": 660,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 660,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 591,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 687,
+   "node_type": "CFGGuider",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 164,
+   "node_type": "LTXVConditioning",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safete"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VRAMReserver",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VRAMReserver",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 629,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Ltx2.3-Licon-VBVR-I2V-390K-R32.safetensors"
+  },
+  {
+   "node_id": 629,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX-2.3-OmniNFT-RL-Lora_bf16.safetensors"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 542,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 542,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 515,
+   "node_type": "ModelSamplingSD3",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "linear_quadratic"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 0,
+   "value_preview": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 1,
+   "value_preview": "main_device"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 2,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "gemma_3_12B_it.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "ltxv"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 619,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "video vae"
+  },
+  {
+   "node_id": 620,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "audio vae"
+  },
+  {
+   "node_id": 621,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "CLIP"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 0,
+   "value_preview": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 1,
+   "value_preview": "main_device"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 2,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 628,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "CLIP"
+  },
+  {
+   "node_id": 565,
+   "node_type": "LTX2_NAG",
+   "widget_index": 0,
+   "value_preview": "11"
+  },
+  {
+   "node_id": 565,
+   "node_type": "LTX2_NAG",
+   "widget_index": 1,
+   "value_preview": "0.25"
+  },
+  {
+   "node_id": 565,
+   "node_type": "LTX2_NAG",
+   "widget_index": 2,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 565,
+   "node_type": "LTX2_NAG",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 169,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 588,
+   "node_type": "LTX2SamplingPreviewOverride",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 592,
+   "node_type": "DF_Int_to_Float",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 358,
+   "node_type": "VisualizeSigmasKJ",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 358,
+   "node_type": "VisualizeSigmasKJ",
+   "widget_index": 1,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 652,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "output_image"
+  },
+  {
+   "node_id": 154,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "lcm"
+  },
+  {
+   "node_id": 624,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "audio vae"
+  },
+  {
+   "node_id": 594,
+   "node_type": "SimpleMath+",
+   "widget_index": 0,
+   "value_preview": "a*b+1"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 1,
+   "value_preview": "126548958664283"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 2,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 626,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "video vae"
+  },
+  {
+   "node_id": 627,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "audio vae"
+  },
+  {
+   "node_id": 664,
+   "node_type": "PrimitiveBoolean",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 651,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "output_image"
+  },
+  {
+   "node_id": 586,
+   "node_type": "LTXVPreprocess",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "resize"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 596,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 8,
+   "value_preview": "<tr><td>Output: </td><td><b>1</b> x <b>1280</b> x <b>736 | 1"
+  },
+  {
+   "node_id": 625,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "video vae"
+  },
+  {
+   "node_id": 589,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "taeltx2_3.safetensors"
+  },
+  {
+   "node_id": 661,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 0,
+   "value_preview": "960"
+  },
+  {
+   "node_id": 661,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 1,
+   "value_preview": "544"
+  },
+  {
+   "node_id": 661,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 2,
+   "value_preview": "121"
+  },
+  {
+   "node_id": 661,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 713,
+   "node_type": "MarkdownNote",
+   "widget_index": 0,
+   "value_preview": "# https://space.bilibili.com/353000653?spm_id_from=333.1007."
+  },
+  {
+   "node_id": 714,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 584,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 712,
+   "node_type": "Text",
+   "widget_index": 0,
+   "value_preview": "动态壁纸，火焰熊熊的烈火燃烧，大风吹动服装快速的飘动。人物眨眼睛。"
+  },
+  {
+   "node_id": 593,
+   "node_type": "PrimitiveInt",
+   "widget_index": 0,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 593,
+   "node_type": "PrimitiveInt",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "8"
+  },
+  {
+   "node_id": 716,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "8"
+  },
+  {
+   "node_id": 715,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 708,
+   "node_type": "MarkdownNote",
+   "widget_index": 0,
+   "value_preview": "# 视频高清放大：https://www.runninghub.cn/post/2057112467372863489/"
+  },
+  {
+   "node_id": 595,
+   "node_type": "PrimitiveInt",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 595,
+   "node_type": "PrimitiveInt",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  }
+ ]
+}

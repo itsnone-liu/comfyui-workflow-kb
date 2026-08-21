@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "AIGC图像编辑",
+  "人像换脸",
+  "照片重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张源人脸照片和一张目标图像，自动输出将源脸身份迁移到目标图像上的换脸结果，实现高还原度自然无痕换脸",
+   "kind": "fact"
+  },
+  {
+   "text": "一键完成脸部遮罩自动提取、迁移与局部重绘，无需手动涂抹遮罩",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Joy Caption 自动为参考图生成描述文本，结合 FLUX Redux 保持目标场景语义，提高重绘还原度",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 DetailerForEach 对换脸区域进行二次修复，增强面部细节与边缘融合质量",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Fill 局部重绘",
+  "FLUX Redux 风格/结构参考",
+  "SegmentAnythingUltra V2 脸部遮罩提取",
+  "Mask 膨胀/收缩与填充处理",
+  "InpaintCrop/InpaintStitch 局部修复",
+  "DetailerForEach 面部细节增强",
+  "DifferentialDiffusion 敏感区域扩散",
+  "Joy Caption 自动提示词生成",
+  "LoRA portrait_lora 人像增强",
+  "ConditioningZeroOut + FluxGuidance 双分支控制"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个 SegmentAnythingUltra V2 节点分别提取源脸和目标区域遮罩，并通过 SetNode/GetNode 以'遮罩'变量在图中传递，实现遮罩迁移",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 Joy_caption_two 自动为参考图生成自然语言描述，作为 CLIPTextEncode 的输入，减少手工写提示词的需求",
+   "kind": "fact"
+  },
+  {
+   "text": "采用 Anything Everywhere 节点自动广播条件输入，显著简化连线拓扑",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 GrowMask 正值(43)扩张遮罩扩大重绘范围，负值(-5)收缩遮罩控制最终融合区，形成边界控制回路",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ConditioningZeroOut 和两个 FluxGuidance(50/3.5) 双分支控制生成强度，兼顾身份保持与场景融合",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ImageConcanate 与 Image Comparer 将生成结果与参考图并列对比，实现人工质量检查环节",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕“无痕换脸”目标设计：先用 SAM 自动精确提取源脸和目标区域的遮罩，再利用 Flux Fill 的局部重绘能力替换面部区域，同时通过 Redux 引用原图结构、Joy Caption 自动生成语义描述、portrait_lora 增强人像特征，最后用 DetailerForEach 和 Inpaint 收尾修复细节与边缘。整体呈现“识别遮罩→多条件约束重绘→细节精修”的分段流水线，意图是在端到端自动化的同时尽可能提高身份还原度和融合自然度。",
+ "use_case": "适用于单张人像照片的换脸、脸部妆容迁移、身份保持的写真合成，以及需要无痕局部重绘的创意修图场景。",
+ "limitation": "依赖多个自定义节点与大型 FLUX 模型，对显存和硬件要求高；需要输入两张图像（源脸 + 目标图）；换脸结果受源脸角度、遮挡、光照以及目标姿态差异影响；无法直接用于视频或多人复杂场景处理。",
+ "dependencies": [
+  "模型: Flux Fill dev - fp8_黑森林官方重绘模型.safetensors, flux1-redux-dev.safetensors, fluxFusionV24StepsGGUFNF4_V2Fp16.safetensors",
+  "CLIP: sigclip_vision_patch14_384.safetensors, clip_l.safetensors, t5xxl_fp8_e4m3fn.safetensors",
+  "VAE: ae.sft",
+  "LoRA: portrait_lora64.safetensors",
+  "自定义节点: LayerMask (SegmentAnythingUltra V2), Joy_caption_two, rgthree (Image Comparer, Anything Everywhere), EasyUse (ImageConcanate, DetailerForEach), LayerUtility, Inpaint Crop/Stitch, DifferentialDiffusion"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两张图像：源人脸照片 + 目标图像",
+  "count": "2"
+ },
+ "output": {
+  "type": "一张换脸合成图像",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "默认 30，若细节不足可增大至 40-50；速度优先时可降至 20，但融合度会下降。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "Flux 系列通常使用 1.0，此工作流设为 1，以在提示词跟随与自然度之间取得平衡。"
+  },
+  {
+   "param": "KSampler sampler/scheduler",
+   "how_to_tune": "使用 euler/simple，是 FLUX 工程中较稳妥的组合；如需更强细节可尝试 deis/dpmpp。"
+  },
+  {
+   "param": "GrowMask 第一个值(43)",
+   "how_to_tune": "正值扩张遮罩，用于扩大重绘范围以消除边缘痕迹；值越大覆盖越广，但可能影响周围背景。"
+  },
+  {
+   "param": "GrowMask 第二个值(-5)",
+   "how_to_tune": "负值收缩遮罩，用于收敛最终融合区域，避免过度重绘而丢失目标场景特征。"
+  },
+  {
+   "param": "FluxGuidance(50/3.5)",
+   "how_to_tune": "两个分支的引导强度：50 用于强约束语义对齐，3.5 用于平衡自然生成；调整时若换脸过于生硬可降低强分支值，若身份还原不足则提高。"
+  }
+ ],
+ "summary_text": "能力:输入一张源人脸照片和一张目标图像，自动输出将源脸身份迁移到目标图像上的换脸结果，实现高还原度自然无痕换脸；能力:一键完成脸部遮罩自动提取、迁移与局部重绘，无需手动涂抹遮罩；能力:通过 Joy Caption 自动为参考图生成描述文本，结合 FLUX Redux 保持目标场景语义，提高重绘还原度；能力:使用 DetailerForEach 对换脸区域进行二次修复，增强面部细节与边缘融合质量；特色:使用两个 SegmentAnythingUltra V2 节点分别提取源脸和目标区域遮罩，并通过 SetNode/GetNode 以'遮罩'变量在图中传递，实现遮罩迁移；特色:引入 Joy_caption_two 自动为参考图生成自然语言描述，作为 CLIPTextEncode 的输入，减少手工写提示词的需求；特色:采用 Anything Everywhere 节点自动广播条件输入，显著简化连线拓扑；特色:通过 GrowMask 正值(43)扩张遮罩扩大重绘范围，负值(-5)收缩遮罩控制最终融合区，形成边界控制回路；特色:使用 ConditioningZeroOut 和两个 FluxGuidance(50/3.5) 双分支控制生成强度，兼顾身份保持与场景融合；特色:通过 ImageConcanate 与 Image Comparer 将生成结果与参考图并列对比，实现人工质量检查环节；适用于单张人像照片的换脸、脸部妆容迁移、身份保持的写真合成，以及需要无痕局部重绘的创意修图场景。；该工作流围绕“无痕换脸”目标设计：先用 SAM 自动精确提取源脸和目标区域的遮罩，再利用 Flux Fill 的局部重绘能力替换面部区域，同时通过 Redux 引用原图结构、Joy Caption 自动生成语义描述、portrait_lora 增强人像特征，最后用 DetailerForEach 和 Inpaint 收尾修复细节与边缘。整体呈现“识别遮罩→多条件约束重绘→细节精修”的分段流水线，意图是在端到端自动化的同时尽可能提高身份还原度和融合自然度。"
+}

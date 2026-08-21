@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图像修复",
+  "人像后期",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成『上传一张手部有缺陷的图片 → 自动检测并分割手部 → 局部重绘修复 → 输出修复结果』，针对 AI 生成图中常见的多指、缺指、手指扭曲等畸形进行一键修补。",
+   "kind": "fact"
+  },
+  {
+   "text": "全自动蒙版：无需手动涂抹，由 GroundingDINO 文本引导检测『hand』、SAM ViT-H 生成语义掩膜、VITMatte 精化边缘，并直接产出可用于重绘的蒙版。",
+   "kind": "fact"
+  },
+  {
+   "text": "仅重绘手部及周边小范围：通过 InpaintModelConditioning 注入掩膜条件，并配合 DifferentialDiffusion 使非手部区域基本保持原样，意图实现『只修手、不碰其他内容』。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Fill（局部重绘/Inpainting 基座模型）",
+  "InpaintModelConditioning（掩膜条件注入 latent）",
+  "Differential Diffusion（差分扩散，掩膜感知的去噪控制）",
+  "Segment Anything + GroundingDINO（文本引导自动检测与分割）",
+  "VITMatte（alpha 边缘精化）",
+  "GrowMask（掩膜扩张 + 软边 tapered corners）",
+  "FluxGuidance（FLUX 指导强度控制）",
+  "DualCLIPLoader（T5-XXL + CLIP-L 双文本编码，flux 模式）"
+ ],
+ "special_features": [
+  {
+   "text": "自动检测·分割·修复三段式串联：SegmentAnythingUltra V2 一个节点内集成 GroundingDINO 检测框、SAM ViT-H 语义分割与 VITMatte 边缘精修，把『找手→抠手→修手』压缩成全自动流程；另设 preview_mask 节点在采样前可视化蒙版，便于确认检测质量。",
+   "kind": "fact"
+  },
+  {
+   "text": "双重掩膜控制回路：InpaintModelConditioning 将掩膜编码进 latent 供 FLUX Fill 重绘，同时 DifferentialDiffusion 挂载到采样模型上，使去噪强度按掩膜梯度分布；配合 GrowMask(expand=30, tapered_corners=True) 的软边，在硬修复与自然融合之间取平衡。",
+   "kind": "inference"
+  },
+  {
+   "text": "提示词硬编码为修复专用文本（TextInput: 'Beautifully intact and perfect hands…'），用户完全不碰提示词即可一键修复，体现『面向大众用户』的工程取舍。",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 rgthree Image Comparer 前后对照面板，采样后立即左右对比原图与修复图，方便挑图。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流把『修手』从手动 PS 中解放出来，设计成一条『检测→蒙版→重绘→对比』的线性流水线。核心思路是用 GroundingDINO+SAM 的文本引导分割替代人工涂蒙版，用 FLUX Fill 的局部重绘能力替代整图重绘，再用 DifferentialDiffusion 与 GrowMask 软角共同保证只有手部及周边 30px 范围发生像素级变化，从而在修复手指的同时不扰动原图的构图、人脸和背景。整体意图似乎非常明确：面向 FLUX 用户的高频痛点（手部畸形），提供零手动的标准化修补方案，而不是做一个通用重绘框架。",
+ "use_case": "适用于 AI 生成图片中手部畸形的后期修复、SD/FLUX 出图后的局部瑕疵修补，以及人像摄影/电商模特图中需要保持人物与环境不变、仅修正手部形态的局部重绘场景。",
+ "limitation": "需要 FLUX.1-Fill 全套 fp16 权重（UNet / clip_l / t5xxl / ae.sft），以及 SegmentAnythingUltra V2（SAM ViT-H 2.56GB + GroundingDINO 938MB + VITMatte）和 rgthree 自定义节点；输入图片必须能被 GroundingDINO 检测到『手』，手部过小、遮挡严重、姿态极端或非写实画风时可能检测失败；修复提示词固定且 widget 显示截断，需要改词时得手动编辑 TextInput 节点；显存需求较高（FLUX fp16 与 SAM/DINO 同时加载），16GB 以下显存可能 OOM；只适合局部修手，不适用于整图重绘或构图变化。",
+ "dependencies": [
+  "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors（FLUX.1 Fill UNet）",
+  "clip_l.safetensors + t5xxl_fp16.safetensors（DualCLIPLoader，flux 模式）",
+  "ae.sft（FLUX VAE）",
+  "SegmentAnythingUltra V2 自定义节点（含 sam_vit_h 2.56GB、GroundingDINO_SwinB 938MB、VITMatte 权重）",
+  "rgthree-comfy（Image Comparer 节点）"
+ ],
+ "geek_rating": 3.5,
+ "input": {
+  "type": "image（单张图片，LoadImage IN）",
+  "count": "1"
+ },
+ "output": {
+  "type": "image（PreviewImage / SaveImage 输出重绘结果，另有 Image Comparer 做人工前后对比）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "默认 30。手指细节修复不干净时可提高到 40~50；追求速度可降至 20；FLUX 对步数相对不敏感，主要影响细节锐度。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "必须保持 1。FLUX 系列不使用 CFG，设为其他值会引入过曝、色彩污染或结构崩坏。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 30，控制提示词对重绘结果的约束力。修复结果不像『完好的手』时增大到 30~35；出现伪影或过锐时降到 20~25。"
+  },
+  {
+   "param": "GrowMask expand",
+   "how_to_tune": "默认 30px。修复边界生硬或背景被意外改动时增大到 40~60；图片分辨率低、只想精修手指时减小到 10~20。"
+  },
+  {
+   "param": "GrowMask tapered_corners",
+   "how_to_tune": "保持 True 开启软边，使掩膜从中心到边缘渐变；若发现手部周围被多余重绘，可考虑 False 并配合更小的 expand。"
+  },
+  {
+   "param": "SegmentAnythingUltra box_threshold",
+   "how_to_tune": "GroundingDINO 对『hand』的置信度阈值，默认 0.5。检测不到手（例如手很小或被遮挡）时降到 0.3~0.4；误检（把非手区域圈进来）时升到 0.6~0.7。"
+  },
+  {
+   "param": "KSampler seed",
+   "how_to_tune": "randomize 时每次采样结果不同，便于多抽几张挑选；找到满意效果后固定该 seed 值即可复现。"
+  },
+  {
+   "param": "TextInput 提示词",
+   "how_to_tune": "固定为类似『Beautifully intact and perfect hands…』的完整手部描述。若画风不匹配（写实 vs 二次元）或想指定姿势，需手动修改该节点的英文提示词。"
+  }
+ ],
+ "summary_text": "能力:端到端完成『上传一张手部有缺陷的图片 → 自动检测并分割手部 → 局部重绘修复 → 输出修复结果』，针对 AI 生成图中常见的多指、缺指、手指扭曲等畸形进行一键修补。；能力:全自动蒙版：无需手动涂抹，由 GroundingDINO 文本引导检测『hand』、SAM ViT-H 生成语义掩膜、VITMatte 精化边缘，并直接产出可用于重绘的蒙版。；能力:仅重绘手部及周边小范围：通过 InpaintModelConditioning 注入掩膜条件，并配合 DifferentialDiffusion 使非手部区域基本保持原样，意图实现『只修手、不碰其他内容』。；特色:自动检测·分割·修复三段式串联：SegmentAnythingUltra V2 一个节点内集成 GroundingDINO 检测框、SAM ViT-H 语义分割与 VITMatte 边缘精修，把『找手→抠手→修手』压缩成全自动流程；另设 preview_mask 节点在采样前可视化蒙版，便于确认检测质量。；特色:双重掩膜控制回路：InpaintModelConditioning 将掩膜编码进 latent 供 FLUX Fill 重绘，同时 DifferentialDiffusion 挂载到采样模型上，使去噪强度按掩膜梯度分布；配合 GrowMask(expand=30, tapered_corners=True) 的软边，在硬修复与自然融合之间取平衡。；特色:提示词硬编码为修复专用文本（TextInput: 'Beautifully intact and perfect hands…'），用户完全不碰提示词即可一键修复，体现『面向大众用户』的工程取舍。；特色:内置 rgthree Image Comparer 前后对照面板，采样后立即左右对比原图与修复图，方便挑图。；适用于 AI 生成图片中手部畸形的后期修复、SD/FLUX 出图后的局部瑕疵修补，以及人像摄影/电商模特图中需要保持人物与环境不变、仅修正手部形态的局部重绘场景。；该工作流把『修手』从手动 PS 中解放出来，设计成一条『检测→蒙版→重绘→对比』的线性流水线。核心思路是用 GroundingDINO+SAM 的文本引导分割替代人工涂蒙版，用 FLUX Fill 的局部重绘能力替代整图重绘，再用 DifferentialDiffusion 与 GrowMask 软角共同保证只有手部及周边 30px 范围发生像素级变化，从而在修复手指的同时不扰动原图的构图、人脸和背景。整体意图似乎非常明确：面向 FLUX 用户的高频痛点（手部畸形），提供零手动的标准化修补方案，而不是做一个通用重绘框架。"
+}

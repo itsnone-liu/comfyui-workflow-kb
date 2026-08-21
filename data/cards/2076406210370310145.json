@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "图生图",
+  "文生图",
+  "多模态提示词工程",
+  "风格化重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "从节点看，输入图像会先经过 AILab_QwenVL（Qwen3-VL-4B-Instruct）生成详细描述，再送入 AILab_QwenVL_PromptEnhancer 扩写成更完整的图像提示词。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 krea2Edition_nsfw.safetensors（Qwen-Image/Krea2 UNET）+ Purple_Grainy_Kr2_AM LoRA 生成带胶片颗粒感的 Krea2 风格图像，并按 2K、3:4 画幅输出。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 KSampler 以 8 步、cfg=1、er_sde/simple 的 turbo 低步数采样，最后用 VAEDecode + SaveImage 保存结果。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image 图像生成（UNETLoader 加载 krea2Edition_nsfw.safetensors）",
+  "Qwen3-VL 视觉理解（AILab_QwenVL）",
+  "Prompt Enhancing 提示词扩写（AILab_QwenVL_PromptEnhancer）",
+  "多模态提示词链路：图 → 文 → 图",
+  "LoRA 风格注入（LoraLoaderModelOnly，Purple_Grainy_Kr2_AM，strength=0.5）",
+  "Turbo 低步数采样（KSampler: 8 steps, cfg=1, er_sde/simple）",
+  "AuraFlow ModelSampling shift=3.0",
+  "Fooocus 风格选择器（easy stylesSelector）",
+  "rgthree 分支控制（Any Switch / Fast Groups Bypasser）"
+ ],
+ "special_features": [
+  {
+   "text": "双 Qwen 链路：先用 Qwen3-VL 把参考图变成文字描述，再由 QwenVL Prompt Enhancer 重写为生成提示词，形成“图→文→图”的中介式图生图，而非像素级 img2img。",
+   "kind": "fact"
+  },
+  {
+   "text": "rgthree Any Switch 与 Fast Groups Bypasser 并存，可在同一工作流内切换提示词来源或整体旁路部分节点，适合做 A/B 对比和模块化开关。",
+   "kind": "inference"
+  },
+  {
+   "text": "Krea2SizePreset(2K,3:4) + ModelSamplingAuraFlow(shift=3) + KSampler(8步,cfg=1) 形成针对 Krea2 turbo 的高分辨率低步数生成组合。",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut 的存在似乎是用于把某个条件分支置零，可能实现无条件/半无条件采样或 CFG 消融控制。",
+   "kind": "inference"
+  },
+  {
+   "text": "LoRA 采用 LoraLoaderModelOnly，只影响 UNet/生成路径而不改 CLIP，降低风格 LoRA 对提示词编码的干扰。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这串工作流似乎是为“有参考图但不会写提示词”的用户设计的半自动风格化管线：先用 Qwen3-VL 把图片翻译成语义描述，再交给 Prompt Enhancer 扩写，减少手工写 prompt 的门槛；生成端选用 Krea2/Qwen-Image 的 turbo 低步数配置，叠加 Purple_Grainy LoRA 形成统一胶片颗粒风格，并用 Krea2SizePreset 固定 2K 3:4 输出。rgthree 的开关与旁路节点和 easy 系列组件则让工作流在实验阶段更容易切换提示词分支、观察结果。最终能力更像“一张参考图 → 多张同主题但构图自由的高清风格化图像”，而不是严格保留原图结构的图生图。",
+ "use_case": "适合把一张照片、剧照或草图作为灵感，快速产出 2K 3:4、带 Purple_Grainy 颗粒感的风格化概念图；可用于角色设计、封面配图、视觉风格探索。",
+ "limitation": "依赖 AILab_QwenVL 系列、rgthree、easy-use、YANC、Krea2SizePreset、ModelSamplingAuraFlow 等自定义节点；需要 krea2Edition_nsfw.safetensors、qwen3vl_4b_fp8_scaled.safetensors、qwen_image_vae.safetensors、Purple_Grainy_Kr2_AM.safetensors 这几个模型文件。由于输入图先被概括成文本，再重新生成图像，无法保证面容、物体细节和原始构图一致。8步/CFG1 的 turbo 参数若与模型版本不匹配，可能出现伪影或色彩异常。",
+ "dependencies": [
+  "模型：krea2Edition_nsfw.safetensors",
+  "模型：qwen3vl_4b_fp8_scaled.safetensors",
+  "模型：qwen_image_vae.safetensors",
+  "模型：Purple_Grainy_Kr2_AM.safetensors",
+  "自定义节点：AILab_QwenVL / AILab_QwenVL_PromptEnhancer",
+  "自定义节点：rgthree（Any Switch, Fast Groups Bypasser）",
+  "自定义节点：easy-use（easy showAnything, easy stylesSelector）",
+  "自定义节点：YANC.MultilineString",
+  "自定义节点：Krea2SizePreset / ModelSamplingAuraFlow"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（LoadImage）",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像（SaveImage，前缀 Krea2_turbo）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 8 步，是 Krea2 turbo 的低步数档；若出图不完整或细节崩坏，可试 10~12 步，追求速度则保持 8。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前 cfg=1，搭配 turbo/LoRA 可避免过饱和；如果提示词不跟随，可小幅升到 2.0 左右，但可能引入伪影。"
+  },
+  {
+   "param": "KSampler sampler/scheduler",
+   "how_to_tune": "当前为 er_sde + simple；如果颗粒噪点太重或画面发糊，可换 dpmpp_2m_sde + karras 对比。"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前 0.5 是 Purple_Grainy 的中等强度；想要更强风格化可调到 0.6~0.7，想更自然则降到 0.3。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift",
+   "how_to_tune": "当前 shift=3.0 适合 2K 高分辨率；低分辨率或重影时可降到 1.5~2.5，画风过于平淡可往 3.0~3.5 调整。"
+  },
+  {
+   "param": "Krea2SizePreset",
+   "how_to_tune": "当前锁定 2K 与 3:4；需要横构图可改 16:9/3:2，但 Krea2 在不同比例下的构图偏好不同，应重新试效果。"
+  },
+  {
+   "param": "AILab_QwenVL 生成模式/max_tokens",
+   "how_to_tune": "使用 Detailed Description 且 max 512，生成中等详细描述；要保留服装/场景等更多信息可换 Custom Prompt 或调高到 768/1024。"
+  },
+  {
+   "param": "AILab_QwenVL_PromptEnhancer mode",
+   "how_to_tune": "auto 会自动扩写；如果扩写过度、引入太多不相关细节，可关闭自动或增加额外约束文本。"
+  }
+ ],
+ "summary_text": "能力:从节点看，输入图像会先经过 AILab_QwenVL（Qwen3-VL-4B-Instruct）生成详细描述，再送入 AILab_QwenVL_PromptEnhancer 扩写成更完整的图像提示词。；能力:使用 krea2Edition_nsfw.safetensors（Qwen-Image/Krea2 UNET）+ Purple_Grainy_Kr2_AM LoRA 生成带胶片颗粒感的 Krea2 风格图像，并按 2K、3:4 画幅输出。；能力:通过 KSampler 以 8 步、cfg=1、er_sde/simple 的 turbo 低步数采样，最后用 VAEDecode + SaveImage 保存结果。；特色:双 Qwen 链路：先用 Qwen3-VL 把参考图变成文字描述，再由 QwenVL Prompt Enhancer 重写为生成提示词，形成“图→文→图”的中介式图生图，而非像素级 img2img。；特色:rgthree Any Switch 与 Fast Groups Bypasser 并存，可在同一工作流内切换提示词来源或整体旁路部分节点，适合做 A/B 对比和模块化开关。；特色:Krea2SizePreset(2K,3:4) + ModelSamplingAuraFlow(shift=3) + KSampler(8步,cfg=1) 形成针对 Krea2 turbo 的高分辨率低步数生成组合。；特色:ConditioningZeroOut 的存在似乎是用于把某个条件分支置零，可能实现无条件/半无条件采样或 CFG 消融控制。；特色:LoRA 采用 LoraLoaderModelOnly，只影响 UNet/生成路径而不改 CLIP，降低风格 LoRA 对提示词编码的干扰。；适合把一张照片、剧照或草图作为灵感，快速产出 2K 3:4、带 Purple_Grainy 颗粒感的风格化概念图；可用于角色设计、封面配图、视觉风格探索。；这串工作流似乎是为“有参考图但不会写提示词”的用户设计的半自动风格化管线：先用 Qwen3-VL 把图片翻译成语义描述，再交给 Prompt Enhancer 扩写，减少手工写 prompt 的门槛；生成端选用 Krea2/Qwen-Image 的 turbo 低步数配置，叠加 Purple_Grainy LoRA 形成统一胶片颗粒风格，并用 Krea2SizePreset 固定 2K 3:4 输出。rgthree 的开关与旁路节点和 easy 系列组件则让工作流在实验阶段更容易切换提示词分支、观察结果。最终能力更像“一张参考图 → 多张同主题但构图自由的高清风格化图像”，而不是严格保留原图结构的图生图。"
+}

@@ -1,0 +1,114 @@
+{
+ "22": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "f380682b294be215661b35aabae6aa9c512845b80480372e8fb47278e50782fb.mp4",
+   "choose video file to upload": "Video"
+  },
+  "_meta": {
+   "title": "加载视频"
+  }
+ },
+ "12": {
+  "class_type": "AutoDownloadBiRefNetModel",
+  "inputs": {
+   "model_name": "General",
+   "device": "AUTO"
+  },
+  "_meta": {
+   "title": "AutoDownloadBiRefNetModel"
+  }
+ },
+ "23": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "22",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Get Video Components"
+  }
+ },
+ "14": {
+  "class_type": "RembgByBiRefNet",
+  "inputs": {
+   "images": [
+    "23",
+    0
+   ],
+   "model": [
+    "12",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "RembgByBiRefNet"
+  }
+ },
+ "26": {
+  "class_type": "MaskToImage",
+  "inputs": {
+   "mask": [
+    "14",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "遮罩到图像"
+  }
+ },
+ "29": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "save_output": true,
+   "filename_prefix": "birefnet",
+   "images": [
+    "14",
+    0
+   ],
+   "loop_count": 0,
+   "save_metadata": true,
+   "crf": 23,
+   "format": "video/mov",
+   "no_preview": false,
+   "audio": [
+    "23",
+    1
+   ],
+   "frame_rate": [
+    "23",
+    2
+   ],
+   "pingpong": false
+  },
+  "_meta": {
+   "title": "合并为视频"
+  }
+ },
+ "9": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "save_output": true,
+   "filename_prefix": "Alpha",
+   "images": [
+    "26",
+    0
+   ],
+   "loop_count": 0,
+   "save_metadata": true,
+   "crf": 23,
+   "format": "video/mov",
+   "no_preview": false,
+   "frame_rate": [
+    "23",
+    2
+   ],
+   "pingpong": false
+  },
+  "_meta": {
+   "title": "合并为视频"
+  }
+ }
+}

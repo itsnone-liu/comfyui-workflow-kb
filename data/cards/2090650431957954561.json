@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图生视频",
+  "多模态视频生成",
+  "AI数字人/口播视频"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张参考图（人脸/主体照） + 一段参考音频 → 生成约7秒（默认1344×768@24fps）的多模态短视频，内容身份/声音特征与参考资料一致",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 turbo LoRA 将扩散采样控制在4步，实现低延迟快速出片",
+   "kind": "fact"
+  },
+  {
+   "text": "视频画面流和音频流通过独立 VAE 解码后封装为同一个视频文件（SaveVideo）",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 多模态视频生成模型（ref2va checkpoint，支持图+音频双条件）",
+  "Reference-to-Video with Audio：参考图 + 参考音频同时注入生成主节点 MiniMaxH3ReferenceToVideo",
+  "Turbo LoRA 4步蒸馏加速采样（minimax_h3_ref2v_turbo_4step）",
+  "Qwen3VL-32B 多模态 CLIP 编码器（CLIPLoader minimax 模式，AWQ 量化）",
+  "视频 VAE（fp16）与音频 VAE（fp32）分离编解码",
+  "BasicGuider + euler + SigmaShift(12,3) 的低步数采样组合",
+  "固定随机种子42（RandomNoise fixed）+ 动态帧数公式 max(5, round(a*24))",
+  "音频时长匹配（match 模式）自动对齐视频时长"
+ ],
+ "special_features": [
+  {
+   "text": "双 VAELoader + 双 VAEDecode（VAEDecode 解码图像序列、VAEDecodeAudio 解码音频）构成视频/音频双流潜空间解码管线，最后汇入 SaveVideo",
+   "kind": "fact"
+  },
+  {
+   "text": "用 ComfyMathExpression 做动态帧数计算：max(5, round(a*24))，由 PrimitiveFloat 的时长变量 a（默认7秒）驱动，修改时长即可自适应帧数",
+   "kind": "fact"
+  },
+  {
+   "text": "BasicScheduler+BasicGuider 与 turbo LoRA 绑定为“4步、CFG=1”的极简采样链，配合 fixed seed=42 形成可复现的一键式流程",
+   "kind": "fact"
+  },
+  {
+   "text": "MiniMaxH3ReferenceToVideo 同时接入 LoadImage 与 LoadAudio，并通过 'match' 模式将参考音频时长与视频时长对齐",
+   "kind": "fact"
+  },
+  {
+   "text": "工作流内置 MarkdownNote 分辨率/像素对照表（megapixels/Aspect），面向使用者的参数导航设计",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流似乎将 MiniMax H3 的双模态（参考图+参考音频）生成能力刻意封装为“上传一张图、上传一段录音、直接出片”的低门槛工具。为了把长耗时采样降到可交互级别，作者用 turbo LoRA（4步蒸馏）配合 BasicGuider/CFG=1，并锁死随机种子保证可复现；视频/音频双 VAE 分离是模型架构本身的必然要求，但也让音频条件注入路径一目了然。动态帧数公式和 ResolutionSelector 组合，使时长/分辨率调整无需手动改帧数。整体设计是面向快速原型验证和演示，而不是追求生成多样性。",
+ "use_case": "适合需要快速制作口播视频/数字人样张的创作者：给一张人脸照 + 一段语音 → 得到一条可预览的对口型视频；也可作为 MiniMax H3 模型参数的测试台，反复调整分辨率、时长、sigma shift 以观察效果变化。",
+ "limitation": "依赖官方模型权重组：minimax_h3_ref2va_bf16、qwen3vl_32b_minimax_h3_nvfp4_awq（约几十GB级 CLIP，显存压力大）、视频VAE fp16、音频VAE fp32、turbo LoRA；需要安装 MiniMax H3 系列自定义节点（MiniMaxH3ReferenceToVideo、VAEDecodeAudio 等）以及 ComfyMath/CreateVideo/ResolutionSelector 等扩展节点。工作流内 LoadAudio 固定引用音频文件 ID '2a091fbe2449cca84561eb88'，缺失时会报错，需替换为用户自己的音频文件。steps 固定为4，调大不会获得更好质量（LoRA只针对4步训练）；seed 固定42限制了生成多样性，要探索需手动改 RandomNoise 的 seed。",
+ "dependencies": [
+  "{'name': 'minimax_h3_ref2va_bf16.safetensors', 'role': 'UNET/多模态DiT主模型，ref2va（reference-to-video+audio）权重组'}",
+  "{'name': 'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors', 'role': 'CLIP文本+图像编码器（Qwen3VL-32B，AWQ量化）'}",
+  "{'name': 'minimax_h3_video_vae_fp16.safetensors', 'role': '视频潜空间VAE'}",
+  "{'name': 'minimax_h3_audio_vae_fp32.safetensors', 'role': '音频潜空间VAE'}",
+  "{'name': 'minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors', 'role': 'turbo LoRA，将采样压缩到4步'}"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image+audio",
+  "count": "1张参考图 + 1段参考音频"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "steps (BasicScheduler)",
+   "how_to_tune": "工作流锁定为4，与 turbo LoRA 匹配，不建议调大；增大只会显著降低速度且不一定提高质量。若要恢复多步精绘，需移除 LoRA 并调回默认采样步数。"
+  },
+  {
+   "param": "cfg (BasicGuider)",
+   "how_to_tune": "当前为1（基本无分类器引导）。在 turbo 模式下高 cfg 会过曝/失真；若追求更强文本/参考条件，可在非turbo配置下从2-4开始试。"
+  },
+  {
+   "param": "seed (RandomNoise)",
+   "how_to_tune": "当前固定42，保证可复现；改成 -1 或任意整数可探索不同视频内容，适合批量出样。"
+  },
+  {
+   "param": "resolution (ResolutionSelector / 1344×768)",
+   "how_to_tune": "默认16:9 1344×768；像素越高显存和耗时越大。可切换其他宽高比，但需确保同一像素量级，避免画面构图异常。"
+  },
+  {
+   "param": "a 时长变量 (PrimitiveFloat=7)",
+   "how_to_tune": "控制视频秒数，经公式 max(5, round(a*24)) 折算成帧数。a 减小会缩短视频，a 增大则帧数线性增加，注意显存限制。"
+  },
+  {
+   "param": "fps (CreateVideo)",
+   "how_to_tune": "当前24fps；可根据目标平台改 15/30/60，但高fps会显著增大文件体积和处理耗时。"
+  },
+  {
+   "param": "SigmaShift (MiniMaxH3SigmaShift)",
+   "how_to_tune": "当前 shift=12, 原start=3；数值越大，噪声调度越偏'高噪声'，画面动态/结构变化越明显；调小则时序更平滑，适合对抖动敏感的内容。"
+  }
+ ],
+ "summary_text": "能力:上传单张参考图（人脸/主体照） + 一段参考音频 → 生成约7秒（默认1344×768@24fps）的多模态短视频，内容身份/声音特征与参考资料一致；能力:利用 turbo LoRA 将扩散采样控制在4步，实现低延迟快速出片；能力:视频画面流和音频流通过独立 VAE 解码后封装为同一个视频文件（SaveVideo）；特色:双 VAELoader + 双 VAEDecode（VAEDecode 解码图像序列、VAEDecodeAudio 解码音频）构成视频/音频双流潜空间解码管线，最后汇入 SaveVideo；特色:用 ComfyMathExpression 做动态帧数计算：max(5, round(a*24))，由 PrimitiveFloat 的时长变量 a（默认7秒）驱动，修改时长即可自适应帧数；特色:BasicScheduler+BasicGuider 与 turbo LoRA 绑定为“4步、CFG=1”的极简采样链，配合 fixed seed=42 形成可复现的一键式流程；特色:MiniMaxH3ReferenceToVideo 同时接入 LoadImage 与 LoadAudio，并通过 'match' 模式将参考音频时长与视频时长对齐；特色:工作流内置 MarkdownNote 分辨率/像素对照表（megapixels/Aspect），面向使用者的参数导航设计；适合需要快速制作口播视频/数字人样张的创作者：给一张人脸照 + 一段语音 → 得到一条可预览的对口型视频；也可作为 MiniMax H3 模型参数的测试台，反复调整分辨率、时长、sigma shift 以观察效果变化。；这个工作流似乎将 MiniMax H3 的双模态（参考图+参考音频）生成能力刻意封装为“上传一张图、上传一段录音、直接出片”的低门槛工具。为了把长耗时采样降到可交互级别，作者用 turbo LoRA（4步蒸馏）配合 BasicGuider/CFG=1，并锁死随机种子保证可复现；视频/音频双 VAE 分离是模型架构本身的必然要求，但也让音频条件注入路径一目了然。动态帧数公式和 ResolutionSelector 组合，使时长/分辨率调整无需手动改帧数。整体设计是面向快速原型验证和演示，而不是追求生成多样性。"
+}

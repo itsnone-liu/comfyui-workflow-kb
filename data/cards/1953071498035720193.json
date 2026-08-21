@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "图生图",
+  "局部重绘",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "上传源人脸图和目标人物图，在保持目标图的背景、人物姿势、服装不变的前提下，将脸部替换为源人脸身份，并输出高清结果",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 InstantID + PuLID 双身份保持技术，通过文本描述控制生成，在风格化重绘的同时保留面部特征",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 PersonMaskUltra 与局部重绘，仅对脸部/头部区域进行生成，非面部区域尽量保持原始像素",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 ReActor/inswapper 做像素级换脸，并用 GFPGAN 进行人脸修复，增强最终面部清晰度",
+   "kind": "fact"
+  },
+  {
+   "text": "自动进行颜色匹配（ColorMatch）、精细化边缘处理（MaskEdgeUltraDetail）和多级超分辨率修复（PMRF/SeedVR2），输出带对比预览的成片",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "PuLID",
+  "ReActor/inswapper",
+  "ControlNet",
+  "Differential Diffusion",
+  "局部重绘（inpainting）",
+  "图生图（img2img）",
+  "人脸解析（PersonMaskUltra）",
+  "GFPGAN 人脸增强",
+  "SeedVR2 超分",
+  "PMRF 超分/修复",
+  "ColorMatch 颜色匹配",
+  "RH_Captioner 动态提示词"
+ ],
+ "special_features": [
+  {
+   "text": "双重身份保持链：同时挂载 InstantID（ip-adapter.bin + instantid/diffusion_pytorch_model.safetensors）与 PuLID（ip-adapter_pulid_sdxl_fp16.safetensors + EvaCLIP + InsightFace），用不同 IP-Adapter 分别约束身份与属性，再叠加 ReActor 物理换脸，形成多层兜底",
+   "kind": "fact"
+  },
+  {
+   "text": "多阶段采样流水线：使用 juggernautXL_Lightning 与 dreamshaperXL_Turbo 两个低步数 checkpoint，配合两个 KSampler（steps=8, euler_ancestral, sgm_uniform），中间用 VAEEncode/SetLatentNoiseMask 过渡，可能先做 InstantID 重绘再做 PuLID 精修，最后 ReActor 换脸修复",
+   "kind": "inference"
+  },
+  {
+   "text": "精细化局部区域控制：使用 Bounded Image Crop with Mask 多次裁剪，配合 MaskGrow、Mask Fill Holes、RemapMaskRange、DifferentialDiffusion 将重绘范围限制在五官与边缘，避免影响背景和身体",
+   "kind": "fact"
+  },
+  {
+   "text": "自动面部语义提示：RH_Captioner 生成英文脸部特征描述并注入 CLIPTextEncode，使生成过程能根据描述微调面部属性",
+   "kind": "inference"
+  },
+  {
+   "text": "多层质量控制回路：ReActor 后用 ColorMatch 统一肤色，PMRF + SeedVR2 两段放大修复，ImageComparer / ImageConcanate 并排显示对比图，方便人工筛选",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流的目标是在完全不改变原图背景、姿势、服饰的前提下，将人脸替换为参考身份，同时克服单一换脸方法在相似度、清晰度和融合度上的短板。它采用双路身份保持（InstantID + PuLID）来生成高相似度人脸，用 ReActor 做像素级换脸兜底，并用局部重绘 + 差分扩散只让面部区域参与生成，避免污染背景。随后通过 ColorMatch、GFPGAN、PMRF、SeedVR2 等进行颜色与细节的多级修复，最终用并排对比图检查质量。设计上偏“工作室级精修”，适合对融合质量要求较高的场景。",
+ "use_case": "适用于社交媒体头像定制、影视/广告人物替换、摄影后期中为模特更换面部，以及动漫/写实风格的面部融合创作。尤其适合目标图包含复杂背景和姿态、要求人脸自然融入的场景。",
+ "limitation": "依赖大量自定义节点（Impact Pack、rgthree、ComfyUI-LayerStyle、ReActor、PuLID、InstantID、SeedVR2、PMRF、RH_Captioner 等），需要预先下载指定模型权重；输入的三张图片最好已对齐五官，且目标图人脸清晰可检测；低 CFG 与少步数适合 Lightning/Turbo 模型，换其他 checkpoint 可能需重新调参；最终输出尺寸受模型上下文限制（Note 中建议裁剪到 1024），超大图需要额外放大。",
+ "dependencies": [
+  "ComfyUI_InstantID",
+  "ComfyUI_PuLID",
+  "ComfyUI_ReActor",
+  "comfyui_layerstyle",
+  "ComfyUI-Impact-Pack",
+  "rgthree-comfy",
+  "SeedVR2 custom node",
+  "PMRF custom node",
+  "RH_Captioner custom node",
+  "模型文件：juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors、dreamshaperXL_v21TurboDPMSDE.safetensors、seedvr2_ema_3b_fp8_e4m3fn.safetensors、ip-adapter_pulid_sdxl_fp16.safetensors、ip-adapter.bin、inswapper_128.onnx、GFPGANv1.4.pth、instantid/diffusion_pytorch_model.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "三张图片（源人脸图、目标人物/背景图，可能还有参考图）",
+  "count": "3"
+ },
+ "output": {
+  "type": "图像（多组预览与最终结果）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantIDAdvanced",
+   "how_to_tune": "widgets 中前两个 0.98 分别是 IP-Adapter 权重和 ControlNet 强度；提高可增强身份相似度，但过高会破坏背景/姿势，建议 0.8~1.0 范围内微调。"
+  },
+  {
+   "param": "ApplyPulid",
+   "how_to_tune": "widgets 中 0.7 为整体权重，0.05~0.9 为起始/结束步；fidelity 模式偏保真。若面部不像，可提升权重至 0.8~0.9；若出现伪影则降低。"
+  },
+  {
+   "param": "KSampler",
+   "how_to_tune": "steps=8, cfg=1.3~1.4 适合 Lightning/Turbo 类低步数模型；若换用标准 SDXL，需将 steps 提高至 25+、cfg 调回 5~7。"
+  },
+  {
+   "param": "ReActorFaceSwap",
+   "how_to_tune": "restore_visibility=1 表示使用 GFPGAN 全量修复；0.5 为概率/混合强度。若觉得磨皮过度，可降低 restore_visibility。"
+  },
+  {
+   "param": "PMRF / SeedVR2",
+   "how_to_tune": "PMRF 中 1.5 是放大倍数，25 是步骤数；SeedVR2 中 1536 与 5 分别控制目标尺寸和降噪强度。速度慢时可降低放大倍数或调低 SeedVR2 尺寸。"
+  }
+ ],
+ "summary_text": "能力:上传源人脸图和目标人物图，在保持目标图的背景、人物姿势、服装不变的前提下，将脸部替换为源人脸身份，并输出高清结果；能力:使用 InstantID + PuLID 双身份保持技术，通过文本描述控制生成，在风格化重绘的同时保留面部特征；能力:通过 PersonMaskUltra 与局部重绘，仅对脸部/头部区域进行生成，非面部区域尽量保持原始像素；能力:集成 ReActor/inswapper 做像素级换脸，并用 GFPGAN 进行人脸修复，增强最终面部清晰度；能力:自动进行颜色匹配（ColorMatch）、精细化边缘处理（MaskEdgeUltraDetail）和多级超分辨率修复（PMRF/SeedVR2），输出带对比预览的成片；特色:双重身份保持链：同时挂载 InstantID（ip-adapter.bin + instantid/diffusion_pytorch_model.safetensors）与 PuLID（ip-adapter_pulid_sdxl_fp16.safetensors + EvaCLIP + InsightFace），用不同 IP-Adapter 分别约束身份与属性，再叠加 ReActor 物理换脸，形成多层兜底；特色:多阶段采样流水线：使用 juggernautXL_Lightning 与 dreamshaperXL_Turbo 两个低步数 checkpoint，配合两个 KSampler（steps=8, euler_ancestral, sgm_uniform），中间用 VAEEncode/SetLatentNoiseMask 过渡，可能先做 InstantID 重绘再做 PuLID 精修，最后 ReActor 换脸修复；特色:精细化局部区域控制：使用 Bounded Image Crop with Mask 多次裁剪，配合 MaskGrow、Mask Fill Holes、RemapMaskRange、DifferentialDiffusion 将重绘范围限制在五官与边缘，避免影响背景和身体；特色:自动面部语义提示：RH_Captioner 生成英文脸部特征描述并注入 CLIPTextEncode，使生成过程能根据描述微调面部属性；特色:多层质量控制回路：ReActor 后用 ColorMatch 统一肤色，PMRF + SeedVR2 两段放大修复，ImageComparer / ImageConcanate 并排显示对比图，方便人工筛选；适用于社交媒体头像定制、影视/广告人物替换、摄影后期中为模特更换面部，以及动漫/写实风格的面部融合创作。尤其适合目标图包含复杂背景和姿态、要求人脸自然融入的场景。；该工作流的目标是在完全不改变原图背景、姿势、服饰的前提下，将人脸替换为参考身份，同时克服单一换脸方法在相似度、清晰度和融"
+}

@@ -1,0 +1,102 @@
+{
+ "domain": [
+  "图生视频",
+  "数字人"
+ ],
+ "capabilities": [
+  {
+   "text": "输入人物图片与文本指令，端到端生成带同步音频的视频片段（含语音/环境音），可直接用于数字人/短视频素材。",
+   "kind": "fact"
+  },
+  {
+   "text": "提供两个图像载入入口，可加载主图与辅助图（如角色多视角参考），但实际链路中主要依赖单张图像。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用固定随机种子与可调参数，可复现同一场景的不同视频结果，便于批量微调 prompt 或长度。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 图生视频模型（UNETLoader 加载 int8 剪枝版）",
+  "Qwen3-VL 多模态文本编码（CLIPLoader，minimax 类型）",
+  "视频 VAE + 音频 VAE 双路解码，再由 VHS_VideoCombine 合成有声视频",
+  "SageAttention 注意力加速（PathchSageAttentionKJ 自动 patch）",
+  "res_multistep 采样器 + BasicGuider + SamplerCustomAdvanced 采样管线",
+  "BasicScheduler 调度采样步数与噪声计划",
+  "图像预处理：ImageResizeKJv2 居中裁剪 + ImageScaleByAspectRatio 保持宽高比缩放/letterbox"
+ ],
+ "special_features": [
+  {
+   "text": "双 VAE 分路解码视频帧和音频，利用 minimax_h3_audio_vae 与 minimax_h3_video_vae 分别输出音轨和画面，再合流至 VHS_VideoCombine——这种视频/音频分离式解码在一般图生视频工作流中很少见。",
+   "kind": "fact"
+  },
+  {
+   "text": "ComfyMathExpression 动态表达式 max(5, round(a*24)+...) 参与帧数计算，使视频长度可由前序参数自动换算（疑似按秒数和 24fps 推算帧数）。",
+   "kind": "fact"
+  },
+  {
+   "text": "PathchSageAttentionKJ 自动注入 SageAttention 优化算子，降低大模型注意力计算开销，是长视频/高分辨率生成时的性能改造点。",
+   "kind": "fact"
+  },
+  {
+   "text": "多个 Display Any (rgthree) 节点显示计算中间值（例如 124、640、640），方便调试参数流动，但并非生成必需。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流把 MiniMax H3 开源模型拆分为 checkpoint + CLIP + 双 VAE 的标准 ComfyUI 加载方式，并在解码阶段刻意将视频和音频分开处理，之后由 VHS_VideoCombine 合成。这一设计可能出于两个原因：一是 H3 音频 VAE 与视频 VAE 独立，便于单独控制音轨和画面；二是将生成出的 latent 分别还原为像素和波形，避免传统管线中音频信息丢失。同时配合 SageAttention 与 int8 剪枝版模型，似乎旨在降低消费级显卡上运行 H3 的门槛；整体结构平铺直叙，无复杂分支，适合作为图生视频/数字人的基础模板。",
+ "use_case": "数字人视频生成：上传人物照片，输入台词或描述，生成会说话/带表情的视频片段；或用于短剧分镜、角色动态展示等创意内容生产。",
+ "limitation": "必须手动下载并放置四个模型文件（见 dependencies）；依赖多个 ComfyUI 自定义节点（如 rgthree、KJNodes、VideoHelperSuite、SageAttention），环境配置复杂；输出分辨率固定为 640x640，输入图片需先压缩到 512/640，原始构图可能被裁剪/变形；固定种子导致默认结果可复现，但多样性受限；长视频生成需要较高显存，且 int8 剪枝可能牺牲部分画质。",
+ "dependencies": [
+  "minimax_h3_fl2va_pruned_int8_convrot.safetensors (UNET/checkpoint)",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors (CLIP)",
+  "minimax_h3_audio_vae_fp32.safetensors (audio VAE)",
+  "minimax_h3_video_vae_fp16.safetensors (video VAE)",
+  "ComfyUI 内置节点：UNETLoader, CLIPLoader, VAELoader, VAEDecode, VAEDecodeAudio, SamplerCustomAdvanced 等",
+  "KJNodes (ImageResizeKJv2, LayerUtility: ImageScaleByAspectRatio V2)",
+  "rgthree's Custom Nodes (Display Any)",
+  "ComfyUI-VideoHelperSuite (VHS_VideoCombine)",
+  "MiniMaxH3ImageToVideo 节点（第三方或官方自定义节点）",
+  "SageAttention (PathchSageAttentionKJ)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片 (2 路，LoadImage) + 文本提示 (MiniMaxH3ImageToVideo.prompt)",
+  "count": "2 images + 1 prompt"
+ },
+ "output": {
+  "type": "带音频的视频文件 (.mp4 via VHS_VideoCombine)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ImageToVideo.prompt",
+   "how_to_tune": "输入驱动生成的自然语言描述；对人物说话内容、表情、运镜越具体，输出一致性越好。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo.length",
+   "how_to_tune": "生成视频的帧数，当前示例 73，约 3 秒（≈24fps）；增大可延长视频，但显存和耗时增加。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo.width / height",
+   "how_to_tune": "目前 640x640，为官方标准比例；若改其他尺寸需同步调整预处理节点。"
+  },
+  {
+   "param": "BasicScheduler (steps=20)",
+   "how_to_tune": "采样步数；20 为平衡质量与速度；追求质量可调 25-30，显存紧张可降到 15。"
+  },
+  {
+   "param": "PrimitiveFloat (5)",
+   "how_to_tune": "疑似 CFG 引导强度；数值越大越贴近 prompt，但过大易产生伪影，建议 3-7 之间调试。"
+  },
+  {
+   "param": "RandomNoise (seed)",
+   "how_to_tune": "固定为 443724493955121 保证复现；修改该值可得到不同随机结果。"
+  },
+  {
+   "param": "ComfyMathExpression",
+   "how_to_tune": "控制帧数计算，其中 a 可能是时长/步数输入，乘 24 为假设的帧率；可按需调整公式改变最终视频长度。"
+  }
+ ],
+ "summary_text": "能力:输入人物图片与文本指令，端到端生成带同步音频的视频片段（含语音/环境音），可直接用于数字人/短视频素材。；能力:提供两个图像载入入口，可加载主图与辅助图（如角色多视角参考），但实际链路中主要依赖单张图像。；能力:使用固定随机种子与可调参数，可复现同一场景的不同视频结果，便于批量微调 prompt 或长度。；特色:双 VAE 分路解码视频帧和音频，利用 minimax_h3_audio_vae 与 minimax_h3_video_vae 分别输出音轨和画面，再合流至 VHS_VideoCombine——这种视频/音频分离式解码在一般图生视频工作流中很少见。；特色:ComfyMathExpression 动态表达式 max(5, round(a*24)+...) 参与帧数计算，使视频长度可由前序参数自动换算（疑似按秒数和 24fps 推算帧数）。；特色:PathchSageAttentionKJ 自动注入 SageAttention 优化算子，降低大模型注意力计算开销，是长视频/高分辨率生成时的性能改造点。；特色:多个 Display Any (rgthree) 节点显示计算中间值（例如 124、640、640），方便调试参数流动，但并非生成必需。；数字人视频生成：上传人物照片，输入台词或描述，生成会说话/带表情的视频片段；或用于短剧分镜、角色动态展示等创意内容生产。；该工作流把 MiniMax H3 开源模型拆分为 checkpoint + CLIP + 双 VAE 的标准 ComfyUI 加载方式，并在解码阶段刻意将视频和音频分开处理，之后由 VHS_VideoCombine 合成。这一设计可能出于两个原因：一是 H3 音频 VAE 与视频 VAE 独立，便于单独控制音轨和画面；二是将生成出的 latent 分别还原为像素和波形，避免传统管线中音频信息丢失。同时配合 SageAttention 与 int8 剪枝版模型，似乎旨在降低消费级显卡上运行 H3 的门槛；整体结构平铺直叙，无复杂分支，适合作为图生视频/数字人的基础模板。"
+}

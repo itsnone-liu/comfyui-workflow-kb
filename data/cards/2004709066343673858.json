@@ -1,0 +1,110 @@
+{
+ "domain": [
+  "人像精修",
+  "商业调色",
+  "影楼后期",
+  "皮肤美化/妆容"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张人像照片，输出美白祛油、牛奶肌调色、自然提亮等多版本精修结果；结构上可见 1 个 LoadImage、15 个 PreviewImage、6 个 SaveImage。",
+   "kind": "fact"
+  },
+  {
+   "text": "实现“美白祛油”：通过 LayerFilter: SkinBeauty、Whitening_Node 以及 screen/soft_light 等混合叠加，对皮肤进行提亮和油光抑制。",
+   "kind": "inference"
+  },
+  {
+   "text": "实现“牛奶肌/自然提亮”：通过 AutoBrightness、Brightness & Contrast、Levels、ColorOverlay V2(#FFBF30) 等调色节点统一肤色并增加通透感。",
+   "kind": "inference"
+  },
+  {
+   "text": "保留皮肤质感并降低 AI 感：DetailTransfer 将原图细节重新回叠到磨皮美白结果上，避免皮肤变成塑料质感。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LayerFilter: SkinBeauty 皮肤美化",
+  "Whitening_Node 美白节点",
+  "LayerColor: AutoBrightness / Brightness & Contrast / Levels 影调调整",
+  "LayerStyle: ColorOverlay V2 暖色罩叠加",
+  "LayerUtility: ImageBlend / ImageBlendAdvance V2 多层混合（screen、soft_light、overlay、darker、normal）",
+  "DetailTransfer 原图细节回传",
+  "Shadow & Highlight Mask / ImageToMask / InvertMask / ImpactGaussianBlurMask 蒙版保护与羽化",
+  "CR Text Input Switch / Compare / easy ab 多档效果切换"
+ ],
+ "special_features": [
+  {
+   "text": "并联 6 个 SaveImage 和 15 个 PreviewImage，同时输出并预览多个精修版本，形成影楼修图师“挑片式”的多路输出结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 CR Text Input Switch (4 way)、3 个 Compare、3 个 easy ab 与 3 个 JjkText 标签（美白祛油、调色_牛奶肌、自然提亮）搭出可切换的三档后期风格分支。",
+   "kind": "inference"
+  },
+  {
+   "text": "DetailTransfer 与 SkinBeauty/Whitening_Node 并用，形成“先磨皮美白、再回传原图细节”的质感补偿回路，以削弱 AI 修图感。",
+   "kind": "inference"
+  },
+  {
+   "text": "ImageChannelSplit(RGBA)、Unary Image Op(abs)、InvertMask、ImageToMask(red) 组合，疑似通过通道运算/红色通道蒙版锁定肤色区域，实现局部精修。",
+   "kind": "inference"
+  },
+  {
+   "text": "孤海-取色器 提供 #fedec8、#fee5d7、#f7b2a1 等肤色系色板，可能用于给“牛奶肌”输出统一肤色参考色相。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "设计意图是让影楼修图师在单张照片上快速得到多档商业人像效果。作者没有交给扩散模型生成，而是用纯图像处理节点构造了“美白祛油 → 调色 → 提亮 → 细节回传”的管线；通过 CR Text Input Switch/Compare/easy ab 把三档客片风格合并到一个工作流里，方便对照挑选。大量 Preview/Save 节点承担试修和挑片输出职能；DetailTransfer 的加入可能是有意抵消磨皮导致的人工塑料感，保留皮肤毛孔细节。整体倾向于实用、可控、可微调，而不是生成式换脸或重绘。",
+ "use_case": "影楼/商业修图师对客户原片进行美白祛油、牛奶肌调色、自然提亮、皮肤质感增强，并输出多个可挑选的精修版本；也适用于模特图、人像广告图、证件照/写真集的统一肤色调性处理。",
+ "limitation": "只处理单张图片，工作流本身没有批量遍历文件夹的入口；依赖 LayerStyle、Comfyroll、Impact、DetailTransfer、JjkText、Whitening_Node、easy ab、孤海-取色器、EG_ZZ_TMTX 等自定义节点，缺失时无法运行；部分参数含义（如 SkinBeauty 第二个负值、Whitening_Node 的 False、EG_ZZ_TMTX='no'）缺少官方说明，更换环境后需要重新校对。",
+ "dependencies": [
+  "ComfyUI-LayerStyle / LayerStyle 系列节点（LayerColor、LayerStyle、LayerFilter、LayerMask、LayerUtility）",
+  "ComfyUI_Comfyroll_Custom_Nodes（CR Text Input Switch (4 way)）",
+  "ComfyUI-Impact-Pack（ImpactGaussianBlurMask）",
+  "DetailTransfer 节点（常见于 ComfyUI_KJNodes 或 Image Detail Transfer 扩展）",
+  "JjkText、Whitening_Node、easy ab、EG_ZZ_TMTX、孤海-取色器 等自定义节点",
+  "GetImageSize+、MaskPreview+、Unary Image Op 等节点所属扩展（按导入提示补齐）",
+  "ComfyUI 内置节点：LoadImage、PreviewImage、SaveImage、ImageToMask、InvertMask"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张图片（LoadImage，从 ComfyUI input 目录选择）",
+  "count": "1"
+ },
+ "output": {
+  "type": "多路图像输出：15 个 PreviewImage 预览、6 个 SaveImage 保存、2 个 MaskPreview+ 蒙版预览",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LayerFilter: SkinBeauty (35, -254, 100)",
+   "how_to_tune": "35 控制皮肤处理强度，越大磨皮/美白越明显；-254 是细节保留阈值，通常保持负值可减少皮肤画质损伤；100 是处理半径，半身像/胸像可用 80-120，特写可降到 40-60。"
+  },
+  {
+   "param": "Whitening_Node (False, 37, 5)",
+   "how_to_tune": "37 是美白强度，数字越大越白；5 是过渡半径，越大边缘越柔和；第一个布尔开关含义不确定，若效果异常可切换 False/True 对比观察。"
+  },
+  {
+   "param": "LayerColor: Levels (RGB, 163, 255, 1, 0, 255)",
+   "how_to_tune": "163 为输入黑场，降低它会让暗部更通透，升高会增强对比；255 为白场，控制高光截止；Gamma=1 时中间调基本不偏移。"
+  },
+  {
+   "param": "LayerUtility: ImageBlend（screen/soft_light/overlay/darker 及透明度）",
+   "how_to_tune": "screen 60/100 负责整体提亮，soft_light 10/26 负责皮肤柔光质感，overlay 20 负责暖色叠加；若想要更自然，优先降低 screen 和 overlay 的透明度。"
+  },
+  {
+   "param": "DetailTransfer (screen, 1, 0.35)",
+   "how_to_tune": "0.35 是细节回传量，增大可保留更多原图毛孔、发丝以去 AI 感，但过大会把瑕疵也带回来；建议在 0.25-0.5 之间微调。"
+  },
+  {
+   "param": "LayerStyle: ColorOverlay V2 (#FFBF30, overlay, 20/50)",
+   "how_to_tune": "20/50 是暖色覆盖透明度；想要“牛奶肌”更粉/更暖可提高 50 那一路，但要注意肤色溢出和背景偏色。"
+  },
+  {
+   "param": "CR Text Input Switch (4 way) / easy ab",
+   "how_to_tune": "切换 CR Text Input Switch 的值为 1-3 可对应美白祛油、牛奶肌、自然提亮三种风格；easy ab=True 表示启用该风格分支，False 则旁路，哪档不生效时优先检查这几个开关。"
+  }
+ ],
+ "summary_text": "能力:输入一张人像照片，输出美白祛油、牛奶肌调色、自然提亮等多版本精修结果；结构上可见 1 个 LoadImage、15 个 PreviewImage、6 个 SaveImage。；能力:实现“美白祛油”：通过 LayerFilter: SkinBeauty、Whitening_Node 以及 screen/soft_light 等混合叠加，对皮肤进行提亮和油光抑制。；能力:实现“牛奶肌/自然提亮”：通过 AutoBrightness、Brightness & Contrast、Levels、ColorOverlay V2(#FFBF30) 等调色节点统一肤色并增加通透感。；能力:保留皮肤质感并降低 AI 感：DetailTransfer 将原图细节重新回叠到磨皮美白结果上，避免皮肤变成塑料质感。；特色:并联 6 个 SaveImage 和 15 个 PreviewImage，同时输出并预览多个精修版本，形成影楼修图师“挑片式”的多路输出结构。；特色:用 CR Text Input Switch (4 way)、3 个 Compare、3 个 easy ab 与 3 个 JjkText 标签（美白祛油、调色_牛奶肌、自然提亮）搭出可切换的三档后期风格分支。；特色:DetailTransfer 与 SkinBeauty/Whitening_Node 并用，形成“先磨皮美白、再回传原图细节”的质感补偿回路，以削弱 AI 修图感。；特色:ImageChannelSplit(RGBA)、Unary Image Op(abs)、InvertMask、ImageToMask(red) 组合，疑似通过通道运算/红色通道蒙版锁定肤色区域，实现局部精修。；特色:孤海-取色器 提供 #fedec8、#fee5d7、#f7b2a1 等肤色系色板，可能用于给“牛奶肌”输出统一肤色参考色相。；影楼/商业修图师对客户原片进行美白祛油、牛奶肌调色、自然提亮、皮肤质感增强，并输出多个可挑选的精修版本；也适用于模特图、人像广告图、证件照/写真集的统一肤色调性处理。；设计意图是让影楼修图师在单张照片上快速得到多档商业人像效果。作者没有交给扩散模型生成，而是用纯图像处理节点构造了“美白祛油 → 调色 → 提亮 → 细节回传”的管线；通过 CR Text Input Switch/Compare/easy ab 把三档客片风格合并到一个工作流里，方便对照挑选。大量 Preview/Save 节点承担试修和挑片输出职能；DetailTransfer 的加入可能是有意抵消磨皮导致的人工塑料感，保留皮肤毛孔细节。整体倾向于实用、可控、可微调，而不是生成式换脸或重绘。"
+}

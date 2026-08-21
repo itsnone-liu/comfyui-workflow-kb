@@ -1,0 +1,83 @@
+{
+ "domain": [
+  "换装"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张角色图片，一键转换为毛线/羊毛编织材质风格，同时保留原角色风格和颜色一致性",
+   "kind": "fact"
+  },
+  {
+   "text": "输出两张生成图（文件名前缀分别为 r-flux2-aijuxi 和 r-mx-aijuxi），并利用 Image Stitch 生成原图与结果向右拼接的对比图",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 dev (fp8 mixed) 扩散模型",
+  "Mistral3 small 文本编码器 (CLIPLoader, mistral_3_small_flux2_fp8)",
+  "ReferenceLatent 参考潜空间引导",
+  "Flux2Scheduler 调度（steps=20, 1248x832）",
+  "FluxGuidance 引导强度（value=4）",
+  "Euler 采样器 + SamplerCustomAdvanced",
+  "VAE 编解码（flux2-vae.safetensors）",
+  "图像缩放（ImageScaleDownToSize 1280）与拼接（Image Stitch）"
+ ],
+ "special_features": [
+  {
+   "text": "使用 ReferenceLatent 将输入图像编码为参考潜空间，从而在生成时约束构图和颜色，确保材质替换而不破坏原图内容",
+   "kind": "inference"
+  },
+  {
+   "text": "双输出设计：同时保存 r-flux2-aijuxi 和 r-mx-aijuxi 两个结果，可能对应两种风格或采样变体，便于用户选择",
+   "kind": "inference"
+  },
+  {
+   "text": "Image Stitch 节点将原图与生成图向右拼接，直接生成对比图，方便检查风格一致性和材质转换效果",
+   "kind": "fact"
+  },
+  {
+   "text": "两处 LayerUtility: PurgeVRAM 节点分别在流程前后清理显存，降低连续运行时的显存碎片和峰值压力",
+   "kind": "fact"
+  },
+  {
+   "text": "输入图像先经 GetImageSizeAndCount 读取尺寸，再由固定 1280 长度缩放（保持比例），统一了不同来源图片的处理流程",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在将 FLUX.2 的先进文生图能力封装成一个'上传即用'的毛线材质转换工具。通过 ReferenceLatent 和提示词双重约束，在改变材质的同時保留原角色的风格和颜色；使用 fp8 混合精度和 PurgeVRAM 来控制显存占用，降低硬件门槛；双输出和对比拼接设计则可能为了提供更多风格选项并直观展示效果，整体追求易用性、稳定性和视觉可验证性。",
+ "use_case": "适用于电商商品图、动漫二次创作、社交媒体趣味换装等场景。用户上传任意角色（人物、动物、动漫形象等）的正面或半身照，即可自动生成毛线编织风格的定制图像，用于头像、周边、表情包等。",
+ "limitation": "需要下载并放置三个模型文件：flux2_dev_fp8mixed.safetensors、mistral_3_small_flux2_fp8.safetensors、flux2-vae.safetensors；需安装支持 FLUX.2 的 ComfyUI 版本及相关自定义节点（Flux2Scheduler、ReferenceLatent、FluxGuidance、LayerUtility: PurgeVRAM、Image Stitch 等）；输出尺寸固定为 1248x832，输入图像会先等比缩放到最长边 1280，可能改变原始构图；FLUX.2 模型较大，建议至少 12GB 显存（fp8 可降低需求）；随机噪声种子每次不同，结果不可直接复现（除非固定 RandomNoise 中的 seed）。",
+ "dependencies": [
+  "models: flux2_dev_fp8mixed.safetensors, mistral_3_small_flux2_fp8.safetensors, flux2-vae.safetensors",
+  "custom_nodes: ComfyUI LayerStyle（提供 LayerUtility: PurgeVRAM、Image Stitch 等节点）",
+  "ComfyUI 内置节点：FLUX.2 相关新节点（Flux2Scheduler, ReferenceLatent, FluxGuidance, EmptyFlux2LatentImage, BasicGuider, SamplerCustomAdvanced）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Flux2Scheduler.steps",
+   "how_to_tune": "控制采样步数，默认为 20。提高步数（如 30）可增加细节和稳定度，但耗时线性增长；低步数（如 15）可快速预览，但可能出现材质转换不彻底。"
+  },
+  {
+   "param": "FluxGuidance.flux_guidance",
+   "how_to_tune": "文本引导强度，默认 4。值越大越贴近'毛线羊毛材质'的语义，但过大会导致色彩过饱和或伪影；值小则保持原图风格更强。建议范围 2-6。"
+  },
+  {
+   "param": "EmptyFlux2LatentImage.width/height",
+   "how_to_tune": "生成分辨率，默认为 1248x832。增大可提高清晰度，但必须同步调整 Flux2Scheduler 中的分辨率参数，且显存占用增加；当前设计固定尺寸以控制资源消耗。"
+  },
+  {
+   "param": "RandomNoise.noise_seed",
+   "how_to_tune": "采样随机种子，默认随机。固定种子可复现结果；不同种子会产生不同毛线纹理细节，适合批量生成多个候选。"
+  }
+ ],
+ "summary_text": "能力:上传单张角色图片，一键转换为毛线/羊毛编织材质风格，同时保留原角色风格和颜色一致性；能力:输出两张生成图（文件名前缀分别为 r-flux2-aijuxi 和 r-mx-aijuxi），并利用 Image Stitch 生成原图与结果向右拼接的对比图；特色:使用 ReferenceLatent 将输入图像编码为参考潜空间，从而在生成时约束构图和颜色，确保材质替换而不破坏原图内容；特色:双输出设计：同时保存 r-flux2-aijuxi 和 r-mx-aijuxi 两个结果，可能对应两种风格或采样变体，便于用户选择；特色:Image Stitch 节点将原图与生成图向右拼接，直接生成对比图，方便检查风格一致性和材质转换效果；特色:两处 LayerUtility: PurgeVRAM 节点分别在流程前后清理显存，降低连续运行时的显存碎片和峰值压力；特色:输入图像先经 GetImageSizeAndCount 读取尺寸，再由固定 1280 长度缩放（保持比例），统一了不同来源图片的处理流程；适用于电商商品图、动漫二次创作、社交媒体趣味换装等场景。用户上传任意角色（人物、动物、动漫形象等）的正面或半身照，即可自动生成毛线编织风格的定制图像，用于头像、周边、表情包等。；该工作流旨在将 FLUX.2 的先进文生图能力封装成一个'上传即用'的毛线材质转换工具。通过 ReferenceLatent 和提示词双重约束，在改变材质的同時保留原角色的风格和颜色；使用 fp8 混合精度和 PurgeVRAM 来控制显存占用，降低硬件门槛；双输出和对比拼接设计则可能为了提供更多风格选项并直观展示效果，整体追求易用性、稳定性和视觉可验证性。"
+}

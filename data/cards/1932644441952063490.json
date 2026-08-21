@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图像生成",
+  "换脸",
+  "图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人脸参考图与一张/多张目标图像，端到端完成 FLUX Fill 局部重绘式换脸，输出保持目标图整体构图与背景、同时保留参考人脸身份的结果",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 CLIPTextEncode 的文本提示词控制生成结果，正向提示可用于改善面部细节，负向提示（text, watermark）可同时去除水印/文字",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 SegmentAnythingUltra V2（GroundingDINO + SAM + VITMatte）自动分割人像并生成精细化遮罩，无需手动抠图即可定位重绘区域",
+   "kind": "fact"
+  },
+  {
+   "text": "支持三路图像输入（推断为参考人脸、被换脸目标图、辅助构图/遮罩参考），经三路并行预处理统一到 512×512 后再进入生成链路",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "PuLID (pulid_flux_v0.9.1)：基于视觉编码器+InsightFace 的人脸 ID 保持，无需 LoRA 训练，单张参考照即可",
+  "FLUX Fill (F.1-Fill fp16)：FLUX 官方局部重绘/修补模型，提供高质量 inpaint 先验",
+  "InpaintModelConditioning：将图像/遮罩/文本条件打包成 FLUX 所需 inpainting 条件",
+  "SegmentAnythingUltra V2：GroundingDINO 检测 + SAM 分割 + VITMatte 精修，生成高质量人物/人脸遮罩",
+  "DualCLIPLoader：CLIP-L + T5-XXL 双文本编码器，为 FLUX 提供文本条件",
+  "FluxGuidance + KSampler(euler, cfg=1)：Flow Matching 采样，用 guidance 控制文本跟随强度",
+  "多级预处理：ImageScaleByAspectRatio V2(letterbox) → ImageCrop(512) → ImageResizeKJ(512)，统一多路输入尺寸"
+ ],
+ "special_features": [
+  {
+   "text": "三路 LoadImage 输入 + 三路异步预处理（letterbox 保持宽高比 → 固定 512×512 裁剪/缩放），形成多输入对齐的流水线式前端",
+   "kind": "fact"
+  },
+  {
+   "text": "双 Mask Crop Region('24','dominant') + AddMask 组合：从两路图像中分别提取最大连通域遮罩后相加合并，避免 SAM 误检碎片并融合多来源遮罩信息",
+   "kind": "fact"
+  },
+  {
+   "text": "PuLID + FLUX Fill + InpaintModelConditioning 的组合实现'换脸'而非简单图生图：先语义分割+蒙版限定区域，再在蒙版内做保留身份的局部重绘",
+   "kind": "inference"
+  },
+  {
+   "text": "KSampler 中 cfg 固定为 1 并显式使用 FluxGuidance=30，完全遵循 FLUX 的 Flow Matching 采样范式，而非传统 CFG 范式",
+   "kind": "fact"
+  },
+  {
+   "text": "Note 节点内嵌商业联系方式，属于商家发布的定制工作流",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流面向商业换脸/修图场景，使用 PuLID 解决'像不像'的问题（无需训练 LoRA，单张照片即可锁定身份），使用 FLUX Fill 解决'自然不自然'的问题（局部重绘保留原图环境光、姿态和背景）。为了排除原图面部和背景的干扰，作者用 SAM 系工具自动生成蒙版，并用多个 Mask Crop Region 只保留最大人像区域。三路输入并行预处理的目的大概率是让参考脸、目标图和辅助图在进入生成链路前保持同一坐标系和分辨率，降低 PuLID 与 inpaint 条件对齐的复杂度。整体上是一个追求'开箱即用、人工干预少'的生产级结构，但 512×512 的输出分辨率和 CPU 上的 InsightFace 可能暗示它优先考虑显存占用和服务端部署",
+ "use_case": "单人像换脸、AI 写真身份保持、水印/文字去除、人像局部重绘",
+ "limitation": "依赖较多外部模型文件与自定义节点（PuLID-Flux、LayerUtility、KJNodes、SegmentAnythingUltra 等），首次运行需下载 FLUX Fill、T5-XXL、ae.sft、pulid_flux_v0.9.1、InsightFace、SAM/DINO 等大模型；输入被硬编码预处理为 512×512，对非方形或高分辨率源图会损失构图细节；ImageCrop 从 (0,0) 截取可能导致主体偏离原构图；InsightFace 被设置为 CPU 运行，推理较慢；SAM 遮罩依赖 GroundingDINO 阈值，复杂场景可能误检；KSampler seed 为随机化，每次运行结果不固定；仅支持单人脸 ID 保持，多人或大面积遮挡场景效果不确定",
+ "dependencies": [
+  "模型：F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、ae.sft、pulid_flux_v0.9.1.safetensors",
+  "PuLID-Flux 自定义节点（ApplyPulidFlux / PulidFluxEvaClipLoader / PulidFluxInsightFaceLoader / PulidFluxModelLoader）",
+  "LayerUtility: ImageScaleByAspectRatio V2、ImageResizeKJ（KJNodes）、Mask Crop Region",
+  "LayerMask: SegmentAnythingUltra V2（SAM + GroundingDINO + VITMatte）",
+  "ComfyUI 内置：UNETLoader、DualCLIPLoader、CLIPTextEncode、KSampler、VAEDecode、FluxGuidance、InpaintModelConditioning",
+  "3 张输入图像 + 1 个输出目录；要求人像/目标图像清晰，参考脸正脸或接近正脸为佳"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "3 路 LoadImage 图像输入（推断为参考人脸图、被换脸目标图、辅助构图/遮罩图）",
+  "count": "3"
+ },
+ "output": {
+  "type": "单张 512×512 PNG/JPG 图像，经 SaveImage 输出",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前 25；FLUX 常用 20~50，追求细节可上调至 35~40，追求速度可降至 20，低于 15 会明显掉质"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "必须保持 1；FLUX 使用 Flow Matching，与传统 CFG 不同，调大 1 以上会过曝/失真"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前 30；范围为 1~100，值越大越严格遵循文本提示，实际常用 10~40；面部细节不满意可尝试 20~35 之间的值"
+  },
+  {
+   "param": "ApplyPulidFlux weight",
+   "how_to_tune": "当前 1.0；身份保持强度，0.6~1.2 之间调节；越接近 1 越像参考脸，过大容易脸僵硬"
+  },
+  {
+   "param": "ApplyPulidFlux start/end",
+   "how_to_tune": "当前 [0,1]，即全程注入；若发现换脸区域与其他结构冲突，可将 start 提高到 0.1~0.2 以保留更多原图结构"
+  },
+  {
+   "param": "SegmentAnything boxes_threshold",
+   "how_to_tune": "当前 0.3；检测框置信度阈值，调低（如 0.2）可提高召回，但会增加误检遮罩；复杂背景建议 0.25~0.35"
+  }
+ ],
+ "summary_text": "能力:上传单张人脸参考图与一张/多张目标图像，端到端完成 FLUX Fill 局部重绘式换脸，输出保持目标图整体构图与背景、同时保留参考人脸身份的结果；能力:通过 CLIPTextEncode 的文本提示词控制生成结果，正向提示可用于改善面部细节，负向提示（text, watermark）可同时去除水印/文字；能力:内置 SegmentAnythingUltra V2（GroundingDINO + SAM + VITMatte）自动分割人像并生成精细化遮罩，无需手动抠图即可定位重绘区域；能力:支持三路图像输入（推断为参考人脸、被换脸目标图、辅助构图/遮罩参考），经三路并行预处理统一到 512×512 后再进入生成链路；特色:三路 LoadImage 输入 + 三路异步预处理（letterbox 保持宽高比 → 固定 512×512 裁剪/缩放），形成多输入对齐的流水线式前端；特色:双 Mask Crop Region('24','dominant') + AddMask 组合：从两路图像中分别提取最大连通域遮罩后相加合并，避免 SAM 误检碎片并融合多来源遮罩信息；特色:PuLID + FLUX Fill + InpaintModelConditioning 的组合实现'换脸'而非简单图生图：先语义分割+蒙版限定区域，再在蒙版内做保留身份的局部重绘；特色:KSampler 中 cfg 固定为 1 并显式使用 FluxGuidance=30，完全遵循 FLUX 的 Flow Matching 采样范式，而非传统 CFG 范式；特色:Note 节点内嵌商业联系方式，属于商家发布的定制工作流；单人像换脸、AI 写真身份保持、水印/文字去除、人像局部重绘；该工作流面向商业换脸/修图场景，使用 PuLID 解决'像不像'的问题（无需训练 LoRA，单张照片即可锁定身份），使用 FLUX Fill 解决'自然不自然'的问题（局部重绘保留原图环境光、姿态和背景）。为了排除原图面部和背景的干扰，作者用 SAM 系工具自动生成蒙版，并用多个 Mask Crop Region 只保留最大人像区域。三路输入并行预处理的目的大概率是让参考脸、目标图和辅助图在进入生成链路前保持同一坐标系和分辨率，降低 PuLID 与 inpaint 条件对齐的复杂度。整体上是一个追求'开箱即用、人工干预少'的生产级结构，但 512×512 的输出分辨率和 CPU 上的 InsightFace 可能暗示它优先考虑显存占用和服务端部署"
+}

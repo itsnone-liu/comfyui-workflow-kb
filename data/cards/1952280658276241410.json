@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "人像编辑",
+  "换脸",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "上传包含人物/背景的图片（可另配参考人脸图），通过 InstantID 对脸部做身份注入式重建或替换，同时用局部重绘蒙版保证背景和人物身体部分保持不变，最终输出高清换脸结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "流程会自动裁剪/放大面部区域，把重绘后的脸部合成回原图，再经过色彩匹配和超分放大输出，适合端到端的单图人像面部重绘。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 TTPLANET ControlNet Tile 约束原始细节，使用 InstantID ControlNet 约束身份特征，更像是在“换脸”和“保真”之间做双层控制。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID 身份注入",
+  "insightface 人脸分析",
+  "ControlNet Tile 细节约束",
+  "局部重绘/Inpainting + SetLatentNoiseMask",
+  "PersonMask / MaskGrow 蒙版处理",
+  "adain 颜色匹配",
+  "NomosUni 高清放大",
+  "RH_Captioner 自动提示词"
+ ],
+ "special_features": [
+  {
+   "text": "三路 LoadImage 分别承担原图编码、参考人脸裁剪/蒙版、ControlNet Tile 引导；同一张输入图被多处复用，结构上形成“一张图多角色”的预处理链。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用双 PersonMaskUltra V2 + 两组 MaskGrow/CropByMask/LayerImageTransform 把面部区域裁剪、缩放后再送入 InstantID，并在 SetLatentNoiseMask 中只对脸部蒙版区域采样，疑似实现局部换脸。",
+   "kind": "inference"
+  },
+  {
+   "text": "TTPLANET ControlNet Tile 与 InstantID ControlNet 同时作用，ControlNetApplySD3 设 strength=0.35/end=0.75，可能用于在换脸的同时锁定原图的纹理、光照和背景细节。",
+   "kind": "inference"
+  },
+  {
+   "text": "RH_Captioner 自动输出英文脸部特征描述并接入文本编码器，使空白提示词也能生成合理条件，降低手动写 prompt 门槛。",
+   "kind": "inference"
+  },
+  {
+   "text": "输出前增加 easy imageColorMatch(adain) 色彩匹配与 Image Comparer 对比预览，用于修正肤色差异并做人工质检。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流的核心目标是“只换脸，不动背景和身体”。它先用蒙版/人脸检测把重绘范围限制到面部，再将面部区域裁剪放大后交给 InstantID 注入身份特征；同时用 TTPLANET ControlNet Tile 约束原始画面细节，避免重绘时背景、衣服、光影漂移。采样阶段通过 latent mask 只对局部区域做重绘，最后把生成脸贴回原图并用 adain 颜色匹配消除肤色差异，再超分输出。这套设计似乎是为了兼顾身份相似度、局部真实感和全局一致性。",
+ "use_case": "适用于人像照片的局部换脸/面部重绘，比如电商人像精修、摄影写真替换面部、短视频素材快速换脸；注意换脸需遵守肖像权与合成内容合规要求。",
+ "limitation": "依赖较多第三方自定义节点，迁移到新环境需补齐 InstantID、LayerStyle、rgthree、EasyUse、RH_Captioner 等节点；需要下载 juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors、instantid/diffusion_pytorch_model.safetensors、TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors、ip-adapter.bin、2xNomosUni_span_multijpg_ldl.pth 等模型，且需要 CUDA GPU。输入方面：默认 3 个 LoadImage 使用同一占位图，若要做真正的双图换脸，需要手动为参考脸图与目标图分别指定不同图片；多人脸或大角度侧脸时，FaceBoundingBox 可能只取到第一张脸/效果下降。",
+ "dependencies": [
+  "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors",
+  "instantid/diffusion_pytorch_model.safetensors",
+  "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors",
+  "ip-adapter.bin",
+  "2xNomosUni_span_multijpg_ldl.pth",
+  "insightface 人脸分析模型",
+  "ComfyUI_InstantID 自定义节点",
+  "ComfyUI_LayerStyle/PersonMaskUltra 相关节点",
+  "rgthree Image Comparer 节点",
+  "ComfyUI-Easy-Use easy imageColorMatch 节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片（目标底图/参考人脸图）",
+  "count": "3 个 LoadImage 输入口，默认同一张图"
+ },
+ "output": {
+  "type": "图片",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID weight=1.0, start=0, end=1",
+   "how_to_tune": "weight 越大身份特征越强，但过大可能导致面部僵硬或出现伪影；建议 0.6~1.0 之间调节以平衡相似度与自然度。"
+  },
+  {
+   "param": "ControlNetApplySD3 strength=0.35, start=0, end=0.75",
+   "how_to_tune": "该 ControlNet 用于约束原始画面细节。若背景/人物身体被改坏，可提高 strength；若换脸痕迹太重，可降低 strength 或把 end 提前到 0.6~0.7。"
+  },
+  {
+   "param": "KSampler denoise=0.8, cfg=3, steps=6",
+   "how_to_tune": "denoise 0.8 表示对蒙版区域做较彻底重绘；若想更多保留原脸光影，可降到 0.5~0.6。steps=6 与 Lightning 加速 checkpoint 配套，不要随意大幅增加。"
+  },
+  {
+   "param": "FaceBoundingBox 参数 0, 0.3, -1",
+   "how_to_tune": "0.3 可能是人脸框扩张系数，值越大裁剪区域越宽松，越不容易切掉五官，但也可能把头发/背景带入身份参考；需要根据原图人脸占比调整。"
+  },
+  {
+   "param": "MaskGrow 膨胀/羽化值 96/8 与 48/16",
+   "how_to_tune": "膨胀值决定重绘范围，越大越容易覆盖到发际线和耳朵边缘，融合更自然但可能改变脸型；羽化值影响边缘过渡，推荐保持较小羽化以减少接缝。"
+  },
+  {
+   "param": "JWImageResizeByLongerSide=1536 与 CR Upscale 2x",
+   "how_to_tune": "1536 是放大前中间分辨率，显存不足可降到 1280；最终 2xNomosUni 超分提高细节锐度，想要更高分辨率可再接一个放大节点。"
+  }
+ ],
+ "summary_text": "能力:上传包含人物/背景的图片（可另配参考人脸图），通过 InstantID 对脸部做身份注入式重建或替换，同时用局部重绘蒙版保证背景和人物身体部分保持不变，最终输出高清换脸结果。；能力:流程会自动裁剪/放大面部区域，把重绘后的脸部合成回原图，再经过色彩匹配和超分放大输出，适合端到端的单图人像面部重绘。；能力:使用 TTPLANET ControlNet Tile 约束原始细节，使用 InstantID ControlNet 约束身份特征，更像是在“换脸”和“保真”之间做双层控制。；特色:三路 LoadImage 分别承担原图编码、参考人脸裁剪/蒙版、ControlNet Tile 引导；同一张输入图被多处复用，结构上形成“一张图多角色”的预处理链。；特色:使用双 PersonMaskUltra V2 + 两组 MaskGrow/CropByMask/LayerImageTransform 把面部区域裁剪、缩放后再送入 InstantID，并在 SetLatentNoiseMask 中只对脸部蒙版区域采样，疑似实现局部换脸。；特色:TTPLANET ControlNet Tile 与 InstantID ControlNet 同时作用，ControlNetApplySD3 设 strength=0.35/end=0.75，可能用于在换脸的同时锁定原图的纹理、光照和背景细节。；特色:RH_Captioner 自动输出英文脸部特征描述并接入文本编码器，使空白提示词也能生成合理条件，降低手动写 prompt 门槛。；特色:输出前增加 easy imageColorMatch(adain) 色彩匹配与 Image Comparer 对比预览，用于修正肤色差异并做人工质检。；适用于人像照片的局部换脸/面部重绘，比如电商人像精修、摄影写真替换面部、短视频素材快速换脸；注意换脸需遵守肖像权与合成内容合规要求。；这个工作流的核心目标是“只换脸，不动背景和身体”。它先用蒙版/人脸检测把重绘范围限制到面部，再将面部区域裁剪放大后交给 InstantID 注入身份特征；同时用 TTPLANET ControlNet Tile 约束原始画面细节，避免重绘时背景、衣服、光影漂移。采样阶段通过 latent mask 只对局部区域做重绘，最后把生成脸贴回原图并用 adain 颜色匹配消除肤色差异，再超分输出。这套设计似乎是为了兼顾身份相似度、局部真实感和全局一致性。"
+}

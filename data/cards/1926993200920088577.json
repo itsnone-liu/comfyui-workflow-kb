@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "视频生成",
+  "动作迁移",
+  "肖像动画"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张人物静态图 + 一段包含动作的参考视频，提取OpenPose姿势并生成该人物的动作视频，实现身份保持的动作迁移",
+   "kind": "fact"
+  },
+  {
+   "text": "生成后可选用4x模型放大并输出不同规格的视频，兼顾预览与高清成片",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "OpenPose姿势提取",
+  "视频扩散模型 (Wan2.1 VACE 14B)",
+  "图生视频",
+  "Upscale-Hires高分辨率放大",
+  "视频后处理与多路输出"
+ ],
+ "special_features": [
+  {
+   "text": "双输入结构：静态图经ImageResizeKJ、姿势视频经ImageResizeKJv2统一到832x480后再送入VACE生成，保证人物与姿态对齐",
+   "kind": "fact"
+  },
+  {
+   "text": "三路VideoCombine输出，可能分别对应预览、标准和高清版本",
+   "kind": "inference"
+  },
+  {
+   "text": "集成PurgeVRAM V2与easy cleanGpuUsed显存清理节点，便于长视频或高分辨率生成",
+   "kind": "fact"
+  },
+  {
+   "text": "使用ModelSamplingSD3 shift=8.0调整扩散采样分布，可能优化高分辨率视频生成质量",
+   "kind": "inference"
+  },
+  {
+   "text": "后处理放大链：4xNomos8kSCHAT-L超分模型 + ImageUpscaleWithModel + ImageScale，可提升最终视频清晰度",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在将静态人物照与姿态参考视频结合，通过VACE 14B视频扩散模型生成指定动作视频。OpenPose从参考视频提取姿态序列，Resize节点统一图像分辨率，生成后经4x模型放大提升画质，同时用ModelSamplingSD3调整采样分布以改善输出。显存清理节点和多路输出设计可能为了适配在线平台，让用户能同时获得预览与高清成片。",
+ "use_case": "适合内容创作者将一张照片快速变成随参考视频跳舞或做动作的短片，也可用于虚拟人动画、短视频生成等场景。",
+ "limitation": "依赖14B级视频扩散模型，运行时显存和算力要求高；需要下载指定模型文件（wan2.1_vace_14B_fp16.safetensors、umt5_xxl_fp8_e4m3fn_scaled.safetensors、wan_2.1_vae.safetensors、4xNomos8kSCHAT-L.pth）。同时要求安装ComfyUI-VideoHelperSuite、ComfyUI-KJNodes、ComfyUI-Easy-Use、LayerUtility、OpenPose预处理等自定义节点。输入视频需包含清晰人体动作，遮挡或复杂动作可能导致OpenPose提取不准。",
+ "dependencies": [
+  "wan2.1_vace_14B_fp16.safetensors",
+  "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "wan_2.1_vae.safetensors",
+  "4xNomos8kSCHAT-L.pth",
+  "ComfyUI-VideoHelperSuite (VHS)",
+  "ComfyUI-KJNodes",
+  "ComfyUI-Easy-Use",
+  "ComfyUI-LayerUtility",
+  "OpenPosePreprocessor (comfyui_controlnet_aux)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image+video",
+  "count": "2"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "正向提示词 (CLIPTextEncode)",
+   "how_to_tune": "描述期望的主体、动作和场景，例如此处'一个美丽女人在走廊上跳舞'；建议明确主体特征、动作语义、环境氛围，以获得更符合预期的生成结果。"
+  },
+  {
+   "param": "负向提示词 (CLIPTextEncode)",
+   "how_to_tune": "列出不想要的质量缺陷，如'色调艳丽，过曝，细节模糊不清，字幕，风格，作品，'；可继续补充'多手指、畸形、水印'等，提升画面纯净度。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前20步，属于速度与质量的平衡点；若追求更好细节可调至25~30，但会显著降低速度。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前为4.0，较保守；若主体一致性差可适当调至5，若画面过饱和或僵硬可降至3。"
+  },
+  {
+   "param": "KSampler seed",
+   "how_to_tune": "设为固定seed可复现结果；randomize模式下每轮生成不同画面，便于快速筛选。"
+  },
+  {
+   "param": "WanVaceToVideo length",
+   "how_to_tune": "当前49帧（约2秒@24fps）；增加帧数可生成更长的动作视频，但显存占用和耗时同步上升。"
+  },
+  {
+   "param": "ModelSamplingSD3 shift",
+   "how_to_tune": "当前shift=8.0，影响噪声调度；若出现色彩异常或结构不稳定可尝试在6~10之间微调。"
+  },
+  {
+   "param": "尺寸 (ImageResizeKJ / ImageResizeKJv2)",
+   "how_to_tune": "当前统一为832x480；建议保持该比例，如果输入人物图或姿势视频比例不同，需先裁剪/缩放以避免拉伸变形。"
+  }
+ ],
+ "summary_text": "能力:输入一张人物静态图 + 一段包含动作的参考视频，提取OpenPose姿势并生成该人物的动作视频，实现身份保持的动作迁移；能力:生成后可选用4x模型放大并输出不同规格的视频，兼顾预览与高清成片；特色:双输入结构：静态图经ImageResizeKJ、姿势视频经ImageResizeKJv2统一到832x480后再送入VACE生成，保证人物与姿态对齐；特色:三路VideoCombine输出，可能分别对应预览、标准和高清版本；特色:集成PurgeVRAM V2与easy cleanGpuUsed显存清理节点，便于长视频或高分辨率生成；特色:使用ModelSamplingSD3 shift=8.0调整扩散采样分布，可能优化高分辨率视频生成质量；特色:后处理放大链：4xNomos8kSCHAT-L超分模型 + ImageUpscaleWithModel + ImageScale，可提升最终视频清晰度；适合内容创作者将一张照片快速变成随参考视频跳舞或做动作的短片，也可用于虚拟人动画、短视频生成等场景。；该工作流旨在将静态人物照与姿态参考视频结合，通过VACE 14B视频扩散模型生成指定动作视频。OpenPose从参考视频提取姿态序列，Resize节点统一图像分辨率，生成后经4x模型放大提升画质，同时用ModelSamplingSD3调整采样分布以改善输出。显存清理节点和多路输出设计可能为了适配在线平台，让用户能同时获得预览与高清成片。"
+}

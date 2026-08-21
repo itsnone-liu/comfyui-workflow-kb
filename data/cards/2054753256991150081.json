@@ -1,0 +1,66 @@
+{
+ "domain": [
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端输入单张图片，经由 RH_RhartImageG2ImageToImage 将图像转成“软萌 Q 版拟人 + 潮牌街头风 + 3D 毛绒”风格的角色图，并保存为图片。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过节点内参数控制输出比例为 2:3、画质/分辨率为 4k，并可使用固定 seed 复现结果或 randomize 随机变化。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "image-to-image（图生图）风格迁移",
+  "Prompt 驱动的多关键词风格组合（Q 版拟人 / 潮牌街头 / 3D 毛绒）",
+  "Aspect ratio 控制（2:3 竖构图）",
+  "Seed 控制与随机化生成"
+ ],
+ "special_features": [
+  {
+   "text": "全工作流只有 3 个节点，LoadImage → RH_RhartImageG2ImageToImage → SaveImage；所有扩散生成逻辑被封装进单个 RH 自定义节点，没有传统的 KSampler、CLIP Text Encode、VAE Decode 等底层节点链。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成提示词以“+”连接多个风格关键词，并作为节点 widget 直接暴露，代替了独立的文本编码器，属于高度面向任务的一键式图生图结构。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流似乎以“极低门槛、开箱即用”为目标：把原本需要多节点串联的图生图管线收敛为一个 RH 自定义节点，用户只需传入一张图和一段风格描述，就能得到角色设计图。这样设计可以大幅降低 ComfyUI 新手搭建难度，但也意味着内部模型、采样、放大策略等细节可能不可见。",
+ "use_case": "用于角色设计、二次元化头像、Q 版人物风格化等场景；也可作为把照片快速变成“软萌/潮牌/3D 毛绒”风格视觉素材的模板。",
+ "limitation": "依赖 RunningHub 的 RH_RhartImageG2ImageToImage 自定义节点及其背后模型/API；若脱离该节点或对应平台服务则无法运行。输入为单张图片，输出尺寸与比例受节点 widget 限制；未暴露出人脸修复、背景移除、多图参考等能力。",
+ "dependencies": [
+  "ComfyUI 内置 LoadImage / SaveImage",
+  "RH_RhartImageG2ImageToImage（RunningHub 或 Rhart 自定义节点，需安装并连通其模型/API）"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "软萌 Q 版拟人 + 潮牌街头风 + 3D 毛绒（风格提示词）",
+   "how_to_tune": "想更软萌就把“软萌 Q 版拟人”放在最前或加重描述；想更潮牌就替换/增加“潮牌街头风”相关细节；想更毛绒可补充“毛绒质感、3D 渲染、柔和光照”等词。"
+  },
+  {
+   "param": "2:3（宽高比）",
+   "how_to_tune": "用于控制输出构图；竖版头像/全身角色适合 2:3，若需横版海报可改为 3:2 或 16:9。"
+  },
+  {
+   "param": "1376225634 / randomize（种子与随机开关）",
+   "how_to_tune": "固定 seed 可复现同一底图下的相同风格结果；改为 randomize 可每次生成不同构图/细节，适合批量探索。"
+  },
+  {
+   "param": "4k（画质/分辨率）",
+   "how_to_tune": "追求清晰细节时保持 4k；若出图慢或显存不足，可下调到 2k/1080p 以提高生成速度。"
+  }
+ ],
+ "summary_text": "能力:端到端输入单张图片，经由 RH_RhartImageG2ImageToImage 将图像转成“软萌 Q 版拟人 + 潮牌街头风 + 3D 毛绒”风格的角色图，并保存为图片。；能力:支持通过节点内参数控制输出比例为 2:3、画质/分辨率为 4k，并可使用固定 seed 复现结果或 randomize 随机变化。；特色:全工作流只有 3 个节点，LoadImage → RH_RhartImageG2ImageToImage → SaveImage；所有扩散生成逻辑被封装进单个 RH 自定义节点，没有传统的 KSampler、CLIP Text Encode、VAE Decode 等底层节点链。；特色:生成提示词以“+”连接多个风格关键词，并作为节点 widget 直接暴露，代替了独立的文本编码器，属于高度面向任务的一键式图生图结构。；用于角色设计、二次元化头像、Q 版人物风格化等场景；也可作为把照片快速变成“软萌/潮牌/3D 毛绒”风格视觉素材的模板。；该工作流似乎以“极低门槛、开箱即用”为目标：把原本需要多节点串联的图生图管线收敛为一个 RH 自定义节点，用户只需传入一张图和一段风格描述，就能得到角色设计图。这样设计可以大幅降低 ComfyUI 新手搭建难度，但也意味着内部模型、采样、放大策略等细节可能不可见。"
+}

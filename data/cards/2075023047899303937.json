@@ -1,0 +1,110 @@
+{
+ "domain": [
+  "图像修复",
+  "超分辨率",
+  "人像增强"
+ ],
+ "capabilities": [
+  {
+   "text": "输入任意单张图像，自动放大到 4K（最长边 3840），并通过 Klein+TTP 分块进行高清修复，消除AI塑料感，增强皮肤细节与质感",
+   "kind": "fact"
+  },
+  {
+   "text": "在修复过程中通过 LCSColorAnchor 和 easy imageColorMatch 进行颜色锚定与匹配，避免重绘后偏色，保持与原图一致的色调",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Flux2-Klein 模型",
+  "TTP 分块（Tile）处理",
+  "LoRA 混合（一致性/加速/皮肤质感）",
+  "色彩锚定（LCSColorAnchor）",
+  "颜色匹配（wavelet）",
+  "Turbo 低步数采样（4步，CFG=1）",
+  "文本条件控制（Qwen3-8B 编码）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式分块修复：TTP_Image_Tile_Batch 将图像切成 1024 尺寸的 tiles，经 TTP_Tile_image_size 控制网格与重叠，修复后由 TTP_Image_Assy 重新拼接，避免全局重绘导致的细节崩坏",
+   "kind": "fact"
+  },
+  {
+   "text": "三 LoRA 叠加：f2k_9B_lcs_consist（增强一致性，0.2）、klein_9B_Turbo（加速，0.5）、F2Klein9b 高清细节增强皮肤质感（0.2），平衡速度、细节与风格",
+   "kind": "fact"
+  },
+  {
+   "text": "色彩质量控制回路：LCSColorAnchor + easy imageColorMatch 在生成后强制色彩回归，配合 Image Comparer 供人工对比，并用 SetNode/GetNode 保存最终图",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ConditioningZeroOut 配合 Qwen3-8B 文本编码，可能用于控制编辑强度；KSampler 采用 4 步 Turbo 配置，实现快速生成",
+   "kind": "inference"
+  },
+  {
+   "text": "MemoryCleaner 自动清理显存，支持更大分辨率 out-of-the-box",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流目标是在 4K 超分辨率下去除 AI 生成图常见的“塑料感”。核心思路是：先用 Klein 模型作为底模，似乎使用了两种不同倍数的缩放（16x/8x）来平衡细节和效率，再分块（tile）修复以避免全局采样高分辨率显存溢出；三个 LoRA 分别控制一致性、加速和皮肤质感，使输出更真实；LCSColorAnchor 和 imageColorMatch 作为颜色后处理，保证修复后色彩不漂移。整体设计体现了对质量、速度和显存的三重平衡。",
+ "use_case": "适合将 AI 生成的人像或低清照片修复为高清真实风格，尤其适用于需要皮肤细节、去 AI 感、并且最终输出 4K 大图的人像摄影后期或素材增强场景。",
+ "limitation": "依赖特定模型文件：Flux2-Klein-9B-True-v2-bf16.safetensors、qwen_3_8b.safetensors、flux2-vae.safetensors 以及三个 LoRA；需要安装 TTP、LCS、easy、LayerUtility、rgthree 等自定义节点；输入为单张图片，输出为修复后的图片；处理大图时显存占用较高，建议使用高性能 GPU（MemoryCleaner 可在一定程度上缓解）。",
+ "dependencies": [
+  "Flux2-Klein-9B-True-v2-bf16.safetensors",
+  "qwen_3_8b.safetensors",
+  "flux2-vae.safetensors",
+  "f2k_9B_lcs_consist_20260415.safetensors",
+  "klein_9B_Turbo_r128.safetensors",
+  "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors",
+  "TTP_Image_Tile_Batch",
+  "TTP_Tile_image_size",
+  "TTP_Image_Assy",
+  "LCSColorAnchor",
+  "LCSLoadData",
+  "easy imageBatchToImageList",
+  "easy imageListToImageBatch",
+  "easy imageColorMatch",
+  "LayerUtility: ImageScaleByAspectRatio V2",
+  "LayerUtility: ImageScaleRestore V2",
+  "Image Comparer (rgthree)",
+  "Flux2KleinEditTextEncode_EditUtils",
+  "MemoryCleaner",
+  "SetNode/GetNode"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps=4, cfg=1, sampler=euler, scheduler=beta",
+   "how_to_tune": "这是 Klein Turbo 的推荐配置：保持 cfg=1 可获得最快速度；若细节不满意可尝试 steps=6-8，或切换 sampler 为 dpmpp_2m / sgm_uniform；增加 steps 会提升清晰度但减慢速度。"
+  },
+  {
+   "param": "LoRA 权重 f2k_9B_lcs_consist=0.2，klein_9B_Turbo=0.5，F2Klein9b 皮肤质感=0.2",
+   "how_to_tune": "若画面出现结构不稳定，可提高一致性 LoRA 至 0.3-0.4；若速度慢，可降低 Turbo LoRA 至 0.3，但需增加 steps 补偿；若皮肤质感过强/过弱，调节皮肤质感 LoRA 在 0.1-0.3 之间。"
+  },
+  {
+   "param": "LCSColorAnchor strength=0.8",
+   "how_to_tune": "控制颜色锚定强度，值越低越接近生成图原始色彩，越高越接近原图色彩；推荐 0.6-1.0，过大可能导致颜色发灰。"
+  },
+  {
+   "param": "ImageScaleByAspectRatio V2 缩放倍数 16 / 8",
+   "how_to_tune": "16x 用于重建高分辨率细节，8x 可能用于生成参考底图；若显存不足可改为 12 和 6，但输出分辨率会下降；最终尺寸由 INTConstant 3840 决定。"
+  },
+  {
+   "param": "TTP_Tile_image_size 2,2,0.2 (网格 2x2，重叠 20%)",
+   "how_to_tune": "对于更大图可增加网格数（如 3x3），重叠率 0.2 用于避免接缝；重叠过高会导致计算量增大，过低可能出现拼接痕迹。"
+  },
+  {
+   "param": "Flux2KleinEditTextEncode 文本 'High definition, 4K, Add'",
+   "how_to_tune": "可修改为更具体的修复指令，如 'highly detailed skin texture, natural wrinkles, 8K'；文本会通过 Qwen3-8B 编码，影响生成风格。"
+  }
+ ],
+ "summary_text": "能力:输入任意单张图像，自动放大到 4K（最长边 3840），并通过 Klein+TTP 分块进行高清修复，消除AI塑料感，增强皮肤细节与质感；能力:在修复过程中通过 LCSColorAnchor 和 easy imageColorMatch 进行颜色锚定与匹配，避免重绘后偏色，保持与原图一致的色调；特色:多段式分块修复：TTP_Image_Tile_Batch 将图像切成 1024 尺寸的 tiles，经 TTP_Tile_image_size 控制网格与重叠，修复后由 TTP_Image_Assy 重新拼接，避免全局重绘导致的细节崩坏；特色:三 LoRA 叠加：f2k_9B_lcs_consist（增强一致性，0.2）、klein_9B_Turbo（加速，0.5）、F2Klein9b 高清细节增强皮肤质感（0.2），平衡速度、细节与风格；特色:色彩质量控制回路：LCSColorAnchor + easy imageColorMatch 在生成后强制色彩回归，配合 Image Comparer 供人工对比，并用 SetNode/GetNode 保存最终图；特色:使用 ConditioningZeroOut 配合 Qwen3-8B 文本编码，可能用于控制编辑强度；KSampler 采用 4 步 Turbo 配置，实现快速生成；特色:MemoryCleaner 自动清理显存，支持更大分辨率 out-of-the-box；适合将 AI 生成的人像或低清照片修复为高清真实风格，尤其适用于需要皮肤细节、去 AI 感、并且最终输出 4K 大图的人像摄影后期或素材增强场景。；该工作流目标是在 4K 超分辨率下去除 AI 生成图常见的“塑料感”。核心思路是：先用 Klein 模型作为底模，似乎使用了两种不同倍数的缩放（16x/8x）来平衡细节和效率，再分块（tile）修复以避免全局采样高分辨率显存溢出；三个 LoRA 分别控制一致性、加速和皮肤质感，使输出更真实；LCSColorAnchor 和 imageColorMatch 作为颜色后处理，保证修复后色彩不漂移。整体设计体现了对质量、速度和显存的三重平衡。"
+}

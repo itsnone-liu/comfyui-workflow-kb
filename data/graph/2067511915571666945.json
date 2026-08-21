@@ -1,0 +1,847 @@
+{
+ "node_count": 21,
+ "link_count": 22,
+ "active_node_count": 17,
+ "nodes": [
+  {
+   "id": 44,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "633a5856e85d05191cddc204b72d042809c4b2f0e726fba21c6679d9c7fb7810.jpg",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    57
+   ]
+  },
+  {
+   "id": 46,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    58
+   ],
+   "out_links": []
+  },
+  {
+   "id": 45,
+   "type": "Image Crop Location",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    500,
+    1200,
+    1800,
+    1000
+   ],
+   "in_links": [
+    57
+   ],
+   "out_links": [
+    58
+   ]
+  },
+  {
+   "id": 48,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "当图像中有多个人物的时候可以先裁剪"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "LayerMask: LoadBiRefNetModelV2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BiRefNet-General"
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 75,
+   "type": "GetImageSizeAndCount",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    95
+   ],
+   "out_links": [
+    93,
+    94
+   ]
+  },
+  {
+   "id": 59,
+   "type": "Mask Crop Region",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    "dominant"
+   ],
+   "in_links": [
+    74
+   ],
+   "out_links": [
+    75,
+    85,
+    86,
+    87,
+    88
+   ]
+  },
+  {
+   "id": 60,
+   "type": "MaskPreview+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    75
+   ],
+   "out_links": []
+  },
+  {
+   "id": 69,
+   "type": "Image Crop Location",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    256,
+    256
+   ],
+   "in_links": [
+    84,
+    85,
+    86,
+    87,
+    88
+   ],
+   "out_links": [
+    90,
+    91,
+    95,
+    123
+   ]
+  },
+  {
+   "id": 96,
+   "type": "SplitImageWithAlpha",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    123
+   ],
+   "out_links": [
+    139,
+    128
+   ]
+  },
+  {
+   "id": 101,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "可以修改为任意颜色的底"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 76,
+   "type": "CR Draw Shape",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "square",
+    "black",
+    "black",
+    0,
+    0,
+    1,
+    0,
+    "#000000",
+    "#000000"
+   ],
+   "in_links": [
+    93,
+    94
+   ],
+   "out_links": [
+    140
+   ]
+  },
+  {
+   "id": 72,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    90
+   ],
+   "out_links": []
+  },
+  {
+   "id": 99,
+   "type": "ImageCompositeMasked",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    false
+   ],
+   "in_links": [
+    139,
+    140,
+    128
+   ],
+   "out_links": [
+    142
+   ]
+  },
+  {
+   "id": 102,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    141
+   ],
+   "out_links": []
+  },
+  {
+   "id": 103,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    142
+   ],
+   "out_links": []
+  },
+  {
+   "id": 71,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "生成的图像分辨率是8的倍数，遮罩与图像可能会有几个像素的差别"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 104,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "- b站主页（虚幻1024）：https://space.bilibili.com/383893362\n- liblib：https://www.liblib.art/userpage/54021b109b7a40258e58c95ea57a1177/publish/workflow\n- 往期工作流下载：https://pan.quark.cn/s/b20dbac8c7f3\n\n- qq交流群：995012625\n\n- 知识星球（技术分享 91536747）\n  - 目录：https://www.linyy.site/article/detail?id=294\n  - 链接：https://t.zsxq.com/eqGN8"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 73,
+   "type": "TTP_Expand_And_Mask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "white",
+    true,
+    "#ffffff",
+    false,
+    false,
+    false,
+    false,
+    1,
+    1,
+    1,
+    1
+   ],
+   "in_links": [
+    91
+   ],
+   "out_links": [
+    141
+   ]
+  },
+  {
+   "id": 1,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "633a5856e85d05191cddc204b72d042809c4b2f0e726fba21c6679d9c7fb7810.jpg",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LayerMask: BiRefNetUltraV2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "VITMatte",
+    4,
+    2,
+    0.01,
+    0.99,
+    false,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    84,
+    74
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 2,
+   "to_node": 59,
+   "type": "MASK"
+  },
+  {
+   "from_node": 2,
+   "to_node": 69,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 2,
+   "type": "BIREFNET_MODEL"
+  },
+  {
+   "from_node": 44,
+   "to_node": 45,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 46,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 59,
+   "to_node": 60,
+   "type": "MASK"
+  },
+  {
+   "from_node": 59,
+   "to_node": 69,
+   "type": "INT"
+  },
+  {
+   "from_node": 59,
+   "to_node": 69,
+   "type": "INT"
+  },
+  {
+   "from_node": 59,
+   "to_node": 69,
+   "type": "INT"
+  },
+  {
+   "from_node": 59,
+   "to_node": 69,
+   "type": "INT"
+  },
+  {
+   "from_node": 69,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 73,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 75,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 96,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 102,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 75,
+   "to_node": 76,
+   "type": "INT"
+  },
+  {
+   "from_node": 75,
+   "to_node": 76,
+   "type": "INT"
+  },
+  {
+   "from_node": 76,
+   "to_node": 99,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 99,
+   "type": "MASK"
+  },
+  {
+   "from_node": 96,
+   "to_node": 99,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 99,
+   "to_node": 103,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 6,
+  "utility": 15
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 54,
+ "structure_hash": "259376809253fe9b",
+ "param_face": [
+  {
+   "node_id": 44,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "633a5856e85d05191cddc204b72d042809c4b2f0e726fba21c6679d9c7fb"
+  },
+  {
+   "node_id": 44,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 45,
+   "node_type": "Image Crop Location",
+   "widget_index": 0,
+   "value_preview": "500"
+  },
+  {
+   "node_id": 45,
+   "node_type": "Image Crop Location",
+   "widget_index": 1,
+   "value_preview": "1200"
+  },
+  {
+   "node_id": 45,
+   "node_type": "Image Crop Location",
+   "widget_index": 2,
+   "value_preview": "1800"
+  },
+  {
+   "node_id": 45,
+   "node_type": "Image Crop Location",
+   "widget_index": 3,
+   "value_preview": "1000"
+  },
+  {
+   "node_id": 48,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "当图像中有多个人物的时候可以先裁剪"
+  },
+  {
+   "node_id": 3,
+   "node_type": "LayerMask: LoadBiRefNetModelV2",
+   "widget_index": 0,
+   "value_preview": "BiRefNet-General"
+  },
+  {
+   "node_id": 59,
+   "node_type": "Mask Crop Region",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 59,
+   "node_type": "Mask Crop Region",
+   "widget_index": 1,
+   "value_preview": "dominant"
+  },
+  {
+   "node_id": 69,
+   "node_type": "Image Crop Location",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 69,
+   "node_type": "Image Crop Location",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 69,
+   "node_type": "Image Crop Location",
+   "widget_index": 2,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 69,
+   "node_type": "Image Crop Location",
+   "widget_index": 3,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 101,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "可以修改为任意颜色的底"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 2,
+   "value_preview": "square"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 3,
+   "value_preview": "black"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 4,
+   "value_preview": "black"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 9,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 76,
+   "node_type": "CR Draw Shape",
+   "widget_index": 10,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 72,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 99,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 99,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 99,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 102,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 103,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 71,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "生成的图像分辨率是8的倍数，遮罩与图像可能会有几个像素的差别"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 0,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 2,
+   "value_preview": "#ffffff"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 9,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 73,
+   "node_type": "TTP_Expand_And_Mask",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 1,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "633a5856e85d05191cddc204b72d042809c4b2f0e726fba21c6679d9c7fb"
+  },
+  {
+   "node_id": 1,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 0,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 3,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 4,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 6,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 7,
+   "value_preview": "2"
+  }
+ ]
+}

@@ -1,0 +1,1927 @@
+{
+ "node_count": 43,
+ "link_count": 65,
+ "active_node_count": 43,
+ "nodes": [
+  {
+   "id": 109,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.45,
+    0,
+    0.6
+   ],
+   "in_links": [
+    158,
+    159,
+    160,
+    161
+   ],
+   "out_links": [
+    155,
+    156
+   ]
+  },
+  {
+   "id": 127,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    190
+   ],
+   "out_links": []
+  },
+  {
+   "id": 136,
+   "type": "FaceBoundingBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0.1,
+    -1
+   ],
+   "in_links": [
+    204,
+    206
+   ],
+   "out_links": [
+    205,
+    207
+   ]
+  },
+  {
+   "id": 137,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    204
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    205
+   ],
+   "out_links": []
+  },
+  {
+   "id": 99,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Perfect, high quality, regular"
+   ],
+   "in_links": [
+    142
+   ],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 98,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Low quality, irregular"
+   ],
+   "in_links": [
+    141
+   ],
+   "out_links": [
+    159
+   ]
+  },
+  {
+   "id": 111,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LineArtPreprocessor",
+    512
+   ],
+   "in_links": [
+    209
+   ],
+   "out_links": [
+    161,
+    190
+   ]
+  },
+  {
+   "id": 106,
+   "type": "InstantIDFaceAnalysis",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CPU"
+   ],
+   "in_links": [],
+   "out_links": [
+    151
+   ]
+  },
+  {
+   "id": 107,
+   "type": "ApplyInstantID",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    150,
+    151,
+    152,
+    207,
+    154,
+    155,
+    156,
+    211
+   ],
+   "out_links": [
+    146,
+    136,
+    137
+   ]
+  },
+  {
+   "id": 97,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    136,
+    137,
+    138,
+    213,
+    140
+   ],
+   "out_links": [
+    147,
+    148,
+    179
+   ]
+  },
+  {
+   "id": 121,
+   "type": "RepeatLatentBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    179
+   ],
+   "out_links": [
+    149
+   ]
+  },
+  {
+   "id": 102,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    695425049712053,
+    "randomize",
+    15,
+    1.5,
+    "euler_ancestral",
+    "sgm_uniform",
+    0.6
+   ],
+   "in_links": [
+    146,
+    147,
+    148,
+    149
+   ],
+   "out_links": [
+    134
+   ]
+  },
+  {
+   "id": 96,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    134,
+    135
+   ],
+   "out_links": [
+    187,
+    192,
+    193
+   ]
+  },
+  {
+   "id": 129,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    192
+   ],
+   "out_links": []
+  },
+  {
+   "id": 130,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_qpmzj_00001_occjh_1776354749.jpg&type=temp&subfolder=&rand=0.4213302407854571&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NmZmZmUwYmE4MTBlNWNiMGViZDM5MjY0MTllMzg4YSIsInNpZ25FeHBpcmUiOjE3NzY5NTg1OTg2NjcsInRzIjoxNzc2MzUzNzk4NjY3LCJzaWduIjoiZDQ5MjJiNWE4OTUwYWY1MWQyODlkYjA5NDRlZGU0Y2MifQ==&Rh-Identify=56fffe0ba810e5cb0ebd3926419e388a"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_qpmzj_00002_eyvzx_1776354751.jpg&type=temp&subfolder=&rand=0.589226410550382&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NmZmZmUwYmE4MTBlNWNiMGViZDM5MjY0MTllMzg4YSIsInNpZ25FeHBpcmUiOjE3NzY5NTg1OTg2NjcsInRzIjoxNzc2MzUzNzk4NjY3LCJzaWduIjoiZDQ5MjJiNWE4OTUwYWY1MWQyODlkYjA5NDRlZGU0Y2MifQ==&Rh-Identify=56fffe0ba810e5cb0ebd3926419e388a"
+     }
+    ]
+   ],
+   "in_links": [
+    194,
+    193
+   ],
+   "out_links": []
+  },
+  {
+   "id": 131,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_plsgq_00001_uizcr_1776354762.jpg&type=temp&subfolder=&rand=0.14533769584853906&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NmZmZmUwYmE4MTBlNWNiMGViZDM5MjY0MTllMzg4YSIsInNpZ25FeHBpcmUiOjE3NzY5NTg1OTg2NjcsInRzIjoxNzc2MzUzNzk4NjY3LCJzaWduIjoiZDQ5MjJiNWE4OTUwYWY1MWQyODlkYjA5NDRlZGU0Y2MifQ==&Rh-Identify=56fffe0ba810e5cb0ebd3926419e388a"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_plsgq_00002_tqtzb_1776354763.jpg&type=temp&subfolder=&rand=0.4034860101269543&Rh-Comfy-Auth=eyJ1c2VySWQiOiI1NmZmZmUwYmE4MTBlNWNiMGViZDM5MjY0MTllMzg4YSIsInNpZ25FeHBpcmUiOjE3NzY5NTg1OTg2NjcsInRzIjoxNzc2MzUzNzk4NjY3LCJzaWduIjoiZDQ5MjJiNWE4OTUwYWY1MWQyODlkYjA5NDRlZGU0Y2MifQ==&Rh-Identify=56fffe0ba810e5cb0ebd3926419e388a"
+     }
+    ]
+   ],
+   "in_links": [
+    203,
+    195
+   ],
+   "out_links": []
+  },
+  {
+   "id": 115,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    200,
+    200,
+    200,
+    200,
+    "8"
+   ],
+   "in_links": [
+    185,
+    168
+   ],
+   "out_links": [
+    173,
+    197,
+    180,
+    198,
+    171,
+    174
+   ]
+  },
+  {
+   "id": 117,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1152,
+    1152,
+    "lanczos",
+    "keep proportion",
+    "always",
+    0
+   ],
+   "in_links": [
+    173
+   ],
+   "out_links": [
+    183
+   ]
+  },
+  {
+   "id": 132,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    197
+   ],
+   "out_links": []
+  },
+  {
+   "id": 133,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    198
+   ],
+   "out_links": []
+  },
+  {
+   "id": 123,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    181
+   ],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 139,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    208
+   ],
+   "out_links": [
+    209
+   ]
+  },
+  {
+   "id": 113,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    183
+   ],
+   "out_links": [
+    208,
+    210
+   ]
+  },
+  {
+   "id": 140,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    210
+   ],
+   "out_links": [
+    211,
+    212
+   ]
+  },
+  {
+   "id": 141,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    212
+   ],
+   "out_links": [
+    213
+   ]
+  },
+  {
+   "id": 120,
+   "type": "CropMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    512,
+    512
+   ],
+   "in_links": [
+    176,
+    177,
+    178
+   ],
+   "out_links": [
+    140,
+    172
+   ]
+  },
+  {
+   "id": 119,
+   "type": "MaskBlur+",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    60,
+    "auto"
+   ],
+   "in_links": [
+    175
+   ],
+   "out_links": [
+    176,
+    199
+   ]
+  },
+  {
+   "id": 122,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    false
+   ],
+   "in_links": [
+    180
+   ],
+   "out_links": [
+    175
+   ]
+  },
+  {
+   "id": 118,
+   "type": "LayerUtility: CropBoxResolve",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    174
+   ],
+   "out_links": [
+    144,
+    177,
+    145,
+    178
+   ]
+  },
+  {
+   "id": 134,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    199
+   ],
+   "out_links": []
+  },
+  {
+   "id": 116,
+   "type": "LayerUtility: RestoreCropBox",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    186,
+    170,
+    171,
+    172
+   ],
+   "out_links": [
+    200
+   ]
+  },
+  {
+   "id": 135,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    1,
+    true
+   ],
+   "in_links": [
+    201,
+    200
+   ],
+   "out_links": [
+    202,
+    203
+   ]
+  },
+  {
+   "id": 100,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    "lanczos",
+    "pad",
+    "always",
+    0
+   ],
+   "in_links": [
+    188,
+    144,
+    145
+   ],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 124,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    202
+   ],
+   "out_links": []
+  },
+  {
+   "id": 126,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    189
+   ],
+   "out_links": []
+  },
+  {
+   "id": 108,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "50c0e81789a7360777af98d26d21604b3aaf30cbd5c96aeb47d0b8552ddc2a17.jpg",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    206
+   ]
+  },
+  {
+   "id": 103,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "50c0e81789a7360777af98d26d21604b3aaf30cbd5c96aeb47d0b8552ddc2a17.jpg",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    181,
+    185,
+    186,
+    195,
+    201
+   ]
+  },
+  {
+   "id": 101,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    154,
+    141,
+    142,
+    135,
+    138
+   ]
+  },
+  {
+   "id": 110,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "controlnet-canny-sdxl-1.0-v2-xinsir.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    160
+   ]
+  },
+  {
+   "id": 104,
+   "type": "InstantIDModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ip-adapter.bin"
+   ],
+   "in_links": [],
+   "out_links": [
+    150
+   ]
+  },
+  {
+   "id": 105,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SDXL-EcomID-controlnet.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    152
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SUPIR_Upscale",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIR-v0F_fp16.safetensors",
+    "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors",
+    362723049813818,
+    "randomize",
+    "lanczos",
+    2,
+    30,
+    -1,
+    2,
+    "masterpiece, best quality,finely detail, highres, 8k,beautiful and aesthetic，",
+    "sketches, (worst quality:2), (low quality:2), (normal quality:2), lowers, normal quality, ((monochrome)), ((grayscale)), facing away, looking away, text, error ,extra digit, fewer digits, cropped,jpeg artifacts,signature, watermark, username,blurry, skin spots, acnes, skin blemishes, bad anatomy,fat,bad feet,cropped,poorly drawn hands,poorly drawn face,mutation,deformed, tilted head, bad anatomy,bad hands,extra fingers,fewer digits,extra limbs,extra arms,extra legs,malformed limbs,fused fingers, too many fingers,long neck,cross-eyed,mutated hands,bad body,bad proportions,gross proportions,text,error,missing fingers, missing arms,missing legs,extra digit, extra arms, extra leg, extra foot,missing fingers",
+    5,
+    1.003,
+    1,
+    4.000000000000001,
+    0,
+    "Wavelet",
+    true,
+    true,
+    512,
+    32,
+    "auto",
+    "auto",
+    1,
+    false,
+    1024,
+    512,
+    false,
+    false,
+    "RestoreEDMSampler"
+   ],
+   "in_links": [
+    187
+   ],
+   "out_links": [
+    188,
+    189,
+    194
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 100,
+   "to_node": 116,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 101,
+   "to_node": 107,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 101,
+   "to_node": 96,
+   "type": "VAE"
+  },
+  {
+   "from_node": 101,
+   "to_node": 97,
+   "type": "VAE"
+  },
+  {
+   "from_node": 101,
+   "to_node": 98,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 101,
+   "to_node": 99,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 102,
+   "to_node": 96,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 103,
+   "to_node": 115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 116,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 123,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 131,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 135,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 104,
+   "to_node": 107,
+   "type": "INSTANTID"
+  },
+  {
+   "from_node": 105,
+   "to_node": 107,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 106,
+   "to_node": 107,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 107,
+   "to_node": 102,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 107,
+   "to_node": 97,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 107,
+   "to_node": 97,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 108,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 109,
+   "to_node": 107,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 109,
+   "to_node": 107,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 110,
+   "to_node": 109,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 111,
+   "to_node": 109,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 111,
+   "to_node": 127,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 113,
+   "to_node": 139,
+   "type": "*"
+  },
+  {
+   "from_node": 113,
+   "to_node": 140,
+   "type": "*"
+  },
+  {
+   "from_node": 115,
+   "to_node": 116,
+   "type": "BOX"
+  },
+  {
+   "from_node": 115,
+   "to_node": 117,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 115,
+   "to_node": 118,
+   "type": "BOX"
+  },
+  {
+   "from_node": 115,
+   "to_node": 122,
+   "type": "MASK"
+  },
+  {
+   "from_node": 115,
+   "to_node": 132,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 115,
+   "to_node": 133,
+   "type": "MASK"
+  },
+  {
+   "from_node": 116,
+   "to_node": 135,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 117,
+   "to_node": 113,
+   "type": "*"
+  },
+  {
+   "from_node": 118,
+   "to_node": 100,
+   "type": "INT"
+  },
+  {
+   "from_node": 118,
+   "to_node": 100,
+   "type": "INT"
+  },
+  {
+   "from_node": 118,
+   "to_node": 120,
+   "type": "INT"
+  },
+  {
+   "from_node": 118,
+   "to_node": 120,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 120,
+   "type": "MASK"
+  },
+  {
+   "from_node": 119,
+   "to_node": 134,
+   "type": "MASK"
+  },
+  {
+   "from_node": 120,
+   "to_node": 116,
+   "type": "MASK"
+  },
+  {
+   "from_node": 120,
+   "to_node": 97,
+   "type": "MASK"
+  },
+  {
+   "from_node": 121,
+   "to_node": 102,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 122,
+   "to_node": 119,
+   "type": "MASK"
+  },
+  {
+   "from_node": 123,
+   "to_node": 115,
+   "type": "MASK"
+  },
+  {
+   "from_node": 125,
+   "to_node": 100,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 125,
+   "to_node": 126,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 125,
+   "to_node": 130,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 135,
+   "to_node": 124,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 135,
+   "to_node": 131,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 136,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 136,
+   "to_node": 138,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 137,
+   "to_node": 136,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 139,
+   "to_node": 111,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 140,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 140,
+   "to_node": 141,
+   "type": "*"
+  },
+  {
+   "from_node": 141,
+   "to_node": 97,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 125,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 129,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 130,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 97,
+   "to_node": 102,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 97,
+   "to_node": 102,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 97,
+   "to_node": 121,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 98,
+   "to_node": 109,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 99,
+   "to_node": 109,
+   "type": "CONDITIONING"
+  }
+ ],
+ "categories": {
+  "controlnet": 3,
+  "image_io": 8,
+  "utility": 18,
+  "face": 4,
+  "conditioning": 2,
+  "preprocessor": 1,
+  "batch": 1,
+  "sampler": 1,
+  "vae": 1,
+  "postprocess": 2,
+  "checkpoint_loader": 1,
+  "upscale": 1
+ },
+ "assets": [
+  {
+   "node_id": 101,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+  },
+  {
+   "node_id": 110,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "controlnet-canny-sdxl-1.0-v2-xinsir.safetensors"
+  },
+  {
+   "node_id": 104,
+   "node_type": "InstantIDModelLoader",
+   "kind": "aux_model",
+   "name": "ip-adapter.bin"
+  },
+  {
+   "node_id": 105,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "SDXL-EcomID-controlnet.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "kind": "upscaler",
+   "name": "SUPIR-v0F_fp16.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "kind": "upscaler",
+   "name": "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors"
+  }
+ ],
+ "techniques": [
+  "InstantID",
+  "ControlNet",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 109,
+ "structure_hash": "ece7cbe1aa082b65",
+ "param_face": [
+  {
+   "node_id": 109,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.45"
+  },
+  {
+   "node_id": 109,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 109,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 136,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 136,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 1,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 136,
+   "node_type": "FaceBoundingBox",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 137,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 137,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 99,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "Perfect, high quality, regular"
+  },
+  {
+   "node_id": 98,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "Low quality, irregular"
+  },
+  {
+   "node_id": 111,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "LineArtPreprocessor"
+  },
+  {
+   "node_id": 111,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 106,
+   "node_type": "InstantIDFaceAnalysis",
+   "widget_index": 0,
+   "value_preview": "CPU"
+  },
+  {
+   "node_id": 107,
+   "node_type": "ApplyInstantID",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 107,
+   "node_type": "ApplyInstantID",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 107,
+   "node_type": "ApplyInstantID",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 97,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 121,
+   "node_type": "RepeatLatentBatch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "695425049712053"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 102,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "200"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "200"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "200"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "200"
+  },
+  {
+   "node_id": 115,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "1152"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "1152"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 117,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 123,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 120,
+   "node_type": "CropMask",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 120,
+   "node_type": "CropMask",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 120,
+   "node_type": "CropMask",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 120,
+   "node_type": "CropMask",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 119,
+   "node_type": "MaskBlur+",
+   "widget_index": 0,
+   "value_preview": "60"
+  },
+  {
+   "node_id": 119,
+   "node_type": "MaskBlur+",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 122,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 122,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 116,
+   "node_type": "LayerUtility: RestoreCropBox",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 135,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 135,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 135,
+   "node_type": "ColorMatch",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "pad"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 100,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 124,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 108,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "50c0e81789a7360777af98d26d21604b3aaf30cbd5c96aeb47d0b8552ddc"
+  },
+  {
+   "node_id": 108,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 103,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "50c0e81789a7360777af98d26d21604b3aaf30cbd5c96aeb47d0b8552ddc"
+  },
+  {
+   "node_id": 103,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 101,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "DreamShaper XL v2.1 Turbo 闪电.safetensors"
+  },
+  {
+   "node_id": 110,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "controlnet-canny-sdxl-1.0-v2-xinsir.safetensors"
+  },
+  {
+   "node_id": 104,
+   "node_type": "InstantIDModelLoader",
+   "widget_index": 0,
+   "value_preview": "ip-adapter.bin"
+  },
+  {
+   "node_id": 105,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "SDXL-EcomID-controlnet.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 0,
+   "value_preview": "SUPIR-v0F_fp16.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 1,
+   "value_preview": "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 2,
+   "value_preview": "362723049813818"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 3,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 5,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 6,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 7,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 8,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 9,
+   "value_preview": "masterpiece, best quality,finely detail, highres, 8k,beautif"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 11,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 12,
+   "value_preview": "1.003"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 13,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 14,
+   "value_preview": "4.000000000000001"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 15,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 16,
+   "value_preview": "Wavelet"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 17,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 18,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 19,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 20,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 21,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 22,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 23,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 24,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 25,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 26,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 27,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 28,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 125,
+   "node_type": "SUPIR_Upscale",
+   "widget_index": 29,
+   "value_preview": "RestoreEDMSampler"
+  }
+ ]
+}

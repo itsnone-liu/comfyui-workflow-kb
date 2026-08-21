@@ -1,0 +1,119 @@
+{
+ "domain": [
+  "视频生成",
+  "角色一致性",
+  "动作迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张参考人物图 + 一段驱动视频，生成同一人物按驱动视频动作/姿态完成视频内容（如跳舞）的角色一致性视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过中文提示词控制内容，例如“1个美女跳舞，舞蹈。”，并叠加 LoRA 影响生成风格与运动表现。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 DWPose/DensePose 提取驱动视频的姿态/控制信号，再经 VACE 注入生成流程，让结果在保留参考人物身份的同时复刻动作。",
+   "kind": "inference"
+  },
+  {
+   "text": "工作流包含两个 VHS_VideoCombine 输出节点，可能同时输出生成视频与“原视频/控制视频 vs 生成视频”的对比视频。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1-T2V-14B 文生视频基础模型 + VACE 条件控制模块",
+  "reference_image + control_video 的 VACE 多模态条件注入",
+  "DWPreprocessor/DWPose 姿态提取",
+  "ColorMatch 颜色匹配",
+  "Wan21_CausVid_14B_T2V_lora_OSM LoRA 控制",
+  "WanVideoBlockSwap 显存换速度优化",
+  "WanVideoTorchCompileSettings (inductor) 编译加速",
+  "RH_Captioner 自动生成详细提示词",
+  "VHS_VideoCombine 视频输出编码"
+ ],
+ "special_features": [
+  {
+   "text": "用 SetNode/GetNode 命名全局变量（wanvae、control_video、reference_image）来复用 VACE 所需的多路条件输入，避免大量跨区域连线。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用两个 Anything Everywhere 节点自动广播未连接的输入，进一步整理图结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "三个 ImageConcanate（两次 down、一次 right）配合 ImageResizeKJ/ImagePadKJ，似乎用于拼合参考图/控制信号或生成对比预览图。",
+   "kind": "inference"
+  },
+  {
+   "text": "同时存在两个 VHS_VideoCombine 输出，可能用于“生成单条视频”和“对照/拼接视频”双输出。",
+   "kind": "inference"
+  },
+  {
+   "text": "14B 模型 + fp8 + VACE + BlockSwap + TorchCompile + 双视频输出，整体是一套为单卡显存和性能调优的生成管线。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从结构看，这个工作流的目标是用 Wan 2.1 + VACE 做“参考图 + 驱动视频”的可控视频生成：先加载参考图和驱动视频，用 DWPose 类预处理器提取姿态/控制信号，再通过 SetNode/GetNode 和 Anything Everywhere 把条件分发给 VACE Encode，同时用中文提示词与 LoRA 约束内容和风格；为了在有限显存上运行 14B 模型，加入了 BlockSwap 和 TorchCompile。整体设计偏工程化，把复杂条件路由藏进命名变量和自动广播，并预留双输出以便对照生成效果。",
+ "use_case": "适合短视频/虚拟角色内容制作：输入一张角色图片和一段动作/舞蹈视频，生成该角色执行相同动作的视频，可用于舞蹈翻跳、口播动作迁移、角色表演视频等领域。",
+ "limitation": "依赖 ComfyUI 自定义节点与模型文件：需要 Wan2.1-T2V-14B fp8 checkpoint、Wan2.1-VACE_module_14B fp8、umt5-xxl-enc-fp8、Wan2.1_VAE_bf16 以及 Wan21_CausVid_14B_T2V_lora_OSM LoRA；同时需要 WanVideo 系列节点、VHS、KJNodes、AIO_Preprocessor、RH_Captioner、SetNode/GetNode、Anything Everywhere 等自定义组件。生成时长为 832x480、81 帧、30 步的视频对显存和算力要求仍然较高；若参考人物与驱动视频人物的姿态/构图差异过大，VACE/DWPose 控制可能不稳。",
+ "dependencies": [
+  "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors",
+  "umt5-xxl-enc-fp8_e4m3fn.safetensors",
+  "Wan2_1_VAE_bf16.safetensors",
+  "Wan21_CausVid_14B_T2V_lora_OSM.safetensors",
+  "WanVideo 相关自定义节点",
+  "VideoHelperSuite (VHS)",
+  "KJNodes (ImageConcanate/ImageResizeKJ/ImagePadKJ 等)",
+  "AIO_Preprocessor (DWPreprocessor)",
+  "RH_Captioner",
+  "SetNode/GetNode",
+  "Anything Everywhere"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image+video",
+  "count": "1 张参考图 + 1 段驱动视频"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler.steps",
+   "how_to_tune": "默认 30；想加速可降到 20-25，想更稳定/精细可升到 35-40，但耗时增加。"
+  },
+  {
+   "param": "WanVideoSampler.cfg",
+   "how_to_tune": "默认约 8.0；太高易饱和/过曝，太低易漂移/不稳定，可在 5-12 之间调节。"
+  },
+  {
+   "param": "WanVideoSampler.seed",
+   "how_to_tune": "默认 randomize=True 每次结果不同；需要复现时改为固定种子。"
+  },
+  {
+   "param": "WanVideoVACEEncode.length",
+   "how_to_tune": "默认 81，控制生成总帧数；值越大视频越长，但显存和耗时线性上升。"
+  },
+  {
+   "param": "WanVideoVACEEncode.width / height",
+   "how_to_tune": "默认 832x480；需与 VACE/Wan 模型支持的分辨率匹配，改动后应小步测试。"
+  },
+  {
+   "param": "WanVideoBlockSwap.blocks_to_swap",
+   "how_to_tune": "默认 10；显存不足时调高以减少峰值显存，但速度会下降；显存充足可调低提速。"
+  },
+  {
+   "param": "WanVideoLoraSelect.strength",
+   "how_to_tune": "默认 0.4；LoRA 风格/动作影响不够可调高，出现伪影或控制过强则调低。"
+  },
+  {
+   "param": "VHS_LoadVideo.select_every_nth",
+   "how_to_tune": "控制驱动视频抽帧间隔；动作快时适当调小以保持动作连续，动作慢时可调大以减少计算量。"
+  }
+ ],
+ "summary_text": "能力:输入一张参考人物图 + 一段驱动视频，生成同一人物按驱动视频动作/姿态完成视频内容（如跳舞）的角色一致性视频。；能力:通过中文提示词控制内容，例如“1个美女跳舞，舞蹈。”，并叠加 LoRA 影响生成风格与运动表现。；能力:使用 DWPose/DensePose 提取驱动视频的姿态/控制信号，再经 VACE 注入生成流程，让结果在保留参考人物身份的同时复刻动作。；能力:工作流包含两个 VHS_VideoCombine 输出节点，可能同时输出生成视频与“原视频/控制视频 vs 生成视频”的对比视频。；特色:用 SetNode/GetNode 命名全局变量（wanvae、control_video、reference_image）来复用 VACE 所需的多路条件输入，避免大量跨区域连线。；特色:使用两个 Anything Everywhere 节点自动广播未连接的输入，进一步整理图结构。；特色:三个 ImageConcanate（两次 down、一次 right）配合 ImageResizeKJ/ImagePadKJ，似乎用于拼合参考图/控制信号或生成对比预览图。；特色:同时存在两个 VHS_VideoCombine 输出，可能用于“生成单条视频”和“对照/拼接视频”双输出。；特色:14B 模型 + fp8 + VACE + BlockSwap + TorchCompile + 双视频输出，整体是一套为单卡显存和性能调优的生成管线。；适合短视频/虚拟角色内容制作：输入一张角色图片和一段动作/舞蹈视频，生成该角色执行相同动作的视频，可用于舞蹈翻跳、口播动作迁移、角色表演视频等领域。；从结构看，这个工作流的目标是用 Wan 2.1 + VACE 做“参考图 + 驱动视频”的可控视频生成：先加载参考图和驱动视频，用 DWPose 类预处理器提取姿态/控制信号，再通过 SetNode/GetNode 和 Anything Everywhere 把条件分发给 VACE Encode，同时用中文提示词与 LoRA 约束内容和风格；为了在有限显存上运行 14B 模型，加入了 BlockSwap 和 TorchCompile。整体设计偏工程化，把复杂条件路由藏进命名变量和自动广播，并预留双输出以便对照生成效果。"
+}

@@ -1,0 +1,99 @@
+{
+ "domain": [
+  "电商设计",
+  "AI图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张商品/角色参考图，自动生成适合“详情页”使用的多态高清视觉图，并保持主体身份一致",
+   "kind": "fact"
+  },
+  {
+   "text": "内置 RH_Captioner + RH_Translator 自动生成提示词，用户无需手写 prompt 即可完成详情页配图生产",
+   "kind": "fact"
+  },
+  {
+   "text": "先以 512 分辨率快速构图，再经 4x 放大后于 1024/1280 分辨率二次精修，输出高分辨率成品图",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 add_details LoRA 增强产品/角色细节表现，适合电商主图、场景氛围图等营销视觉素材",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev + Nunchaku int4 量化推理",
+  "SigLIP2 视觉编码（siglip2_so400m_patch16_512）",
+  "flex1_redux 风格模型（StyleModelApply）实现参考图身份保持",
+  "FLUX.1-Turbo-Alpha LoRA 加速采样",
+  "FLUX-dev-lora-add_details 细节增强",
+  "双阶段采样：512 粗采样 → 4xRealWebPhoto_v3_atd 放大 → 1024/1280 二次精修",
+  "Upscale-Hires 高清放大流程",
+  "RH_Captioner + RH_Translator 自动提示词生成"
+ ],
+ "special_features": [
+  {
+   "text": "双采样链结构：第一链使用 FLUX.1-Turbo-Alpha + 8 步 + cfg=1.0 快速生成构图；第二链使用 FLUX-dev-lora-add_details + cfg=0.5 精修，形成“先快后精”的分阶段生产模式",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 siglip2 + flex1_redux_siglip2_512 作为视觉条件控制源，结合 StyleModelApply 将参考图身份/风格强制注入生成过程，显著降低跨图身份漂移",
+   "kind": "fact"
+  },
+  {
+   "text": "提示词链路完全自动化：RH_Captioner 负责描述主体，RH_Translator 负责翻译/润色，用户只输入一张图即可出图",
+   "kind": "fact"
+  },
+  {
+   "text": "整个 FLUX.1-dev 采用 int4 量化（Nunchaku）部署，并嵌入 easy cleanGpuUsed 显存清理节点，可在消费级显卡上稳定运行",
+   "kind": "fact"
+  },
+  {
+   "text": "显式使用 ModelSamplingFlux（shift=1.15, 720x1024）校准采样潜空间分布，使低分辨率粗采样与高分辨率精修之间衔接更稳定",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流面向电商/内容创作者的“详情页”生产场景：用户只提供一张商品照片（如毛绒玩具），工作流自动完成构图、细化、放大和润色。设计者通过 SigLIP2 视觉编码 + flex1_redux 风格模型把参考图身份强绑定到生成条件中，防止生成结果偏离主体；再用“Turbo Alpha 快出图、放大、add_details 精修”的两段式管线平衡速度与画质。RH_Captioner/Translator 的引入进一步消除了提示词门槛，使整个流程真正能“一键”完成。Nunchaku int4 量化则是在工程上降低运行成本的关键取舍。",
+ "use_case": "电商详情页主图/场景图生成：一张商品照 → 详情页氛围图；也可用于 IP 角色、人设图的一致性出图，如角色多姿态海报、产品故事配图等",
+ "limitation": "必须安装 Nunchaku 量化推理节点及对应的 int4 模型（svdq-int4-flux.1-dev）；依赖 flex1_redux_siglip2_512.safetensors 这一非原生的 Redux 风格 checkpoint；输入仅支持单张参考图，且视觉编码为 512 分辨率，过大的原图会被压缩/裁剪，影响细节保真；第二次 1280 分辨率采样对显存有较高要求；依赖 RH_Captioner/RH_Translator/KJNodes/Easy-Use/CR 等自定义节点，环境迁移成本较高",
+ "dependencies": [
+  "自定义节点：ComfyUI-Nunchaku（int4 量化推理）、KJNodes（ImageResizeKJ）、ComfyUI-Easy-Use（easy cleanGpuUsed / easy showAnything）、RH_Captioner、RH_Translator、CR Model Input Switch",
+  "模型文件：svdq-int4-flux.1-dev、flex1_redux_siglip2_512.safetensors、siglip2_so400m_patch16_512.safetensors、clip_l.safetensors、sd3/t5xxl_fp16.safetensors、FLUX.1-Turbo-Alpha.safetensors、FLUX-dev-lora-add_details.safetensors、ae.safetensors、4xRealWebPhoto_v3_atd.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FLUX.1-Turbo-Alpha LoRA strength",
+   "how_to_tune": "默认 1.0；若第一阶段构图不理想（主体歪斜、结构混乱）可降至 0.7~0.9，让模型更贴近 dev 原版能力"
+  },
+  {
+   "param": "FLUX-dev-lora-add_details strength",
+   "how_to_tune": "默认 0.6；二次细化时纹理不足可加大至 0.8，出现过锐/伪影则降至 0.3~0.4"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 3.5；希望更强遵循详情页文案/构图可上调至 4~5，超过 6 容易导致颜色过饱和、主体僵硬"
+  },
+  {
+   "param": "BasicScheduler steps",
+   "how_to_tune": "第一链默认 8 步，若生成杂色明显可加到 10~12；第二链精修 8 步足够，过高步数不会带来明显收益反而增加耗时"
+  },
+  {
+   "param": "ModelSamplingFlux shift",
+   "how_to_tune": "默认 1.15，适配 720x1024 附近分辨率；若输出分辨率提升到 1280 以上可尝试 1.2~1.3，避免高分辨率下细节模糊"
+  },
+  {
+   "param": "精修链 BasicScheduler cfg（0.5）",
+   "how_to_tune": "越低越依赖放大图结构、越稳定；越高细节越丰富但偏离输入越大；推荐在 0.4~0.7 之间微调"
+  }
+ ],
+ "summary_text": "能力:上传单张商品/角色参考图，自动生成适合“详情页”使用的多态高清视觉图，并保持主体身份一致；能力:内置 RH_Captioner + RH_Translator 自动生成提示词，用户无需手写 prompt 即可完成详情页配图生产；能力:先以 512 分辨率快速构图，再经 4x 放大后于 1024/1280 分辨率二次精修，输出高分辨率成品图；能力:通过 add_details LoRA 增强产品/角色细节表现，适合电商主图、场景氛围图等营销视觉素材；特色:双采样链结构：第一链使用 FLUX.1-Turbo-Alpha + 8 步 + cfg=1.0 快速生成构图；第二链使用 FLUX-dev-lora-add_details + cfg=0.5 精修，形成“先快后精”的分阶段生产模式；特色:使用 siglip2 + flex1_redux_siglip2_512 作为视觉条件控制源，结合 StyleModelApply 将参考图身份/风格强制注入生成过程，显著降低跨图身份漂移；特色:提示词链路完全自动化：RH_Captioner 负责描述主体，RH_Translator 负责翻译/润色，用户只输入一张图即可出图；特色:整个 FLUX.1-dev 采用 int4 量化（Nunchaku）部署，并嵌入 easy cleanGpuUsed 显存清理节点，可在消费级显卡上稳定运行；特色:显式使用 ModelSamplingFlux（shift=1.15, 720x1024）校准采样潜空间分布，使低分辨率粗采样与高分辨率精修之间衔接更稳定；电商详情页主图/场景图生成：一张商品照 → 详情页氛围图；也可用于 IP 角色、人设图的一致性出图，如角色多姿态海报、产品故事配图等；这个工作流面向电商/内容创作者的“详情页”生产场景：用户只提供一张商品照片（如毛绒玩具），工作流自动完成构图、细化、放大和润色。设计者通过 SigLIP2 视觉编码 + flex1_redux 风格模型把参考图身份强绑定到生成条件中，防止生成结果偏离主体；再用“Turbo Alpha 快出图、放大、add_details 精修”的两段式管线平衡速度与画质。RH_Captioner/Translator 的引入进一步消除了提示词门槛，使整个流程真正能“一键”完成。Nunchaku int4 量化则是在工程上降低运行成本的关键取舍。"
+}

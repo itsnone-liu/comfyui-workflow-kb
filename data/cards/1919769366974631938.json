@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "文生视频",
+  "图生视频",
+  "视频生成",
+  "姿态控制"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成：输入参考图/可选视频 + 文本提示词，用 OpenPose/DWPose 提取姿态，经 Wan2.1-Fun-Control-14B 生成 832×480 的姿态可控短视频，并可选 RIFE 插帧提升流畅度。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持图生视频与文生视频混合入口：CLIPTextEncode 接收英文 prompt，RH_Translator 可把中文翻译成英文；LoadImage 提供首帧/参考图，Florence2 可自动为参考图生成详细描述。",
+   "kind": "inference"
+  },
+  {
+   "text": "可把 VHS_LoadVideo 加载的视频当作动作驱动源，提取其中人物姿态后生成同一动作、不同外观或场景的新视频。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "OpenPose 姿态检测",
+  "DWPose 姿态检测",
+  "Wan2.1-Fun-Control-14B 控制视频生成",
+  "CLIP Vision 图像语义参考",
+  "Florence2 图像自动描述",
+  "RH_Translator 文案翻译",
+  "RIFE 光流帧插值",
+  "TeaCache 缓存加速",
+  "Skip Layer Guidance 分层引导",
+  "ModelSamplingSD3 采样调制",
+  "SageAttention 注意力优化",
+  "VAE Tiled 分块解码",
+  "多段式 SamplerCustom + SplitSigmas 采样"
+ ],
+ "special_features": [
+  {
+   "text": "同时接入 OpenposePreprocessor 与 DWPreprocessor 两个姿态提取前端，可能分别用于人体骨架和手部/面部细节，增强复杂姿态下的鲁棒性。",
+   "kind": "inference"
+  },
+  {
+   "text": "显式用 SplitSigmas 将采样拆成两段，并配置两个 SamplerCustom 分别处理，配合 SkipLayerGuidanceWanVideo 指定 9,10 层做分层引导，属于非默认的高级采样结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "存在三个 VHS_VideoCombine 输出节点，可能分别保存原始生成、RIFE 插帧后、控制/姿态预览等多路视频，便于人工对比。",
+   "kind": "inference"
+  },
+  {
+   "text": "多处使用 easy cleanGpuUsed 清理显存，同时集成 TeaCache、SageAttention、ModelSamplingSD3、PatchModelPatcherOrder，明显是为在有限显存上运行 14B 模型做了优化设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "接入 Florence2ModelLoader + Florence2Run 自动打标，再通过 RH_Translator 翻译提示词，形成“参考图自动描述 → 中英翻译 → 正负提示词”的辅助链路。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该流程把“姿态控制”作为核心，围绕 Wan2.1-Fun-Control-14B 将 OpenPose/DWPose 骨架转成视频条件；为了支持中文用户，先让 Florence2 自动给参考图打标，再用 RH_Translator 翻译成英文 prompt；采样端堆叠了 TeaCache、SageAttention、ModelSamplingSD3、模型补丁顺序和显存清理，似乎是为了在消费级显卡上跑 14B 模型；最后接 RIFE 插帧，则是为了弥补生成帧率不足。整体未见传统反馈回路，而是靠多路输出便于人工对比选择。",
+ "use_case": "数字人动作驱动、舞蹈/运动迁移、角色动画、影视预演；只要提供一张含人物的图和一段文本，即可生成由姿态控制的短视频。",
+ "limitation": "依赖 Wan2.1-Fun-Control-14B FP8 权重、wan_2.1_vae、umt5_xxl、clip_vision_h、rife47 以及多个自定义节点；14B 模型即使有 TeaCache/SageAttention 仍需较高显存。输入图片如果不是清晰人物，OpenPose/DWPose 可能提取不到有效骨架；VHS_LoadVideo 作为可选视频源，其帧率/尺寸需与姿态预处理匹配。输出分辨率固定为 832×480，基础帧数由 EmptyHunyuanLatentVideo 的 33 帧决定，RIFE 插值只是后处理，不能新增内容细节。",
+ "dependencies": [
+  "模型权重: Wan2.1-Fun-Control-14B_fp8_e4m3fn.safetensors",
+  "模型权重: wan_2.1_vae.safetensors",
+  "模型权重: umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "模型权重: clip_vision_h.safetensors",
+  "姿态模型: yolox_l.onnx, dw-ll_ucoco_384_bs5.torchscript.pt",
+  "插帧模型: rife47.pth",
+  "自定义节点: ComfyUI-WanFunControl / KJNodes / VideoHelperSuite / ComfyUI-Frame-Interpolation / ComfyUI-Florence2 / ComfyUI-Easy-Use / RH_Translator 相关 / ControlNet Aux 预处理器"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image;video",
+  "count": "1 张图 + 0~1 个视频"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "EmptyHunyuanLatentVideo length=33",
+   "how_to_tune": "控制基础视频帧数，33 帧约为 1~2 秒短视频；调大会增加时长，但显存和耗时线性上升。"
+  },
+  {
+   "param": "KSampler steps=40 / cfg=5",
+   "how_to_tune": "Wan 系列较常用 cfg 4~6；追求速度可把 steps 降到 20~30，追求画质可升到 40~50。"
+  },
+  {
+   "param": "WanFunControlToVideo width/height=832/480",
+   "how_to_tune": "需与 EmptyHunyuanLatentVideo、ImageResizeKJ 保持同一分辨率；显存不足时可整体降到 640×384 或 512×320。"
+  },
+  {
+   "param": "RIFE VFI factor=10",
+   "how_to_tune": "插帧倍数越高越平滑但越耗时，动作剧烈时可能产生伪影，建议根据实际流畅度在 2~4 倍之间调节。"
+  },
+  {
+   "param": "WanVideoTeaCacheKJ 阈值=0.2",
+   "how_to_tune": "阈值越高加速越明显但可能改变生成质量；若出现闪烁或结构漂移，可调低到 0.1 左右。"
+  },
+  {
+   "param": "OpenposePreprocessor / DWPreprocessor 开关",
+   "how_to_tune": "需要手部或面部细节时开启对应检测；舞蹈/动作迁移建议 body+hands 同时开启。"
+  }
+ ],
+ "summary_text": "能力:端到端完成：输入参考图/可选视频 + 文本提示词，用 OpenPose/DWPose 提取姿态，经 Wan2.1-Fun-Control-14B 生成 832×480 的姿态可控短视频，并可选 RIFE 插帧提升流畅度。；能力:支持图生视频与文生视频混合入口：CLIPTextEncode 接收英文 prompt，RH_Translator 可把中文翻译成英文；LoadImage 提供首帧/参考图，Florence2 可自动为参考图生成详细描述。；能力:可把 VHS_LoadVideo 加载的视频当作动作驱动源，提取其中人物姿态后生成同一动作、不同外观或场景的新视频。；特色:同时接入 OpenposePreprocessor 与 DWPreprocessor 两个姿态提取前端，可能分别用于人体骨架和手部/面部细节，增强复杂姿态下的鲁棒性。；特色:显式用 SplitSigmas 将采样拆成两段，并配置两个 SamplerCustom 分别处理，配合 SkipLayerGuidanceWanVideo 指定 9,10 层做分层引导，属于非默认的高级采样结构。；特色:存在三个 VHS_VideoCombine 输出节点，可能分别保存原始生成、RIFE 插帧后、控制/姿态预览等多路视频，便于人工对比。；特色:多处使用 easy cleanGpuUsed 清理显存，同时集成 TeaCache、SageAttention、ModelSamplingSD3、PatchModelPatcherOrder，明显是为在有限显存上运行 14B 模型做了优化设计。；特色:接入 Florence2ModelLoader + Florence2Run 自动打标，再通过 RH_Translator 翻译提示词，形成“参考图自动描述 → 中英翻译 → 正负提示词”的辅助链路。；数字人动作驱动、舞蹈/运动迁移、角色动画、影视预演；只要提供一张含人物的图和一段文本，即可生成由姿态控制的短视频。；该流程把“姿态控制”作为核心，围绕 Wan2.1-Fun-Control-14B 将 OpenPose/DWPose 骨架转成视频条件；为了支持中文用户，先让 Florence2 自动给参考图打标，再用 RH_Translator 翻译成英文 prompt；采样端堆叠了 TeaCache、SageAttention、ModelSamplingSD3、模型补丁顺序和显存清理，似乎是为了在消费级显卡上跑 14B 模型；最后接 RIFE 插帧，则是为了弥补生成帧率不足。整体未见传统反馈回路，而是靠多路输出便于人工对比选择。"
+}

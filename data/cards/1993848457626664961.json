@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "文生图",
+  "插画生成",
+  "本地VLM精修",
+  "LoRA风格化"
+ ],
+ "capabilities": [
+  {
+   "text": "输入中文提示词（如“男孩身着黄色上衣……”），端到端生成 1024×1536 插画，并通过 VAEDecode + PreviewImage/SaveImage 预览和保存图像",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载 z_image_turbo 与 z_image 两个 UNET，分别由两个 KSampler 出图，可对比快速草稿与正式精修图",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 llama_cpp_instruct_adv + Gemma-4-26B 对草稿图进行中文描述，并可能将描述回填给 CLIPTextEncode，实现自动提示词细化后再生成",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "两段式 UNET 生成：z_image_turbo_bf16 草稿 + z_image_bf16 精修",
+  "本地 VLM 图像描述回注：llama_cpp_instruct_adv + Gemma-4-26B-A4B-it-heret",
+  "Qwen3-4B 文本编码：CLIPLoader(qwen_3_4b, qwen_image)",
+  "LoRA 风格注入：LoraLoaderModelOnly(Electric Blue Style（电蓝风格）.safetensors)",
+  "蒸馏模型低步数采样：KSampler(steps=10, cfg=1, euler, sgm_uniform)",
+  "负向/空条件控制：CLIPTextEncode 负向词 + ConditioningZeroOut",
+  "Latent 噪声注入：Latent Noise Injection(strength=0.6)",
+  "竖构图空 latent：EmptyLatentImage(1024×1536)"
+ ],
+ "special_features": [
+  {
+   "text": "双 UNET + 双 KSampler 两段式生成：turbo 模型先出草稿，全量模型叠加电蓝 LoRA 出正式图",
+   "kind": "fact"
+  },
+  {
+   "text": "本地 VLM 节点（llama_cpp_instruct_adv）设置提示词“不要展示思考过程，用中文描述这张图片”和“详细描述200-300字”，说明草稿图会被转成中文描述",
+   "kind": "fact"
+  },
+  {
+   "text": "描述文本很可能被连接到其中一个 CLIPTextEncode 的 text 输入，形成“草稿图→语言描述→文本条件→再生成”的自举回路，而不是简单的两遍采样",
+   "kind": "inference"
+  },
+  {
+   "text": "Latent Noise Injection(strength=0.6) 出现在扩散前，可能是为了给第二次生成加入噪声扰动，增加结果多样性",
+   "kind": "inference"
+  },
+  {
+   "text": "ConditioningZeroOut 作为空负向条件接入某个 KSampler，适合 CFG=1 的蒸馏模型分支，避免负向提示干扰",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流很可能是为了在低成本下获得高质量中文文生图：先用 z_image_turbo 快速生成一张草稿，再用本地 Gemma-4-26B VLM 把草稿描述成 200-300 字中文，从而把视觉构图转换成更具体的语言提示；随后用 z_image 全量模型和 Electric Blue 风格 LoRA 按这个描述重新生成。这样既弥补了 turbo 模型细节不足，又让最终图像与草稿保持一定的语义关联。CFG=1 + euler + sgm_uniform + 10 步是蒸馏模型的常见配置；Latent Noise Injection 可能用于给第二次生成增加变化，负向提示和空负向条件分别用于精修/草稿分支。注意没有 VAEEncode/LoadImage，所以第二次并不是以草稿为底图重绘，而是由描述文本重新从空白 latent 生成。",
+ "use_case": "适合人物设定/插画批量出图：先用一句话描述角色，由工作流自动扩写成详细画面说明，并统一生成电蓝风格；也适合本地隐私敏感的中文文本到图像场景，提示词和模型都在本地运行。",
+ "limitation": "当前工作流没有 LoadImage 节点，外部图片不能直接输入；内容主要由 3 个 CLIPTextEncode 内的中文 prompt 控制，需要手动编辑节点文本。依赖 llama_cpp 系列自定义节点和本地 GGUF 模型（gemma-4-26B-A4B-it-heret），显存/内存占用高；同时需要 z_image_turbo_bf16、z_image_bf16、qwen_3_4b、ae.safetensors 和 Electric Blue Style LoRA 等权重，缺一不可。CFG=1 只适合蒸馏模型，替换模型后参数需重调。",
+ "dependencies": [
+  "UNETLoader: z_image_turbo_bf16.safetensors",
+  "UNETLoader: z_image_bf16.safetensors",
+  "CLIPLoader: qwen_3_4b.safetensors (qwen_image)",
+  "VAELoader: ae.safetensors",
+  "LoraLoaderModelOnly: Electric Blue Style（电蓝风格）.safetensors",
+  "llama_cpp_model_loader: gemma-4-26B-A4B-it-heret",
+  "llama_cpp_instruct_adv / llama_cpp_parameters 等 llama.cpp 自定义节点",
+  "ComfyUI 内置 KSampler / CLIPTextEncode / VAEDecode / PreviewImage / SaveImage"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "中文提示词/负向提示词 + latent 尺寸 + 随机种子",
+  "count": "3 个 CLIPTextEncode 文本条件，1 个 EmptyLatentImage(1024×1536)，2 个 KSampler seed"
+ },
+ "output": {
+  "type": "image：VAEDecode 两个分支，分别送 PreviewImage 和 SaveImage（正式图存为 ComfyUI 文件）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前 10 步；z_image_turbo 这类蒸馏模型建议 8~15 步，太少会细节不足，太多收益递减且可能过曝/失真"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前 cfg=1，是 turbo/蒸馏模型的推荐值；若换用非蒸馏模型需调到 3~7，否则图像会雾/灰"
+  },
+  {
+   "param": "sampler/scheduler",
+   "how_to_tune": "当前 euler + sgm_uniform 适合 Z-Image/蒸馏模型；可尝试 dpmpp_2m + sgm_uniform 或改用默认 scheduler 对比"
+  },
+  {
+   "param": "Latent Noise Injection strength",
+   "how_to_tune": "当前 0.6；值越高注入噪声越大，二次生成越偏离初始 latent；值越低越保守，接近空 latent 的基线"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前 1；电蓝风格想让色彩更浓可到 1.1~1.2，想保留原色调可降到 0.6~0.8"
+  },
+  {
+   "param": "EmptyLatentImage 尺寸",
+   "how_to_tune": "当前 1024×1536 竖构图；Z-Image 建议保持 1024 边长的倍数，改比例时注意模型分辨率上限"
+  },
+  {
+   "param": "llama_cpp_parameters（上下文/top-k/top-p 等）",
+   "how_to_tune": "当前 1024/30/0.9/0.05/1/0.8 这套值中，temperature/top_p 越低描述越稳定；希望描述更稳定可调低 top_p（如 0.8）或降低 temperature，希望更有想象力可调高"
+  }
+ ],
+ "summary_text": "能力:输入中文提示词（如“男孩身着黄色上衣……”），端到端生成 1024×1536 插画，并通过 VAEDecode + PreviewImage/SaveImage 预览和保存图像；能力:同时加载 z_image_turbo 与 z_image 两个 UNET，分别由两个 KSampler 出图，可对比快速草稿与正式精修图；能力:使用 llama_cpp_instruct_adv + Gemma-4-26B 对草稿图进行中文描述，并可能将描述回填给 CLIPTextEncode，实现自动提示词细化后再生成；特色:双 UNET + 双 KSampler 两段式生成：turbo 模型先出草稿，全量模型叠加电蓝 LoRA 出正式图；特色:本地 VLM 节点（llama_cpp_instruct_adv）设置提示词“不要展示思考过程，用中文描述这张图片”和“详细描述200-300字”，说明草稿图会被转成中文描述；特色:描述文本很可能被连接到其中一个 CLIPTextEncode 的 text 输入，形成“草稿图→语言描述→文本条件→再生成”的自举回路，而不是简单的两遍采样；特色:Latent Noise Injection(strength=0.6) 出现在扩散前，可能是为了给第二次生成加入噪声扰动，增加结果多样性；特色:ConditioningZeroOut 作为空负向条件接入某个 KSampler，适合 CFG=1 的蒸馏模型分支，避免负向提示干扰；适合人物设定/插画批量出图：先用一句话描述角色，由工作流自动扩写成详细画面说明，并统一生成电蓝风格；也适合本地隐私敏感的中文文本到图像场景，提示词和模型都在本地运行。；这个工作流很可能是为了在低成本下获得高质量中文文生图：先用 z_image_turbo 快速生成一张草稿，再用本地 Gemma-4-26B VLM 把草稿描述成 200-300 字中文，从而把视觉构图转换成更具体的语言提示；随后用 z_image 全量模型和 Electric Blue 风格 LoRA 按这个描述重新生成。这样既弥补了 turbo 模型细节不足，又让最终图像与草稿保持一定的语义关联。CFG=1 + euler + sgm_uniform + 10 步是蒸馏模型的常见配置；Latent Noise Injection 可能用于给第二次生成增加变化，负向提示和空负向条件分别用于精修/草稿分支。注意没有 VAEEncode/LoadImage，所以第二次并不是以草稿为底图重绘，而是由描述文本重新从空白 latent 生成。"
+}

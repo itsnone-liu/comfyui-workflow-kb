@@ -1,0 +1,105 @@
+{
+ "domain": [
+  "虚拟试穿",
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入人物视频和目标服装图（或参考图），输出人物穿着新服装且动作保留的换装视频",
+   "kind": "fact"
+  },
+  {
+   "text": "通过DWPose姿态序列和SegformerB2ClothesUltra服装分割mask，实现姿态保持下的服装区域重绘",
+   "kind": "fact"
+  },
+  {
+   "text": "借助文本提示（如“唱歌”）和多个风格/加速LoRA，生成光照更一致、速度更快、带特定风格的换装动画",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "视频扩散模型 (Wan2.2-Animate 14B)",
+  "姿态引导生成 (DWPose)",
+  "服装分割 (SegformerB2ClothesUltra)",
+  "多LoRA组合 (relight/lightning/fast/style)",
+  "VAE视频解码",
+  "BlockSwap显存交换",
+  "CLIP视觉编码参考图",
+  "文本编码 (umt5-xxl)",
+  "图像拼接 (ImageConcatMulti)",
+  "视频后处理/合成 (VHS)"
+ ],
+ "special_features": [
+  {
+   "text": "多处PurgeVRAM与WanVideoBlockSwap混用，在14B模型推理中主动清理显存，保障长流程不爆显存",
+   "kind": "fact"
+  },
+  {
+   "text": "WanVideoLoraSelectMulti同时叠加relight(重光照)、Lightning(4步加速)、FastWan(画质)、PusaV1(风格)，单流程内通过LoRA组合增强模型能力",
+   "kind": "fact"
+  },
+  {
+   "text": "大量GetNode/SetNode/Reroute将reference_image、pose_images、mask、VAE、video等关键张量抽成端口，把复杂流封装成类似子图调用，减小连线复杂度",
+   "kind": "fact"
+  },
+  {
+   "text": "三个VHS_VideoCombine输出端，可能同时输出换装结果、mask可视化或原视频对比，便于人工质检",
+   "kind": "inference"
+  },
+  {
+   "text": "使用BlockifyMask和DrawMaskOnImage生成并可视化mask，方便查看服装区域定位效果",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "在显存受限的情况下，为“视频换装”建立一条可控、可复现的端到端流水线。作者用DWPose锁定人物动作、用服装分割mask锁定服装区域，让Wan2.2-Animate在mask约束下重绘；同时通过多LoRA组合弥补单模型在光照、速度、画质上的短板，并用PurgeVRAM/BlockSwap保证14B模型可运行。整体更像一个产品化模板：将复杂技术细节封装成易于使用的端口，牺牲部分自由控制换取一键出片。",
+ "use_case": "电商服装展示、短视频特效换装、虚拟试穿、影视预演等，用户提供一段人物视频和一张目标服装图即可生成穿着效果。",
+ "limitation": "依赖Wan2.2-Animate 14B和多个离线模型文件，需要较高显存（建议>=16GB）；对视频中人物大小、朝向、遮挡较敏感；服装分割对复杂花纹/透明材质可能不准；文本提示固定为“唱歌”，换动作需手动修改CR Text；输出分辨率受限（832x480/512x512），无法直接高清。",
+ "dependencies": [
+  "ComfyUI-VideoHelperSuite (VHS_LoadVideo/VHS_VideoCombine/VHS_VideoInfo)",
+  "ComfyUI-WanVideoWrapper (WanVideoModelLoader/WanVideoSampler/WanVideoDecode/WanVideoVAELoader/WanVideoClipVisionEncode/WanVideoAnimateEmbeds/WanVideoLoraSelectMulti/WanVideoBlockSwap/WanVideoTextEncodeCached)",
+  "ComfyUI-LayerStyle (LayerMask:SegformerB2ClothesUltra/LayerUtility:PurgeVRAM/ImageScaleByAspectRatioV2)",
+  "ComfyUI_ControlNet-Aux (DWPreprocessor)",
+  "KJNodes (ImageResizeKJv2?)",
+  "ComfyUI_essentials 或类似 (ImageConcatMulti/GrowMask/BlockifyMask/DrawMaskOnImage/EmptyImage/GetNode/SetNode)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "视频文件 + 2张图片（人物参考图/服装图，另有文本提示固定为“唱歌”）",
+  "count": "3"
+ },
+ "output": {
+  "type": "视频（换装结果，可能含mask/对比版本，共3个输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler/steps",
+   "how_to_tune": "当前4步（配合Lightning LoRA），画质不足可增至6-8，耗时线性增长。"
+  },
+  {
+   "param": "WanVideoSampler/cfg",
+   "how_to_tune": "当前1，若内容偏离提示词可调高至3-5；过高易色彩过饱和。"
+  },
+  {
+   "param": "WanVideoSampler/seed",
+   "how_to_tune": "固定42用于复现；改随机种子可探索不同效果。"
+  },
+  {
+   "param": "WanVideoLoraSelectMulti/各LoRA权重",
+   "how_to_tune": "relight权重控制光照一致性，lightning影响速度/质量平衡，FastWan/PusaV1控制细节与风格，建议在0.5~1.5间微调，叠加过大易崩。"
+  },
+  {
+   "param": "VHS_LoadVideo/frame_load_cap & select_every_nth",
+   "how_to_tune": "限制帧数可控制显存和时长；长视频建议降低frame_load_cap并隔帧采样。"
+  },
+  {
+   "param": "DWPreprocessor/resolution",
+   "how_to_tune": "当前960，姿态检测不准时可提至1280，但耗显存增加。"
+  },
+  {
+   "param": "ImageResizeKJv2/输出尺寸",
+   "how_to_tune": "832x480为生成尺寸，512x512为参考图尺寸，与模型分辨率对齐；修改可能引起构图/显存变化。"
+  }
+ ],
+ "summary_text": "能力:输入人物视频和目标服装图（或参考图），输出人物穿着新服装且动作保留的换装视频；能力:通过DWPose姿态序列和SegformerB2ClothesUltra服装分割mask，实现姿态保持下的服装区域重绘；能力:借助文本提示（如“唱歌”）和多个风格/加速LoRA，生成光照更一致、速度更快、带特定风格的换装动画；特色:多处PurgeVRAM与WanVideoBlockSwap混用，在14B模型推理中主动清理显存，保障长流程不爆显存；特色:WanVideoLoraSelectMulti同时叠加relight(重光照)、Lightning(4步加速)、FastWan(画质)、PusaV1(风格)，单流程内通过LoRA组合增强模型能力；特色:大量GetNode/SetNode/Reroute将reference_image、pose_images、mask、VAE、video等关键张量抽成端口，把复杂流封装成类似子图调用，减小连线复杂度；特色:三个VHS_VideoCombine输出端，可能同时输出换装结果、mask可视化或原视频对比，便于人工质检；特色:使用BlockifyMask和DrawMaskOnImage生成并可视化mask，方便查看服装区域定位效果；电商服装展示、短视频特效换装、虚拟试穿、影视预演等，用户提供一段人物视频和一张目标服装图即可生成穿着效果。；在显存受限的情况下，为“视频换装”建立一条可控、可复现的端到端流水线。作者用DWPose锁定人物动作、用服装分割mask锁定服装区域，让Wan2.2-Animate在mask约束下重绘；同时通过多LoRA组合弥补单模型在光照、速度、画质上的短板，并用PurgeVRAM/BlockSwap保证14B模型可运行。整体更像一个产品化模板：将复杂技术细节封装成易于使用的端口，牺牲部分自由控制换取一键出片。"
+}

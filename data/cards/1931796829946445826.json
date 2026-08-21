@@ -1,0 +1,123 @@
+{
+ "domain": [
+  "局部重绘",
+  "人像编辑",
+  "换脸",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "局部重绘：使用 FLUX.1 Fill + InpaintModelConditioning + PersonMaskUltra / SegmentAnythingUltra / BiRefNetRMBG 等生成遮罩，对指定区域进行局部重绘。",
+   "kind": "fact"
+  },
+  {
+   "text": "换脸与身份保持：通过 ApplyInstantID + SDXL(RealVisXL) + ip-adapter.bin / InstantID ControlNet，并在流程中输出“3阶段-换脸”结果，可做人脸替换或身份保持。",
+   "kind": "inference"
+  },
+  {
+   "text": "姿势/深度结构控制：用 DWPreprocessor(openpose) 和 AIO_Preprocessor(DepthAnythingV2) 提取条件，再通过 FLUX.1-dev-ControlNet-Union-Pro 控制生成图的结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "参考图引导生成：使用 flux1-redux-dev + ReduxAdvanced 和 ace_plus_fft_fp8 LoRA，结合 easy imageConcat 构建左图/右图拼接条件，实现参考图到新图像的生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动提示词生成：通过 RH_LLMAPI_NODE 描述人物服装、动作姿势和环境，再用 RH_Translator 翻译为英文提示词，减少手写 prompt。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID 人脸身份保持",
+  "FLUX.1 Fill 局部重绘",
+  "FLUX Redux Advanced 参考图引导",
+  "ACE++ (ace_plus_fft_fp8) 图像条件生成/拼接",
+  "ControlNet Union Pro + DWPose + DepthAnythingV2 姿态/深度控制",
+  "SegmentAnythingUltra / PersonMaskUltra / BiRefNetRMBG 自动抠图与遮罩",
+  "Differential Diffusion 局部去噪强度控制",
+  "TeaCache FLUX 采样加速",
+  "LLM API + 自动翻译生成提示词",
+  "InpaintCropImproved / InpaintStitchImproved 分块重绘与拼接"
+ ],
+ "special_features": [
+  {
+   "text": "以 GetNode/SetNode 构成模块化总线，把流程切成“上传图片-redux(原图)”“上传图片-CN(原图)”“设置3阶段脸部参考-原图”“保存图像-3阶段-换脸”等命名子模块，并输出“未裁剪/裁剪后/3阶段换脸”多路结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时引入 FLUX 系（Fill+Redux+ACE+++ControlNet Union）和 SDXL 系（RealVisXL+InstantID）双基座，形成“先大范围重绘、再人脸换脸/精修”的多阶段管线。",
+   "kind": "inference"
+  },
+  {
+   "text": "RH_LLMAPI_NODE 分别用中文提示“只描述人物服装”和“动作姿势环境”，再经 RH_Translator 强制翻译成英文作为提示词，属于自动提词设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 ReduxAdvanced 分别使用 keep aspect ratio 与 autocrop with mask 模式，配合人物抠图/遮罩处理参考图，而不是简单整图缩放。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 easy imageConcat 多次将图像向右拼接，配合“ace左图-宽/高/遮罩/姿势/深度”等节点，构建 ACE++ 所需的左右图条件。",
+   "kind": "inference"
+  },
+  {
+   "text": "在采样链中插入 TeaCache、DifferentialDiffusion、cleanGpuUsed，兼顾速度、局部重绘精确度和显存清理。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流似乎想解决“既要有 FLUX 的强重绘/结构跟随，又要保持人脸身份”的矛盾：用 FLUX Fill + Redux + ACE++ 处理画面和局部内容，用 DWPose/Depth + ControlNet Union 锁住姿势和深度，再用 InstantID + SDXL 做人脸换脸/精修，并用 PersonMask/BiRefNet 等生成遮罩避免无关区域被改动。大量 GetNode/SetNode 命名表明作者有意把复杂流程模块化；3 阶段换脸与多路保存则是为了方便逐步对比。LLM 提词节点可能是为了降低手写提示词的成本。",
+ "use_case": "适合需要对人像照片进行“局部重绘+换脸/保持身份”的进阶用户，例如换装、换背景、改姿势后仍保持同一张脸，或想在 ComfyUI 中参考 InstantID + FLUX Fill + ACE++ 多模型组合。由于流程复杂，更适合已有自定义节点和模型部署经验的人使用。",
+ "limitation": "模型和自定义节点非常多，部署体积大、显存压力高；需要可用的 LLM API（RH_LLMAPI_NODE）才能自动提词；输入依赖原图、参考图/遮罩，遮罩质量直接影响重绘边界；ACE++/Redux/ControlNet 多条件叠加时参数敏感，可能需要多次调参并固定随机种子。",
+ "dependencies": [
+  "自定义节点：ComfyUI_InstantID、LayerStyle(LayerMask/LayerUtility)、SegmentAnythingUltra V2、PersonMaskUltra V2、BiRefNet、ControlNet Union、TeaCache、easy-image-concat、ReduxAdvanced、InpaintCropImproved/InpaintStitchImproved、Differential Diffusion、RH_LLMAPI_NODE/RH_Translator、ShowText|pysssss 等",
+  "Checkpoint/模型：fluxFillFP8_v10.safetensors、flux1-redux-dev.safetensors、realvisxlV50_v50Bakedvae.safetensors、ae.sft",
+  "LoRA：portrait_lora64.safetensors、manfoot-v3-b20.safetensors、ace_plus_fft_fp8.safetensors",
+  "ControlNet：instantid/diffusion_pytorch_model.safetensors、FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors",
+  "CLIP/辅助模型：sigclip_vision_patch14_384.safetensors、t5xxl_fp8_e4m3fn_scaled.safetensors、clip_l.safetensors、ip-adapter.bin",
+  "预处理模型：yolox_l.onnx、dw-ll_ucoco_384_bs5.torchscript.pt"
+ ],
+ "geek_rating": 5,
+ "input": {
+  "type": "图片（原图、ControlNet参考图、遮罩），另有文本描述可选",
+  "count": "2~3 张，可按需提供文本描述"
+ },
+ "output": {
+  "type": "图像（多路预览 + SaveImage：Flux / 未裁剪 / 裁剪后 / 3阶段-换脸）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID",
+   "how_to_tune": "权重默认 1；脸不像/身份弱时保持 1，想更多保留 prompt 自由度时可降到 0.5-0.8，并配合 start/end 控制作用区间。"
+  },
+  {
+   "param": "ControlNetApplyAdvanced",
+   "how_to_tune": "两个分支强度约为 0.5 和 0.8；姿势不贴合时提高 openpose 分支，画面结构过强/太机械时降低对应 strength。"
+  },
+  {
+   "param": "KSampler",
+   "how_to_tune": "FLUX 常用 steps=20、cfg=1.5；细节不足时增加 steps，出现色彩过饱和或死板时可降 cfg。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 40；希望生成更自由可降到 10-30，希望严格跟随提示词可提高到 40 以上。"
+  },
+  {
+   "param": "ReduxAdvanced",
+   "how_to_tune": "强度约 0.8、噪声约 0.1；想减弱参考图影响就降低 strength，想更贴参考图可提高 strength。"
+  },
+  {
+   "param": "TeaCache",
+   "how_to_tune": "启动后能加速 FLUX；若画面出现伪影/不连续，可降低缓存阈值（当前类似 0.3/0.2/0.8）或关闭缓存。"
+  },
+  {
+   "param": "LayerMask: MaskGrow",
+   "how_to_tune": "默认 grow=8、feather=4；重绘边缘生硬时增大扩张像素，想尽量保留原边缘则减小。"
+  },
+  {
+   "param": "LayerColor: Brightness & Contrast",
+   "how_to_tune": "对比度默认 1.5；输出过亮/过暗时可把对比度调回 0.8-1.2，或微调亮度。"
+  }
+ ],
+ "summary_text": "能力:局部重绘：使用 FLUX.1 Fill + InpaintModelConditioning + PersonMaskUltra / SegmentAnythingUltra / BiRefNetRMBG 等生成遮罩，对指定区域进行局部重绘。；能力:换脸与身份保持：通过 ApplyInstantID + SDXL(RealVisXL) + ip-adapter.bin / InstantID ControlNet，并在流程中输出“3阶段-换脸”结果，可做人脸替换或身份保持。；能力:姿势/深度结构控制：用 DWPreprocessor(openpose) 和 AIO_Preprocessor(DepthAnythingV2) 提取条件，再通过 FLUX.1-dev-ControlNet-Union-Pro 控制生成图的结构。；能力:参考图引导生成：使用 flux1-redux-dev + ReduxAdvanced 和 ace_plus_fft_fp8 LoRA，结合 easy imageConcat 构建左图/右图拼接条件，实现参考图到新图像的生成。；能力:自动提示词生成：通过 RH_LLMAPI_NODE 描述人物服装、动作姿势和环境，再用 RH_Translator 翻译为英文提示词，减少手写 prompt。；特色:以 GetNode/SetNode 构成模块化总线，把流程切成“上传图片-redux(原图)”“上传图片-CN(原图)”“设置3阶段脸部参考-原图”“保存图像-3阶段-换脸”等命名子模块，并输出“未裁剪/裁剪后/3阶段换脸”多路结果。；特色:同时引入 FLUX 系（Fill+Redux+ACE+++ControlNet Union）和 SDXL 系（RealVisXL+InstantID）双基座，形成“先大范围重绘、再人脸换脸/精修”的多阶段管线。；特色:RH_LLMAPI_NODE 分别用中文提示“只描述人物服装”和“动作姿势环境”，再经 RH_Translator 强制翻译成英文作为提示词，属于自动提词设计。；特色:两个 ReduxAdvanced 分别使用 keep aspect ratio 与 autocrop with mask 模式，配合人物抠图/遮罩处理参考图，而不是简单整图缩放。；特色:使用 easy imageConcat 多次将图像向右拼接，配合“ace左图-宽/高/遮罩/姿势/深度”等节点，构建 ACE++ 所需的左右图条件。；特色:在采样链中插入 TeaCache、DifferentialDiffusion、cleanGpuUsed，兼顾速度、局部重绘精确度和显存清理。；适合需要对人像照片进行“局部重绘+换脸/保持身份”的进阶用户，例如换装、换背景、改姿势后仍保持同一张脸，或想在 ComfyUI 中参考 Inst"
+}

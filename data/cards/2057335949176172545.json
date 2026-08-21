@@ -1,0 +1,116 @@
+{
+ "domain": [
+  "视频生成",
+  "角色动作迁移",
+  "AI 短剧/漫画制作"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一段人物动作视频和一张角色参考图，提取视频中的人体姿态（OpenPose + NLF）并结合参考图外观，利用 Wan2.1 生成保持角色一致性的舞蹈/动作视频",
+   "kind": "fact"
+  },
+  {
+   "text": "支持以中文自然语言描述画面与动作（如“五只小猫跟着音乐节奏跳舞”），实现文本/图像到视频的复合条件生成",
+   "kind": "inference"
+  },
+  {
+   "text": "并联 3 个 VHS_VideoCombine 输出节点，可同时导出多个视频版本或用于对比/拼接，便于后期选取最佳结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1 14B 视频扩散模型 (WanVideoModelLoader, WanVideoSamplerv2)",
+  "SCAIL 条件嵌入 (WanVideoAddSCAILPoseEmbeds / WanVideoAddSCAILReferenceEmbeds)",
+  "ControlNet (Wan21_Uni3C_ControlnetLoader)",
+  "OpenPose 人体姿态检测 (PoseDetectionVitPoseToDWPose)",
+  "NLF 姿态预测/渲染 (DownloadAndLoadNLFModel, NLFPredict, RenderNLFPoses)",
+  "CLIP Vision 参考图编码 (CLIPVisionLoader, WanVideoClipVisionEncode)",
+  "T5 文本编码 (LoadWanVideoT5TextEncoder)",
+  "LoRA 模块 (lightx2v_I2V_14B_480p...)",
+  "VideoHelperSuite 视频加载/导出 (VHS_LoadVideo, VHS_VideoCombine)",
+  "显存与速度优化 (WanVideoBlockSwap, WanVideoTorchCompileSettings, MemoryCleaner)"
+ ],
+ "special_features": [
+  {
+   "text": "同时使用 OpenPose 与 NLF 模型获取/渲染姿态，形成双路姿态信息，可能用于提升动作一致性与细节",
+   "kind": "inference"
+  },
+  {
+   "text": "采用 SCAIL 的 Pose/Reference Embeds 将姿态与参考图语义直接注入 Wan 模型，配合 Uni3C ControlNet 形成多层条件控制",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 GetNode/SetNode + Reroute 构建参数总线，集中管理 gen_width/gen_height、cfg、VAE 等关键参数，方便统一调参",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 SimpleMath+ a/2 自动将宽高/2 作为 latent 尺寸，避免 VAE 编码尺寸不匹配，实现动态分辨率适配",
+   "kind": "inference"
+  },
+  {
+   "text": "开启 BlockSwap、TorchCompile 和 MemoryCleaner，使大型 14B 模型能在消费级 GPU 上运行更流畅",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流的设计意图可能是：用一张参考图 + 一段姿态视频生成保持角色身份一致的新视频，所以叠加了 SCAIL 参考/姿态嵌入、Uni3C ControlNet、OpenPose/NLF 姿态等多项条件，确保动作与外观的强约束。同时通过 BlockSwap、TorchCompile、量化等显存优化手段，把 14B 级大模型的运行门槛降低到普通显卡。三个视频输出也许是为了便于在后期挑选最优镜头，或分别导出生图、合成、遮罩等素材。",
+ "use_case": "AI 短剧/漫画角色动态化，将人物照片快速套入舞蹈或动作视频生成新短片；也适用于虚拟主播换装、角色动作绑定与内容素材生产。",
+ "limitation": "依赖较大模型文件（Wan2.1 14B checkpoint、SCAIL、ControlNet、LoRA、NLF 等），显存需求高（开启 BlockSwap 后建议 24GB 以上，否则速度极慢）；需要安装 WanVideoWrapper、VideoHelperSuite、KJNodes、rgthree、comfyui_controlnet_aux 等自定义节点；输入视频必须能清晰检测到人体姿态，且参考图与生成目标应保持同一主体，否则身份一致性会下降。",
+ "dependencies": [
+  "checkpoint: SCAIL/Wan21-14B-SCAIL-preview_comfy_bf16.safetensors",
+  "text_encoder: umt5-xxl-enc-bf16.safetensors",
+  "vae: Wan2_1_VAE_bf16.safetensors",
+  "controlnet: Wan21_Uni3C_controlnet_fp16.safetensors",
+  "lora: lightx2v_I2V_14B_480p_cfg_step_distill_rank128_bf16.safetensors",
+  "clip_vision: clip_vision_h.safetensors",
+  "nlf_model: nlf_l_multi_0.3.2.torchs",
+  "custom_nodes: WanVideoWrapper, VideoHelperSuite (VHS), KJNodes, rgthree, comfyui_controlnet_aux, OnnxDetectionModelLoader (mode4)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "视频 + 图像",
+  "count": "1 段驱动视频 + 1 张参考图"
+ },
+ "output": {
+  "type": "视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSamplerv2 steps",
+   "how_to_tune": "默认 6 步，适合快速产出。若画面闪烁或动作不连贯，可逐步提高到 10-20 步；追求速度则不宜超过 10 步。"
+  },
+  {
+   "param": "WanVideoSamplerv2 cfg",
+   "how_to_tune": "在 7-8 左右通常能平衡文本一致性和生成质量；若画面出现过曝/过饱和，可降低到 5-6；若结构与提示词不匹配，可提高到 9-10。"
+  },
+  {
+   "param": "WanVideoSchedulerv2 scheduler",
+   "how_to_tune": "默认 dpm++_sde 对视频扩散较友好；若结果出现规律性伪影，可尝试更换为 euler/uniform 等调度器并配合步数调整。"
+  },
+  {
+   "param": "WanVideoContextOptions max_frames",
+   "how_to_tune": "默认 81 帧，增加帧数可延长视频时长，但显存和耗时线性增长；需注意帧数需能被 VAE 下采样倍数整除（如 4 的倍数）。"
+  },
+  {
+   "param": "WanVideoBlockSwap swap_size",
+   "how_to_tune": "默认 20 适合显存 16GB 级别；若显存充足（24GB+）可降至 0 以提升速度；若 8GB，则需要加大到 30 以上。"
+  },
+  {
+   "param": "WanVideoLoraSelect strength",
+   "how_to_tune": "LoRA 权重默认 1.0；若生成的视频动作僵硬，可尝试降到 0.7-0.8 以减弱模型风格化，若要多保留该 LoRA 的画风可保持 1.0。"
+  },
+  {
+   "param": "WanVideoUni3C_embeds strength",
+   "how_to_tune": "控制 Uni3C ControlNet 的影响权重。动作不跟随输入视频时可适当提高（>1.0）；画面出现结构崩坏时则降低到 0.6-0.8。"
+  },
+  {
+   "param": "WanVideoTextEncode prompts",
+   "how_to_tune": "正向提示词应写清主体、动作、环境与镜头，如“五只小猫跟着音乐节奏在跳舞，衣服穿着不变”；负面提示词可加入“过曝、模糊、字幕、风格化”等不期望元素。"
+  },
+  {
+   "param": "ImageResizeKJv2 width/height",
+   "how_to_tune": "视频帧 resize 到 480x832 左右较经济，若显存允许可提高至 544x960 或更高以获得细节，同时需相应调整 WanVideoEmptyEmbeds 与 RenderNLFPoses 的尺寸。"
+  }
+ ],
+ "summary_text": "能力:输入一段人物动作视频和一张角色参考图，提取视频中的人体姿态（OpenPose + NLF）并结合参考图外观，利用 Wan2.1 生成保持角色一致性的舞蹈/动作视频；能力:支持以中文自然语言描述画面与动作（如“五只小猫跟着音乐节奏跳舞”），实现文本/图像到视频的复合条件生成；能力:并联 3 个 VHS_VideoCombine 输出节点，可同时导出多个视频版本或用于对比/拼接，便于后期选取最佳结果；特色:同时使用 OpenPose 与 NLF 模型获取/渲染姿态，形成双路姿态信息，可能用于提升动作一致性与细节；特色:采用 SCAIL 的 Pose/Reference Embeds 将姿态与参考图语义直接注入 Wan 模型，配合 Uni3C ControlNet 形成多层条件控制；特色:使用 GetNode/SetNode + Reroute 构建参数总线，集中管理 gen_width/gen_height、cfg、VAE 等关键参数，方便统一调参；特色:通过 SimpleMath+ a/2 自动将宽高/2 作为 latent 尺寸，避免 VAE 编码尺寸不匹配，实现动态分辨率适配；特色:开启 BlockSwap、TorchCompile 和 MemoryCleaner，使大型 14B 模型能在消费级 GPU 上运行更流畅；AI 短剧/漫画角色动态化，将人物照片快速套入舞蹈或动作视频生成新短片；也适用于虚拟主播换装、角色动作绑定与内容素材生产。；该工作流的设计意图可能是：用一张参考图 + 一段姿态视频生成保持角色身份一致的新视频，所以叠加了 SCAIL 参考/姿态嵌入、Uni3C ControlNet、OpenPose/NLF 姿态等多项条件，确保动作与外观的强约束。同时通过 BlockSwap、TorchCompile、量化等显存优化手段，把 14B 级大模型的运行门槛降低到普通显卡。三个视频输出也许是为了便于在后期挑选最优镜头，或分别导出生图、合成、遮罩等素材。"
+}

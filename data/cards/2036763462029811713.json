@@ -1,0 +1,103 @@
+{
+ "domain": [
+  "图生图",
+  "人像换脸",
+  "妆容迁移",
+  "高清放大/修复"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人脸照 → 生成保持该人脸身份并带有指定妆容风格的高清人像写真（端到端：换脸 + 妆容迁移 + 局部重绘 + SUPIR 放大 + 色彩统一）",
+   "kind": "inference"
+  },
+  {
+   "text": "对换脸结果进行 SUPIR 1.5 倍高清放大，并用 ColorMatch 对输出图像做色彩匹配，保证换脸区域与整体肤色/色调一致",
+   "kind": "fact"
+  },
+  {
+   "text": "基于 PersonMaskUltra 与 CropByMask/RestoreCropBox，只对人物/面部区域做局部重绘，非目标区域保持不被改动",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID（身份保持）",
+  "InstantID ControlNet + ip-adapter.bin",
+  "Upscale-Hires（SUPIR）放大",
+  "InpaintModelConditioning 局部重绘",
+  "PersonMaskUltra V2 人像分割",
+  "CropByMask V2 + RestoreCropBox 裁剪-还原",
+  "ImageConcatMulti 参考图拼接为 2×2 条件网格",
+  "ColorMatch 色彩匹配"
+ ],
+ "special_features": [
+  {
+   "text": "多段式接力管线：InstantID 身份注入 → PersonMaskUltra 分割/局部重绘 → SUPIR 放大 → ColorMatch 校色，四个环节解耦并各自使用独立模型",
+   "kind": "fact"
+  },
+  {
+   "text": "裁剪→处理→还原包裹结构：FaceBoundingBox 取人脸框 → GrowMask(40) 扩张 → MaskBlur+(60) 羽化 → CropByMask V2 裁剪局部区域 → 重绘后由 RestoreCropBox 还原到原图坐标，让换脸只作用在面部周围",
+   "kind": "fact"
+  },
+  {
+   "text": "用两个 ImageConcatMulti 分别按 down/right 方向拼接参考图，形成 2×2 条件网格，可能用于把“身份脸 + 妆容图”打包成单一视觉条件喂给生成模型，是妆容版特有的先验注入方式",
+   "kind": "inference"
+  },
+  {
+   "text": "双模型协同：主生成使用 juggernautXL_v9Rdphoto2Lightning.safetensors，放大单独使用 SUPIR-v0Q.ckpt，生成与修复分离",
+   "kind": "fact"
+  },
+  {
+   "text": "调参辅助齐全：2 个 Image Comparer (rgthree) + 5 个 PreviewImage + MaskPreview，便于放大前后、重绘前后逐级对比",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该流把换脸拆成三阶段工程问题：先用 InstantID 把身份塞进 SDXL（JuggernautXL）生成；再用 ImageConcatMulti 把妆容参考拼进条件，让生成时同时受身份与妆容两个视觉先验约束；之后用 PersonMaskUltra/CropByMask 把人物局部圈出做一次重绘，保证只换脸和妆容而不破坏身体/背景；最后用 SUPIR 放大并 ColorMatch 校色，解决低分辨率与色差问题。每个阶段都有独立模型、独立参数，方便针对“像不像/美不美/清不清晰”分别调优。",
+ "use_case": "适合人像写真 / 虚拟试妆：输入一张人脸照，输出保持身份 + 妆容风格的高清人像；也可换不同妆容参考图输出多组风格，搭配 Image Comparer 快速挑选",
+ "limitation": "依赖 ComfyUI 第三方节点（InstantID 系、LayerMask/LayerUtility 系、rgthree、SUPIR），需预先安装；需要下载 ip-adapter.bin、instantid ControlNet、SUPIR-v0Q.ckpt、insightface 模型，文件体积大且吃显存；演示状态下 3 路 LoadImage 默认指向同一张图，实际使用需分别替换身份图/基调图/妆容图；节点中的提示词显示为截断片段，需自行补全完整 prompt；整体依赖 CUDA GPU，显存建议 ≥ 12GB",
+ "dependencies": [
+  "自定义节点：ComfyUI-InstantID（InstantIDModelLoader / InstantIDFaceAnalysis / ApplyInstantIDAdvanced）",
+  "自定义节点：包含 LayerMask / LayerUtility 的节点套件（PersonMaskUltra V2、CropByMask V2、RestoreCropBox、MaskBlur+ 等）",
+  "自定义节点：rgthree-comfy（Image Comparer）",
+  "模型：instantid/ip-adapter.bin",
+  "模型：instantid/diffusion_pytorch_model.safetensors",
+  "模型：SUPIR-v0Q.ckpt",
+  "模型：juggernautXL_v9Rdphoto2Lightning.safetensors",
+  "环境：insightface（CUDA）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（3 路，演示时同为一张图）",
+  "count": "3"
+ },
+ "output": {
+  "type": "图像（PreviewImage 预览 ×5 + SaveImage 保存）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantIDAdvanced",
+   "how_to_tune": "widgets 中前两个 0.8 分别代表身份/ControlNet 强度；人物不够像时调向 0.9-1.0，想保留更多姿势或妆容自然度时调向 0.5-0.7"
+  },
+  {
+   "param": "KSampler",
+   "how_to_tune": "steps=20、cfg=2、euler_ancestral/sgm_uniform，InstantID 适合低 CFG；若构图不稳定可把 CFG 提到 3-4、steps 加到 25-30"
+  },
+  {
+   "param": "GrowMask=40 / MaskBlur+=60",
+   "how_to_tune": "GrowMask 控制重绘区域向外扩多少，脸侧有遮挡时加大；MaskBlur 控制融合羽化，越大过渡越柔和"
+  },
+  {
+   "param": "SUPIR_Upscale scale=1.5",
+   "how_to_tune": "放大倍数，1.25-2.0 之间调节；越高细节越丰富但显存/耗时越大"
+  },
+  {
+   "param": "PersonMaskUltra V2",
+   "how_to_tune": "当前只开启第一个开关（人物分割）；若需要连头发、衣着一起重绘，可打开对应类别开关"
+  },
+  {
+   "param": "随机种子",
+   "how_to_tune": "KSampler 与 SUPIR 均设为 randomize，每次生成不同结果；需要复现效果时改为固定种子"
+  }
+ ],
+ "summary_text": "能力:上传单张人脸照 → 生成保持该人脸身份并带有指定妆容风格的高清人像写真（端到端：换脸 + 妆容迁移 + 局部重绘 + SUPIR 放大 + 色彩统一）；能力:对换脸结果进行 SUPIR 1.5 倍高清放大，并用 ColorMatch 对输出图像做色彩匹配，保证换脸区域与整体肤色/色调一致；能力:基于 PersonMaskUltra 与 CropByMask/RestoreCropBox，只对人物/面部区域做局部重绘，非目标区域保持不被改动；特色:多段式接力管线：InstantID 身份注入 → PersonMaskUltra 分割/局部重绘 → SUPIR 放大 → ColorMatch 校色，四个环节解耦并各自使用独立模型；特色:裁剪→处理→还原包裹结构：FaceBoundingBox 取人脸框 → GrowMask(40) 扩张 → MaskBlur+(60) 羽化 → CropByMask V2 裁剪局部区域 → 重绘后由 RestoreCropBox 还原到原图坐标，让换脸只作用在面部周围；特色:用两个 ImageConcatMulti 分别按 down/right 方向拼接参考图，形成 2×2 条件网格，可能用于把“身份脸 + 妆容图”打包成单一视觉条件喂给生成模型，是妆容版特有的先验注入方式；特色:双模型协同：主生成使用 juggernautXL_v9Rdphoto2Lightning.safetensors，放大单独使用 SUPIR-v0Q.ckpt，生成与修复分离；特色:调参辅助齐全：2 个 Image Comparer (rgthree) + 5 个 PreviewImage + MaskPreview，便于放大前后、重绘前后逐级对比；适合人像写真 / 虚拟试妆：输入一张人脸照，输出保持身份 + 妆容风格的高清人像；也可换不同妆容参考图输出多组风格，搭配 Image Comparer 快速挑选；该流把换脸拆成三阶段工程问题：先用 InstantID 把身份塞进 SDXL（JuggernautXL）生成；再用 ImageConcatMulti 把妆容参考拼进条件，让生成时同时受身份与妆容两个视觉先验约束；之后用 PersonMaskUltra/CropByMask 把人物局部圈出做一次重绘，保证只换脸和妆容而不破坏身体/背景；最后用 SUPIR 放大并 ColorMatch 校色，解决低分辨率与色差问题。每个阶段都有独立模型、独立参数，方便针对“像不像/美不美/清不清晰”分别调优。"
+}

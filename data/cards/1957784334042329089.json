@@ -1,0 +1,82 @@
+{
+ "domain": [
+  "图像抠图",
+  "透明材质分割",
+  "背景替换"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张图片，一键生成4种不同抠图模型（SegmentAnything / BiRefNet / RMBG / SDMatte）的抠图结果预览，并保存为透明背景图像",
+   "kind": "fact"
+  },
+  {
+   "text": "支持中文文本引导分割：输入提示词（如“鲜花”）即可提取对应物体，极大降低使用门槛",
+   "kind": "fact"
+  },
+  {
+   "text": "针对透明/半透明材质（玻璃、塑料、水等）提供SDMatte专门matting模型，获得精细alpha通道",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LayerMask: SegmentAnythingUltra V2（SAM + GroundingDINO 文本引导分割）",
+  "LayerMask: BiRefNetUltraV2（高精度二值分割）",
+  "RMBG（背景去除模型）",
+  "SDMatteApply（alpha matting，透明材质精细抠图）",
+  "JoinImageWithAlpha（图像与alpha合成RGBA透明图）",
+  "Mask后处理链：GrowMaskWithBlur / Mask Invert / AddMask / MaskPreview+"
+ ],
+ "special_features": [
+  {
+   "text": "4种抠图模型并行计算并分别输出mask预览，用户可直观对比选择最优结果",
+   "kind": "fact"
+  },
+  {
+   "text": "使用ChinesePrompt_Mix节点动态生成中文提示词，实现中文交互式分割，无需手动翻译",
+   "kind": "fact"
+  },
+  {
+   "text": "包含丰富的mask质量增强链路：GrowMaskWithBlur、AddMask、Mask Invert等，可优化边缘细节和合并多模型mask",
+   "kind": "fact"
+  },
+  {
+   "text": "SDMatte的alpha参数（0.8）可手动调节，精细控制透明区域的保留程度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流将当前主流的几种抠图/分割模型（SAM、BiRefNet、RMBG）与专为透明材质设计的matting模型（SDMatte）并联，让用户在同一工作流中一次性获得多种抠图结果并对比挑选。透明材质是自动抠图的难点，因此专门纳入SDMatte；同时通过Mask后处理链弥补单一模型的边缘不足，整体设计思路是“多模型对照 + 后处理修正”，而非自动串联，方便人工介入选择最佳方案。",
+ "use_case": "适用于电商产品图（玻璃杯、塑料瓶、首饰）、设计素材提取、摄影后期等需要高质量的透明/半透明物体抠图场景。",
+ "limitation": "需要预先下载多个大型模型文件（SAM ViT-H 2.56GB、GroundingDINO、BiRefNet、RMBG-2.0、SDMatte_plus.pth），显存占用高；部分模型内部将输入图resize到1024，可能影响大图细节；如果使用中文提示，ChinesePrompt_Mix节点可能依赖翻译服务或预置词库，对网络/本地环境有一定要求",
+ "dependencies": [
+  "sam_vit_h (2.56GB)",
+  "GroundingDINO_SwinT_OGC",
+  "BiRefNet-General",
+  "RMBG-2.0",
+  "SDMatte_plus.pth",
+  "ComfyUI_LayerMask系列自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1~3（存在多个LoadImage，实际通常加载一张图）"
+ },
+ "output": {
+  "type": "image (RGBA透明背景 / mask预览)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "SegmentAnythingUltra V2 的 grounding_dino_threshold (0.3)",
+   "how_to_tune": "阈值越低，GroundingDINO检出的候选目标越多，mask可能包含更多区域；阈值越高越精准，但可能漏检。当目标被完整包含时，可适当降低阈值"
+  },
+  {
+   "param": "SDMatteApply 的 alpha (0.8)",
+   "how_to_tune": "控制最终alpha强度，值越大越不透明，越小越透明。处理玻璃时建议从0.8开始，若边缘发灰可小幅调高"
+  },
+  {
+   "param": "GrowMaskWithBlur 的 grow 和 blur",
+   "how_to_tune": "grow正值扩大mask，负值收缩；blur羽化边缘。对发丝等精细边缘可增大blur，但过大易丢失细节"
+  }
+ ],
+ "summary_text": "能力:上传一张图片，一键生成4种不同抠图模型（SegmentAnything / BiRefNet / RMBG / SDMatte）的抠图结果预览，并保存为透明背景图像；能力:支持中文文本引导分割：输入提示词（如“鲜花”）即可提取对应物体，极大降低使用门槛；能力:针对透明/半透明材质（玻璃、塑料、水等）提供SDMatte专门matting模型，获得精细alpha通道；特色:4种抠图模型并行计算并分别输出mask预览，用户可直观对比选择最优结果；特色:使用ChinesePrompt_Mix节点动态生成中文提示词，实现中文交互式分割，无需手动翻译；特色:包含丰富的mask质量增强链路：GrowMaskWithBlur、AddMask、Mask Invert等，可优化边缘细节和合并多模型mask；特色:SDMatte的alpha参数（0.8）可手动调节，精细控制透明区域的保留程度；适用于电商产品图（玻璃杯、塑料瓶、首饰）、设计素材提取、摄影后期等需要高质量的透明/半透明物体抠图场景。；该工作流将当前主流的几种抠图/分割模型（SAM、BiRefNet、RMBG）与专为透明材质设计的matting模型（SDMatte）并联，让用户在同一工作流中一次性获得多种抠图结果并对比挑选。透明材质是自动抠图的难点，因此专门纳入SDMatte；同时通过Mask后处理链弥补单一模型的边缘不足，整体设计思路是“多模型对照 + 后处理修正”，而非自动串联，方便人工介入选择最佳方案。"
+}

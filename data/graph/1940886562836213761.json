@@ -1,0 +1,737 @@
+{
+ "node_count": 22,
+ "link_count": 23,
+ "active_node_count": 22,
+ "nodes": [
+  {
+   "id": 40,
+   "type": "FluxKontextImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    158
+   ],
+   "out_links": [
+    159
+   ]
+  },
+  {
+   "id": 39,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    159,
+    120
+   ],
+   "out_links": [
+    138
+   ]
+  },
+  {
+   "id": 12,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-kontext-dev.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 11,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp16.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 42,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    123,
+    138
+   ],
+   "out_links": [
+    157
+   ]
+  },
+  {
+   "id": 22,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    54,
+    157
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 13,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    37,
+    30,
+    19,
+    20,
+    116
+   ],
+   "out_links": [
+    24
+   ]
+  },
+  {
+   "id": 35,
+   "type": "PrimitiveNode",
+   "category": "utility",
+   "title": "height",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1520,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    113,
+    114
+   ]
+  },
+  {
+   "id": 34,
+   "type": "PrimitiveNode",
+   "category": "utility",
+   "title": "width",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    112,
+    115
+   ]
+  },
+  {
+   "id": 26,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2.5
+   ],
+   "in_links": [
+    41
+   ],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 37,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The reference sampling implementation auto adjusts the shift value based on the resolution, if you don't want this you can just bypass (CTRL-B) this ModelSamplingFlux node.\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    24,
+    12
+   ],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 41,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "436a34dd575cc03005ce24316bef21b9f4f1cf52af142eb315314078a7cba480.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 9,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    9
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2080,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 17,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    20,
+    1
+   ],
+   "in_links": [
+    55
+   ],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 30,
+   "type": "ModelSamplingFlux",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.15,
+    0.5,
+    1024,
+    1520
+   ],
+   "in_links": [
+    56,
+    115,
+    114
+   ],
+   "out_links": [
+    54,
+    55
+   ]
+  },
+  {
+   "id": 28,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "For consistent characters, just provide a high-resolution and highly detailed image of the face in one input — and for better performance, use a front-facing pose.\n\nThe rest will be the magic of your prompts — it depends on how you want to craft the output.\n\nTo create a custom workflow or for local setup, you can contact me:\n📧 Email: oomify@gmail.com\n📱 WhatsApp: https://wa.me/923003209004\n\nPrompt Example:\n\nYour job is to present the model in front of a velvet emerald green curtain, styled in a burnt orange raw silk kurta with antique gold gota work. A matching burnt orange chiffon dupatta is pinned gracefully, softly framing her face.\nSoft focus, centered square crop.\n\nFace must remain fully intact — no changes to features or identity."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    12,
+    120
+   ]
+  },
+  {
+   "id": 27,
+   "type": "EmptySD3LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1520,
+    1
+   ],
+   "in_links": [
+    112,
+    113
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 16,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    19
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": "CLIP Text Encode (Positive Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Capture a striking Russian fashion model with sharp, confident features, posed gracefully against a minimal yet dramatic backdrop — think textured charcoal wall or a low-lit, moody studio.\n\nShe wears a form-fitting, floor-length black satin gown with a plunging neckline and thigh-high slit, designed to accentuate her curves with precision. The dress features subtle gold metallic threadwork along the seams, adding quiet luxury without overwhelming the silhouette.\n\nHer hair is styled in soft waves or a sleek pulled-back bun, makeup bold but clean — smokey eyes, nude lips, sculpted cheekbones. The lighting is warm and directional, highlighting the sheen of the satin and the model’s skin.\n\nShe gazes directly into the lens — poised, powerful, and unbothered — exuding effortless sensuality.\n\nFinal crop is vertical editorial, shot in soft focus with crisp facial detail. The image should feel seductive but elevated, suitable for a Vogue or Harper’s Bazaar spread, not overtly commercial or objectifying.\n\nDo not alter the model’s face or identity."
+   ],
+   "in_links": [
+    10
+   ],
+   "out_links": [
+    41
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 39,
+   "type": "VAE"
+  },
+  {
+   "from_node": 10,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 12,
+   "to_node": 30,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 13,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 17,
+   "to_node": 13,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 22,
+   "to_node": 13,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 25,
+   "to_node": 13,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 42,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 27,
+   "to_node": 13,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 30,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 30,
+   "to_node": 22,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 34,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 34,
+   "to_node": 30,
+   "type": "INT"
+  },
+  {
+   "from_node": 35,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 35,
+   "to_node": 30,
+   "type": "INT"
+  },
+  {
+   "from_node": 39,
+   "to_node": 42,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 40,
+   "to_node": 39,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 41,
+   "to_node": 40,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 22,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 9,
+  "vae": 3,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "sampler": 4,
+  "image_io": 2,
+  "preprocessor": 1,
+  "conditioning": 1
+ },
+ "assets": [
+  {
+   "node_id": 12,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux1-kontext-dev.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 30,
+ "structure_hash": "d37cdec1dd003c16",
+ "param_face": [
+  {
+   "node_id": 12,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-kontext-dev.safetensors"
+  },
+  {
+   "node_id": 12,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 11,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 35,
+   "node_type": "PrimitiveNode",
+   "widget_index": 0,
+   "value_preview": "1520"
+  },
+  {
+   "node_id": 35,
+   "node_type": "PrimitiveNode",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 34,
+   "node_type": "PrimitiveNode",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 34,
+   "node_type": "PrimitiveNode",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 26,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 41,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "436a34dd575cc03005ce24316bef21b9f4f1cf52af142eb315314078a7cb"
+  },
+  {
+   "node_id": 41,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 41,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 9,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 9,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "2080"
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 0,
+   "value_preview": "1.15"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 30,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 3,
+   "value_preview": "1520"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.safetensors"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 1,
+   "value_preview": "1520"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  }
+ ]
+}

@@ -1,0 +1,1898 @@
+{
+ "node_count": 45,
+ "link_count": 55,
+ "active_node_count": 45,
+ "nodes": [
+  {
+   "id": 637,
+   "type": "RegexExtract",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "[\\[\\(【「]*\\s*LOCAL\\s*[\\]\\)】」]*\\s*[:：]?\\s*\\n+([\\s\\S]*?)(?:\\s*\\n+\\s*[\\[\\(【「]*\\s*LENGTHS\\s*[\\]\\)】」]*|\\s*$)",
+    "First Group",
+    true,
+    false,
+    false,
+    1
+   ],
+   "in_links": [
+    1559
+   ],
+   "out_links": [
+    1556
+   ]
+  },
+  {
+   "id": 636,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1558
+   ],
+   "out_links": [
+    1555,
+    1559
+   ]
+  },
+  {
+   "id": 635,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1557
+   ],
+   "out_links": []
+  },
+  {
+   "id": 634,
+   "type": "PreviewAny",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1556
+   ],
+   "out_links": []
+  },
+  {
+   "id": 625,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": "fps",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [],
+   "out_links": [
+    1546,
+    1549,
+    1582
+   ]
+  },
+  {
+   "id": 631,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": "px",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1280
+   ],
+   "in_links": [],
+   "out_links": [
+    1554
+   ]
+  },
+  {
+   "id": 619,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    1538,
+    1554
+   ],
+   "out_links": [
+    1537,
+    1567,
+    1539,
+    1540
+   ]
+  },
+  {
+   "id": 638,
+   "type": "RH_LLMAPI_Pro_Node",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemini-3-flash-preview",
+    "你是一个视频提示词分镜助手。你的任务是把用户给出的\"一整段连续镜头描述\"拆成 Prompt Relay 节点所需的结构化格式。\n\n【输出格式】\n严格按以下三段式输出，不要输出任何解释性文字、Markdown 标题、编号、引号或代码块：\n\nGLOBAL:\n<一句话全局锚点，仅描述整段视频共享不变的主体、场景大类、镜头风格、光影氛围。不要写任何具体动作、不要写镜头运动、不要写随时间变化的内容。>\n\nLOCAL:\n<第1段文字> | <第2段文字> | <第3段文字> | ... | <第N段文字>\n\nLENGTHS:\n<留空，或输出逗号分隔的像素帧数，如 24,24,48,24>\n\n【GLOBAL 写法规则】\n1. 只写在整段视频中\"始终成立\"的内容：主体身份（如\"一只雄鹰\"/\"一位戴墨镜的男子\"中能贯穿全片的那一个）、整体环境类型（如\"城市夜景\"）、镜头总语言（如\"单镜头连续运镜\"、\"电影级手持镜头\"、\"慢速推进\"）、整体光影基调（如\"霓虹冷色调\"）。\n2. 如果原文中不同段落主体差异很大（例如雄鹰 → 赛博城市 → 客厅），GLOBAL 只保留最高层级的共同描述，比如\"一次单镜头连续推拉运镜，电影级画面\"。\n3. 禁止在 GLOBAL 里出现任何时序词：先/然后/接着/最后/随后/镜头拉近/拉远/切换 等。\n4. 长度控制在 15～40 个汉字或 8～25 个英文单词以内。\n\n【LOCAL 分段规则】\n1. 以下任一情形触发新段：\n   - 镜头运动显著变化（推近 / 拉远 / 平移 / 跟随 / 切镜）\n   - 画面主体或视角切换\n   - 场景、环境、空间跃迁\n   - 新的对白、新的动作开始\n2. 每段只写该时间区间里\"正在发生的事情 + 当时的画面\"，不写前因后果。\n3. 每段 8～35 个汉字 或 6～25 个英文单词；避免一段塞多个镜头。\n4. 保留原文里的关键名词（雄鹰、瞳孔、赛博朋克都市、墨镜男子、电视机、客厅），让每段都能被文本编码器独立识别。\n5. 段数建议 3～8 段；少于 3 段请尝试拆得更细，多于 8 段请合并相邻同质镜头。\n6. 段与段之间用空格 + \"|\" + 空格 分隔；首尾不要有 \"|\"。\n\n【LENGTHS 规则】\n1. 默认留空，让节点按段数等分。\n2. 如果原文明显暗示某段更长（如\"镜头缓缓…\"、\"逐渐…\"），可给出逗号分隔的像素帧数。所有数值加起来应接近用户工作流的总帧数（不知道总帧数就留空）。\n\n【语言】\n- 输入是中文则输出中文，输入是英文则输出英文，不要混用。\n\n【完整示例】\n用户输入：\n一只雄鹰翱翔于天际，振翅高飞。镜头迅速拉近，聚焦于雄鹰的双眼。在它的瞳孔中，一座赛博朋克都市的景象已然显现……（省略）……温暖的灯光洒满房间，复古的家具和人们围坐在电视机旁。\n\n你应该输出：\nGLOBAL:\n一次单镜头连续推拉运镜，电影级画面，光影层次丰富。\n\nLOCAL:\n一只雄鹰在高空振翅翱翔，天色辽阔 | 镜头迅速推近雄鹰的双眼，聚焦于它的瞳孔 | 瞳孔中浮现出一座扭曲的赛博朋克都市，随推近愈发清晰 | 赛博朋克都市全景，层叠车道上的车流与霓虹倒影洒在雨后街道 | 镜头追踪并锁定一辆穿行于霓虹街道的汽车 | 镜头移至车侧，一位戴墨镜的男子坐在车内驾驶 | 镜头缓缓拉远，赛博朋克画面显露于一台电视屏幕上 | 镜头继续拉远，呈现20世纪风格客厅，一台老式电视机前围坐着人们，灯光温暖\n\nLENGTHS:\n",
+    "",
+    0.6,
+    995483322,
+    "fixed"
+   ],
+   "in_links": [
+    1567,
+    1561
+   ],
+   "out_links": [
+    1558
+   ]
+  },
+  {
+   "id": 553,
+   "type": "VAELoaderKJ",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_video_vae_bf16.safetensors",
+    "main_device",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    1425
+   ]
+  },
+  {
+   "id": 470,
+   "type": "VAELoaderKJ",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX23_audio_vae_bf16.safetensors",
+    "main_device",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    1458
+   ]
+  },
+  {
+   "id": 416,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gemma_3_12B_it.safetensors",
+    "ltx-2.3_text_projection_bf16.safetensors",
+    "ltxv",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1574
+   ]
+  },
+  {
+   "id": 414,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ltx-2.3-22b-distilled_transformer_only_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1510
+   ]
+  },
+  {
+   "id": 542,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    1599
+   ],
+   "out_links": [
+    1523,
+    1568
+   ]
+  },
+  {
+   "id": 582,
+   "type": "LTXVImgToVideoInplaceKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1",
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    1465,
+    1466,
+    1541
+   ],
+   "out_links": [
+    1467
+   ]
+  },
+  {
+   "id": 547,
+   "type": "LTXVEmptyLatentAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    489,
+    25,
+    1
+   ],
+   "in_links": [
+    1460,
+    1583,
+    1582
+   ],
+   "out_links": [
+    1411
+   ]
+  },
+  {
+   "id": 514,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "linear_quadratic",
+    8,
+    1
+   ],
+   "in_links": [
+    1523
+   ],
+   "out_links": [
+    1364
+   ]
+  },
+  {
+   "id": 588,
+   "type": "LTX2SamplingPreviewOverride",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [
+    1577
+   ],
+   "out_links": [
+    1475
+   ]
+  },
+  {
+   "id": 358,
+   "type": "VisualizeSigmasKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    -1
+   ],
+   "in_links": [
+    1364
+   ],
+   "out_links": [
+    1445
+   ]
+  },
+  {
+   "id": 154,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler_ancestral"
+   ],
+   "in_links": [],
+   "out_links": [
+    1444
+   ]
+  },
+  {
+   "id": 548,
+   "type": "LTXVConcatAVLatent",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1467,
+    1411
+   ],
+   "out_links": [
+    1446
+   ]
+  },
+  {
+   "id": 561,
+   "type": "SamplerCustom",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    178456803945694,
+    "randomize",
+    1
+   ],
+   "in_links": [
+    1475,
+    1438,
+    1439,
+    1444,
+    1445,
+    1446
+   ],
+   "out_links": [
+    1442
+   ]
+  },
+  {
+   "id": 549,
+   "type": "LTXVSeparateAVLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1442
+   ],
+   "out_links": [
+    1443,
+    1416
+   ]
+  },
+  {
+   "id": 471,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1443,
+    1288
+   ],
+   "out_links": [
+    1502
+   ]
+  },
+  {
+   "id": 236,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_video_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video_vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1288
+   ]
+  },
+  {
+   "id": 550,
+   "type": "LTXVAudioVAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1416,
+    1459
+   ],
+   "out_links": [
+    1503
+   ]
+  },
+  {
+   "id": 575,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_audio_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio_vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1459
+   ]
+  },
+  {
+   "id": 632,
+   "type": "RegexExtract",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "[\\[\\(【「]*\\s*GLOBAL\\s*[\\]\\)】」]*\\s*[:：]?\\s*\\n+([\\s\\S]*?)\\s*\\n+\\s*[\\[\\(【「]*\\s*LOCAL\\s*[\\]\\)】」]*",
+    "First Group",
+    true,
+    false,
+    false,
+    1
+   ],
+   "in_links": [
+    1555
+   ],
+   "out_links": [
+    1557,
+    1576
+   ]
+  },
+  {
+   "id": 606,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Ltx2.3-Licon-VBVR-I2V-390K-R32-LoRA.safetensors",
+    0.5000000000000001
+   ],
+   "in_links": [
+    1510
+   ],
+   "out_links": [
+    1590
+   ]
+  },
+  {
+   "id": 647,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX2.3-Cinematic-Camera-Control-LoRA.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    1590
+   ],
+   "out_links": [
+    1597
+   ]
+  },
+  {
+   "id": 164,
+   "type": "LTXVConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    25
+   ],
+   "in_links": [
+    1578,
+    1522
+   ],
+   "out_links": [
+    1438,
+    1439
+   ]
+  },
+  {
+   "id": 650,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LTX2.3-IC-LORA-Dual-Character-Shot.safetensors",
+    0.8000000000000002
+   ],
+   "in_links": [
+    1597
+   ],
+   "out_links": [
+    1599
+   ]
+  },
+  {
+   "id": 420,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1579
+   ],
+   "out_links": [
+    1522
+   ]
+  },
+  {
+   "id": 629,
+   "type": "SimpleMath+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a*b+1"
+   ],
+   "in_links": [
+    1548,
+    1549
+   ],
+   "out_links": [
+    1550,
+    1583
+   ]
+  },
+  {
+   "id": 628,
+   "type": "CM_IntToFloat",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [
+    1546
+   ],
+   "out_links": [
+    1547,
+    1580
+   ]
+  },
+  {
+   "id": 577,
+   "type": "EmptyLTXVLatentVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    736,
+    1280,
+    489,
+    1
+   ],
+   "in_links": [
+    1539,
+    1540,
+    1550
+   ],
+   "out_links": [
+    1466,
+    1575
+   ]
+  },
+  {
+   "id": 576,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_audio_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio_vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1460
+   ]
+  },
+  {
+   "id": 583,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_video_vae",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video_vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    1465
+   ]
+  },
+  {
+   "id": 586,
+   "type": "LTXVPreprocess",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30
+   ],
+   "in_links": [
+    1537
+   ],
+   "out_links": [
+    1541
+   ]
+  },
+  {
+   "id": 228,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video_vae"
+   ],
+   "in_links": [
+    1425
+   ],
+   "out_links": []
+  },
+  {
+   "id": 574,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "audio_vae"
+   ],
+   "in_links": [
+    1458
+   ],
+   "out_links": []
+  },
+  {
+   "id": 604,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "xiao",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "xiao_00001_p81-audio_ygqev_1778812280.mp4",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//f3257c885c1aaa9dddfcc32ac04c6ba1/output/xiao_00001_p81-audio_ygqev_1778812280.mp4",
+      "workflow": "xiao_00001_p81.png",
+      "fullpath": "/data/ComfyUI/personal/f3257c885c1aaa9dddfcc32ac04c6ba1/output/xiao_00001_p81-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 30
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 25,
+    "pingpong": false
+   },
+   "in_links": [
+    1502,
+    1503,
+    1547
+   ],
+   "out_links": []
+  },
+  {
+   "id": 584,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1538
+   ]
+  },
+  {
+   "id": 640,
+   "type": "Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "科幻电影大片质感，漂亮的亚洲美少女，皮肤白皙，头发被精心编织成复杂的辫子，她身着一套复古欧式 / 维京风格的雕花盔甲，整体色调是做旧的银灰色与铜金色，充满了岁月的质感。女战士用戴着盔甲的手臂环抱着白狼，白狼温顺地靠在她的肩头，两者姿态亲密，传递出强烈的羁绊感。\n场景为星际废墟交融玄幻秘境，漂浮建筑残骸、薄雾弥散，丁达尔光束穿透空气，写实细腻刻画机甲金属、毛发衣料、雾气粒子，高对比高饱和电影调色，赛博科幻与东方玄幻融合"
+   ],
+   "in_links": [],
+   "out_links": [
+    1561
+   ]
+  },
+  {
+   "id": 642,
+   "type": "PromptRelayEncodeTimeline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    451,
+    "{\"segments\":[{\"prompt\":\"镜头推至白狼脸部特写，少女说：“一切都好了”。\",\"length\":150,\"color\":\"#4f8edc\"},{\"prompt\":\"镜头推至少女脸部特写，少女说：“不去怎知真假?”。\",\"length\":150,\"color\":\"#e07b3a\"},{\"prompt\":\"近景镜头，白狼和少女，少女说：“我们胜利了”。\",\"length\":151,\"color\":\"#5cb85c\"}]}",
+    "镜头推至白狼脸部特写，少女说：“一切都好了”。 | 镜头推至少女脸部特写，少女说：“不去怎知真假?”。 | 近景镜头，白狼和少女，少女说：“我们胜利了”。",
+    "150, 150, 151",
+    0.001,
+    24,
+    "frames",
+    ""
+   ],
+   "in_links": [
+    1568,
+    1574,
+    1575,
+    1576,
+    1580
+   ],
+   "out_links": [
+    1577,
+    1578,
+    1579
+   ]
+  },
+  {
+   "id": 618,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": "秒",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [],
+   "out_links": [
+    1548
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 154,
+   "to_node": 561,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 164,
+   "to_node": 561,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 164,
+   "to_node": 561,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 236,
+   "to_node": 471,
+   "type": "VAE"
+  },
+  {
+   "from_node": 358,
+   "to_node": 561,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 414,
+   "to_node": 606,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 416,
+   "to_node": 642,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 420,
+   "to_node": 164,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 470,
+   "to_node": 574,
+   "type": "VAE"
+  },
+  {
+   "from_node": 471,
+   "to_node": 604,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 514,
+   "to_node": 358,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 542,
+   "to_node": 514,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 542,
+   "to_node": 642,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 547,
+   "to_node": 548,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 548,
+   "to_node": 561,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 471,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 549,
+   "to_node": 550,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 550,
+   "to_node": 604,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 553,
+   "to_node": 228,
+   "type": "VAE"
+  },
+  {
+   "from_node": 561,
+   "to_node": 549,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 575,
+   "to_node": 550,
+   "type": "VAE"
+  },
+  {
+   "from_node": 576,
+   "to_node": 547,
+   "type": "VAE"
+  },
+  {
+   "from_node": 577,
+   "to_node": 582,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 577,
+   "to_node": 642,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 582,
+   "to_node": 548,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 583,
+   "to_node": 582,
+   "type": "VAE"
+  },
+  {
+   "from_node": 584,
+   "to_node": 619,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 586,
+   "to_node": 582,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 588,
+   "to_node": 561,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 606,
+   "to_node": 647,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 618,
+   "to_node": 629,
+   "type": "*"
+  },
+  {
+   "from_node": 619,
+   "to_node": 577,
+   "type": "INT"
+  },
+  {
+   "from_node": 619,
+   "to_node": 577,
+   "type": "INT"
+  },
+  {
+   "from_node": 619,
+   "to_node": 586,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 619,
+   "to_node": 638,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 625,
+   "to_node": 547,
+   "type": "INT"
+  },
+  {
+   "from_node": 625,
+   "to_node": 628,
+   "type": "INT"
+  },
+  {
+   "from_node": 625,
+   "to_node": 629,
+   "type": "*"
+  },
+  {
+   "from_node": 628,
+   "to_node": 604,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 628,
+   "to_node": 642,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 629,
+   "to_node": 547,
+   "type": "INT"
+  },
+  {
+   "from_node": 629,
+   "to_node": 577,
+   "type": "INT"
+  },
+  {
+   "from_node": 631,
+   "to_node": 619,
+   "type": "INT"
+  },
+  {
+   "from_node": 632,
+   "to_node": 635,
+   "type": "*"
+  },
+  {
+   "from_node": 632,
+   "to_node": 642,
+   "type": "STRING"
+  },
+  {
+   "from_node": 636,
+   "to_node": 632,
+   "type": "STRING"
+  },
+  {
+   "from_node": 636,
+   "to_node": 637,
+   "type": "STRING"
+  },
+  {
+   "from_node": 637,
+   "to_node": 634,
+   "type": "*"
+  },
+  {
+   "from_node": 638,
+   "to_node": 636,
+   "type": "*"
+  },
+  {
+   "from_node": 640,
+   "to_node": 638,
+   "type": "STRING"
+  },
+  {
+   "from_node": 642,
+   "to_node": 164,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 642,
+   "to_node": 420,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 642,
+   "to_node": 588,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 647,
+   "to_node": 650,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 650,
+   "to_node": 542,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "utility": 30,
+  "vae": 4,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "preprocessor": 1,
+  "sampler": 2,
+  "conditioning": 1,
+  "lora": 3,
+  "video_io": 1,
+  "image_io": 1
+ },
+ "assets": [
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "kind": "vae",
+   "name": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "kind": "vae",
+   "name": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "gemma_3_12B_it.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "ltx-2.3-22b-distilled_transformer_only_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 606,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Ltx2.3-Licon-VBVR-I2V-390K-R32-LoRA.safetensors"
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX2.3-Cinematic-Camera-Control-LoRA.safetensors"
+  },
+  {
+   "node_id": 650,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "LTX2.3-IC-LORA-Dual-Character-Shot.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 110,
+ "structure_hash": "64054e3c350a7613",
+ "param_face": [
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 1,
+   "value_preview": "[\\[\\(【「]*\\s*LOCAL\\s*[\\]\\)】」]*\\s*[:：]?\\s*\\n+([\\s\\S]*?)(?:\\s*\\"
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 2,
+   "value_preview": "First Group"
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 637,
+   "node_type": "RegexExtract",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 625,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 631,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 619,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 638,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 0,
+   "value_preview": "gemini-3-flash-preview"
+  },
+  {
+   "node_id": 638,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 638,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 3,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 638,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 4,
+   "value_preview": "995483322"
+  },
+  {
+   "node_id": 638,
+   "node_type": "RH_LLMAPI_Pro_Node",
+   "widget_index": 5,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 0,
+   "value_preview": "LTX23_video_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 1,
+   "value_preview": "main_device"
+  },
+  {
+   "node_id": 553,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 2,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 0,
+   "value_preview": "LTX23_audio_vae_bf16.safetensors"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 1,
+   "value_preview": "main_device"
+  },
+  {
+   "node_id": 470,
+   "node_type": "VAELoaderKJ",
+   "widget_index": 2,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "gemma_3_12B_it.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "ltx-2.3_text_projection_bf16.safetensors"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "ltxv"
+  },
+  {
+   "node_id": 416,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "ltx-2.3-22b-distilled_transformer_only_fp8_scaled.safetensor"
+  },
+  {
+   "node_id": 414,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 542,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 542,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 582,
+   "node_type": "LTXVImgToVideoInplaceKJ",
+   "widget_index": 9,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 547,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 0,
+   "value_preview": "489"
+  },
+  {
+   "node_id": 547,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 1,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 547,
+   "node_type": "LTXVEmptyLatentAudio",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "linear_quadratic"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 514,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 588,
+   "node_type": "LTX2SamplingPreviewOverride",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 358,
+   "node_type": "VisualizeSigmasKJ",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 358,
+   "node_type": "VisualizeSigmasKJ",
+   "widget_index": 1,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 154,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 1,
+   "value_preview": "178456803945694"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 561,
+   "node_type": "SamplerCustom",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 236,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "video_vae"
+  },
+  {
+   "node_id": 575,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "audio_vae"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 1,
+   "value_preview": "[\\[\\(【「]*\\s*GLOBAL\\s*[\\]\\)】」]*\\s*[:：]?\\s*\\n+([\\s\\S]*?)\\s*\\n+"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 2,
+   "value_preview": "First Group"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 632,
+   "node_type": "RegexExtract",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 606,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Ltx2.3-Licon-VBVR-I2V-390K-R32-LoRA.safetensors"
+  },
+  {
+   "node_id": 606,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX2.3-Cinematic-Camera-Control-LoRA.safetensors"
+  },
+  {
+   "node_id": 647,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 164,
+   "node_type": "LTXVConditioning",
+   "widget_index": 0,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 650,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "LTX2.3-IC-LORA-Dual-Character-Shot.safetensors"
+  },
+  {
+   "node_id": 650,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 629,
+   "node_type": "SimpleMath+",
+   "widget_index": 0,
+   "value_preview": "a*b+1"
+  },
+  {
+   "node_id": 628,
+   "node_type": "CM_IntToFloat",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 577,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 0,
+   "value_preview": "736"
+  },
+  {
+   "node_id": 577,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 1,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 577,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 2,
+   "value_preview": "489"
+  },
+  {
+   "node_id": 577,
+   "node_type": "EmptyLTXVLatentVideo",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 576,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "audio_vae"
+  },
+  {
+   "node_id": 583,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "video_vae"
+  },
+  {
+   "node_id": 586,
+   "node_type": "LTXVPreprocess",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 228,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "video_vae"
+  },
+  {
+   "node_id": 574,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "audio_vae"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "xiao"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "25"
+  },
+  {
+   "node_id": 604,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 584,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 1,
+   "value_preview": "451"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 3,
+   "value_preview": "镜头推至白狼脸部特写，少女说：“一切都好了”。 | 镜头推至少女脸部特写，少女说：“不去怎知真假?”。 | 近景镜头，白"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 4,
+   "value_preview": "150, 150, 151"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 5,
+   "value_preview": "0.001"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 6,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 7,
+   "value_preview": "frames"
+  },
+  {
+   "node_id": 642,
+   "node_type": "PromptRelayEncodeTimeline",
+   "widget_index": 8,
+   "value_preview": ""
+  },
+  {
+   "node_id": 618,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "8"
+  }
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "domain": [
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "输入多张图像，端到端生成带音频的高速度打斗视频，最终由 VHS_VideoCombine 输出含音轨的视频文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "零提示词自动导演：LLM 节点（RH_LLMAPI_Pro_Node/gpt-5.6-terra）自动分析输入图像，结合“Action Director Pro”模板生成动作导演文本，再送入 MiniMax H3 采样器生成视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持 I2VA（图生音视频/首帧）与 Ref2VA（参考生音视频）两种模式并行运行，用户可通过 Fast Groups Bypasser 快速切换或对比两条管线输出。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 FL2VA 图生视频/音频生成",
+  "Qwen3VL 32B 多模态 CLIP 文本编码与 conditioning",
+  "LLM API 零提示词自动动作导演（RH_LLMAPI_Pro_Node）",
+  "音视频联合生成：PT_H3ConcatAVLatent + MiniMaxH3AVDecodeT8 + 音频 VAE",
+  "DualClock 双时钟采样器（euler + beta 调度）",
+  "bf16/int8_convrot 混合精度加载与 SageAttention 显存优化",
+  "多图像参考输入与动态帧数/分辨率计算"
+ ],
+ "special_features": [
+  {
+   "text": "双生成模式并行：同一工作流中部署了 I2VA 和 Ref2VA 两条完整 H3 管线，均含采样、AV 解码、视频输出，并用 mode4 后缀区分；配合 Fast Groups Bypasser 可整体开关。",
+   "kind": "fact"
+  },
+  {
+   "text": "Zero-Prompt 自动导演：RH_LLMAPI_Pro_Node 调用 openai/gpt-5.6-terra，提示模板包含“Analyze the image to mat...”和“Action Director Pro · An...”，推断它负责把多张图片自动转成动作/镜头文本条件。",
+   "kind": "inference"
+  },
+  {
+   "text": "多图像战斗参考：结构上设置 4 个 LoadImage 输入，并存在“# Multi-Image Battle”提示模板，可组合多张角色/场景/动作参考图生成战斗场景。",
+   "kind": "fact"
+  },
+  {
+   "text": "动态帧数/分辨率控制：ComfyMathExpression 使用 max(5, round(a * 24)) 计算帧数，ResolutionSelector 提供 16:9 宽屏比例，BasicScheduler 配合 beta 调度控制采样节奏。",
+   "kind": "fact"
+  },
+  {
+   "text": "显存/速度优化：同时加载 bf16 与 int8_convrot 两套 checkpoint/CLIP，并加入 MiniMaxH3MemoryEfficientSageAttentionPatch，兼顾质量与高速生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "可复现性：4 个 RandomNoise 节点均固定 seed=214 且为 fixed 模式，同一输入可复现相同结果。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流的核心意图是把“多图参考 + 零提示词 + 高速度打斗 + 音视频同时生成”打包成一条高效管线。先让多模态 LLM 自动分析输入的图像并生成动作导演文本，替代手工 prompt；再用 MiniMax H3 的双条件 AV 采样器生成视频与音频。双模式并行和 Fast Groups Bypasser 使创作者能在 I2VA 与 Ref2VA 之间快速对比，而 int8/SageAttention 与动态帧数计算则是对高速度、高质量、有限显存三者之间的平衡设计。",
+ "use_case": "适合短片导演、游戏/动漫同人创作者：上传角色、场景或动作参考图，自动生成带音效的高速度打斗短片，无需手写提示词。",
+ "limitation": "依赖外部 LLM API（openai/gpt-5.6-terra），离线或未配置 Key 时不可用；需要下载 MiniMax H3 系列权重（bf16/int8 checkpoint、Qwen3VL 32B CLIP、video/audio VAE），体量大且对显存要求较高；依赖一系列自定义节点（MiniMax-H3、rgthree、VideoHelperSuite、ComfyMath、RH_LLMAPI_Pro_Node 等），缺一不可；输入目前为固定数量的图片，若画面尺寸、数量与模板不匹配可能需要手动调整。",
+ "dependencies": [
+  "ComfyUI-MiniMax-H3（H3 系列节点）",
+  "rgthree（Fast Groups Bypasser）",
+  "ComfyUI-VideoHelperSuite（VHS_VideoCombine）",
+  "ComfyMath（ComfyMathExpression）",
+  "RH_LLMAPI_Pro_Node（RunningHub LLM API 节点）",
+  "ResolutionSelector / BasicScheduler / BasicGuider / KSamplerSelect / SamplerCustomAdvanced",
+  "模型权重：minimax_h3_fl2va_bf16.safetensors、minimax_h3_fl2va_int8_convrot.safetensors、qwen3vl_32b_minimax_h3_bf16.safetensors、qwen3vl_32b_minimax_h3_int8_convrot.safetensors、minimax_h3_video_vae_fp16.safetensors、minimax_h3_audio_vae_fp32.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "4（4 个 LoadImage，具体角色/场景/参考图分配需看连线）"
+ },
+ "output": {
+  "type": "视频（含音频轨，VHS_VideoCombine 输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3DualClockSamplerT8（steps=24, scale=18.4, shift=3, sampler=euler, scheduler=beta）",
+   "how_to_tune": "steps 为采样步数，追求高速可降至 16-20，要求画质可升至 32；scale 为 CFG，当前 18.4 偏高，若出现闪烁/过曝可降至 12-15，若运动幅度不足可略微上调；shift/euler/beta 的组合已较稳定，一般无需大改。"
+  },
+  {
+   "param": "BasicScheduler（beta / 4 / 0.2）",
+   "how_to_tune": "denoise=0.2 时输出更贴近参考图/首帧，适合 Ref2VA 保持角色身份；需要更大运动幅度时可以提高 denoise，但会偏离参考对象，需根据打斗强度平衡。"
+  },
+  {
+   "param": "RH_LLMAPI_Pro_Node（temperature=0.6）",
+   "how_to_tune": "温度越低 LLM 生成的动作导演文本越稳定、可复现，适合保持角色一致性；温度越高动作越多样、更有想象力，但可能出现分镜跳脱或描述不可控。"
+  },
+  {
+   "param": "ResolutionSelector（16:9 / 0.6 / 32）",
+   "how_to_tune": "宽高比与分辨率参数直接影响显存占用和清晰度；16:9 适合横向打斗场景，若显存不足可降低 0.6 倍率或改用更小比例，若追求画质可提高，但需要更强 GPU。"
+  },
+  {
+   "param": "ComfyMathExpression（max(5, round(a * 24))）",
+   "how_to_tune": "用于动态计算生成帧数；系数 24 越大则视频越长、耗时越高；下限 5 防止生成空视频，a 受前端输入控制，可改小以缩短时长、改大以增加动作完整度。"
+  }
+ ],
+ "summary_text": "能力:输入多张图像，端到端生成带音频的高速度打斗视频，最终由 VHS_VideoCombine 输出含音轨的视频文件。；能力:零提示词自动导演：LLM 节点（RH_LLMAPI_Pro_Node/gpt-5.6-terra）自动分析输入图像，结合“Action Director Pro”模板生成动作导演文本，再送入 MiniMax H3 采样器生成视频。；能力:支持 I2VA（图生音视频/首帧）与 Ref2VA（参考生音视频）两种模式并行运行，用户可通过 Fast Groups Bypasser 快速切换或对比两条管线输出。；特色:双生成模式并行：同一工作流中部署了 I2VA 和 Ref2VA 两条完整 H3 管线，均含采样、AV 解码、视频输出，并用 mode4 后缀区分；配合 Fast Groups Bypasser 可整体开关。；特色:Zero-Prompt 自动导演：RH_LLMAPI_Pro_Node 调用 openai/gpt-5.6-terra，提示模板包含“Analyze the image to mat...”和“Action Director Pro · An...”，推断它负责把多张图片自动转成动作/镜头文本条件。；特色:多图像战斗参考：结构上设置 4 个 LoadImage 输入，并存在“# Multi-Image Battle”提示模板，可组合多张角色/场景/动作参考图生成战斗场景。；特色:动态帧数/分辨率控制：ComfyMathExpression 使用 max(5, round(a * 24)) 计算帧数，ResolutionSelector 提供 16:9 宽屏比例，BasicScheduler 配合 beta 调度控制采样节奏。；特色:显存/速度优化：同时加载 bf16 与 int8_convrot 两套 checkpoint/CLIP，并加入 MiniMaxH3MemoryEfficientSageAttentionPatch，兼顾质量与高速生成。；特色:可复现性：4 个 RandomNoise 节点均固定 seed=214 且为 fixed 模式，同一输入可复现相同结果。；适合短片导演、游戏/动漫同人创作者：上传角色、场景或动作参考图，自动生成带音效的高速度打斗短片，无需手写提示词。；该工作流的核心意图是把“多图参考 + 零提示词 + 高速度打斗 + 音视频同时生成”打包成一条高效管线。先让多模态 LLM 自动分析输入的图像并生成动作导演文本，替代手工 prompt；再用 MiniMax H3 的双条件 AV 采样器生成视频与音频。双模式并行和 Fast Groups Bypasser 使创作者能在 I2VA 与 Ref2VA 之间快速对比，而 int8/SageAttention 与动态帧数计算则是对高速度、高质量、有"
+}

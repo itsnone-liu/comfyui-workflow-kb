@@ -1,0 +1,2950 @@
+{
+ "node_count": 65,
+ "link_count": 106,
+ "active_node_count": 48,
+ "nodes": [
+  {
+   "id": 164,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "15.0"
+   ],
+   "in_links": [
+    299
+   ],
+   "out_links": [
+    300
+   ]
+  },
+  {
+   "id": 165,
+   "type": "StringFunction|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "append",
+    "yes",
+    "视频的长度是",
+    "",
+    "秒"
+   ],
+   "in_links": [
+    300
+   ],
+   "out_links": [
+    302
+   ]
+  },
+  {
+   "id": 179,
+   "type": "MiniMaxH3BlockCacheT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.12,
+    0.08,
+    0.95,
+    2,
+    "cpu",
+    8,
+    false
+   ],
+   "in_links": [
+    331
+   ],
+   "out_links": [
+    329,
+    330
+   ]
+  },
+  {
+   "id": 131,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    953487222803437,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    232,
+    347
+   ]
+  },
+  {
+   "id": 125,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": "一采采样器",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    234
+   ]
+  },
+  {
+   "id": 124,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    249,
+    230
+   ],
+   "out_links": [
+    332,
+    358
+   ]
+  },
+  {
+   "id": 123,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    250,
+    229
+   ],
+   "out_links": [
+    240,
+    338,
+    359
+   ]
+  },
+  {
+   "id": 170,
+   "type": "UniBlockSwap",
+   "category": "utility",
+   "title": "开启时会变慢UniBlockSwap（0=关闭，50块）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [
+    357
+   ],
+   "out_links": [
+    315
+   ]
+  },
+  {
+   "id": 134,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": "秒数换算H3帧数（AI应用兼容）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(float(a) * 24)) + (5 - (max(5, round(float(a) * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    248
+   ],
+   "out_links": [
+    277,
+    393
+   ]
+  },
+  {
+   "id": 128,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    330,
+    373
+   ],
+   "out_links": [
+    233
+   ]
+  },
+  {
+   "id": 118,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 171,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "# B站：[点击前往B站](https://space.bilibili.com/361663582)\nYou can click on the link below and try it out directly. If the effect is good, you can deploy it locally\n# RunningHub：[点击前往](https://www.runninghub.ai/user-center/?inviteCode=rh-v1537)   https://www.runninghub.ai/user-center/?inviteCode=rh-v1537\n# 注册送1000点，每日登录100点，畅玩4090！体验48G的超能魅力！如果没有1000点，右上角绑定激活码，填写邀请码 rh-v1537"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 166,
+   "type": "StringFunction|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "append",
+    "yes",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    301,
+    302
+   ],
+   "out_links": [
+    303
+   ]
+  },
+  {
+   "id": 205,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": "参考视频3",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "force_rate": 24,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    417,
+    418
+   ]
+  },
+  {
+   "id": 169,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": "参考音频1",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "060f84e77fb1c2f89c705e8857660be81c68931e829bb919193b4a4a3a98b58c.mp3",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    419,
+    420
+   ]
+  },
+  {
+   "id": 168,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    311
+   ],
+   "out_links": [
+    316
+   ]
+  },
+  {
+   "id": 187,
+   "type": "EasyCache",
+   "category": "utility",
+   "title": "二采 EasyCache",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.3,
+    0.35,
+    0.9,
+    false
+   ],
+   "in_links": [
+    343
+   ],
+   "out_links": [
+    344,
+    345
+   ]
+  },
+  {
+   "id": 182,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": "放大后清理缓存",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    335
+   ],
+   "out_links": [
+    336
+   ]
+  },
+  {
+   "id": 184,
+   "type": "VAEEncodeAudio",
+   "category": "vae",
+   "title": "二采音频重新编码",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    338,
+    339
+   ],
+   "out_links": [
+    341
+   ]
+  },
+  {
+   "id": 185,
+   "type": "PT_H3ConcatAVLatent",
+   "category": "conditioning",
+   "title": "二采音视频潜空间合并",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    340,
+    341
+   ],
+   "out_links": [
+    351
+   ]
+  },
+  {
+   "id": 191,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": "二采重绘",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    347,
+    348,
+    349,
+    350,
+    351
+   ],
+   "out_links": [
+    353
+   ]
+  },
+  {
+   "id": 192,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": "二采最终解码",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    353,
+    354
+   ],
+   "out_links": [
+    355
+   ]
+  },
+  {
+   "id": 189,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": "二采 Beta 调度",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    2,
+    0.2
+   ],
+   "in_links": [
+    344,
+    352
+   ],
+   "out_links": [
+    350
+   ]
+  },
+  {
+   "id": 188,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": "二采采样器",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    349
+   ]
+  },
+  {
+   "id": 193,
+   "type": "INTConstant",
+   "category": "utility",
+   "title": "二采步数",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3
+   ],
+   "in_links": [],
+   "out_links": [
+    352
+   ]
+  },
+  {
+   "id": 186,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": "二采 SageAttention",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    371
+   ],
+   "out_links": [
+    343
+   ]
+  },
+  {
+   "id": 190,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": "二采引导",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    345,
+    394
+   ],
+   "out_links": [
+    348
+   ]
+  },
+  {
+   "id": 173,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    316,
+    317
+   ],
+   "out_links": [
+    319,
+    390
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    229,
+    267,
+    339,
+    383
+   ]
+  },
+  {
+   "id": 121,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    230,
+    266,
+    337,
+    354,
+    382
+   ]
+  },
+  {
+   "id": 130,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    265,
+    381
+   ]
+  },
+  {
+   "id": 129,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": "FL2VA INT8 单模型",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    371,
+    372
+   ]
+  },
+  {
+   "id": 174,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 177,
+   "type": "SolAttnPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.2,
+    0.2,
+    0.9,
+    4096,
+    true,
+    "exact_kv",
+    true,
+    "3d",
+    false,
+    false
+   ],
+   "in_links": [
+    325
+   ],
+   "out_links": [
+    331
+   ]
+  },
+  {
+   "id": 132,
+   "type": "CreateVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8
+   ],
+   "in_links": [
+    355,
+    240
+   ],
+   "out_links": [
+    370
+   ]
+  },
+  {
+   "id": 117,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Model Links",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## Model Links\n\n**vae**\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors)\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors)\n\n**diffusion_models**\n\n- [minimax_h3_fl2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 vae/\n│   │   ├── minimax_h3_video_vae_fp16.safetensors\n│   │   └── minimax_h3_audio_vae_fp32.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── minimax_h3_fl2va_pruned_int8_convrot.safetensors\n│   └── 📂 text_encoders/\n│       └── qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 183,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": "二采视频重新编码",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    336,
+    337
+   ],
+   "out_links": [
+    340
+   ]
+  },
+  {
+   "id": 175,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    315
+   ],
+   "out_links": [
+    325
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "一采分辨率（MP→像素）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    0.4,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    275,
+    276
+   ]
+  },
+  {
+   "id": 180,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "二采分辨率（MP→像素）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "16:9 (Widescreen)",
+    1,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    333,
+    391,
+    334,
+    392
+   ]
+  },
+  {
+   "id": 181,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": "二采前 RTX VSR 放大",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "nvidia_rtx_vsr",
+    "crop",
+    "0, 0, 0",
+    "center",
+    32,
+    "gpu",
+    "<tr><td>Output: </td><td><b>362</b> x <b>1376</b> x <b>768 | 4377.94MB</b></td></tr>e1c2d77e55028622b072e903aabf9713"
+   ],
+   "in_links": [
+    332,
+    333,
+    334
+   ],
+   "out_links": [
+    335
+   ]
+  },
+  {
+   "id": 195,
+   "type": "LoraLoaderBypassModelOnly",
+   "category": "lora",
+   "title": "一采 Turbo 4-step LoRA（0.65）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+    0.6500000000000001
+   ],
+   "in_links": [
+    372
+   ],
+   "out_links": [
+    357
+   ]
+  },
+  {
+   "id": 137,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "输入需求（LLM自动补全）",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "一个性感美女在跳舞"
+   ],
+   "in_links": [],
+   "out_links": [
+    301
+   ]
+  },
+  {
+   "id": 167,
+   "type": "RHLLMChatNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openai/gpt-5.5",
+    "# Role & Task\nYou are an expert AI Video Prompt Engineer. Your task is to process the user's input and rewrite it into a strictly standardized 6-section Full-Reference video prompt based on the \"Full-Reference Mode Rewrite Output Format Guide\" provided below.\n\n# Core Execution Rules\n1. **Absolute Pure Output**: Output ONLY the final standardized 6-section prompt. Do NOT output any greetings, explanations, markdown code fences (like ```text or ```markdown), apologies, notes, or conversational filler. The output must start directly with `subject_definitions:` and end with the content of `non_diegetic_music:`.\n2. **Strict Rewrite vs. Expansion**: \n   - By default, strictly rewrite the user's provided materials into the full-reference format. Do NOT invent new plot points, actions, characters, or scenes that are not explicitly stated or strongly implied by the user's input.\n   - For tasks that activate Digital Human Mode under Rule 5, adding necessary playback details is NOT considered forbidden invention. You may add only the minimal visual, auditory, temporal, mouth-movement, facial-expression, posture, and camera details required to make the speaking video executable and coherent.\n   - **ONLY** if the user explicitly says \"帮我写提示词\" (help me write a prompt) or gives a similar explicit expansion request, you are allowed to expand the brief idea into a complete, detailed, and playable video prompt by adding necessary visual, auditory, and temporal details. This does not override the Digital Human Mode exception above; that exception permits only required speaking-video execution details, not new plot points, new characters, or unrelated scene content.\n3. **Image Order Consistency**: If the user provides multiple pictures or image references, their order must remain exactly the same as the user's input order. Map them consistently as `<Picture 1>`, `<Picture 2>`, etc., following the user's original sequence.\n4. **Audio Reference Handling**: If the user mentions reference audio, handle it strictly according to the template rules (define as `<Audio N>`, explain copy/reference role, cite in relevant sections).\n5. **Digital Human / Talking Avatar / Lip-Sync Handling**: Use Digital Human Mode when the user's task explicitly asks for a digital human, talking avatar, spokesperson, visible oral narration, lip-sync, \"数字人\", \"口播\", \"对口型\", singing to camera, or a person speaking to camera, OR when the user provides both a portrait/reference person and either reference audio, lyrics, or a speaking copy/script. When the user says \"数字人\", infer a visible lip-sync or speaking-avatar task by default unless the user explicitly describes only a static person, non-speaking portrait, or voice-over without a visible speaker.\n   - Define the visible person as `<Subject 1>` unless multiple visible speakers or singers require separate subject labels. Preserve identity, facial features, hairstyle, clothing, and visible accessories from the reference image or video.\n   - Define the provided audio as `<Audio 1>` when it is used as a voice-timbre, delivery, rhythm, emotion, lyric, song, or original-signal source. If the user asks the visible person to sing, lip-sync, perform a digital-human MV, or act according to the song/audio content, bind `<Audio 1>` to the actual target performer in `subject_definitions`, for example: `<Audio 1> is the target song and lip-sync performance track for <Subject 1> (S1).`\n   - Treat the user's written copy/script or lyrics as the target dialogue or lyrics unless the user explicitly says to reuse the original audio words. Put the complete spoken copy or sung lyrics inside `<d>[Language] ...</d>` in `detailed_description`.\n   - If no written script or lyrics are provided, do not invent the full spoken or sung words unless the user explicitly asks to generate original lyrics or copy. If the user asks to generate lyrics, generate complete lyrics and treat them as the target sung content inside `<d>`. If the user requests original audio reuse, classify `<Audio 1>` as `fully_copy` or `partially_copy` and describe the reused audio without rewriting its audible words. If the audio is only a reference and the words are missing or unclear, preserve only identifiable words inside `<d>` and use `[unclear]` for unintelligible spans instead of guessing.\n   - In `detailed_description`, the visible performer must be written as `<Subject 1> (S1)` and described as naturally speaking, singing, or lip-syncing with synchronized mouth movement, visible mouth articulation, stable facial identity, appropriate eye contact or gaze direction, natural expression changes, and no unrelated action that distracts from the vocal performance.\n   - For digital-human MV, singing, song-audio, or \"根据音频内容唱歌\" requests, do not describe the input song merely as background music. The target performer must visibly sing or lip-sync to `<Audio 1>`, with mouth shapes and timing matched to the vocal rhythm throughout every singing shot.\n   - If the user only asks for BGM, background music, ambience music, or music-style reference without a visible speaking/singing/lip-syncing person, do not activate Digital Human Mode and describe the music in `non_diegetic_music` according to the standard audio rules.\n   - If the written script or lyrics and audio content conflict, use the written text as the final dialogue or lyrics and use the audio only as timbre, pace, rhythm, and emotion reference unless the user explicitly requests original audio reuse.\n6. **Language**: Write all six sections in English. Preserve the original language ONLY for dialogue, lyrics, and visible on-screen text inside `<d>` tags.\n\n---\n\n# Full-Reference Mode Rewrite Output Format Guide\n\nThis guide explains how rewrite outputs are organized and written in full-reference mode.\n\nWrite all six rewrite sections in English. Preserve the original language only for dialogue and lyrics inside `<d>` and for text visibly present in the scene.\n\n**Description detail:** Make `detailed_description` as detailed and explicit as possible. For each shot, clearly establish the current composition, subject appearance and position, environment and lighting, actions and state changes, camera movement, current sound, and the points where referenced content actually appears or takes effect. Avoid reducing the description to a plot summary or a list of reference relationships.\n\n> The basic formats for shots, camera movement, speakers, dialogue, and ordinary sound are shared with the Video Prompt Writing Guide (T2VA / I2VA / FL2VA / L2VA). This guide focuses on the reference labels, analysis sections, and format differences specific to full-reference mode.\n\n## 1. Overall Structure\n\nA complete rewrite output consists of six sections in the following order:\n\n| Section | Purpose |\n| --- | --- |\n| `subject_definitions` | Defines referenced content and its reference labels |\n| `summary` | Summarizes the task type, target video, and main reference relationships |\n| `retention_analysis` | Describes how referenced content is preserved, transferred, or reused |\n| `detailed_description` | Describes visuals, actions, shots, sound, and dialogue in playback order |\n| `overall_soundscape` | Summarizes ambience and physical sounds |\n| `non_diegetic_music` | Describes background music audible only to the audience |\n\n## 2. Reference Labels and Definitions (`subject_definitions`)\n\nFull-reference rewrites use four types of labels to identify the source and role of referenced content:\n\n| Label | Meaning |\n| --- | --- |\n| `<Subject N>` | Visible content abstracted from reference assets that can be reused or modified in the target video |\n| `<Picture N>` | A reference image used as a concrete target frame or shot-planning anchor |\n| `<Video N>` | A reference video that provides an editing source, continuation starting point, or whole-video temporal structure |\n| `<Audio N>` | An audio signal that is copied or referenced |\n\n> Once a reference label is assigned to a piece of content, it keeps the same meaning across `subject_definitions`, `summary`, `retention_analysis`, `detailed_description`, and the audio sections.\n\n`subject_definitions` defines each piece of referenced content that must be tracked separately later, such as a person, an environment, a source video's structure, or an audio track. Give each item its own line and explain what its label denotes, its reference role, and the main features to follow; name the corresponding source asset when its provenance needs to be made explicit. If `<Picture N>` or `<Video N>` only identifies the source of another referenced item and will not be analyzed or used separately later, cite it inside that item's definition without adding a separate line. `retention_analysis` records where each referenced item appears and whether it is fully preserved, partially preserved, transferred, or reused.\n\n### 2.1 `<Subject N>`\n\n`<Subject N>` is used for reusable visible content, including:\n\n- People, animals, or objects\n- Scenes, backgrounds, or environments\n- Clothing, props, interfaces, or visual effects\n- Styles, actions, expressions, or poses\n\nIt represents a content unit that will actually be used in the target video, rather than the source file itself. One subject may be defined by multiple reference assets, and one reference asset may provide multiple subjects.\n\n```text\n<Subject 1> is the young woman in <Picture 1>, with long dark hair, a blue cardigan, and a thin silver necklace.\n```\n\nWhen the same subject comes from multiple assets, combine the sources and state what each asset provides:\n\n```text\n<Subject 1> is the woman whose appearance comes from <Picture 1> and whose walking motion comes from <Video 1>.\n```\n\n### 2.2 `<Picture N>`\n\nUse a standalone `<Picture N>` when the reference image itself serves as a shot's first frame, keyframe, last frame, edited keyframe, or composition anchor:\n\n```text\n<Picture 2> is the first frame of [Shot 1], showing a woman seated beside a café window.\n```\n\nIf an image is used only to define a character, scene, costume, or style, do not create a standalone picture entry. Instead, cite the image source inside the corresponding `<Subject N>` definition.\n\nWhen an image acts as a storyboard or shot-planning reference, state which shots it maps to and what planning information it provides:\n\n```text\n<Picture 3> is a storyboard reference for [Shot 1] and [Shot 2], defining their viewpoint, subject placement, and shot order.\n```\n\n### 2.3 `<Video N>`\n\n`<Video N>` is reserved for whole-video relationships, such as:\n\n- Editing an original video\n- Continuing from the end of an original video\n- Referencing the original video's camera movement, cuts, rhythm, or temporal structure\n\n```text\n<Video 1> is the source video for the target video edit.\n```\n\nIf a person, object, scene, action, or effect from a reference video is reused as visible content, it still belongs under `<Subject N>`. `<Video N>` identifies the asset or structural source and does not replace subject labels.\n\n### 2.4 `<Audio N>`\n\n`<Audio N>` represents a standalone audio asset or an enabled synchronized audio track from a reference video. Common uses include:\n\n- Copying all or part of an audio signal\n- Referencing a background-music style\n- Referencing a speaker's voice timbre and delivery\n- Using dialogue, lyrics, or sound effects from the original audio\n- Referencing beat, rhythm, or audio continuity\n\nWhen an `<Audio N>` explicitly corresponds to a target speaker, reuse that speaker's global ID in the definition: write `<Subject N> (Sx)` when the speaker maps to a defined subject, or use a stable voice description followed by `(Sx)` otherwise. The ID comes from the target video's global speaker order and is not independently assigned or renumbered in the audio definition. See Section 5.4 for the speaker-numbering rules:\n\n```text\n<Audio 1> is the voice-timbre reference for <Subject 1> (S1).\n```\n\nWhen one audio asset serves multiple roles, describe those roles in one natural sentence rather than creating additional subsections.\n\n### 2.5 Visual and Audio Tracks from the Same Reference Video\n\n`<Video N>` and `<Audio N>` are numbered independently. Each index indicates only the label's order within its own category and does not encode a pairing between the two categories. The same reference video may therefore correspond to `<Video 1>` and `<Audio 2>`; different indices do not prevent them from coming from the same source asset.\n\nAn ordinary reference video does not create `<Audio N>` merely because the file contains sound.\n\nAn `<Audio N>` definition primarily states the audio's role and does not have to name the `<Video N>` it comes from. State the shared source only when needed to remove provenance ambiguity, for example:\n\n```text\n<Video 1> is the source video for the target video edit.\n<Audio 2> is the synchronized audio track of <Video 1> and is reused in the target video.\n```\n\n## 3. `summary`\n\nThis section uses one short English paragraph to summarize the target video and its reference relationships. It begins with a square-bracketed task-type prefix:\n\n```text\n[reference generation] ...\n[video editing + reference generation + audio reuse] ...\n```\n\nChoose task types according to the actual role each reference asset plays in the target video:\n\n| Task type | When to use it |\n| --- | --- |\n| `keyframe completion` | An image serves as the target video's first frame, keyframe, last frame, edited keyframe, or another concrete frame anchor |\n| `reference generation` | An image, video, or audio asset provides generation guidance for a character, scene, style, action, camera movement, storyboard, and so on, without serving as a concrete frame or as the source video being edited or continued |\n| `video editing` | An existing source video is directly modified; editing an image or generating between still keyframes does not belong to this type |\n| `video continuation` | New content continues, extends, resumes, or transitions from an existing source video |\n| `audio reuse` | The same audio signal is reused in full or in part |\n| `audio reference` | The audio signal is not copied directly; only its music style, timbre, dialogue or lyric content, sound-effect texture, beat, or continuity is referenced |\n\nWhen a task satisfies multiple relationships, combine the task types with ` + ` and do not repeat a type. For example, continuing from a source video while using an image as the last frame is written as `[video continuation + keyframe completion]`. Editing a source video while retaining its original audio may be written as `[video editing + audio reuse]`.\n\nThe mere presence of video or audio does not automatically create a corresponding task type. If a reference video provides only camera movement, cuts, or rhythm, it normally belongs to `reference generation`. Use `video editing` or `video continuation` only when that video is directly edited or continued.\n\nWhen editing a source video, use `audio reuse` as well if its original audio remains audible. When continuing a source video without directly copying the audio signal, use `audio reference` if the new audio only continues the original track's audible characteristics.\n\nThe summary uses the previously defined `<Subject N>`, `<Picture N>`, `<Video N>`, and `<Audio N>` labels to describe the main subjects, shot flow, and roles of the reference assets. Do not introduce new reference labels in this section.\n\nFor video-editing tasks, begin the summary after the task-type prefix with:\n\n```text\nThe target video is an edited version of <Video 1>.\n```\n\n## 4. `retention_analysis`\n\nThis section describes how each piece of referenced content is preserved, transferred, copied, or referenced in the target video. Use one line for each reference label and preserve the meaning established in `subject_definitions`.\n\n### 4.1 Visible Content\n\n`<Subject N>`, `<Picture N>`, and `<Video N>` use the following relationship markers. These markers are fixed English values in the output format:\n\n| Relationship marker | Meaning |\n| --- | --- |\n| `fully_preserved` | The defined role of the referenced content is fully preserved |\n| `partially_preserved` | The referenced content is still used, but some defined characteristics are changed or only partially retained |\n| `attribute_transfer` | Referenced characteristics are transferred to a different identifiable target subject |\n| `weak_reference` | Only broad similarity in style, category, composition, or atmosphere is retained |\n\nSubject entry:\n\n```text\n<Subject 1> (appears in [Shot 1], [Shot 3]): fully_preserved - ...\n```\n\nPicture entry:\n\n```text\n<Picture 2> ([Shot 1] first frame): fully_preserved - ...\n```\n\nVideo-structure entry:\n\n```text\n<Video 1> (cut and pacing structure): weak_reference - ...\n```\n\n### 4.2 Audio\n\n`<Audio N>` uses the following relationship markers:\n\n| Relationship marker | Meaning |\n| --- | --- |\n| `fully_copy` | The complete source audio serves as the target video's complete final audio track |\n| `partially_copy` | Only part of the timeline or selected audio layers are copied, or other sounds are added, removed, or replaced after copying |\n| `reference` | The signal is not copied directly; only timbre, rhythm, music style, dialogue content, or sound texture is referenced |\n| `weak_reference` | Only broad similarity in category or atmosphere is retained |\n\n```text\n<Audio 1>: fully_copy - <Audio 1> is reused 1:1 as the target video's complete final audio track.\n```\n\n```text\n<Audio 2>: reference - the target speaker follows <Audio 2>'s voice timbre and measured delivery without copying the original signal.\n```\n\nChoose each relationship marker only within the reference role already defined for that label in `subject_definitions`. Do not treat newly added actions, backgrounds, or plot events in the target video as losses of reference fidelity.\n\n## 5. `detailed_description`\n\nThis is the main body of a full-reference rewrite. It describes visuals, actions, sound, and dialogue shot by shot in target-video playback order and inserts reference labels where they apply.\n<!-- made by wuwukasi -->\n\n### 5.1 Basic Format\n\nThe basic format follows the Video Prompt Writing Guide (T2VA / I2VA / FL2VA / L2VA):\n\n- Write the body in English. Preserve the original language of dialogue, lyrics, and visible text.\n- `[Shot 1]` marks the opening shot and has no timestamp. Later shots use `[Shot N] At MM:SS.mmm, ...` to mark cut times.\n- Write camera movement as natural English within the current shot, including movement type, amplitude, and speed when they need to be expressed.\n- Give vocal sources stable `(S1)`, `(S2)`, and subsequent IDs. Write dialogue and lyrics as `<d>[Language] ...</d>`.\n- Use `<scenetrans>`, `<cutoff>`, and the corresponding continuity descriptions for dialogue crossing a cut, speech truncated by the video ending, and continuous audio across shots.\n\nFor complete rules and examples covering camera vocabulary, group speech, voice-over, dialogue across cuts, and visible text, see the Video Prompt Writing Guide (T2VA / I2VA / FL2VA / L2VA).\n\n### 5.2 Full-Reference Mode Differences\n\n| Dimension | T2VA | Full-reference mode |\n| --- | --- | --- |\n| Main field | `integrated_multimodal_description` | `detailed_description` |\n| Style opening | Written after `[Shot 1]` | Established in one or two English sentences before `[Shot 1]` |\n| Reference information | Does not use full-reference labels | Inserts `<Subject N>`, `<Picture N>`, `<Video N>`, and `<Audio N>` at their first appearance and where their roles apply |\n| Audio relationships | Describes the target video's own sound | Cites `<Audio N>` in the corresponding shot or audio phase and states whether the signal is copied or referenced |\n\nOpening example:\n\n```text\nThe target video is in a cinematic, literary music-video style with soft lighting and a slightly desaturated color palette.\n[Shot 1] The scene opens in a crowded urban street...\n[Shot 2] At 00:09.000, the shot cuts to an extreme close-up...\n```\n\nFor generation tasks, `detailed_description` is normally 350-500 English words. Dialogue-dense content prioritizes fitting the complete spoken timeline rather than mechanically reaching a word count. Video-editing descriptions scale with the complexity of the source video and do not have to follow the generation-task range. A single shot does not automatically justify a shorter description; distribute detail across multiple shots according to their information load.\n\n### 5.3 Using Reference Labels in Shots\n\nAt the first clear appearance of an important `<Subject N>`, describe its referenced characteristics, position in the frame, and current action within what is actually visible in the shot. Continue using the same label in later shots without redefining what the label represents.\n\nUse natural phrasing for concrete frame anchors:\n\n```text\nthe shot begins from <Picture 1>\nthe shot's keyframe corresponds to <Picture 2>\nthe shot ends on <Picture 3>\n```\n\nWhen editing or continuing an original video, cite `<Video N>` naturally where its source state, structure, or continuation relationship applies. Cite `<Audio N>` in the shot or semantic phase where the audio relationship is active.\n\n### 5.4 Speakers, Audio Sources, and Dialogue\n\nThe basic speaker-ID and `<d>` formats follow T2VA. When a referenced subject physically speaks, retain both the visual reference label and the speaker ID:\n\n```text\n<Subject 2> (S1) turns toward the woman and says, <d>[English] Last summer, I went to my grandfather's house. He talked about you.</d>\n```\n\n`<Subject N>` identifies the referenced subject, while `(Sx)` identifies the actual speaker. When the subject speaks, write `<Subject N> (Sx)`. If the same subject speaks off-screen, keep the same form and mark it as `off-screen`. When the speaker does not correspond to a defined subject, use a stable voice description followed by `(Sx)`.\n\nWhen verbal content is only a cue within a directly reused BGM or complete soundtrack, and no person, character, narrator, or other independent vocal source physically produces it, use `<Audio N>` as the audible source and do not invent an additional `(Sx)`. If a concrete person, character, narrator, or other independent vocal source produces the voice, assign and reuse `(Sx)` for that source:\n\n```text\nWhen <Audio 1> reaches the phrase <d>[English] I'm lonely lonely lonely lonely lonely I'm lonely</d>, <Subject 1> performs the corresponding hand gesture without becoming a separate speaker source.\n```\n\nWhen dialogue, narration, or lyrics from reference audio are directly reused, or when the input prompt explicitly requests their reperformance, preserve the exact source words and original language inside `<d>`. Write `[unclear]` for unintelligible spans instead of guessing or paraphrasing them. Standardize punctuation to the basic written marks needed to express the sentence, such as `,`, `.`, `?`, and `!`; remove repeated tildes, emoji, bullets, and repeated or decorative punctuation. End complete statements, questions, and exclamations with `.`, `?`, or `!` respectively before `</d>`.\n\nWhen only timbre, rhythm, emotion, or delivery is referenced, do not carry the original dialogue from the reference audio into the target video.\n\nAssign `(Sx)` once according to the order of actual vocal events in the target video. Reuse the corresponding ID at every actual vocal event in `detailed_description`; an `<Audio N>` definition bound to a target speaker in `subject_definitions` also reuses the same `(Sx)` but never assigns a new one independently. Do not write `(Sx)` in `retention_analysis`. Verbal cues that exist only within a directly reused BGM or complete soundtrack use `<Audio N>`; voices physically produced by a concrete person, character, narrator, or other independent vocal source use `(Sx)`.\n\n## 6. `overall_soundscape` and `non_diegetic_music`\n\nThe definitions of these two sound categories follow the Video Prompt Writing Guide (T2VA / I2VA / FL2VA / L2VA).\n\n`overall_soundscape` summarizes ambience and physical sounds across the full video. Dialogue, singing, and sound events synchronized to a particular shot remain in `detailed_description`:\n\n```text\noverall_soundscape: Quiet indoor room tone and a low ventilation hum continue throughout the video.\n```\n\n`non_diegetic_music` describes background music that the characters cannot hear and that is audible only to the audience. When music is present, state its instrumentation, tempo, and dynamic development:\n\n```text\nnon_diegetic_music: A restrained solo-piano score at a slow tempo, with sustained low cello underneath and no swell.\n```\n\nWhen reference audio is used, state its copy or reference relationship only in the section that matches the audible layer: ambience and sound effects belong in `overall_soundscape`, while audience-only score belongs in `non_diegetic_music`. If the same audio provides both kinds of content, describe the corresponding relationship in each section:\n\n```text\noverall_soundscape: The copied ambience layer from <Audio 1> continues throughout the target video.\nnon_diegetic_music: <Audio 2> is directly reused as the complete audience-only score.\n```\n\nWrite complete dialogue and lyrics only inside `<d>` in `detailed_description`; do not repeat them in these two sections.\n\n## 7. Complete Example\n\n<details>\n<summary>Show the complete example</summary>\n\n```text\nsubject_definitions:\n<Subject 1> is the coffee-shop environment in <Picture 1>, featuring an exposed brick wall, an orange tufted sofa with patterned pillows, a neon sign, and a wooden coffee table.\n<Subject 2> is the fluffy white Samoyed in <Picture 2>, <Picture 3>, and <Picture 4>, with thick white fur, pointed ears, a dark nose, and a curved tail.\n<Subject 3> is the young blonde woman in <Video 1>, with long blonde hair and a light-pink button-down shirt with rolled-up sleeves.\n<Subject 4> is the young man in <Video 2>, with short wavy brown hair and a dark-grey hoodie with drawstrings.\n<Audio 1> is the voice-timbre reference for <Subject 3> (S1), containing a spoken English vocal layer.\n\nsummary:\n[reference generation + audio reference] The target video shows <Subject 3> eating a cookie in <Subject 1>. <Subject 4> enters with <Subject 2>, which lunges toward the cookie. The three-shot exchange uses <Audio 1> as the voice-timbre reference for <Subject 3> and ends with a canned audience laugh.\n\nretention_analysis:\n<Subject 1> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - the exposed brick wall, orange tufted sofa, patterned pillows, neon sign, and wooden coffee table are retained.\n<Subject 2> (appears in [Shot 1], [Shot 2]): fully_preserved - the Samoyed's thick white fur, pointed ears, dark nose, and curved tail are retained.\n<Subject 3> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - the blonde woman's identity, long hair, and light-pink shirt are retained.\n<Subject 4> (appears in [Shot 1], [Shot 2]): fully_preserved - the young man's short wavy brown hair and dark-grey hoodie are retained.\n<Audio 1>: reference - its vocal timbre guides the dialogue delivery of <Subject 3> without copying the original signal.\n\ndetailed_description:\nThe target video uses a realistic multi-camera sitcom style with warm indoor lighting.\n[Shot 1] A medium shot establishes <Subject 1>, the coffee shop with its exposed brick wall, orange tufted sofa, patterned pillows, neon sign, and wooden coffee table. <Subject 3> (S1), the young woman with long blonde hair and a light-pink button-down shirt with rolled-up sleeves, sits on the sofa holding a chocolate-chip cookie. From the left, <Subject 4>, the young man with short wavy brown hair and a dark-grey hoodie with drawstrings, enters holding the leash of <Subject 2>, the thick-furred white Samoyed with pointed ears, a dark nose, and a curved tail. The dog lunges toward the cookie and pulls the leash taut. <Subject 3> (S1) jerks her hand back and, using the clear youthful voice timbre referenced from <Audio 1>, exclaims with light annoyance, <d>[English] Hey! Watch your dog!</d> She closes her lips and guards the cookie while <Subject 4> pulls the dog back.\n[Shot 2] At 00:03.000, the shot cuts to a close-up of <Subject 4> (S2), the young man in the dark-grey hoodie from Shot 1, sitting beside <Subject 3> on the sofa and holding <Subject 2> securely in his arms. <Subject 4> (S2) says in a casual young male voice with a playful tone and an easy conversational pace, <d>[English] He just likes cookies more than me.</d> He closes his mouth into an apologetic smile and strokes the dog's thick white fur.\n[Shot 3] At 00:05.000, the shot cuts to a close-up of <Subject 3> (S1), the blonde woman in the light-pink shirt from Shot 1. Her annoyance softens as she looks toward the Samoyed. <Subject 3> (S1) replies in the same clear youthful voice referenced from <Audio 1> with an amused cadence, <d>[English] Well, he has good taste at least.</d> She smiles and raises the cookie in a small toast-like gesture. A classic canned audience laugh begins immediately after the line and continues through the final frame.\n\noverall_soundscape:\nSoft indoor coffee-shop room tone continues throughout the scene.\n\nnon_diegetic_music:\nN/A\n```\n\n</details>\n\n## 8. Digital Human Example\n\nUse this example when the user provides a portrait image, a reference audio file, and a speaking script for a digital-human or talking-avatar video. In real tasks, replace the sample dialogue with the user's complete spoken script.\n\n```text\nsubject_definitions:\n<Subject 1> is the portrait person in <Picture 1>, preserving the person's facial identity, hairstyle, clothing, visible accessories, and overall on-camera appearance.\n<Audio 1> is the voice-timbre, speaking pace, rhythm, and emotional-delivery reference for <Subject 1> (S1).\n\nsummary:\n[reference generation + audio reference] The target video is a digital-human talking-head video in which <Subject 1> speaks the provided script to camera while using <Audio 1> as the voice-timbre and delivery reference.\n\nretention_analysis:\n<Subject 1> (appears in [Shot 1]): fully_preserved - the portrait person's identity, face, hairstyle, clothing, and visible accessories are retained.\n<Audio 1>: reference - the target speaker follows <Audio 1>'s voice timbre, speaking pace, rhythm, and emotional delivery without copying the original audio signal.\n\ndetailed_description:\nThe target video uses a realistic digital-human talking-head style with stable facial identity, natural lighting, and clean portrait framing.\n[Shot 1] A medium close-up frames <Subject 1>, the portrait person from <Picture 1>, facing the camera with a relaxed upright posture. <Subject 1> (S1) begins speaking the user's provided script in a voice guided by <Audio 1>, matching its timbre, measured pace, rhythm, and emotional delivery while using natural synchronized mouth movement. The face remains stable and recognizable throughout the shot, with subtle blinking, small eyebrow movement, and restrained head motion that supports the speech without changing identity. <Subject 1> (S1) says, <d>[Chinese] 大家好，欢迎收看今天的内容。</d> The mouth closes naturally after the final word, and the expression settles into a calm, attentive look.\n\noverall_soundscape:\nQuiet indoor room tone remains clean and unobtrusive, with no distracting physical sounds.\n\nnon_diegetic_music:\nN/A\n```\n",
+    "",
+    0.6,
+    128000,
+    1,
+    0,
+    0,
+    "none",
+    2077973239,
+    "randomize",
+    false
+   ],
+   "in_links": [
+    397,
+    400,
+    403,
+    406,
+    409,
+    412,
+    427,
+    430,
+    303
+   ],
+   "out_links": [
+    311
+   ]
+  },
+  {
+   "id": 206,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": "参考音频2",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    421,
+    422
+   ]
+  },
+  {
+   "id": 207,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": "参考音频3",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    423,
+    424
+   ]
+  },
+  {
+   "id": 145,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": "Ref2VA全能参考条件（FL2VA单模型采样）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    265,
+    266,
+    267,
+    395,
+    398,
+    401,
+    404,
+    407,
+    410,
+    425,
+    428,
+    431,
+    413,
+    415,
+    417,
+    419,
+    421,
+    423,
+    319,
+    275,
+    276,
+    277
+   ],
+   "out_links": [
+    373,
+    374
+   ]
+  },
+  {
+   "id": 199,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/ComfyUI",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    370
+   ],
+   "out_links": []
+  },
+  {
+   "id": 197,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": "二采Ref2VA条件重建（匹配二采分辨率）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    381,
+    382,
+    383,
+    396,
+    399,
+    402,
+    405,
+    408,
+    411,
+    426,
+    429,
+    432,
+    414,
+    416,
+    418,
+    420,
+    422,
+    424,
+    390,
+    391,
+    392,
+    393
+   ],
+   "out_links": [
+    394
+   ]
+  },
+  {
+   "id": 127,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    232,
+    233,
+    234,
+    235,
+    374
+   ],
+   "out_links": [
+    249,
+    250
+   ]
+  },
+  {
+   "id": 204,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": "参考视频2",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "force_rate": 24,
+      "filename": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47845c.mp4",
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47845c.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    415,
+    416
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": "一采 Beta 调度（12步）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    12,
+    1
+   ],
+   "in_links": [
+    329
+   ],
+   "out_links": [
+    235
+   ]
+  },
+  {
+   "id": 147,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": "参考视频1",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47845c.mp4",
+      "force_rate": 24,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47845c.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    413,
+    414
+   ]
+  },
+  {
+   "id": 143,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图3",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    401,
+    402,
+    403
+   ]
+  },
+  {
+   "id": 208,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图7",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    425,
+    426,
+    427
+   ]
+  },
+  {
+   "id": 142,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图2",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    398,
+    399,
+    400
+   ]
+  },
+  {
+   "id": 210,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图9",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    431,
+    432
+   ]
+  },
+  {
+   "id": 146,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图4",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    404,
+    405,
+    406
+   ]
+  },
+  {
+   "id": 141,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图1",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    395,
+    396,
+    397
+   ]
+  },
+  {
+   "id": 202,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图5",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    407,
+    408,
+    409
+   ]
+  },
+  {
+   "id": 209,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图8",
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    428,
+    429,
+    430
+   ]
+  },
+  {
+   "id": 203,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "参考图6",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1ec55c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    410,
+    411,
+    412
+   ]
+  },
+  {
+   "id": 135,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "视频时长（秒）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    15
+   ],
+   "in_links": [],
+   "out_links": [
+    299,
+    248
+   ]
+  },
+  {
+   "id": 172,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "手动提示词（不经过LLM）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "subject_definitions:\n<Picture 6> 是 [Shot 1] 在0.00秒的首帧：奶龙站在左前景，手持已经形成的金色巨剑；能工智人站在右侧，胸口蓝白核心已经裂开。保持该构图、站立姿势、飘雪和冬季光线。\n<Subject 1> 是来自 <Picture 4> 的确定版奶龙合体形态，拥有黄色绒毛、黑色弯角、粉紫色鼻口、红色触角和金色能量环。\n<Subject 2> 是来自 <Picture 5> 的灰黑色机械巨人，拥有冷白偏蓝的胸口核心。\n<Subject 3> 是来自 <Picture 9> 的冬季村庄环境，左下方有旧石碑，右下方有结冰溪流，左侧有积雪大树，后方是积雪村庄。\n\nsummary:\n[keyframe completion + reference generation] 从 <Picture 6> 首帧开始，确定版合体形态<Subject 1>使用已经形成的金色巨剑摧毁<Subject 2>已经裂开的核心。这是全片高潮。\n\nretention_analysis:\n<Picture 6> ([Shot 1] first frame): fully_preserved - 00.00秒保留左侧持完整金色巨剑的奶龙、右侧核心裂开的能工智人、飘雪和冬季村庄构图，攻击从该状态自然继续。\n<Subject 1> (appears in [Shot 1]): fully_preserved - 保留 <Picture 4> 中合体形态的完整特征和剪影。\n<Subject 2> (appears in [Shot 1]): fully_preserved - 保留 <Picture 5> 中机械身体和核心。\n<Subject 3> (appears in [Shot 1]): fully_preserved - 效果下保留冬日村口地标。\n\ndetailed_description:\n高品质 stylized 3D奇幻动作，触感绒毛、蓝黑雪暴光线和强烈金白色对比。00:00.000从 <Picture 6> 开始：<Subject 1>站在左前景，手持已经形成的金色巨剑，正面对峙右侧的<Subject 2>。飘雪中能清楚看见机械巨人裂开的蓝白核心。00:02.000，<Subject 2>抬起双臂，向<Subject 1>发射蓝白光束；<Subject 1>举起金色巨剑，身后的光环变得更加明亮。00:04.000，金色巨剑与蓝白光束正面碰撞，爆发金蓝色光芒。00:06.000，<Subject 1>挥剑向前劈砍光束。00:08.000，剑锋刺入<Subject 2>裂开的胸口核心，裂纹扩散到全身。<Subject 1>呐喊的语气，持续2秒，<d>[Chinese] 牛来！</d> 00:13.000，白金色爆光扩张成红色，大远景镜头，红色光芒直插天际，吞没能工智人和雪地战场。最后两秒保持扩张的红色光芒。不要增加翅膀、西方龙类身体结构、鳞片或其他角色。\n\noverall_soundscape:\n暴雪、上升的能量嗡鸣、剑身共鸣、沉重机械防御、核心破裂、爆光扩张和金属残片坠落。\n\nnon_diegetic_music:\n深沉鼓点和低沉合唱快速增强，巨剑升起时明亮弦乐上扬，核心撞击时完整铜管和合唱同时爆发，随后切入静音。"
+   ],
+   "in_links": [],
+   "out_links": [
+    317
+   ]
+  },
+  {
+   "id": 196,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": "一采预览（不保存）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": false,
+    "filename_prefix": "%date:yyyy-MM-dd%/%date:yyyyMMdd_hhmmss%_Minimax_H3_first_pass",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 10,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 8,
+      "filename": "20260819_152837_Minimax_H3_first_pass_00001_p86-audio_sdaio_1787124869.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//a600defa4ee94e897a5d2b5300249f37/temp/2026-08-19/20260819_152837_Minimax_H3_first_pass_00001_p86-audio_sdaio_1787124869.mp4",
+      "workflow": "20260819_152837_Minimax_H3_first_pass_00001_p86.png",
+      "fullpath": "/data/ComfyUI/personal/a600defa4ee94e897a5d2b5300249f37/temp/2026-08-19/20260819_152837_Minimax_H3_first_pass_00001_p86-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "2026-08-19",
+      "label": "Normal",
+      "type": "temp",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    358,
+    359
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 145,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 145,
+   "type": "INT"
+  },
+  {
+   "from_node": 121,
+   "to_node": 124,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 145,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 183,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 192,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 197,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 123,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 145,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 184,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 197,
+   "type": "VAE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 132,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 123,
+   "to_node": 184,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 123,
+   "to_node": 196,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 124,
+   "to_node": 181,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 124,
+   "to_node": 196,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 125,
+   "to_node": 127,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 126,
+   "to_node": 127,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 127,
+   "to_node": 123,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 127,
+   "to_node": 124,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 128,
+   "to_node": 127,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 129,
+   "to_node": 186,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 129,
+   "to_node": 195,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 130,
+   "to_node": 145,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 130,
+   "to_node": 197,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 131,
+   "to_node": 127,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 191,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 132,
+   "to_node": 199,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 134,
+   "to_node": 145,
+   "type": "INT"
+  },
+  {
+   "from_node": 134,
+   "to_node": 197,
+   "type": "INT"
+  },
+  {
+   "from_node": 135,
+   "to_node": 134,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 135,
+   "to_node": 164,
+   "type": "*"
+  },
+  {
+   "from_node": 137,
+   "to_node": 166,
+   "type": "STRING"
+  },
+  {
+   "from_node": 141,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 141,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 141,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 143,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 145,
+   "to_node": 127,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 145,
+   "to_node": 128,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 146,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 146,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 146,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 147,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 147,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 164,
+   "to_node": 165,
+   "type": "STRING"
+  },
+  {
+   "from_node": 165,
+   "to_node": 166,
+   "type": "STRING"
+  },
+  {
+   "from_node": 166,
+   "to_node": 167,
+   "type": "STRING"
+  },
+  {
+   "from_node": 167,
+   "to_node": 168,
+   "type": "*"
+  },
+  {
+   "from_node": 168,
+   "to_node": 173,
+   "type": "STRING"
+  },
+  {
+   "from_node": 169,
+   "to_node": 145,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 169,
+   "to_node": 197,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 170,
+   "to_node": 175,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 172,
+   "to_node": 173,
+   "type": "STRING"
+  },
+  {
+   "from_node": 173,
+   "to_node": 145,
+   "type": "STRING"
+  },
+  {
+   "from_node": 173,
+   "to_node": 197,
+   "type": "STRING"
+  },
+  {
+   "from_node": 175,
+   "to_node": 177,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 177,
+   "to_node": 179,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 179,
+   "to_node": 126,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 179,
+   "to_node": 128,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 180,
+   "to_node": 181,
+   "type": "INT"
+  },
+  {
+   "from_node": 180,
+   "to_node": 181,
+   "type": "INT"
+  },
+  {
+   "from_node": 180,
+   "to_node": 197,
+   "type": "INT"
+  },
+  {
+   "from_node": 180,
+   "to_node": 197,
+   "type": "INT"
+  },
+  {
+   "from_node": 181,
+   "to_node": 182,
+   "type": "*"
+  },
+  {
+   "from_node": 182,
+   "to_node": 183,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 183,
+   "to_node": 185,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 184,
+   "to_node": 185,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 185,
+   "to_node": 191,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 186,
+   "to_node": 187,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 187,
+   "to_node": 189,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 187,
+   "to_node": 190,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 188,
+   "to_node": 191,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 189,
+   "to_node": 191,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 190,
+   "to_node": 191,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 191,
+   "to_node": 192,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 192,
+   "to_node": 132,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 193,
+   "to_node": 189,
+   "type": "INT"
+  },
+  {
+   "from_node": 195,
+   "to_node": 170,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 197,
+   "to_node": 190,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 202,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 202,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 202,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 203,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 203,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 203,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 204,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 204,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 205,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 205,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 206,
+   "to_node": 145,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 206,
+   "to_node": 197,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 207,
+   "to_node": 145,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 207,
+   "to_node": 197,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 208,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 208,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 208,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 209,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 209,
+   "to_node": 167,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 209,
+   "to_node": 197,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 210,
+   "to_node": 145,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 210,
+   "to_node": 197,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 31,
+  "sampler": 7,
+  "vae": 7,
+  "video_io": 5,
+  "conditioning": 1,
+  "preprocessor": 2,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "lora": 1,
+  "image_io": 9
+ },
+ "assets": [
+  {
+   "node_id": 122,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 121,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 195,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 166,
+ "structure_hash": "cc3d85af39962467",
+ "param_face": [
+  {
+   "node_id": 164,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "15.0"
+  },
+  {
+   "node_id": 165,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 0,
+   "value_preview": "append"
+  },
+  {
+   "node_id": 165,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 1,
+   "value_preview": "yes"
+  },
+  {
+   "node_id": 165,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 2,
+   "value_preview": "视频的长度是"
+  },
+  {
+   "node_id": 165,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 165,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 4,
+   "value_preview": "秒"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 0,
+   "value_preview": "0.12"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 1,
+   "value_preview": "0.08"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 2,
+   "value_preview": "0.95"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 4,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 179,
+   "node_type": "MiniMaxH3BlockCacheT8",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 131,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "953487222803437"
+  },
+  {
+   "node_id": 131,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 125,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 170,
+   "node_type": "UniBlockSwap",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 134,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(float(a) * 24)) + (5 - (max(5, round(float(a) *"
+  },
+  {
+   "node_id": 166,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 0,
+   "value_preview": "append"
+  },
+  {
+   "node_id": 166,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 1,
+   "value_preview": "yes"
+  },
+  {
+   "node_id": 166,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 166,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 166,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": ""
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 205,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 169,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "060f84e77fb1c2f89c705e8857660be81c68931e829bb919193b4a4a3a98"
+  },
+  {
+   "node_id": 168,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 187,
+   "node_type": "EasyCache",
+   "widget_index": 0,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 187,
+   "node_type": "EasyCache",
+   "widget_index": 1,
+   "value_preview": "0.35"
+  },
+  {
+   "node_id": 187,
+   "node_type": "EasyCache",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 187,
+   "node_type": "EasyCache",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 189,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 189,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 189,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 188,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 193,
+   "node_type": "INTConstant",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 186,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 186,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 122,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 121,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 0,
+   "value_preview": "1.2"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 1,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 3,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 5,
+   "value_preview": "exact_kv"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 7,
+   "value_preview": "3d"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 177,
+   "node_type": "SolAttnPatch",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 132,
+   "node_type": "CreateVideo",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 132,
+   "node_type": "CreateVideo",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 180,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "16:9 (Widescreen)"
+  },
+  {
+   "node_id": 180,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 180,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "nvidia_rtx_vsr"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "gpu"
+  },
+  {
+   "node_id": 181,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 8,
+   "value_preview": "<tr><td>Output: </td><td><b>362</b> x <b>1376</b> x <b>768 |"
+  },
+  {
+   "node_id": 195,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetenso"
+  },
+  {
+   "node_id": 195,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.6500000000000001"
+  },
+  {
+   "node_id": 137,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "一个性感美女在跳舞"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 0,
+   "value_preview": "openai/gpt-5.5"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 3,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 4,
+   "value_preview": "128000"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 8,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 9,
+   "value_preview": "2077973239"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 10,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 167,
+   "node_type": "RHLLMChatNode",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 206,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 207,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 145,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 145,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 145,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 145,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 145,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 199,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/ComfyUI"
+  },
+  {
+   "node_id": 199,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 199,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 197,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 197,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 197,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 197,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 197,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 204,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "3ddb2081f5c880669455dff696ce42782c201bbf00c0b28c99156b600c47"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 147,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 143,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 143,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 208,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 208,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 210,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 210,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 146,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 146,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 141,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 141,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 202,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 209,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 209,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 203,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "aa5b5d7e34ac3ee202b60ce57ff0396d5771c2047bfb8d90ea4011f17b1e"
+  },
+  {
+   "node_id": 203,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 135,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "15"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "%date:yyyy-MM-dd%/%date:yyyyMMdd_hhmmss%_Minimax_H3_first_pa"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "10"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 8, 'f"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 196,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  }
+ ]
+}

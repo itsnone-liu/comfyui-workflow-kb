@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "人物姿态迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一段参考动作/舞蹈视频、两张参考图（如人物与服装）和中文提示词，端到端生成由 DWPose 姿态驱动、参考图约束的跳舞视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 DWPreprocessor 对输入视频提取 body/hand 姿态关键点，作为动作条件送入生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 CLIPVisionLoader + WanVideoClipVisionEncode 将参考图编码为视觉条件，增强人物外观/身份一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 WanVideoSampler + WanVideoDecode 采样并解码出视频，并通过 3 个 VHS_VideoCombine(OUT) 同时导出多路视频结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "FaceMaskFromPoseKeypoints 从姿态关键点生成脸部 mask，可能用于局部人脸编辑、修复或额外人脸特写输出。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.x 视频扩散采样",
+  "DWPose 姿态关键点提取",
+  "CLIP-ViT-H 视觉条件编码",
+  "UMT5-XXL 文本条件编码",
+  "多条件图像拼接（ImageConcatMulti）",
+  "姿态人脸掩码（FaceMaskFromPoseKeypoints）",
+  "视频预处理与后处理（VHS_LoadVideo/VHS_VideoCombine/ImageResizeKJ/ImageCropByMaskAndResize）",
+  "模板化参数封装（GetNode/SetNode/SimpleMath+/开关节点）"
+ ],
+ "special_features": [
+  {
+   "text": "大量使用 GetNode/SetNode/RHHiddenNodes/Primitive integer [Crystools] 把 Fps、总帧数、跳帧、宽/高等参数提到外层，把工作流封装成可配置模板。",
+   "kind": "fact"
+  },
+  {
+   "text": "存在 ImpactSwitch、easy anythingIndexSwitch、RHHiddenNodes 等开关/分支节点，运行时可切换流程路径。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 ImageConcatMulti 按 left/down 方向拼接多张条件图，构造 Wan 模型的多条件输入。",
+   "kind": "fact"
+  },
+  {
+   "text": "3 个 VHS_VideoCombine 同时导出，结合 FaceMaskFromPoseKeypoints/ImageCropByMaskAndResize，疑似会输出全身、脸部特写、掩码等多路结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "SimpleMath+ 对帧号/时长做运算，可能与 ImageFromBatch、跳帧逻辑联动，实现动态抽帧。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这看起来是一个面向 Wan 视频模型的封装型模板：作者把分辨率、总帧数、fps、跳帧、内部开关等大量参数提到上层，让使用者只替换参考视频、参考图和提示词即可运行。内部以 DWPose 约束动作、CLIP-ViT 与 UMT5-XXL 约束外观/内容，并加入人脸 mask 与多路导出，似乎是想在‘易用模板’和‘可控视频生成’之间取得平衡。",
+ "use_case": "适合短视频创作者做舞蹈/动作迁移：用一段现成舞蹈视频提供动作，用一张或两张人物/服装参考图决定外观，配合一句中文提示词生成新的跳舞视频；也可用于批量测试不同服装、场景或动作组合。",
+ "limitation": "依赖 Wan 视频模型、CLIP ViT-H、UMT5-XXL 和 DWPose 等模型文件，且需要安装 VHS、WanVideo 系列、KJNodes、Impact、Crystools、pysssss、RH/easy 系列等 ComfyUI 第三方节点；任何模型或节点缺失都会导致无法加载。输出分辨率/帧数在结构上基本固定（如 WanVideoAnimateEmbeds 内 832×480），改长视频或高清时需要同步调整多个尺寸相关节点，并需要更大显存。",
+ "dependencies": [
+  "模型文件：clip_vision_vit_h.safetensors、umt5-xxl-enc-bf16.safetensors、yolox_l.torchscript.pt、dw-ll_ucoco_384_bs5.torchscript.pt",
+  "ComfyUI-VideoHelperSuite（VHS_LoadVideo/VHS_VideoCombine）",
+  "WanVideo 相关节点（WanVideoSampler/WanVideoDecode/WanVideoAnimateEmbeds/WanVideoContextOptions/WanVideoTextEncodeCached）",
+  "DWPreprocessor 与 DWPose 模型（FaceMaskFromPoseKeypoints 同族）",
+  "KJNodes（ImageResizeKJ/ImageFromBatch 等）",
+  "Impact Pack（ImpactSwitch）、Crystools、pysssss、RH/easy 系列自定义节点包"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "video + 2 张图片 + 提示词",
+  "count": "1 段视频、2 张 LoadImage(IN) 图像、若干文本/参数输入"
+ },
+ "output": {
+  "type": "视频文件（3 路 VHS_VideoCombine 输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler steps/cfg",
+   "how_to_tune": "当前步数为 5、cfg 约 6，适合快速出片和预览；若画质或动作不够稳，可把 steps 提到 10~20，cfg 保持在 5~8 之间微调。固定种子 275817394418818 便于复现，换效果时可改为随机种子。"
+  },
+  {
+   "param": "WanVideoTextEncodeCached 正/负面提示词",
+   "how_to_tune": "正面提示词描述动作与人物，如‘一个美女在跳舞，绿色旗袍’；负面提示词保留‘过曝、静态、细节模糊不清、字幕、风格’等，可有效压低坏帧、水印和多余风格化。"
+  },
+  {
+   "param": "DWPreprocessor 检测分辨率",
+   "how_to_tune": "当前检测分辨率约为 960；姿态抖动时可降到 768 或 512 提升稳定性/速度，小目标动作不敏感时可提高到 1280。detect_hand=enable 保留手势，detect_face 按需开启。"
+  },
+  {
+   "param": "WanVideoAnimateEmbeds 宽/高",
+   "how_to_tune": "当前为 832×480 横版；若要出竖版（如 480×832/848），需要同步修改 ImageResizeKJ、VHS 等尺寸相关节点，避免人物比例拉伸。"
+  },
+  {
+   "param": "WanVideoContextOptions 上下文参数",
+   "how_to_tune": "当前上下文相关数值约为 81/4/32；上下文窗口或重叠越大，长视频时间一致性越好，但显存和耗时也会上升。短片段可适当减小，长视频需增大并注意显存上限。"
+  }
+ ],
+ "summary_text": "能力:输入一段参考动作/舞蹈视频、两张参考图（如人物与服装）和中文提示词，端到端生成由 DWPose 姿态驱动、参考图约束的跳舞视频。；能力:使用 DWPreprocessor 对输入视频提取 body/hand 姿态关键点，作为动作条件送入生成。；能力:使用 CLIPVisionLoader + WanVideoClipVisionEncode 将参考图编码为视觉条件，增强人物外观/身份一致性。；能力:使用 WanVideoSampler + WanVideoDecode 采样并解码出视频，并通过 3 个 VHS_VideoCombine(OUT) 同时导出多路视频结果。；能力:FaceMaskFromPoseKeypoints 从姿态关键点生成脸部 mask，可能用于局部人脸编辑、修复或额外人脸特写输出。；特色:大量使用 GetNode/SetNode/RHHiddenNodes/Primitive integer [Crystools] 把 Fps、总帧数、跳帧、宽/高等参数提到外层，把工作流封装成可配置模板。；特色:存在 ImpactSwitch、easy anythingIndexSwitch、RHHiddenNodes 等开关/分支节点，运行时可切换流程路径。；特色:用 ImageConcatMulti 按 left/down 方向拼接多张条件图，构造 Wan 模型的多条件输入。；特色:3 个 VHS_VideoCombine 同时导出，结合 FaceMaskFromPoseKeypoints/ImageCropByMaskAndResize，疑似会输出全身、脸部特写、掩码等多路结果。；特色:SimpleMath+ 对帧号/时长做运算，可能与 ImageFromBatch、跳帧逻辑联动，实现动态抽帧。；适合短视频创作者做舞蹈/动作迁移：用一段现成舞蹈视频提供动作，用一张或两张人物/服装参考图决定外观，配合一句中文提示词生成新的跳舞视频；也可用于批量测试不同服装、场景或动作组合。；这看起来是一个面向 Wan 视频模型的封装型模板：作者把分辨率、总帧数、fps、跳帧、内部开关等大量参数提到上层，让使用者只替换参考视频、参考图和提示词即可运行。内部以 DWPose 约束动作、CLIP-ViT 与 UMT5-XXL 约束外观/内容，并加入人脸 mask 与多路导出，似乎是想在‘易用模板’和‘可控视频生成’之间取得平衡。"
+}

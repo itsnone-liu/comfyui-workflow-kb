@@ -1,0 +1,114 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "音频视频联合生成",
+  "二次元风格",
+  "动态壁纸"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成：加载 2 张输入图（LoadImage×2）+ 文本提示词 → LTX-2.3 生成 960×544、121 帧视频 → latent 放大 → 解码并通过 VHS_VideoCombine 保存/预览。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成《鬼灭之刃》风的二次元动态壁纸短视频，提示词示例为“动态壁纸，火焰熊熊的烈火燃烧，大风吹动服装快速的”；通过双 LoRA 强化角色一致性与动漫化表现。",
+   "kind": "inference"
+  },
+  {
+   "text": "利用 LTXVEmptyLatentAudio、LTXVConcatAVLatent 与音频 VAE 生成/解码同期音频，输出文件可按 trim_to_audio 处理，形成带声音的动态壁纸片段。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LTX-2.3 22B distilled 视频生成",
+  "Image-to-Video（LTXVImgToVideoConditionOnly / LTXVImgToVideoInplace）",
+  "多模态音视频联合 latent 生成（LTXVConcatAVLatent / LTXVSeparateAVLatent）",
+  "LoRA 风格与运动控制",
+  "Upscale-Hires（ltx-2.3-spatial-upscaler）",
+  "自定义采样（ManualSigmas / BasicScheduler / CFGGuider / KSamplerSelect）",
+  "SageAttention 加速与显存优化",
+  "ModelSamplingSD3 时间步偏移"
+ ],
+ "special_features": [
+  {
+   "text": "双图像控制流：LTXVImgToVideoConditionOnly 负责图片条件，LTXVImgToVideoInplace 负责原位注入，配合 LTXVCropGuides、ImageResizeKJv2、LTXVPreprocess 形成“参考图+场景图”双通道。",
+   "kind": "inference"
+  },
+  {
+   "text": "音视频联合 latent 结构：LTXVEmptyLatentVideo + LTXVEmptyLatentAudio → LTXVConcatAVLatent×2 → LTXVSeparateAVLatent×2 → LTXVAudioVAEDecode×2，模型在同一个采样中生成视频和音频 latent，而不是后配音。",
+   "kind": "fact"
+  },
+  {
+   "text": "双采样器/双 sigmas 策略：SamplerCustom(euler_cfg_pp) + SamplerCustomAdvanced(lcm) + ManualSigmas + BasicScheduler + CFGGuider=1，疑似可切换或分阶段采样；LTX2SamplingPreviewOverride 在采样中实时预览。",
+   "kind": "inference"
+  },
+  {
+   "text": "Latent 空间 Upscale-Hires：LatentUpscaleModelLoader + LTXVLatentUpsampler 在解码前完成 2× 放大，节省显存并保留时间一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "工程化防护：PathchSageAttentionKJ、VRAMReserver、ModelSamplingSD3、Fast Groups Bypasser、easy get/setNode 组合使用，减少 OOM、加速注意力并让 71 节点工作流可维护。",
+   "kind": "fact"
+  },
+  {
+   "text": "双路 VHS_VideoCombine：一路保存视频，另一路以 pingpong 循环预览，并可 trim_to_audio，配合 audio VAE 输出声画文件。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "设计者似乎想围绕 LTX-2.3 的多模态能力，把工作流做成“图片锁定人物/场景、文字驱动动态、latent 放大出高清、音频一起出”的一站式动态壁纸流水线。为了在 960×544@121 帧下仍可控且不爆显存，作者加入了 latent upscaler、SageAttention、VRAMReserver；用两个 LoRA 分别保证 I2V 运动一致性和二次元画风。双采样器/手动 sigmas 可能用于在不同质量/速度档位间切换，或对比不同采样策略的结果。",
+ "use_case": "适用于《鬼灭之刃》等二次元角色的动态壁纸/短视频制作：准备角色清晰图（和可选场景图），输入类似“火焰燃烧、风吹服装”的提示词，生成约 5 秒的横向动态壁纸片段，导出或用 VHS 预览。",
+ "limitation": "依赖大量自定义节点和模型文件（LTX-2.3 22B distilled fp8、Gemma 3 12B、text projection、三个 VAE、两个 LoRA、LTX 2.3 spatial upscaler），需按节点包要求安装并下载对应资源；工作流没有自动质量审片，效果依赖抽卡与手调参数；121 帧 960×544 对显存和算力要求高。",
+ "dependencies": [
+  "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+  "gemma_3_12B_it.safetensors",
+  "ltx-2.3_text_projection_bf16.safetensors",
+  "LTX23_video_vae_bf16.safetensors",
+  "LTX23_audio_vae_bf16.safetensors",
+  "taeltx2_3.safetensors",
+  "Ltx2.3-Licon-VBVR-I2V-390K-R32.safetensors",
+  "LTX-2.3-OmniNFT-RL-Lora_bf16.safetensors",
+  "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+  "KJNodes / rgthree-comfy / ComfyUI-VideoHelperSuite / LTXV 系列节点 / easy getNode and setNode"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（LoadImage×2）",
+  "count": "2"
+ },
+ "output": {
+  "type": "video（VHS_VideoCombine×2）+ video decode + audio decode",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LTX2_NAG (11, 0.25, 2.5, False)",
+   "how_to_tune": "LTX-2.3 的视频引导辅助参数，11 可能为迭代/步数，0.25/2.5 为强度缩放；动作不连贯时微调强度，生成紊乱时增大迭代或切换 False/True。"
+  },
+  {
+   "param": "LTXVConditioning (30) / LTXVPreprocess (30)",
+   "how_to_tune": "控制输入图像对视频前 30 帧的条件约束强度/帧数；人物身份漂移时加大，画面太死/动不起来时减小。"
+  },
+  {
+   "param": "BasicScheduler (linear_quadratic, 8, 1)",
+   "how_to_tune": "调度器类型、8 步采样与 denoise=1；提质量可增加步数，提速可减少；linear_quadratic 适合视频类采样。"
+  },
+  {
+   "param": "ManualSigmas (0.85, 0.7250, 0.4219, ...)",
+   "how_to_tune": "手动去噪计划；首段 sigma 决定结构，末段 sigma 决定细节；出现闪烁/不稳定时可调高尾部 sigma，灰雾感明显时调低首段。"
+  },
+  {
+   "param": "CFGGuider (1)",
+   "how_to_tune": "CFG=1 匹配蒸馏模型特性；构图漂移时可在 1.5~2 之间试探，但过高容易让二次元画面偏脏/过饱和。"
+  },
+  {
+   "param": "ModelSamplingSD3 (8)",
+   "how_to_tune": "shift=8 调整时间步采样分布；数字越大越强调细节/对比，但可能引入噪点；画面过平滑可提高，噪点多可降低。"
+  },
+  {
+   "param": "EmptyLTXVLatentVideo (960, 544, 121, 1)",
+   "how_to_tune": "宽/高/帧数/批大小；121 帧约 5 秒@24fps；若 OOM 优先降帧数到 81 或改 768×432。"
+  }
+ ],
+ "summary_text": "能力:端到端完成：加载 2 张输入图（LoadImage×2）+ 文本提示词 → LTX-2.3 生成 960×544、121 帧视频 → latent 放大 → 解码并通过 VHS_VideoCombine 保存/预览。；能力:生成《鬼灭之刃》风的二次元动态壁纸短视频，提示词示例为“动态壁纸，火焰熊熊的烈火燃烧，大风吹动服装快速的”；通过双 LoRA 强化角色一致性与动漫化表现。；能力:利用 LTXVEmptyLatentAudio、LTXVConcatAVLatent 与音频 VAE 生成/解码同期音频，输出文件可按 trim_to_audio 处理，形成带声音的动态壁纸片段。；特色:双图像控制流：LTXVImgToVideoConditionOnly 负责图片条件，LTXVImgToVideoInplace 负责原位注入，配合 LTXVCropGuides、ImageResizeKJv2、LTXVPreprocess 形成“参考图+场景图”双通道。；特色:音视频联合 latent 结构：LTXVEmptyLatentVideo + LTXVEmptyLatentAudio → LTXVConcatAVLatent×2 → LTXVSeparateAVLatent×2 → LTXVAudioVAEDecode×2，模型在同一个采样中生成视频和音频 latent，而不是后配音。；特色:双采样器/双 sigmas 策略：SamplerCustom(euler_cfg_pp) + SamplerCustomAdvanced(lcm) + ManualSigmas + BasicScheduler + CFGGuider=1，疑似可切换或分阶段采样；LTX2SamplingPreviewOverride 在采样中实时预览。；特色:Latent 空间 Upscale-Hires：LatentUpscaleModelLoader + LTXVLatentUpsampler 在解码前完成 2× 放大，节省显存并保留时间一致性。；特色:工程化防护：PathchSageAttentionKJ、VRAMReserver、ModelSamplingSD3、Fast Groups Bypasser、easy get/setNode 组合使用，减少 OOM、加速注意力并让 71 节点工作流可维护。；特色:双路 VHS_VideoCombine：一路保存视频，另一路以 pingpong 循环预览，并可 trim_to_audio，配合 audio VAE 输出声画文件。；适用于《鬼灭之刃》等二次元角色的动态壁纸/短视频制作：准备角色清晰图（和可选场景图），输入类似“火焰燃烧、风吹服装”的提示词，生成约 5 秒的横向动态壁纸片段，导出或用 VHS 预览。；设计者似乎想围绕 LTX-2"
+}

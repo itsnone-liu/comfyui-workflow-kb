@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "视频生成",
+  "可控生成",
+  "图像到视频",
+  "文生视频",
+  "动作迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "输入参考图/控制视频与文字提示，基于 Wan2.1 T2V + VACE 端到端生成 480×832×29 左右的人物跳舞或动作视频，并可导出为视频文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 AIO_Preprocessor 提取 DWPose 姿态用于人物控制；Note 明确提示动物等场景可改用 depth1 深度控制，相当于一图/一视频驱动动作生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "工作流包含 3 个 LoadImage 输入和 2 个 VHS_LoadVideo 输入，可同时读取多张参考图、姿态图和/或控制视频，并对图像做尺寸管理、颜色匹配和拼接。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 3 个 VHS_VideoCombine 输出节点，支持同时导出多路视频结果，适合一次生成多个候选或不同分支版本的视频。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1 T2V 14B 文生视频生成",
+  "Wan2.1 VACE 视频条件控制",
+  "DWPose 姿态预提取与人物动作控制",
+  "参考图 + 控制图拼接与 ColorMatch 颜色匹配",
+  "Wan21_CausVid_14B_T2V_lora_rank32 LoRA 注入",
+  "RH_Captioner 自动生成提示词并拼接",
+  "TeaCache / TorchCompile / BlockSwap / SLG 等推理加速与显存优化",
+  "VHS 视频加载、解码与多路导出"
+ ],
+ "special_features": [
+  {
+   "text": "使用 SetNode/GetNode 将 WanModel、WanVAE、WanTextEncoder、reference_image、control_video 等对象显式命名传输，形成模块化数据总线，避免复杂节点的连线混乱。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时启用 WanVideoTeaCache、WanVideoTorchCompileSettings、WanVideoBlockSwap、WanVideoSLG、WanVideoExperimentalArgs(mode4) 和 easy cleanGpuUsed，是一套为 14B 大模型在有限显存下运行而组合的加速/省显存方案。",
+   "kind": "fact"
+  },
+  {
+   "text": "人物与动物采用不同控制逻辑：Note 写明“人物使用 Pose，动物等使用 depth1”；用户可通过 AIO_Preprocessor 切换预处理分支。",
+   "kind": "fact"
+  },
+  {
+   "text": "RH_Captioner 同时生成英文详细描述与中文主体描述，再经 Text Concatenate 拼接，并叠加 Text Multiline 手工提示词，形成自动化与手工混合的提示词链路。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 GetImageSizeAndCount、SimpleMath+、ImageResizeKJ 和多个 Primitive integer 动态计算分辨率/尺寸，并将输入图适配到 VACE 所需的宽高。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这像是一个为 runninghub 分享而打包的“Wan2.1 VACE 通用视频生成工作台”。作者把模型加载、文本编码、控制信号预处理、参考图/控制图拼合、推理加速、多路导出都放进同一画布，并用命名数据总线和条件开关让用户不需要理解内部连线即可操作。大量性能优化节点说明目标是在中等显存显卡上也能跑 14B 大模型；三路导出和 Pose/Depth 提示则面向短视频、虚拟角色和动画场景的实际创作流程，意图是“一张参考图/一段控制视频 + 一句话 → 直接产出可短视频”。",
+ "use_case": "适合短视频创作者用一张人物照片配合 Pose 视频生成保持人物特征的跳舞片段；也适合用 Depth 控制视频做动物运动或镜头迁移；三路输出便于快速挑选多个候选视频。",
+ "limitation": "工作流依赖 Wan2.1 系列大模型权重，显存和硬盘占用很高；依赖 WanVideoWrapper、VHS、ImpactSwitch、AIO_Preprocessor、Crystools、RH_Captioner/RHHiddenNodes 等大量自定义节点；VACE 控制信号需与目标分辨率/帧数匹配，否则容易变形；作者 Note 提示“已加密”，在 runninghub 之外复用可能受限；DWPose 对遮挡、多人或非人物场景效果有限，需按说明换用 depth。",
+ "dependencies": [
+  "WanT2V_MasterModel.safetensors",
+  "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors",
+  "umt5-xxl-enc-fp8_e4m3fn.safetensors",
+  "Wan2_1_VAE_bf16.safetensors",
+  "Wan21_CausVid_14B_T2V_lora_rank32.safetensors",
+  "ComfyUI-WanVideoWrapper 系列节点",
+  "VideoHelperSuite (VHS)",
+  "ImpactSwitch / Impact Pack",
+  "AIO_Preprocessor",
+  "Crystools 节点",
+  "RH_Captioner / RHHiddenNodes / runninghub 环境"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像 + 视频",
+  "count": "3×LoadImage + 2×VHS_LoadVideo"
+ },
+ "output": {
+  "type": "视频 + 预览图",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler / steps",
+   "how_to_tune": "当前为 20。追求动作细节和流畅度可增加到 30-40，但耗时明显变长；低显存或批量出片建议保持 20 左右。"
+  },
+  {
+   "param": "WanVideoLoraSelect / strength",
+   "how_to_tune": "当前约 0.4。若 LoRA 带来的风格/动作特征不够明显，可提高到 0.5-0.6；过高可能造成画面不稳定或人物畸变。"
+  },
+  {
+   "param": "WanVideoTeaCache / threshold",
+   "how_to_tune": "当前约 0.2。想要更快可尝试 0.3-0.4，但可能损失运动一致性；显存紧张时建议保持 0.2 并配合 offload。"
+  },
+  {
+   "param": "WanVideoVACEEncode / width,height,length",
+   "how_to_tune": "当前为 480×832、29 帧。修改分辨率时需要同步调整 ImageResizeKJ 和输入视频尺寸，避免拉伸变形；帧数增加会显著增加显存和生成时间。"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "当前为 30。显存不足时可调大数值降低峰值占用，但速度会变慢；显存充足时可调小或关闭以提速。"
+  }
+ ],
+ "summary_text": "能力:输入参考图/控制视频与文字提示，基于 Wan2.1 T2V + VACE 端到端生成 480×832×29 左右的人物跳舞或动作视频，并可导出为视频文件。；能力:使用 AIO_Preprocessor 提取 DWPose 姿态用于人物控制；Note 明确提示动物等场景可改用 depth1 深度控制，相当于一图/一视频驱动动作生成。；能力:工作流包含 3 个 LoadImage 输入和 2 个 VHS_LoadVideo 输入，可同时读取多张参考图、姿态图和/或控制视频，并对图像做尺寸管理、颜色匹配和拼接。；能力:通过 3 个 VHS_VideoCombine 输出节点，支持同时导出多路视频结果，适合一次生成多个候选或不同分支版本的视频。；特色:使用 SetNode/GetNode 将 WanModel、WanVAE、WanTextEncoder、reference_image、control_video 等对象显式命名传输，形成模块化数据总线，避免复杂节点的连线混乱。；特色:同时启用 WanVideoTeaCache、WanVideoTorchCompileSettings、WanVideoBlockSwap、WanVideoSLG、WanVideoExperimentalArgs(mode4) 和 easy cleanGpuUsed，是一套为 14B 大模型在有限显存下运行而组合的加速/省显存方案。；特色:人物与动物采用不同控制逻辑：Note 写明“人物使用 Pose，动物等使用 depth1”；用户可通过 AIO_Preprocessor 切换预处理分支。；特色:RH_Captioner 同时生成英文详细描述与中文主体描述，再经 Text Concatenate 拼接，并叠加 Text Multiline 手工提示词，形成自动化与手工混合的提示词链路。；特色:通过 GetImageSizeAndCount、SimpleMath+、ImageResizeKJ 和多个 Primitive integer 动态计算分辨率/尺寸，并将输入图适配到 VACE 所需的宽高。；适合短视频创作者用一张人物照片配合 Pose 视频生成保持人物特征的跳舞片段；也适合用 Depth 控制视频做动物运动或镜头迁移；三路输出便于快速挑选多个候选视频。；这像是一个为 runninghub 分享而打包的“Wan2.1 VACE 通用视频生成工作台”。作者把模型加载、文本编码、控制信号预处理、参考图/控制图拼合、推理加速、多路导出都放进同一画布，并用命名数据总线和条件开关让用户不需要理解内部连线即可操作。大量性能优化节点说明目标是在中等显存显卡上也能跑 14B 大模型；三路导出和 Pose/Depth 提示则面向短视频、虚拟角色和动画场景的实际创作流程，意图是“一张参考图/一段控"
+}

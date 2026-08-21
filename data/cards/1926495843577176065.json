@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "图像生成",
+  "人像写真",
+  "姿态控制"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端生成受OpenPose姿态控制的高质量写实人像：输入参考图与文本提示，基于FLUX模型完成从构图生成到高清放大的完整流程",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过CR Text Input Switch(4 way)快速切换提示词片段（如黑/白/红长筒袜），在同一姿态下批量产出多套服装/配饰变体",
+   "kind": "fact"
+  },
+  {
+   "text": "通过两阶段采样（第一阶段denoise=0.3精修、第二阶段denoise=1.0生成）配合4x模型放大，输出高分辨率细节增强的最终图像",
+   "kind": "fact"
+  },
+  {
+   "text": "利用TTP分块 + VAEDecodeTiled处理超大分辨率，降低显存占用",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "ControlNet",
+  "FLUX",
+  "Upscale-Hires",
+  "OpenPose姿态控制",
+  "两阶段采样",
+  "TTP分块/VAE Tiled",
+  "LoRA身材调节",
+  "条件提示词切换"
+ ],
+ "special_features": [
+  {
+   "text": "双套UNETLoader/CLIPLoader/VAELoader分别以fp8_e4m3fn/fp8_e5m2加载同一FLUX模型，并分别接入两个SamplerCustomAdvanced，构成两代采样管线",
+   "kind": "fact"
+  },
+  {
+   "text": "使用TTP_Image_Tile_Batch/TTP_Image_Assy + TTP_Tile_image_size对图像和VAE解码均采用分块策略，可在低显存下生成超大图",
+   "kind": "fact"
+  },
+  {
+   "text": "借助SetNode/GetNode自定义全局变量（openpose、image_stage1、promopt）在阶段间传递姿态、首轮图像与提示词，实现流程解耦",
+   "kind": "fact"
+  },
+  {
+   "text": "引入InversionDemoLazyIndexSwitch与CR Text Input Switch(4 way)，支持运行时通过索引/开关切换不同输入分支（提示词/图像），属于条件式流程控制",
+   "kind": "inference"
+  },
+  {
+   "text": "集成Fast Groups Muter (rgthree)，可快速静音/启用不同功能组，方便对比两阶段或多分支效果",
+   "kind": "fact"
+  },
+  {
+   "text": "对FLUX专门配置了FluxGuidance×2、ModelSamplingFlux(shift=1.15)以及SDXLEmptyLatentSizePicker+，精细化控制采样分布与输出分辨率",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流的核心意图是在FLUX大模型基础上，用OpenPose ControlNet锁定人物姿态，通过两阶段采样（首先生成整体，再精修细节）和显存友好的分块放大策略，兼顾构图质量与输出分辨率；同时利用提示词开关和LoRA身材调节，让设计师能够快速生成同一姿态下的多套服装变体。整体呈现一种“姿态固定+变量切换+质量控制”的生产型工作流思路。",
+ "use_case": "适用于电商模特图、AI写真、服装/配饰效果预览（如袜子颜色切换）等需要同一人物姿态快速产出多版本高清图片的场景。",
+ "limitation": "依赖FLUX生态与多个自定义节点（TTP、rgthree、easy-use、AdvancedControlNet等），需预先安装且占用较多显存；输入图像需能提取到有效OpenPose姿态；提示词开关仅支持4路，扩展需改图；LoRA强体调节参数（1.0/1.5）可能导致畸变，需谨慎调参。",
+ "dependencies": [
+  "majicflus_v1.safetensors (FLUX checkpoint)",
+  "ae.sft (VAE)",
+  "t5xxl_fp8_e4m3fn.safetensors + clip_l.safetensors (CLIP)",
+  "FLUX.1-dev-Controlnet-Union-InstantX.safetensors",
+  "flux_身材调节.safetensors (LoRA)",
+  "4x_NMKD-Siax_200k.pth (Upscaler)",
+  "自定义节点: TTP, rgthree, ComfyUI-Easy-Use, ComfyUI-Advanced-ControlNet, AIO_Preprocessor"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像+提示词",
+  "count": "6个LoadImage节点（示例共用同一图，实际可按需连接多张参考图）；另有JjkText/CR Switch文本输入"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ACN_AdvancedControlNetApplySingle_v2 strength",
+   "how_to_tune": "当前0.7；值越大姿态约束越强，但过强会损失动作自然度或引入伪影，建议0.55~0.8"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "两阶段分别使用3.5/4；控制提示词遵循程度，范围通常3.5~6，追求更贴合提示可上调，但过高会过饱和"
+  },
+  {
+   "param": "BasicScheduler denoise",
+   "how_to_tune": "第一阶段0.3、第二阶段1.0；若想增强二次精修力度可提高至0.4~0.5，若想保持初稿构图则保持≤0.3"
+  },
+  {
+   "param": "LoraLoader strength_model / strength_clip",
+   "how_to_tune": "当前1.0/1.5；身材调节强度，过高会产生畸变，建议model 0.8~1.2、clip 0.8~1.0起步"
+  },
+  {
+   "param": "ModelSamplingFlux shift",
+   "how_to_tune": "当前1.15；调节FLUX的采样分布，影响光影/锐度，可尝试1.0~1.3观察细节变化"
+  },
+  {
+   "param": "LatentUpscaleBy",
+   "how_to_tune": "当前2.0；控制潜在空间放大倍数，显存不足时可改为1.5并与外部4x放大搭配"
+  },
+  {
+   "param": "TTP_Image_Tile_Batch tile size",
+   "how_to_tune": "当前1024x1024；越小越省显存，但可能增加接缝，可配合overlap参数微调"
+  }
+ ],
+ "summary_text": "能力:端到端生成受OpenPose姿态控制的高质量写实人像：输入参考图与文本提示，基于FLUX模型完成从构图生成到高清放大的完整流程；能力:支持通过CR Text Input Switch(4 way)快速切换提示词片段（如黑/白/红长筒袜），在同一姿态下批量产出多套服装/配饰变体；能力:通过两阶段采样（第一阶段denoise=0.3精修、第二阶段denoise=1.0生成）配合4x模型放大，输出高分辨率细节增强的最终图像；能力:利用TTP分块 + VAEDecodeTiled处理超大分辨率，降低显存占用；特色:双套UNETLoader/CLIPLoader/VAELoader分别以fp8_e4m3fn/fp8_e5m2加载同一FLUX模型，并分别接入两个SamplerCustomAdvanced，构成两代采样管线；特色:使用TTP_Image_Tile_Batch/TTP_Image_Assy + TTP_Tile_image_size对图像和VAE解码均采用分块策略，可在低显存下生成超大图；特色:借助SetNode/GetNode自定义全局变量（openpose、image_stage1、promopt）在阶段间传递姿态、首轮图像与提示词，实现流程解耦；特色:引入InversionDemoLazyIndexSwitch与CR Text Input Switch(4 way)，支持运行时通过索引/开关切换不同输入分支（提示词/图像），属于条件式流程控制；特色:集成Fast Groups Muter (rgthree)，可快速静音/启用不同功能组，方便对比两阶段或多分支效果；特色:对FLUX专门配置了FluxGuidance×2、ModelSamplingFlux(shift=1.15)以及SDXLEmptyLatentSizePicker+，精细化控制采样分布与输出分辨率；适用于电商模特图、AI写真、服装/配饰效果预览（如袜子颜色切换）等需要同一人物姿态快速产出多版本高清图片的场景。；该工作流的核心意图是在FLUX大模型基础上，用OpenPose ControlNet锁定人物姿态，通过两阶段采样（首先生成整体，再精修细节）和显存友好的分块放大策略，兼顾构图质量与输出分辨率；同时利用提示词开关和LoRA身材调节，让设计师能够快速生成同一姿态下的多套服装变体。整体呈现一种“姿态固定+变量切换+质量控制”的生产型工作流思路。"
+}

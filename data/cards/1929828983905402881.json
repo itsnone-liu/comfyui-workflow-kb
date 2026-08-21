@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "视频生成",
+  "局部重绘",
+  "视频编辑",
+  "AIGC"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一段现有视频，仅通过文字描述（如“一个机器人在跳舞”）对视频中的局部区域进行重绘编辑，输出修改后的视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动检测并分割视频中的主体（通过Florence2定位+SAM/BiRefNet抠图），无需手动指定蒙版或参考图。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持中英文混合提示词输入，自动翻译为英文后驱动Wan VACE生成，并可选叠加吉卜力风格LoRA。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan 2.1 VACE视频编辑",
+  "文本条件视频局部重绘（Text-Guided Video Inpainting）",
+  "Florence2 + GroundingDINO 区域定位",
+  "Segment Anything (SAM) / BiRefNet 高质量抠图",
+  "Mask 膨胀（GrowMask）与Mask填充（INPAINT_MaskedFill）",
+  "Video-LoRA（吉卜力风格 + CausVid 运动控制）",
+  "TeaCache 缓存加速",
+  "WanVideoBlockSwap 显存交换",
+  "WanVideoSLG（Skip Layer Gating）",
+  "TorchCompile 编译优化"
+ ],
+ "special_features": [
+  {
+   "text": "多段式结构：先用VHS_LoadVideo读入视频，经过Florence2+SAM+BiRefNet三级模型自动生成精细主体Mask，再通过INPAINT_MaskedFill和MaskToImage预处理，最后送入Wan VACE编码器进行局部重绘。",
+   "kind": "fact"
+  },
+  {
+   "text": "用SetNode/GetNode把整个流程封装成若干可复用的子块（如ashuot5、ashuomodel、prompt、image等），配合rgthree的Fast Groups Bypasser/Muter和Mute Relay/Repeater，可快速开关不同模块进行AB测试。",
+   "kind": "fact"
+  },
+  {
+   "text": "叠加了两个LoRA：吉卜力风格LoRA（0.8权重）和CausVid运动LoRA（0.8权重），同时控制视觉风格和视频动态，属于风格+运动解耦的调参思路。",
+   "kind": "inference"
+  },
+  {
+   "text": "集成大量性能调优节点：WanVideoBlockSwap（30块交换）、WanVideoTorchCompileSettings（inductor）、WanVideoSLG（跳过层9,10）、WanVideoExperimentalArgs（疑似TeaCache）以及WanVideoVRAMManagement，为消费级显卡跑14B模型做了充足优化。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出前经过WanVideoEnhanceAVideo（增强值2）做视频清晰度/保真度增强，且有两个VHS_VideoCombine输出分支，可同时保存不同配置的结果。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者可能希望在不需要参考图、仅凭一句文字描述的前提下，对现有视频进行局部语义级编辑。为此先用视觉模型自动识别并分割出需要重绘的区域，再把区域作为Mask输入到Wan VACE中，避免整帧重绘造成无关区域变化。同时考虑到14B模型显存压力大，作者堆叠了BlockSwap、SLG、TorchCompile、TeaCache等大量加速省显存机制，似乎目标是在单卡消费级GPU上也能流畅运行。",
+ "use_case": "适合需要对已有视频做局部内容替换/修改的创作场景，例如把视频中的某个角色替换为机器人、改变局部动作或风格，且不想手动抠图或指定参考图的用户。",
+ "limitation": "依赖众多大型模型（Wan2.1 T2V fp8 14B、VACE module、Wan VAE、umt5-xxl编码器、SAM、GroundingDINO、BiRefNet、Florence2），需手动下载并按指定目录放置；工作流耦合了多个自定义节点（VideoHelperSuite、rgthree、SegmentAnythingUltra、BiRefNet、ComfyUI-WanVideo等），缺少或版本不一致会直接报错；输入必须是视频且会被Resize到512x512，小显存仍可能有压力；局部重绘效果受文字描述和蒙版质量影响较大。",
+ "dependencies": [
+  "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors",
+  "Wan2_1_VAE_bf16.safetensors",
+  "umt5-xxl-enc-bf16.safetensors",
+  "Wan21_CausVid_14B_T2V_lora_rank32.safetensors",
+  "吉卜力风格-14B.safetensors",
+  "Florence-2-large",
+  "SegmentAnythingUltra (sam_vit_h)",
+  "GroundingDINO_SwinB",
+  "BiRefNet-General",
+  "ComfyUI VideoHelperSuite",
+  "rgthree custom nodes",
+  "ComfyUI WanVideo Wrapper",
+  "WanVideoBlockSwap、SLG等扩展节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "视频（文件路径）",
+  "count": "1"
+ },
+ "output": {
+  "type": "视频（MP4等）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler",
+   "how_to_tune": "widgets中steps=9、cfg=1、shift=5、seed固定。steps可在9-20之间调高以提升细节但会变慢；cfg过高易过曝，建议1.0附近微调。"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "blocks=30表示将30层参与显存交换，值越大显存占用越低但速度越慢；低显存可加大到40-50，高显存可减小到10-20换速度。"
+  },
+  {
+   "param": "WanVideoSLG",
+   "how_to_tune": "SLG设置skip layers为'9,10'，可减少推理计算量；如果画面变差或语义不连贯，可减少跳过层数或调低skip rate。"
+  },
+  {
+   "param": "WanVideoEnhanceAVideo",
+   "how_to_tune": "增强值设为2，数值大会提高视频保真度但可能引入噪点；出现闪烁时可降到1，追求清晰可尝试3。"
+  },
+  {
+   "param": "WanVideoLoraSelect",
+   "how_to_tune": "吉卜力风格LoRA权重0.8，CausVid运动LoRA权重0.8；权重越大风格/运动影响越强，过高会破坏身份或动作稳定性，建议0.5-1.0。"
+  }
+ ],
+ "summary_text": "能力:上传一段现有视频，仅通过文字描述（如“一个机器人在跳舞”）对视频中的局部区域进行重绘编辑，输出修改后的视频。；能力:自动检测并分割视频中的主体（通过Florence2定位+SAM/BiRefNet抠图），无需手动指定蒙版或参考图。；能力:支持中英文混合提示词输入，自动翻译为英文后驱动Wan VACE生成，并可选叠加吉卜力风格LoRA。；特色:多段式结构：先用VHS_LoadVideo读入视频，经过Florence2+SAM+BiRefNet三级模型自动生成精细主体Mask，再通过INPAINT_MaskedFill和MaskToImage预处理，最后送入Wan VACE编码器进行局部重绘。；特色:用SetNode/GetNode把整个流程封装成若干可复用的子块（如ashuot5、ashuomodel、prompt、image等），配合rgthree的Fast Groups Bypasser/Muter和Mute Relay/Repeater，可快速开关不同模块进行AB测试。；特色:叠加了两个LoRA：吉卜力风格LoRA（0.8权重）和CausVid运动LoRA（0.8权重），同时控制视觉风格和视频动态，属于风格+运动解耦的调参思路。；特色:集成大量性能调优节点：WanVideoBlockSwap（30块交换）、WanVideoTorchCompileSettings（inductor）、WanVideoSLG（跳过层9,10）、WanVideoExperimentalArgs（疑似TeaCache）以及WanVideoVRAMManagement，为消费级显卡跑14B模型做了充足优化。；特色:输出前经过WanVideoEnhanceAVideo（增强值2）做视频清晰度/保真度增强，且有两个VHS_VideoCombine输出分支，可同时保存不同配置的结果。；适合需要对已有视频做局部内容替换/修改的创作场景，例如把视频中的某个角色替换为机器人、改变局部动作或风格，且不想手动抠图或指定参考图的用户。；作者可能希望在不需要参考图、仅凭一句文字描述的前提下，对现有视频进行局部语义级编辑。为此先用视觉模型自动识别并分割出需要重绘的区域，再把区域作为Mask输入到Wan VACE中，避免整帧重绘造成无关区域变化。同时考虑到14B模型显存压力大，作者堆叠了BlockSwap、SLG、TorchCompile、TeaCache等大量加速省显存机制，似乎目标是在单卡消费级GPU上也能流畅运行。"
+}

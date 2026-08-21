@@ -1,0 +1,56 @@
+{
+ "domain": [
+  "图像修复"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张老照片，通过 FLUX Kontext Pro 模型执行“Restoration of old photo”指令，输出修复后的图片",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "FLUX Kontext Pro 图像修复"
+ ],
+ "special_features": [],
+ "design_intent": "该工作流仅由加载、修复、保存三个节点构成，似乎刻意追求最简实现：完全依赖 FLUX Kontext Pro 模型的文生图/图生图能力，将老照片修复抽象为一句提示词，用户不需要任何预处理或后处理环节，即可得到修复结果。",
+ "use_case": "适用于老照片的快速修复场景，例如去除折痕、污渍、补全褪色部分，尤其适合非专业用户探索 FLUX Kontext 的修复效果。",
+ "limitation": "依赖外部模型 flux-kontext-pro 及自定义节点 RH_ComfyFluxKontext；LoadImage 一次仅处理单张图片，无法批处理；修复效果受提示词和模型能力限制，对严重破损或多人脸照片可能效果不稳定。",
+ "dependencies": [
+  "flux-kontext-pro 模型",
+  "RH_ComfyFluxKontext 自定义节点",
+  "ComfyUI 内置 LoadImage/SaveImage"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt",
+   "how_to_tune": "当前为 'Restoration of old photo'，可改成更具体的修复指令，如 'remove scratches, restore color' 来控制修复方向"
+  },
+  {
+   "param": "model",
+   "how_to_tune": "当前为 'flux-kontext-pro'，如平台支持其他 FLUX Kontext 模型可替换尝试"
+  },
+  {
+   "param": "mode",
+   "how_to_tune": "当前为 'match_input_image'，该模式会参考输入图像，保留更多原图结构；若需更强修复可在同类节点中调整模式"
+  },
+  {
+   "param": "strength",
+   "how_to_tune": "当前为 '1'，数值越高修复幅度越大，调低可保留更多原始细节，防止过度平滑"
+  },
+  {
+   "param": "seed",
+   "how_to_tune": "当前为 '1925006437'，修改种子可尝试不同的修复随机细节，获得多样化结果"
+  }
+ ],
+ "summary_text": "能力:上传一张老照片，通过 FLUX Kontext Pro 模型执行“Restoration of old photo”指令，输出修复后的图片；适用于老照片的快速修复场景，例如去除折痕、污渍、补全褪色部分，尤其适合非专业用户探索 FLUX Kontext 的修复效果。；该工作流仅由加载、修复、保存三个节点构成，似乎刻意追求最简实现：完全依赖 FLUX Kontext Pro 模型的文生图/图生图能力，将老照片修复抽象为一句提示词，用户不需要任何预处理或后处理环节，即可得到修复结果。"
+}

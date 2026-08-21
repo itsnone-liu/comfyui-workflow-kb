@@ -1,0 +1,119 @@
+{
+ "domain": [
+  "图像精修",
+  "电商商业",
+  "FLUX"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成产品/旧物照片的 AI 精修：输入原图，使用 FLUX.1-dev + 电商产品 LoRA 重新建模渲染，输出精修后的多个方案图及带标签对比图",
+   "kind": "inference"
+  },
+  {
+   "text": "内置 Florence2Image2Prompt 自动生成详细提示词，配合 TextInput 和 ShowText 形成自动打标/提示词注入链",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 BiRefNet 抠图 + ColorImage 纯色底图 + ImageBlend 实现前景分离与背景替换，可自动更换产品背景",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ImageReel 和 ImageReelComposit 生成带『精修前/精修方案1/精修方案2』标签的对比图，便于直接评审交付",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 strong 参数（Note 标注：0=不精修，2-3=普通旧物）控制整体精修力度，适配强弱不同的修复需求",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev fp8 采样生成",
+  "FLUX LoRA（林鹤-物华天宝-电商商业产品建模渲染高级感辅助lora）",
+  "DualCLIP 双编码器（T5-XXL + ViT-L detail-improved）",
+  "多阶段 SamplerCustomAdvanced + BasicGuider + FluxDeGuidance",
+  "TeaCache 缓存加速",
+  "BiRefNet 高精度图像抠像",
+  "Florence2 图像描述/提示词生成",
+  "DetailTransfer 细节迁移",
+  "InFluxModelSamplingPred / OutFluxModelSamplingPred 采样预测",
+  "Mask 生成与组合（CreateShapeMask, AddMask, ResizeMask）",
+  "ImageReel / ImageReelComposit 对比图合成",
+  "VAE Encode/Decode 多路图像回环"
+ ],
+ "special_features": [
+  {
+   "text": "三路 BasicGuider + SamplerCustomAdvanced + FluxDeGuidance 并存，构成多方案/多阶段精修管线，可能是为了生成不同风格强度的候选结果",
+   "kind": "fact"
+  },
+  {
+   "text": "大量使用 GetNode/SetNode 将 clip、models、vae、strong、i-start0、i-end1、i-end2 等参数在图中显式路由，形成可视化『参数总线』",
+   "kind": "fact"
+  },
+  {
+   "text": "TeaCache 与 PurgeVRAM 同时出现，说明作者针对 FLUX 大模型做了显存调度与缓存加速设计",
+   "kind": "fact"
+  },
+  {
+   "text": "BiRefNet 自动抠图 + Florence2 自动打标 + DetailTransfer 细节保留 + ImageComparer 对比，形成半自动精修闭环",
+   "kind": "fact"
+  },
+  {
+   "text": "存在 DisableNoise、FlipSigmas、AddMask 等组合，可能用于局部重绘/反推降噪控制，属于非标准采样技巧",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 SimpleMath+ 和 Int 等节点实时计算中间参数，使精修力度等关键数值可被公式化控制",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流将 FLUX 精修拆解为自动理解（Florence2）、生成渲染（FLUX+LoRA）、细节保护（DetailTransfer）、质量控制（ImageComparer / 多路预览）、结果展示（ImageReel）五个环节。作者可能希望普通用户只需上传图片并调整少量旋钮（如 strong），即可获得多版电商级精修图并直接对比交付；同时通过显式参数路由和 TeaCache/PurgeVRAM 控制显存成本，使 FLUX 精修在消费级显卡上更可行。",
+ "use_case": "旧物/商品照片精修、电商产品建模渲染、多方案效果对比与交付",
+ "limitation": "依赖多个外部模型和自定义节点：需自行下载 FLUX.1-dev-fp8、t5xxl_fp8、ViT-L detail-improved CLIP、ae.sft、BiRefNet-General、Florence2-base 及电商 LoRA 文件；需要 ComfyUI 的 LayerStyle、rgthree、pysssss、KJNodes、TeaCache、FluxTools 等插件；显存需求高，建议 12GB 以上最终出图分辨率 1536×1536 会进一步加大压力；输入为两张图片，输出效果依赖 strong 参数与参考图质量；TeaCache 阈值不当可能产生伪影。",
+ "dependencies": [
+  "ComfyUI-LayerStyle / LayerUtility / LayerMask",
+  "ComfyUI-rgthree (Image Comparer, Label)",
+  "ComfyUI-pysssss (ShowText)",
+  "KJNodes (ImageResizeKJ, SimpleMath+ 等)",
+  "ComfyUI-TeaCache",
+  "ComfyUI-FluxTools / FluxDeGuidance / InFluxModelSamplingPred / OutFluxModelSamplingPred",
+  "BiRefNet-General 模型",
+  "Florence2-base 模型",
+  "FLUX.1-dev-fp8.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ViT-L-14-TEXT-detail-improved-hiT-GmP-TE-only-HF.safetensors",
+  "ae.sft (FLUX VAE)",
+  "林鹤-物华天宝-电商商业产品建模渲染高级感辅助lora_v1.safetensors"
+ ],
+ "geek_rating": 4.5,
+ "input": {
+  "type": "image（LoadImage×2：主体图/参考图）",
+  "count": "2"
+ },
+ "output": {
+  "type": "image（SaveImage×3 + PreviewImage×5，含 ImageReel 带标签对比图）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "strong",
+   "how_to_tune": "由 Note 标注：0=不精修，2-3=普通旧物；数值越大重绘越强，建议从 1 起逐步微调，防止过度修改原图结构。"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前 0.6，控制电商产品建模 LoRA 的风格影响力，常用区间 0.4-0.8；过高容易出现过饱和或塑料感。"
+  },
+  {
+   "param": "FluxDeGuidance",
+   "how_to_tune": "当前 3.5（另有 3.5/0 两路），FLUX 指导强度；越高越贴合提示词，越低画面越自由自然，可在 0-4 间尝试。"
+  },
+  {
+   "param": "TeaCache threshold",
+   "how_to_tune": "当前 0.4，缓存匹配容忍度；0.3-0.5 左右通常能平衡速度与质量，过高可能导致细节丢失或伪影。"
+  },
+  {
+   "param": "BasicScheduler",
+   "how_to_tune": "三种调度配置分别为 beta/25/0.23、beta/30/1、simple/30/1；步数越多细节越好但耗时增加，denoise 与 sigma 值影响生成与输入的接近程度。"
+  }
+ ],
+ "summary_text": "能力:端到端完成产品/旧物照片的 AI 精修：输入原图，使用 FLUX.1-dev + 电商产品 LoRA 重新建模渲染，输出精修后的多个方案图及带标签对比图；能力:内置 Florence2Image2Prompt 自动生成详细提示词，配合 TextInput 和 ShowText 形成自动打标/提示词注入链；能力:通过 BiRefNet 抠图 + ColorImage 纯色底图 + ImageBlend 实现前景分离与背景替换，可自动更换产品背景；能力:使用 ImageReel 和 ImageReelComposit 生成带『精修前/精修方案1/精修方案2』标签的对比图，便于直接评审交付；能力:通过 strong 参数（Note 标注：0=不精修，2-3=普通旧物）控制整体精修力度，适配强弱不同的修复需求；特色:三路 BasicGuider + SamplerCustomAdvanced + FluxDeGuidance 并存，构成多方案/多阶段精修管线，可能是为了生成不同风格强度的候选结果；特色:大量使用 GetNode/SetNode 将 clip、models、vae、strong、i-start0、i-end1、i-end2 等参数在图中显式路由，形成可视化『参数总线』；特色:TeaCache 与 PurgeVRAM 同时出现，说明作者针对 FLUX 大模型做了显存调度与缓存加速设计；特色:BiRefNet 自动抠图 + Florence2 自动打标 + DetailTransfer 细节保留 + ImageComparer 对比，形成半自动精修闭环；特色:存在 DisableNoise、FlipSigmas、AddMask 等组合，可能用于局部重绘/反推降噪控制，属于非标准采样技巧；特色:通过 SimpleMath+ 和 Int 等节点实时计算中间参数，使精修力度等关键数值可被公式化控制；旧物/商品照片精修、电商产品建模渲染、多方案效果对比与交付；该工作流将 FLUX 精修拆解为自动理解（Florence2）、生成渲染（FLUX+LoRA）、细节保护（DetailTransfer）、质量控制（ImageComparer / 多路预览）、结果展示（ImageReel）五个环节。作者可能希望普通用户只需上传图片并调整少量旋钮（如 strong），即可获得多版电商级精修图并直接对比交付；同时通过显式参数路由和 TeaCache/PurgeVRAM 控制显存成本，使 FLUX 精修在消费级显卡上更可行。"
+}

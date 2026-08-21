@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "人像",
+  "图像精修",
+  "AI写真",
+  "面部修复"
+ ],
+ "capabilities": [
+  {
+   "text": "单张人像照 → 自动检测/裁剪人脸 → 用 InstantID+FLUX 保持身份重绘（可改妆发、加花环等）→ FaceDetailer/局部 Inpaint 修复细节 → 4x 超分 + ColorMatch 调色 → 输出高清精修图。",
+   "kind": "fact"
+  },
+  {
+   "text": "同一张输入图被 LoadImage 加载两次，并存在 CR Batch Images From List，推测可接入多图列表做批量精修。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 CLIPTextEncode 中的 'hand' 做负向条件，减少手部畸形，提升人像整体可用性。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID 身份保持",
+  "FaceDetailer 人脸细化",
+  "ControlNet (InstantID)",
+  "Inpaint / Mask 引导重绘",
+  "Detect/Crop/Warp Faces 人脸裁剪融合",
+  "FLUX 与 DreamShaperXL 双基座混合",
+  "LoRA 皮肤细节与风格增强",
+  "4x 模型超分 (UltraSharp / NMKD-Siax)",
+  "ColorMatch 色彩匹配",
+  "Fast Groups Bypasser 快速切换",
+  "CR Batch 批量图像处理"
+ ],
+ "special_features": [
+  {
+   "text": "多段式身份保持生成 + 局部重绘：ApplyInstantID+ControlNet 负责全图身份生成，InpaintModelConditioning+MaskFastGrow+WarpFacesBack 负责局部精修，形成“先保身份、再修局部”的双闭环。",
+   "kind": "inference"
+  },
+  {
+   "text": "双基座+多 LoRA 并行：3 个 CheckpointLoaderSimple（两个 FLUX fp8、一个 DreamShaperXL Lightning）+ 2 个 LoRA + 4 个参数不同的 KSampler 构成可堆叠/可切换的生成-精修实验矩阵。",
+   "kind": "inference"
+  },
+  {
+   "text": "FaceDetailer 与 UltralyticsDetectorProvider(segm/yolov8s-seg.pt) 协同，用 YOLO 分割结果驱动面部修复，提升对眼睛、嘴部等小器官的定位精度。",
+   "kind": "inference"
+  },
+  {
+   "text": "Fast Groups Bypasser 支持一键旁路/启用若干节点组，方便快速对比不同基座模型或精修路径。",
+   "kind": "fact"
+  },
+  {
+   "text": "双超分模型 + ColorMatch 质量控制回路：4x-UltraSharp 与 4x_NMKD-Siax 分别应对锐化/柔化，最后用 mkl 色彩匹配回原图色板。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整体像是为“人像精修”定制的多模型混合流水线：先用 InstantID 锁定人物身份，再由 FLUX/DreamShaper 负责生成或局部重绘；为避免破坏原图环境，用 Mask/Inpaint 和 FaceDetailer 做局部修复，并在末端用超分+ColorMatch 保证输出分辨率与色调一致。多个 KSampler、双 checkpoint、双 upscaler 与 Bypasser 的存在推测是为了方便对不同照片执行不同精修实验，而不是只走单一固定路径。",
+ "use_case": "适用于 AI 人像精修/写真工作流：输入一张正面/半身人像，可将人物放入新场景、配上 New style（如“a woman with a flower crown”），同时保持五官身份一致，最终导出高清可交付图片；也适合作为电商模特图、证件照/形象照的批量后处理前端。",
+ "limitation": "依赖众多外部模型和自定义节点，需要额外安装 ComfyUI_InstantID、Impact Pack（FaceDetailer/UltralyticsDetectorProvider）、Comfyroll（CR Batch/CR Text）和 rgthree（Fast Groups Bypasser）；需要下载 FLUX fp8、DreamShaperXL、ip-adapter.bin、InstantID ControlNet、两个 LoRA、YOLOv8s-seg、两个 4x 超分模型；输入构图被限制在 ~768x1024 竖幅（EmptyLatentImage 768x1024），任意尺寸图片需预裁剪/缩放；运行需较充裕的显卡显存（FLUX fp8 + 双模型）。",
+ "dependencies": [
+  "checkpoint/flux1-dev-fp8.safetensors",
+  "checkpoint/dreamshaperXL_lightningDPMSDE.safetensors",
+  "aux_model/ip-adapter.bin",
+  "controlnet/krnl_InstantID/diffusion_pytorch_model.safetensors",
+  "lora/苏-FLUX皮肤细节增强去伪存真_v2.0.safetensors",
+  "lora/aidmaFLUXPro1.1-FLUX-v0.3-sexy.safetensors",
+  "upscaler/4x-UltraSharp.pth",
+  "upscaler/4x_NMKD-Siax_200k.pth",
+  "segm/yolov8s-seg.pt",
+  "custom_nodes: ComfyUI_InstantID, Impact Pack, Comfyroll, rgthree"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（人像照片；两个 LoadImage 共用同一张输入图，可通过 CR Batch Images From List 扩展为多图列表）",
+  "count": "1（可扩展批量）"
+ },
+ "output": {
+  "type": "image（精修后人像，多路 PreviewImage + SaveImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID 的 weight/start/end",
+   "how_to_tune": "当前为 1/0/1；想更“像本人”可提高到 1.2~1.5，想更服从提示词构图可降到 0.7~0.9。"
+  },
+  {
+   "param": "两个 LoRA 权重",
+   "how_to_tune": "皮肤细节 LoRA 当前 0.6，过高会产生塑料感，建议 0.4~0.7；aidmaFLUXPro 风格 LoRA 当前 0.35，数值越高越偏“精修/柔美”，建议 0.3~0.5 微调。"
+  },
+  {
+   "param": "KSampler 的 steps/cfg",
+   "how_to_tune": "所有 KSampler 的 cfg 均为 1.0，疑似针对蒸馏/lightning 模型；不要随意拉高 cfg，否则饱和/崩坏。FLUX 主生成保留 20 步，DreamShaper 精修分支 10 步即可。"
+  },
+  {
+   "param": "FaceDetailer 的 denoise/guide_size",
+   "how_to_tune": "控制面部重绘幅度：想保留原脸但修瑕疵就把 denoise 调低（0.3~0.4）；需要“换脸级”修复则调高，但过高会失真。"
+  },
+  {
+   "param": "Upscale 模型与 ColorMatch",
+   "how_to_tune": "4x-UltraSharp 出图更锐利，4x_NMKD-Siax 更柔和；ColorMatch 用 mkl、强度 1，若觉得发灰可降低匹配强度到 0.7~0.9。"
+  }
+ ],
+ "summary_text": "能力:单张人像照 → 自动检测/裁剪人脸 → 用 InstantID+FLUX 保持身份重绘（可改妆发、加花环等）→ FaceDetailer/局部 Inpaint 修复细节 → 4x 超分 + ColorMatch 调色 → 输出高清精修图。；能力:同一张输入图被 LoadImage 加载两次，并存在 CR Batch Images From List，推测可接入多图列表做批量精修。；能力:使用 CLIPTextEncode 中的 'hand' 做负向条件，减少手部畸形，提升人像整体可用性。；特色:多段式身份保持生成 + 局部重绘：ApplyInstantID+ControlNet 负责全图身份生成，InpaintModelConditioning+MaskFastGrow+WarpFacesBack 负责局部精修，形成“先保身份、再修局部”的双闭环。；特色:双基座+多 LoRA 并行：3 个 CheckpointLoaderSimple（两个 FLUX fp8、一个 DreamShaperXL Lightning）+ 2 个 LoRA + 4 个参数不同的 KSampler 构成可堆叠/可切换的生成-精修实验矩阵。；特色:FaceDetailer 与 UltralyticsDetectorProvider(segm/yolov8s-seg.pt) 协同，用 YOLO 分割结果驱动面部修复，提升对眼睛、嘴部等小器官的定位精度。；特色:Fast Groups Bypasser 支持一键旁路/启用若干节点组，方便快速对比不同基座模型或精修路径。；特色:双超分模型 + ColorMatch 质量控制回路：4x-UltraSharp 与 4x_NMKD-Siax 分别应对锐化/柔化，最后用 mkl 色彩匹配回原图色板。；适用于 AI 人像精修/写真工作流：输入一张正面/半身人像，可将人物放入新场景、配上 New style（如“a woman with a flower crown”），同时保持五官身份一致，最终导出高清可交付图片；也适合作为电商模特图、证件照/形象照的批量后处理前端。；整体像是为“人像精修”定制的多模型混合流水线：先用 InstantID 锁定人物身份，再由 FLUX/DreamShaper 负责生成或局部重绘；为避免破坏原图环境，用 Mask/Inpaint 和 FaceDetailer 做局部修复，并在末端用超分+ColorMatch 保证输出分辨率与色调一致。多个 KSampler、双 checkpoint、双 upscaler 与 Bypasser 的存在推测是为了方便对不同照片执行不同精修实验，而不是只走单一固定路径。"
+}

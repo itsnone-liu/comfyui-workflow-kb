@@ -1,0 +1,2126 @@
+{
+ "node_count": 49,
+ "link_count": 63,
+ "active_node_count": 45,
+ "nodes": [
+  {
+   "id": 225,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2.5
+   ],
+   "in_links": [
+    373
+   ],
+   "out_links": [
+    386
+   ]
+  },
+  {
+   "id": 290,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    479,
+    480
+   ],
+   "out_links": [
+    478,
+    483
+   ]
+  },
+  {
+   "id": 230,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    381,
+    390,
+    480,
+    485
+   ]
+  },
+  {
+   "id": 227,
+   "type": "ImageStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true,
+    0,
+    "white"
+   ],
+   "in_links": [
+    513,
+    376
+   ],
+   "out_links": [
+    372,
+    489
+   ]
+  },
+  {
+   "id": 288,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    476,
+    478
+   ],
+   "out_links": [
+    475
+   ]
+  },
+  {
+   "id": 291,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    481
+   ],
+   "out_links": [
+    482
+   ]
+  },
+  {
+   "id": 224,
+   "type": "FluxKontextImageScale",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    372
+   ],
+   "out_links": [
+    374
+   ]
+  },
+  {
+   "id": 243,
+   "type": "LayerUtility: JoyCaptionBeta1",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Descriptive",
+    "any",
+    512,
+    0.9,
+    0,
+    0.1,
+    "Please describe the contents, materials, styles of these garments,The first sentence is: this person is wearing the clothes,and the feature of the clothes is"
+   ],
+   "in_links": [
+    456,
+    397,
+    398
+   ],
+   "out_links": [
+    490,
+    503
+   ]
+  },
+  {
+   "id": 247,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    405
+   ],
+   "out_links": []
+  },
+  {
+   "id": 293,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    486
+   ],
+   "out_links": []
+  },
+  {
+   "id": 228,
+   "type": "GetImageSize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    377
+   ],
+   "out_links": [
+    378,
+    379
+   ]
+  },
+  {
+   "id": 229,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1536,
+    1152,
+    1
+   ],
+   "in_links": [
+    378,
+    379
+   ],
+   "out_links": [
+    388
+   ]
+  },
+  {
+   "id": 281,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    504
+   ],
+   "out_links": [
+    456
+   ]
+  },
+  {
+   "id": 233,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-dev-kontext_fp8_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    406,
+    473
+   ]
+  },
+  {
+   "id": 234,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    401,
+    477
+   ]
+  },
+  {
+   "id": 287,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clothes_remover_v0.safetensors",
+    1
+   ],
+   "in_links": [
+    473
+   ],
+   "out_links": [
+    474
+   ]
+  },
+  {
+   "id": 255,
+   "type": "LayerUtility: LoadJoyCaptionBeta1Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fancyfeast/llama-joycaption-beta-one-hf-llava",
+    "nf4",
+    "cuda"
+   ],
+   "in_links": [],
+   "out_links": [
+    397
+   ]
+  },
+  {
+   "id": 241,
+   "type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    "Huluwa"
+   ],
+   "in_links": [],
+   "out_links": [
+    398
+   ]
+  },
+  {
+   "id": 297,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "This person is wearing a light blue bikini. The bikini top features a halter neck design with thin black straps and a small black bow at the center, which ties the top together. The top is adorned with a delicate white lace trim along the edges, adding a touch of elegance. The bikini bottom is a low-rise style with thin black side ties, also trimmed with white lace along the top edge. The overall style is simple and feminine, with a soft pastel blue color that is both soothing and stylish. The lace trim and black accents provide a subtle yet charming contrast to the light blue fabric. The design is both functional and fashionable, suitable for casual beachwear."
+   ],
+   "in_links": [
+    503
+   ],
+   "out_links": []
+  },
+  {
+   "id": 242,
+   "type": "TextInput_",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Have this person put on the given clothes."
+   ],
+   "in_links": [],
+   "out_links": [
+    399
+   ]
+  },
+  {
+   "id": 244,
+   "type": "Text Concatenate (JPS)",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "comma"
+   ],
+   "in_links": [
+    399,
+    490
+   ],
+   "out_links": [
+    506
+   ]
+  },
+  {
+   "id": 286,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    532442943628335,
+    "fixed",
+    25,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    474,
+    475,
+    482,
+    483
+   ],
+   "out_links": [
+    484
+   ]
+  },
+  {
+   "id": 289,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "remove the clothes And restore the image to make it clearer."
+   ],
+   "in_links": [
+    477
+   ],
+   "out_links": [
+    476,
+    481
+   ]
+  },
+  {
+   "id": 240,
+   "type": "LayerMask: BenUltra",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "VITMatte",
+    4,
+    2,
+    0.01,
+    0.99,
+    2,
+    false
+   ],
+   "in_links": [
+    394,
+    519
+   ],
+   "out_links": [
+    392,
+    393
+   ]
+  },
+  {
+   "id": 256,
+   "type": "LayerMask: LoadBenModel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BEN_Base.pth",
+    "cuda"
+   ],
+   "in_links": [],
+   "out_links": [
+    394
+   ]
+  },
+  {
+   "id": 239,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    20,
+    20,
+    20,
+    20,
+    "8"
+   ],
+   "in_links": [
+    392,
+    393
+   ],
+   "out_links": [
+    376,
+    504
+   ]
+  },
+  {
+   "id": 248,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mytryon4_comfy.safetensors",
+    0.8500000000000002
+   ],
+   "in_links": [
+    406
+   ],
+   "out_links": [
+    447
+   ]
+  },
+  {
+   "id": 277,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Flux-Turbo-Alpha.safetensors",
+    1
+   ],
+   "in_links": [
+    447
+   ],
+   "out_links": [
+    448
+   ]
+  },
+  {
+   "id": 235,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "16",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    502
+   ],
+   "out_links": [
+    377,
+    405,
+    446,
+    479
+   ]
+  },
+  {
+   "id": 292,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    484,
+    485
+   ],
+   "out_links": [
+    486,
+    513
+   ]
+  },
+  {
+   "id": 300,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8e90e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    511,
+    517
+   ]
+  },
+  {
+   "id": 254,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8e90e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    495,
+    502
+   ]
+  },
+  {
+   "id": 253,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8e90e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    510,
+    521
+   ]
+  },
+  {
+   "id": 301,
+   "type": "ImageStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true,
+    0,
+    "white"
+   ],
+   "in_links": [
+    521,
+    517
+   ],
+   "out_links": [
+    518,
+    519
+   ]
+  },
+  {
+   "id": 231,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    489,
+    381
+   ],
+   "out_links": [
+    404
+   ]
+  },
+  {
+   "id": 226,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    374
+   ],
+   "out_links": []
+  },
+  {
+   "id": 245,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    401,
+    506
+   ],
+   "out_links": [
+    371,
+    403
+   ]
+  },
+  {
+   "id": 296,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    497
+   ],
+   "out_links": []
+  },
+  {
+   "id": 238,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    492
+   ],
+   "out_links": []
+  },
+  {
+   "id": 236,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    210374551924821,
+    "randomize",
+    25,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    442,
+    386,
+    387,
+    388
+   ],
+   "out_links": [
+    389
+   ]
+  },
+  {
+   "id": 275,
+   "type": "ApplyPulidFlux",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    448,
+    438,
+    439,
+    440,
+    446
+   ],
+   "out_links": [
+    442
+   ]
+  },
+  {
+   "id": 272,
+   "type": "PulidFluxInsightFaceLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    440
+   ]
+  },
+  {
+   "id": 273,
+   "type": "PulidFluxEvaClipLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    439
+   ]
+  },
+  {
+   "id": 274,
+   "type": "PulidFluxModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "pulid_flux_v0.9.1.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    438
+   ]
+  },
+  {
+   "id": 294,
+   "type": "LayerUtility: ImageReel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "input person",
+    "input clothes",
+    "output",
+    "image4",
+    1024,
+    32
+   ],
+   "in_links": [
+    495,
+    518,
+    493
+   ],
+   "out_links": [
+    491
+   ]
+  },
+  {
+   "id": 237,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    389,
+    390
+   ],
+   "out_links": [
+    493,
+    497
+   ]
+  },
+  {
+   "id": 295,
+   "type": "LayerUtility: ImageReelComposit",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Alibaba-PuHuiTi-Heavy.ttf",
+    40,
+    10,
+    "dark"
+   ],
+   "in_links": [
+    491
+   ],
+   "out_links": [
+    492
+   ]
+  },
+  {
+   "id": 223,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    371
+   ],
+   "out_links": [
+    387
+   ]
+  },
+  {
+   "id": 246,
+   "type": "ReferenceLatent",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    403,
+    404
+   ],
+   "out_links": [
+    373
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 223,
+   "to_node": 236,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 224,
+   "to_node": 226,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 225,
+   "to_node": 236,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 227,
+   "to_node": 224,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 227,
+   "to_node": 231,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 228,
+   "to_node": 229,
+   "type": "INT"
+  },
+  {
+   "from_node": 228,
+   "to_node": 229,
+   "type": "INT"
+  },
+  {
+   "from_node": 229,
+   "to_node": 236,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 230,
+   "to_node": 231,
+   "type": "VAE"
+  },
+  {
+   "from_node": 230,
+   "to_node": 237,
+   "type": "VAE"
+  },
+  {
+   "from_node": 230,
+   "to_node": 290,
+   "type": "VAE"
+  },
+  {
+   "from_node": 230,
+   "to_node": 292,
+   "type": "VAE"
+  },
+  {
+   "from_node": 231,
+   "to_node": 246,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 233,
+   "to_node": 248,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 233,
+   "to_node": 287,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 234,
+   "to_node": 245,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 234,
+   "to_node": 289,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 235,
+   "to_node": 228,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 235,
+   "to_node": 247,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 235,
+   "to_node": 275,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 235,
+   "to_node": 290,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 236,
+   "to_node": 237,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 237,
+   "to_node": 294,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 237,
+   "to_node": 296,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 239,
+   "to_node": 227,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 239,
+   "to_node": 281,
+   "type": "*"
+  },
+  {
+   "from_node": 240,
+   "to_node": 239,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 240,
+   "to_node": 239,
+   "type": "MASK"
+  },
+  {
+   "from_node": 241,
+   "to_node": 243,
+   "type": "JoyCaption2ExtraOption"
+  },
+  {
+   "from_node": 242,
+   "to_node": 244,
+   "type": "STRING"
+  },
+  {
+   "from_node": 243,
+   "to_node": 244,
+   "type": "STRING"
+  },
+  {
+   "from_node": 243,
+   "to_node": 297,
+   "type": "*"
+  },
+  {
+   "from_node": 244,
+   "to_node": 245,
+   "type": "STRING"
+  },
+  {
+   "from_node": 245,
+   "to_node": 223,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 245,
+   "to_node": 246,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 246,
+   "to_node": 225,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 248,
+   "to_node": 277,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 253,
+   "to_node": 301,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 254,
+   "to_node": 235,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 254,
+   "to_node": 294,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 255,
+   "to_node": 243,
+   "type": "JOYCAPTIONBETA1_MODEL"
+  },
+  {
+   "from_node": 256,
+   "to_node": 240,
+   "type": "BEN_MODEL"
+  },
+  {
+   "from_node": 272,
+   "to_node": 275,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 273,
+   "to_node": 275,
+   "type": "EVA_CLIP"
+  },
+  {
+   "from_node": 274,
+   "to_node": 275,
+   "type": "PULIDFLUX"
+  },
+  {
+   "from_node": 275,
+   "to_node": 236,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 277,
+   "to_node": 275,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 281,
+   "to_node": 243,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 286,
+   "to_node": 292,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 287,
+   "to_node": 286,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 288,
+   "to_node": 286,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 289,
+   "to_node": 288,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 289,
+   "to_node": 291,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 290,
+   "to_node": 286,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 290,
+   "to_node": 288,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 291,
+   "to_node": 286,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 292,
+   "to_node": 227,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 292,
+   "to_node": 293,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 294,
+   "to_node": 295,
+   "type": "Reel"
+  },
+  {
+   "from_node": 295,
+   "to_node": 238,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 300,
+   "to_node": 301,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 301,
+   "to_node": 240,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 301,
+   "to_node": 294,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 22,
+  "vae": 5,
+  "image_io": 8,
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "lora": 3,
+  "conditioning": 3,
+  "sampler": 2,
+  "face": 4
+ },
+ "assets": [
+  {
+   "node_id": 230,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 233,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux1-dev-kontext_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 287,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "clothes_remover_v0.safetensors"
+  },
+  {
+   "node_id": 256,
+   "node_type": "LayerMask: LoadBenModel",
+   "kind": "checkpoint",
+   "name": "BEN_Base.pth"
+  },
+  {
+   "node_id": 248,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "mytryon4_comfy.safetensors"
+  },
+  {
+   "node_id": 277,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Flux-Turbo-Alpha.safetensors"
+  },
+  {
+   "node_id": 274,
+   "node_type": "PulidFluxModelLoader",
+   "kind": "aux_model",
+   "name": "pulid_flux_v0.9.1.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "FLUX"
+ ],
+ "param_face_size": 128,
+ "structure_hash": "c36e81142702e56e",
+ "param_face": [
+  {
+   "node_id": 225,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "2.5"
+  },
+  {
+   "node_id": 230,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 227,
+   "node_type": "ImageStitch",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 227,
+   "node_type": "ImageStitch",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 227,
+   "node_type": "ImageStitch",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 227,
+   "node_type": "ImageStitch",
+   "widget_index": 3,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 0,
+   "value_preview": "Descriptive"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 1,
+   "value_preview": "any"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 3,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 243,
+   "node_type": "LayerUtility: JoyCaptionBeta1",
+   "widget_index": 5,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 229,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 229,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1152"
+  },
+  {
+   "node_id": 229,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 233,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-dev-kontext_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 233,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 234,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 287,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "clothes_remover_v0.safetensors"
+  },
+  {
+   "node_id": 287,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 255,
+   "node_type": "LayerUtility: LoadJoyCaptionBeta1Model",
+   "widget_index": 0,
+   "value_preview": "fancyfeast/llama-joycaption-beta-one-hf-llava"
+  },
+  {
+   "node_id": 255,
+   "node_type": "LayerUtility: LoadJoyCaptionBeta1Model",
+   "widget_index": 1,
+   "value_preview": "nf4"
+  },
+  {
+   "node_id": 255,
+   "node_type": "LayerUtility: LoadJoyCaptionBeta1Model",
+   "widget_index": 2,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 10,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 14,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 15,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 16,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 17,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 18,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 19,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 20,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 21,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 22,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 23,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 24,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 25,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 26,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 241,
+   "node_type": "LayerUtility: JoyCaptionBeta1ExtraOptions",
+   "widget_index": 27,
+   "value_preview": "Huluwa"
+  },
+  {
+   "node_id": 242,
+   "node_type": "TextInput_",
+   "widget_index": 0,
+   "value_preview": "Have this person put on the given clothes."
+  },
+  {
+   "node_id": 244,
+   "node_type": "Text Concatenate (JPS)",
+   "widget_index": 0,
+   "value_preview": "comma"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "532442943628335"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 286,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 289,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "remove the clothes And restore the image to make it clearer."
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 0,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 3,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 4,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 5,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 240,
+   "node_type": "LayerMask: BenUltra",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 256,
+   "node_type": "LayerMask: LoadBenModel",
+   "widget_index": 0,
+   "value_preview": "BEN_Base.pth"
+  },
+  {
+   "node_id": 256,
+   "node_type": "LayerMask: LoadBenModel",
+   "widget_index": 1,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 239,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 248,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "mytryon4_comfy.safetensors"
+  },
+  {
+   "node_id": 248,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.8500000000000002"
+  },
+  {
+   "node_id": 277,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Flux-Turbo-Alpha.safetensors"
+  },
+  {
+   "node_id": 277,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 235,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 300,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8"
+  },
+  {
+   "node_id": 300,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 254,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8"
+  },
+  {
+   "node_id": 254,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 253,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "61e0e7a6a769fb5a05936cdd3a69d55d2ccb5a53aedc473b2cf785dc7ab8"
+  },
+  {
+   "node_id": 253,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 301,
+   "node_type": "ImageStitch",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 301,
+   "node_type": "ImageStitch",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 301,
+   "node_type": "ImageStitch",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 301,
+   "node_type": "ImageStitch",
+   "widget_index": 3,
+   "value_preview": "white"
+  },
+  {
+   "node_id": 245,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 296,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 238,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "210374551924821"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 236,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 275,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 275,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 275,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 272,
+   "node_type": "PulidFluxInsightFaceLoader",
+   "widget_index": 0,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 274,
+   "node_type": "PulidFluxModelLoader",
+   "widget_index": 0,
+   "value_preview": "pulid_flux_v0.9.1.safetensors"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 0,
+   "value_preview": "input person"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 1,
+   "value_preview": "input clothes"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 2,
+   "value_preview": "output"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 3,
+   "value_preview": "image4"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 294,
+   "node_type": "LayerUtility: ImageReel",
+   "widget_index": 5,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 295,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 0,
+   "value_preview": "Alibaba-PuHuiTi-Heavy.ttf"
+  },
+  {
+   "node_id": 295,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 1,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 295,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 295,
+   "node_type": "LayerUtility: ImageReelComposit",
+   "widget_index": 3,
+   "value_preview": "dark"
+  }
+ ]
+}

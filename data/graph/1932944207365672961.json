@@ -1,0 +1,1455 @@
+{
+ "node_count": 22,
+ "link_count": 27,
+ "active_node_count": 22,
+ "nodes": [
+  {
+   "id": 35,
+   "type": "WanVideoTorchCompileSettings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "inductor",
+    false,
+    "default",
+    false,
+    64,
+    true,
+    128
+   ],
+   "in_links": [],
+   "out_links": [
+    84
+   ]
+  },
+  {
+   "id": 38,
+   "type": "WanVideoVAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1_VAE_bf16.safetensors",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    43,
+    81
+   ]
+  },
+  {
+   "id": 39,
+   "type": "WanVideoBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    25,
+    false,
+    false,
+    true,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    50
+   ]
+  },
+  {
+   "id": 59,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_vision_h.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    70
+   ]
+  },
+  {
+   "id": 65,
+   "type": "WanVideoClipVisionEncode",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    1,
+    "center",
+    "average",
+    true,
+    0,
+    0.20000000000000004
+   ],
+   "in_links": [
+    70,
+    89
+   ],
+   "out_links": [
+    82
+   ]
+  },
+  {
+   "id": 84,
+   "type": "Video_Upscale_With_Model",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "RealESRGAN_x4plus_anime_6B.pth",
+    "bicubic",
+    2,
+    "auto"
+   ],
+   "in_links": [
+    126
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 74,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    96
+   ],
+   "out_links": []
+  },
+  {
+   "id": 79,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    1
+   ],
+   "in_links": [
+    104,
+    103
+   ],
+   "out_links": [
+    121,
+    125
+   ]
+  },
+  {
+   "id": 27,
+   "type": "WanVideoSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8,
+    1.0000000000000002,
+    2.0000000000000004,
+    1057359483639287,
+    "fixed",
+    true,
+    "dpm++_sde/beta",
+    0,
+    1,
+    false,
+    "comfy"
+   ],
+   "in_links": [
+    29,
+    30,
+    66
+   ],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 58,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    88
+   ]
+  },
+  {
+   "id": 22,
+   "type": "WanVideoModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2114BFusionx_fusionxImage2video.safetensors",
+    "bf16",
+    "fp8_e4m3fn",
+    "offload_device",
+    "sageattn"
+   ],
+   "in_links": [
+    84,
+    50,
+    109
+   ],
+   "out_links": [
+    29,
+    79
+   ]
+  },
+  {
+   "id": 11,
+   "type": "LoadWanVideoT5TextEncoder",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5-xxl-enc-bf16.safetensors",
+    "bf16",
+    "offload_device",
+    "disabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    15
+   ]
+  },
+  {
+   "id": 90,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan_i2v_720p-功能-动态壁纸-Live Wallpaper Style.safetensors",
+    1.0000000000000002,
+    true
+   ],
+   "in_links": [],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 28,
+   "type": "WanVideoDecode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    272,
+    272,
+    144,
+    128
+   ],
+   "in_links": [
+    43,
+    33
+   ],
+   "out_links": [
+    36,
+    103
+   ]
+  },
+  {
+   "id": 88,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": false,
+    "filename_prefix": "WanVideoWrapperV2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapperV2V_00006_judpp_1749690010.mp4",
+      "workflow": "WanVideoWrapperV2V_00006.png",
+      "fullpath": "/data/ComfyUI/personal/e985a58c8ddccd6d2e22687314d491d8/temp/WanVideoWrapperV2V_00006.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "temp",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    121
+   ],
+   "out_links": []
+  },
+  {
+   "id": 80,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00004_cfult_1749690275.mp4",
+      "workflow": "WanVideoWrapper_I2V_00004.png",
+      "fullpath": "/data/ComfyUI/personal/e985a58c8ddccd6d2e22687314d491d8/output/WanVideoWrapper_I2V_00004.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    116
+   ],
+   "out_links": []
+  },
+  {
+   "id": 91,
+   "type": "RIFE VFI",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "rife49.pth",
+    10,
+    2,
+    true,
+    true,
+    1
+   ],
+   "in_links": [
+    125
+   ],
+   "out_links": [
+    126
+   ]
+  },
+  {
+   "id": 69,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1080,
+    720,
+    "lanczos",
+    "resize",
+    "0, 0, 0",
+    "center",
+    16,
+    "cpu"
+   ],
+   "in_links": [
+    88
+   ],
+   "out_links": [
+    89,
+    96,
+    99,
+    104,
+    90,
+    91
+   ]
+  },
+  {
+   "id": 16,
+   "type": "WanVideoTextEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "A silver-haired, blue-eyed young female knight in shining metallic armor and a navy-blue skirt leaps through the air, slashing with a glowing blue lightning sword that cuts through the sky; the background is a stormy wilderness under dark clouds and fierce winds; intensely jumps and strikes mid-air, creating a powerful shockwave; close-up shot + low-angle + high-speed tracking camera + wide-angle lens; atmosphere is tense, dynamic, and powerful; style is highly animated Japanese anime with bold motion lines, exaggerated perspective, and combat-focused framing.",
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+    false
+   ],
+   "in_links": [
+    15,
+    79
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 82,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": "运镜lora",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan_ZDSJV2_Orbit.safetensors",
+    1.0000000000000002,
+    true
+   ],
+   "in_links": [
+    123
+   ],
+   "out_links": [
+    109
+   ]
+  },
+  {
+   "id": 63,
+   "type": "WanVideoImageToVideoEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    832,
+    480,
+    81,
+    0.030000000000000006,
+    1,
+    1,
+    true,
+    false,
+    false
+   ],
+   "in_links": [
+    81,
+    82,
+    99,
+    90,
+    91
+   ],
+   "out_links": [
+    66
+   ]
+  },
+  {
+   "id": 30,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "WanVideoWrapper_I2V",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "WanVideoWrapper_I2V_00003_pokcc_1749689973.mp4",
+      "workflow": "WanVideoWrapper_I2V_00003.png",
+      "fullpath": "/data/ComfyUI/personal/e985a58c8ddccd6d2e22687314d491d8/output/WanVideoWrapper_I2V_00003.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    36
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 11,
+   "to_node": 16,
+   "type": "WANTEXTENCODER"
+  },
+  {
+   "from_node": 16,
+   "to_node": 27,
+   "type": "WANVIDEOTEXTEMBEDS"
+  },
+  {
+   "from_node": 22,
+   "to_node": 16,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 27,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 27,
+   "to_node": 28,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 28,
+   "to_node": 30,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 22,
+   "type": "WANCOMPILEARGS"
+  },
+  {
+   "from_node": 38,
+   "to_node": 28,
+   "type": "VAE"
+  },
+  {
+   "from_node": 38,
+   "to_node": 63,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 39,
+   "to_node": 22,
+   "type": "BLOCKSWAPARGS"
+  },
+  {
+   "from_node": 58,
+   "to_node": 69,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 59,
+   "to_node": 65,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 63,
+   "to_node": 27,
+   "type": "WANVIDIMAGE_EMBEDS"
+  },
+  {
+   "from_node": 65,
+   "to_node": 63,
+   "type": "WANVIDIMAGE_CLIPEMBEDS"
+  },
+  {
+   "from_node": 69,
+   "to_node": 63,
+   "type": "INT"
+  },
+  {
+   "from_node": 69,
+   "to_node": 63,
+   "type": "INT"
+  },
+  {
+   "from_node": 69,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 65,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 74,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 88,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 91,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 82,
+   "to_node": 22,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 84,
+   "to_node": 80,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 90,
+   "to_node": 82,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 91,
+   "to_node": 84,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 12,
+  "vae": 1,
+  "clip": 2,
+  "upscale": 1,
+  "image_io": 2,
+  "postprocess": 1,
+  "video_io": 3
+ },
+ "assets": [
+  {
+   "node_id": 38,
+   "node_type": "WanVideoVAELoader",
+   "kind": "vae",
+   "name": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 59,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "clip_vision_h.safetensors"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Video_Upscale_With_Model",
+   "kind": "upscaler",
+   "name": "RealESRGAN_x4plus_anime_6B.pth"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "kind": "checkpoint",
+   "name": "wan2114BFusionx_fusionxImage2video.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "kind": "checkpoint",
+   "name": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "Wan_i2v_720p-功能-动态壁纸-Live Wallpaper Style.safetensors"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "kind": "checkpoint",
+   "name": "rife49.pth"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "wan_ZDSJV2_Orbit.safetensors"
+  }
+ ],
+ "techniques": [
+  "Upscale-Hires"
+ ],
+ "param_face_size": 119,
+ "structure_hash": "7f89f92e1bf37783",
+ "param_face": [
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 0,
+   "value_preview": "inductor"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 4,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 35,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 6,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 38,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 38,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 0,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 39,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 59,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "clip_vision_h.safetensors"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 2,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 3,
+   "value_preview": "average"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 65,
+   "node_type": "WanVideoClipVisionEncode",
+   "widget_index": 6,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Video_Upscale_With_Model",
+   "widget_index": 0,
+   "value_preview": "RealESRGAN_x4plus_anime_6B.pth"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Video_Upscale_With_Model",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Video_Upscale_With_Model",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Video_Upscale_With_Model",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 74,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 79,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 2,
+   "value_preview": "2.0000000000000004"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 3,
+   "value_preview": "1057359483639287"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 4,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 6,
+   "value_preview": "dpm++_sde/beta"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 27,
+   "node_type": "WanVideoSampler",
+   "widget_index": 10,
+   "value_preview": "comfy"
+  },
+  {
+   "node_id": 58,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 58,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 0,
+   "value_preview": "wan2114BFusionx_fusionxImage2video.safetensors"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 2,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 22,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 4,
+   "value_preview": "sageattn"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 0,
+   "value_preview": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 11,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "Wan_i2v_720p-功能-动态壁纸-Live Wallpaper Style.safetensors"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 90,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 28,
+   "node_type": "WanVideoDecode",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 28,
+   "node_type": "WanVideoDecode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 28,
+   "node_type": "WanVideoDecode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 28,
+   "node_type": "WanVideoDecode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 28,
+   "node_type": "WanVideoDecode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapperV2V"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 88,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 80,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 0,
+   "value_preview": "rife49.pth"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 1,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 91,
+   "node_type": "RIFE VFI",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "1080"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "720"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "resize"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 69,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 16,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan_ZDSJV2_Orbit.safetensors"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 0,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 1,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 2,
+   "value_preview": "81"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 3,
+   "value_preview": "0.030000000000000006"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 63,
+   "node_type": "WanVideoImageToVideoEncode",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "WanVideoWrapper_I2V"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'W"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 30,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  }
+ ]
+}

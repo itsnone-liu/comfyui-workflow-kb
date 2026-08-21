@@ -1,0 +1,126 @@
+{
+ "domain": [
+  "角色一致性",
+  "虚拟换装",
+  "IP形象场景迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张IP形象参考图（id或ip模式），即可在不同场景/服装下生成保持角色身份一致性的图像，支持单图或多图组合输入。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持‘IP（图像插入）’和‘ID（身份）’两种参考编码模式，可灵活控制参考图对生成结果的身份约束强度。",
+   "kind": "fact"
+  },
+  {
+   "text": "可实现虚拟换装：将两件衣服同时试穿时，两张服装图分别作为参考，生成换装后的角色效果图。",
+   "kind": "fact"
+  },
+  {
+   "text": "端到端完成从参考图+文本提示词到多张保持角色一致性的成图输出，并支持预览和保存。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "SDXL",
+  "DreamO（角色一致性/参考图编码）",
+  "LoRA 模型堆叠（身份LoRA、质量LoRA、Turbo蒸馏LoRA）",
+  "CFG Distill（dreamo_cfg_distill）",
+  "CLIP 双编码器（CLIP-L + T5XXL）",
+  "FluxGuidance 引导",
+  "图像拼接（ImageConcanate）与缩放预处理",
+  "多分支并行采样（3组独立生成链路）"
+ ],
+ "special_features": [
+  {
+   "text": "三组完全平行的生成链路（每组含独立的 UNETLoader、DualCLIPLoader、KSampler、DreamO 相关节点），可能用于同时生成多个版本或不同场景结果，便于对比和筛选。",
+   "kind": "fact"
+  },
+  {
+   "text": "依赖自定义节点套件 DreamO（ApplyDreamO、DreamOProcessorLoader、DreamORefEncode），以‘ip’或‘id’两种模式编码参考图，属于非标准 ComfyUI 原生功能，设计较特殊。",
+   "kind": "fact"
+  },
+  {
+   "text": "LoRA 链包含正负质量 LoRA：dreamo_quality_lora_pos_ 权重为 +0.15，dreamo_quality_lora_neg_ 权重为 -0.8，用负权重抑制低质量特征，属于质量控制的精细调参。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载两个 FLUX dev 模型（原版 + mode4 重复），且每个分支都叠加 Flux Turbo Lora 和 CFG Distill LoRA，暗示利用 Turbo 蒸馏减少采样步数，并用 CFG Distill 适配低 CFG 推理。",
+   "kind": "fact"
+  },
+  {
+   "text": "多处使用 DeepTranslatorTextNode 自动翻译提示词，提示词中可见中文片段（如‘portrait, Chibi’和‘A chinese women is weari’），说明工作流可能集成实时翻译以支持中文用户。",
+   "kind": "fact"
+  },
+  {
+   "text": "工作流中包含 Fast Groups Bypasser (rgthree)，支持快速旁路/启用不同功能组，适合在多个生成模式间切换，属于模块化可交互设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "存在 ConditioningZeroOut 节点，可能用于抑制或丢弃部分条件信息（如文本提示），以测试或实现无文本引导的纯参考图生成模式。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕‘角色一致性’和‘虚拟换装’场景设计，核心是使用 DreamO 专有节点将参考图编码为可注入的身份/图像条件，再结合 FLUX 模型和多种 LoRA（身份保持、质量增强、Turbo加速、CFG蒸馏）来平衡生成速度与一致性。三组并行链路可能用于同时生成不同场景/服装的结果，或者用于对比不同参数设置。条件翻译、图像拼接和质量控制节点的存在，表明设计者希望降低使用门槛，让用户通过简单上传图片和输入中文描述即可获得多视角、多场景的角色一致图像。整体设计有较强的实验性和模块化倾向，但依赖非官方 DreamO 自定义节点，可移植性有限。",
+ "use_case": "IP角色形象设计、电商虚拟试衣、插画角色多场景延展、个人形象一致性生成",
+ "limitation": "需要自行下载三个 FLUX dev 模型 checkpoint（flux1-dev.sft，fp8_e4m3fn 量化版本）、多个专用 LoRA（dreamo_comfyui、dreamo_cfg_distill、Flux Turbo、正负质量 LoRA）以及对应 CLIP 和 VAE 文件。依赖非官方自定义节点 DreamO（ApplyDreamO、DreamOProcessorLoader、DreamORefEncode）与 rgthree 的 Fast Groups Bypasser，在标准 ComfyUI 环境中无法直接运行。输入图片需为正方形或适配 1024 尺寸，作者预置的参考图（LoadImage 默认加载同一张图片）可能限制了开箱即用时的多样性，用户需替换为自己的图片。",
+ "dependencies": [
+  "FLUX.1-dev（fp8_e4m3fn）checkpoint x3",
+  "clip_l.safetensors + t5xxl_fp8_e4m3fn.safetensors",
+  "ae.safetensors（FLUX VAE）",
+  "dreamo_comfyui.safetensors",
+  "dreamo_cfg_distill_comfyui.safetensors",
+  "Flux Turbo Lora.safetensors",
+  "dreamo_quality_lora_pos/neg_comfyui.safetensors",
+  "DreamO 自定义节点（ApplyDreamO、DreamOProcessorLoader、DreamORefEncode）",
+  "rgthree Fast Groups Bypasser",
+  "DeepTranslatorTextNode（可联网翻译，可选）",
+  "CR SDXL Aspect Ratio（Comfyroll）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（参考角色图、服装图，支持多张同时输入） + 文本提示词（支持中文自动翻译）",
+  "count": "至少1张参考图，可多张；文本提示词若干"
+ },
+ "output": {
+  "type": "多张预览图 + 保存的 PNG 图像（filename_prefix 含 pl-dreamo 和 ComfyUI）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "dreamo_quality_lora_neg_ 权重",
+   "how_to_tune": "工作流中设置为 -0.8，用于抑制低质量特征；若生成图像出现细节崩坏可降低绝对值（如 -0.5），若清晰度不足可适当提高绝对值，但过强可能引入噪声。"
+  },
+  {
+   "param": "dreamo_quality_lora_pos_ 权重",
+   "how_to_tune": "设置为 +0.15，正向增强质量特征；可小范围调整（0.1~0.3），值过高可能导致过饱和或风格偏移。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "三组 KSampler 均使用 12 步，配合 Flux Turbo 蒸馏 LoRA 实现快速生成；若质量不足可增加至 16-20 步，但会降低速度。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "均为 1.0，这是 Flux 配合 CFG Distill 的典型设置，避免双重引导导致过曝；不要随意调高。"
+  },
+  {
+   "param": "sampler 和 scheduler",
+   "how_to_tune": "使用 euler + simple，是 FLUX 常用的稳定组合；如遇噪声偏多可尝试 euler_ancestral，但会改变随机性。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "设置为 3.5，控制文本跟从强度；值越高越贴近提示词，但可能降低身份一致性；若角色不像可降至 2.5-3.0。"
+  },
+  {
+   "param": "CR SDXL Aspect Ratio",
+   "how_to_tune": "预设 5:8 portrait 832x1216，但基础尺设为 1024x1024，实际分辨率可能按宽高比重新计算；需要输出竖构图时保持该设置。"
+  },
+  {
+   "param": "DreamORefEncode 模式",
+   "how_to_tune": "可选 ‘ip’（图像插入）或 ‘id’（身份），‘id’更强调身份特征保持，‘ip’更强调图像内容迁移；虚拟换装时建议两件衣服模式一致。"
+  }
+ ],
+ "summary_text": "能力:上传一张IP形象参考图（id或ip模式），即可在不同场景/服装下生成保持角色身份一致性的图像，支持单图或多图组合输入。；能力:支持‘IP（图像插入）’和‘ID（身份）’两种参考编码模式，可灵活控制参考图对生成结果的身份约束强度。；能力:可实现虚拟换装：将两件衣服同时试穿时，两张服装图分别作为参考，生成换装后的角色效果图。；能力:端到端完成从参考图+文本提示词到多张保持角色一致性的成图输出，并支持预览和保存。；特色:三组完全平行的生成链路（每组含独立的 UNETLoader、DualCLIPLoader、KSampler、DreamO 相关节点），可能用于同时生成多个版本或不同场景结果，便于对比和筛选。；特色:依赖自定义节点套件 DreamO（ApplyDreamO、DreamOProcessorLoader、DreamORefEncode），以‘ip’或‘id’两种模式编码参考图，属于非标准 ComfyUI 原生功能，设计较特殊。；特色:LoRA 链包含正负质量 LoRA：dreamo_quality_lora_pos_ 权重为 +0.15，dreamo_quality_lora_neg_ 权重为 -0.8，用负权重抑制低质量特征，属于质量控制的精细调参。；特色:同时加载两个 FLUX dev 模型（原版 + mode4 重复），且每个分支都叠加 Flux Turbo Lora 和 CFG Distill LoRA，暗示利用 Turbo 蒸馏减少采样步数，并用 CFG Distill 适配低 CFG 推理。；特色:多处使用 DeepTranslatorTextNode 自动翻译提示词，提示词中可见中文片段（如‘portrait, Chibi’和‘A chinese women is weari’），说明工作流可能集成实时翻译以支持中文用户。；特色:工作流中包含 Fast Groups Bypasser (rgthree)，支持快速旁路/启用不同功能组，适合在多个生成模式间切换，属于模块化可交互设计。；特色:存在 ConditioningZeroOut 节点，可能用于抑制或丢弃部分条件信息（如文本提示），以测试或实现无文本引导的纯参考图生成模式。；IP角色形象设计、电商虚拟试衣、插画角色多场景延展、个人形象一致性生成；该工作流围绕‘角色一致性’和‘虚拟换装’场景设计，核心是使用 DreamO 专有节点将参考图编码为可注入的身份/图像条件，再结合 FLUX 模型和多种 LoRA（身份保持、质量增强、Turbo加速、CFG蒸馏）来平衡生成速度与一致性。三组并行链路可能用于同时生成不同场景/服装的结果，或者用于对比不同参数设置。条件翻译、图像拼接和质量控制节点的存在，表明设计者希望降低使用门槛，让用户通过简单上传图片和输入中文描述即可获得多视角、多场景的角色一"
+}

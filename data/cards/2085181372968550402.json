@@ -1,0 +1,120 @@
+{
+ "domain": [
+  "人像精修",
+  "图像增强",
+  "高清放大"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照片，端到端完成皮肤质感增强、去除痘印等瑕疵、专业人像精修，并输出高清结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "同一工作流同时加载 Z-Image-Turbo 与 Flux.2-Klein 两个 UNET 和两套 CLIP/LoRA，可对照或切换不同模型路径。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ReferenceLatent 与 Klein 一致性增强 LoRA，尽可能保持原人物身份特征，避免精修/放大后五官漂移。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 TTP 图块化处理与 SeedVR2 上采样，将精修结果推高到 1080/2048 级高清。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Upscale-Hires",
+  "双模型/双 LoRA 组合生成",
+  "ReferenceLatent 参考潜空间",
+  "TTP 图块化高分辨率处理",
+  "Qwen3 大语言模型文本编码",
+  "SeedVR 生成式放大",
+  "ColorCorrect 色彩校正"
+ ],
+ "special_features": [
+  {
+   "text": "SetNode/GetNode 命名总线：原图、美颜强度、klein、Z-image、高清、原图像素标准化 6 个命名变量串联整个多模型流程，便于切换和复用分支。",
+   "kind": "fact"
+  },
+  {
+   "text": "TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy 构成切块→批处理→拼图链路，绕开大图直接推理的显存瓶颈。",
+   "kind": "fact"
+  },
+  {
+   "text": "Image Comparer (rgthree) 提供修图前后对比/质量检查，形成人工质量控制回路，而不是盲出结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "SeedVR2VideoUpscaler + seedvr2_ema_7b-Q8_0.gguf 使用量化生成式模型做最终高清放大，属于较极客的高成本放大方案。",
+   "kind": "fact"
+  },
+  {
+   "text": "KSampler 与 KSamplerAdvanced 两段式采样，配合 Z-Image-Turbo 和 Flux.2-Klein 两条模型路径，可能形成“粗修→精修”的多段质量控制回路。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流可能是想解决单模型人像精修时“皮肤纹理被抹平、高清感靠锐化、人物容易不像”的问题。它把偏真实幻想的 Z-Image-Turbo 和强语义控制的 Flux.2-Klein 放在同一流程中，通过一致性 LoRA 和 ReferenceLatent 锁住身份，再用 TTP 分块降低显存压力，最后用 SeedVR 生成式放大补出高频皮肤纹理；如果中间效果不对，可以用 rgthree Image Comparer 对比后再调参。",
+ "use_case": "适用于商业人像精修、写真后期、去痘印/去瑕疵、皮肤质感增强，以及需要高分辨率输出并尽量保持人物身份的批量人像修图场景。",
+ "limitation": "依赖大量自定义节点和外部模型，缺一不可；需要同时加载 Z-Image-Turbo、Flux.2-Klein、Qwen3 CLIP、多个 VAE 以及 SeedVR GGUF 量化模型，显存占用和加载时间很高。输入限定为单张人像照片，主要针对人脸/肖像；多人、复杂姿势或非人像场景可能不稳定。不同模型的 LoRA 强度、美颜滑块和布尔开关需要手工配合，否则容易出现风格冲突或身份漂移。",
+ "dependencies": [
+  "自定义节点：ComfyUI-EditUtils (EditTextEncode_EditUtils / Flux2Klein*)",
+  "自定义节点：TTP_Tile (TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy)",
+  "自定义节点：rgthree (Image Comparer)",
+  "自定义节点：SeedVR2 系列 (SeedVR2VideoUpscaler / SeedVR2LoadDiTModel / SeedVR2LoadVAEModel)",
+  "自定义节点：easy-use (easy imageScaleToNormPixels / easy cleanGpuUsed)",
+  "自定义节点：孤海系列 (图像缩放V2_孤海 / 数学运算_孤海)",
+  "自定义节点：GoohaiUniversalSlider",
+  "自定义节点：SetNode / GetNode 相关扩展",
+  "模型：Z-Image-Turbo fp16.safetensors",
+  "模型：flux-2-klein-9b-fp8.safetensors",
+  "模型：qwen_3_8b_fp8mixed.safetensors",
+  "模型：qwen_3_4b.safetensors",
+  "模型：flux2-vae.safetensors",
+  "模型：z_image_turbo-vae.safetensors",
+  "模型：ema_vae_fp16.safetensors",
+  "模型：seedvr2_ema_7b-Q8_0.gguf",
+  "LoRA：Klein 一致性增强.safetensors",
+  "LoRA：Kook_Zimage_真实幻想_Turbo.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人像照片（LoadImage）",
+  "count": "1"
+ },
+ "output": {
+  "type": "高清精修后的人像图像（PreviewImage / SaveImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly: Klein 一致性增强 强度",
+   "how_to_tune": "当前为 0.5。如果精修后人物五官漂移或不像，可调高到 0.6-0.8；调太高会让脸显得僵硬、表情不自然。"
+  },
+  {
+   "param": "LoraLoaderModelOnly: Kook_Zimage_真实幻想_Turbo 强度",
+   "how_to_tune": "当前为 0.5。想要更强真实幻想/风格化质感可上调，想要保守自然修图可下调到 0.3 以下。"
+  },
+  {
+   "param": "GoohaiUniversalSlider 美颜强度",
+   "how_to_tune": "当前为 0.4。轻度精修用 0.2-0.3，重度美颜/去瑕疵用 0.5 以上；过高可能损失皮肤纹理。"
+  },
+  {
+   "param": "KSampler / KSamplerAdvanced steps 与 cfg",
+   "how_to_tune": "当前分别为 4/8 步、cfg=1，适配 Turbo 蒸馏模型。若画质不稳或结构漂移，可尝试 8-16 步、cfg 1-2 之间微调。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler 目标分辨率",
+   "how_to_tune": "当前为 1080。输出要求更高可试 2048，但显存和耗时明显增加；若卡顿可降到 720-1080。"
+  },
+  {
+   "param": "Flux2KleinConfigPreparer_EditUtils longest_edge",
+   "how_to_tune": "当前为 2048。控制 Klein 模型处理的最大长边，越大细节越足，但显存需求快速上升。"
+  },
+  {
+   "param": "TTP_Image_Tile_Batch 图块尺寸",
+   "how_to_tune": "当前为 1024×1024，通常与模型训练分辨率匹配；放大后若出现接缝，可调整 TTP_Tile_image_size 的重叠/网格参数。"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照片，端到端完成皮肤质感增强、去除痘印等瑕疵、专业人像精修，并输出高清结果。；能力:同一工作流同时加载 Z-Image-Turbo 与 Flux.2-Klein 两个 UNET 和两套 CLIP/LoRA，可对照或切换不同模型路径。；能力:通过 ReferenceLatent 与 Klein 一致性增强 LoRA，尽可能保持原人物身份特征，避免精修/放大后五官漂移。；能力:通过 TTP 图块化处理与 SeedVR2 上采样，将精修结果推高到 1080/2048 级高清。；特色:SetNode/GetNode 命名总线：原图、美颜强度、klein、Z-image、高清、原图像素标准化 6 个命名变量串联整个多模型流程，便于切换和复用分支。；特色:TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy 构成切块→批处理→拼图链路，绕开大图直接推理的显存瓶颈。；特色:Image Comparer (rgthree) 提供修图前后对比/质量检查，形成人工质量控制回路，而不是盲出结果。；特色:SeedVR2VideoUpscaler + seedvr2_ema_7b-Q8_0.gguf 使用量化生成式模型做最终高清放大，属于较极客的高成本放大方案。；特色:KSampler 与 KSamplerAdvanced 两段式采样，配合 Z-Image-Turbo 和 Flux.2-Klein 两条模型路径，可能形成“粗修→精修”的多段质量控制回路。；适用于商业人像精修、写真后期、去痘印/去瑕疵、皮肤质感增强，以及需要高分辨率输出并尽量保持人物身份的批量人像修图场景。；这个工作流可能是想解决单模型人像精修时“皮肤纹理被抹平、高清感靠锐化、人物容易不像”的问题。它把偏真实幻想的 Z-Image-Turbo 和强语义控制的 Flux.2-Klein 放在同一流程中，通过一致性 LoRA 和 ReferenceLatent 锁住身份，再用 TTP 分块降低显存压力，最后用 SeedVR 生成式放大补出高频皮肤纹理；如果中间效果不对，可以用 rgthree Image Comparer 对比后再调参。"
+}

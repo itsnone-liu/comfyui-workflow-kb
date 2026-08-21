@@ -1,0 +1,102 @@
+{
+ "domain": [
+  "文生视频",
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "上传 3 张参考人物图并输入文字提示，端到端生成一条保持面部身份一致、带音频轨道的多姿态短视频（MP4）",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 cxy_kiss_lora 可生成吻戏/亲密互动类特定动作镜头",
+   "kind": "fact"
+  },
+  {
+   "text": "以 MiniMax H3 为基座，支持文生视频与图生视频两种模式，三图参考进一步收紧主体特征",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频生成（ref2va pruned bf16 全精度）",
+  "Reference-to-Video 三路参考图注入",
+  "LoRA 模型适配：SameFace_Fix（人脸一致性）与 cxy_kiss_lora_h3_v01（亲吻动作）",
+  "MiniMaxH3BlockCacheT8 块缓存显存优化",
+  "PathchSageAttentionKJ 注意力加速",
+  "res_multistep 采样器 + BasicGuider + SamplerCustomAdvanced 自定义采样链路",
+  "双 VAE 分离解码：视频 VAE fp16 + 音频 VAE fp32",
+  "ResolutionSelector 动态分辨率 + ComfyMathExpression 动态帧数计算"
+ ],
+ "special_features": [
+  {
+   "text": "三重参考图并行输入：3 个 LoadImage 同时作为条件，配合 SameFace_Fix LoRA 形成多角度锁脸的人物一致性方案",
+   "kind": "fact"
+  },
+  {
+   "text": "满血全精度工程化：BF16/FP16 模型 + BlockCache + SageAttention 双优化，在较低显存限制下尽量保留全精度画质",
+   "kind": "fact"
+  },
+  {
+   "text": "ComfyMathExpression 动态帧数公式 max(5, round(a*24))+...，只需调整一个 PrimitiveFloat 即可控制视频长度",
+   "kind": "fact"
+  },
+  {
+   "text": "双 VAE 独立解码：视频与音频分别使用 fp16/fp32 VAE 解码后再合成，使音画出帧策略更灵活",
+   "kind": "fact"
+  },
+  {
+   "text": "双 easy cleanGpuUsed 清理节点分布在采样前后，主动防显存碎片、防 OOM",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 AnyBooleanSwitch 作为条件开关（具体控制链路不明），可能用于快速开启/关闭 LoRA 或 BlockCache 等组件",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "此工作流试图用「多参考图 + 任务 LoRA」的方式解决 MiniMax H3 视频生成中身份漂移和特定动作难以控制的问题：SameFace_Fix 将人脸特征锁定到参考图，cxy_kiss_lora 注入亲吻动作先验，二者叠加使一次采样直接获得\"这个人做这个动作\"的结果。同时为了不让全精度模型压垮显存，引入 BlockCache 与 SageAttention 双优化，并用双 cleanGpuUsed 和动态参数计算来延长生成长度、提高显存周转。整体呈现一种\"功能优先、性能取舍\"的极客式堆叠风格。",
+ "use_case": "适用于短视频/写真/虚拟偶像场景：输入同一人物的 3 张不同角度照片，即可批量产出保持外观一致的动作短视频；kiss LoRA 使它能直接生成亲密互动镜头，常用于短剧、MV、直播切片等内容生产。",
+ "limitation": "必须自行准备 MiniMax H3 官方权重（UNET/CLIP/双 VAE 共 4 个模型文件）与两个 LoRA 文件；依赖 ComfyUI-VideoHelperSuite、ComfyMath、KJNodes、MiniMaxH3 系列等自定义节点；LoadImage 节点固定为 3 路，少图/多图需改图；生成 1344×768×124 帧对显存要求较高，建议 ≥24GB 显存，低显存需同步调低 BlockCache 保留比例与帧数。",
+ "dependencies": [
+  "minimax_h3_ref2va_pruned_bf16.safetensors（UNET）",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors（CLIP）",
+  "minimax_h3_video_vae_fp16.safetensors + minimax_h3_audio_vae_fp32.safetensors",
+  "SameFace_Fix.safetensors、cxy_kiss_lora_h3_v01.safetensors（LoRA）",
+  "ComfyUI-VideoHelperSuite、ComfyMath、KJNodes、MiniMaxH3 系列自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "3 张参考人物图像 + 1 段文本提示词",
+  "count": "3 images + 1 text"
+ },
+ "output": {
+  "type": "MP4 视频（带独立音轨，支持音画同步）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "SameFace_Fix LoRA 强度（默认 0.35）",
+   "how_to_tune": "值越大面部越贴近参考图，但过高会限制表情与动作姿态，建议 0.25~0.4 内微调"
+  },
+  {
+   "param": "cxy_kiss_lora 强度（默认 0.25）",
+   "how_to_tune": "控制亲吻动作出现强度；过高会导致口部区域被遮挡或画面集中，建议 0.15~0.3"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo 帧数（默认 1344×768×124）",
+   "how_to_tune": "124 帧约 4~5 秒短视频；帧数越高显存占用和耗时线性增长，低显存可改为 80~96 帧"
+  },
+  {
+   "param": "MiniMaxH3BlockCacheT8 缓存系数（0.08/0.2/0.85）",
+   "how_to_tune": "前两个描述缓存窗口，第三个是保留比例；调低保留可省显存，调高更接近全精度效果，可按显存紧张程度在 0.75~0.9 之间调整"
+  },
+  {
+   "param": "BasicScheduler 步数（默认 25）",
+   "how_to_tune": "25 步已基本收敛；追求细节可提升至 32~40 步，代价是耗时明显上升"
+  },
+  {
+   "param": "PathchSageAttentionKJ（auto/False）",
+   "how_to_tune": "开启后显著提速并降显存；如遇画面细节劣化或闪烁，可尝试关闭或手动指定 kernel 以保留全精度质感"
+  }
+ ],
+ "summary_text": "能力:上传 3 张参考人物图并输入文字提示，端到端生成一条保持面部身份一致、带音频轨道的多姿态短视频（MP4）；能力:通过 cxy_kiss_lora 可生成吻戏/亲密互动类特定动作镜头；能力:以 MiniMax H3 为基座，支持文生视频与图生视频两种模式，三图参考进一步收紧主体特征；特色:三重参考图并行输入：3 个 LoadImage 同时作为条件，配合 SameFace_Fix LoRA 形成多角度锁脸的人物一致性方案；特色:满血全精度工程化：BF16/FP16 模型 + BlockCache + SageAttention 双优化，在较低显存限制下尽量保留全精度画质；特色:ComfyMathExpression 动态帧数公式 max(5, round(a*24))+...，只需调整一个 PrimitiveFloat 即可控制视频长度；特色:双 VAE 独立解码：视频与音频分别使用 fp16/fp32 VAE 解码后再合成，使音画出帧策略更灵活；特色:双 easy cleanGpuUsed 清理节点分布在采样前后，主动防显存碎片、防 OOM；特色:两个 AnyBooleanSwitch 作为条件开关（具体控制链路不明），可能用于快速开启/关闭 LoRA 或 BlockCache 等组件；适用于短视频/写真/虚拟偶像场景：输入同一人物的 3 张不同角度照片，即可批量产出保持外观一致的动作短视频；kiss LoRA 使它能直接生成亲密互动镜头，常用于短剧、MV、直播切片等内容生产。；此工作流试图用「多参考图 + 任务 LoRA」的方式解决 MiniMax H3 视频生成中身份漂移和特定动作难以控制的问题：SameFace_Fix 将人脸特征锁定到参考图，cxy_kiss_lora 注入亲吻动作先验，二者叠加使一次采样直接获得\"这个人做这个动作\"的结果。同时为了不让全精度模型压垮显存，引入 BlockCache 与 SageAttention 双优化，并用双 cleanGpuUsed 和动态参数计算来延长生成长度、提高显存周转。整体呈现一种\"功能优先、性能取舍\"的极客式堆叠风格。"
+}

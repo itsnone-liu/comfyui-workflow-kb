@@ -1,0 +1,94 @@
+{
+ "domain": [
+  "图生视频",
+  "动漫头像驱动"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张角色图像 + 文本提示词，生成保持角色特征、具有简单运镜的动漫风格短视频",
+   "kind": "inference"
+  },
+  {
+   "text": "自动去除输入图像背景，将主体抽取后作为视频生成的身份锚点",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FramePack 图像到视频（I2V）生成",
+  "Hunyuan Video 视频生成模型",
+  "LoRA 风格调制（animetic_light）",
+  "双 CLIP 文本编码（clip_l + llava_llama3）",
+  "CLIP 视觉编码（sigclip_vision_patch14_384）",
+  "背景移除（Rembg u2net）",
+  "动态分辨率桶匹配",
+  "VAE 平铺解码",
+  "torch.compile 加速"
+ ],
+ "special_features": [
+  {
+   "text": "整合 FramePack 专用节点链（LoadFramePackModel → FramePackSingleFrameSampler → FramePackFindNearestBucket），形成完整的端到端 I2V 流程",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 ConditioningZeroOut 构造无条件分支，可能用于 CFG 引导增强",
+   "kind": "inference"
+  },
+  {
+   "text": "同时加载两个文本编码器和一个视觉编码器，实现多模态条件注入",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 ImageConcatMulti 节点对图像进行拼接，可能用于多视角或多帧一致性约束",
+   "kind": "inference"
+  },
+  {
+   "text": "开启 torch.compile（inductor）和 bf16/fp8 混合精度，针对性能做了深度优化",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流以 FramePack 为核心，先将输入图像进行背景剥离、尺寸归一化，再结合 Hunyuan Video 模型和动画 LoRA，将静态角色转化为具有可控运动与运镜的短视频。通过 TorchCompile 设置和 tiled VAE 解码，可能旨在降低显存占用、提升生成效率，同时利用 ConditioningZeroOut 增强条件控制的自由度。整体设计偏向于在消费级 GPU 上实现高可玩性的角色视频合成。",
+ "use_case": "适合动漫角色二创、短视频素材生成、虚拟主播动态展示等场景，用户提供一张静态角色图即可快速产出带运镜的短动画片段。",
+ "limitation": "依赖 FramePack 自定义节点集及大型 Hunyuan Video 模型，需要较高显存；输入图像背景去除效果依赖 Rembg 模型，复杂背景可能影响主体提取；输出为图像序列而非直接视频，需额外合并；生成帧数有限，长视频需要分镜处理；LoRA 强度过高或过低都可能影响风格一致性。",
+ "dependencies": [
+  "FramePackI2V_HY_fp8_e4m3fn.safetensors",
+  "sigclip_vision_patch14_384.safetensors",
+  "clip_l.safetensors",
+  "llava_llama3_fp8_scaled.safetensors",
+  "hunyuan_video_vae_bf16.safetensors",
+  "animetic_light.safetensors",
+  "u2net (Rembg 模型)",
+  "ComfyUI 自定义节点：FramePack、Image Rembg、ImageResize+ 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video (image sequence)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FramePackSingleFrameSampler",
+   "how_to_tune": "参数序列中的 15 可能为采样步数，增大可提升质量但降低速度；0.15 可能为去噪强度，控制运动幅度，值越小越接近原图；10 可能为 CFG，调节文本引导强度，动漫场景常用 7-12 之间。"
+  },
+  {
+   "param": "FramePackFindNearestBucket",
+   "how_to_tune": "给定 640 表示生成视频的目标分辨率桶，增加会提高细节但大幅增加显存占用；调小可加速生成。"
+  },
+  {
+   "param": "FramePackLoraSelect",
+   "how_to_tune": "强度值 1 控制 LoRA 的插值比例，调大增强动画风格，调小减弱；过大会导致画面变形。"
+  },
+  {
+   "param": "LoadFramePackModel",
+   "how_to_tune": "精度选择 fp8_e4m3fn 可节省显存、速度更快，但画质略有损失；bf16 精度更高，适合显存充足时使用。"
+  },
+  {
+   "param": "ImageResize+",
+   "how_to_tune": "将输入图缩放到 512x512，过小会损失细节，过大可能被裁剪；建议保持主体完整裁剪比例。"
+  }
+ ],
+ "summary_text": "能力:输入单张角色图像 + 文本提示词，生成保持角色特征、具有简单运镜的动漫风格短视频；能力:自动去除输入图像背景，将主体抽取后作为视频生成的身份锚点；特色:整合 FramePack 专用节点链（LoadFramePackModel → FramePackSingleFrameSampler → FramePackFindNearestBucket），形成完整的端到端 I2V 流程；特色:使用 ConditioningZeroOut 构造无条件分支，可能用于 CFG 引导增强；特色:同时加载两个文本编码器和一个视觉编码器，实现多模态条件注入；特色:引入 ImageConcatMulti 节点对图像进行拼接，可能用于多视角或多帧一致性约束；特色:开启 torch.compile（inductor）和 bf16/fp8 混合精度，针对性能做了深度优化；适合动漫角色二创、短视频素材生成、虚拟主播动态展示等场景，用户提供一张静态角色图即可快速产出带运镜的短动画片段。；该工作流以 FramePack 为核心，先将输入图像进行背景剥离、尺寸归一化，再结合 Hunyuan Video 模型和动画 LoRA，将静态角色转化为具有可控运动与运镜的短视频。通过 TorchCompile 设置和 tiled VAE 解码，可能旨在降低显存占用、提升生成效率，同时利用 ConditioningZeroOut 增强条件控制的自由度。整体设计偏向于在消费级 GPU 上实现高可玩性的角色视频合成。"
+}

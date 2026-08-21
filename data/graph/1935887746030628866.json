@@ -1,0 +1,455 @@
+{
+ "node_count": 11,
+ "link_count": 8,
+ "active_node_count": 11,
+ "nodes": [
+  {
+   "id": 118,
+   "type": "FaceEmbedDistance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "cosine",
+    100,
+    1,
+    true
+   ],
+   "in_links": [
+    214,
+    215,
+    217
+   ],
+   "out_links": [
+    216
+   ]
+  },
+  {
+   "id": 119,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    216
+   ],
+   "out_links": []
+  },
+  {
+   "id": 85,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "pl-kpntext"
+   ],
+   "in_links": [
+    173
+   ],
+   "out_links": []
+  },
+  {
+   "id": 115,
+   "type": "RH_Translator",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "restore and colorize this photo. Maintain the consistency between the characters and the background,\n",
+    812,
+    "randomize",
+    "auto"
+   ],
+   "in_links": [],
+   "out_links": [
+    210
+   ]
+  },
+  {
+   "id": "94",
+   "type": "easy imageScaleDownToSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    true
+   ],
+   "in_links": [
+    211
+   ],
+   "out_links": [
+    212
+   ]
+  },
+  {
+   "id": 84,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "b4f80f809e41f6ac3d91aed809fde1698a2be436b3053a29bb14f42c84eb9a8b.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    211,
+    215
+   ]
+  },
+  {
+   "id": 114,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "下面用英文填写提示词，也支持中文，尽量描述出主体，如果没有特殊颜色要求，直接用默认的提示词即可，"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 117,
+   "type": "FaceAnalysisModels",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "insightface",
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    214
+   ]
+  },
+  {
+   "id": 89,
+   "type": "RH_ComfyFluxKontext",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "flux-kontext-max",
+    "",
+    "match_input_image",
+    1,
+    648959923,
+    "randomize",
+    true,
+    3.5,
+    "ai.t8star.cn",
+    "png",
+    false,
+    2
+   ],
+   "in_links": [
+    212,
+    210
+   ],
+   "out_links": [
+    173,
+    217
+   ]
+  },
+  {
+   "id": 120,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "与原图的人脸，相似度检测\n数值越低，代表与原图人脸越相似\n\n如：\nVALUE：0.0 （代表与原图100%相似）\nVALUE：0.8 （代表与原图仅20%相似）\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 121,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "aspect_ratio 这一栏里可以选图片比例\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 89,
+   "type": "STRING"
+  },
+  {
+   "from_node": 117,
+   "to_node": 118,
+   "type": "ANALYSIS_MODELS"
+  },
+  {
+   "from_node": 118,
+   "to_node": 119,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 84,
+   "to_node": 118,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 84,
+   "to_node": "94",
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 89,
+   "to_node": 118,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 89,
+   "to_node": 85,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": "94",
+   "to_node": 89,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 7,
+  "image_io": 3,
+  "face": 1
+ },
+ "assets": [],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 32,
+ "structure_hash": "8af9a6acc63a3c8b",
+ "param_face": [
+  {
+   "node_id": 118,
+   "node_type": "FaceEmbedDistance",
+   "widget_index": 0,
+   "value_preview": "cosine"
+  },
+  {
+   "node_id": 118,
+   "node_type": "FaceEmbedDistance",
+   "widget_index": 1,
+   "value_preview": "100"
+  },
+  {
+   "node_id": 118,
+   "node_type": "FaceEmbedDistance",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 118,
+   "node_type": "FaceEmbedDistance",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 85,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "pl-kpntext"
+  },
+  {
+   "node_id": 115,
+   "node_type": "RH_Translator",
+   "widget_index": 0,
+   "value_preview": "restore and colorize this photo. Maintain the consistency be"
+  },
+  {
+   "node_id": 115,
+   "node_type": "RH_Translator",
+   "widget_index": 1,
+   "value_preview": "812"
+  },
+  {
+   "node_id": 115,
+   "node_type": "RH_Translator",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 115,
+   "node_type": "RH_Translator",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": "94",
+   "node_type": "easy imageScaleDownToSize",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": "94",
+   "node_type": "easy imageScaleDownToSize",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "b4f80f809e41f6ac3d91aed809fde1698a2be436b3053a29bb14f42c84eb"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 84,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 114,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "下面用英文填写提示词，也支持中文，尽量描述出主体，如果没有特殊颜色要求，直接用默认的提示词即可，"
+  },
+  {
+   "node_id": 117,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 0,
+   "value_preview": "insightface"
+  },
+  {
+   "node_id": 117,
+   "node_type": "FaceAnalysisModels",
+   "widget_index": 1,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 1,
+   "value_preview": "flux-kontext-max"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 3,
+   "value_preview": "match_input_image"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 5,
+   "value_preview": "648959923"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 6,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 8,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 9,
+   "value_preview": "ai.t8star.cn"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 10,
+   "value_preview": "png"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 89,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 12,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 120,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "与原图的人脸，相似度检测\n数值越低，代表与原图人脸越相似\n\n如：\nVALUE：0.0 （代表与原图100%相似）\nVAL"
+  },
+  {
+   "node_id": 121,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "aspect_ratio 这一栏里可以选图片比例\n"
+  }
+ ]
+}

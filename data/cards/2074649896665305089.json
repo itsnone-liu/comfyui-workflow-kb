@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "AI绘画",
+  "图像生成",
+  "分镜设计"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张图像，通过 Qwen-Image-Edit 模型和多个中文镜头指令，生成 8 张不同角度/景别的分镜图（背面、侧视、俯视、特写、广角、仰视等），并保存为统一前缀 r-qwen2509-aijuxi 的 8 个文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 Qwen-Image 的编辑能力与参考图拼接，在变换镜头的同时保持主体（角色/场景）身份一致，适用于快速产出分镜脚本素材。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image Edit（基于 qwen_image_edit_2509_bf16 检查点）",
+  "多角度编辑 LoRA（Qwen-Edit-2509-Multiple-angles）",
+  "加速采样 LoRA（Qwen-Image-Lightning-4steps）",
+  "多参考图网格拼接条件（ImageConcatMulti）",
+  "多段独立 KSampler 采样（8 路分镜生成）",
+  "文本条件编码（TextEncodeQwenImageEditPlus）",
+  "显存回收管理（LayerUtility: PurgeVRAM）",
+  "采样参数适配（ModelSamplingAuraFlow、CFGNorm）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式分镜结构：8 套独立的 KSampler + VAEDecode + SaveImage 链路，分别对应不同的 TextEncodeQwenImageEditPlus / JjkText 镜头提示词，实现一次工作流产出多张分镜。",
+   "kind": "fact"
+  },
+  {
+   "text": "参考图网格拼接：使用 ImageConcatMulti 将多张图按 right/down 方向拼接成组合图，作为 Qwen-Image-Edit 的条件输入，可能是为了把原图与已生成的分镜作为上下文，增强后续画面的一致性。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存压力控制：在 9 处插入 LayerUtility: PurgeVRAM，主动清理 VRAM，使长链条的多次采样能稳定运行。",
+   "kind": "fact"
+  },
+  {
+   "text": "LoRA 组合策略：多角度 LoRA 与 Lightning 加速 LoRA 同时启用，权重均为 0.8，在保证镜头变换能力的同时将采样步数压缩到 6 步。",
+   "kind": "fact"
+  },
+  {
+   "text": "针对 Qwen-Image 的采样适配：使用 ModelSamplingAuraFlow(3) 和 CFGNorm(mode4)，可能是为了匹配 Qwen-Image 的噪声调度与 CFG 归一化方式，提升编辑效果。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流面向“一张图生成多角度分镜”的创作场景。设计者以 Qwen-Image 的指令编辑能力为核心，借助多角度 LoRA 强化镜头变换控制，同时用 Lightning LoRA 降低采样成本。通过 ImageConcatMulti 将原始图与已生成分镜拼接为参考网格，试图在镜头变化时维持主体一致性；每个分镜独立采样和保存，避免相互干扰，也便于筛选。中途插大量 PurgeVRAM 是为了应对多轮采样带来的显存压力。整体呈现一种“流水线式分镜工厂”的设计思路。",
+ "use_case": "用户上传一张概念设计图，自动生成 8 个不同镜头角度/景别的分镜草图，可用于影视分镜、漫画分镜、广告分镜的前期预览与灵感发散。",
+ "limitation": "依赖特定的 Qwen-Image 模型文件（qwen_image_edit_2509_bf16.safetensors、qwen_2.5_vl_7b_fp8_scaled.safetensors、qwen_image_vae.safetensors）以及两个 LoRA 文件；需要大量自定义节点（UNETLoader、CLIPLoader、ImageConcatMulti、TextEncodeQwenImageEditPlus、JjkText、LayerUtility: PurgeVRAM、CFGNorm、ModelSamplingAuraFlow、GetNode/SetNode 等）。仅接受单张图片输入，分镜数量固定为 8；多次采样对显存要求较高，普通显卡可能只能低分辨率运行。",
+ "dependencies": [
+  "checkpoint: qwen_image_edit_2509_bf16.safetensors (fp8_e4m3fn)",
+  "clip: qwen_2.5_vl_7b_fp8_scaled.safetensors (type qwen_image)",
+  "vae: qwen_image_vae.safetensors",
+  "lora: Qwen-Edit-2509-Multiple-angles.safetensors",
+  "lora: Qwen-Image-Lightning-4steps-V1.0.safetensors",
+  "custom nodes: UNETLoader, CLIPLoader, ImageConcatMulti, TextEncodeQwenImageEditPlus, JjkText, CFGNorm, ModelSamplingAuraFlow, LayerUtility: PurgeVRAM, GetNode/SetNode, ImageResizeKJv2"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "count": "8",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps=6, cfg=1, sampler=euler, scheduler=simple",
+   "how_to_tune": "配合 Lightning LoRA 可将步数保持在 4~8 步；cfg 建议 1.0 附近，若生成不稳定可缓慢增加至 2.0，但过高会破坏编辑指令的遵从度。"
+  },
+  {
+   "param": "LoRA 权重（Qwen-Edit-2509-Multiple-angles=0.8 / Lightning=0.8）",
+   "how_to_tune": "多角度 LoRA 权重越高镜头变换越明显，但有可能破坏原图身份特征；建议在 0.5~0.9 之间调节，达到平衡。Lightning 加速 LoRA 一般保持 0.8 上下即可。"
+  },
+  {
+   "param": "ImageConcatMulti 拼接方向与格数（right/down, 2/4）",
+   "how_to_tune": "拼接方向决定参考图的排列方式，拼接格数影响模型能同时看到的上下文数量。若生成结果出现主体混淆，可减少格数或重新排列参考图顺序。"
+  },
+  {
+   "param": "ImageResizeKJv2 分辨率（768x768）",
+   "how_to_tune": "Qwen-Image 在 768~1024 分辨率下较稳定；若显存充足可提高至 1024 获得更多细节，否则保持 768 并配合 PurgeVRAM 防止 OOM。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow 参数=3",
+   "how_to_tune": "该参数影响采样噪声 shift 分布；值越小越接近原始训练噪声调度。一般使用默认值 3，若画面过曝或欠曝可尝试 1~5 区间微调。"
+  }
+ ],
+ "summary_text": "能力:输入一张图像，通过 Qwen-Image-Edit 模型和多个中文镜头指令，生成 8 张不同角度/景别的分镜图（背面、侧视、俯视、特写、广角、仰视等），并保存为统一前缀 r-qwen2509-aijuxi 的 8 个文件。；能力:利用 Qwen-Image 的编辑能力与参考图拼接，在变换镜头的同时保持主体（角色/场景）身份一致，适用于快速产出分镜脚本素材。；特色:多段式分镜结构：8 套独立的 KSampler + VAEDecode + SaveImage 链路，分别对应不同的 TextEncodeQwenImageEditPlus / JjkText 镜头提示词，实现一次工作流产出多张分镜。；特色:参考图网格拼接：使用 ImageConcatMulti 将多张图按 right/down 方向拼接成组合图，作为 Qwen-Image-Edit 的条件输入，可能是为了把原图与已生成的分镜作为上下文，增强后续画面的一致性。；特色:显存压力控制：在 9 处插入 LayerUtility: PurgeVRAM，主动清理 VRAM，使长链条的多次采样能稳定运行。；特色:LoRA 组合策略：多角度 LoRA 与 Lightning 加速 LoRA 同时启用，权重均为 0.8，在保证镜头变换能力的同时将采样步数压缩到 6 步。；特色:针对 Qwen-Image 的采样适配：使用 ModelSamplingAuraFlow(3) 和 CFGNorm(mode4)，可能是为了匹配 Qwen-Image 的噪声调度与 CFG 归一化方式，提升编辑效果。；用户上传一张概念设计图，自动生成 8 个不同镜头角度/景别的分镜草图，可用于影视分镜、漫画分镜、广告分镜的前期预览与灵感发散。；该工作流面向“一张图生成多角度分镜”的创作场景。设计者以 Qwen-Image 的指令编辑能力为核心，借助多角度 LoRA 强化镜头变换控制，同时用 Lightning LoRA 降低采样成本。通过 ImageConcatMulti 将原始图与已生成分镜拼接为参考网格，试图在镜头变化时维持主体一致性；每个分镜独立采样和保存，避免相互干扰，也便于筛选。中途插大量 PurgeVRAM 是为了应对多轮采样带来的显存压力。整体呈现一种“流水线式分镜工厂”的设计思路。"
+}

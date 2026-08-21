@@ -1,0 +1,106 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "动态壁纸"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张图片并给定正/负提示词，端到端生成以该图为视觉起点的 Wan2.1 i2v 短视频；模型加载、VAE 编解码、采样和视频封装都在本工作流内完成。",
+   "kind": "fact"
+  },
+  {
+   "text": "叠加“动态壁纸”与“Orbit 环绕运镜”两个 LoRA，让输出更像动态壁纸/环绕展示镜头，而不仅是普通图生视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "自动执行 RIFE 补帧 → RealESRGAN 超分 → ColorMatch 校色 → 固定尺寸输出的后处理链，最终可产出 1080x720 的高帧率视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 3 个 VHS_VideoCombine 保存多段产物，便于分别取用原始生成、补帧/超分后的版本。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1 Image-to-Video（wan2114BFusionx_fusionxImage2video 模型）",
+  "Upscale-Hires（RealESRGAN_x4plus_anime_6B 视频超分）",
+  "RIFE 视频补帧（rife49.pth，multiplier=10）",
+  "LoRA 多风格叠加（Dynamic Wallpaper + Orbit）",
+  "CLIP Vision 图像条件编码 + UMT5-XXL 文本编码",
+  "ColorMatch（mkl）色彩匹配",
+  "WanVideoBlockSwap / TorchCompile(inductor) / sageattn / fp8 显存与速度优化"
+ ],
+ "special_features": [
+  {
+   "text": "双 LoRA 分离控制：一个 LoRA 负责“动态壁纸”画面风格，另一个负责“Orbit”环绕运镜，二者在采样前经两个 WanVideoLoraSelect 同时注入；可视为可插拔的风格/运镜旋钮。",
+   "kind": "inference"
+  },
+  {
+   "text": "高倍率后处理链：RIFE 10 倍插帧把 81 帧扩展到近 810 帧，再用 RealESRGAN 2x 放大，最后用 ColorMatch(mkl) 把颜色向原图拉回，避免超分后偏色。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存优化配置齐全：WanVideoBlockSwap(25) + fp8_e4m3fn 模型加载 + sageattn + TorchCompileSettings(inductor)，明显是为了在有限显存下跑通 Wan2.1 的长视频采样。",
+   "kind": "inference"
+  },
+  {
+   "text": "三段式输出：3 个 VHS_VideoCombine 并存，疑似分别接在原始生成、补帧后、超分调色后，便于中途预览和分版输出。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这条工作流像一条“动态壁纸短视频”生产流水线：先用 Wan2.1 i2v 生成基础镜头，再用 Dynamic Wallpaper 与 Orbit 两个 LoRA 分别控制画面风格和镜头运动；为了让视频更适合当壁纸循环，作者加入 RIFE 高倍补帧和 RealESRGAN 超分，最后用 ColorMatch 防止处理链导致颜色漂移。为降低运行门槛，还配置了 BlockSwap、fp8、sageattn 和 torch.compile 等优化；同时保留 3 个视频输出节点，似乎是为了方便在不同阶段检查与导出。",
+ "use_case": "适合把一张插画/照片变成 1080x720 的动态壁纸短片，也可作为角色出场、场景氛围片的图生视频模板；双 LoRA 的构造很适合快速切换风格或运镜方式。",
+ "limitation": "依赖 WanVideoWrapper、KJNodes、VideoHelperSuite、RIFE/Frame-Interpolation、ColorMatch 等自定义节点；需下载 wan2114BFusionx_fusionxImage2video、umt5-xxl-enc-bf16、Wan2_1_VAE_bf16、clip_vision_h、RealESRGAN_x4plus_anime_6B、rife49 及两个 LoRA 模型。输入图片会被强制 Resize 到 832x480，比例不同时可能变形；81 帧 + 10 倍补帧使计算量很大，生成耗时和显存占用偏高。",
+ "dependencies": [
+  "ComfyUI-WanVideoWrapper（WanVideo* 系列节点）",
+  "KJNodes（ImageResizeKJv2）",
+  "VideoHelperSuite（VHS_VideoCombine / Video_Upscale_With_Model）",
+  "ComfyUI-Frame-Interpolation（RIFE VFI）",
+  "ColorMatch 节点（可能来自 WAS Node Suite）",
+  "模型文件：wan2114BFusionx_fusionxImage2video.safetensors",
+  "模型文件：umt5-xxl-enc-bf16.safetensors",
+  "模型文件：Wan2_1_VAE_bf16.safetensors",
+  "模型文件：clip_vision_h.safetensors",
+  "模型文件：RealESRGAN_x4plus_anime_6B.pth",
+  "模型文件：rife49.pth",
+  "LoRA：Wan_i2v_720p-功能-动态壁纸-Live Wallpaper Style.safetensors",
+  "LoRA：wan_ZDSJV2_Orbit.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler.steps",
+   "how_to_tune": "当前为 8 步，属于快速出图配置；若运动变形或细节崩坏，可提到 12-16 步，但耗时增加。Wan 类模型通常不需要 20 步以上。"
+  },
+  {
+   "param": "WanVideoSampler.cfg",
+   "how_to_tune": "当前约 1.0，是 Wan2.1 快速采样的常见甜点区；调太高容易过饱和/运动僵硬，建议先在 1.0-2.5 间试。"
+  },
+  {
+   "param": "WanVideoImageToVideoEncode.noise_aug",
+   "how_to_tune": "当前约 0.03，首帧保留较强；想让镜头更动态、更像“活起来”可加大到 0.1-0.2，但首帧一致性会下降。"
+  },
+  {
+   "param": "RIFE VFI.multiplier",
+   "how_to_tune": "当前为 10 倍，追求极致丝滑；若出现插帧形变、物体抖动或耗时过长，降到 4/6 倍会更稳。"
+  },
+  {
+   "param": "WanVideoLoraSelect.strength",
+   "how_to_tune": "两个 LoRA 都约 1.0，属于满强度注入；若画面风格过强或运镜太晃，可分别下调到 0.6-0.8。"
+  },
+  {
+   "param": "Video_Upscale_With_Model.scale",
+   "how_to_tune": "当前用 2x 而不是 4x，配合末端 ImageResizeKJv2 固定 1080x720，能减少放大伪影；要更高分辨率建议提高基础生成分辨率而非硬放大。"
+  }
+ ],
+ "summary_text": "能力:输入一张图片并给定正/负提示词，端到端生成以该图为视觉起点的 Wan2.1 i2v 短视频；模型加载、VAE 编解码、采样和视频封装都在本工作流内完成。；能力:叠加“动态壁纸”与“Orbit 环绕运镜”两个 LoRA，让输出更像动态壁纸/环绕展示镜头，而不仅是普通图生视频。；能力:自动执行 RIFE 补帧 → RealESRGAN 超分 → ColorMatch 校色 → 固定尺寸输出的后处理链，最终可产出 1080x720 的高帧率视频。；能力:通过 3 个 VHS_VideoCombine 保存多段产物，便于分别取用原始生成、补帧/超分后的版本。；特色:双 LoRA 分离控制：一个 LoRA 负责“动态壁纸”画面风格，另一个负责“Orbit”环绕运镜，二者在采样前经两个 WanVideoLoraSelect 同时注入；可视为可插拔的风格/运镜旋钮。；特色:高倍率后处理链：RIFE 10 倍插帧把 81 帧扩展到近 810 帧，再用 RealESRGAN 2x 放大，最后用 ColorMatch(mkl) 把颜色向原图拉回，避免超分后偏色。；特色:显存优化配置齐全：WanVideoBlockSwap(25) + fp8_e4m3fn 模型加载 + sageattn + TorchCompileSettings(inductor)，明显是为了在有限显存下跑通 Wan2.1 的长视频采样。；特色:三段式输出：3 个 VHS_VideoCombine 并存，疑似分别接在原始生成、补帧后、超分调色后，便于中途预览和分版输出。；适合把一张插画/照片变成 1080x720 的动态壁纸短片，也可作为角色出场、场景氛围片的图生视频模板；双 LoRA 的构造很适合快速切换风格或运镜方式。；这条工作流像一条“动态壁纸短视频”生产流水线：先用 Wan2.1 i2v 生成基础镜头，再用 Dynamic Wallpaper 与 Orbit 两个 LoRA 分别控制画面风格和镜头运动；为了让视频更适合当壁纸循环，作者加入 RIFE 高倍补帧和 RealESRGAN 超分，最后用 ColorMatch 防止处理链导致颜色漂移。为降低运行门槛，还配置了 BlockSwap、fp8、sageattn 和 torch.compile 等优化；同时保留 3 个视频输出节点，似乎是为了方便在不同阶段检查与导出。"
+}

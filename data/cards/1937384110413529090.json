@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "风格迁移",
+  "局部重绘",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人脸参考图和目标动漫图，生成保持人脸身份、符合目标构图/姿态的动漫风格换脸图",
+   "kind": "inference"
+  },
+  {
+   "text": "支持深度控制（DepthAnythingV2）并用ControlNet约束结构，可维持目标图的姿势与场景布局",
+   "kind": "fact"
+  },
+  {
+   "text": "使用WD14Tagger自动为输入图打标，辅助生成符合内容语义的提示词",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "IP-Adapter FaceID",
+  "ControlNet-Union (SDXL)",
+  "DepthAnythingV2",
+  "WD14Tagger",
+  "Stable Diffusion XL Checkpoint"
+ ],
+ "special_features": [
+  {
+   "text": "同时串联InstantID和IPAdapter FaceID双身份约束，增强换脸相似度",
+   "kind": "inference"
+  },
+  {
+   "text": "引入ConditioningZeroOut节点，疑似用于在特定控制模式下降级文本条件，突出身份与深度控制",
+   "kind": "inference"
+  },
+  {
+   "text": "使用两个ControlNetLoader并配合ControlNetApplyAdvanced，可能用同一控制网络的不同权重/区间进行双重结构约束",
+   "kind": "inference"
+  },
+  {
+   "text": "集成WD14Tagger自动打tag，省去手工编写提示词",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流试图在动漫换脸中兼顾身份保持与结构控制：InstantID负责把参考人脸迁移到目标图像，IPAdapter FaceID进一步提炼面部细节，深度图+ControlNet维持目标构图和姿态，WD14Tagger自动生成语义标签，整体呈现多模型协同、条件分层的设计。",
+ "use_case": "适用于动漫换脸、cos风格化、角色插画创作等需要保持目标图像结构并替换人物身份的生成场景。",
+ "limitation": "需要下载并配置雪石-炫彩动漫.safetensors、controlnet-union-sdxl-1.0、ip-adapter.bin、wd-v1-4-moat-tagger-v2等模型文件；依赖ComfyUI自定义节点InstantID/IPAdapter/WD14Tagger/LayerUtility；输入需要至少2张有效图像，且目标图应具有可被深度模型识别的结构。",
+ "dependencies": [
+  "CheckpointLoaderSimple: 雪石-炫彩动漫.safetensors",
+  "ControlNetLoader: controlnet-union-sdxl-1.0.safetensors",
+  "InstantIDModelLoader: ip-adapter.bin",
+  "WD14Tagger: wd-v1-4-moat-tagger-v2",
+  "自定义节点: InstantID, ComfyUI_IPAdapter_plus, WD14Tagger|pysssss, LayerUtility"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "多张图像（人脸参考、目标主体，third可能为控制/深度源）",
+  "count": "3路LoadImage，至少2张有效图"
+ },
+ "output": {
+  "type": "图像（预览+保存PNG）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID weight",
+   "how_to_tune": "身份保持强度；0.8是默认推荐，调高可增强脸像但可能让画面生硬，建议范围0.5-1.0"
+  },
+  {
+   "param": "IPAdapterFaceID weight",
+   "how_to_tune": "FaceID嵌入权重，值与instantID互补；调高可提升面部细节，1.0附近较平衡，过高易导致过拟合"
+  },
+  {
+   "param": "IPAdapterUnifiedLoaderFaceID weight",
+   "how_to_tune": "加载器内置权重0.6，影响整体IPAdapter强度，可配合后续权重联动"
+  },
+  {
+   "param": "ControlNetApplyAdvanced strength",
+   "how_to_tune": "深度控制强度，1为全量，降低可给生成更多自由，适合需要改变结构或姿势时调小"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "提示词约束强度；当前7，调高更听话但容易偏色，建议5-9"
+  },
+  {
+   "param": "WD14Tagger threshold",
+   "how_to_tune": "0.35/0.85，第一个阈值过滤低置信度标签，第二个控制二次过滤；提高可减少无关tag，降低则tag更丰富"
+  }
+ ],
+ "summary_text": "能力:上传人脸参考图和目标动漫图，生成保持人脸身份、符合目标构图/姿态的动漫风格换脸图；能力:支持深度控制（DepthAnythingV2）并用ControlNet约束结构，可维持目标图的姿势与场景布局；能力:使用WD14Tagger自动为输入图打标，辅助生成符合内容语义的提示词；特色:同时串联InstantID和IPAdapter FaceID双身份约束，增强换脸相似度；特色:引入ConditioningZeroOut节点，疑似用于在特定控制模式下降级文本条件，突出身份与深度控制；特色:使用两个ControlNetLoader并配合ControlNetApplyAdvanced，可能用同一控制网络的不同权重/区间进行双重结构约束；特色:集成WD14Tagger自动打tag，省去手工编写提示词；适用于动漫换脸、cos风格化、角色插画创作等需要保持目标图像结构并替换人物身份的生成场景。；该工作流试图在动漫换脸中兼顾身份保持与结构控制：InstantID负责把参考人脸迁移到目标图像，IPAdapter FaceID进一步提炼面部细节，深度图+ControlNet维持目标构图和姿态，WD14Tagger自动生成语义标签，整体呈现多模型协同、条件分层的设计。"
+}

@@ -1,0 +1,86 @@
+{
+ "domain": [
+  "图像生成",
+  "故事板",
+  "四格漫画"
+ ],
+ "capabilities": [
+  {
+   "text": "上传三张参考图（如场景、角色、物件），结合故事文本，自动生成一张2x2四宫格剧情图",
+   "kind": "inference"
+  },
+  {
+   "text": "通过LLM将简单故事扩写为分格提示词，并注入生成模型",
+   "kind": "inference"
+  },
+  {
+   "text": "同时支持图生图和文生图两种生成模式，适应不同输入条件",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LLM提示词工程（RH_LLMAPI_NODE）",
+  "图像到图像生成（RH_RhartImageG2ImageToImage）",
+  "文本到图像生成（RH_RhartImageG2TextToImage）",
+  "多条件图像输入（3×LoadImage）",
+  "字符串拼接（StringConcatenate）",
+  "中间结果可视化（easy showAnything）"
+ ],
+ "special_features": [
+  {
+   "text": "使用Fast Groups Bypasser (rgthree) 对节点组进行旁路控制，便于快速切换不同处理流程",
+   "kind": "fact"
+  },
+  {
+   "text": "配置双LLM节点并行处理，可能分别负责不同分格的提示词扩展，并通过StringConcatenate拼接多段文本",
+   "kind": "inference"
+  },
+  {
+   "text": "同时包含文生图和图生图两个生成分支，配合旁路开关可灵活选用",
+   "kind": "inference"
+  },
+  {
+   "text": "多个easy showAnything节点将中间提示词和最终结果可视化，形成调试观察点",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能旨在提供一个低价、快速的四格故事板生成模板。它通过LLM自动将用户简短的故事描述扩展为符合写实电影风格的详细分格提示词，再结合三张参考图（场景、角色、道具）输入图生图模型，以保持角色和场景的视觉一致性。双生成通道与旁路开关增加了流程灵活性，使创作者能根据输入素材情况在文生图与图生图之间切换。",
+ "use_case": "适用于需要快速生成四格漫画、故事板、广告分镜或剧情概念图的内容创作者、插画师和短视频策划人员。",
+ "limitation": "依赖RH_LLMAPI_NODE与RH_RhartImageG2ImageToImage等特定自定义节点及外部API服务，需要网络连接和可用的API密钥；输入固定为三张图像，且图像内容应与分格剧情相关；输出尺寸受到生成模型预设（如16:9）限制。",
+ "dependencies": [
+  "ComfyUI",
+  "rgthree-comfyui (Fast Groups Bypasser)",
+  "RH_LLMAPI_NODE 自定义节点",
+  "RH_RhartImageG2ImageToImage 自定义节点",
+  "RH_RhartImageG2TextToImage 自定义节点",
+  "easy-use (easy showAnything)"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "图像 + 文本",
+  "count": "3张图像 + 多条提示词文本"
+ },
+ "output": {
+  "type": "图像（2x2四宫格）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_LLMAPI_NODE temperature",
+   "how_to_tune": "控制LLM输出随机性，默认0.6；值越低输出越稳定，适合提示词解析；值越高创意性更强，但可能偏离规则。"
+  },
+  {
+   "param": "RH_RhartImageG2ImageToImage 宽高比",
+   "how_to_tune": "设定输出图像比例，默认16:9，可改为1:1或4:3以适配不同分镜用途。"
+  },
+  {
+   "param": "RH_RhartImageG2ImageToImage seed",
+   "how_to_tune": "随机种子，设为randomize可每次生成不同结果；固定数值可复现同一构图。"
+  },
+  {
+   "param": "PrimitiveStringMultiline 多行文本",
+   "how_to_tune": "直接编辑各分格提示词模板，可细化第一格、第二格等场景描述，影响最终生成内容。"
+  }
+ ],
+ "summary_text": "能力:上传三张参考图（如场景、角色、物件），结合故事文本，自动生成一张2x2四宫格剧情图；能力:通过LLM将简单故事扩写为分格提示词，并注入生成模型；能力:同时支持图生图和文生图两种生成模式，适应不同输入条件；特色:使用Fast Groups Bypasser (rgthree) 对节点组进行旁路控制，便于快速切换不同处理流程；特色:配置双LLM节点并行处理，可能分别负责不同分格的提示词扩展，并通过StringConcatenate拼接多段文本；特色:同时包含文生图和图生图两个生成分支，配合旁路开关可灵活选用；特色:多个easy showAnything节点将中间提示词和最终结果可视化，形成调试观察点；适用于需要快速生成四格漫画、故事板、广告分镜或剧情概念图的内容创作者、插画师和短视频策划人员。；该工作流可能旨在提供一个低价、快速的四格故事板生成模板。它通过LLM自动将用户简短的故事描述扩展为符合写实电影风格的详细分格提示词，再结合三张参考图（场景、角色、道具）输入图生图模型，以保持角色和场景的视觉一致性。双生成通道与旁路开关增加了流程灵活性，使创作者能根据输入素材情况在文生图与图生图之间切换。"
+}

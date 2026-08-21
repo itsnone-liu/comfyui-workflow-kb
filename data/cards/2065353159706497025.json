@@ -1,0 +1,110 @@
+{
+ "domain": [
+  "图像生成",
+  "角色设计"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张真人照片和一张动漫角色参考图，生成该真人扮演该动漫角色的高质量照片（保持面部特征，融合角色服装/姿势/风格）",
+   "kind": "fact"
+  },
+  {
+   "text": "通过提示词控制角色姿势（如跪地、站姿等），生成对应动作的cosplay图",
+   "kind": "fact"
+  },
+  {
+   "text": "多分支并行生成多个候选结果，并支持通过删减提示词减少出图数量",
+   "kind": "inference"
+  },
+  {
+   "text": "利用SeedVR2将结果放大至1080p高清输出",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Qwen-Image-Edit",
+  "Upscale-Hires",
+  "LoRA (Any2Cosplay, Z-image绝对真人像写真, cospose, Qwen加速)",
+  "SegmentAnything",
+  "Inpaint条件控制",
+  "CFGNorm强制CFG=1",
+  "ModelSamplingAuraFlow"
+ ],
+ "special_features": [
+  {
+   "text": "多模型级联：Qwen-Image-Edit进行角色融合 → Z-image-turbo增强真实感 → SeedVR2放大，形成完整的高质量生成流水线",
+   "kind": "inference"
+  },
+  {
+   "text": "存在mode2版本的多组UNETLoader/采样器，形成并行分支，可能同时生成多路结果供Image Comparer对比",
+   "kind": "inference"
+  },
+  {
+   "text": "使用GetNode/SetNode模式对model/clip/vae/参考图进行模块化封装，简化主流程连接",
+   "kind": "fact"
+  },
+  {
+   "text": "大量显存管理节点（PurgeVRAM、PurgeVRAM_UTK、RunningHub Deepcleaner）在阶段间清理模型，实现在有限显存下运行多模型",
+   "kind": "fact"
+  },
+  {
+   "text": "LayerMask SegmentAnythingUltra V3自动分割人物并输入InpaintModelConditioning，减少背景干扰",
+   "kind": "inference"
+  },
+  {
+   "text": "使用CFGNorm强制CFG=1并搭配ModelSamplingAuraFlow（shift=3），配合加速LoRA稳定采样",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "工作流围绕“真人保持身份去扮演动漫角色”这一目标构建。它先通过SegmentAnything定位人物区域，随后利用Qwen-Image-Edit的指令编辑能力，将动漫角色的服装和特征迁移到真人图上；再通过Z-image-turbo模型增强照片真实感，并用多个LoRA分别控制角色还原度、真人质感和动作姿势；最后经SeedVR2放大至1080p输出。多分支与并行设计可能用于提供多个备选结果，而大量显存清理节点则让多模型流水线在消费级显卡上也能运行。",
+ "use_case": "用于制作真人cosplay动漫角色的照片、头像、宣传物料，或角色扮演灵感参考。",
+ "limitation": "需要同时输入真人照片和动漫角色参考图；依赖Qwen-Image-Edit、Z-image-turbo、SeedVR2等特定模型及rgthree、LayerStyle等自定义节点；显存需求较高（尽管有PurgeVRAM）；LoRA权重和提示词会显著影响效果；模型文件需提前下载并匹配版本。",
+ "dependencies": [
+  "qwen_image_edit_2511_bf16.safetensors",
+  "z_image_turbo_bf16.safetensors",
+  "seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_3_4b.safetensors",
+  "qwen_image_vae.safetensors",
+  "ema_vae_fp16.safetensors",
+  "z_image_turbo-vae.safetensors",
+  "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors",
+  "Any2Cosplay_25.safetensors",
+  "Z-image绝对真人像写真.safetensors",
+  "cospose_20.safetensors",
+  "自定义节点：rgthree (Fast Groups Muter, Image Comparer, Seed), LayerUtility (LayerStyle), SegmentAnythingUltra, SeedVR2, Easy_QwenEdit2509, RunningHub Deepcleaner, CFGNorm, ModelSamplingAuraFlow, FluxKontextImageScale, ImageScaleRestore_UTK, InpaintModelConditioning"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly (Any2Cosplay)",
+   "how_to_tune": "默认0.8，提高则cosplay角色特征更强，降低则更接近真人原貌"
+  },
+  {
+   "param": "Z-image绝对真人像写真LoRA强度",
+   "how_to_tune": "默认0.8，控制输出照片的真实皮肤质感和光影，过高可能降低角色还原度"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "默认4步，配合Qwen加速LoRA使用；若生成质量不足可适当增加步数（如6-8）"
+  },
+  {
+   "param": "SeedVR2目标分辨率",
+   "how_to_tune": "默认1080，可设为720/1440以平衡速度与清晰度"
+  },
+  {
+   "param": "提示词（CR Prompt Text）",
+   "how_to_tune": "可填写动作描述（如'跪地姿势'），也可留空以使用自动姿势"
+  }
+ ],
+ "summary_text": "能力:上传一张真人照片和一张动漫角色参考图，生成该真人扮演该动漫角色的高质量照片（保持面部特征，融合角色服装/姿势/风格）；能力:通过提示词控制角色姿势（如跪地、站姿等），生成对应动作的cosplay图；能力:多分支并行生成多个候选结果，并支持通过删减提示词减少出图数量；能力:利用SeedVR2将结果放大至1080p高清输出；特色:多模型级联：Qwen-Image-Edit进行角色融合 → Z-image-turbo增强真实感 → SeedVR2放大，形成完整的高质量生成流水线；特色:存在mode2版本的多组UNETLoader/采样器，形成并行分支，可能同时生成多路结果供Image Comparer对比；特色:使用GetNode/SetNode模式对model/clip/vae/参考图进行模块化封装，简化主流程连接；特色:大量显存管理节点（PurgeVRAM、PurgeVRAM_UTK、RunningHub Deepcleaner）在阶段间清理模型，实现在有限显存下运行多模型；特色:LayerMask SegmentAnythingUltra V3自动分割人物并输入InpaintModelConditioning，减少背景干扰；特色:使用CFGNorm强制CFG=1并搭配ModelSamplingAuraFlow（shift=3），配合加速LoRA稳定采样；用于制作真人cosplay动漫角色的照片、头像、宣传物料，或角色扮演灵感参考。；工作流围绕“真人保持身份去扮演动漫角色”这一目标构建。它先通过SegmentAnything定位人物区域，随后利用Qwen-Image-Edit的指令编辑能力，将动漫角色的服装和特征迁移到真人图上；再通过Z-image-turbo模型增强照片真实感，并用多个LoRA分别控制角色还原度、真人质感和动作姿势；最后经SeedVR2放大至1080p输出。多分支与并行设计可能用于提供多个备选结果，而大量显存清理节点则让多模型流水线在消费级显卡上也能运行。"
+}

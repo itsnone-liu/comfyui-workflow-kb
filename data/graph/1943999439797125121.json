@@ -1,0 +1,1983 @@
+{
+ "node_count": 43,
+ "link_count": 58,
+ "active_node_count": 43,
+ "nodes": [
+  {
+   "id": 60,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    129
+   ],
+   "out_links": []
+  },
+  {
+   "id": 43,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    60
+   ],
+   "out_links": []
+  },
+  {
+   "id": 48,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    121
+   ],
+   "out_links": []
+  },
+  {
+   "id": 74,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    134
+   ],
+   "out_links": [
+    135
+   ]
+  },
+  {
+   "id": 73,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    130
+   ],
+   "out_links": []
+  },
+  {
+   "id": 42,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    128,
+    131
+   ],
+   "out_links": [
+    60,
+    61
+   ]
+  },
+  {
+   "id": 49,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    122,
+    135
+   ],
+   "out_links": [
+    69,
+    70
+   ]
+  },
+  {
+   "id": 47,
+   "type": "CR Color Panel",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "black",
+    "#000000"
+   ],
+   "in_links": [
+    132,
+    133
+   ],
+   "out_links": [
+    121,
+    122
+   ]
+  },
+  {
+   "id": 94,
+   "type": "Int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024
+   ],
+   "in_links": [],
+   "out_links": [
+    164,
+    165
+   ]
+  },
+  {
+   "id": 87,
+   "type": "CLIPVisionEncode",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "center"
+   ],
+   "in_links": [
+    155,
+    162
+   ],
+   "out_links": [
+    154
+   ]
+  },
+  {
+   "id": 89,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sigclip_vision_patch14_384.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    155
+   ]
+  },
+  {
+   "id": 88,
+   "type": "StyleModelLoader",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-redux-dev.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    153
+   ]
+  },
+  {
+   "id": 71,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "height",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    163,
+    165
+   ],
+   "out_links": [
+    128,
+    129,
+    132,
+    137,
+    172,
+    133
+   ]
+  },
+  {
+   "id": 109,
+   "type": "NunchakuTextEncoderLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux",
+    "sd3/t5xxl_fp16.safetensors",
+    "clip_l.safetensors",
+    768,
+    "disable",
+    "none"
+   ],
+   "in_links": [],
+   "out_links": [
+    197
+   ]
+  },
+  {
+   "id": 27,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    38
+   ],
+   "out_links": [
+    44
+   ]
+  },
+  {
+   "id": 28,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    50
+   ],
+   "in_links": [
+    157
+   ],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 30,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    47,
+    83
+   ],
+   "out_links": [
+    48,
+    170
+   ]
+  },
+  {
+   "id": 29,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    158,
+    44,
+    82,
+    61,
+    71
+   ],
+   "out_links": [
+    43,
+    45,
+    46
+   ]
+  },
+  {
+   "id": 86,
+   "type": "StyleModelApply",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "multiply"
+   ],
+   "in_links": [
+    156,
+    153,
+    154
+   ],
+   "out_links": [
+    157
+   ]
+  },
+  {
+   "id": 31,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    48
+   ],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    82,
+    83
+   ]
+  },
+  {
+   "id": 85,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    214
+   ],
+   "out_links": [
+    211
+   ]
+  },
+  {
+   "id": 51,
+   "type": "ImageToMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "red"
+   ],
+   "in_links": [
+    70
+   ],
+   "out_links": [
+    71
+   ]
+  },
+  {
+   "id": 50,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    69
+   ],
+   "out_links": []
+  },
+  {
+   "id": 113,
+   "type": "ModelSamplingFlux",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.15,
+    0.5,
+    1024,
+    1024
+   ],
+   "in_links": [
+    211
+   ],
+   "out_links": [
+    210
+   ]
+  },
+  {
+   "id": 115,
+   "type": "NunchakuFluxLoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace++_subject_lora16.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    213
+   ],
+   "out_links": [
+    214
+   ]
+  },
+  {
+   "id": 92,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    161
+   ],
+   "out_links": []
+  },
+  {
+   "id": 100,
+   "type": "DownloadAndLoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gokaygokay/Florence-2-Flux-Large",
+    "fp16",
+    "sdpa",
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    185
+   ]
+  },
+  {
+   "id": 118,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinT_OGC (694MB)",
+    0.3,
+    "VITMatte",
+    6,
+    6,
+    0.15,
+    0.99,
+    true,
+    "Clothes",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    217
+   ],
+   "out_links": [
+    218,
+    219
+   ]
+  },
+  {
+   "id": 23,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    503616962176774,
+    "randomize",
+    25,
+    1,
+    "euler",
+    "normal",
+    1
+   ],
+   "in_links": [
+    210,
+    43,
+    45,
+    46
+   ],
+   "out_links": [
+    47
+   ]
+  },
+  {
+   "id": 108,
+   "type": "NunchakuFluxDiTLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "svdq-int4-flux.1-fill-dev",
+    0.08000000000000002,
+    "nunchaku-fp16",
+    "auto",
+    0,
+    "bfloat16",
+    "enabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    213
+   ]
+  },
+  {
+   "id": 84,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": []
+  },
+  {
+   "id": 95,
+   "type": "ImageCrop",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    0,
+    0
+   ],
+   "in_links": [
+    170,
+    173,
+    174,
+    172
+   ],
+   "out_links": [
+    171,
+    234
+   ]
+  },
+  {
+   "id": 125,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_duevm_00005_ppsul_1752321824.png&type=temp&subfolder=&rand=0.7483849814682528&Rh-Comfy-Auth=eyJ1c2VySWQiOiI2Zjc0ODM1OTgzM2VlM2RiZmY4MGYxNzRlYWIzY2IzZiIsInNpZ25FeHBpcmUiOjE3NTI5MjU3ODg2MzMsInRzIjoxNzUyMzIwOTg4NjMzLCJzaWduIjoiZmFjZDA2NzYyYTg3YWQyZTU0YTc5MDcwN2NlY2M1ZmQifQ==&Rh-Identify=6f748359833ee3dbff80f174eab3cb3f"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_duevm_00006_rmgry_1752321826.png&type=temp&subfolder=&rand=0.5214300063240882&Rh-Comfy-Auth=eyJ1c2VySWQiOiI2Zjc0ODM1OTgzM2VlM2RiZmY4MGYxNzRlYWIzY2IzZiIsInNpZ25FeHBpcmUiOjE3NTI5MjU3ODg2MzMsInRzIjoxNzUyMzIwOTg4NjMzLCJzaWduIjoiZmFjZDA2NzYyYTg3YWQyZTU0YTc5MDcwN2NlY2M1ZmQifQ==&Rh-Identify=6f748359833ee3dbff80f174eab3cb3f"
+     }
+    ]
+   ],
+   "in_links": [
+    234,
+    235
+   ],
+   "out_links": []
+  },
+  {
+   "id": 99,
+   "type": "Florence2Run",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "more_detailed_caption",
+    true,
+    false,
+    1024,
+    3,
+    true,
+    "",
+    665312304168744,
+    "randomize"
+   ],
+   "in_links": [
+    184,
+    185
+   ],
+   "out_links": [
+    186,
+    236
+   ]
+  },
+  {
+   "id": 101,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The image is a 3D rendering of a light blue dress with a floral pattern. The dress is made up of multiple layers of fabric, with the top layer being the largest and the bottom layer being smaller. The fabric is light blue in color and has a subtle floral pattern in shades of pink, white, and green. The skirt of the dress is full and flows down to the floor, creating a flowy and voluminous silhouette. The top layer is a deep V-neckline with thin straps that are tied in a bow at the back. The straps are decorated with small white flowers and leaves, adding a touch of elegance to the dress. The background is white, making the dress stand out even more."
+   ],
+   "in_links": [
+    186
+   ],
+   "out_links": []
+  },
+  {
+   "id": 26,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    197,
+    181
+   ],
+   "out_links": [
+    38,
+    156
+   ]
+  },
+  {
+   "id": 98,
+   "type": "LayerUtility: TextJoin",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    182,
+    236
+   ],
+   "out_links": [
+    181
+   ]
+  },
+  {
+   "id": 53,
+   "type": "DeepTranslatorTextNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    "english",
+    false,
+    "",
+    "",
+    "GoogleTranslator",
+    "保持服装细节不变，光影协调，比例协调,",
+    "proxy_hide",
+    "authorization_hide"
+   ],
+   "in_links": [],
+   "out_links": [
+    182
+   ]
+  },
+  {
+   "id": 91,
+   "type": "LayerUtility: ImageRemoveAlpha",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    "#ffffff"
+   ],
+   "in_links": [
+    218,
+    219
+   ],
+   "out_links": [
+    161,
+    162,
+    163,
+    184
+   ]
+  },
+  {
+   "id": 69,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f1943bab8eba97d9cfe5bfa2b2dbc48c897e3d25f7c35dcc1bff11c89180086b.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    217
+   ]
+  },
+  {
+   "id": 70,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f1943bab8eba97d9cfe5bfa2b2dbc48c897e3d25f7c35dcc1bff11c89180086b.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    124,
+    235,
+    220,
+    221,
+    232
+   ]
+  },
+  {
+   "id": 72,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "height",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    124,
+    232,
+    164
+   ],
+   "out_links": [
+    130,
+    131,
+    134,
+    173,
+    174
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 100,
+   "to_node": 99,
+   "type": "FL2MODEL"
+  },
+  {
+   "from_node": 108,
+   "to_node": 115,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 109,
+   "to_node": 26,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 113,
+   "to_node": 23,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 115,
+   "to_node": 85,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 118,
+   "to_node": 91,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 118,
+   "to_node": 91,
+   "type": "MASK"
+  },
+  {
+   "from_node": 23,
+   "to_node": 30,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 24,
+   "to_node": 29,
+   "type": "VAE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 30,
+   "type": "VAE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 26,
+   "to_node": 86,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 27,
+   "to_node": 29,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 28,
+   "to_node": 29,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 23,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 23,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 23,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 30,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 30,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 47,
+   "to_node": 48,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 47,
+   "to_node": 49,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 50,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 51,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 51,
+   "to_node": 29,
+   "type": "MASK"
+  },
+  {
+   "from_node": 53,
+   "to_node": 98,
+   "type": "STRING"
+  },
+  {
+   "from_node": 69,
+   "to_node": 118,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 70,
+   "to_node": 125,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 70,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 70,
+   "to_node": 72,
+   "type": "MASK"
+  },
+  {
+   "from_node": 71,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 47,
+   "type": "INT"
+  },
+  {
+   "from_node": 71,
+   "to_node": 47,
+   "type": "INT"
+  },
+  {
+   "from_node": 71,
+   "to_node": 60,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 95,
+   "type": "INT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 73,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 74,
+   "type": "MASK"
+  },
+  {
+   "from_node": 72,
+   "to_node": 95,
+   "type": "INT"
+  },
+  {
+   "from_node": 72,
+   "to_node": 95,
+   "type": "INT"
+  },
+  {
+   "from_node": 74,
+   "to_node": 49,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 85,
+   "to_node": 113,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 86,
+   "to_node": 28,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 87,
+   "to_node": 86,
+   "type": "CLIP_VISION_OUTPUT"
+  },
+  {
+   "from_node": 88,
+   "to_node": 86,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 89,
+   "to_node": 87,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 91,
+   "to_node": 71,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 87,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 92,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 99,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 71,
+   "type": "INT"
+  },
+  {
+   "from_node": 94,
+   "to_node": 72,
+   "type": "INT"
+  },
+  {
+   "from_node": 95,
+   "to_node": 125,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 84,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 98,
+   "to_node": 26,
+   "type": "STRING"
+  },
+  {
+   "from_node": 99,
+   "to_node": 101,
+   "type": "*"
+  },
+  {
+   "from_node": 99,
+   "to_node": 98,
+   "type": "STRING"
+  }
+ ],
+ "categories": {
+  "image_io": 10,
+  "postprocess": 2,
+  "conditioning": 5,
+  "utility": 19,
+  "clip": 2,
+  "vae": 2,
+  "lora": 1,
+  "preprocessor": 1,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 89,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 88,
+   "node_type": "StyleModelLoader",
+   "kind": "checkpoint",
+   "name": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "kind": "checkpoint",
+   "name": "sd3/t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 24,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 115,
+   "node_type": "NunchakuFluxLoraLoader",
+   "kind": "lora",
+   "name": "ace++_subject_lora16.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 125,
+ "structure_hash": "2c4c45e04543de96",
+ "param_face": [
+  {
+   "node_id": 60,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 43,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 48,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 73,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 42,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 42,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 49,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 49,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 47,
+   "node_type": "CR Color Panel",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 47,
+   "node_type": "CR Color Panel",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 47,
+   "node_type": "CR Color Panel",
+   "widget_index": 2,
+   "value_preview": "black"
+  },
+  {
+   "node_id": 47,
+   "node_type": "CR Color Panel",
+   "widget_index": 3,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 94,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 87,
+   "node_type": "CLIPVisionEncode",
+   "widget_index": 0,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 89,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 88,
+   "node_type": "StyleModelLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "height"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 0,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 1,
+   "value_preview": "sd3/t5xxl_fp16.safetensors"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 2,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 3,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 4,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 109,
+   "node_type": "NunchakuTextEncoderLoader",
+   "widget_index": 5,
+   "value_preview": "none"
+  },
+  {
+   "node_id": 28,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "50"
+  },
+  {
+   "node_id": 29,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 86,
+   "node_type": "StyleModelApply",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 86,
+   "node_type": "StyleModelApply",
+   "widget_index": 1,
+   "value_preview": "multiply"
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 24,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 51,
+   "node_type": "ImageToMask",
+   "widget_index": 0,
+   "value_preview": "red"
+  },
+  {
+   "node_id": 50,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 113,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 0,
+   "value_preview": "1.15"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 113,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 115,
+   "node_type": "NunchakuFluxLoraLoader",
+   "widget_index": 0,
+   "value_preview": "ace++_subject_lora16.safetensors"
+  },
+  {
+   "node_id": 115,
+   "node_type": "NunchakuFluxLoraLoader",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 92,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 100,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "gokaygokay/Florence-2-Flux-Large"
+  },
+  {
+   "node_id": 100,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 100,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 2,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 100,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinT_OGC (694MB)"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "Clothes"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 118,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "503616962176774"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 23,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 0,
+   "value_preview": "svdq-int4-flux.1-fill-dev"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 1,
+   "value_preview": "0.08000000000000002"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 2,
+   "value_preview": "nunchaku-fp16"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 5,
+   "value_preview": "bfloat16"
+  },
+  {
+   "node_id": 108,
+   "node_type": "NunchakuFluxDiTLoader",
+   "widget_index": 6,
+   "value_preview": "enabled"
+  },
+  {
+   "node_id": 84,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 84,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 95,
+   "node_type": "ImageCrop",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 95,
+   "node_type": "ImageCrop",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 95,
+   "node_type": "ImageCrop",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 95,
+   "node_type": "ImageCrop",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 1,
+   "value_preview": "more_detailed_caption"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 5,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 7,
+   "value_preview": ""
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 8,
+   "value_preview": "665312304168744"
+  },
+  {
+   "node_id": 99,
+   "node_type": "Florence2Run",
+   "widget_index": 9,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 26,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 98,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 98,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 98,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 98,
+   "node_type": "LayerUtility: TextJoin",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 1,
+   "value_preview": "english"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 5,
+   "value_preview": "GoogleTranslator"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 6,
+   "value_preview": "保持服装细节不变，光影协调，比例协调,"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 7,
+   "value_preview": "proxy_hide"
+  },
+  {
+   "node_id": 53,
+   "node_type": "DeepTranslatorTextNode",
+   "widget_index": 8,
+   "value_preview": "authorization_hide"
+  },
+  {
+   "node_id": 91,
+   "node_type": "LayerUtility: ImageRemoveAlpha",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 91,
+   "node_type": "LayerUtility: ImageRemoveAlpha",
+   "widget_index": 1,
+   "value_preview": "#ffffff"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "f1943bab8eba97d9cfe5bfa2b2dbc48c897e3d25f7c35dcc1bff11c89180"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "f1943bab8eba97d9cfe5bfa2b2dbc48c897e3d25f7c35dcc1bff11c89180"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "height"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  }
+ ]
+}

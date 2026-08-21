@@ -1,0 +1,82 @@
+{
+ "domain": [
+  "角色设计",
+  "图像生成",
+  "风格一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张角色/人脸参考图，通过 RunningHub OmniConsistency LoraLoader + Sampler，在 Macaron 风格 LoRA 与 Vector-style 提示词控制下生成保持角色一致性的设计图。",
+   "kind": "inference"
+  },
+  {
+   "text": "利用 ImageConcanate 将参考图与生成结果拼接为横向对比图，并由两个 SaveImage 分别保存生成结果和拼接结果，便于检查一致性。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "RunningHub OmniConsistency LoraLoader 加载 Macaron_rank128_bf16.safetensors 做风格注入",
+  "RunningHub OmniConsistency Sampler 执行一致性采样生成",
+  "CR Prompt Text + easy promptConcat 拼接提示词",
+  "LayerUtility: ImageScaleByAspectRatio V2 做输入图比例预处理（letterbox / lanczos）",
+  "ImageConcanate 做图像拼接对比"
+ ],
+ "special_features": [
+  {
+   "text": "输入图先经过 ImageScaleByAspectRatio V2（original / letterbox / lanczos）做比例统一，避免非标准长宽比干扰 OmniConsistency 采样效果。",
+   "kind": "inference"
+  },
+  {
+   "text": "设置两个 SaveImage 输出，并搭配 ImageConcanate 输出『参考图 + 生成图』拼接图，可能意图是同时保留纯生成结果和一致性对比结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "提示词被拆成两个 CR Prompt Text，分别放风格词（Macaron style）和主体描述（a girl is smiling），再经 easy promptConcat 合并，使风格与主体解耦。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这看起来是一个面向角色设计的轻量一致性生成链路：先用 OmniConsistency LoraLoader 注入 Macaron 风格，再用 OmniConsistency Sampler 根据参考图生成同角色图像。由于输出尺寸固定为 896x1024，所以输入图比例预处理很重要；同时用 ImageConcanate 拼出参考图与结果图，可能是为了快速人工核对角色一致性，风格词和主体词分段设计也便于修改角色动作/表情而不破坏风格。",
+ "use_case": "角色设计师输入一张参考图，快速得到同角色、同风格的备选设计图；可用于探索不同表情、动作或构图，并以拼接图形式评估一致性。",
+ "limitation": "依赖 RunningHub OmniConsistency LoraLoader/Sampler、LayerUtility、CR Prompt Text、easy promptConcat、ImageConcanate 等自定义节点；需要预先放置 Macaron_rank128_bf16.safetensors；输入为单张图像；输出分辨率受 Sampler 的 896x1024 限制；提示词中预设为 a girl，若用于其他性别或多人物需修改提示词。",
+ "dependencies": [
+  "Macaron_rank128_bf16.safetensors",
+  "RunningHub OmniConsistency LoraLoader",
+  "RunningHub OmniConsistency Sampler",
+  "LayerUtility: ImageScaleByAspectRatio V2（LayerStyle 节点）",
+  "CR Prompt Text（Comfyroll 节点）",
+  "easy promptConcat（Easy Use 或等效节点）",
+  "ImageConcanate 自定义节点"
+ ],
+ "geek_rating": 2,
+ "input": {
+  "type": "单张图像",
+  "count": "1"
+ },
+ "output": {
+  "type": "生成图像 + 参考图/生成图拼接对比图",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RunningHub OmniConsistency Sampler: width/height",
+   "how_to_tune": "当前为 896x1024 竖构图；若要改横构图或方形构图，应同步调整输入图的 letterbox 预处理，避免参考图比例与输出比例不匹配。"
+  },
+  {
+   "param": "RunningHub OmniConsistency Sampler: cfg",
+   "how_to_tune": "当前 cfg=3.5 比较平衡；若提示词细节执行不到位可升到 5-7；若色彩过饱和或构图生硬可降到 2.5-3。"
+  },
+  {
+   "param": "RunningHub OmniConsistency Sampler: seed",
+   "how_to_tune": "固定 seed 可复现某个角色/构图；randomize 可用于批量生成不同候选，方便角色设计阶段筛选。"
+  },
+  {
+   "param": "CR Prompt Text 内容",
+   "how_to_tune": "修改风格时优先调整 'Macaron style, ' 或 Sampler 中的 'Vector style, a girl is '；修改人物表情/动作时改 'a girl is smiling,' 更安全，避免破坏整体风格。"
+  },
+  {
+   "param": "LayerUtility: ImageScaleByAspectRatio V2",
+   "how_to_tune": "当前看起来是 original/letterbox/lanczos 组合，即尽量保持原图比例并补边，适合避免裁切人脸；若生成图中主体过小或构图偏移，可调整 letterbox 补边策略或缩放倍率。"
+  }
+ ],
+ "summary_text": "能力:输入一张角色/人脸参考图，通过 RunningHub OmniConsistency LoraLoader + Sampler，在 Macaron 风格 LoRA 与 Vector-style 提示词控制下生成保持角色一致性的设计图。；能力:利用 ImageConcanate 将参考图与生成结果拼接为横向对比图，并由两个 SaveImage 分别保存生成结果和拼接结果，便于检查一致性。；特色:输入图先经过 ImageScaleByAspectRatio V2（original / letterbox / lanczos）做比例统一，避免非标准长宽比干扰 OmniConsistency 采样效果。；特色:设置两个 SaveImage 输出，并搭配 ImageConcanate 输出『参考图 + 生成图』拼接图，可能意图是同时保留纯生成结果和一致性对比结果。；特色:提示词被拆成两个 CR Prompt Text，分别放风格词（Macaron style）和主体描述（a girl is smiling），再经 easy promptConcat 合并，使风格与主体解耦。；角色设计师输入一张参考图，快速得到同角色、同风格的备选设计图；可用于探索不同表情、动作或构图，并以拼接图形式评估一致性。；这看起来是一个面向角色设计的轻量一致性生成链路：先用 OmniConsistency LoraLoader 注入 Macaron 风格，再用 OmniConsistency Sampler 根据参考图生成同角色图像。由于输出尺寸固定为 896x1024，所以输入图比例预处理很重要；同时用 ImageConcanate 拼出参考图与结果图，可能是为了快速人工核对角色一致性，风格词和主体词分段设计也便于修改角色动作/表情而不破坏风格。"
+}

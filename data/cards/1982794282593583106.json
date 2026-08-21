@@ -1,0 +1,111 @@
+{
+ "domain": [
+  "视频生成",
+  "动作迁移",
+  "ControlNet 视频预处理"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一段参考视频，输出三路 ControlNet 条件视频：OpenPose 姿态骨架、面部关键点、Depth Anything V2 深度图。",
+   "kind": "inference"
+  },
+  {
+   "text": "加载 FLUX.1-dev-ControlNet-Union-Pro-2.0 统一 ControlNet，并由 SetUnionControlNetType 将条件类型设为 depth。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 DWPreprocessor、PoseAndFaceDetection、OnnxDetectionModelLoader（ViTPose/YOLOX/YOLOv10）完成人体姿态和面部关键点检测。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 DepthAnythingV2Preprocessor 估计帧级深度，得到场景/人物深度条件图。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 ImageResizeKJv2 统一到 832x480，并以 PixelPerfectResolution 做 ControlNet 像素级对齐，方便下游直接消费。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "ControlNet (Union)",
+  "FLUX.1-dev-ControlNet-Union-Pro-2.0",
+  "OpenPose/DWPose",
+  "ViTPose + YOLOX/YOLOv10 姿态/面部检测",
+  "Depth Anything V2",
+  "RMBG 抠像",
+  "VideoHelperSuite 视频 IO",
+  "Pixel-Perfect 分辨率对齐"
+ ],
+ "special_features": [
+  {
+   "text": "一条输入视频并行进入 DWPose、PoseAndFaceDetection、DepthAnythingV2 三分支，并由 3 个 VHS_VideoCombine(OUT) 分别输出条件视频，形成多路条件预处理矩阵。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Fast Groups Muter (rgthree) 快速启停整组节点，便于在姿态/面部/深度条件间切换调试。",
+   "kind": "inference"
+  },
+  {
+   "text": "RMBG 与 ImageBlend 组合：可能是先抠出人物，再把控制信号混合到干净背景，减少背景对 ControlNet 的干扰。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 SetUnionControlNetType 指定 FLUX ControlNet Union 的当前条件类型（depth），而不是为各条件加载多个 ControlNet 权重。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流看起来是 FLUX.1-dev-ControlNet-Union-Pro 视频控制链路的“条件预处理上游”：作者把视频中的人体姿态、面部关键点和深度分别做成独立分支，统一分辨率后输出三路条件视频，目的是让下游带 KSampler 的生成流程可以直接把这三路信号注入同一个 Union ControlNet，实现对动作、表情和景深的三重控制。由于整个图里没有采样节点，它可能只是 RunningHub 里负责“提取控制条件”的前半段。",
+ "use_case": "动作迁移/视频风格化的预处理：用户上传一段参考视频，先将视频转成 pose/face/depth 三个条件视频，再接到 FLUX.1-dev-ControlNet-Union-Pro 的主生成流程，让最终视频跟随参考动作、面部表情和场景深度。",
+ "limitation": "没有 KSampler/生成节点，不能直接产出最终生成视频；需要后续接入带采样器的完整生成工作流。依赖大量自定义节点（VideoHelperSuite、ControlNet Aux、rgthree、KJNodes、LayerStyle、RMBG 等）以及多个 ONNX/PyTorch 权重文件，缺一不可。VHS_LoadVideo 只接受视频输入；若用图片或 GIF 需先转视频。当前 SetUnionControlNetType 为 depth，若要输出/使用姿态或面部条件需要手动切换类型并确认分支匹配。",
+ "dependencies": [
+  "VideoHelperSuite (VHS_LoadVideo/VHS_VideoCombine)",
+  "ComfyUI-ControlNet-Aux (DWPreprocessor、DepthAnythingV2Preprocessor)",
+  "rgthree Custom Nodes (Fast Groups Muter)",
+  "KJNodes (ImageResizeKJv2)",
+  "ComfyUI-LayerStyle (LayerUtility: ImageBlend)",
+  "ComfyUI-RMBG (RMBG)",
+  "FLUX.1-dev-ControlNet-Union-Pro-2.0/diffusion_pytorch_model.safetensors",
+  "depth_anything_v2_vitl.pth",
+  "vitpose_h_wholebody_model.onnx",
+  "yolov10m.onnx",
+  "yolox_l.onnx",
+  "dw-ll_ucoco_384.onnx",
+  "RMBG-2.0"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "视频文件",
+  "count": "1"
+ },
+ "output": {
+  "type": "三路 ControlNet 条件视频（OpenPose 骨架 / Face 关键点 / Depth 深度）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "VHS_LoadVideo: select_every_nth",
+   "how_to_tune": "每隔 N 帧取 1 帧；N 越大处理越快，但动作连续性下降。高帧率视频可设为 2 来缩短耗时。"
+  },
+  {
+   "param": "VHS_LoadVideo: frame_load_cap",
+   "how_to_tune": "限制实际加载帧数；调试阶段设 24~48 帧即可快速看效果。"
+  },
+  {
+   "param": "ImageResizeKJv2: width/height",
+   "how_to_tune": "当前为 832x480；应与下游生成分辨率保持一致，否则 ControlNet 条件图会被拉伸/裁切。"
+  },
+  {
+   "param": "SetUnionControlNetType: union_type",
+   "how_to_tune": "当前为 depth；如果目标是姿态或面部控制，需要改成对应的 union 类型并保证输入条件图来自正确分支。"
+  },
+  {
+   "param": "VHS_VideoCombine: crf",
+   "how_to_tune": "控制输出视频质量；数值越小画质越高、文件越大。预览可 28+，正式使用建议 18~23。"
+  },
+  {
+   "param": "PixelPerfectResolution: width/height",
+   "how_to_tune": "根据 ControlNet 预处理器与目标生成尺寸计算理想分辨率；修改生成尺寸时需同步更新。"
+  }
+ ],
+ "summary_text": "能力:上传一段参考视频，输出三路 ControlNet 条件视频：OpenPose 姿态骨架、面部关键点、Depth Anything V2 深度图。；能力:加载 FLUX.1-dev-ControlNet-Union-Pro-2.0 统一 ControlNet，并由 SetUnionControlNetType 将条件类型设为 depth。；能力:通过 DWPreprocessor、PoseAndFaceDetection、OnnxDetectionModelLoader（ViTPose/YOLOX/YOLOv10）完成人体姿态和面部关键点检测。；能力:通过 DepthAnythingV2Preprocessor 估计帧级深度，得到场景/人物深度条件图。；能力:用 ImageResizeKJv2 统一到 832x480，并以 PixelPerfectResolution 做 ControlNet 像素级对齐，方便下游直接消费。；特色:一条输入视频并行进入 DWPose、PoseAndFaceDetection、DepthAnythingV2 三分支，并由 3 个 VHS_VideoCombine(OUT) 分别输出条件视频，形成多路条件预处理矩阵。；特色:使用 Fast Groups Muter (rgthree) 快速启停整组节点，便于在姿态/面部/深度条件间切换调试。；特色:RMBG 与 ImageBlend 组合：可能是先抠出人物，再把控制信号混合到干净背景，减少背景对 ControlNet 的干扰。；特色:用 SetUnionControlNetType 指定 FLUX ControlNet Union 的当前条件类型（depth），而不是为各条件加载多个 ControlNet 权重。；动作迁移/视频风格化的预处理：用户上传一段参考视频，先将视频转成 pose/face/depth 三个条件视频，再接到 FLUX.1-dev-ControlNet-Union-Pro 的主生成流程，让最终视频跟随参考动作、面部表情和场景深度。；这个工作流看起来是 FLUX.1-dev-ControlNet-Union-Pro 视频控制链路的“条件预处理上游”：作者把视频中的人体姿态、面部关键点和深度分别做成独立分支，统一分辨率后输出三路条件视频，目的是让下游带 KSampler 的生成流程可以直接把这三路信号注入同一个 Union ControlNet，实现对动作、表情和景深的三重控制。由于整个图里没有采样节点，它可能只是 RunningHub 里负责“提取控制条件”的前半段。"
+}

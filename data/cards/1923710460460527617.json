@@ -1,0 +1,125 @@
+{
+ "domain": [
+  "face swap",
+  "图像生成",
+  "人像重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张源人脸照和一张目标模板图，自动完成人脸替换，保持源脸的身份特征与目标图的姿态、背景、光影。",
+   "kind": "inference"
+  },
+  {
+   "text": "基于目标图像用 Florence2 自动反推详细提示词，无需手动编写，并自动替换为换脸用的参考提示。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 SegmentAnythingUltra V2 + GroundingDINO 自动分割人脸区域，结合 CropFace 人脸框，生成精确的重绘遮罩。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Redux（StyleModelApply）身份特征注入",
+  "FLUX.1 Fill（inpainting）局部重绘",
+  "Segment Anything + GroundingDINO 自动分割",
+  "RetinaFace（CropFace）人脸检测",
+  "Florence2（LayerUtility: Florence2Image2Prompt）图像提示词反推",
+  "TeaCache 缓存加速",
+  "GGUF 量化模型加载（UnetLoaderGGUF）",
+  "Differential Diffusion 局部扩散",
+  "LoRA portrait_lora64 人像质量增强",
+  "多阶段蒙版后处理（GrowMaskWithBlur, InvertMask, TTP_Expand_And_Mask）"
+ ],
+ "special_features": [
+  {
+   "text": "双模型协同换脸：Redux 负责保持源脸身份，FLUX Fill 负责目标区域重绘，实现身份与背景的解耦。",
+   "kind": "inference"
+  },
+  {
+   "text": "多段式处理流水线：目标图解析 → 人脸分割 → 蒙版精细调整 → 重绘 → 裁剪恢复原分辨率，工程化完整。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动提示词反推 + 模板替换：Florence2 生成提示词后，通过 Replace Text 自动填入 CLIPTextEncode，减少手动操作。",
+   "kind": "fact"
+  },
+  {
+   "text": "显存/速度优化组合：TeaCache + GGUF 量化 + PurgeVRAM V2，降低高端显卡门槛并加速推理。",
+   "kind": "fact"
+  },
+  {
+   "text": "精细蒙版控制：GrowMaskWithBlur 边缘融合、TTP_Expand_And_Mask 扩展重绘区域、DifferentialDiffusion 渐进式修复，提升换脸衔接自然度。",
+   "kind": "fact"
+  },
+  {
+   "text": "加入 ImitationHueNode 色调模仿节点，统一源脸与目标图的肤色和光影环境。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "作者旨在解决传统换脸中身份保持度低、需要手动绘制蒙版、提示词编写繁琐等痛点。通过将 FLUX.1 Redux 的身份编码能力与 FLUX.1 Fill 的局部修复能力叠加，在 SAM/DINO 自动分割和 RetinaFace 检测的辅助下获得精准蒙版，并利用 Florence2 自动反推提示词降低门槛。整体设计以高质量换脸为核心，同时兼顾速度（TeaCache/GGUF）与显存管理（PurgeVRAM），是一个工程化较完整的端到端工作流。",
+ "use_case": "适用于人像照片换脸、角色形象替换、写真模板合成等需要保持身份特征和原始背景一致性的场景。",
+ "limitation": "依赖较多第三方自定义节点（SegmentAnythingUltra V2、LayerUtility、TeaCache 等），且需下载多个大模型文件（FLUX Redux、FLUX Fill GGUF、T5/CLIP 等）。输入图需要清晰正脸，目标图中待替换区域最好无明显遮挡，否则蒙版可能误判。显存需求较高，建议使用 ≥12GB 显存显卡。",
+ "dependencies": [
+  "flux1-redux-dev.safetensors",
+  "flux1-fill-dev-Q8_0.gguf",
+  "t5xxl_fp16.safetensors",
+  "clip_l.safetensors",
+  "sigclip_vision_patch14_384.safetensors",
+  "ae.safetensors",
+  "portrait_lora64.safetensors",
+  "sam_vit_h (2.56GB)",
+  "GroundingDINO_SwinT_OGC",
+  "SegmentAnythingUltra V2",
+  "CropFace",
+  "TeaCache",
+  "LayerUtility"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两张图片：源人脸照 + 目标模板图",
+  "count": "2"
+ },
+ "output": {
+  "type": "换脸结果图像（可预览/保存）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "默认 30 步，追求高质量可保持；若需提速可降至 20，但细节可能轻微损失。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "FLUX 模型推荐 cfg=1，不建议调大，否则会出现过曝或风格漂移。"
+  },
+  {
+   "param": "KSampler/sampler/scheduler",
+   "how_to_tune": "euler + normal 是 FLUX 常用稳定组合，如需更快可尝试 dpmpp_2m，但需同步调整步数。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 40，控制条件引导强度。值越大图像越贴近 prompt 和参考，但过高可能色彩过浓；建议 20-40 区间调整。"
+  },
+  {
+   "param": "TeaCache",
+   "how_to_tune": "缓存阈值 0.2，越大加速越明显但可能牺牲细节；建议 0.1-0.3，若发现重绘区域不自然可调低。"
+  },
+  {
+   "param": "LoraLoaderModelOnly/strength",
+   "how_to_tune": "默认 1.0，用于增强人像质感。若脸部生成过假可降至 0.7-0.8；若不够逼真可尝试 1.2。"
+  },
+  {
+   "param": "SegmentAnythingUltra V2/threshold",
+   "how_to_tune": "默认 0.3，控制分割置信度。蒙版漏掉脸部区域时降低到 0.2；蒙版过大时提升到 0.4。"
+  },
+  {
+   "param": "GrowMaskWithBlur",
+   "how_to_tune": "第一个参数 -3 表示蒙版收缩（负值扩边），调节实际重绘范围。负值过大会扩入背景，正值会缩到脸内，导致边缘渗色。"
+  },
+  {
+   "param": "ImitationHueNode",
+   "how_to_tune": "色调模仿强度 0.7。若换脸后肤色与目标差异明显，可调到 1.0；若需保留源脸原色调，可调低至 0.3。"
+  }
+ ],
+ "summary_text": "能力:输入一张源人脸照和一张目标模板图，自动完成人脸替换，保持源脸的身份特征与目标图的姿态、背景、光影。；能力:基于目标图像用 Florence2 自动反推详细提示词，无需手动编写，并自动替换为换脸用的参考提示。；能力:使用 SegmentAnythingUltra V2 + GroundingDINO 自动分割人脸区域，结合 CropFace 人脸框，生成精确的重绘遮罩。；特色:双模型协同换脸：Redux 负责保持源脸身份，FLUX Fill 负责目标区域重绘，实现身份与背景的解耦。；特色:多段式处理流水线：目标图解析 → 人脸分割 → 蒙版精细调整 → 重绘 → 裁剪恢复原分辨率，工程化完整。；特色:自动提示词反推 + 模板替换：Florence2 生成提示词后，通过 Replace Text 自动填入 CLIPTextEncode，减少手动操作。；特色:显存/速度优化组合：TeaCache + GGUF 量化 + PurgeVRAM V2，降低高端显卡门槛并加速推理。；特色:精细蒙版控制：GrowMaskWithBlur 边缘融合、TTP_Expand_And_Mask 扩展重绘区域、DifferentialDiffusion 渐进式修复，提升换脸衔接自然度。；特色:加入 ImitationHueNode 色调模仿节点，统一源脸与目标图的肤色和光影环境。；适用于人像照片换脸、角色形象替换、写真模板合成等需要保持身份特征和原始背景一致性的场景。；作者旨在解决传统换脸中身份保持度低、需要手动绘制蒙版、提示词编写繁琐等痛点。通过将 FLUX.1 Redux 的身份编码能力与 FLUX.1 Fill 的局部修复能力叠加，在 SAM/DINO 自动分割和 RetinaFace 检测的辅助下获得精准蒙版，并利用 Florence2 自动反推提示词降低门槛。整体设计以高质量换脸为核心，同时兼顾速度（TeaCache/GGUF）与显存管理（PurgeVRAM），是一个工程化较完整的端到端工作流。"
+}

@@ -1,0 +1,106 @@
+{
+ "domain": [
+  "图像后期",
+  "高清修复",
+  "人像增强"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张图像 → 分块高清修复并放大至4K，同时降低AI感、增强皮肤纹理细节",
+   "kind": "fact"
+  },
+  {
+   "text": "结合Flux2-Klein模型与三组LoRA，在修复过程中保持人物身份一致性（f2k_9B_lcs_consist）并提升细节质感",
+   "kind": "fact"
+  },
+  {
+   "text": "通过自适应分块、颜色匹配和锐度干预，输出视觉一致且无变形的高分辨率图像（3840宽度左右）",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 模型（Flux2-Klein-9B）",
+  "分块处理（TTP_Image_Tile_Batch / TTP_Tile_image_size / TTP_Image_Assy）",
+  "LoRA 微调（皮肤质感增强、Turbo加速、一致性保持）",
+  "颜色匹配与色彩锚定（easy imageColorMatch / LCSColorAnchor）",
+  "清晰度校准与干预（LCSSharpnessCalibrate / LCSSharpnessIntervene）",
+  "零变形缩放与锐化（ImageScaleByAspectRatio V2 / ImageScaleRestore V2）",
+  "图像列表批处理（easy imageBatchToImageList / easy imageListToImageBatch）",
+  "超分辨率放大（通过分块+重采样至4K级别）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式分块修复管线：TTP_Tile_image_size按2x2分块、每块1024px，修复后经TTP_Image_Assy拼接还原",
+   "kind": "fact"
+  },
+  {
+   "text": "色彩质量回路：easy imageColorMatch与LCSColorAnchor在分块拼接后统一颜色，避免局部色差",
+   "kind": "fact"
+  },
+  {
+   "text": "清晰度自动干预：LCSSharpnessCalibrate先标定，再经LCSSharpnessIntervene调整锐化强度，并配合简单数学表达式动态计算分块数量",
+   "kind": "fact"
+  },
+  {
+   "text": "身份一致性LoRA（f2k_9B_lcs_consist）与TTP分块组合，疑似针对人像面部高频细节做保持",
+   "kind": "inference"
+  },
+  {
+   "text": "记忆清理节点（MemoryCleaner）插入管线，显存压力大时自动清理，体现长管线工程化设计",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流的核心思路是利用Klein模型的高清能力与多LoRA组合，在低显存条件下通过分块处理实现接近4K的高质量输出。为提高分块间的一致性，作者设计了颜色匹配、锐度校准和身份一致性LoRA三层控制回路，推测是为了降低AI感、保留皮肤真实纹理同时避免分块修复产生的断层或色彩漂移。编程式动态计算分块数（MathExpression）与ImageScaleRestore V2的缩放恢复，体现对最终分辨率精度和细节损失的严格控制。",
+ "use_case": "适合摄影后期、人像精修、AI生成图去AI感、老照片/低清图放大至4K并增强皮肤细节，特别是需要高保真且无变形的批量高清修复场景。",
+ "limitation": "依赖自定义节点：TTP、LCS系列、LayerUtility、ComfyUI-Easy-Use、rgthree、pysssss等；需要下载Flux2-Klein-9B模型与qwen_3_8b文本编码器；输入单张图像且对显存有一定要求（虽然分块缓解，但加载9B模型+多个LoRA仍需较大显存）；皮肤纹理增强针对人像优化，非人像效果不明；输出尺寸由图像宽高比决定，不一定严格4K，但作者设置了3840宽度参考。",
+ "dependencies": [
+  "ComfyUI 自定义节点：TTP_Image_Tile_Batch、TTP_Tile_image_size、TTP_Image_Assy",
+  "LCS系列节点：LCSColorAnchor、LCSLoadData、LCSSharpnessCalibrate、LCSSharpnessIntervene",
+  "LayerUtility: ImageScaleByAspectRatio V2、ImageScaleRestore V2",
+  "ComfyUI-Easy-Use 节点（easy imageBatchToImageList等）",
+  "rgthree 节点（Image Comparer）",
+  "pysssss 节点（MathExpression）",
+  "模型文件：Flux2-Klein-9B-True-v2-bf16.safetensors、flux2-vae.safetensors、qwen_3_8b.safetensors",
+  "LoRA文件：F2Klein9b 高清细节增强皮肤质感v2.0.safetensors、klein_9B_Turbo_r128.safetensors、f2k_9B_lcs_consist_20260415.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图像（LoadImage(IN) 上传）",
+  "count": "1"
+ },
+ "output": {
+  "type": "修复并放大后的图像（PreviewImage(OUT) 预览 / SaveImage(OUT) 保存）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "F2Klein9b 高清细节增强皮肤质感v2.0 权重",
+   "how_to_tune": "0.5 为默认强度，增强皮肤纹理；若AI感仍明显可提高至0.6-0.7，但过高可能产生油画感或失真"
+  },
+  {
+   "param": "klein_9B_Turbo_r128 权重",
+   "how_to_tune": "0.2 用于加速采样、减少步数（示例使用4步），若质量下降可微调至0.15-0.25，太高会损失细节"
+  },
+  {
+   "param": "f2k_9B_lcs_consist 权重",
+   "how_to_tune": "0.2 用于保持身份一致性，尤其分块后人脸变形；若人脸不相似可提高至0.3，但会影响美观度"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "示例为4步，依靠Turbo LoRA实现低步数；若画质不稳可尝试6-8步，但速度下降"
+  },
+  {
+   "param": "LCSSharpnessIntervene 参数",
+   "how_to_tune": "默认-1,2,4，控制锐化强度与介入范围，皮肤纹理过锐可降低第二项（2→1）"
+  },
+  {
+   "param": "TTP_Tile_image_size 分块参数",
+   "how_to_tune": "2,2,0.2 表示2行2列分块+重叠20%；显存小可增加分块数，但重叠过大会增加拼接痕迹"
+  },
+  {
+   "param": "INTConstant 3840",
+   "how_to_tune": "目标输出宽度，可改为4096或更高；取决于显存，建议不超过8K"
+  }
+ ],
+ "summary_text": "能力:上传单张图像 → 分块高清修复并放大至4K，同时降低AI感、增强皮肤纹理细节；能力:结合Flux2-Klein模型与三组LoRA，在修复过程中保持人物身份一致性（f2k_9B_lcs_consist）并提升细节质感；能力:通过自适应分块、颜色匹配和锐度干预，输出视觉一致且无变形的高分辨率图像（3840宽度左右）；特色:多段式分块修复管线：TTP_Tile_image_size按2x2分块、每块1024px，修复后经TTP_Image_Assy拼接还原；特色:色彩质量回路：easy imageColorMatch与LCSColorAnchor在分块拼接后统一颜色，避免局部色差；特色:清晰度自动干预：LCSSharpnessCalibrate先标定，再经LCSSharpnessIntervene调整锐化强度，并配合简单数学表达式动态计算分块数量；特色:身份一致性LoRA（f2k_9B_lcs_consist）与TTP分块组合，疑似针对人像面部高频细节做保持；特色:记忆清理节点（MemoryCleaner）插入管线，显存压力大时自动清理，体现长管线工程化设计；适合摄影后期、人像精修、AI生成图去AI感、老照片/低清图放大至4K并增强皮肤细节，特别是需要高保真且无变形的批量高清修复场景。；该工作流的核心思路是利用Klein模型的高清能力与多LoRA组合，在低显存条件下通过分块处理实现接近4K的高质量输出。为提高分块间的一致性，作者设计了颜色匹配、锐度校准和身份一致性LoRA三层控制回路，推测是为了降低AI感、保留皮肤真实纹理同时避免分块修复产生的断层或色彩漂移。编程式动态计算分块数（MathExpression）与ImageScaleRestore V2的缩放恢复，体现对最终分辨率精度和细节损失的严格控制。"
+}

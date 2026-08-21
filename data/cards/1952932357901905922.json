@@ -1,0 +1,112 @@
+{
+ "domain": [
+  "虚拟试衣",
+  "人像编辑",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成虚拟试衣：输入人物照与服装照，生成人物穿上指定服装的效果图；结合提示词文本，流程可能是先用“remove the clothes And r”去除原衣，再用“Have this person put on [服装描述]”生成试衣图。",
+   "kind": "inference"
+  },
+  {
+   "text": "利用 JoyCaptionBeta1 自动把服装图转为文本描述，并与固定前缀“Have this person put on ”拼接，减少手工写服装 prompt 的成本。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 BEN/BenUltra（BEN_Base.pth）进行抠图，并用 CropByMask V2 按 mask_area 裁剪人物区域，降低背景对试衣结果的影响。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 PuLID Flux（pulid_flux_v0.9.1）注入人脸身份条件，使生成人物疑似保持输入人脸特征。",
+   "kind": "inference"
+  },
+  {
+   "text": "存在两个 KSampler：一个种子固定为 532442943628335，另一个为 randomize；可分别输出可复现主图与随机探索变体。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev Kontext（flux1-dev-kontext_fp8_scaled.safetensors）",
+  "PuLID Flux 人脸身份注入",
+  "BEN matting / BenUltra 抠图",
+  "JoyCaptionBeta1 自动服装描述",
+  "LoRA 组合：clothes_remover_v0 + mytryon4_comfy + Flux-Turbo-Alpha",
+  "FluxGuidance + ConditioningZeroOut 条件控制",
+  "ReferenceLatent / FluxKontextImageScale 参考图结构约束",
+  "ImageStitch / ImageReel / ImageReelComposit 多图拼接与版式输出"
+ ],
+ "special_features": [
+  {
+   "text": "两段式“先脱后穿”：第一个 KSampler 固定种子执行去衣（remove the clothes），第二个 KSampler 使用随机种子把服装描述穿到人物身上。",
+   "kind": "inference"
+  },
+  {
+   "text": "两个 ReferenceLatent 与 VAEEncode 组合，疑似分别对“人物参考图”和“服装参考图”做 latent 条件注入，让 FLUX Kontext 同时受结构与外观约束。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用两个 ConditioningZeroOut 构造无条件分支，配合 FluxGuidance=2.5，疑似为蒸馏类 LoRA/加速模型提供更稳定的引导。",
+   "kind": "inference"
+  },
+  {
+   "text": "ImageReel + ImageReelComposit 把 input person / input clothes / output 拼成带文字标注的图卷，并输出可对比的交付版式。",
+   "kind": "inference"
+  },
+  {
+   "text": "堆叠三个功能化 LoRA：clothes_remover_v0、mytryon4_comfy、Flux-Turbo-Alpha，分别承担去衣、试衣和加速。",
+   "kind": "inference"
+  },
+  {
+   "text": "JoyCaptionBeta1ExtraOptions 被引入，用于微调 caption 选项，说明作者对自动打标做了额外控制。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "从节点结构与提示词文本看，作者试图把虚拟试衣做成一条“去背景→自动打标→去衣→穿衣→拼版输出”的工程化流水线。先用 BenUltra 抠出人物主体，再用 JoyCaption 自动描述服装并组装提示词；同时用 PuLID 保脸、ReferenceLatent/Flux Kontext 保结构，避免 FLUX 自由发挥破坏身份和服装形状。双 KSampler 的固定/随机种子设计可能是为了在可复现性和多样性之间取平衡；ImageReel/ImageReelComposit 则把输入输出整理成便于人工挑选的对比图卷。",
+ "use_case": "电商模特图快速换装、虚拟试衣间、服装设计预览、时尚编辑批量生成穿搭素材，或作为 Flux 试衣 LoRA 的效果演示流。",
+ "limitation": "依赖大量第三方自定义节点与外部模型文件，文件缺失会直接报错；输入需要约 3 张图像（结构事实为 3 个 LoadImage），缺少其中任意一张都会使条件不完整；FLUX Kontext + PuLID + JoyCaption 同时运行对显存和 CUDA 依赖较高；JoyCaption 的服装描述质量会直接影响试衣效果；mytryon4/clothes_remover 等 LoRA 对特殊服装、复杂姿态和宽泛版型的泛化能力未知；没有内置自动质量评分或失败重试机制。",
+ "dependencies": [
+  "模型文件：flux1-dev-kontext_fp8_scaled.safetensors、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、ae.sft",
+  "PuLID：pulid_flux_v0.9.1.safetensors + PulidFluxEvaClipLoader / PulidFluxInsightFaceLoader / PulidFluxModelLoader",
+  "BEN matting：BEN_Base.pth + LayerMask: BenUltra（VITMatte）",
+  "LoRA：clothes_remover_v0.safetensors、mytryon4_comfy.safetensors、Flux-Turbo-Alpha.safetensors",
+  "JoyCaption：fancyfeast/llama-joycapt（nf4）+ JoyCaptionBeta1 / JoyCaptionBeta1ExtraOptions / LoadJoyCaptionBeta1Model",
+  "自定义节点族：PuLID Flux、LayerStyle/LayerUtility、ImageStitch、GetImageSize+、JPS Text Concatenate、ReferenceLatent/FluxKontext、easy showAnything"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "3（LoadImage ×3）"
+ },
+ "output": {
+  "type": "image（SaveImage ×2）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前 25 步、euler/simple 是 FLUX 常见配置；若细节不足可提高到 30-40 步，若追求速度可配合 Flux-Turbo-Alpha 降到 8-12 步。"
+  },
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "第一个固定为 532442943628335 便于复现主结果，第二个 randomize 用于探索；批量出图时可固定种子，二次筛选时改为随机。"
+  },
+  {
+   "param": "FluxGuidance.flux_guidance",
+   "how_to_tune": "当前 2.5；提示词跟随弱或内容平淡可尝试 3.0-4.0，出现过曝/过饱和时降到 1.5-2.0。"
+  },
+  {
+   "param": "mytryon4 LoRA strength",
+   "how_to_tune": "当前 0.85；试衣效果不明显可升到 1.0，服装结构变形过大则回落到 0.6-0.7。"
+  },
+  {
+   "param": "clothes_remover LoRA strength",
+   "how_to_tune": "当前 1.0；若原图不是完整人像或姿态复杂，建议降到 0.7-0.8 以避免过度破坏身体/衣物细节。"
+  },
+  {
+   "param": "CropByMask V2 padding",
+   "how_to_tune": "四个方向各 20；留白太小会切到肢体，留白太大背景干扰增加，可按原图人物占比调整到 30-50。"
+  }
+ ],
+ "summary_text": "能力:端到端完成虚拟试衣：输入人物照与服装照，生成人物穿上指定服装的效果图；结合提示词文本，流程可能是先用“remove the clothes And r”去除原衣，再用“Have this person put on [服装描述]”生成试衣图。；能力:利用 JoyCaptionBeta1 自动把服装图转为文本描述，并与固定前缀“Have this person put on ”拼接，减少手工写服装 prompt 的成本。；能力:使用 BEN/BenUltra（BEN_Base.pth）进行抠图，并用 CropByMask V2 按 mask_area 裁剪人物区域，降低背景对试衣结果的影响。；能力:通过 PuLID Flux（pulid_flux_v0.9.1）注入人脸身份条件，使生成人物疑似保持输入人脸特征。；能力:存在两个 KSampler：一个种子固定为 532442943628335，另一个为 randomize；可分别输出可复现主图与随机探索变体。；特色:两段式“先脱后穿”：第一个 KSampler 固定种子执行去衣（remove the clothes），第二个 KSampler 使用随机种子把服装描述穿到人物身上。；特色:两个 ReferenceLatent 与 VAEEncode 组合，疑似分别对“人物参考图”和“服装参考图”做 latent 条件注入，让 FLUX Kontext 同时受结构与外观约束。；特色:使用两个 ConditioningZeroOut 构造无条件分支，配合 FluxGuidance=2.5，疑似为蒸馏类 LoRA/加速模型提供更稳定的引导。；特色:ImageReel + ImageReelComposit 把 input person / input clothes / output 拼成带文字标注的图卷，并输出可对比的交付版式。；特色:堆叠三个功能化 LoRA：clothes_remover_v0、mytryon4_comfy、Flux-Turbo-Alpha，分别承担去衣、试衣和加速。；特色:JoyCaptionBeta1ExtraOptions 被引入，用于微调 caption 选项，说明作者对自动打标做了额外控制。；电商模特图快速换装、虚拟试衣间、服装设计预览、时尚编辑批量生成穿搭素材，或作为 Flux 试衣 LoRA 的效果演示流。；从节点结构与提示词文本看，作者试图把虚拟试衣做成一条“去背景→自动打标→去衣→穿衣→拼版输出”的工程化流水线。先用 BenUltra 抠出人物主体，再用 JoyCaption 自动描述服装并组装提示词；同时用 PuLID 保脸、ReferenceLatent/Flux Kontext 保结构，避免 FLUX 自由发挥破坏身份和服装形状。双 KSampler 的固定/随机种子"
+}

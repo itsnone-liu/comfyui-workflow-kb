@@ -1,0 +1,1661 @@
+{
+ "node_count": 41,
+ "link_count": 49,
+ "active_node_count": 40,
+ "nodes": [
+  {
+   "id": 85,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "samKrea2_turboV10.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 91,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_4b_fp8_scaled.safetensors",
+    "krea2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    161,
+    162
+   ]
+  },
+  {
+   "id": 92,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    109,
+    116,
+    179
+   ]
+  },
+  {
+   "id": 100,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1536,
+    1
+   ],
+   "in_links": [
+    118,
+    119
+   ],
+   "out_links": [
+    167
+   ]
+  },
+  {
+   "id": 131,
+   "type": "Any To Any",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    189
+   ],
+   "out_links": [
+    207
+   ]
+  },
+  {
+   "id": 130,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    187
+   ],
+   "out_links": []
+  },
+  {
+   "id": 94,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "Load Image 1",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "854d4adf09d6463e0848d00f14daa210e21d617d6dd9831c433f79b32cc155fd.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    114
+   ]
+  },
+  {
+   "id": 121,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": "Load Image 2",
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "854d4adf09d6463e0848d00f14daa210e21d617d6dd9831c433f79b32cc155fd.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    174
+   ]
+  },
+  {
+   "id": 123,
+   "type": "Int",
+   "category": "utility",
+   "title": "Int (最长边尺寸）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1600
+   ],
+   "in_links": [],
+   "out_links": [
+    175
+   ]
+  },
+  {
+   "id": 124,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    178,
+    179
+   ],
+   "out_links": [
+    180
+   ]
+  },
+  {
+   "id": 122,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1920,
+    "#000000"
+   ],
+   "in_links": [
+    174,
+    175
+   ],
+   "out_links": [
+    176,
+    177,
+    178
+   ]
+  },
+  {
+   "id": 97,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    115,
+    116
+   ],
+   "out_links": [
+    166
+   ]
+  },
+  {
+   "id": 95,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "crop",
+    "lanczos",
+    "8",
+    "longest",
+    1920,
+    "#000000"
+   ],
+   "in_links": [
+    114,
+    113
+   ],
+   "out_links": [
+    115,
+    159,
+    160,
+    118,
+    119
+   ]
+  },
+  {
+   "id": 132,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    193
+   ]
+  },
+  {
+   "id": 139,
+   "type": "CR Text",
+   "category": "utility",
+   "title": "generate  quantity",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3"
+   ],
+   "in_links": [],
+   "out_links": [
+    191
+   ]
+  },
+  {
+   "id": 135,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Single light source, film grain texture.\n <生成的摄影作品的景别应该控制在面部到膝盖的位置，双人物全景>\n\nF2Pkrea2_identity_edit, ,,极致画质，电影级光影，一对年轻新人，身着复古白礼服与银色晚礼裙，手挽相依于城市天台边缘，在城市霓虹与冷月光交织下，身体微微前倾，眼神交汇，唇角微扬，裙摆随风扬起，镜头从下往上仰拍，画面构图极具张力与情感浓度，动态模糊捕捉呼吸与心跳节奏，冷暖光对比强烈，视觉张力满格，人物姿态浪漫却不失洒脱，充满电影级浪漫主义叙事感，,",
+    "Single light source, film grain texture.\n <生成的摄影作品的景别应该控制在面部到膝盖的位置，双人物全景>\n\nF2Pkrea2_identity_edit, ,,极致画质，电影级光影，一对新人身着现代极简风婚纱与黑金定制西装，站在海边悬崖边，海潮声与鸟鸣为背景，男方单手轻托女方后颈，女方侧身回望，裙摆与西装裤线在风中自然摆动，镜头拉远至中景，呈现海天交融的苍穹光影，氛围宁静奢华，动作优雅而克制，画面饱和度高，细节锐利，人物姿态充满故事感与亲密张力，,",
+    "Single light source, film grain texture.\n <生成的摄影作品的景别应该控制在面部到膝盖的位置，双人物全景>\n\nF2匹Pkrea2_identity_edit, ,,极致画质，电影级光影，一对新人身着民族风刺绣婚服与手工编织长裙，在藏式寺庙前的晨光中，男方单膝跪地，女方轻靠其肩，两人目光相投，晨光穿透薄雾打在婚纱上，形成柔和金色光晕，镜头从高空俯拍，人物呈半身剪影感，服装材质极其细腻，布料纹理清晰可见，场景光影充满宗教仪式感与神圣静谧，两人姿态温柔却不失张力，充满艺术史诗感，,"
+   ],
+   "in_links": [
+    195
+   ],
+   "out_links": []
+  },
+  {
+   "id": 96,
+   "type": "Int",
+   "category": "utility",
+   "title": "Int (最长边尺寸）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1600
+   ],
+   "in_links": [],
+   "out_links": [
+    113
+   ]
+  },
+  {
+   "id": 115,
+   "type": "Krea2EditGroundedEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    768,
+    ""
+   ],
+   "in_links": [
+    161,
+    159,
+    177,
+    207
+   ],
+   "out_links": [
+    163
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    169,
+    109
+   ],
+   "out_links": [
+    187
+   ]
+  },
+  {
+   "id": 107,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    708897319849791,
+    "randomize",
+    8,
+    1,
+    "euler",
+    "sgm_uniform",
+    1
+   ],
+   "in_links": [
+    156,
+    163,
+    164,
+    167,
+    208
+   ],
+   "out_links": [
+    169
+   ]
+  },
+  {
+   "id": 149,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【元指令名称】\n高细节·多样化中文AI绘图提示词生成器 (High-Detail & Diverse Batch Prompts)\n\n角色设定：\n你是一位拥有无限创意的顶级美术指导和时尚造型师。你擅长根据一个基础主题（如“美女”），构思出截然不同的视觉风格。你拒绝重复，追求每一张画面在服装、场景、光影和情感上的巨大反差与惊喜感，同时保持对材质和光影的极致描述，<同时要确保人物的姿势是时尚而且洒脱的，具有视觉冲击力的造型 pose，同时确保画面不是人物特写，应该是广角，或者是卡在头部至膝盖的全景人物照片>。\n\n核心任务目标：\n根据用户提供的 [数字]、[触发词]、[触发词2] 和 [基础主题]，生成指定数量的纯文本提示词。\n**关键要求**： [数字]很重要，代表你最后要出多少条不同的提示词，一定要严格遵守！虽然人物基础设定（如年龄、身材）保持不变，但**每一条提示词必须更换全新的服装、场景、时间和光影氛围**，绝不允许连续两条提示词出现相同的穿搭或环境。\n\n行为约束与规则：\n1. **强制差异化 (Diversity)**：\n   - 如果用户要求生成 9 条，你必须提供 9 种完全不同的服装风格（例如：JK制服、古风汉服、赛博朋克机能风、晚礼服、泳装、运动装、职业装等）。\n   - 场景必须随服装变化而匹配（例如：泳装配海滩，晚礼服配宴会）。\n2. **画质强制增强**：每条开头必须包含“大师级杰作，极致画质，8k超高清，电影级光影”。\n3. **细节“堆料”**：\n   - 必须极尽辞藻地描述**当前服装**的材质（如：蕾丝、乳胶、丝绸、牛仔、皮革）。\n   - 必须描述**当前场景**的独特光影（如：霓虹灯、夕阳、月光、影棚光）。\n4. **格式严格锁死**：\n   - 格式必须严格为：`[触发词],[触发词2],[(内容描述)],`\n   - 禁止 Markdown，禁止废话，禁止空行，禁止标号。\n   - 每一行结尾必须有英文逗号 `,`。\n\n输出格式模板：\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第一套服装与材质**，**第一种场景**，**第一种动作**，光影与氛围，镜头语言)],\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第二套服装与材质**，**第二种场景**，**第二种动作**，光影与氛围，镜头语言)],\n... (以此类推，直到达到指定数量)\n\nInitialization (初始化指令)：\n读取用户变量：\n1. **生成数量**：[数字] (必须严格遵守此数量)\n2. **触发词**：[触发词]\n3. **触发词2**：[触发词2] (如果没有则留空)\n4. **基础主题**：[用户输入的主题]\n\n请立即执行，只输出纯文本提示词，不要输出任何推理过程或废话：\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 116,
+   "type": "Krea2EditGroundedEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    768,
+    ""
+   ],
+   "in_links": [
+    162,
+    160,
+    176
+   ],
+   "out_links": [
+    164
+   ]
+  },
+  {
+   "id": 114,
+   "type": "Krea2EditModelPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    1,
+    "fit"
+   ],
+   "in_links": [
+    224,
+    166,
+    180
+   ],
+   "out_links": [
+    156
+   ]
+  },
+  {
+   "id": 86,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "krea2_identity_edit_v1_2_编辑模型.safetensors",
+    0.8500000000000002
+   ],
+   "in_links": [
+    98
+   ],
+   "out_links": [
+    221
+   ]
+  },
+  {
+   "id": 138,
+   "type": "CR Text",
+   "category": "utility",
+   "title": "Lora key words",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F2Pkrea2_identity_edit, "
+   ],
+   "in_links": [],
+   "out_links": [
+    192
+   ]
+  },
+  {
+   "id": 142,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【元指令名称】\n高细节·多样化中文AI绘图提示词生成器 (High-Detail & Diverse Batch Prompts)\n\n角色设定：\n你是一位拥有无限创意的顶级美术指导和时尚造型师。你擅长根据一个基础主题（如“美女”），构思出截然不同的视觉风格。你拒绝重复，追求每一张画面在服装、场景、光影和情感上的巨大反差与惊喜感，同时保持对材质和光影的极致描述。\n\n核心任务目标：\n根据用户提供的 [数字]、[触发词]、[触发词2] 和 [基础主题]，生成指定数量的纯文本提示词。\n**关键要求**： [数字]很重要，代表你最后要出多少条不同的提示词，一定要严格遵守！虽然人物基础设定（如年龄、身材）保持不变，但**每一条提示词必须更换全新的服装、场景、时间和光影氛围**，绝不允许连续两条提示词出现相同的穿搭或环境。\n\n行为约束与规则：\n1. **强制差异化 (Diversity)**：\n   - 如果用户要求生成 9 条，你必须提供 9 种完全不同的服装风格（例如：JK制服、古风汉服、赛博朋克机能风、晚礼服、泳装、运动装、职业装等）。\n   - 场景必须随服装变化而匹配（例如：泳装配海滩，晚礼服配宴会）。\n2. **画质强制增强**：每条开头必须包含“大师级杰作，极致画质，8k超高清，电影级光影”。\n3. **细节“堆料”**：\n   - 必须极尽辞藻地描述**当前服装**的材质（如：蕾丝、乳胶、丝绸、牛仔、皮革）。\n   - 必须描述**当前场景**的独特光影（如：霓虹灯、夕阳、月光、影棚光）。\n4. **格式严格锁死**：\n   - 格式必须严格为：`[触发词],[触发词2],[(内容描述)],`\n   - 禁止 Markdown，禁止废话，禁止空行，禁止标号。\n   - 每一行结尾必须有英文逗号 `,`。\n\n输出格式模板：\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第一套服装与材质**，**第一种场景**，**第一种动作**，光影与氛围，镜头语言)],\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第二套服装与材质**，**第二种场景**，**第二种动作**，光影与氛围，镜头语言)],\n... (以此类推，直到达到指定数量)\n\nInitialization (初始化指令)：\n读取用户变量：\n1. **生成数量**：[数字] (必须严格遵守此数量)\n2. **触发词**：[触发词]\n3. **触发词2**：[触发词2] (如果没有则留空)\n4. **基础主题**：[用户输入的主题]\n\n请立即执行，只输出纯文本提示词，不要输出任何推理过程或废话：\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    225
+   ]
+  },
+  {
+   "id": 137,
+   "type": "Qwen3VL_Chat",
+   "category": "utility",
+   "title": "Qwen3VL智能对话",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Huihui-Qwen3-VL-4B-Instruct-Abliterated",
+    "4-bit (节省显存)",
+    "SDPA",
+    512,
+    "0.7",
+    "0.9",
+    1,
+    1,
+    2048,
+    false,
+    "随机",
+    false,
+    false,
+    false
+   ],
+   "in_links": [
+    198,
+    199,
+    200
+   ],
+   "out_links": [
+    194
+   ]
+  },
+  {
+   "id": 133,
+   "type": "CR Text Replace",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "[数字]",
+    "",
+    "[触发词]",
+    "",
+    "[触发词2]",
+    ""
+   ],
+   "in_links": [
+    190,
+    191,
+    192,
+    193
+   ],
+   "out_links": [
+    199
+   ]
+  },
+  {
+   "id": 136,
+   "type": "JWStringConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    ""
+   ],
+   "in_links": [
+    196,
+    197
+   ],
+   "out_links": [
+    189,
+    195
+   ]
+  },
+  {
+   "id": 144,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "You are a master of Artistic group photo photography\nYou expand customer descriptions into daily life contexts.\n((Goal: Generate clean, clear, accurate, watermark-free, subtitle-free realistic photography prompts)), precise and direct descriptions of poses, movements, and sexy postures, \nserene atmosphere, cinematic composition, Visual description of a full-body composition\"\n\nOutput format: Each generated prompt must explicitly describe a man and a woman as core elements, depicting them in an intimate interaction with detailed focus on their shared state and connection. Dynamic shot range Visual description.  \n\n\n\nYour subject is: ##wedding"
+   ],
+   "in_links": [],
+   "out_links": [
+    198
+   ]
+  },
+  {
+   "id": 148,
+   "type": "Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ", ",
+    "true"
+   ],
+   "in_links": [
+    205
+   ],
+   "out_links": [
+    203
+   ]
+  },
+  {
+   "id": 145,
+   "type": "ProcessString",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "去空行"
+   ],
+   "in_links": [
+    203
+   ],
+   "out_links": [
+    204
+   ]
+  },
+  {
+   "id": 147,
+   "type": "Seed (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    -1,
+    "",
+    "",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    200,
+    208
+   ]
+  },
+  {
+   "id": 146,
+   "type": "JDCN_StringToList",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    204
+   ],
+   "out_links": [
+    197
+   ]
+  },
+  {
+   "id": 134,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    194
+   ],
+   "out_links": [
+    205
+   ]
+  },
+  {
+   "id": 143,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": "Additional Prompt",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Single light source, film grain texture.\n <生成的摄影作品的景别应该控制在面部到膝盖的位置，双人物全景>\n\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    196
+   ]
+  },
+  {
+   "id": 140,
+   "type": "easy anythingIndexSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    225,
+    226
+   ],
+   "out_links": [
+    190
+   ]
+  },
+  {
+   "id": 152,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "KREA2film grain.safetensors",
+    0.39000000000000007
+   ],
+   "in_links": [
+    221
+   ],
+   "out_links": [
+    222
+   ]
+  },
+  {
+   "id": 151,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "krea2filterbypass.safetensors",
+    0.26000000000000006
+   ],
+   "in_links": [
+    222
+   ],
+   "out_links": [
+    223
+   ]
+  },
+  {
+   "id": 150,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "krea2-Cc-Ins风-人像.safetensors",
+    0.26000000000000006
+   ],
+   "in_links": [
+    223
+   ],
+   "out_links": [
+    224
+   ]
+  },
+  {
+   "id": 141,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【元指令名称】\n高细节·多样化中文AI绘图提示词生成器 (High-Detail & Diverse Batch Prompts)\n\n角色设定：\n你是一位拥有无限创意的顶级美术指导和时尚造型师。你擅长根据一个基础主题（如“男女情侣合影”和 group photo photography），构思出截然不同的视觉风格。你拒绝重复，追求每一张画面在服装、场景、光影和情感上的巨大反差与惊喜感，同时保持对材质和光影的极致描述，<同时要确保人物的姿势是时尚而且洒脱的，具有视觉冲击力的造型 pose，同时确保画面不是人物特写，应该是广角，或者是卡在头部至膝盖的全景人物照片>。\n\n核心任务目标：\n根据用户提供的 [数字]、[触发词]、[触发词2] 和 [基础主题]，生成指定数量的纯文本提示词。\n**关键要求**： [数字]很重要，代表你最后要出多少条不同的提示词，一定要严格遵守！虽然人物基础设定（如年龄、身材）保持不变，但**每一条提示词必须更换全新的服装、场景、时间和光影氛围**，绝不允许连续两条提示词出现相同的穿搭或环境。\n\n行为约束与规则：\n1. **强制差异化 (Diversity)**：\n   - 如果用户要求生成 9 条，你必须提供 9 种完全不同的服装风格（例如：JK制服、古风汉服、赛博朋克机能风、晚礼服、泳装、运动装、职业装等）。\n   - 场景必须随服装变化而匹配（例如：泳装配海滩，晚礼服配宴会）。\n2. **画质强制增强**：每条开头必须包含“极致画质，电影级光影”。\n3. **细节“堆料”**：\n   - 必须极尽辞藻地描述**当前服装**的材质（如：蕾丝、乳胶、丝绸、牛仔、皮革）。\n   - 必须描述**当前场景**的独特光影（如：霓虹灯、夕阳、月光、影棚光）。\n4. **格式严格锁死**：\n   - 格式必须严格为：`[触发词],[触发词2],[(内容描述)],`\n   - 禁止 Markdown，禁止废话，禁止空行，禁止标号。\n   - 每一行结尾必须有英文逗号 `,`。\n\n输出格式模板：\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第一套服装与材质**，**第一种场景**，**第一种动作**，光影与氛围，镜头语言)],\n[触发词],[触发词2],[(画质修饰词，人物基础特征，**第二套服装与材质**，**第二种场景**，**第二种动作**，光影与氛围，镜头语言)],\n... (以此类推，直到达到指定数量)\n\nInitialization (初始化指令)：\n读取用户变量：\n1. **生成数量**：[数字] (必须严格遵守此数量)\n2. **触发词**：[触发词]\n3. **触发词2**：[触发词2] (如果没有则留空)\n4. **基础主题**：[用户输入的主题]\n\n请立即执行，只输出纯文本提示词，不要输出任何推理过程或废话：\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    226
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 100,
+   "to_node": 107,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 107,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 114,
+   "to_node": 107,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 115,
+   "to_node": 107,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 116,
+   "to_node": 107,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 121,
+   "to_node": 122,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 116,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 124,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 122,
+   "type": "INT"
+  },
+  {
+   "from_node": 124,
+   "to_node": 114,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 131,
+   "to_node": 115,
+   "type": "STRING"
+  },
+  {
+   "from_node": 132,
+   "to_node": 133,
+   "type": "STRING"
+  },
+  {
+   "from_node": 133,
+   "to_node": 137,
+   "type": "STRING"
+  },
+  {
+   "from_node": 134,
+   "to_node": 148,
+   "type": "STRING"
+  },
+  {
+   "from_node": 136,
+   "to_node": 131,
+   "type": "*"
+  },
+  {
+   "from_node": 136,
+   "to_node": 135,
+   "type": "STRING"
+  },
+  {
+   "from_node": 137,
+   "to_node": 134,
+   "type": "*"
+  },
+  {
+   "from_node": 138,
+   "to_node": 133,
+   "type": "STRING"
+  },
+  {
+   "from_node": 139,
+   "to_node": 133,
+   "type": "STRING"
+  },
+  {
+   "from_node": 140,
+   "to_node": 133,
+   "type": "STRING"
+  },
+  {
+   "from_node": 141,
+   "to_node": 140,
+   "type": "*"
+  },
+  {
+   "from_node": 142,
+   "to_node": 140,
+   "type": "*"
+  },
+  {
+   "from_node": 143,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 144,
+   "to_node": 137,
+   "type": "STRING"
+  },
+  {
+   "from_node": 145,
+   "to_node": 146,
+   "type": "STRING"
+  },
+  {
+   "from_node": 146,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 147,
+   "to_node": 107,
+   "type": "INT"
+  },
+  {
+   "from_node": 147,
+   "to_node": 137,
+   "type": "INT"
+  },
+  {
+   "from_node": 148,
+   "to_node": 145,
+   "type": "STRING"
+  },
+  {
+   "from_node": 150,
+   "to_node": 114,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 151,
+   "to_node": 150,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 152,
+   "to_node": 151,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 3,
+   "to_node": 130,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 85,
+   "to_node": 86,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 86,
+   "to_node": 152,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 91,
+   "to_node": 115,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 91,
+   "to_node": 116,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 92,
+   "to_node": 124,
+   "type": "VAE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 3,
+   "type": "VAE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 97,
+   "type": "VAE"
+  },
+  {
+   "from_node": 94,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 100,
+   "type": "INT"
+  },
+  {
+   "from_node": 95,
+   "to_node": 100,
+   "type": "INT"
+  },
+  {
+   "from_node": 95,
+   "to_node": 115,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 116,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 97,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 96,
+   "to_node": 95,
+   "type": "INT"
+  },
+  {
+   "from_node": 97,
+   "to_node": 114,
+   "type": "LATENT"
+  }
+ ],
+ "categories": {
+  "checkpoint_loader": 1,
+  "clip": 1,
+  "vae": 4,
+  "utility": 25,
+  "image_io": 3,
+  "sampler": 1,
+  "lora": 4,
+  "conditioning": 2
+ },
+ "assets": [
+  {
+   "node_id": 85,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "samKrea2_turboV10.safetensors"
+  },
+  {
+   "node_id": 91,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 92,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 86,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "krea2_identity_edit_v1_2_编辑模型.safetensors"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "KREA2film grain.safetensors"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "krea2filterbypass.safetensors"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "krea2-Cc-Ins风-人像.safetensors"
+  }
+ ],
+ "techniques": [
+  "Qwen-Image"
+ ],
+ "param_face_size": 93,
+ "structure_hash": "8ea9cabc45f95241",
+ "param_face": [
+  {
+   "node_id": 85,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "samKrea2_turboV10.safetensors"
+  },
+  {
+   "node_id": 85,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 91,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_4b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 91,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "krea2"
+  },
+  {
+   "node_id": 91,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 92,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 100,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 100,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1536"
+  },
+  {
+   "node_id": 100,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 130,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 94,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "854d4adf09d6463e0848d00f14daa210e21d617d6dd9831c433f79b32cc1"
+  },
+  {
+   "node_id": 94,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 121,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "854d4adf09d6463e0848d00f14daa210e21d617d6dd9831c433f79b32cc1"
+  },
+  {
+   "node_id": 121,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 123,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1600"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 122,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 132,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 139,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 96,
+   "node_type": "Int",
+   "widget_index": 0,
+   "value_preview": "1600"
+  },
+  {
+   "node_id": 115,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 115,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 1,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 115,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "708897319849791"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "sgm_uniform"
+  },
+  {
+   "node_id": 107,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 116,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 116,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 1,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 116,
+   "node_type": "Krea2EditGroundedEncode",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 114,
+   "node_type": "Krea2EditModelPatch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 114,
+   "node_type": "Krea2EditModelPatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 114,
+   "node_type": "Krea2EditModelPatch",
+   "widget_index": 2,
+   "value_preview": "fit"
+  },
+  {
+   "node_id": 86,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "krea2_identity_edit_v1_2_编辑模型.safetensors"
+  },
+  {
+   "node_id": 86,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.8500000000000002"
+  },
+  {
+   "node_id": 138,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": "F2Pkrea2_identity_edit, "
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 0,
+   "value_preview": "Huihui-Qwen3-VL-4B-Instruct-Abliterated"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 1,
+   "value_preview": "4-bit (节省显存)"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 2,
+   "value_preview": "SDPA"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 4,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 5,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 8,
+   "value_preview": "2048"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 10,
+   "value_preview": "随机"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 137,
+   "node_type": "Qwen3VL_Chat",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 0,
+   "value_preview": "[数字]"
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 2,
+   "value_preview": "[触发词]"
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 4,
+   "value_preview": "[触发词2]"
+  },
+  {
+   "node_id": 133,
+   "node_type": "CR Text Replace",
+   "widget_index": 5,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "JWStringConcat",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "JWStringConcat",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 148,
+   "node_type": "Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ", "
+  },
+  {
+   "node_id": 148,
+   "node_type": "Text Concatenate",
+   "widget_index": 1,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 145,
+   "node_type": "ProcessString",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 145,
+   "node_type": "ProcessString",
+   "widget_index": 1,
+   "value_preview": "去空行"
+  },
+  {
+   "node_id": 147,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 0,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 147,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 147,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 147,
+   "node_type": "Seed (rgthree)",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 143,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "Single light source, film grain texture.\n <生成的摄影作品的景别应该控制在面部"
+  },
+  {
+   "node_id": 140,
+   "node_type": "easy anythingIndexSwitch",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "KREA2film grain.safetensors"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.39000000000000007"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "krea2filterbypass.safetensors"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.26000000000000006"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "krea2-Cc-Ins风-人像.safetensors"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.26000000000000006"
+  }
+ ]
+}

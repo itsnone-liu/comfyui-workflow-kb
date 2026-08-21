@@ -1,0 +1,501 @@
+{
+ "node_count": 11,
+ "link_count": 13,
+ "active_node_count": 11,
+ "nodes": [
+  {
+   "id": 29,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    34,
+    32
+   ],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 31,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    37
+   ],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "RunningHub OmniConsistency Sampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Vector style, a girl is sitting on the bed",
+    896,
+    1024,
+    3.5,
+    669470009046226,
+    "randomize",
+    25
+   ],
+   "in_links": [
+    28,
+    29,
+    35,
+    36,
+    41
+   ],
+   "out_links": [
+    30,
+    32
+   ]
+  },
+  {
+   "id": 35,
+   "type": "easy promptConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    ","
+   ],
+   "in_links": [
+    39,
+    40
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 20,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    30
+   ],
+   "out_links": []
+  },
+  {
+   "id": 36,
+   "type": "JWInteger",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024
+   ],
+   "in_links": [],
+   "out_links": [
+    42
+   ]
+  },
+  {
+   "id": 34,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "a girl is smiling,"
+   ],
+   "in_links": [],
+   "out_links": [
+    40
+   ]
+  },
+  {
+   "id": 33,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Macaron style, "
+   ],
+   "in_links": [],
+   "out_links": [
+    39
+   ]
+  },
+  {
+   "id": 19,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "480894bdff1dabe3a64ef1be697847024d5fc1bc2c64a3a08a1df7621814facb.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    29,
+    33
+   ]
+  },
+  {
+   "id": 28,
+   "type": "RunningHub OmniConsistency LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Macaron_rank128_bf16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 30,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "16",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    33,
+    42
+   ],
+   "out_links": [
+    34,
+    35,
+    36
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 19,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 19,
+   "to_node": 30,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 20,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 27,
+   "type": "OCPipeline"
+  },
+  {
+   "from_node": 29,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 30,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 30,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 30,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 33,
+   "to_node": 35,
+   "type": "STRING"
+  },
+  {
+   "from_node": 34,
+   "to_node": 35,
+   "type": "STRING"
+  },
+  {
+   "from_node": 35,
+   "to_node": 27,
+   "type": "STRING"
+  },
+  {
+   "from_node": 36,
+   "to_node": 30,
+   "type": "INT"
+  }
+ ],
+ "categories": {
+  "utility": 6,
+  "image_io": 3,
+  "conditioning": 1,
+  "lora": 1
+ },
+ "assets": [
+  {
+   "node_id": 28,
+   "node_type": "RunningHub OmniConsistency LoraLoader",
+   "kind": "lora",
+   "name": "Macaron_rank128_bf16.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 32,
+ "structure_hash": "f88cec6fc1ea384c",
+ "param_face": [
+  {
+   "node_id": 29,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 29,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 31,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 0,
+   "value_preview": "Vector style, a girl is sitting on the bed"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 1,
+   "value_preview": "896"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 3,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 4,
+   "value_preview": "669470009046226"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 5,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 27,
+   "node_type": "RunningHub OmniConsistency Sampler",
+   "widget_index": 6,
+   "value_preview": "25"
+  },
+  {
+   "node_id": 35,
+   "node_type": "easy promptConcat",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 35,
+   "node_type": "easy promptConcat",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 35,
+   "node_type": "easy promptConcat",
+   "widget_index": 2,
+   "value_preview": ","
+  },
+  {
+   "node_id": 20,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 20,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 36,
+   "node_type": "JWInteger",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 34,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "a girl is smiling,"
+  },
+  {
+   "node_id": 33,
+   "node_type": "CR Prompt Text",
+   "widget_index": 0,
+   "value_preview": "Macaron style, "
+  },
+  {
+   "node_id": 19,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "480894bdff1dabe3a64ef1be697847024d5fc1bc2c64a3a08a1df7621814"
+  },
+  {
+   "node_id": 19,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 19,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 28,
+   "node_type": "RunningHub OmniConsistency LoraLoader",
+   "widget_index": 0,
+   "value_preview": "Macaron_rank128_bf16.safetensors"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 30,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  }
+ ]
+}

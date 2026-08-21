@@ -1,0 +1,61 @@
+{
+ "domain": [
+  "图像抠图",
+  "图像合成",
+  "背景替换"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张照片 → 自动进行高精度抠图 → 将主体合成到用户可选纯色背景（默认白色）上，最终输出不透明 RGB 图片",
+   "kind": "fact"
+  },
+  {
+   "text": "借助 BiRefNet 模型可处理头发丝、半透明边缘等复杂细节，适合人像/商品精细分割",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "BiRefNet 高精度分割",
+  "图像 alpha 合成",
+  "背景色替换",
+  "alpha 通道移除"
+ ],
+ "special_features": [
+  {
+   "text": "使用 Fast Groups Bypasser 对节点组进行快速旁路，方便对比有无后处理/合成时的效果",
+   "kind": "fact"
+  },
+  {
+   "text": "多段式流水线：BiRefNet 抠图 → ColorPicker+ImageCombineAlpha 背景合成 → ImageRemoveAlpha 清理 alpha，各环节均可用节点替换或旁路",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ColorPicker 直接在界面点选背景色，免去手动输入十六进制颜色值",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流面向普通抠图需求，把高精度分割模型、背景合成、alpha 清理打包成极简流水线。可能的设计思路是：先用 BiRefNet 得到精细alpha，再用颜色选择器灵活更换纯色背景，最后移除alpha以便直接输出通用JPG/RGB图片。引入 Fast Groups Bypasser 可能是为了快速切换不同处理分支，方便调试或对比。整体结构清晰，但缺少质量反馈回路，属于常规功能性流程。",
+ "use_case": "证件照换底色、产品抠图换背景、电商图片白底化、快速获得不透明背景的精细分割结果",
+ "limitation": "依赖 ComfyUI_LayerMask 扩展和 BiRefNet 模型文件 BiRefNet-general-epoch_244.pth；输入为单张图像；输出为 RGB 不透明图（不保留 alpha 通道），若需要透明 PNG 需禁用/改动 ImageRemoveAlpha 节点；模型加载与推理需要一定显存，大图可能受限。",
+ "dependencies": [
+  "ComfyUI_LayerMask 扩展（含 BiRefNetUltraV2、LoadBiRefNetModel）",
+  "BiRefNet 模型文件 BiRefNet-general-epoch_244.pth",
+  "rgthree-comfy 扩展（Fast Groups Bypasser）"
+ ],
+ "geek_rating": 2,
+ "input": {
+  "type": "单个图像文件",
+  "count": "1"
+ },
+ "output": {
+  "type": "单个图像文件（RGB，无alpha）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BiRefNetUltraV2 参数（VITMatte, 4, 2, 0.01, 0.99, False）",
+   "how_to_tune": "VITMatte 可能表示选择 VITMatte 骨干/模式；数字 4 和 2 可能控制下采样倍数或细化次数，值越大计算越精细但更耗显存；0.01 与 0.99 可能是前景/背景阈值，调低可保留半透明边缘，调高使边界更硬；False 可能关闭某后处理选项。建议根据图片尺寸和边缘复杂程度小范围调整后目测效果。"
+  }
+ ],
+ "summary_text": "能力:输入一张照片 → 自动进行高精度抠图 → 将主体合成到用户可选纯色背景（默认白色）上，最终输出不透明 RGB 图片；能力:借助 BiRefNet 模型可处理头发丝、半透明边缘等复杂细节，适合人像/商品精细分割；特色:使用 Fast Groups Bypasser 对节点组进行快速旁路，方便对比有无后处理/合成时的效果；特色:多段式流水线：BiRefNet 抠图 → ColorPicker+ImageCombineAlpha 背景合成 → ImageRemoveAlpha 清理 alpha，各环节均可用节点替换或旁路；特色:通过 ColorPicker 直接在界面点选背景色，免去手动输入十六进制颜色值；证件照换底色、产品抠图换背景、电商图片白底化、快速获得不透明背景的精细分割结果；该工作流面向普通抠图需求，把高精度分割模型、背景合成、alpha 清理打包成极简流水线。可能的设计思路是：先用 BiRefNet 得到精细alpha，再用颜色选择器灵活更换纯色背景，最后移除alpha以便直接输出通用JPG/RGB图片。引入 Fast Groups Bypasser 可能是为了快速切换不同处理分支，方便调试或对比。整体结构清晰，但缺少质量反馈回路，属于常规功能性流程。"
+}

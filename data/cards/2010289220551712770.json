@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "AI图像编辑",
+  "证件照生成",
+  "人像处理"
+ ],
+ "capabilities": [
+  {
+   "text": "输入手机随手拍/旧生活照，通过 Qwen-Image-Edit 保持人物身份重绘证件照服装与姿态，再经 Hivision 自动抠图、换纯色背景、按证件照规格裁剪排版，端到端生成标准证件照。",
+   "kind": "fact"
+  },
+  {
+   "text": "内置多套服装提示词模板（藏青西装、白衬衫黑西装、浅紫西装、JK制服等），用户更换提示词即可生成不同正式着装版本的证件照。",
+   "kind": "fact"
+  },
+  {
+   "text": "后处理直接输出证件照排版规格（当前预设大二寸 626×413、蓝色背景、300DPI），省去二次手工修图。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持以“旧照翻新”替代重拍：不需要化妆/重新拍摄，使用人物一致性 LoRA 保持人脸身份。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit 指令式图像编辑（qwen_image_edit_2509_fp8 + Qwen2.5-VL-7B CLIP + qwen_image_vae）",
+  "人物一致性 LoRA（ZOEY-Qwen-Edit-人物一致性_Alpha，强度约 0.2）",
+  "HivisionIDPhotos 证件照后处理链：HivisionNode（modnet_photographic_portrait 抠图、mtcnn 人脸检测）、AddBackgroundNode、HivisionLayOutNode、ZHHivisionParamsNode",
+  "多提示词服装模板：Note / easy positive 预设并切换着装描述",
+  "图像拼接排版：ImageStitch 横向拼接、2px 黑边",
+  "快速采样调优：KSampler steps=8 + CFGNorm + ModelSamplingAuraFlow shift=5.0"
+ ],
+ "special_features": [
+  {
+   "text": "生成 + 传统图像处理混合链路：先用 Qwen-Image-Edit 做语义级换装/重绘，再用 Hivision 做证件照精确格式化，规避纯生成模型在尺寸、底色、DPI 上的不稳定性。",
+   "kind": "fact"
+  },
+  {
+   "text": "把多套服装描述写成 Note 节点，作为可复制/修改的提示词库；Note 中同时写有“人物一致性Lora建议0.2~0.6”等操作说明，相当于内嵌使用手册。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 RHHiddenNodes + easy getNode / easy setNode 将 IMAGE、Lora强度、成品等封装为可复用接口，方便作为子工作流嵌入更大项目。",
+   "kind": "inference"
+  },
+  {
+   "text": "低步数快速出图设计：KSampler 仅 8 步、cfg=1，并配 CFGNorm 与 AuraFlow 采样偏移，推测是为了在消费级显卡上快速迭代证件照方案。",
+   "kind": "inference"
+  },
+  {
+   "text": "输出端使用 ImageStitch 横向拼接（黑边 2px），可能用于“原图 vs 成品”对比或多种尺寸证件照排版预览。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流试图把“生成式 AI 人像编辑”和“证件照专业后处理”组合成一条免重拍的生产管线：先借助 Qwen-Image-Edit 与人物一致性 LoRA，在保持人脸身份的前提下把生活照改成正式着装/背景，再用 Hivision 自动完成抠图、纯色背景、尺寸裁剪和 DPI 设置，避免生成模型直接输出不符合规格的图片。多组 Note 服装模板与 RHHidden 参数封装，可能是为了让非专业用户也能通过替换提示词快速得到不同风格的标准证件照，同时降低单张出图的迭代成本。",
+ "use_case": "适合需要快速制作求职简历、考试报名、社保/证件等标准证件照的用户，也适合给旧照片或手机随手拍批量生成多套职业装/制服证件照预览。",
+ "limitation": "依赖较多自定义节点（如 Hivision、TextEncodeQwenImageEditPlus_lrzjason、RHHiddenNodes、easy 系列等）和指定模型文件；输入建议为清晰正脸生活照，非正面、多人或大面积遮挡可能导致 mtcnn 人脸检测/抠图失败；当前证件照规格固定为大二寸 626×413、蓝色背景、300DPI，切换一寸/红色背景需改 ZHHivisionParamsNode；生成质量与 LoRA 强度及提示词相关，人物一致性 LoRA 建议控制在 0.2~0.6。",
+ "dependencies": [
+  "模型：qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+  "模型：qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "模型：qwen_image_vae.safetensors",
+  "模型：ZOEY-Qwen-Edit-人物一致性_Alpha.safetensors",
+  "自定义节点：HivisionNode / HivisionLayOutNode / AddBackgroundNode / ZHHivisionParamsNode",
+  "自定义节点：TextEncodeQwenImageEditPlus_lrzjason",
+  "自定义节点：RHHiddenNodes、LaterProcessNode、CFGNorm、ImageStitch",
+  "自定义节点：ComfyUI-Easy-Use（easy getNode / setNode / positive）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "10（LoadImage×10；实际通常可放入同一张主图或少数对比图）"
+ },
+ "output": {
+  "type": "image",
+  "count": "4（SaveImage×4）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly strength（当前约 0.2）",
+   "how_to_tune": "控制人物一致性与编辑幅度：建议 0.2~0.6；越低越贴近原图身份，越高服装/风格变化越强；同一人脸换装建议从 0.2 开始试。工作流内置 Note 也提示 0.2~0.6。"
+  },
+  {
+   "param": "KSampler steps（当前 8）",
+   "how_to_tune": "低步数用于快速预览；若人脸/服装细节不足，可提高到 12~20 步，注意步数升高会明显增加耗时。"
+  },
+  {
+   "param": "KSampler cfg（当前 1，配合 CFGNorm）",
+   "how_to_tune": "CFGNorm 下 cfg=1 可保持稳定；不要直接大幅调高，如需更强编辑响应可在 CFGNorm 或 Sampler 配置上微调 1~2。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow shift（当前 5.0）",
+   "how_to_tune": "影响 Qwen-Image 采样的时间步分布；细节不足可尝试 4~6 之间的值，过高/过低可能造成过曝或结构漂移。"
+  },
+  {
+   "param": "TextEncodeQwenImageEditPlus 的服装描述（当前示例为白色长袖衬衫）",
+   "how_to_tune": "替换为工作流 Note 中预置的藏青西装、浅紫西装、JK制服等描述，或自定义面料/颜色/领口样式；描述应控制在单一着装主题，避免同时出现多套衣服。"
+  },
+  {
+   "param": "ZHHivisionParamsNode（当前大二寸、蓝色、300DPI）",
+   "how_to_tune": "如需一寸/小一寸、红底或不同分辨率，修改这里的尺寸/颜色/DPI；Hivision 会自动按新版式输出。"
+  },
+  {
+   "param": "HivisionNode 参数（modnet_photographic_portrait / mtcnn / 0.2）",
+   "how_to_tune": "抠图模型和人脸检测阈值影响头肩分割；背景复杂或边缘发丝多时，可尝试更精细的抠图模型或调整阈值；当前 0.2 为检测/抠图敏感度。"
+  }
+ ],
+ "summary_text": "能力:输入手机随手拍/旧生活照，通过 Qwen-Image-Edit 保持人物身份重绘证件照服装与姿态，再经 Hivision 自动抠图、换纯色背景、按证件照规格裁剪排版，端到端生成标准证件照。；能力:内置多套服装提示词模板（藏青西装、白衬衫黑西装、浅紫西装、JK制服等），用户更换提示词即可生成不同正式着装版本的证件照。；能力:后处理直接输出证件照排版规格（当前预设大二寸 626×413、蓝色背景、300DPI），省去二次手工修图。；能力:支持以“旧照翻新”替代重拍：不需要化妆/重新拍摄，使用人物一致性 LoRA 保持人脸身份。；特色:生成 + 传统图像处理混合链路：先用 Qwen-Image-Edit 做语义级换装/重绘，再用 Hivision 做证件照精确格式化，规避纯生成模型在尺寸、底色、DPI 上的不稳定性。；特色:把多套服装描述写成 Note 节点，作为可复制/修改的提示词库；Note 中同时写有“人物一致性Lora建议0.2~0.6”等操作说明，相当于内嵌使用手册。；特色:使用 RHHiddenNodes + easy getNode / easy setNode 将 IMAGE、Lora强度、成品等封装为可复用接口，方便作为子工作流嵌入更大项目。；特色:低步数快速出图设计：KSampler 仅 8 步、cfg=1，并配 CFGNorm 与 AuraFlow 采样偏移，推测是为了在消费级显卡上快速迭代证件照方案。；特色:输出端使用 ImageStitch 横向拼接（黑边 2px），可能用于“原图 vs 成品”对比或多种尺寸证件照排版预览。；适合需要快速制作求职简历、考试报名、社保/证件等标准证件照的用户，也适合给旧照片或手机随手拍批量生成多套职业装/制服证件照预览。；该工作流试图把“生成式 AI 人像编辑”和“证件照专业后处理”组合成一条免重拍的生产管线：先借助 Qwen-Image-Edit 与人物一致性 LoRA，在保持人脸身份的前提下把生活照改成正式着装/背景，再用 Hivision 自动完成抠图、纯色背景、尺寸裁剪和 DPI 设置，避免生成模型直接输出不符合规格的图片。多组 Note 服装模板与 RHHidden 参数封装，可能是为了让非专业用户也能通过替换提示词快速得到不同风格的标准证件照，同时降低单张出图的迭代成本。"
+}

@@ -1,0 +1,114 @@
+{
+ "domain": [
+  "角色一致性视频生成",
+  "多模态生成（视频+音频）"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张人物图像，自动生成与该图角色一致的多姿态/动作短视频，并同步生成匹配的背景音乐和音效，最终输出带音频的视频文件。",
+   "kind": "inference"
+  },
+  {
+   "text": "从输入图像自动提取视觉描述（中文），翻译成英文，结合用户自定义提示词生成完整视频提示驱动 Wan2.1 生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 VACE 视觉条件编码和多图拼接（ImageConcatMulti）实现角色一致性，可支持参考图辅助生成。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1 T2V 视频生成（WanVideoModelLoader + WanVideoSampler）",
+  "VACE 视觉条件控制（WanVideoVACEEncode / VACEModelSelect）",
+  "MMAudio 视频音频生成（MMAudioModelLoader + MMAudioSampler）",
+  "Stable Audio 文本转音频（CheckpointLoaderSimple 加载）",
+  "TeaCache 采样加速",
+  "WanVideoSLG 语义引导",
+  "BlockSwap 显存/速度平衡",
+  "RGB 色彩匹配（ColorMatch）",
+  "自动提示词生成与翻译（RH_Captioner / RH_Prompter / RH_Translator）",
+  "动态分辨率与帧数计算（FluxResolutionNode / MathExpression）"
+ ],
+ "special_features": [
+  {
+   "text": "多模态输出：同时生成视频和音频，AudioCombine 混合多个音频源，并通过三个 VHS_VideoCombine 分支输出不同规格/用途的视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "全自动提示词管线：RH_Captioner 自动描述上传图片，RH_Translator 翻译，RH_Prompter 组合生成最终提示词，减少手工输入。",
+   "kind": "fact"
+  },
+  {
+   "text": "性能优化组合拳：TeaCache + SLG + BlockSwap + WanVideoExperimentalArgs 同时使用，在 14B 大模型上实现缓存加速和显存控制，体现作者对部署可行性的考量。",
+   "kind": "fact"
+  },
+  {
+   "text": "动态计算分辨率：FluxResolutionNode 配合多个 MathExpression 和 Evaluate Integers 根据输入图片比例自动计算宽高、帧数和 VACE 参数，适配不同输入。",
+   "kind": "fact"
+  },
+  {
+   "text": "多条件角色一致性设计：ImageConcatMulti 将多张参考图拼接，配合 VACE 控制，可能用于保持多个视角下的角色外观稳定。",
+   "kind": "inference"
+  },
+  {
+   "text": "集成音频后处理：EmptyLatentAudio + AudioCombine + PreviewAudio + SaveAudio，支持生成后音频的试听和保存，并可联动 VHS_VideoCombine 的 trim_to_audio 裁剪视频长度对齐音频。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流试图将“图片参考→自动提示词→视频生成→音频生成→文件输出”全链路自动化，用户只需上传一张图即可获得带声音的短视频。作者可能希望降低视频创作门槛，同时通过 VACE 和多图拼接保证角色一致性，并通过 TeaCache/BlockSwap 等优化让高算力需求的 Wan2.1 在消费级显卡上可运行。使用 RH_Captioner 等自动描述节点也可能是为了减少手动润色提示词的步骤。",
+ "use_case": "适合快速制作角色统一的音乐短视频、虚拟人物动态写真、多视角一致性演示；也适用于希望从一张图直接产出带音效的创意内容的用户。",
+ "limitation": "依赖多项大模型和自定义节点，需要预先下载 Wan2.1、MMAudio、Stable Audio 等模型；显存需求高（虽用 fp8 和 BlockSwap，仍推荐 24GB 以上显存）；输入图像质量影响角色一致性；自动提示词可能不完全准确，需要人工微调；部分参数（如 WanVideoSLG、TeaCache 阈值）需针对显卡调试。",
+ "dependencies": [
+  "Wan2_1-VACE_module_14B_bf16.safetensors",
+  "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "Wan2_1_VAE_bf16.safetensors",
+  "mmaudio_vae_44k_fp16.safetensors",
+  "mmaudio_synchformer_fp16.safetensors",
+  "mmaudio_large_44k_v2_fp16.safetensors",
+  "stable-audio-open-1.0.safetensors",
+  "apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors",
+  "t5-base-google.safetensors",
+  "umt5-xxl-enc-bf16.safetensors",
+  "自定义节点：ComfyUI-RH（RH_Captioner / RH_Prompter / RH_Translator）、WanVideoKJ（WanVideoXXX）、pysssss（MathExpression）、VHS、WAS 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（LoadImage）",
+  "count": "1"
+ },
+ "output": {
+  "type": "视频（含音轨）+ 独立音频预览",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler steps",
+   "how_to_tune": "默认 20，增加至 30-40 可提升画面细节，但生成时间线性上升；显存不足时优先降低 steps。"
+  },
+  {
+   "param": "WanVideoSampler cfg",
+   "how_to_tune": "cfg 约 5-6 适合文本一致性；过高易过曝或饱和，过低则内容漂移。"
+  },
+  {
+   "param": "WanVideoTeaCache rel_l1_threshold",
+   "how_to_tune": "默认 0.2，增大可加速但可能丢失细节；若画面伪影明显，降低至 0.1 左右。"
+  },
+  {
+   "param": "WanVideoSLG s/c/h",
+   "how_to_tune": "s 和 h 控制语义引导强度，默认 9/0.7；若生成内容偏离提示，可增大 s；若过拟合导致不自然，减小 h。"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "根据显存调整交换层数（如 30），显存不足时增加层数，但生成速度会变慢。"
+  },
+  {
+   "param": "MMAudioSampler steps",
+   "how_to_tune": "默认 40 步，调低至 20 可加速但声音质量下降；调高至 50 可能更稳。"
+  },
+  {
+   "param": "FluxResolutionNode scale",
+   "how_to_tune": "0.5 可显著降低显存；若显卡性能强，可提高到 0.75 或 1.0 获得更高分辨率。"
+  }
+ ],
+ "summary_text": "能力:上传一张人物图像，自动生成与该图角色一致的多姿态/动作短视频，并同步生成匹配的背景音乐和音效，最终输出带音频的视频文件。；能力:从输入图像自动提取视觉描述（中文），翻译成英文，结合用户自定义提示词生成完整视频提示驱动 Wan2.1 生成。；能力:通过 VACE 视觉条件编码和多图拼接（ImageConcatMulti）实现角色一致性，可支持参考图辅助生成。；特色:多模态输出：同时生成视频和音频，AudioCombine 混合多个音频源，并通过三个 VHS_VideoCombine 分支输出不同规格/用途的视频。；特色:全自动提示词管线：RH_Captioner 自动描述上传图片，RH_Translator 翻译，RH_Prompter 组合生成最终提示词，减少手工输入。；特色:性能优化组合拳：TeaCache + SLG + BlockSwap + WanVideoExperimentalArgs 同时使用，在 14B 大模型上实现缓存加速和显存控制，体现作者对部署可行性的考量。；特色:动态计算分辨率：FluxResolutionNode 配合多个 MathExpression 和 Evaluate Integers 根据输入图片比例自动计算宽高、帧数和 VACE 参数，适配不同输入。；特色:多条件角色一致性设计：ImageConcatMulti 将多张参考图拼接，配合 VACE 控制，可能用于保持多个视角下的角色外观稳定。；特色:集成音频后处理：EmptyLatentAudio + AudioCombine + PreviewAudio + SaveAudio，支持生成后音频的试听和保存，并可联动 VHS_VideoCombine 的 trim_to_audio 裁剪视频长度对齐音频。；适合快速制作角色统一的音乐短视频、虚拟人物动态写真、多视角一致性演示；也适用于希望从一张图直接产出带音效的创意内容的用户。；这个工作流试图将“图片参考→自动提示词→视频生成→音频生成→文件输出”全链路自动化，用户只需上传一张图即可获得带声音的短视频。作者可能希望降低视频创作门槛，同时通过 VACE 和多图拼接保证角色一致性，并通过 TeaCache/BlockSwap 等优化让高算力需求的 Wan2.1 在消费级显卡上可运行。使用 RH_Captioner 等自动描述节点也可能是为了减少手动润色提示词的步骤。"
+}

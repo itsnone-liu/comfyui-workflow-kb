@@ -1,0 +1,108 @@
+{
+ "domain": [
+  "图生图",
+  "换脸",
+  "人像一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "输入 4 张同一人物的人脸参考图（另有一个 LoadImage 输入位可作为底图/模板），生成保持该人脸身份一致的多张换脸写真/模板图。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ApplyInstantID 与 IPAdapterFaceID 双路注入人脸身份特征，配合 SDXL-EcomID-controlnet，降低多张输出之间“不像/跑脸”的风险。",
+   "kind": "inference"
+  },
+  {
+   "text": "生成结果经 SUPIR_Upscale 放大和 DZ_Face_Detailer 人脸精修后，输出清晰的高分辨率人脸结果。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 FaceEmbedDistance 以 L2_norm 度量参考人脸与生成人脸的距离，阈值 100 可作为一致性校验/筛选依据。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "IP-Adapter FaceID Plus V2",
+  "InsightFace / FaceAnalysis 人脸检测与 embedding",
+  "ControlNet (SDXL-EcomID-controlnet)",
+  "SDXL 基座模型 (juggernautXL_v9-Lightning/RDPhoto 2)",
+  "SUPIR 扩散放大",
+  "DZ_Face_Detailer 人脸局部细化",
+  "FaceEmbedDistance 身份距离校验",
+  "Upscale-Hires 后处理"
+ ],
+ "special_features": [
+  {
+   "text": "多图身份聚合：4 个 FaceBoundingBox 分别裁剪参考图人脸，3 个 ImageBatch 将人脸图打包成 batch，供 InstantID/IPAdapter 使用多视角身份参考。",
+   "kind": "fact"
+  },
+  {
+   "text": "双身份注入链路：InstantIDModelLoader + ApplyInstantID 与 IPAdapterUnifiedLoaderFaceID + IPAdapterFaceID 同时出现，且另加载 SDXL-EcomID-controlnet，形成双重 ID 约束。",
+   "kind": "fact"
+  },
+  {
+   "text": "一致性校验节点：FaceEmbedDistance 使用 L2_norm、阈值 100，可在输出侧对生成结果做相似度打分/筛选（是否自动重绘取决于连线）。",
+   "kind": "inference"
+  },
+  {
+   "text": "高清两段式后处理：SUPIR_Upscale ×2 + DZ_Face_Detailer + MaskToImage，先超分再人脸局部细化，是高质量人脸输出结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "多路输出对比：3 组 PreviewImage/SaveImage(OUT) 分别保存不同分支/阶段结果，便于人工挑选和 A/B 对比。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整个工作流像是为“一张脸在多张图里保持一致”设计的。作者先用多张参考图做人脸检测和身份特征聚合，使 InstantID 与 IP-Adapter FaceID 拿到比单图更稳定的身份信号；生成后用 FaceEmbedDistance 把关相似度，再用 SUPIR 和 DZ_Face_Detailer 做高清化与脸部细节修复。可能因为单张 InstantID 参考图相似度不够，所以叠加了 IPAdapter、ControlNet 和 4 张参考图来加强身份锁定。大量 Reroute 也用于整理这条长链路的连线，方便分支复用。",
+ "use_case": "同一人物批量写真、电商模特换脸、证件照/模板照换脸、角色一致性出图，以及对生成结果需要做身份一致性校验的高质量人像工作流。",
+ "limitation": "高度依赖 ComfyUI 自定义节点和外部模型；当前结构中没有独立的常规 KSampler 节点，实际生成/重绘主要依赖 DZ_Face_Detailer 等内部采样，自定义节点缺失会导致流程不完整；SDXL + SUPIR 显存占用较高；输入中 4 张参考图应尽量是同一人的清晰多角度人脸，否则身份特征会互相冲突。",
+ "dependencies": [
+  "ComfyUI_InstantID",
+  "ComfyUI_IPAdapter_Plus",
+  "ComfyUI-SUPIR",
+  "DZ_Face_Detailer 自定义节点",
+  "insightface (CUDA)",
+  "juggernautXL_v9-Lightning_4S_V9 + RDPhoto 2.safetensors",
+  "ip-adapter.bin",
+  "SDXL-EcomID-controlnet.safetensors",
+  "SUPIR-v0F_fp16.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image（5 个 LoadImage 输入位；通常 4 张参考人脸 + 1 张底图/模板）",
+  "count": "4 张参考图 + 1 张底图/模板（共 5 个 LoadImage）"
+ },
+ "output": {
+  "type": "image（同一身份的多张换脸/高清写真结果）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "IPAdapterFaceID weight",
+   "how_to_tune": "当前 0.9，控制 IP-Adapter FaceID 的注入强度；越高越贴近参考脸，过低会不够像；可在 0.7～1.0 间微调。"
+  },
+  {
+   "param": "ApplyInstantID weight/start/end",
+   "how_to_tune": "当前 1/0/1，表示 InstantID 全程强注入；若生成图构图僵硬或风格受损，可把 weight 降到 0.8 左右，或把 end 提前到 0.8～0.9。"
+  },
+  {
+   "param": "IPAdapterUnifiedLoaderFaceID FACEID PLUS V2 strength",
+   "how_to_tune": "当前 0.6，比较均衡；脸不像则上调到 0.75～0.8，背景/风格被破坏则下调到 0.4～0.5。"
+  },
+  {
+   "param": "FaceEmbedDistance threshold",
+   "how_to_tune": "当前 100（L2_norm）。阈值越小要求越严格；用于筛选时可在 50～100 之间调整，数值越小越强调“必须同一人”。"
+  },
+  {
+   "param": "DZ_Face_Detailer steps/sampler/scheduler",
+   "how_to_tune": "当前 steps=10、euler_ancestral/sgm_uniform；若脸部细节不足可增大 steps；若修复后不像原脸，应降低重绘幅度（denoise）而不是单纯加大 steps。"
+  },
+  {
+   "param": "SUPIR_Upscale scale/resize_mode",
+   "how_to_tune": "当前 lanczos + 2 倍放大；2 倍比较稳妥，显存不足时可降到 1.5，或在放大前先缩小输入图。"
+  }
+ ],
+ "summary_text": "能力:输入 4 张同一人物的人脸参考图（另有一个 LoadImage 输入位可作为底图/模板），生成保持该人脸身份一致的多张换脸写真/模板图。；能力:通过 ApplyInstantID 与 IPAdapterFaceID 双路注入人脸身份特征，配合 SDXL-EcomID-controlnet，降低多张输出之间“不像/跑脸”的风险。；能力:生成结果经 SUPIR_Upscale 放大和 DZ_Face_Detailer 人脸精修后，输出清晰的高分辨率人脸结果。；能力:用 FaceEmbedDistance 以 L2_norm 度量参考人脸与生成人脸的距离，阈值 100 可作为一致性校验/筛选依据。；特色:多图身份聚合：4 个 FaceBoundingBox 分别裁剪参考图人脸，3 个 ImageBatch 将人脸图打包成 batch，供 InstantID/IPAdapter 使用多视角身份参考。；特色:双身份注入链路：InstantIDModelLoader + ApplyInstantID 与 IPAdapterUnifiedLoaderFaceID + IPAdapterFaceID 同时出现，且另加载 SDXL-EcomID-controlnet，形成双重 ID 约束。；特色:一致性校验节点：FaceEmbedDistance 使用 L2_norm、阈值 100，可在输出侧对生成结果做相似度打分/筛选（是否自动重绘取决于连线）。；特色:高清两段式后处理：SUPIR_Upscale ×2 + DZ_Face_Detailer + MaskToImage，先超分再人脸局部细化，是高质量人脸输出结构。；特色:多路输出对比：3 组 PreviewImage/SaveImage(OUT) 分别保存不同分支/阶段结果，便于人工挑选和 A/B 对比。；同一人物批量写真、电商模特换脸、证件照/模板照换脸、角色一致性出图，以及对生成结果需要做身份一致性校验的高质量人像工作流。；整个工作流像是为“一张脸在多张图里保持一致”设计的。作者先用多张参考图做人脸检测和身份特征聚合，使 InstantID 与 IP-Adapter FaceID 拿到比单图更稳定的身份信号；生成后用 FaceEmbedDistance 把关相似度，再用 SUPIR 和 DZ_Face_Detailer 做高清化与脸部细节修复。可能因为单张 InstantID 参考图相似度不够，所以叠加了 IPAdapter、ControlNet 和 4 张参考图来加强身份锁定。大量 Reroute 也用于整理这条长链路的连线，方便分支复用。"
+}

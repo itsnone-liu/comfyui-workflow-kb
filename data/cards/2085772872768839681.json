@@ -1,0 +1,100 @@
+{
+ "domain": [
+  "图生视频",
+  "视频运镜",
+  "音频生成",
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张静态图片，生成带同步音频（含环境音/人声）的高质量短片，支持竖屏 9:16 等多分辨率",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Turbo LoRA 仅作用于模型权重，将采样步数压缩到 4 步，实现快速出片",
+   "kind": "fact"
+  },
+  {
+   "text": "支持视频运镜（tag 标记），但结构中未见显式运动控制节点，可能由提示词或分辨率选择器隐式驱动",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 视频生成模型（UNETLoader: minimax_h3_fl2va_int8_convrot）",
+  "Qwen3VL 32B 多模态文本编码为视频条件（CLIPLoader）",
+  "双时钟采样器 MiniMaxH3DualClockSamplerT8",
+  "视频 VAE + 音频 VAE 联合解码（MiniMaxH3AVDecodeT8）",
+  "自制 Turbo LoRA 加速（4步采样）",
+  "SageAttention 高效注意力内存优化",
+  "动态参数表达式（ComfyMathExpression）控制生成规格"
+ ],
+ "special_features": [
+  {
+   "text": "视频与音频双 VAE 解码，单次推理同时生成画面和声音（MiniMaxH3AVDecodeT8 + VideoVAE + AudioVAE）",
+   "kind": "fact"
+  },
+  {
+   "text": "MiniMaxH3DualClockSamplerT8 双时钟采样，可能用于协调视频帧与音频时钟的对齐",
+   "kind": "inference"
+  },
+  {
+   "text": "加载 'minimax_h3_turbo_4步加速_comfyui.safetensors' 的 LoRA（BypassModelOnly），明确为 4 步 Turbo 加速",
+   "kind": "fact"
+  },
+  {
+   "text": "ComfyMathExpression 动态计算生成参数（表达式中出现 max(5, round(a*24))，通常用来根据秒数推算帧数）",
+   "kind": "inference"
+  },
+  {
+   "text": "使用分辨率选择器一键切换 9:16 竖屏等画幅，方便短视频平台发布",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流试图用 MiniMax H3 模型在消费级显卡上实现快速、高质量、带音频的图生视频生成。通过 Qwen3VL 大语言模型增强文本语义控制，利用双时钟采样器与双 VAE 将画面和音频作为同一生成过程对待；再通过 Turbo LoRA 将采样步数压缩到 4 步，配合 SageAttention 和 int8 量化降低显存压力，使普通用户能以较低门槛产出短视频素材。整体设计可能偏向自媒体快速出片，因此预置了竖屏比例和音频条件。",
+ "use_case": "适合从产品图、风景照或人像图快速生成短宣传视频/短视频的场景；也可作为 sd2.0 的轻量替代方案，在本地生成带配乐或音效的片段",
+ "limitation": "依赖 ComfyUI 的 MiniMax H3 自定义节点；模型文件体积较大（Qwen3VL 32B 量化版 CLIP、双 VAE）；输入仅支持单张静态图片；视频长度、分辨率和采样步数受显卡显存限制；若未安装 SageAttention 对应 kernel 可能运行失败",
+ "dependencies": [
+  "custom_nodes: MiniMaxH3 系列节点（MiniMaxH3DualClockSamplerT8 / MiniMaxH3AVDecodeT8 / MiniMaxH3AudioConditioningT8 / MiniMaxH3MemoryEfficientSageAttentionPatch）",
+  "checkpoint: minimax_h3_fl2va_int8_convrot.safetensors",
+  "clip: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "vae: minimax_h3_video_vae_fp16.safetensors, minimax_h3_audio_vae_fp32.safetensors",
+  "lora: minimax_h3_turbo_4步加速_comfyui.safetensors",
+  "IO: VHS_VideoCombine（ComfyUI-VideoHelperSuite）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "video（含音频）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3DualClockSamplerT8 (8, 12, 3)",
+   "how_to_tune": "采样的核心控制参数；通常 8 为视频采样步数，12 可能为音频/双时钟周期，3 为引导偏移。若偏慢可先降步数，若画质不稳则增步数"
+  },
+  {
+   "param": "MiniMaxH3AudioConditioningT8 (1344, 768, 124)",
+   "how_to_tune": "分别对应视频宽、高、总帧数；在显存允许下可调大分辨率，帧数需与所用帧率匹配（如 24fps×5s=120）"
+  },
+  {
+   "param": "RandomNoise seed=123456788",
+   "how_to_tune": "更换种子可得到不同随机结果；noise_type 可选择降噪曲线"
+  },
+  {
+   "param": "PrimitiveFloat=15",
+   "how_to_tune": "疑似 CFG 强度；数值越大越贴近提示词，但过大易导致色彩过饱和"
+  },
+  {
+   "param": "ResolutionSelector=9:16 / 0.9 / 32",
+   "how_to_tune": "控制输出画幅与缩放比例；0.9 可能是边长缩放系数，32 为分辨率对齐步长"
+  },
+  {
+   "param": "ComfyMathExpression",
+   "how_to_tune": "自动计算节点参数，修改表达式可改变帧数或时长计算规则，需保持输出类型与下游预期一致"
+  }
+ ],
+ "summary_text": "能力:输入一张静态图片，生成带同步音频（含环境音/人声）的高质量短片，支持竖屏 9:16 等多分辨率；能力:通过 Turbo LoRA 仅作用于模型权重，将采样步数压缩到 4 步，实现快速出片；能力:支持视频运镜（tag 标记），但结构中未见显式运动控制节点，可能由提示词或分辨率选择器隐式驱动；特色:视频与音频双 VAE 解码，单次推理同时生成画面和声音（MiniMaxH3AVDecodeT8 + VideoVAE + AudioVAE）；特色:MiniMaxH3DualClockSamplerT8 双时钟采样，可能用于协调视频帧与音频时钟的对齐；特色:加载 'minimax_h3_turbo_4步加速_comfyui.safetensors' 的 LoRA（BypassModelOnly），明确为 4 步 Turbo 加速；特色:ComfyMathExpression 动态计算生成参数（表达式中出现 max(5, round(a*24))，通常用来根据秒数推算帧数）；特色:使用分辨率选择器一键切换 9:16 竖屏等画幅，方便短视频平台发布；适合从产品图、风景照或人像图快速生成短宣传视频/短视频的场景；也可作为 sd2.0 的轻量替代方案，在本地生成带配乐或音效的片段；该工作流试图用 MiniMax H3 模型在消费级显卡上实现快速、高质量、带音频的图生视频生成。通过 Qwen3VL 大语言模型增强文本语义控制，利用双时钟采样器与双 VAE 将画面和音频作为同一生成过程对待；再通过 Turbo LoRA 将采样步数压缩到 4 步，配合 SageAttention 和 int8 量化降低显存压力，使普通用户能以较低门槛产出短视频素材。整体设计可能偏向自媒体快速出片，因此预置了竖屏比例和音频条件。"
+}

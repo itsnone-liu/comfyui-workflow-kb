@@ -1,0 +1,108 @@
+{
+ "domain": [
+  "图生视频",
+  "数字人",
+  "人物类特效"
+ ],
+ "capabilities": [
+  {
+   "text": "接受9张参考图、1段参考视频和1段音频作为多模态条件输入，并输出一段目标视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "基于MiniMax H3 ref2va模型和Bernini低噪声LoRA，生成在参考对象/风格上保持一致的低噪声视频。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过双CLIP文本编码和多参考图像，可完成数字人、人物特效类短视频创作。",
+   "kind": "inference"
+  },
+  {
+   "text": "在1920宽度和24fps下输出接近2K的高清片段。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMaxH3ReferenceToVideo（参考图生视频）",
+  "双CLIP编码：qwen3vl_32b_minimax_h3 + umt5_xxl_fp8",
+  "多VAE分离：minimax_h3_video_vae / minimax_h3_audio_vae / Wan2.1_VAE",
+  "Bernini-R-LightX2V-low-noise LoRA低噪声加速",
+  "SageAttention（PathchSageAttentionKJ）注意力优化",
+  "动态宽高比/分辨率选择（ResolutionSelector + BerniniConditioning）",
+  "音视频联合生成与修剪（LoadAudio + VAEDecodeAudio + trim_to_audio）"
+ ],
+ "special_features": [
+  {
+   "text": "同一工作流内放置9个LoadImage节点，形成多角度/多姿态参考池。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时挂载minimax和wan两套CLIP模型，可能用于双语义空间文本理解。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用三套VAE（音频/视频/Wan备用），支撑音视频联合解码。",
+   "kind": "fact"
+  },
+  {
+   "text": "引入ComfyMathExpression动态计算帧数和InjectLatentNoise+噪声注入，可能用于增强时域多样性和节奏控制。",
+   "kind": "inference"
+  },
+  {
+   "text": "包含PainterVRAM、easy cleanGpuUsed、PathchSageAttentionKJ等显存/注意力优化节点，属于生产级低显存配置。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕MiniMax H3的ref2va多模态视频生成能力设计，通过引入Bernini低噪声LoRA和SageAttention加速，试图在较低步数和显存占用下获得接近2K的高质量视频；同时提供9图、视频、音频三类参考输入，可能用于数字人/人物特效等需要保持身份一致性的创作场景。多VAE与双CLIP的设计似乎是为了同时处理视频和音频条件，并兼容不同的文本/视觉理解模型，提升生成可控性。",
+ "use_case": "数字人短视频制作、人物多视角换装/特效、影视分镜参考生成等需要多模态参考的视频创作。",
+ "limitation": "需要手动下载并放置指定模型文件（minimax_h3_ref2va_pruned_int8_convrot.safetensors、Bernini_LOW_fp8_e4m3fn_scaled.safetensors、qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors、umt5_xxl_fp8_e4m3fn_scaled.safetensors、minimax_h3_audio_vae_fp32.safetensors、minimax_h3_video_vae_fp16.safetensors、Wan2.1_VAE.pth、Bernini-R-LightX2V-low-noise.safetensors）；依赖若干自定义节点（MiniMaxH3ReferenceToVideo、BerniniConditioning、PainterVRAM、PathchSageAttentionKJ、VHS_LoadVideo/VHS_VideoCombine等），需确保ComfyUI环境兼容；输入固定为9图+1视频+1音频，标题中提到的“3视频3音频”在UI中仅对应单个VHS_LoadVideo和LoadAudio节点，实际多路复用需要自行扩展。",
+ "dependencies": [
+  "MiniMaxH3ReferenceToVideo",
+  "BerniniConditioning",
+  "PainterVRAM",
+  "PathchSageAttentionKJ",
+  "VHS_LoadVideo",
+  "VHS_VideoCombine",
+  "CreateVideo",
+  "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+  "Bernini_LOW_fp8_e4m3fn_scaled.safetensors",
+  "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "Wan2.1_VAE.pth",
+  "Bernini-R-LightX2V-low-noise.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image/video/audio",
+  "count": "9图 / 1视频 / 1音频"
+ },
+ "output": {
+  "type": "video",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler/KSampler steps",
+   "how_to_tune": "当前BasicScheduler=20、KSampler=4，配合Bernini低噪LoRA可低步数出图；画质优先可调到20左右，速度优先保持4-8。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength_model",
+   "how_to_tune": "当前1.5，用于放大Bernini低噪效果；若出现过曝/细节丢失可降到1.0-1.2，反之可适当提高。"
+  },
+  {
+   "param": "InjectLatentNoise+.noise_level",
+   "how_to_tune": "当前0.3，控制时域多样性；人物易抖动可降低到0.1-0.2，需要更强动态可提升到0.5。"
+  },
+  {
+   "param": "ResolutionSelector.aspect_ratio",
+   "how_to_tune": "当前9:16竖屏，可改为1:1或16:9以适配不同平台；注意配合BerniniConditioning的width/height。"
+  },
+  {
+   "param": "PathchSageAttentionKJ.enable",
+   "how_to_tune": "默认auto，遇到兼容性问题可设为False；显存紧张时保持auto以启用SageAttention加速。"
+  }
+ ],
+ "summary_text": "能力:接受9张参考图、1段参考视频和1段音频作为多模态条件输入，并输出一段目标视频。；能力:基于MiniMax H3 ref2va模型和Bernini低噪声LoRA，生成在参考对象/风格上保持一致的低噪声视频。；能力:通过双CLIP文本编码和多参考图像，可完成数字人、人物特效类短视频创作。；能力:在1920宽度和24fps下输出接近2K的高清片段。；特色:同一工作流内放置9个LoadImage节点，形成多角度/多姿态参考池。；特色:同时挂载minimax和wan两套CLIP模型，可能用于双语义空间文本理解。；特色:使用三套VAE（音频/视频/Wan备用），支撑音视频联合解码。；特色:引入ComfyMathExpression动态计算帧数和InjectLatentNoise+噪声注入，可能用于增强时域多样性和节奏控制。；特色:包含PainterVRAM、easy cleanGpuUsed、PathchSageAttentionKJ等显存/注意力优化节点，属于生产级低显存配置。；数字人短视频制作、人物多视角换装/特效、影视分镜参考生成等需要多模态参考的视频创作。；该工作流围绕MiniMax H3的ref2va多模态视频生成能力设计，通过引入Bernini低噪声LoRA和SageAttention加速，试图在较低步数和显存占用下获得接近2K的高质量视频；同时提供9图、视频、音频三类参考输入，可能用于数字人/人物特效等需要保持身份一致性的创作场景。多VAE与双CLIP的设计似乎是为了同时处理视频和音频条件，并兼容不同的文本/视觉理解模型，提升生成可控性。"
+}

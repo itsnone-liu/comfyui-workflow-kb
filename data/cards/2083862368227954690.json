@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "图生视频",
+  "建筑设计可视化",
+  "创意视频"
+ ],
+ "capabilities": [
+  {
+   "text": "上传两张静态图片（LoadImage×2）作为参考输入，配合提示词调用 RH_MinimaxHailuoH3ImageToVideo 生成视频",
+   "kind": "fact"
+  },
+  {
+   "text": "端到端完成“静态图→动态视频”的生成与落盘：最终通过 SaveVideo 保存视频文件，并用 easy showAnything 展示远端 URL 和 taskId",
+   "kind": "fact"
+  },
+  {
+   "text": "通过中文提示词控制画面主体与动作，例如示例中的“白色长发的男子在念诗：春风拂面意如何”",
+   "kind": "fact"
+  },
+  {
+   "text": "根据平台标签推断，可面向“手稿到渲染图”的设计可视化场景，将手稿/参考图转化为动态渲染示意",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "RH_MinimaxHailuoH3ImageToVideo（Hailuo H3 图像到视频 API）",
+  "图像到视频扩散生成",
+  "双静态图像条件输入",
+  "视频本地保存（SaveVideo）",
+  "远端输出预览与任务追踪（easy showAnything）"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个 LoadImage 组成双参考输入，可能用于“首帧 + 风格参考”或“多角度参考”，再由提示词统一驱动生成",
+   "kind": "inference"
+  },
+  {
+   "text": "用 easy showAnything 同时展示返回的视频 URL 与 taskId JSON，具备轻量调试/任务追踪能力，而不只做静默输出",
+   "kind": "fact"
+  },
+  {
+   "text": "全流程只有 6 个节点，接近 Hailuo H3 图生视频 API 的最小可运行示例",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这是一个面向 Hailuo H3 图生视频能力的极简调用型工作流。设计者可能希望让用户只提供参考图和一句提示词，就能通过云端模型生成短视频，并把结果同时以远程链接和本地视频文件两种形式输出。整个链路避免额外分支和后期修复节点，明显是刻意保持简单，用来快速验证“手稿/参考图 → 动态效果”的可行性。",
+ "use_case": "适合建筑与空间设计领域做“手稿到渲染图/动态示意”，也适合人物或角色图转动态短片（如示例中的白发男子念诗）。用户只需替换两张输入图片并修改提示词，即可快速生成用于方案汇报、概念演示或社交媒体传播的短视频。",
+ "limitation": "工作流依赖 Hailuo H3 云端 API，生成质量、速度与稳定性受 MiniMax/Hailuo 服务及账号权限影响；需要安装 RH_MinimaxHailuoH3ImageToVideo、easy showAnything、SaveVideo 等自定义节点，否则直接报错。两个 LoadImage 使用固定图片路径，不适合批量处理；当前版本没有质量筛选、失败重试或运动控制回读，生成结果不可精确复现（除非固定 seed）。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_MinimaxHailuoH3ImageToVideo 自定义节点",
+  "easy showAnything 自定义节点（ComfyUI-Easy-Use）",
+  "SaveVideo 视频保存节点（VideoHelperSuite）",
+  "Hailuo H3 / MiniMax API 访问凭证与网络环境"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "图像 ×2 + 文本提示词",
+  "count": "2 张静态图 + 1 段自然语言提示词"
+ },
+ "output": {
+  "type": "视频文件 + 远端视频 URL/taskId",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt",
+   "how_to_tune": "用自然语言明确描述主体、动作和氛围；示例中以“@图1 中的……”直接指代第一张图，建议在实际使用时同样显式引用参考图，可提高动作与主题的一致性。"
+  },
+  {
+   "param": "resolution='2K'",
+   "how_to_tune": "视频分辨率档位，2K 更清晰但生成与下载耗时更长；快速验证时可降低档位，正式成片再调回 2K。"
+  },
+  {
+   "param": "10",
+   "how_to_tune": "很可能是视频时长或帧数控制参数，示例中为 10。短时长用于快速试错，确认运动与提示词匹配后再延长。"
+  },
+  {
+   "param": "False",
+   "how_to_tune": "该项为布尔开关，具体含义取决于 RH_MinimaxHailuoH3ImageToVideo 的节点定义，可能是关闭水印、关闭加速或关闭某些后处理；调整时需参考自定义节点文档。"
+  },
+  {
+   "param": "87474228 / randomize",
+   "how_to_tune": "87474228 应是用例固定的随机种子；randomize 开启后每次生成会产生不同运动/镜头结果。建议在提示词调试阶段开启 randomize，固定风格后再关闭随机化以复现结果。"
+  }
+ ],
+ "summary_text": "能力:上传两张静态图片（LoadImage×2）作为参考输入，配合提示词调用 RH_MinimaxHailuoH3ImageToVideo 生成视频；能力:端到端完成“静态图→动态视频”的生成与落盘：最终通过 SaveVideo 保存视频文件，并用 easy showAnything 展示远端 URL 和 taskId；能力:通过中文提示词控制画面主体与动作，例如示例中的“白色长发的男子在念诗：春风拂面意如何”；能力:根据平台标签推断，可面向“手稿到渲染图”的设计可视化场景，将手稿/参考图转化为动态渲染示意；特色:使用两个 LoadImage 组成双参考输入，可能用于“首帧 + 风格参考”或“多角度参考”，再由提示词统一驱动生成；特色:用 easy showAnything 同时展示返回的视频 URL 与 taskId JSON，具备轻量调试/任务追踪能力，而不只做静默输出；特色:全流程只有 6 个节点，接近 Hailuo H3 图生视频 API 的最小可运行示例；适合建筑与空间设计领域做“手稿到渲染图/动态示意”，也适合人物或角色图转动态短片（如示例中的白发男子念诗）。用户只需替换两张输入图片并修改提示词，即可快速生成用于方案汇报、概念演示或社交媒体传播的短视频。；这是一个面向 Hailuo H3 图生视频能力的极简调用型工作流。设计者可能希望让用户只提供参考图和一句提示词，就能通过云端模型生成短视频，并把结果同时以远程链接和本地视频文件两种形式输出。整个链路避免额外分支和后期修复节点，明显是刻意保持简单，用来快速验证“手稿/参考图 → 动态效果”的可行性。"
+}

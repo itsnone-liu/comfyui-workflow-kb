@@ -1,0 +1,1782 @@
+{
+ "node_count": 56,
+ "link_count": 38,
+ "active_node_count": 56,
+ "nodes": [
+  {
+   "id": 35,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    66
+   ],
+   "out_links": [
+    52
+   ]
+  },
+  {
+   "id": 13,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    13,
+    14
+   ],
+   "out_links": [
+    61,
+    111,
+    129
+   ]
+  },
+  {
+   "id": 4,
+   "type": "ModelSamplingAuraFlow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5.000000000000001
+   ],
+   "in_links": [
+    120
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 3,
+   "type": "CFGNorm",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    5
+   ]
+  },
+  {
+   "id": 51,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️IMAGE",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "IMAGE"
+   ],
+   "in_links": [
+    83
+   ],
+   "out_links": []
+  },
+  {
+   "id": 53,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️IMAGE",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "IMAGE"
+   ],
+   "in_links": [],
+   "out_links": [
+    87
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    14,
+    64
+   ]
+  },
+  {
+   "id": 9,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    63
+   ]
+  },
+  {
+   "id": 7,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    121
+   ]
+  },
+  {
+   "id": 38,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    61
+   ],
+   "out_links": []
+  },
+  {
+   "id": 72,
+   "type": "AddBackgroundNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    102,
+    103
+   ],
+   "out_links": [
+    104,
+    109
+   ]
+  },
+  {
+   "id": 70,
+   "type": "ZHHivisionParamsNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "大二寸\t\t(626, 413)",
+    "蓝色",
+    "纯色",
+    300,
+    300
+   ],
+   "in_links": [],
+   "out_links": [
+    101,
+    103,
+    105,
+    107
+   ]
+  },
+  {
+   "id": 71,
+   "type": "HivisionNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    "modnet_photographic_portrait_matting",
+    "mtcnn",
+    0.2,
+    0.126,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "in_links": [
+    111,
+    101
+   ],
+   "out_links": [
+    102
+   ]
+  },
+  {
+   "id": 79,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    113
+   ],
+   "out_links": []
+  },
+  {
+   "id": 74,
+   "type": "HivisionLayOutNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    106,
+    107
+   ],
+   "out_links": [
+    113
+   ]
+  },
+  {
+   "id": 73,
+   "type": "LaterProcessNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    104,
+    105
+   ],
+   "out_links": [
+    106
+   ]
+  },
+  {
+   "id": 31,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1,
+    1
+   ],
+   "in_links": [
+    87
+   ],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 84,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "人物一致性Lora，建议0.2~0.6。数字越低，人物越好看（美颜），数字越高与人物越接近。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 82,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    121
+   ],
+   "out_links": [
+    122
+   ]
+  },
+  {
+   "id": 86,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️Lora强度",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Lora强度"
+   ],
+   "in_links": [],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 81,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ZOEY-Qwen-Edit-人物一致性_Alpha.safetensors",
+    0.20000000000000004
+   ],
+   "in_links": [
+    122,
+    125
+   ],
+   "out_links": [
+    120
+   ]
+  },
+  {
+   "id": 85,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️Lora强度",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Lora强度"
+   ],
+   "in_links": [
+    124
+   ],
+   "out_links": []
+  },
+  {
+   "id": 83,
+   "type": "Float",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.20000000000000004
+   ],
+   "in_links": [],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 33,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    83
+   ]
+  },
+  {
+   "id": 91,
+   "type": "easy setNode",
+   "category": "utility",
+   "title": "➡️成品",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "成品"
+   ],
+   "in_links": [
+    129
+   ],
+   "out_links": []
+  },
+  {
+   "id": 93,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️成品",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "成品"
+   ],
+   "in_links": [],
+   "out_links": [
+    131
+   ]
+  },
+  {
+   "id": 87,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1,
+    1
+   ],
+   "in_links": [
+    131
+   ],
+   "out_links": [
+    128
+   ]
+  },
+  {
+   "id": 88,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1,
+    1
+   ],
+   "in_links": [
+    130
+   ],
+   "out_links": [
+    127
+   ]
+  },
+  {
+   "id": 92,
+   "type": "easy getNode",
+   "category": "utility",
+   "title": "⬅️IMAGE",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "IMAGE"
+   ],
+   "in_links": [],
+   "out_links": [
+    130
+   ]
+  },
+  {
+   "id": 90,
+   "type": "ImageStitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true,
+    2,
+    "black"
+   ],
+   "in_links": [
+    127,
+    128
+   ],
+   "out_links": [
+    126
+   ]
+  },
+  {
+   "id": 76,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    109
+   ],
+   "out_links": []
+  },
+  {
+   "id": 89,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    126
+   ],
+   "out_links": []
+  },
+  {
+   "id": 101,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 102,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 103,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "藏青色女士修身西装，内搭纯白色衬衫，领口系浅粉色蝴蝶结，西装肩部挺括，衬衫领口整齐。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 104,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "白色衬衫，黑色西装，打着条纹领带"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 105,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "浅紫色女士西装套装，内搭米白色缎面衬衫，领口点缀同色系小蝴蝶结，西装收腰设计凸显身形；服装无褶皱无污渍，光线均匀柔和。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 106,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "高品质白色衬衫、黑色商务西装，搭配质感条纹领带，衬衫领口整齐，西装肩部挺括。整体光影采用柔和打光，突出面部轮廓，肤色自然，画质高清，呈现专业干练的职业形象，保留人物自身气质。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 107,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 108,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 109,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "白色长袖衬衫，衬衫款式简洁，前襟有纽扣，衣料平整无褶皱。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 110,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 111,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "服装为学院风JK制服套装，深墨绿色单排扣西装外套，面料哑光挺括，带有1颗金色圆形纽扣，内搭纯白色翻领衬衫，领口搭配酒红色双层蝴蝶结领结，领结带有藏蓝色斜条纹和金色徽章图案，西装剪裁合身，线条干净利落，无多余装饰，服装细节清晰，褶皱自然。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 112,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 114,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 115,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "学院风JK制服套装，藏蓝色单排扣西装外套，哑光挺括面料，带有1颗金色圆形纽扣，左胸佩戴金色盾牌刺绣徽章，内搭藏蓝色V领麻花针织背心（领口带有米白+藏青+浅棕撞色条纹镶边），背心内搭纯白色尖领衬衫，搭配藏蓝色斜条纹领带（带有红白细线条纹），服装剪裁合身，褶皱自然，"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 117,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 118,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "韩系学院风制服套装，浅卡其色（米黄色）单排扣西装外套，哑光挺括面料，剪裁合身，线条干净利落，内搭纯白色尖领衬衫，搭配酒红色斜条纹领带，领带上带有藏蓝色细线条纹与精致金色徽章图案，服装细节清晰，褶皱自然，"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 116,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2678a.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 56,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "在第一提示框内输入服装提示词。\n在第二提示框内输入背景提示词。\n\n红底背景（RGB:155,0,0）\n白底背景（RGB:255,255,255）\n蓝色背景（RGB:67、142、219）\n\n1.挺括白色衬衫、黑色修身西装外套，搭配深色条纹领带，服装贴合身形无褶皱，整体光影均匀。\n\n2.服装为学院风JK制服套装，深墨绿色单排扣西装外套，面料哑光挺括，带有1颗金色圆形纽扣，内搭纯白色翻领衬衫，领口搭配酒红色双层蝴蝶结领结，领结带有藏蓝色斜条纹和金色徽章图案，西装剪裁合身，线条干净利落，无多余装饰，服装细节清晰，褶皱自然。\n\n3.粉色女式西装，紫色女式蝴蝶结。\n\n4.藏青色女士修身西装，内搭纯白色衬衫，领口系浅粉色蝴蝶结，西装肩部挺括，衬衫领口整齐。\n\n5.浅紫色女士西装套装，内搭米白色缎面衬衫，领口点缀同色系小蝴蝶结，西装收腰设计凸显身形；服装无褶皱无污渍，光线均匀柔和。\n\n6.高品质白色衬衫、黑色商务西装，搭配质感条纹领带，衬衫领口整齐，西装肩部挺括。整体光影采用柔和打光，突出面部轮廓，肤色自然，画质高清，呈现专业干练的职业形象，保留人物自身气质。\n\n7.白色长袖衬衫，衬衫款式简洁，前襟有纽扣，衣料平整无褶皱。\n\n8.学院风JK制服套装，藏蓝色V领麻花针织背心，领口和袖口带有米白+藏青撞色条纹镶边，左胸带有金色皇冠字母刺绣徽章，内搭纯白色尖领衬衫，搭配藏蓝色斜条纹领带（带有红白细线条纹），针织面料纹理清晰，服装剪裁合身，褶皱自然。\n\n9.学院风JK制服套装，藏蓝色单排扣西装外套，哑光挺括面料，带有1颗金色圆形纽扣，左胸佩戴金色盾牌刺绣徽章，内搭藏蓝色V领麻花针织背心（领口带有米白+藏青+浅棕撞色条纹镶边），背心内搭纯白色尖领衬衫，搭配藏蓝色斜条纹领带（带有红白细线条纹），服装剪裁合身，褶皱自然，\n\n10.韩系学院风制服套装，浅卡其色（米黄色）单排扣西装外套，哑光挺括面料，剪裁合身，线条干净利落，内搭纯白色尖领衬衫，搭配酒红色斜条纹领带，领带上带有藏蓝色细线条纹与精致金色徽章图案，服装细节清晰，褶皱自然，"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    258337032575648,
+    "randomize",
+    8,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    5,
+    65,
+    52,
+    71
+   ],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 113,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "学院风JK制服套装，藏蓝色V领麻花针织背心，领口和袖口带有米白+藏青撞色条纹镶边，左胸带有金色皇冠字母刺绣徽章，内搭纯白色尖领衬衫，搭配藏蓝色斜条纹领带（带有红白细线条纹），针织面料纹理清晰，服装剪裁合身，褶皱自然。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 62,
+   "type": "easy positive",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "学院风JK制服套装，藏蓝色V领麻花针织背心，领口和袖口带有米白+藏青撞色条纹镶边，左胸带有金色皇冠字母刺绣徽章，内搭纯白色尖领衬衫，搭配藏蓝色斜条纹领带（带有红白细线条纹），针织面料纹理清晰，服装剪裁合身，褶皱自然。"
+   ],
+   "in_links": [],
+   "out_links": [
+    95
+   ]
+  },
+  {
+   "id": 66,
+   "type": "easy positive",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "蓝色"
+   ],
+   "in_links": [],
+   "out_links": [
+    96
+   ]
+  },
+  {
+   "id": 67,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    95,
+    96
+   ],
+   "out_links": [
+    116
+   ]
+  },
+  {
+   "id": 40,
+   "type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "白色长袖衬衫，衬衫款式简洁，前襟有纽扣，衣料平整无褶皱",
+    true,
+    true,
+    false,
+    "lanczos",
+    "disabled",
+    "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate."
+   ],
+   "in_links": [
+    63,
+    64,
+    80,
+    116
+   ],
+   "out_links": [
+    65,
+    66,
+    71
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 13,
+   "to_node": 38,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 71,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 91,
+   "type": "*"
+  },
+  {
+   "from_node": 3,
+   "to_node": 6,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 31,
+   "to_node": 40,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 33,
+   "to_node": 51,
+   "type": "*"
+  },
+  {
+   "from_node": 35,
+   "to_node": 6,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 3,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 40,
+   "to_node": 35,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 6,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 6,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 53,
+   "to_node": 31,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 13,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 62,
+   "to_node": 67,
+   "type": "*"
+  },
+  {
+   "from_node": 66,
+   "to_node": 67,
+   "type": "*"
+  },
+  {
+   "from_node": 67,
+   "to_node": 40,
+   "type": "STRING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 82,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 71,
+   "type": "PARAMS"
+  },
+  {
+   "from_node": 70,
+   "to_node": 72,
+   "type": "PARAMS"
+  },
+  {
+   "from_node": 70,
+   "to_node": 73,
+   "type": "PARAMS"
+  },
+  {
+   "from_node": 70,
+   "to_node": 74,
+   "type": "PARAMS"
+  },
+  {
+   "from_node": 71,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 73,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 72,
+   "to_node": 76,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 74,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 13,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 40,
+   "type": "VAE"
+  },
+  {
+   "from_node": 81,
+   "to_node": 4,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 82,
+   "to_node": 81,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 83,
+   "to_node": 85,
+   "type": "*"
+  },
+  {
+   "from_node": 86,
+   "to_node": 81,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 87,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 88,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 40,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 90,
+   "to_node": 89,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 88,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 93,
+   "to_node": 87,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 36,
+  "vae": 2,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "image_io": 14,
+  "lora": 1,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 9,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "qwen_image_edit_2509_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ZOEY-Qwen-Edit-人物一致性_Alpha.safetensors"
+  }
+ ],
+ "techniques": [
+  "Qwen-Image"
+ ],
+ "param_face_size": 98,
+ "structure_hash": "9bc4540150499808",
+ "param_face": [
+  {
+   "node_id": 4,
+   "node_type": "ModelSamplingAuraFlow",
+   "widget_index": 0,
+   "value_preview": "5.000000000000001"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CFGNorm",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 51,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "IMAGE"
+  },
+  {
+   "node_id": 53,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "IMAGE"
+  },
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 9,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 9,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 9,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_edit_2509_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 38,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ZHHivisionParamsNode",
+   "widget_index": 0,
+   "value_preview": "大二寸\t\t(626, 413)"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ZHHivisionParamsNode",
+   "widget_index": 1,
+   "value_preview": "蓝色"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ZHHivisionParamsNode",
+   "widget_index": 2,
+   "value_preview": "纯色"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ZHHivisionParamsNode",
+   "widget_index": 3,
+   "value_preview": "300"
+  },
+  {
+   "node_id": 70,
+   "node_type": "ZHHivisionParamsNode",
+   "widget_index": 4,
+   "value_preview": "300"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 3,
+   "value_preview": "modnet_photographic_portrait_matting"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 4,
+   "value_preview": "mtcnn"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 5,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 6,
+   "value_preview": "0.126"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 7,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 10,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 71,
+   "node_type": "HivisionNode",
+   "widget_index": 11,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 79,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 31,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 31,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 31,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "人物一致性Lora，建议0.2~0.6。数字越低，人物越好看（美颜），数字越高与人物越接近。"
+  },
+  {
+   "node_id": 82,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 86,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "Lora强度"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ZOEY-Qwen-Edit-人物一致性_Alpha.safetensors"
+  },
+  {
+   "node_id": 81,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 85,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "Lora强度"
+  },
+  {
+   "node_id": 83,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 91,
+   "node_type": "easy setNode",
+   "widget_index": 0,
+   "value_preview": "成品"
+  },
+  {
+   "node_id": 93,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "成品"
+  },
+  {
+   "node_id": 87,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 87,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 87,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 88,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 88,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 88,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 92,
+   "node_type": "easy getNode",
+   "widget_index": 0,
+   "value_preview": "IMAGE"
+  },
+  {
+   "node_id": 90,
+   "node_type": "ImageStitch",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 90,
+   "node_type": "ImageStitch",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 90,
+   "node_type": "ImageStitch",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 90,
+   "node_type": "ImageStitch",
+   "widget_index": 3,
+   "value_preview": "black"
+  },
+  {
+   "node_id": 76,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 89,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 102,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 102,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 103,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "藏青色女士修身西装，内搭纯白色衬衫，领口系浅粉色蝴蝶结，西装肩部挺括，衬衫领口整齐。"
+  },
+  {
+   "node_id": 104,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "白色衬衫，黑色西装，打着条纹领带"
+  },
+  {
+   "node_id": 105,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "浅紫色女士西装套装，内搭米白色缎面衬衫，领口点缀同色系小蝴蝶结，西装收腰设计凸显身形；服装无褶皱无污渍，光线均匀柔和。"
+  },
+  {
+   "node_id": 106,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "高品质白色衬衫、黑色商务西装，搭配质感条纹领带，衬衫领口整齐，西装肩部挺括。整体光影采用柔和打光，突出面部轮廓，肤色自然"
+  },
+  {
+   "node_id": 107,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 107,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 108,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 108,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 109,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "白色长袖衬衫，衬衫款式简洁，前襟有纽扣，衣料平整无褶皱。"
+  },
+  {
+   "node_id": 110,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 110,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 111,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "服装为学院风JK制服套装，深墨绿色单排扣西装外套，面料哑光挺括，带有1颗金色圆形纽扣，内搭纯白色翻领衬衫，领口搭配酒红色"
+  },
+  {
+   "node_id": 112,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 112,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 114,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 114,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 117,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 117,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 118,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "韩系学院风制服套装，浅卡其色（米黄色）单排扣西装外套，哑光挺括面料，剪裁合身，线条干净利落，内搭纯白色尖领衬衫，搭配酒红"
+  },
+  {
+   "node_id": 116,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "d908d34a15360d18c3005add19015b9a1e5d6f76c954d95e5dd217b49bb2"
+  },
+  {
+   "node_id": 116,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "258337032575648"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 6,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 113,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "学院风JK制服套装，藏蓝色V领麻花针织背心，领口和袖口带有米白+藏青撞色条纹镶边，左胸带有金色皇冠字母刺绣徽章，内搭纯白"
+  },
+  {
+   "node_id": 62,
+   "node_type": "easy positive",
+   "widget_index": 0,
+   "value_preview": "学院风JK制服套装，藏蓝色V领麻花针织背心，领口和袖口带有米白+藏青撞色条纹镶边，左胸带有金色皇冠字母刺绣徽章，内搭纯白"
+  },
+  {
+   "node_id": 66,
+   "node_type": "easy positive",
+   "widget_index": 0,
+   "value_preview": "蓝色"
+  },
+  {
+   "node_id": 67,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 0,
+   "value_preview": "白色长袖衬衫，衬衫款式简洁，前襟有纽扣，衣料平整无褶皱"
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 40,
+   "node_type": "TextEncodeQwenImageEditPlus_lrzjason",
+   "widget_index": 5,
+   "value_preview": "disabled"
+  }
+ ]
+}

@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "视频生成",
+  "图像处理",
+  "角色一致性"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张图像即可端到端生成一段带音频、保持主体角色一致性的短视频（图生视频）",
+   "kind": "fact"
+  },
+  {
+   "text": "内置分辨率/宽高比选择器，默认输出 3:4 竖屏画面，可适配电商短视频信息流",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Turbo LoRA、块缓存与 SageAttention 三种加速叠加，可在有限 GPU 资源上较快完成视频生成，支持快速试错",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 (FL2VA-int8) 图生视频基础模型",
+  "Qwen3VL-32B 多模态 CLIP 图像/文本编码",
+  "Turbo LoRA 少步数蒸馏采样（8 步，cfg=1）",
+  "MiniMaxH3BlockCacheT8 视频帧间块缓存",
+  "SageAttention 注意力计算加速（PathchSageAttentionKJ）",
+  "BasicGuider + SamplerCustomAdvanced + res_multistep 采样链路",
+  "Video VAE + Audio VAE 双模态解码",
+  "ComfyMathExpression 动态帧数计算 + CreateVideo 视频装配"
+ ],
+ "special_features": [
+  {
+   "text": "MiniMaxH3BlockCacheT8 采用三段阈值（0.14 / 0.15 / 0.90）的帧间块缓存复用，可显著降低相邻帧的重复计算，是本工作流最核心的加速设计",
+   "kind": "fact"
+  },
+  {
+   "text": "同时加载 minimax_h3_video_vae 与 minimax_h3_audio_vae，并通过 VAEDecodeAudio 输出带音频轨的视频，省去后期配音环节",
+   "kind": "fact"
+  },
+  {
+   "text": "用 ComfyMathExpression 表达式 max(5, round(a * 24)) 将秒数动态换算为帧数，并与 CreateVideo 联动，可灵活控制视频长度",
+   "kind": "fact"
+  },
+  {
+   "text": "RandomNoise 固定种子（1058158424724271, fixed 模式），使同一输入图每次生成的运动结果可复现，方便批量对比",
+   "kind": "fact"
+  },
+  {
+   "text": "Turbo LoRA、BlockCache、SageAttention 三种加速手段叠加，示图在消费级 GPU 上达到接近可交互的图生视频速度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "从命名 Fast/Turbo 与结构事实看，作者的核心目标是让 MiniMax H3 这种大体积视频模型在消费级 GPU 上跑出可交互的速度。做法是同时引入 Turbo LoRA（减少采样步数）、BlockCache（复用视频帧间计算）和 SageAttention（优化注意力算子）；音频 VAE 的加入让输出视频直接可投放，减少后期步骤。固定种子和分辨率选择器则体现了电商场景下对可控复现和多尺寸适配的工程化考量。",
+ "use_case": "电商模特/商品的动态短视频素材制作；IP 角色多姿态视频生成；短视频封面图一键转视频；角色一致性镜头序列批量试稿",
+ "limitation": "依赖五个私有模型文件（MiniMax-H3-FL2VA int8 checkpoint、Qwen3VL-32B CLIP、视频/音频双 VAE、Turbo LoRA）；依赖非官方自定义节点（ComfyMathExpression、ResolutionSelector、MiniMaxH3BlockCacheT8、MiniMaxH3ImageToVideo、PathchSageAttentionKJ），需手工安装；输入仅接受单张静态图片；视频动态幅度受模型能力约束，无法精确控制镜头运动轨迹；固定种子时新场景需要手动调整以获得不同运动效果。",
+ "dependencies": [
+  "MiniMax-H3-FL2VA-int8-convrot.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+  "ComfyMathExpression 节点",
+  "ResolutionSelector 节点",
+  "MiniMaxH3BlockCacheT8 节点",
+  "MiniMaxH3ImageToVideo 节点",
+  "PathchSageAttentionKJ 节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "静态图片（LoadImage IN）",
+  "count": "1 张"
+ },
+ "output": {
+  "type": "视频文件（含音频轨道，SaveVideo 输出）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler steps / cfg",
+   "how_to_tune": "当前为 8 步、cfg=1，这是 Turbo 蒸馏模型的推荐区间；若画面细节不足可尝试 12-16 步，但 cfg 应保持在 1-1.5 附近，过高会导致过曝或伪影。"
+  },
+  {
+   "param": "PrimitiveFloat + ComfyMathExpression",
+   "how_to_tune": "PrimitiveFloat（默认 5）代表视频秒数，表达式会自动换算为帧数（fps=24，最少 5 帧）；增大数值会线性增加采样时间和显存峰值，按需调整。"
+  },
+  {
+   "param": "MiniMaxH3BlockCacheT8 阈值 0.14 / 0.15 / 0.90",
+   "how_to_tune": "阈值越高缓存命中越激进、速度越快，但可能损失运动细节或出现闪烁；若发现运动鬼影可适当降低首段阈值；device 设为 cpu 会占用内存带宽，显存充足时改为 gpu 可能更快。"
+  },
+  {
+   "param": "ResolutionSelector 3:4 / 0.8 / 32",
+   "how_to_tune": "默认 3:4 竖屏 + 0.8 缩放 + 32 对齐，适合抖音/快手信息流；切换 16:9 适配横屏；缩放系数调高会提升分辨率但显著增加计算量。"
+  },
+  {
+   "param": "RandomNoise 种子 1058158424724271",
+   "how_to_tune": "固定模式保证可复现；若希望每次生成不同运动轨迹，可改为 random；批量构图对比时建议保持固定。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo 的 1344×768",
+   "how_to_tune": "这是视频生成的基础分辨率，建议与 ResolutionSelector 的宽高比方向保持一致；改得过大容易超出显存，过小会损失主体细节。"
+  }
+ ],
+ "summary_text": "能力:上传单张图像即可端到端生成一段带音频、保持主体角色一致性的短视频（图生视频）；能力:内置分辨率/宽高比选择器，默认输出 3:4 竖屏画面，可适配电商短视频信息流；能力:通过 Turbo LoRA、块缓存与 SageAttention 三种加速叠加，可在有限 GPU 资源上较快完成视频生成，支持快速试错；特色:MiniMaxH3BlockCacheT8 采用三段阈值（0.14 / 0.15 / 0.90）的帧间块缓存复用，可显著降低相邻帧的重复计算，是本工作流最核心的加速设计；特色:同时加载 minimax_h3_video_vae 与 minimax_h3_audio_vae，并通过 VAEDecodeAudio 输出带音频轨的视频，省去后期配音环节；特色:用 ComfyMathExpression 表达式 max(5, round(a * 24)) 将秒数动态换算为帧数，并与 CreateVideo 联动，可灵活控制视频长度；特色:RandomNoise 固定种子（1058158424724271, fixed 模式），使同一输入图每次生成的运动结果可复现，方便批量对比；特色:Turbo LoRA、BlockCache、SageAttention 三种加速手段叠加，示图在消费级 GPU 上达到接近可交互的图生视频速度；电商模特/商品的动态短视频素材制作；IP 角色多姿态视频生成；短视频封面图一键转视频；角色一致性镜头序列批量试稿；从命名 Fast/Turbo 与结构事实看，作者的核心目标是让 MiniMax H3 这种大体积视频模型在消费级 GPU 上跑出可交互的速度。做法是同时引入 Turbo LoRA（减少采样步数）、BlockCache（复用视频帧间计算）和 SageAttention（优化注意力算子）；音频 VAE 的加入让输出视频直接可投放，减少后期步骤。固定种子和分辨率选择器则体现了电商场景下对可控复现和多尺寸适配的工程化考量。"
+}

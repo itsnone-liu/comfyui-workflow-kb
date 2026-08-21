@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "图像修复",
+  "图像上色"
+ ],
+ "capabilities": [
+  {
+   "text": "上传老旧或破损照片，端到端完成修复与上色，输出恢复细节的彩色图片。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过文本提示词在修复同时进行创意编辑（如为人物添加皇冠等），提示词由 Text Multiline 输入，可自动翻译为英文。",
+   "kind": "inference"
+  },
+  {
+   "text": "修复结果经过 InvSR 超分网络进一步提高分辨率，适合后续输出或打印。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Kontext 图像条件生成",
+  "InvSR 逆超分辨率修复",
+  "GGUF 量化模型加载",
+  "FP8 精度推理",
+  "VAE 编码/解码",
+  "CLIP 文本条件编码",
+  "图生图（img2img）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式修复+超分：FLUX Kontext 采样后接 InvSR 超分重建，形成“先修复、后放大”的流水线。",
+   "kind": "fact"
+  },
+  {
+   "text": "图像拼接与对比设计：使用 ImageConcatMulti / ImageStitch / Image Comparer (rgthree) 将原图、修复图、超分图并排展示，便于直观比较。",
+   "kind": "fact"
+  },
+  {
+   "text": "提示词自动翻译：GoogleTranslateTextNode 可将非英文提示词自动翻译为英文，提升多语言可用性。",
+   "kind": "fact"
+  },
+  {
+   "text": "混合精度/量化加载：同时使用 FP8 模型和 GGUF 量化加载器，降低显存占用；还包含 easy cleanGpuUsed 显存清理节点。",
+   "kind": "inference"
+  },
+  {
+   "text": "多路保存输出：三个 SaveImage 节点分别保存不同阶段或组合结果，方便对比与筛选。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在提供一站式老照片修复与上色方案。先利用 FLUX Kontext 对低质量输入进行语义理解和结构修复，通过 FluxGuidance 控制提示词强度；修复结果经过 InvSR 超分网络增加细节与分辨率，同时使用图像拼接与对比节点让用户直观比较原图与结果；为了适应非英文用户，加入 GoogleTranslateTextNode 自动翻译提示词；通过 GGUF 量化加载和 FP8 模型降低显存需求，使在消费级显卡上也能运行。",
+ "use_case": "老照片修复、破损图像翻新、黑白照片上色，同时可作为创意编辑工具（如为人物添加配饰、改变背景描述等）。",
+ "limitation": "依赖多个模型文件（FLUX Kontext、CLIP、VAE、InvSR 等），部分模型体积较大；需要安装 rgthree、pysssss、ComfyUI-InvSR 等自定义节点；对显存有一定要求（尽管有量化与FP8优化）；输入图片内容与提示词文本会显著影响生成效果；提示词建议为英文，或依赖自动翻译节点获得理想语义。",
+ "dependencies": [
+  "flux1-dev-kontext_fp8_scaled.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.safetensors",
+  "noise_predictor_sd_turbo_v5.pth",
+  "ComfyUI 自定义节点：rgthree-comfyui",
+  "ComfyUI 自定义节点：ComfyUI-InvSR",
+  "ComfyUI 自定义节点：pysssss-comfyui",
+  "ComfyUI 自定义节点：ComfyUI-Kontext（推测）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image, text",
+  "count": "1-2 张图像（两个 LoadImage 节点）+ 1 段提示词"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "默认20。修复场景建议15-30：过低可能导致修复不完整，过高则耗时增加；若发现细节过平滑可适当增加。"
+  },
+  {
+   "param": "FluxGuidance.guidance",
+   "how_to_tune": "默认2.5。增大会使生成更贴近提示词，但可能过曝；减小则更依赖输入图像，建议在2.0-3.5之间调整。"
+  },
+  {
+   "param": "CLIPTextEncode.text",
+   "how_to_tune": "当前为“Using this elegant style”，可改为其他风格短语，如“natural 4k, highly detailed”等，直接影响生成风格。"
+  },
+  {
+   "param": "Text Multiline.text",
+   "how_to_tune": "此处输入核心修复/编辑指令，如“restore and colorize this photo. Repair the damaged”；也可加入创作性描述，例如“Bring a crown to the girl”。"
+  },
+  {
+   "param": "LoadInvSRModels.fp16",
+   "how_to_tune": "开启后用更少显存，但可能损失少量精度；显存充裕时可关闭以获取更佳重建质量。"
+  },
+  {
+   "param": "ImageStitch.direction",
+   "how_to_tune": "当前为“right”，控制拼接方向，可按查看习惯改为“left”或“down”。"
+  }
+ ],
+ "summary_text": "能力:上传老旧或破损照片，端到端完成修复与上色，输出恢复细节的彩色图片。；能力:支持通过文本提示词在修复同时进行创意编辑（如为人物添加皇冠等），提示词由 Text Multiline 输入，可自动翻译为英文。；能力:修复结果经过 InvSR 超分网络进一步提高分辨率，适合后续输出或打印。；特色:多段式修复+超分：FLUX Kontext 采样后接 InvSR 超分重建，形成“先修复、后放大”的流水线。；特色:图像拼接与对比设计：使用 ImageConcatMulti / ImageStitch / Image Comparer (rgthree) 将原图、修复图、超分图并排展示，便于直观比较。；特色:提示词自动翻译：GoogleTranslateTextNode 可将非英文提示词自动翻译为英文，提升多语言可用性。；特色:混合精度/量化加载：同时使用 FP8 模型和 GGUF 量化加载器，降低显存占用；还包含 easy cleanGpuUsed 显存清理节点。；特色:多路保存输出：三个 SaveImage 节点分别保存不同阶段或组合结果，方便对比与筛选。；老照片修复、破损图像翻新、黑白照片上色，同时可作为创意编辑工具（如为人物添加配饰、改变背景描述等）。；该工作流旨在提供一站式老照片修复与上色方案。先利用 FLUX Kontext 对低质量输入进行语义理解和结构修复，通过 FluxGuidance 控制提示词强度；修复结果经过 InvSR 超分网络增加细节与分辨率，同时使用图像拼接与对比节点让用户直观比较原图与结果；为了适应非英文用户，加入 GoogleTranslateTextNode 自动翻译提示词；通过 GGUF 量化加载和 FP8 模型降低显存需求，使在消费级显卡上也能运行。"
+}

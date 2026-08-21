@@ -1,0 +1,102 @@
+{
+ "domain": [
+  "图像编辑",
+  "换装",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "输入人物照片（以及可选服装参考图），自动检测并分割人物衣服区域（使用Florence2 + SAM2）",
+   "kind": "fact"
+  },
+  {
+   "text": "基于FLUX.1-dev扩散模型对衣物区域进行局部重绘，保留非目标区域细节",
+   "kind": "fact"
+  },
+  {
+   "text": "通过Flux Redux风格迁移（ReduxAdvanced + StyleModelLoader）将参考图的服装风格/纹理迁移到目标区域",
+   "kind": "inference"
+  },
+  {
+   "text": "支持用CLIP文本提示进一步控制新服装的样式或场景",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev",
+  "Florence2 object detection",
+  "SAM2 segmentation",
+  "Differential Diffusion",
+  "InpaintModelConditioning",
+  "Flux Redux",
+  "CLIP text conditioning"
+ ],
+ "special_features": [
+  {
+   "text": "两段式流水线：前段用Florence2+SAM2完成衣物检测与分割，后段用FLUX局部重绘，两段通过Mask衔接",
+   "kind": "fact"
+  },
+  {
+   "text": "使用自动化对象检测与分割（ObjectDetectorFL2 + SAM2UltraV2）替代手工蒙版，实现衣物Mask精准提取",
+   "kind": "fact"
+  },
+  {
+   "text": "采用DifferentialDiffusion + InpaintModelConditioning + ConditioningZeroOut的局部重绘结构，仅对Mask内区域进行扩散",
+   "kind": "fact"
+  },
+  {
+   "text": "引入Flux Redux（ReduxAdvanced）作为风格控制，与CLIP文本提示（CLIPTextEncode）形成多模态条件控制",
+   "kind": "inference"
+  },
+  {
+   "text": "双图像输入设计：输入端有两个LoadImage，疑似一个为待换装人物图，另一个为服装参考图",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流将自动化分割与扩散修补结合，设计意图似乎是为了解决传统换装/局部重绘中手动Mask繁琐且不精准的问题。通过Florence2定位衣物、SAM2精细分割，再使用FLUX.1-dev配合Redux风格模型对Mask区域重绘，从而在保持人物姿态、面部和背景不变的前提下完成服装替换。同时通过文本提示和参考图双重控制生成结果，提升可控性与真实感。",
+ "use_case": "适用于电商试穿、时尚设计、摄影后期等需要快速、精准更换衣物/服装的场景。",
+ "limitation": "依赖FLUX.1-dev、Flux Redux、SAM2、Florence2等模型文件，占用显存较大；需要分别加载UNET、CLIP、VAE、SAM2、Florence2、Redux模型。检测目标固定为'dress'，不能泛化到其他类别；两个输入图需为清晰人像/服装图；对非真实照片可能效果有限。",
+ "dependencies": [
+  "Florence2 (base) 模型",
+  "SAM2 (sam2_hiera_base_plus.safetensors) 模型",
+  "FLUX.1-dev 模型 (flux1-dev.sft + ae.safetensors + t5xxl_fp16 + clip_l)",
+  "Flux Redux (flux1-redux-dev.safetensors + sigclip_vision_patch14_384.safetensors)",
+  "ComfyUI 可能需要的自定义节点：LayerMask/LayerUtility 系列、ReduxAdvanced"
+ ],
+ "geek_rating": 3.5,
+ "input": {
+  "type": "图像",
+  "count": "2 (输入端有两个LoadImage，通常一个为人像，另一个为服装参考)"
+ },
+ "output": {
+  "type": "图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "示例为30，通常FLUX用20-30步，质量要求高可增加至40，但速度变慢"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "示例为1，FLUX推荐cfg=1，表示纯蒸馏模式；增大可能过曝，需配合FluxGuidance使用"
+  },
+  {
+   "param": "FluxGuidance.guidance",
+   "how_to_tune": "示例为3.5，值越大越贴近文本提示，但过大会导致色彩过饱和"
+  },
+  {
+   "param": "ReduxAdvanced.strength",
+   "how_to_tune": "示例配置约0.5/0.1，控制风格参考强度；值越大参考图风格影响越强，值越小文本提示主导"
+  },
+  {
+   "param": "GrowMaskWithBlur.grow",
+   "how_to_tune": "控制Mask外扩像素，示例为10；外扩越多覆盖越充分，但可能侵入周围区域，需适量"
+  },
+  {
+   "param": "ObjectDetectorFL2.label",
+   "how_to_tune": "当前固定为'dress'；如需检测其他物体可修改为对应英文标签（如'coat', 'shirt'）"
+  }
+ ],
+ "summary_text": "能力:输入人物照片（以及可选服装参考图），自动检测并分割人物衣服区域（使用Florence2 + SAM2）；能力:基于FLUX.1-dev扩散模型对衣物区域进行局部重绘，保留非目标区域细节；能力:通过Flux Redux风格迁移（ReduxAdvanced + StyleModelLoader）将参考图的服装风格/纹理迁移到目标区域；能力:支持用CLIP文本提示进一步控制新服装的样式或场景；特色:两段式流水线：前段用Florence2+SAM2完成衣物检测与分割，后段用FLUX局部重绘，两段通过Mask衔接；特色:使用自动化对象检测与分割（ObjectDetectorFL2 + SAM2UltraV2）替代手工蒙版，实现衣物Mask精准提取；特色:采用DifferentialDiffusion + InpaintModelConditioning + ConditioningZeroOut的局部重绘结构，仅对Mask内区域进行扩散；特色:引入Flux Redux（ReduxAdvanced）作为风格控制，与CLIP文本提示（CLIPTextEncode）形成多模态条件控制；特色:双图像输入设计：输入端有两个LoadImage，疑似一个为待换装人物图，另一个为服装参考图；适用于电商试穿、时尚设计、摄影后期等需要快速、精准更换衣物/服装的场景。；该工作流将自动化分割与扩散修补结合，设计意图似乎是为了解决传统换装/局部重绘中手动Mask繁琐且不精准的问题。通过Florence2定位衣物、SAM2精细分割，再使用FLUX.1-dev配合Redux风格模型对Mask区域重绘，从而在保持人物姿态、面部和背景不变的前提下完成服装替换。同时通过文本提示和参考图双重控制生成结果，提升可控性与真实感。"
+}

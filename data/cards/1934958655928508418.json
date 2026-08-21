@@ -1,0 +1,71 @@
+{
+ "domain": [
+  "文生图",
+  "人像写真",
+  "国潮古风/妆容"
+ ],
+ "capabilities": [
+  {
+   "text": "输入正向与负向提示词，固定 1024×1024 空 latent，通过 DreamShaper 8 底模生成一张图像",
+   "kind": "fact"
+  },
+  {
+   "text": "串联加载 MoXinV1（权重 0.5）与 HIRO摄影写真丨国潮古装汉服美女（权重 0.9）两个 LoRA，使输出同时带有两种风格",
+   "kind": "fact"
+  },
+  {
+   "text": "面向国潮汉服/妆容风格的人像概念图创作，适合快速验证 LoRA 混合效果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Stable Diffusion 文生图",
+  "CLIPTextEncode 正/负提示词编码",
+  "双 LoraLoader 串联叠加",
+  "DPMPP 2M + Karras 采样",
+  "VAEDecode 解码",
+  "EmptyLatentImage 固定分辨率生成"
+ ],
+ "special_features": [],
+ "design_intent": "这似乎是一个为了快速验证双 LoRA 风格混搭而设计的极简工作流：使用 DreamShaper 8 作为通用底模，MoXinV1 提供风格底色，HIRO 国潮古装 LoRA 则负责汉服/人物主题；通过固定 1024×1024 分辨率与常见采样参数，把生成路径缩到最短，方便只调 LoRA 权重和提示词就看效果。",
+ "use_case": "快速生成国潮汉服风格人像写真/妆容概念图，或测试两个 LoRA 在不同权重下的混合结果。",
+ "limitation": "没有图像输入，不能做图生图/局部重绘；分辨率固定 1024×1024；依赖本地存在 dreamshaper_8.safetensors、MoXinV1.safetensors、HIRO摄影写真丨国潮古装汉服美女_v1.0.safetensors 这些模型文件；KSampler 没有接额外质量控制节点。",
+ "dependencies": [
+  "checkpoint: dreamshaper_8.safetensors",
+  "lora: MoXinV1.safetensors",
+  "lora: HIRO摄影写真丨国潮古装汉服美女_v1.0.safetensors",
+  "ComfyUI 内置节点：CheckpointLoaderSimple/CLIPTextEncode/LoraLoader/KSampler/VAEDecode/SaveImage"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "文本提示词（正向/负向各一条）",
+  "count": "2"
+ },
+ "output": {
+  "type": "图像（SaveImage 输出 PNG）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoader: MoXinV1 weight (当前 0.5)",
+   "how_to_tune": "作为画风底色，不建议超过 0.7；过高可能让皮肤/质感过度风格化。若风格不够可微调到 0.6。"
+  },
+  {
+   "param": "LoraLoader: HIRO 国潮古装 weight (当前 0.9)",
+   "how_to_tune": "主控汉服/人物特征，建议 0.8~1.1 之间试。若服饰元素过强导致构图失衡，可降到 0.7。"
+  },
+  {
+   "param": "KSampler: steps/CFG/sampler (30, 7, dpmpp_2m/karras)",
+   "how_to_tune": "常规 25-35 步；CFG 5-8 均可，7 偏平衡。若画面劣化可换 dpmpp_sde 或 restarts 提升质感但更慢。"
+  },
+  {
+   "param": "EmptyLatentImage: 1024×1024",
+   "how_to_tune": "显存紧张可降为 768×768 或 512×512，但两个 LoRA 可能按 1024 训练，低分辨率会削弱细节；提高分辨率需要更多显存。"
+  },
+  {
+   "param": "KSampler: seed 随机化",
+   "how_to_tune": "随机化适合批量找构图；若要复现或定位问题，应固定 seed 并开关 randomize。"
+  }
+ ],
+ "summary_text": "能力:输入正向与负向提示词，固定 1024×1024 空 latent，通过 DreamShaper 8 底模生成一张图像；能力:串联加载 MoXinV1（权重 0.5）与 HIRO摄影写真丨国潮古装汉服美女（权重 0.9）两个 LoRA，使输出同时带有两种风格；能力:面向国潮汉服/妆容风格的人像概念图创作，适合快速验证 LoRA 混合效果；快速生成国潮汉服风格人像写真/妆容概念图，或测试两个 LoRA 在不同权重下的混合结果。；这似乎是一个为了快速验证双 LoRA 风格混搭而设计的极简工作流：使用 DreamShaper 8 作为通用底模，MoXinV1 提供风格底色，HIRO 国潮古装 LoRA 则负责汉服/人物主题；通过固定 1024×1024 分辨率与常见采样参数，把生成路径缩到最短，方便只调 LoRA 权重和提示词就看效果。"
+}

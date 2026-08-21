@@ -1,0 +1,75 @@
+{
+ "domain": [
+  "图像生成",
+  "图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张参考图后，通过 RH_Nano_Banana_Image2Image 执行图生图，按照文字提示“参考图片形象，生成一组动作分镜”输出动作分镜/分镜组合图。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ImageStitch 将原始参考图与生成结果向右并排拼接为对照图，再交给 PreviewImage 与 SaveImage 完成预览和保存。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图生图（Image-to-Image）",
+  "RH_Nano_Banana_Image2Image（Nano Banana）文本引导图像生成",
+  "CR Prompt Text 固定提示词注入",
+  "ImageStitch 图像拼接/前后对照",
+  "PreviewImage + SaveImage 输出管线"
+ ],
+ "special_features": [
+  {
+   "text": "把原图和生成结果拼成左右对照图再输出，方便直接检查生成结果与参考图的一致性。",
+   "kind": "inference"
+  },
+  {
+   "text": "极简 6 节点流程，无 ControlNet 或多模型堆叠，完全依赖单个 RH_Nano_Banana_Image2Image 完成图生图。",
+   "kind": "fact"
+  },
+  {
+   "text": "种子设为 randomize，且提示词独立放在 CR Prompt Text 中，换词即可换分镜内容。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "设计意图可能是把“参考图 → 动作分镜图”做成最短可用的生成链路：一边用 RH_Nano_Banana_Image2Image 接受图片和中文文本指令，生成保留主体形象的动作分镜；另一边用 ImageStitch 把原图和生成结果并排拼接，形成便于视觉验收的前后对照。整体更像一个面向快速验证和轻量使用的模板，而不是追求复杂控制的专业工作流。",
+ "use_case": "适合为角色、玩偶、商品等静态形象快速生成一组动作参考图；也适合用原图与生成图并排对比，检查模型是否保留主体特征。",
+ "limitation": "依赖 RH_Nano_Banana_Image2Image 自定义节点及其背后的 Nano Banana 模型/API，需要能访问该服务的环境；ImageStitch 和 CR Prompt Text 也依赖额外自定义节点；输入为单张静态图片，动作生成质量受参考图清晰度和中文提示词表达能力影响；没有自动质量反馈/修复回路，生成失败或效果不佳时只能手动重跑或改提示词。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_Nano_Banana_Image2Image 自定义节点",
+  "ImageStitch 自定义节点（如 WAS Node Suite 等）",
+  "CR Prompt Text（ComfyUI_Comfyroll_CustomNodes）",
+  "Nano Banana（Gemini 2.5 Flash Image）模型/API 服务（推测）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张图像",
+  "count": "1"
+ },
+ "output": {
+  "type": "图像（生成结果或与原图拼接后的对照图）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "CR Prompt Text 的 text",
+   "how_to_tune": "当前固定为“参考图片形象，生成一组动作分镜”；改成更具体的动作列表（如“跳跃、挥剑、奔跑”）或构图要求，可控制分镜内容。"
+  },
+  {
+   "param": "RH_Nano_Banana_Image2Image 的 seed",
+   "how_to_tune": "widget 显示 randomize，每次生成不同结果；想复现某张满意图可把生成的 seed 固定下来。"
+  },
+  {
+   "param": "ImageStitch 的 direction",
+   "how_to_tune": "widget 显示 right，表示结果拼在原图右侧；可改为 left/up/down 等方向，以调整对照图的布局。"
+  },
+  {
+   "param": "LoadImage 的 image",
+   "how_to_tune": "更换参考图；建议主体清晰、占比大、光线正常的图片，分镜生成会更稳定。"
+  }
+ ],
+ "summary_text": "能力:上传单张参考图后，通过 RH_Nano_Banana_Image2Image 执行图生图，按照文字提示“参考图片形象，生成一组动作分镜”输出动作分镜/分镜组合图。；能力:使用 ImageStitch 将原始参考图与生成结果向右并排拼接为对照图，再交给 PreviewImage 与 SaveImage 完成预览和保存。；特色:把原图和生成结果拼成左右对照图再输出，方便直接检查生成结果与参考图的一致性。；特色:极简 6 节点流程，无 ControlNet 或多模型堆叠，完全依赖单个 RH_Nano_Banana_Image2Image 完成图生图。；特色:种子设为 randomize，且提示词独立放在 CR Prompt Text 中，换词即可换分镜内容。；适合为角色、玩偶、商品等静态形象快速生成一组动作参考图；也适合用原图与生成图并排对比，检查模型是否保留主体特征。；设计意图可能是把“参考图 → 动作分镜图”做成最短可用的生成链路：一边用 RH_Nano_Banana_Image2Image 接受图片和中文文本指令，生成保留主体形象的动作分镜；另一边用 ImageStitch 把原图和生成结果并排拼接，形成便于视觉验收的前后对照。整体更像一个面向快速验证和轻量使用的模板，而不是追求复杂控制的专业工作流。"
+}

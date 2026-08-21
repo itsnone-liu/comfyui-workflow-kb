@@ -1,0 +1,105 @@
+{
+ "domain": [
+  "图像生成",
+  "虚拟换装",
+  "FLUX Kontext 图像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成：上传一张人物图与一张目标服装图，生成人物换上目标服装后的图像",
+   "kind": "inference"
+  },
+  {
+   "text": "用 RH_Captioner 自动为原服装和目标服装生成简短写实描述，再由 TTP_text_mix 拼成“将原服装更改为右侧图片里的目标风格”的换装指令",
+   "kind": "fact"
+  },
+  {
+   "text": "对目标服装图执行 RMBG 抠图，去除背景后经 ImageStitch 拼到右侧，作为 FLUX Kontext 的图像参考条件",
+   "kind": "inference"
+  },
+  {
+   "text": "借助 RH_Translator 将中文意图强制翻译为英文，并使用 Flux Turbo LoRA 以 10 步低步数采样出图",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Kontext-dev",
+  "DualCLIPLoader（CLIP-L + T5-XXL）",
+  "RMBG 背景移除",
+  "ImageStitch 图像拼接",
+  "FluxKontextImageScale 与 ReferenceLatent 参考条件",
+  "RH_Captioner 自动服装打标签",
+  "RH_Translator 中英翻译",
+  "TTP_text_mix 动态提示词模板",
+  "Flux Turbo LoRA 加速采样",
+  "Nunchaku SVDQ Int4 / GGUF Q2_K 量化加载"
+ ],
+ "special_features": [
+  {
+   "text": "RH_Captioner × 2 + RH_Translator + TTP_text_mix 组成“机器读图 → 写服装描述 → 拼换装命令 → 转英文”的自动提示词链路",
+   "kind": "fact"
+  },
+  {
+   "text": "同一工作流里同时放置 UNETLoader(fp8)、NunchakuFluxDiTLoader(int4)、UnetLoaderGGUF(Q2_K) 三条 DiT 加载路径，可能用于适配不同显存/精度环境",
+   "kind": "inference"
+  },
+  {
+   "text": "RMBG(mode4) + ImageStitch(right) + FluxKontextImageScale 将参考服装放在画面右侧，用干净图像条件约束 Kontext 模型",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ReferenceLatent 而不是普通 img2img 的降噪路径，似乎把参考图编码为潜变量参与生成，以保持人物/服装参考信息",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整个工作流把“换装”建模为 FLUX.1 Kontext 的编辑任务：图像通道先将目标服装 RMBG 抠出并拼到右侧，配合 FluxKontextImageScale/ReferenceLatent 提供参考；文本通道则由 RH_Captioner 自动识别原服装和目标服装，再用 TTP_text_mix 形成“把 A 改成右侧 B”的指令并统一翻译成英文。这样用户几乎不需要手写长提示词，可能更稳定地把编辑范围限定在服装上。另加入 Nunchaku/GGUF 量化和 Flux Turbo LoRA，可能是为了在消费级显卡上也能以 10 步快速出图。",
+ "use_case": "电商模特换装、虚拟试衣、服装灵感替换、服装 before/after 对比图生成",
+ "limitation": "需要先准备人物图和干净的服装参考图；RMBG 抠图质量会直接影响生成效果。依赖 FLUX.1 Kontext 系列模型文件（fp8/Nunchaku/GGUF）以及 clip_l/t5xxl/ae；同时依赖 RH_Captioner、RH_Translator、TTP_text_mix、RMBG、FluxKontextImageScale、ReferenceLatent、ImageStitch 等自定义节点。Nunchaku/GGUF 量化路径可能需要特定 ComfyUI 版本与 GPU/CUDA 环境；若换用非 Turbo 底模，CFG 与步数需要重新调整。",
+ "dependencies": [
+  "FLUX.1 Kontext-dev 模型：svdq-int4_r32-flux.1-kontext-dev.safetensors / flux1-dev-kontext_fp8_scaled.safetensors / flux1-kontext-dev-Q2_K.g",
+  "FLUX 文本编码器：clip_l.safetensors + t5xxl_fp8_e4m3fn_scaled.safetensors",
+  "FLUX VAE：ae.safetensors",
+  "LoRA：Flux Turbo Lora.safetensors",
+  "自定义节点：RH_Captioner、RH_Translator、TTP_text_mix、RMBG、FluxKontextImageScale、ReferenceLatent、ImageStitch、Bjornulf_ShowStringText"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片（人物图 + 服装参考图） + 文本线索",
+  "count": "2 张图片 + 文本（部分可由 Captioner 自动生成）"
+ },
+ "output": {
+  "type": "生成图片（PreviewImage / SaveImage）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前 10 步（配合 Flux Turbo LoRA）；追求质量可加到 15-20，追求速度可降到 8-10"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "当前 1，适配 FLUX/Turbo 蒸馏；换非 Turbo 模型时需调回 3.5 左右重新测试"
+  },
+  {
+   "param": "KSampler sampler/scheduler",
+   "how_to_tune": "当前 euler/simple；FLUX 常用 euler + simple/beta，可优先保持 euler 再换 scheduler 观察稳定性"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前 2.5；增大可加强提示遵从，但过高会生硬，建议在 2-4 之间调整"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "当前 1；若出现色彩过饱和或伪影，可尝试降到 0.7-0.9"
+  },
+  {
+   "param": "EmptyLatentImage width/height/batch",
+   "how_to_tune": "当前 1024x1024 batch=2；批量越大、分辨率越高，显存和耗时越高，batch=1 可降低压力"
+  },
+  {
+   "param": "RH_Translator 固定/随机 seed",
+   "how_to_tune": "当前 seed=262 且 randomize；固定 seed 可复现翻译结果，randomize 则每次可能得到不同英文表达"
+  }
+ ],
+ "summary_text": "能力:端到端完成：上传一张人物图与一张目标服装图，生成人物换上目标服装后的图像；能力:用 RH_Captioner 自动为原服装和目标服装生成简短写实描述，再由 TTP_text_mix 拼成“将原服装更改为右侧图片里的目标风格”的换装指令；能力:对目标服装图执行 RMBG 抠图，去除背景后经 ImageStitch 拼到右侧，作为 FLUX Kontext 的图像参考条件；能力:借助 RH_Translator 将中文意图强制翻译为英文，并使用 Flux Turbo LoRA 以 10 步低步数采样出图；特色:RH_Captioner × 2 + RH_Translator + TTP_text_mix 组成“机器读图 → 写服装描述 → 拼换装命令 → 转英文”的自动提示词链路；特色:同一工作流里同时放置 UNETLoader(fp8)、NunchakuFluxDiTLoader(int4)、UnetLoaderGGUF(Q2_K) 三条 DiT 加载路径，可能用于适配不同显存/精度环境；特色:RMBG(mode4) + ImageStitch(right) + FluxKontextImageScale 将参考服装放在画面右侧，用干净图像条件约束 Kontext 模型；特色:使用 ReferenceLatent 而不是普通 img2img 的降噪路径，似乎把参考图编码为潜变量参与生成，以保持人物/服装参考信息；电商模特换装、虚拟试衣、服装灵感替换、服装 before/after 对比图生成；整个工作流把“换装”建模为 FLUX.1 Kontext 的编辑任务：图像通道先将目标服装 RMBG 抠出并拼到右侧，配合 FluxKontextImageScale/ReferenceLatent 提供参考；文本通道则由 RH_Captioner 自动识别原服装和目标服装，再用 TTP_text_mix 形成“把 A 改成右侧 B”的指令并统一翻译成英文。这样用户几乎不需要手写长提示词，可能更稳定地把编辑范围限定在服装上。另加入 Nunchaku/GGUF 量化和 Flux Turbo LoRA，可能是为了在消费级显卡上也能以 10 步快速出图。"
+}

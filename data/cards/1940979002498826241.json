@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "人像摄影",
+  "换脸",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入两张人脸图像，生成保持输入人脸身份特征的多姿态/多风格人像写真，并输出高分辨率结果",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 InstantID 与 ControlNet 组合，实现面部特征迁移，同时保留姿态和构图提示",
+   "kind": "fact"
+  },
+  {
+   "text": "对输出图像进行 2 倍放大（hires fix）及颜色匹配后期处理，提升最终成片质量",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "ControlNet (instantid/diffusion_pytorch_model + TTPLANET_Controlnet_Tile)",
+  "Upscale-Hires (2xNomosUni_span_multijpg_ldl)",
+  "FaceAnalysis (insightface CPU)",
+  "Mask 控制（PersonMaskUltra V2、MaskGrow、SetLatentNoiseMask）",
+  "图像拼接与合成（ImageConcanate、ImageComposite+）",
+  "背景/物体分割后局部重绘（PersonMask + CropByMask）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式结构：主体生成链、局部重绘链、放大链、颜色匹配链并列存在，并用多个 PreviewImage 观察中间结果",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 PersonMaskUltra V2 提取人物 Mask，再通过 CropByMask / MaskGrow / LayerImageTransform 构造局部重绘区域，属于精细的局部换脸/换装流程",
+   "kind": "fact"
+  },
+  {
+   "text": "应用了 ApplyFBCacheOnModel（扩散模型缓存）减少重复计算，属于性能优化设计",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 FaceBoundingBox、GetImageSize+、CM_IntToFloat 等节点动态计算缩放和位移参数，实现自动构图",
+   "kind": "inference"
+  },
+  {
+   "text": "设置了两个 ControlNet（instantid + TTPLANET_Tile）并分别控制不同强度（0.1 与 默认），可能用于在保持结构的同时增强细节",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整个工作流设计为一条“换脸后处理流水线”：先用 InstantID 完成基于参考人脸的身份迁移生成，再用人物分割和 Mask 操作提取面部局部区域进行精细重绘或修复，随后通过放大模型提升分辨率，最后用 easy imageColorMatch 对整体色调进行融合。中间大量的图像拼接、缩放和比较节点用于在同一画布上预览多版本结果，方便用户筛选，整体结构偏向于可控、可调试的工程化处理流程。",
+ "use_case": "适用于不需要精修单张脸，而是想快速生成保持同一人物身份的多张人像照片；也可用于电商模特换脸、摄影后期测试等多种换脸场景。",
+ "limitation": "依赖自定义节点集：ComfyUI_InstantID、comfyui_controlnet_aux、ComfyUI_LayerStyle、rgthree 等；需要下载 InstantID 模型、ControlNet Tile 模型、Upscaler 模型和 juggernautXL_v9Rdphoto2Lightning 模型（约多个 GB）；输入图像需要包含清晰可识别的人脸，运行环境建议至少有 8GB 以上显存；CPU 模式的人脸分析速度较慢；输出结果的质量强烈依赖于输入人脸质量和所选 checkpoint。",
+ "dependencies": [
+  "juggernautXL_v9Rdphoto2Lightning.safetensors",
+  "ip-adapter.bin",
+  "instantid/diffusion_pytorch_model.safetensors",
+  "TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors",
+  "2xNomosUni_span_multijpg_ldl.pth",
+  "insightface 模型",
+  "ComfyUI 自定义节点：InstantID, ControlNet Aux, LayerStyle, rgthree, FB cache 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片（LoadImage 两次输入人脸/背景）",
+  "count": "2"
+ },
+ "output": {
+  "type": "图片（多个 PreviewImage/SaveImage 输出）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyInstantID 的 weight/start_at/end_at",
+   "how_to_tune": "weight 控制身份特征强度，越高越像参考人脸；如果生成结果不像，可提高 weight；如果过于僵化或出现伪影，可降低 weight 或调整 start/end 控制生效区间"
+  },
+  {
+   "param": "ControlNetApplyAdvanced 的 strength",
+   "how_to_tune": "当前 instantid ControlNet 强度为 0.1，TTPLANET_Tile 强度默认 0.5~1；若背景或构图被破坏可调低 Tile 强度，若高频细节缺失可调高"
+  },
+  {
+   "param": "KSampler 的 steps/cfg",
+   "how_to_tune": "当前 steps=8, cfg=1（配合 Lightning 模型）；如果细节不足可增加 steps 但注意速度；cfg 过高会导致过饱和/不自然"
+  },
+  {
+   "param": "CR Upscale Image / PMRF 的 scale",
+   "how_to_tune": "放大倍数越高细节越丰富但耗时越长；若纹理过平滑可用 PMRF 增强锐度，denoise 参数控制重绘程度"
+  },
+  {
+   "param": "LayerImageTransform 的 rotate/scale",
+   "how_to_tune": "用于把重绘区域对齐到原图；如果局部重绘结果错位，调整 rotate 和 scale 即可"
+  },
+  {
+   "param": "MaskGrow 的 grow 值",
+   "how_to_tune": "grow 值越大遮罩扩张越多，重绘影响面积越大；若换脸后脸部边缘有接缝，可适当调大 grow"
+  },
+  {
+   "param": "easy imageColorMatch 的 mode",
+   "how_to_tune": "adain 模式适合整体色调融合，若想保留更多原图颜色可换成 'hist' 或 'reinhard' 等模式并试效果"
+  }
+ ],
+ "summary_text": "能力:输入两张人脸图像，生成保持输入人脸身份特征的多姿态/多风格人像写真，并输出高分辨率结果；能力:通过 InstantID 与 ControlNet 组合，实现面部特征迁移，同时保留姿态和构图提示；能力:对输出图像进行 2 倍放大（hires fix）及颜色匹配后期处理，提升最终成片质量；特色:多段式结构：主体生成链、局部重绘链、放大链、颜色匹配链并列存在，并用多个 PreviewImage 观察中间结果；特色:使用 PersonMaskUltra V2 提取人物 Mask，再通过 CropByMask / MaskGrow / LayerImageTransform 构造局部重绘区域，属于精细的局部换脸/换装流程；特色:应用了 ApplyFBCacheOnModel（扩散模型缓存）减少重复计算，属于性能优化设计；特色:通过 FaceBoundingBox、GetImageSize+、CM_IntToFloat 等节点动态计算缩放和位移参数，实现自动构图；特色:设置了两个 ControlNet（instantid + TTPLANET_Tile）并分别控制不同强度（0.1 与 默认），可能用于在保持结构的同时增强细节；适用于不需要精修单张脸，而是想快速生成保持同一人物身份的多张人像照片；也可用于电商模特换脸、摄影后期测试等多种换脸场景。；整个工作流设计为一条“换脸后处理流水线”：先用 InstantID 完成基于参考人脸的身份迁移生成，再用人物分割和 Mask 操作提取面部局部区域进行精细重绘或修复，随后通过放大模型提升分辨率，最后用 easy imageColorMatch 对整体色调进行融合。中间大量的图像拼接、缩放和比较节点用于在同一画布上预览多版本结果，方便用户筛选，整体结构偏向于可控、可调试的工程化处理流程。"
+}

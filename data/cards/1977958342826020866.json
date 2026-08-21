@@ -1,0 +1,106 @@
+{
+ "domain": [
+  "人像美化",
+  "局部重绘",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张包含人物头像/半身/全身的照片，通过FLUX+双LoRA（nssa5、leileiman）对人物头部与衣物区域进行局部重绘，实现妆容和衣着的风格化转换，并输出处理后的图像",
+   "kind": "inference"
+  },
+  {
+   "text": "使用PersonMaskUltra与SegformerB2ClothesUltra自动分离人物与衣物区域，通过DetailerForEach分别对头部（512/1024档）和衣物（1920档）做精细修复/重绘，保持背景和无关区域不变",
+   "kind": "inference"
+  },
+  {
+   "text": "通过DifferentialDiffusion和InpaintCrop/Stitch实现只对mask区域进行降噪重绘，结合FluxGuidance与ModelSamplingFlux控制生成强度，得到边缘自然的局部重绘结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Nunchaku int4量化",
+  "LoRA双路加载",
+  "DifferentialDiffusion",
+  "Mask-based局部重绘",
+  "DetailerForEach分层细化",
+  "Person/Clothes语义分割",
+  "ModelSamplingFlux",
+  "PatchModelAddDownscale"
+ ],
+ "special_features": [
+  {
+   "text": "双分支局部重绘：分别用PersonMaskUltra和SegformerB2ClothesUltra得到人物/衣物mask，再分别接入两个MaskToSEGS与DetailerForEach（一个偏重头部小区域，一个偏重大区域），实现头部妆容与衣物风格相互独立控制",
+   "kind": "inference"
+  },
+  {
+   "text": "双CLIP文本+双LoRA语义解耦：CLIPTextEncode分别写入'leileiman head,'和'nssa'，配合leileiman.safetensors与nssa5.safetensors两个LoRA，让提示词分别驱动头部与整体风格生成",
+   "kind": "fact"
+  },
+  {
+   "text": "量化与加速组合：NunchakuFluxDiTLoader（svdq-int4-flux.1-dev）配合NunchakuFluxLoraLoader加载LoRA，再加PatchModelAddDownscale（降采样0.35）和PurgeVRAM V2显存清理，使FLUX可在消费级显卡上运行",
+   "kind": "fact"
+  },
+  {
+   "text": "用ConditioningZeroOut、GrowMask、InvertMask、SubtractMask做精细的mask/条件控制，并用InpaintCrop/InpaintStitch拼接局部重绘结果，属于“裁剪重绘再回贴”的巧妙设计",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流可能设计用于在有限显存环境下实现高质量的人像局部风格化：先通过语义分割将人物头部和衣物提取为独立mask，再借助FLUX强大的生成能力和双LoRA分别控制“头部特征”与“整体风格”，利用DifferentialDiffusion只对mask区域去噪，从而既能精准修改妆容/衣物，又避免破坏原始背景。Nunchaku量化与PatchModelAddDownscale进一步降低了运行门槛，适合普通创作爱好者使用。",
+ "use_case": "人像照片的AI妆容/服饰风格化重绘，适合电商模特图微调、虚拟穿搭、娱乐照片美化等场景",
+ "limitation": "依赖Nunchaku生态及自定义节点（DetailerForEach、LayerMask、DifferentialDiffusion等），需要下载FLUX.1 dev量化模型及对应LoRA；输入图像需含清晰人物，建议分辨率在1440左右；量化模型对采样细节略有影响，PatchModelAddDownscale可能降低小物件精度；实际效果受提示词和LoRA权重影响，需要手动微调参数",
+ "dependencies": [
+  "NunchakuFluxDiTLoader",
+  "NunchakuFluxLoraLoader",
+  "DualCLIPLoader",
+  "VAELoader",
+  "DetailerForEach",
+  "MaskToSEGS",
+  "PersonMaskUltra V2",
+  "SegformerB2ClothesUltra",
+  "DifferentialDiffusion",
+  "FluxGuidance",
+  "ModelSamplingFlux",
+  "PatchModelAddDownscale",
+  "InpaintCrop/InpaintStitch",
+  "LayerUtility: ColorImage",
+  "CR Overlay Transparent Image",
+  "rgthree Bookmark",
+  "ConstrainImage|pysssss",
+  "LayerUtility: PurgeVRAM V2",
+  "模型文件: nssa5.safetensors, leileiman.safetensors, clip_l.safetensors, t5xxl_fp8_e4m3fn.safetensors, ae.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图像（多为人物全身/半身照，需含完整头部和衣装区域）",
+  "count": "1"
+ },
+ "output": {
+  "type": "局部重绘后的单张图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FluxGuidance (3.5)",
+   "how_to_tune": "数值越高生成越贴近提示词但可能过度；若出现色彩过饱和或细节僵硬，可降至2.5-3.0；若风格化不足，可升至4.0以上"
+  },
+  {
+   "param": "ModelSamplingFlux (shift=1.15, eta=0.5)",
+   "how_to_tune": "shift控制采样分布，增大可提升对比度但易丢失细腻过渡；eta增加噪声贡献可增强随机性，若结果过于平滑可微调eta"
+  },
+  {
+   "param": "DetailerForEach denoise（对应两个不同档位）",
+   "how_to_tune": "较小的denoise（如0.5-0.7）适合保持原始结构仅微调妆容；较大的denoise（0.8-1.0）用于大幅改变服装/发型，但可能造成失真"
+  },
+  {
+   "param": "GrowMask（2/30）",
+   "how_to_tune": "扩张像素数决定重绘区域范围；头部/衣物区域太小可增加扩张值，太大则可能侵入背景，需平衡"
+  },
+  {
+   "param": "PatchModelAddDownscale (0.35)",
+   "how_to_tune": "降低该值可提升速度，但会损失细节；若人物面部或衣物纹路模糊，可提高到0.4-0.5换取质量"
+  }
+ ],
+ "summary_text": "能力:输入一张包含人物头像/半身/全身的照片，通过FLUX+双LoRA（nssa5、leileiman）对人物头部与衣物区域进行局部重绘，实现妆容和衣着的风格化转换，并输出处理后的图像；能力:使用PersonMaskUltra与SegformerB2ClothesUltra自动分离人物与衣物区域，通过DetailerForEach分别对头部（512/1024档）和衣物（1920档）做精细修复/重绘，保持背景和无关区域不变；能力:通过DifferentialDiffusion和InpaintCrop/Stitch实现只对mask区域进行降噪重绘，结合FluxGuidance与ModelSamplingFlux控制生成强度，得到边缘自然的局部重绘结果；特色:双分支局部重绘：分别用PersonMaskUltra和SegformerB2ClothesUltra得到人物/衣物mask，再分别接入两个MaskToSEGS与DetailerForEach（一个偏重头部小区域，一个偏重大区域），实现头部妆容与衣物风格相互独立控制；特色:双CLIP文本+双LoRA语义解耦：CLIPTextEncode分别写入'leileiman head,'和'nssa'，配合leileiman.safetensors与nssa5.safetensors两个LoRA，让提示词分别驱动头部与整体风格生成；特色:量化与加速组合：NunchakuFluxDiTLoader（svdq-int4-flux.1-dev）配合NunchakuFluxLoraLoader加载LoRA，再加PatchModelAddDownscale（降采样0.35）和PurgeVRAM V2显存清理，使FLUX可在消费级显卡上运行；特色:用ConditioningZeroOut、GrowMask、InvertMask、SubtractMask做精细的mask/条件控制，并用InpaintCrop/InpaintStitch拼接局部重绘结果，属于“裁剪重绘再回贴”的巧妙设计；人像照片的AI妆容/服饰风格化重绘，适合电商模特图微调、虚拟穿搭、娱乐照片美化等场景；该工作流可能设计用于在有限显存环境下实现高质量的人像局部风格化：先通过语义分割将人物头部和衣物提取为独立mask，再借助FLUX强大的生成能力和双LoRA分别控制“头部特征”与“整体风格”，利用DifferentialDiffusion只对mask区域去噪，从而既能精准修改妆容/衣物，又避免破坏原始背景。Nunchaku量化与PatchModelAddDownscale进一步降低了运行门槛，适合普通创作爱好者使用。"
+}

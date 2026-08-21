@@ -1,0 +1,97 @@
+{
+ "domain": [
+  "图像生成",
+  "证件照"
+ ],
+ "capabilities": [
+  {
+   "text": "上传人脸参考图与样式参考图，输入任意中文修改描述，自动生成保持身份的多姿态/多背景证件照",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 GoogleTranslateTextNode 将中文提示词自动翻译为英文，并与预设风格模板组合，驱动 FLUX 生成",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果与原输入图通过 ImageStitch 并排拼接，并由双 SaveImage 保存，提供直观的视觉对照",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 dev (Kontext变体) 图像生成",
+  "LoRA 模型微调",
+  "ReferenceLatent / Kontext 图像上下文注入",
+  "DualCLIP 双文本编码",
+  "提示词自动翻译",
+  "图像拼接与宽高比控制",
+  "VAE 编解码"
+ ],
+ "special_features": [
+  {
+   "text": "多次参考图经 ImageConcatMulti 拼接后通过 FluxKontextImageScale 缩放，再借助 ReferenceLatent 注入生成流程，利用 Kontext 模型实现参考图像身份保持",
+   "kind": "inference"
+  },
+  {
+   "text": "内置 GoogleTranslateTextNode，可将中文自然语言指令自动翻译为英文提示词，并支持手动翻译覆盖",
+   "kind": "fact"
+  },
+  {
+   "text": "双 SaveImage 分别保存生成图和 Stitch 拼合图，形成输入输出对照链，便于人工质检",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut 与 FluxGuidance 配合，可能用于动态调整文本条件对生成的影响",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流可能面向中文用户提供“以图生图”式证件照服务。通过 FLUX Kontext 模型强大的参考图条件能力，将用户上传的人脸图/风格图作为上下文注入，结合翻译后的文本指令，实现身份保持的同时修改人像细节。双输出设计让用户能立即比对原图与生成图的保真度；配置 fp8 模型与 20 步采样表明作者在质量与生成速度间做了平衡。整体设计意图是通过组合现成的自定义节点，以较低成本搭建一个开箱即用、可交互修图的证件照生成器。",
+ "use_case": "适用于快速制作证件照、形象照：用户上传一张清晰正脸照片，用文字指定背景色/服装/配饰（如“戴皇冠”），即可生成同一人物的新照片。也可用于电商模特图、虚拟形象生成等场景。",
+ "limitation": "依赖外部网络进行 Google 翻译，且模型文件较多；若未安装第三方节点（ComfyRoll、pysssss、GoogleTranslate 等）需要先补齐。FLUX Kontext 模型对显存有一定要求，输入人脸不清晰或角度过大时可能导致身份偏移。未具名的 LoRA 需用户自行准备。输出分辨率受 CR SDXL Aspect Ratio 节点限制。",
+ "dependencies": [
+  "flux1-dev-kontext_fp8_scaled.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.safetensors",
+  "未具名 LoRA 文件",
+  "ComfyUI-GoogleTranslateNode",
+  "ComfyUI_Comfyroll_CustomNodes",
+  "pysssss",
+  "支持 FluxKontextImageScale / ReferenceLatent 的扩展节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像+文本",
+  "count": "2张图像 + 1段文本"
+ },
+ "output": {
+  "type": "PNG图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "当前为 20；想提升细节可提高到 25-30，但耗时增加；追求速度可降到 15，质量略降。"
+  },
+  {
+   "param": "KSampler cfg",
+   "how_to_tune": "FLUX 固定为 1，不建议调整；若切换其他模型需改为 7-8。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前为 2.5；值越大提示词跟随越强但易失真，值越小越自然，可在 1-5 间调节。"
+  },
+  {
+   "param": "CR SDXL Aspect Ratio",
+   "how_to_tune": "可预设证件照尺寸（如 826x1158 为竖版），使用 custom 可自定义宽高；注意长宽比需与目标输出匹配。"
+  },
+  {
+   "param": "LoraLoaderModelOnly weight",
+   "how_to_tune": "当前为 1；该 LoRA 可能用于强化人像/身份特征，若发现人物过于像或不够像，可在 0.6~1.4 范围内调整。"
+  },
+  {
+   "param": "GoogleTranslateTextNode Manual Translate",
+   "how_to_tune": "当自动翻译不够准确时，可开启手动覆盖并输入英文提示词，保证生成符合预期。"
+  }
+ ],
+ "summary_text": "能力:上传人脸参考图与样式参考图，输入任意中文修改描述，自动生成保持身份的多姿态/多背景证件照；能力:通过 GoogleTranslateTextNode 将中文提示词自动翻译为英文，并与预设风格模板组合，驱动 FLUX 生成；能力:生成结果与原输入图通过 ImageStitch 并排拼接，并由双 SaveImage 保存，提供直观的视觉对照；特色:多次参考图经 ImageConcatMulti 拼接后通过 FluxKontextImageScale 缩放，再借助 ReferenceLatent 注入生成流程，利用 Kontext 模型实现参考图像身份保持；特色:内置 GoogleTranslateTextNode，可将中文自然语言指令自动翻译为英文提示词，并支持手动翻译覆盖；特色:双 SaveImage 分别保存生成图和 Stitch 拼合图，形成输入输出对照链，便于人工质检；特色:ConditioningZeroOut 与 FluxGuidance 配合，可能用于动态调整文本条件对生成的影响；适用于快速制作证件照、形象照：用户上传一张清晰正脸照片，用文字指定背景色/服装/配饰（如“戴皇冠”），即可生成同一人物的新照片。也可用于电商模特图、虚拟形象生成等场景。；该工作流可能面向中文用户提供“以图生图”式证件照服务。通过 FLUX Kontext 模型强大的参考图条件能力，将用户上传的人脸图/风格图作为上下文注入，结合翻译后的文本指令，实现身份保持的同时修改人像细节。双输出设计让用户能立即比对原图与生成图的保真度；配置 fp8 模型与 20 步采样表明作者在质量与生成速度间做了平衡。整体设计意图是通过组合现成的自定义节点，以较低成本搭建一个开箱即用、可交互修图的证件照生成器。"
+}

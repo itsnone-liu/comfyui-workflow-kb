@@ -1,0 +1,6569 @@
+{
+ "node_count": 180,
+ "link_count": 175,
+ "active_node_count": 180,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "EmptyImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    1,
+    0
+   ],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 8,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    10,
+    11
+   ],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 10,
+   "type": "ImageToMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "red"
+   ],
+   "in_links": [
+    13
+   ],
+   "out_links": [
+    1,
+    2
+   ]
+  },
+  {
+   "id": 20,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    32
+   ]
+  },
+  {
+   "id": 21,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置ace图像"
+   ],
+   "in_links": [],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 22,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置ace遮罩"
+   ],
+   "in_links": [],
+   "out_links": [
+    34
+   ]
+  },
+  {
+   "id": 49,
+   "type": "ImageCrop+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    256,
+    256,
+    "top-left",
+    0,
+    0
+   ],
+   "in_links": [
+    48,
+    49,
+    50,
+    51
+   ],
+   "out_links": [
+    41,
+    42
+   ]
+  },
+  {
+   "id": 50,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Height"
+   ],
+   "in_links": [],
+   "out_links": [
+    50
+   ]
+  },
+  {
+   "id": 51,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width"
+   ],
+   "in_links": [],
+   "out_links": [
+    49
+   ]
+  },
+  {
+   "id": 59,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-CN(原图)"
+   ],
+   "in_links": [
+    56
+   ],
+   "out_links": []
+  },
+  {
+   "id": 60,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-redux(原图)"
+   ],
+   "in_links": [
+    57
+   ],
+   "out_links": []
+  },
+  {
+   "id": 63,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-redux(原图)_遮罩"
+   ],
+   "in_links": [
+    58
+   ],
+   "out_links": []
+  },
+  {
+   "id": 129,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    121
+   ],
+   "out_links": []
+  },
+  {
+   "id": 148,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-redux(原图)_遮罩"
+   ],
+   "in_links": [],
+   "out_links": [
+    139
+   ]
+  },
+  {
+   "id": 154,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载CN参考"
+   ],
+   "in_links": [
+    146
+   ],
+   "out_links": []
+  },
+  {
+   "id": 158,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件"
+   ],
+   "in_links": [],
+   "out_links": [
+    167
+   ]
+  },
+  {
+   "id": 161,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_获取ace姿势图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取ace姿势图"
+   ],
+   "in_links": [],
+   "out_links": [
+    165
+   ]
+  },
+  {
+   "id": 162,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    166
+   ]
+  },
+  {
+   "id": 163,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_获取ace深度图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取ace深度图"
+   ],
+   "in_links": [],
+   "out_links": [
+    160
+   ]
+  },
+  {
+   "id": 164,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    161
+   ]
+  },
+  {
+   "id": 165,
+   "type": "SetUnionControlNetType",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "depth"
+   ],
+   "in_links": [
+    155
+   ],
+   "out_links": [
+    159
+   ]
+  },
+  {
+   "id": 167,
+   "type": "SetUnionControlNetType",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "openpose"
+   ],
+   "in_links": [
+    156
+   ],
+   "out_links": [
+    164
+   ]
+  },
+  {
+   "id": 149,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-CN(原图)"
+   ],
+   "in_links": [],
+   "out_links": [
+    172
+   ]
+  },
+  {
+   "id": 130,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    172
+   ],
+   "out_links": [
+    121,
+    146,
+    124,
+    123
+   ]
+  },
+  {
+   "id": 37,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_保存图像-未裁剪",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-未裁剪"
+   ],
+   "in_links": [],
+   "out_links": [
+    48
+   ]
+  },
+  {
+   "id": 36,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-裁剪后"
+   ],
+   "in_links": [
+    42
+   ],
+   "out_links": []
+  },
+  {
+   "id": 170,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.5000000000000001,
+    0,
+    0.5000000000000001
+   ],
+   "in_links": [
+    157,
+    158,
+    159,
+    160,
+    161
+   ],
+   "out_links": [
+    154
+   ]
+  },
+  {
+   "id": 31,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件_空条件"
+   ],
+   "in_links": [],
+   "out_links": [
+    31
+   ]
+  },
+  {
+   "id": 53,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件+redux+cn"
+   ],
+   "in_links": [],
+   "out_links": [
+    35
+   ]
+  },
+  {
+   "id": 72,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6f57e5681bb37cadbc71546d34b857c8dc0c9b69a00e47e579d37114561914f5.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    57,
+    58
+   ]
+  },
+  {
+   "id": 70,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "6f57e5681bb37cadbc71546d34b857c8dc0c9b69a00e47e579d37114561914f5.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 205,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "随机种子共享"
+   ],
+   "in_links": [],
+   "out_links": [
+    211
+   ]
+  },
+  {
+   "id": 211,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ","
+   ],
+   "in_links": [
+    216,
+    217
+   ],
+   "out_links": [
+    214,
+    220,
+    223
+   ]
+  },
+  {
+   "id": 217,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ","
+   ],
+   "in_links": [
+    222,
+    223
+   ],
+   "out_links": [
+    224
+   ]
+  },
+  {
+   "id": 206,
+   "type": "RH_Translator",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    149,
+    "randomize",
+    "force_english"
+   ],
+   "in_links": [
+    211
+   ],
+   "out_links": [
+    213,
+    222
+   ]
+  },
+  {
+   "id": 207,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本描述"
+   ],
+   "in_links": [
+    224
+   ],
+   "out_links": []
+  },
+  {
+   "id": 210,
+   "type": "easy seed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    931253907605522,
+    "fixed",
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    228
+   ]
+  },
+  {
+   "id": 155,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "随机种子共享"
+   ],
+   "in_links": [
+    228
+   ],
+   "out_links": []
+  },
+  {
+   "id": 213,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图"
+   ],
+   "in_links": [],
+   "out_links": [
+    218
+   ]
+  },
+  {
+   "id": 212,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载CN参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    219
+   ]
+  },
+  {
+   "id": 214,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "只描述图像中的人物的服装，不要描述环境，姿势动作等其他，英文输出",
+    "",
+    0.6,
+    972106554,
+    "randomize"
+   ],
+   "in_links": [
+    218
+   ],
+   "out_links": [
+    216
+   ]
+  },
+  {
+   "id": 223,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "portrait_lora64.safetensors",
+    1
+   ],
+   "in_links": [
+    238
+   ],
+   "out_links": [
+    236
+   ]
+  },
+  {
+   "id": 222,
+   "type": "TeaCache",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux",
+    0.30000000000000004,
+    0.20000000000000004,
+    0.8000000000000002,
+    "cuda"
+   ],
+   "in_links": [
+    370
+   ],
+   "out_links": [
+    235
+   ]
+  },
+  {
+   "id": 219,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    235
+   ],
+   "out_links": [
+    239
+   ]
+  },
+  {
+   "id": 15,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取模型_fill"
+   ],
+   "in_links": [
+    239
+   ],
+   "out_links": []
+  },
+  {
+   "id": 221,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fluxFillFP8_v10.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    238
+   ]
+  },
+  {
+   "id": 147,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    138,
+    139
+   ],
+   "out_links": [
+    136,
+    137
+   ]
+  },
+  {
+   "id": 151,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    20,
+    20,
+    20,
+    20,
+    "8"
+   ],
+   "in_links": [
+    297,
+    298
+   ],
+   "out_links": [
+    143,
+    144
+   ]
+  },
+  {
+   "id": 152,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    143,
+    144
+   ],
+   "out_links": [
+    130,
+    135,
+    131
+   ]
+  },
+  {
+   "id": 143,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    135
+   ],
+   "out_links": []
+  },
+  {
+   "id": 139,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图_遮罩"
+   ],
+   "in_links": [
+    131
+   ],
+   "out_links": []
+  },
+  {
+   "id": 138,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图"
+   ],
+   "in_links": [
+    130
+   ],
+   "out_links": []
+  },
+  {
+   "id": 145,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图_遮罩"
+   ],
+   "in_links": [
+    137
+   ],
+   "out_links": []
+  },
+  {
+   "id": 144,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux图片"
+   ],
+   "in_links": [
+    136
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    4,
+    5
+   ],
+   "out_links": [
+    3,
+    6
+   ]
+  },
+  {
+   "id": 32,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    190
+   ],
+   "out_links": []
+  },
+  {
+   "id": 190,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinT_OGC (694MB)",
+    0.3,
+    "VITMatte",
+    6,
+    6,
+    0.15,
+    0.99,
+    true,
+    "subject, person,",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    189
+   ],
+   "out_links": [
+    190,
+    191
+   ]
+  },
+  {
+   "id": 42,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载CN参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    5,
+    189
+   ]
+  },
+  {
+   "id": 33,
+   "type": "LayerMask: MaskGrow",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    8,
+    4
+   ],
+   "in_links": [
+    191
+   ],
+   "out_links": [
+    40
+   ]
+  },
+  {
+   "id": 34,
+   "type": "Mask Fill Holes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    40
+   ],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 7,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9
+   ],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 41,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "随机种子共享"
+   ],
+   "in_links": [],
+   "out_links": [
+    44
+   ]
+  },
+  {
+   "id": 40,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    509576270345991,
+    "randomize"
+   ],
+   "in_links": [
+    44
+   ],
+   "out_links": [
+    25
+   ]
+  },
+  {
+   "id": 29,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取模型_fill"
+   ],
+   "in_links": [],
+   "out_links": [
+    23,
+    53
+   ]
+  },
+  {
+   "id": 55,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    20,
+    1
+   ],
+   "in_links": [
+    53
+   ],
+   "out_links": [
+    28
+   ]
+  },
+  {
+   "id": 25,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    25,
+    26,
+    27,
+    28,
+    290
+   ],
+   "out_links": [
+    36
+   ]
+  },
+  {
+   "id": 26,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取vae"
+   ],
+   "in_links": [],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 30,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    36,
+    37
+   ],
+   "out_links": [
+    43
+   ]
+  },
+  {
+   "id": 192,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图_遮罩"
+   ],
+   "in_links": [],
+   "out_links": [
+    198
+   ]
+  },
+  {
+   "id": 160,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件+redux+cn"
+   ],
+   "in_links": [
+    154
+   ],
+   "out_links": []
+  },
+  {
+   "id": 27,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    30,
+    31,
+    32,
+    33,
+    34
+   ],
+   "out_links": [
+    24,
+    289
+   ]
+  },
+  {
+   "id": 264,
+   "type": "RepeatLatentBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4
+   ],
+   "in_links": [
+    289
+   ],
+   "out_links": [
+    288
+   ]
+  },
+  {
+   "id": 263,
+   "type": "RebatchLatents",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    288
+   ],
+   "out_links": [
+    290
+   ]
+  },
+  {
+   "id": 23,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    23,
+    24
+   ],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 28,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40
+   ],
+   "in_links": [
+    35
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 159,
+   "type": "StyleModelLoader",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-redux-dev.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    168,
+    293
+   ]
+  },
+  {
+   "id": 169,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sigclip_vision_patch14_384.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    169,
+    294
+   ]
+  },
+  {
+   "id": 174,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图"
+   ],
+   "in_links": [],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 266,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置脸部参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    295
+   ]
+  },
+  {
+   "id": 173,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件+redux"
+   ],
+   "in_links": [
+    292
+   ],
+   "out_links": []
+  },
+  {
+   "id": 166,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件_空条件"
+   ],
+   "in_links": [],
+   "out_links": [
+    163
+   ]
+  },
+  {
+   "id": 24,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "deis"
+   ],
+   "in_links": [],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 146,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "上传图片-redux(原图)"
+   ],
+   "in_links": [],
+   "out_links": [
+    138,
+    296
+   ]
+  },
+  {
+   "id": 216,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The person is wearing a sleeveless dark gray athletic tank top with a white Nike logo on the chest, black Nike running shorts with a white logo, a black wristwatch, white socks, and white running shoes with pink accents.,The individual is performing a sit-up exercise, positioned on a green mat. Their hands are placed behind their head, elbows bent outward, while their legs are bent at the knees, with feet resting on the mat. The environment appears to be a gym, with fitness equipment and plants visible in the background."
+   ],
+   "in_links": [
+    220
+   ],
+   "out_links": []
+  },
+  {
+   "id": 268,
+   "type": "DWPreprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    "enable",
+    "enable",
+    1024,
+    "yolox_l.onnx",
+    "dw-ll_ucoco_384_bs5.torchscript.pt",
+    "disable"
+   ],
+   "in_links": [
+    299
+   ],
+   "out_links": [
+    306
+   ]
+  },
+  {
+   "id": 269,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    300
+   ],
+   "out_links": []
+  },
+  {
+   "id": 271,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    302
+   ],
+   "out_links": []
+  },
+  {
+   "id": 273,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    304
+   ],
+   "out_links": [
+    305
+   ]
+  },
+  {
+   "id": 274,
+   "type": "LayerColor: Brightness & Contrast",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    1.5000000000000002,
+    1
+   ],
+   "in_links": [
+    305
+   ],
+   "out_links": [
+    302,
+    303
+   ]
+  },
+  {
+   "id": 275,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    306
+   ],
+   "out_links": [
+    300,
+    301
+   ]
+  },
+  {
+   "id": 280,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "DepthAnythingV2Preprocessor",
+    1024
+   ],
+   "in_links": [
+    309
+   ],
+   "out_links": [
+    304
+   ]
+  },
+  {
+   "id": 132,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width"
+   ],
+   "in_links": [
+    124
+   ],
+   "out_links": []
+  },
+  {
+   "id": 131,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Height"
+   ],
+   "in_links": [
+    123
+   ],
+   "out_links": []
+  },
+  {
+   "id": 270,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取姿势图"
+   ],
+   "in_links": [
+    301
+   ],
+   "out_links": []
+  },
+  {
+   "id": 272,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取深度图"
+   ],
+   "in_links": [
+    303
+   ],
+   "out_links": []
+  },
+  {
+   "id": 180,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    313
+   ],
+   "out_links": []
+  },
+  {
+   "id": 175,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取ace姿势图"
+   ],
+   "in_links": [
+    312
+   ],
+   "out_links": []
+  },
+  {
+   "id": 179,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取ace深度图"
+   ],
+   "in_links": [
+    316
+   ],
+   "out_links": []
+  },
+  {
+   "id": 177,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    317
+   ],
+   "out_links": []
+  },
+  {
+   "id": 185,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    183,
+    184
+   ],
+   "out_links": [
+    312,
+    313
+   ]
+  },
+  {
+   "id": 184,
+   "type": "EmptyImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    1,
+    0
+   ],
+   "in_links": [
+    181,
+    182
+   ],
+   "out_links": [
+    183,
+    318
+   ]
+  },
+  {
+   "id": 284,
+   "type": "easy imageConcat",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    false
+   ],
+   "in_links": [
+    318,
+    319
+   ],
+   "out_links": [
+    316,
+    317
+   ]
+  },
+  {
+   "id": 181,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_获取姿势图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取姿势图"
+   ],
+   "in_links": [],
+   "out_links": [
+    184
+   ]
+  },
+  {
+   "id": 285,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_获取深度图",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取深度图"
+   ],
+   "in_links": [],
+   "out_links": [
+    319
+   ]
+  },
+  {
+   "id": 2,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置ace遮罩"
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1
+   ],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置ace图像"
+   ],
+   "in_links": [
+    6
+   ],
+   "out_links": []
+  },
+  {
+   "id": 52,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_ace左图-宽",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-宽"
+   ],
+   "in_links": [],
+   "out_links": [
+    51
+   ]
+  },
+  {
+   "id": 47,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_ace左图-宽",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-宽"
+   ],
+   "in_links": [],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 48,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_ace左图-高",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-高"
+   ],
+   "in_links": [],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 186,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_ace左图-宽",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-宽"
+   ],
+   "in_links": [],
+   "out_links": [
+    181
+   ]
+  },
+  {
+   "id": 187,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_ace左图-高",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-高"
+   ],
+   "in_links": [],
+   "out_links": [
+    182
+   ]
+  },
+  {
+   "id": 43,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-宽"
+   ],
+   "in_links": [
+    45
+   ],
+   "out_links": []
+  },
+  {
+   "id": 44,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace左图-高"
+   ],
+   "in_links": [
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 276,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载CN参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    299
+   ]
+  },
+  {
+   "id": 265,
+   "type": "ReduxAdvanced",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "nearest-exact",
+    "keep aspect ratio",
+    0.8000000000000002,
+    0.10000000000000002
+   ],
+   "in_links": [
+    291,
+    293,
+    294,
+    295
+   ],
+   "out_links": [
+    292
+   ]
+  },
+  {
+   "id": 172,
+   "type": "ReduxAdvanced",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "nearest-exact",
+    "autocrop with mask",
+    0.8000000000000002,
+    0.10000000000000002
+   ],
+   "in_links": [
+    167,
+    168,
+    169,
+    170,
+    198
+   ],
+   "out_links": [
+    162,
+    291
+   ]
+  },
+  {
+   "id": 45,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图"
+   ],
+   "in_links": [],
+   "out_links": [
+    197
+   ]
+  },
+  {
+   "id": 46,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1280,
+    "#000000"
+   ],
+   "in_links": [
+    197
+   ],
+   "out_links": [
+    4,
+    45,
+    46
+   ]
+  },
+  {
+   "id": 267,
+   "type": "BiRefNetRMBG",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BiRefNet-general",
+    0,
+    0,
+    false,
+    false,
+    "Color",
+    "#8c8c8c"
+   ],
+   "in_links": [
+    296
+   ],
+   "out_links": [
+    297,
+    298
+   ]
+  },
+  {
+   "id": 38,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-未裁剪"
+   ],
+   "in_links": [
+    43
+   ],
+   "out_links": []
+  },
+  {
+   "id": 289,
+   "type": "InstantIDFaceAnalysis",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CUDA"
+   ],
+   "in_links": [],
+   "out_links": [
+    331
+   ]
+  },
+  {
+   "id": 290,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "instantid/diffusion_pytorch_model.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    332
+   ]
+  },
+  {
+   "id": 291,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取XL模型"
+   ],
+   "in_links": [
+    326
+   ],
+   "out_links": []
+  },
+  {
+   "id": 292,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取XL-clip"
+   ],
+   "in_links": [
+    327
+   ],
+   "out_links": []
+  },
+  {
+   "id": 293,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取XL-VAE"
+   ],
+   "in_links": [
+    328
+   ],
+   "out_links": []
+  },
+  {
+   "id": 294,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "realvisxlV50_v50Bakedvae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    326,
+    334,
+    327,
+    338,
+    348,
+    328
+   ]
+  },
+  {
+   "id": 295,
+   "type": "InstantIDModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ip-adapter.bin"
+   ],
+   "in_links": [],
+   "out_links": [
+    330
+   ]
+  },
+  {
+   "id": 296,
+   "type": "DifferentialDiffusion",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [
+    329
+   ],
+   "out_links": [
+    359
+   ]
+  },
+  {
+   "id": 297,
+   "type": "ApplyInstantID",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    330,
+    331,
+    332,
+    333,
+    334,
+    335,
+    336,
+    337
+   ],
+   "out_links": [
+    329,
+    352,
+    353
+   ]
+  },
+  {
+   "id": 298,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取XL-VAE"
+   ],
+   "in_links": [],
+   "out_links": [
+    354
+   ]
+  },
+  {
+   "id": 299,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置脸部参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    333
+   ]
+  },
+  {
+   "id": 300,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "face,"
+   ],
+   "in_links": [
+    338
+   ],
+   "out_links": [
+    335
+   ]
+  },
+  {
+   "id": 301,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    339
+   ],
+   "out_links": []
+  },
+  {
+   "id": 302,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    340
+   ],
+   "out_links": []
+  },
+  {
+   "id": 303,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置脸部参考"
+   ],
+   "in_links": [
+    341
+   ],
+   "out_links": []
+  },
+  {
+   "id": 304,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载redux参考图-人物抠图"
+   ],
+   "in_links": [],
+   "out_links": [
+    358,
+    367
+   ]
+  },
+  {
+   "id": 306,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置3阶段脸部参考-原图"
+   ],
+   "in_links": [],
+   "out_links": [
+    337
+   ]
+  },
+  {
+   "id": 307,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置3阶段脸部参考_遮罩缩放"
+   ],
+   "in_links": [
+    342
+   ],
+   "out_links": [
+    347
+   ]
+  },
+  {
+   "id": 308,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-3阶段-换脸"
+   ],
+   "in_links": [
+    343
+   ],
+   "out_links": []
+  },
+  {
+   "id": 309,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    344
+   ],
+   "out_links": []
+  },
+  {
+   "id": 310,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置脸部重绘后"
+   ],
+   "in_links": [],
+   "out_links": [
+    345,
+    364
+   ]
+  },
+  {
+   "id": 311,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    345
+   ],
+   "out_links": []
+  },
+  {
+   "id": 312,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置3阶段脸部参考-原图"
+   ],
+   "in_links": [
+    346
+   ],
+   "out_links": [
+    344
+   ]
+  },
+  {
+   "id": 313,
+   "type": "LayerMask: MaskPreview",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    347
+   ],
+   "out_links": []
+  },
+  {
+   "id": 314,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Drawing, comics, anime, cartoons, 3D，filthy，dirty，Deformed, ugly，Low quality"
+   ],
+   "in_links": [
+    348
+   ],
+   "out_links": [
+    336
+   ]
+  },
+  {
+   "id": 315,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置脸部重绘后"
+   ],
+   "in_links": [
+    349
+   ],
+   "out_links": []
+  },
+  {
+   "id": 316,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置3阶段脸部参考-原图"
+   ],
+   "in_links": [],
+   "out_links": [
+    355
+   ]
+  },
+  {
+   "id": 317,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "设置3阶段脸部参考_遮罩缩放"
+   ],
+   "in_links": [],
+   "out_links": [
+    356
+   ]
+  },
+  {
+   "id": 318,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    350,
+    351
+   ],
+   "out_links": [
+    339,
+    349
+   ]
+  },
+  {
+   "id": 319,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取XL-VAE"
+   ],
+   "in_links": [],
+   "out_links": [
+    351
+   ]
+  },
+  {
+   "id": 320,
+   "type": "InpaintModelConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    352,
+    353,
+    354,
+    355,
+    356
+   ],
+   "out_links": [
+    360,
+    361,
+    362
+   ]
+  },
+  {
+   "id": 321,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    357
+   ],
+   "out_links": [
+    366
+   ]
+  },
+  {
+   "id": 322,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    358
+   ],
+   "out_links": [
+    368
+   ]
+  },
+  {
+   "id": 323,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    473412735909381,
+    "randomize",
+    20,
+    1.5,
+    "dpmpp_2m",
+    "karras",
+    0.5000000000000001
+   ],
+   "in_links": [
+    359,
+    360,
+    361,
+    362
+   ],
+   "out_links": [
+    350
+   ]
+  },
+  {
+   "id": 324,
+   "type": "InpaintStitchImproved",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    363,
+    364
+   ],
+   "out_links": [
+    343
+   ]
+  },
+  {
+   "id": 325,
+   "type": "InpaintCropImproved",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bilinear",
+    "bicubic",
+    false,
+    "ensure minimum resolution",
+    1024,
+    1024,
+    16384,
+    16384,
+    true,
+    0,
+    false,
+    32,
+    0.1,
+    false,
+    1,
+    1,
+    1,
+    1,
+    1.2,
+    true,
+    1280,
+    1280,
+    "32"
+   ],
+   "in_links": [
+    365,
+    366
+   ],
+   "out_links": [
+    363,
+    346,
+    342
+   ]
+  },
+  {
+   "id": 326,
+   "type": "InpaintCropImproved",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bilinear",
+    "bicubic",
+    false,
+    "ensure minimum resolution",
+    1024,
+    1024,
+    16384,
+    16384,
+    true,
+    0,
+    false,
+    32,
+    0.1,
+    false,
+    1,
+    1,
+    1,
+    1,
+    1.2,
+    true,
+    1280,
+    1280,
+    "32"
+   ],
+   "in_links": [
+    367,
+    368
+   ],
+   "out_links": [
+    340,
+    341
+   ]
+  },
+  {
+   "id": 220,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "manfoot-v3-b20.safetensors",
+    0.5000000000000001
+   ],
+   "in_links": [
+    236
+   ],
+   "out_links": [
+    369
+   ]
+  },
+  {
+   "id": 327,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ace_plus_fft_fp8.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    369
+   ],
+   "out_links": [
+    370
+   ]
+  },
+  {
+   "id": 288,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-3阶段-换脸"
+   ],
+   "in_links": [],
+   "out_links": [
+    321
+   ]
+  },
+  {
+   "id": 67,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_保存图像-裁剪后",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-裁剪后"
+   ],
+   "in_links": [],
+   "out_links": [
+    192
+   ]
+  },
+  {
+   "id": 305,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_保存图像-裁剪后",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "保存图像-裁剪后"
+   ],
+   "in_links": [],
+   "out_links": [
+    357,
+    365
+   ]
+  },
+  {
+   "id": 329,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp8_e4m3fn_scaled.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    375
+   ]
+  },
+  {
+   "id": 224,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip模型"
+   ],
+   "in_links": [
+    375
+   ],
+   "out_links": [
+    371
+   ]
+  },
+  {
+   "id": 102,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取vae"
+   ],
+   "in_links": [
+    93
+   ],
+   "out_links": []
+  },
+  {
+   "id": 108,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    93
+   ]
+  },
+  {
+   "id": 198,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_文本描述",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "文本描述"
+   ],
+   "in_links": [],
+   "out_links": [
+    372
+   ]
+  },
+  {
+   "id": 328,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    371,
+    372
+   ],
+   "out_links": [
+    373,
+    374
+   ]
+  },
+  {
+   "id": 103,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件"
+   ],
+   "in_links": [
+    373
+   ],
+   "out_links": []
+  },
+  {
+   "id": 105,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    374
+   ],
+   "out_links": [
+    95
+   ]
+  },
+  {
+   "id": 104,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "获取clip条件_空条件"
+   ],
+   "in_links": [
+    95
+   ],
+   "out_links": []
+  },
+  {
+   "id": 277,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "加载CN参考"
+   ],
+   "in_links": [],
+   "out_links": [
+    309
+   ]
+  },
+  {
+   "id": 215,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "只描述图像中的人物动作姿势和环境场景，不要描述人物服装等其他，英文输出",
+    "",
+    0.6,
+    1400329637,
+    "randomize"
+   ],
+   "in_links": [
+    219
+   ],
+   "out_links": [
+    217
+   ]
+  },
+  {
+   "id": 35,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    41
+   ],
+   "out_links": []
+  },
+  {
+   "id": 171,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.8000000000000002,
+    0,
+    0.6600000000000001
+   ],
+   "in_links": [
+    162,
+    163,
+    164,
+    165,
+    166
+   ],
+   "out_links": [
+    157,
+    158
+   ]
+  },
+  {
+   "id": 168,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    155,
+    156
+   ]
+  },
+  {
+   "id": 68,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "Flux"
+   ],
+   "in_links": [
+    192
+   ],
+   "out_links": []
+  },
+  {
+   "id": 287,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "Flux"
+   ],
+   "in_links": [
+    321
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 1,
+   "type": "MASK"
+  },
+  {
+   "from_node": 10,
+   "to_node": 2,
+   "type": "*"
+  },
+  {
+   "from_node": 105,
+   "to_node": 104,
+   "type": "*"
+  },
+  {
+   "from_node": 108,
+   "to_node": 102,
+   "type": "*"
+  },
+  {
+   "from_node": 130,
+   "to_node": 129,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 130,
+   "to_node": 131,
+   "type": "*"
+  },
+  {
+   "from_node": 130,
+   "to_node": 132,
+   "type": "*"
+  },
+  {
+   "from_node": 130,
+   "to_node": 154,
+   "type": "*"
+  },
+  {
+   "from_node": 146,
+   "to_node": 147,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 146,
+   "to_node": 267,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 147,
+   "to_node": 144,
+   "type": "*"
+  },
+  {
+   "from_node": 147,
+   "to_node": 145,
+   "type": "*"
+  },
+  {
+   "from_node": 148,
+   "to_node": 147,
+   "type": "MASK"
+  },
+  {
+   "from_node": 149,
+   "to_node": 130,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 151,
+   "to_node": 152,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 151,
+   "to_node": 152,
+   "type": "MASK"
+  },
+  {
+   "from_node": 152,
+   "to_node": 138,
+   "type": "*"
+  },
+  {
+   "from_node": 152,
+   "to_node": 139,
+   "type": "*"
+  },
+  {
+   "from_node": 152,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 158,
+   "to_node": 172,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 159,
+   "to_node": 172,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 159,
+   "to_node": 265,
+   "type": "STYLE_MODEL"
+  },
+  {
+   "from_node": 161,
+   "to_node": 171,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 162,
+   "to_node": 171,
+   "type": "VAE"
+  },
+  {
+   "from_node": 163,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 164,
+   "to_node": 170,
+   "type": "VAE"
+  },
+  {
+   "from_node": 165,
+   "to_node": 170,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 166,
+   "to_node": 171,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 167,
+   "to_node": 171,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 168,
+   "to_node": 165,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 168,
+   "to_node": 167,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 169,
+   "to_node": 172,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 169,
+   "to_node": 265,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 170,
+   "to_node": 160,
+   "type": "*"
+  },
+  {
+   "from_node": 171,
+   "to_node": 170,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 171,
+   "to_node": 170,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 172,
+   "to_node": 171,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 172,
+   "to_node": 265,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 174,
+   "to_node": 172,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 181,
+   "to_node": 185,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 184,
+   "to_node": 185,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 184,
+   "to_node": 284,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 185,
+   "to_node": 175,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 185,
+   "to_node": 180,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 186,
+   "to_node": 184,
+   "type": "INT"
+  },
+  {
+   "from_node": 187,
+   "to_node": 184,
+   "type": "INT"
+  },
+  {
+   "from_node": 190,
+   "to_node": 32,
+   "type": "MASK"
+  },
+  {
+   "from_node": 190,
+   "to_node": 33,
+   "type": "MASK"
+  },
+  {
+   "from_node": 192,
+   "to_node": 172,
+   "type": "MASK"
+  },
+  {
+   "from_node": 198,
+   "to_node": 328,
+   "type": "STRING"
+  },
+  {
+   "from_node": 20,
+   "to_node": 27,
+   "type": "VAE"
+  },
+  {
+   "from_node": 205,
+   "to_node": 206,
+   "type": "INT"
+  },
+  {
+   "from_node": 206,
+   "to_node": 217,
+   "type": "STRING"
+  },
+  {
+   "from_node": 21,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 210,
+   "to_node": 155,
+   "type": "INT"
+  },
+  {
+   "from_node": 211,
+   "to_node": 216,
+   "type": "STRING"
+  },
+  {
+   "from_node": 211,
+   "to_node": 217,
+   "type": "STRING"
+  },
+  {
+   "from_node": 212,
+   "to_node": 215,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 213,
+   "to_node": 214,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 214,
+   "to_node": 211,
+   "type": "STRING"
+  },
+  {
+   "from_node": 215,
+   "to_node": 211,
+   "type": "STRING"
+  },
+  {
+   "from_node": 217,
+   "to_node": 207,
+   "type": "STRING"
+  },
+  {
+   "from_node": 219,
+   "to_node": 15,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 22,
+   "to_node": 27,
+   "type": "MASK"
+  },
+  {
+   "from_node": 220,
+   "to_node": 327,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 221,
+   "to_node": 223,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 222,
+   "to_node": 219,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 223,
+   "to_node": 220,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 224,
+   "to_node": 328,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 23,
+   "to_node": 25,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 24,
+   "to_node": 25,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 25,
+   "to_node": 30,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 26,
+   "to_node": 30,
+   "type": "VAE"
+  },
+  {
+   "from_node": 263,
+   "to_node": 25,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 264,
+   "to_node": 263,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 265,
+   "to_node": 173,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 266,
+   "to_node": 265,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 267,
+   "to_node": 151,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 267,
+   "to_node": 151,
+   "type": "MASK"
+  },
+  {
+   "from_node": 268,
+   "to_node": 275,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 27,
+   "to_node": 23,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 27,
+   "to_node": 264,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 273,
+   "to_node": 274,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 274,
+   "to_node": 271,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 274,
+   "to_node": 272,
+   "type": "*"
+  },
+  {
+   "from_node": 275,
+   "to_node": 269,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 275,
+   "to_node": 270,
+   "type": "*"
+  },
+  {
+   "from_node": 276,
+   "to_node": 268,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 277,
+   "to_node": 280,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 28,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 280,
+   "to_node": 273,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 284,
+   "to_node": 177,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 284,
+   "to_node": 179,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 285,
+   "to_node": 284,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 288,
+   "to_node": 287,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 289,
+   "to_node": 297,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 29,
+   "to_node": 23,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 29,
+   "to_node": 55,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 290,
+   "to_node": 297,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 294,
+   "to_node": 291,
+   "type": "*"
+  },
+  {
+   "from_node": 294,
+   "to_node": 292,
+   "type": "*"
+  },
+  {
+   "from_node": 294,
+   "to_node": 293,
+   "type": "*"
+  },
+  {
+   "from_node": 294,
+   "to_node": 297,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 294,
+   "to_node": 300,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 294,
+   "to_node": 314,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 295,
+   "to_node": 297,
+   "type": "INSTANTID"
+  },
+  {
+   "from_node": 296,
+   "to_node": 323,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 297,
+   "to_node": 296,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 297,
+   "to_node": 320,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 297,
+   "to_node": 320,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 298,
+   "to_node": 320,
+   "type": "VAE"
+  },
+  {
+   "from_node": 299,
+   "to_node": 297,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 30,
+   "to_node": 38,
+   "type": "*"
+  },
+  {
+   "from_node": 300,
+   "to_node": 297,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 304,
+   "to_node": 322,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 304,
+   "to_node": 326,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 305,
+   "to_node": 321,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 305,
+   "to_node": 325,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 306,
+   "to_node": 297,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 307,
+   "to_node": 313,
+   "type": "MASK"
+  },
+  {
+   "from_node": 31,
+   "to_node": 27,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 310,
+   "to_node": 311,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 310,
+   "to_node": 324,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 312,
+   "to_node": 309,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 314,
+   "to_node": 297,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 316,
+   "to_node": 320,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 317,
+   "to_node": 320,
+   "type": "MASK"
+  },
+  {
+   "from_node": 318,
+   "to_node": 301,
+   "type": "*"
+  },
+  {
+   "from_node": 318,
+   "to_node": 315,
+   "type": "*"
+  },
+  {
+   "from_node": 319,
+   "to_node": 318,
+   "type": "VAE"
+  },
+  {
+   "from_node": 320,
+   "to_node": 323,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 320,
+   "to_node": 323,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 320,
+   "to_node": 323,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 321,
+   "to_node": 325,
+   "type": "MASK"
+  },
+  {
+   "from_node": 322,
+   "to_node": 326,
+   "type": "MASK"
+  },
+  {
+   "from_node": 323,
+   "to_node": 318,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 324,
+   "to_node": 308,
+   "type": "*"
+  },
+  {
+   "from_node": 325,
+   "to_node": 307,
+   "type": "*"
+  },
+  {
+   "from_node": 325,
+   "to_node": 312,
+   "type": "*"
+  },
+  {
+   "from_node": 325,
+   "to_node": 324,
+   "type": "STITCHER"
+  },
+  {
+   "from_node": 326,
+   "to_node": 302,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 326,
+   "to_node": 303,
+   "type": "*"
+  },
+  {
+   "from_node": 327,
+   "to_node": 222,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 328,
+   "to_node": 103,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 328,
+   "to_node": 105,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 329,
+   "to_node": 224,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 33,
+   "to_node": 34,
+   "type": "MASK"
+  },
+  {
+   "from_node": 34,
+   "to_node": 7,
+   "type": "MASK"
+  },
+  {
+   "from_node": 37,
+   "to_node": 49,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 3,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "*"
+  },
+  {
+   "from_node": 40,
+   "to_node": 25,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 41,
+   "to_node": 40,
+   "type": "INT"
+  },
+  {
+   "from_node": 42,
+   "to_node": 190,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 4,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 46,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 46,
+   "to_node": 4,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 46,
+   "to_node": 43,
+   "type": "*"
+  },
+  {
+   "from_node": 46,
+   "to_node": 44,
+   "type": "*"
+  },
+  {
+   "from_node": 47,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 48,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 49,
+   "to_node": 35,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 36,
+   "type": "*"
+  },
+  {
+   "from_node": 50,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 51,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 52,
+   "to_node": 49,
+   "type": "INT"
+  },
+  {
+   "from_node": 53,
+   "to_node": 28,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 55,
+   "to_node": 25,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 6,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 67,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 7,
+   "to_node": 8,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 70,
+   "to_node": 59,
+   "type": "*"
+  },
+  {
+   "from_node": 72,
+   "to_node": 60,
+   "type": "*"
+  },
+  {
+   "from_node": 72,
+   "to_node": 63,
+   "type": "*"
+  },
+  {
+   "from_node": 8,
+   "to_node": 10,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 15,
+  "utility": 125,
+  "conditioning": 10,
+  "controlnet": 4,
+  "lora": 3,
+  "checkpoint_loader": 2,
+  "preprocessor": 4,
+  "postprocess": 2,
+  "sampler": 5,
+  "vae": 3,
+  "batch": 2,
+  "clip": 2,
+  "face": 3
+ },
+ "assets": [
+  {
+   "node_id": 223,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 221,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "fluxFillFP8_v10.safetensors"
+  },
+  {
+   "node_id": 159,
+   "node_type": "StyleModelLoader",
+   "kind": "checkpoint",
+   "name": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 169,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "kind": "checkpoint",
+   "name": "yolox_l.onnx"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "kind": "checkpoint",
+   "name": "dw-ll_ucoco_384_bs5.torchscript.pt"
+  },
+  {
+   "node_id": 290,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  {
+   "node_id": 294,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "vae",
+   "name": "realvisxlV50_v50Bakedvae.safetensors"
+  },
+  {
+   "node_id": 295,
+   "node_type": "InstantIDModelLoader",
+   "kind": "aux_model",
+   "name": "ip-adapter.bin"
+  },
+  {
+   "node_id": 220,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "manfoot-v3-b20.safetensors"
+  },
+  {
+   "node_id": 327,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "ace_plus_fft_fp8.safetensors"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 108,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 168,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+  }
+ ],
+ "techniques": [
+  "InstantID",
+  "ControlNet",
+  "FLUX"
+ ],
+ "param_face_size": 379,
+ "structure_hash": "be103feba8ed3edb",
+ "param_face": [
+  {
+   "node_id": 6,
+   "node_type": "EmptyImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 6,
+   "node_type": "EmptyImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 6,
+   "node_type": "EmptyImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 6,
+   "node_type": "EmptyImage",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 8,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 8,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "ImageToMask",
+   "widget_index": 0,
+   "value_preview": "red"
+  },
+  {
+   "node_id": 20,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取vae"
+  },
+  {
+   "node_id": 21,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置ace图像"
+  },
+  {
+   "node_id": 22,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置ace遮罩"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 0,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 1,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 2,
+   "value_preview": "top-left"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 49,
+   "node_type": "ImageCrop+",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 50,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "Height"
+  },
+  {
+   "node_id": 51,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "Width"
+  },
+  {
+   "node_id": 59,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-CN(原图)"
+  },
+  {
+   "node_id": 60,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-redux(原图)"
+  },
+  {
+   "node_id": 63,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-redux(原图)_遮罩"
+  },
+  {
+   "node_id": 148,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-redux(原图)_遮罩"
+  },
+  {
+   "node_id": 154,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "加载CN参考"
+  },
+  {
+   "node_id": 158,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件"
+  },
+  {
+   "node_id": 161,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取ace姿势图"
+  },
+  {
+   "node_id": 162,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取vae"
+  },
+  {
+   "node_id": 163,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取ace深度图"
+  },
+  {
+   "node_id": 164,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取vae"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SetUnionControlNetType",
+   "widget_index": 0,
+   "value_preview": "depth"
+  },
+  {
+   "node_id": 167,
+   "node_type": "SetUnionControlNetType",
+   "widget_index": 0,
+   "value_preview": "openpose"
+  },
+  {
+   "node_id": 149,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-CN(原图)"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 130,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 37,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-未裁剪"
+  },
+  {
+   "node_id": 36,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-裁剪后"
+  },
+  {
+   "node_id": 170,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 170,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 170,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 31,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件_空条件"
+  },
+  {
+   "node_id": 53,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件+redux+cn"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6f57e5681bb37cadbc71546d34b857c8dc0c9b69a00e47e579d371145619"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "6f57e5681bb37cadbc71546d34b857c8dc0c9b69a00e47e579d371145619"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 205,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "随机种子共享"
+  },
+  {
+   "node_id": 211,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ","
+  },
+  {
+   "node_id": 217,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ","
+  },
+  {
+   "node_id": 206,
+   "node_type": "RH_Translator",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 206,
+   "node_type": "RH_Translator",
+   "widget_index": 1,
+   "value_preview": "149"
+  },
+  {
+   "node_id": 206,
+   "node_type": "RH_Translator",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 206,
+   "node_type": "RH_Translator",
+   "widget_index": 3,
+   "value_preview": "force_english"
+  },
+  {
+   "node_id": 207,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "文本描述"
+  },
+  {
+   "node_id": 210,
+   "node_type": "easy seed",
+   "widget_index": 0,
+   "value_preview": "931253907605522"
+  },
+  {
+   "node_id": 210,
+   "node_type": "easy seed",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 155,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "随机种子共享"
+  },
+  {
+   "node_id": 213,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图"
+  },
+  {
+   "node_id": 212,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载CN参考"
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 3,
+   "value_preview": "只描述图像中的人物的服装，不要描述环境，姿势动作等其他，英文输出"
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "972106554"
+  },
+  {
+   "node_id": 214,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 223,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "portrait_lora64.safetensors"
+  },
+  {
+   "node_id": 223,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 222,
+   "node_type": "TeaCache",
+   "widget_index": 0,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 222,
+   "node_type": "TeaCache",
+   "widget_index": 1,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 222,
+   "node_type": "TeaCache",
+   "widget_index": 2,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 222,
+   "node_type": "TeaCache",
+   "widget_index": 3,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 222,
+   "node_type": "TeaCache",
+   "widget_index": 4,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 219,
+   "node_type": "DifferentialDiffusion",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 15,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取模型_fill"
+  },
+  {
+   "node_id": 221,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "fluxFillFP8_v10.safetensors"
+  },
+  {
+   "node_id": 221,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 139,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图_遮罩"
+  },
+  {
+   "node_id": 138,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图"
+  },
+  {
+   "node_id": 145,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图_遮罩"
+  },
+  {
+   "node_id": 144,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux图片"
+  },
+  {
+   "node_id": 4,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 4,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinT_OGC (694MB)"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.15"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "subject, person,"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 190,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载CN参考"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 33,
+   "node_type": "LayerMask: MaskGrow",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 41,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "随机种子共享"
+  },
+  {
+   "node_id": 40,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "509576270345991"
+  },
+  {
+   "node_id": 40,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 29,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取模型_fill"
+  },
+  {
+   "node_id": 55,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 55,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 55,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 26,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取vae"
+  },
+  {
+   "node_id": 192,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图_遮罩"
+  },
+  {
+   "node_id": 160,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件+redux+cn"
+  },
+  {
+   "node_id": 27,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 264,
+   "node_type": "RepeatLatentBatch",
+   "widget_index": 0,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 263,
+   "node_type": "RebatchLatents",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 28,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 159,
+   "node_type": "StyleModelLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-redux-dev.safetensors"
+  },
+  {
+   "node_id": 169,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "sigclip_vision_patch14_384.safetensors"
+  },
+  {
+   "node_id": 174,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图"
+  },
+  {
+   "node_id": 266,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置脸部参考"
+  },
+  {
+   "node_id": 173,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件+redux"
+  },
+  {
+   "node_id": 166,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件_空条件"
+  },
+  {
+   "node_id": 24,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "deis"
+  },
+  {
+   "node_id": 146,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "上传图片-redux(原图)"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 1,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 2,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 4,
+   "value_preview": "yolox_l.onnx"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 5,
+   "value_preview": "dw-ll_ucoco_384_bs5.torchscript.pt"
+  },
+  {
+   "node_id": 268,
+   "node_type": "DWPreprocessor",
+   "widget_index": 6,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 273,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 274,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 274,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 1,
+   "value_preview": "1.5000000000000002"
+  },
+  {
+   "node_id": 274,
+   "node_type": "LayerColor: Brightness & Contrast",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 275,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 280,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "DepthAnythingV2Preprocessor"
+  },
+  {
+   "node_id": 280,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 132,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "Width"
+  },
+  {
+   "node_id": 131,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "Height"
+  },
+  {
+   "node_id": 270,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取姿势图"
+  },
+  {
+   "node_id": 272,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取深度图"
+  },
+  {
+   "node_id": 175,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取ace姿势图"
+  },
+  {
+   "node_id": 179,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取ace深度图"
+  },
+  {
+   "node_id": 185,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 185,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 184,
+   "node_type": "EmptyImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 184,
+   "node_type": "EmptyImage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 184,
+   "node_type": "EmptyImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 184,
+   "node_type": "EmptyImage",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 284,
+   "node_type": "easy imageConcat",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 284,
+   "node_type": "easy imageConcat",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 181,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取姿势图"
+  },
+  {
+   "node_id": 285,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取深度图"
+  },
+  {
+   "node_id": 2,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置ace遮罩"
+  },
+  {
+   "node_id": 5,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置ace图像"
+  },
+  {
+   "node_id": 52,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-宽"
+  },
+  {
+   "node_id": 47,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-宽"
+  },
+  {
+   "node_id": 48,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-高"
+  },
+  {
+   "node_id": 186,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-宽"
+  },
+  {
+   "node_id": 187,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-高"
+  },
+  {
+   "node_id": 43,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-宽"
+  },
+  {
+   "node_id": 44,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ace左图-高"
+  },
+  {
+   "node_id": 276,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载CN参考"
+  },
+  {
+   "node_id": 265,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 265,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 1,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 265,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 2,
+   "value_preview": "keep aspect ratio"
+  },
+  {
+   "node_id": 265,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 3,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 265,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 4,
+   "value_preview": "0.10000000000000002"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 1,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 2,
+   "value_preview": "autocrop with mask"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 3,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ReduxAdvanced",
+   "widget_index": 4,
+   "value_preview": "0.10000000000000002"
+  },
+  {
+   "node_id": 45,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 46,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 0,
+   "value_preview": "BiRefNet-general"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 5,
+   "value_preview": "Color"
+  },
+  {
+   "node_id": 267,
+   "node_type": "BiRefNetRMBG",
+   "widget_index": 6,
+   "value_preview": "#8c8c8c"
+  },
+  {
+   "node_id": 38,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-未裁剪"
+  },
+  {
+   "node_id": 289,
+   "node_type": "InstantIDFaceAnalysis",
+   "widget_index": 0,
+   "value_preview": "CUDA"
+  },
+  {
+   "node_id": 290,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "instantid/diffusion_pytorch_model.safetensors"
+  },
+  {
+   "node_id": 291,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取XL模型"
+  },
+  {
+   "node_id": 292,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取XL-clip"
+  },
+  {
+   "node_id": 293,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取XL-VAE"
+  },
+  {
+   "node_id": 294,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "realvisxlV50_v50Bakedvae.safetensors"
+  },
+  {
+   "node_id": 295,
+   "node_type": "InstantIDModelLoader",
+   "widget_index": 0,
+   "value_preview": "ip-adapter.bin"
+  },
+  {
+   "node_id": 296,
+   "node_type": "DifferentialDiffusion",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 297,
+   "node_type": "ApplyInstantID",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 297,
+   "node_type": "ApplyInstantID",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 297,
+   "node_type": "ApplyInstantID",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 298,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取XL-VAE"
+  },
+  {
+   "node_id": 299,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置脸部参考"
+  },
+  {
+   "node_id": 300,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "face,"
+  },
+  {
+   "node_id": 303,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置脸部参考"
+  },
+  {
+   "node_id": 304,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载redux参考图-人物抠图"
+  },
+  {
+   "node_id": 306,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置3阶段脸部参考-原图"
+  },
+  {
+   "node_id": 307,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置3阶段脸部参考_遮罩缩放"
+  },
+  {
+   "node_id": 308,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-3阶段-换脸"
+  },
+  {
+   "node_id": 310,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置脸部重绘后"
+  },
+  {
+   "node_id": 312,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置3阶段脸部参考-原图"
+  },
+  {
+   "node_id": 314,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "Drawing, comics, anime, cartoons, 3D，filthy，dirty，Deformed, "
+  },
+  {
+   "node_id": 315,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "设置脸部重绘后"
+  },
+  {
+   "node_id": 316,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置3阶段脸部参考-原图"
+  },
+  {
+   "node_id": 317,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "设置3阶段脸部参考_遮罩缩放"
+  },
+  {
+   "node_id": 319,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "获取XL-VAE"
+  },
+  {
+   "node_id": 320,
+   "node_type": "InpaintModelConditioning",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 321,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 322,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "473412735909381"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "karras"
+  },
+  {
+   "node_id": 323,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 0,
+   "value_preview": "bilinear"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 3,
+   "value_preview": "ensure minimum resolution"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 5,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 6,
+   "value_preview": "16384"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 7,
+   "value_preview": "16384"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 10,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 11,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 12,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 15,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 16,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 17,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 18,
+   "value_preview": "1.2"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 19,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 20,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 21,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 325,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 22,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 0,
+   "value_preview": "bilinear"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 1,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 3,
+   "value_preview": "ensure minimum resolution"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 5,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 6,
+   "value_preview": "16384"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 7,
+   "value_preview": "16384"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 10,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 11,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 12,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 13,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 15,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 16,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 17,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 18,
+   "value_preview": "1.2"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 19,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 20,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 21,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 326,
+   "node_type": "InpaintCropImproved",
+   "widget_index": 22,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 220,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "manfoot-v3-b20.safetensors"
+  },
+  {
+   "node_id": 220,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 327,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "ace_plus_fft_fp8.safetensors"
+  },
+  {
+   "node_id": 327,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 288,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-3阶段-换脸"
+  },
+  {
+   "node_id": 67,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-裁剪后"
+  },
+  {
+   "node_id": 305,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "保存图像-裁剪后"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 329,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 224,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "clip模型"
+  },
+  {
+   "node_id": 102,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取vae"
+  },
+  {
+   "node_id": 108,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 198,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "文本描述"
+  },
+  {
+   "node_id": 328,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 103,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件"
+  },
+  {
+   "node_id": 104,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "获取clip条件_空条件"
+  },
+  {
+   "node_id": 277,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "加载CN参考"
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 3,
+   "value_preview": "只描述图像中的人物动作姿势和环境场景，不要描述人物服装等其他，英文输出"
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "1400329637"
+  },
+  {
+   "node_id": 215,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 171,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.8000000000000002"
+  },
+  {
+   "node_id": 171,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 171,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "0.6600000000000001"
+  },
+  {
+   "node_id": 168,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "FLUX.1-dev-ControlNet-Union-Pro-2.0-Shakker-Labs.safetensors"
+  },
+  {
+   "node_id": 68,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "Flux"
+  },
+  {
+   "node_id": 287,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "Flux"
+  }
+ ]
+}

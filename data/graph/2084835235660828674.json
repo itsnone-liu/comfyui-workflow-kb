@@ -1,0 +1,2070 @@
+{
+ "node_count": 51,
+ "link_count": 69,
+ "active_node_count": 49,
+ "nodes": [
+  {
+   "id": 123,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "res_multistep"
+   ],
+   "in_links": [],
+   "out_links": [
+    255
+   ]
+  },
+  {
+   "id": 125,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    253,
+    254,
+    255,
+    256,
+    271
+   ],
+   "out_links": [
+    280,
+    281
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    290,
+    270
+   ],
+   "out_links": [
+    254
+   ]
+  },
+  {
+   "id": 129,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1018681534776898,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    253
+   ]
+  },
+  {
+   "id": 131,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    261
+   ],
+   "out_links": [
+    275
+   ]
+  },
+  {
+   "id": 124,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    20,
+    1
+   ],
+   "in_links": [
+    252
+   ],
+   "out_links": [
+    256
+   ]
+  },
+  {
+   "id": 140,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "分辨率设置说明",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 132,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (Duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8
+   ],
+   "in_links": [],
+   "out_links": [
+    261
+   ]
+  },
+  {
+   "id": 120,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    250,
+    274
+   ]
+  },
+  {
+   "id": 119,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    251,
+    273
+   ]
+  },
+  {
+   "id": 128,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    272
+   ]
+  },
+  {
+   "id": 127,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    252,
+    287
+   ]
+  },
+  {
+   "id": 144,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    287
+   ],
+   "out_links": [
+    289
+   ]
+  },
+  {
+   "id": 146,
+   "type": "PainterVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "auto",
+    true
+   ],
+   "in_links": [
+    289
+   ],
+   "out_links": [
+    290
+   ]
+  },
+  {
+   "id": 155,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "None",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    302
+   ]
+  },
+  {
+   "id": 158,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 24,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 832,
+      "filename": "0",
+      "force_rate": 24,
+      "custom_width": 480,
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/0",
+      "skip_first_frames": 0,
+      "type": "input"
+     },
+     "muted": false
+    },
+    "format": "Wan",
+    "video": "0",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    303
+   ]
+  },
+  {
+   "id": 136,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    272,
+    273,
+    274,
+    278,
+    282,
+    283,
+    292,
+    294,
+    295,
+    296,
+    297,
+    298,
+    303,
+    302,
+    279,
+    276,
+    277,
+    275
+   ],
+   "out_links": [
+    270,
+    304,
+    271
+   ]
+  },
+  {
+   "id": 160,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/Bernini_r",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    305
+   ],
+   "out_links": []
+  },
+  {
+   "id": 161,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    306,
+    324
+   ],
+   "out_links": [
+    314,
+    315
+   ]
+  },
+  {
+   "id": 162,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，麦克风，耳机，耳麦"
+   ],
+   "in_links": [
+    307
+   ],
+   "out_links": []
+  },
+  {
+   "id": 165,
+   "type": "VAEEncode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    310,
+    311
+   ],
+   "out_links": [
+    313
+   ]
+  },
+  {
+   "id": 167,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Bernini-R-LightX2V-low-noise.safetensors",
+    1.5
+   ],
+   "in_links": [
+    312
+   ],
+   "out_links": [
+    323
+   ]
+  },
+  {
+   "id": 168,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "wan",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    306,
+    307
+   ]
+  },
+  {
+   "id": 171,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2.1_VAE.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    311,
+    316,
+    322
+   ]
+  },
+  {
+   "id": 172,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    489958947913899,
+    "randomize",
+    4,
+    1,
+    "euler",
+    "beta",
+    0.3
+   ],
+   "in_links": [
+    317,
+    318,
+    319,
+    320
+   ],
+   "out_links": [
+    321
+   ]
+  },
+  {
+   "id": 173,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    321,
+    322
+   ],
+   "out_links": [
+    308
+   ]
+  },
+  {
+   "id": 174,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": "SAGE注意力补丁KJ",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    323
+   ],
+   "out_links": [
+    317
+   ]
+  },
+  {
+   "id": 175,
+   "type": "ImageScaleBy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "nearest-exact",
+    1.5
+   ],
+   "in_links": [
+    325
+   ],
+   "out_links": [
+    310
+   ]
+  },
+  {
+   "id": 166,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Bernini_LOW_fp8_e4m3fn_scaled.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    312
+   ]
+  },
+  {
+   "id": 138,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": "Input Text (Prompt)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "帮我生成一个视频：图1女人和图2的男人，在图3的房间里，拥抱亲吻，然后开始跳舞"
+   ],
+   "in_links": [],
+   "out_links": [
+    279,
+    324
+   ]
+  },
+  {
+   "id": 169,
+   "type": "InjectLatentNoise+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    459202430572547,
+    "randomize",
+    0.3,
+    "false"
+   ],
+   "in_links": [
+    313
+   ],
+   "out_links": [
+    320
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    280,
+    251
+   ],
+   "out_links": [
+    284,
+    325
+   ]
+  },
+  {
+   "id": 121,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    281,
+    250
+   ],
+   "out_links": [
+    285,
+    326
+   ]
+  },
+  {
+   "id": 163,
+   "type": "CreateVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8
+   ],
+   "in_links": [
+    308,
+    326
+   ],
+   "out_links": [
+    305,
+    309
+   ]
+  },
+  {
+   "id": 164,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    309
+   ],
+   "out_links": []
+  },
+  {
+   "id": 147,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    292,
+    330
+   ]
+  },
+  {
+   "id": 149,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    294,
+    331
+   ]
+  },
+  {
+   "id": 150,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    295,
+    332
+   ]
+  },
+  {
+   "id": 151,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    296,
+    333
+   ]
+  },
+  {
+   "id": 152,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    297,
+    334
+   ]
+  },
+  {
+   "id": 153,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    298
+   ]
+  },
+  {
+   "id": 143,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "video/MiniMax_H3",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "MiniMax_H3_00007-audio.mp4",
+      "workflow": "MiniMax_H3_00007.png",
+      "fullpath": "H:\\AI-ComfyUI\\25122wangyi AI-super-comfyui\\2601-WY-50S-130-ComfyUI\\260221-WY-50S-130-ComfyUI\\ComfyUI\\output\\video\\MiniMax_H3_00007-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "video",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    284,
+    285
+   ],
+   "out_links": []
+  },
+  {
+   "id": 137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    278,
+    327
+   ]
+  },
+  {
+   "id": 115,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": "Resolution Selector (Size)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    276,
+    277
+   ]
+  },
+  {
+   "id": 170,
+   "type": "BerniniConditioning",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    480,
+    832,
+    81,
+    1,
+    1920
+   ],
+   "in_links": [
+    314,
+    315,
+    316,
+    327,
+    328,
+    329,
+    330,
+    331,
+    332,
+    333,
+    334,
+    339,
+    340,
+    336
+   ],
+   "out_links": [
+    318,
+    319
+   ]
+  },
+  {
+   "id": 178,
+   "type": "easy int",
+   "category": "utility",
+   "title": "Int（分块宽）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    480
+   ],
+   "in_links": [],
+   "out_links": [
+    339
+   ]
+  },
+  {
+   "id": 177,
+   "type": "easy int",
+   "category": "utility",
+   "title": "Int（最终视频最长边）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1920
+   ],
+   "in_links": [],
+   "out_links": [
+    336
+   ]
+  },
+  {
+   "id": 179,
+   "type": "easy int",
+   "category": "utility",
+   "title": "Int（分块高）",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    832
+   ],
+   "in_links": [],
+   "out_links": [
+    340
+   ]
+  },
+  {
+   "id": 142,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    283,
+    329
+   ]
+  },
+  {
+   "id": 139,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5cf38d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    282,
+    328
+   ]
+  },
+  {
+   "id": 159,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    304
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 115,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 119,
+   "to_node": 122,
+   "type": "VAE"
+  },
+  {
+   "from_node": 119,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 121,
+   "type": "VAE"
+  },
+  {
+   "from_node": 120,
+   "to_node": 136,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 143,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 121,
+   "to_node": 163,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 122,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 175,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 125,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 124,
+   "to_node": 125,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 125,
+   "to_node": 121,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 125,
+   "to_node": 122,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 126,
+   "to_node": 125,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 127,
+   "to_node": 124,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 127,
+   "to_node": 144,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 128,
+   "to_node": 136,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 129,
+   "to_node": 125,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 132,
+   "to_node": 131,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 125,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 126,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 136,
+   "to_node": 159,
+   "type": "*"
+  },
+  {
+   "from_node": 137,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 137,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 138,
+   "to_node": 136,
+   "type": "STRING"
+  },
+  {
+   "from_node": 138,
+   "to_node": 161,
+   "type": "STRING"
+  },
+  {
+   "from_node": 139,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 139,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 144,
+   "to_node": 146,
+   "type": "*"
+  },
+  {
+   "from_node": 146,
+   "to_node": 126,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 147,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 147,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 149,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 149,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 150,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 150,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 151,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 151,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 153,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 155,
+   "to_node": 136,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 158,
+   "to_node": 136,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 161,
+   "to_node": 170,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 161,
+   "to_node": 170,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 163,
+   "to_node": 160,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 163,
+   "to_node": 164,
+   "type": "*"
+  },
+  {
+   "from_node": 165,
+   "to_node": 169,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 166,
+   "to_node": 167,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 167,
+   "to_node": 174,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 168,
+   "to_node": 161,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 168,
+   "to_node": 162,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 169,
+   "to_node": 172,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 170,
+   "to_node": 172,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 170,
+   "to_node": 172,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 171,
+   "to_node": 165,
+   "type": "VAE"
+  },
+  {
+   "from_node": 171,
+   "to_node": 170,
+   "type": "VAE"
+  },
+  {
+   "from_node": 171,
+   "to_node": 173,
+   "type": "VAE"
+  },
+  {
+   "from_node": 172,
+   "to_node": 173,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 173,
+   "to_node": 163,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 174,
+   "to_node": 172,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 175,
+   "to_node": 165,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 177,
+   "to_node": 170,
+   "type": "INT"
+  },
+  {
+   "from_node": 178,
+   "to_node": 170,
+   "type": "INT"
+  },
+  {
+   "from_node": 179,
+   "to_node": 170,
+   "type": "INT"
+  }
+ ],
+ "categories": {
+  "sampler": 5,
+  "utility": 19,
+  "preprocessor": 1,
+  "vae": 7,
+  "clip": 2,
+  "checkpoint_loader": 2,
+  "video_io": 3,
+  "conditioning": 2,
+  "lora": 1,
+  "image_io": 9
+ },
+ "assets": [
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 167,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Bernini-R-LightX2V-low-noise.safetensors"
+  },
+  {
+   "node_id": 168,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 171,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "Wan2.1_VAE.pth"
+  },
+  {
+   "node_id": 166,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "Bernini_LOW_fp8_e4m3fn_scaled.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 108,
+ "structure_hash": "a39727127d47592e",
+ "param_face": [
+  {
+   "node_id": 123,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "res_multistep"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "1018681534776898"
+  },
+  {
+   "node_id": 129,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 131,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 124,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 132,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 120,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 119,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 128,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 127,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 146,
+   "node_type": "PainterVRAM",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 155,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "Wan"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 158,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 136,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 160,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/Bernini_r"
+  },
+  {
+   "node_id": 160,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 160,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 161,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 167,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Bernini-R-LightX2V-low-noise.safetensors"
+  },
+  {
+   "node_id": 167,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 168,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 168,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "wan"
+  },
+  {
+   "node_id": 168,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 171,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2.1_VAE.pth"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "489958947913899"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 172,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 174,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 174,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 175,
+   "node_type": "ImageScaleBy",
+   "widget_index": 0,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 175,
+   "node_type": "ImageScaleBy",
+   "widget_index": 1,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 166,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "Bernini_LOW_fp8_e4m3fn_scaled.safetensors"
+  },
+  {
+   "node_id": 166,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 138,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "帮我生成一个视频：图1女人和图2的男人，在图3的房间里，拥抱亲吻，然后开始跳舞"
+  },
+  {
+   "node_id": 169,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 0,
+   "value_preview": "459202430572547"
+  },
+  {
+   "node_id": 169,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 169,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 169,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 3,
+   "value_preview": "false"
+  },
+  {
+   "node_id": 163,
+   "node_type": "CreateVideo",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 163,
+   "node_type": "CreateVideo",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 147,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 149,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 149,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 150,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 151,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 152,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 153,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 153,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'M"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 115,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 170,
+   "node_type": "BerniniConditioning",
+   "widget_index": 0,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 170,
+   "node_type": "BerniniConditioning",
+   "widget_index": 1,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 170,
+   "node_type": "BerniniConditioning",
+   "widget_index": 2,
+   "value_preview": "81"
+  },
+  {
+   "node_id": 170,
+   "node_type": "BerniniConditioning",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 170,
+   "node_type": "BerniniConditioning",
+   "widget_index": 4,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 178,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 177,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "1920"
+  },
+  {
+   "node_id": 179,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 142,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 139,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "bc2d71583e158845ff863d9ef55e594a57ee68c17f82110be78b715c7d5c"
+  },
+  {
+   "node_id": 139,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

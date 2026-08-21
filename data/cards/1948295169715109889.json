@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "图像编辑",
+  "人像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照片，生成一张“镜头拉远并给人物加上王冠”的风格化图像，同时尽量保持人物身份/构图视角不变。",
+   "kind": "inference"
+  },
+  {
+   "text": "将原图与生成图并排拼接，并用“原图/缩放后”标签生成对比图，便于人工快速验收效果。",
+   "kind": "fact"
+  },
+  {
+   "text": "基于 FLUX Kontext 微调模型完成图像重绘，并非单纯文生图，而是以参考图为核心的图生图/图像编辑流程。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持随机种子多次采样，并启用 TeaCache 缓存加速，适合批量抽卡和快速迭代提示词。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "FLUX Kontext 图像编辑",
+  "ReferenceLatent 参考潜在",
+  "LoRA（zoomout-fal-v1）",
+  "TeaCache 缓存加速",
+  "ImageStitch 图像拼接",
+  "CR Simple Image Compare 图像对比",
+  "VAE 编解码",
+  "FluxGuidance + ConditioningZeroOut 引导"
+ ],
+ "special_features": [
+  {
+   "text": "多段式可视化校验：ImageStitch 将原图和生成结果按 right 并排拼接，CR Simple Image Compare 再生成带“原图/缩放后”中文标签的对比图，形成 before/after 质控回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "三个 LoadImage 读取同一图片 hash，配合 ReferenceLatent 将原图同时作为内容参考和对比基准，可能用于强化 FLUX Kontext 的身份/视角保持。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用专门 LoRA“zoomout-fal-v1”与提示词“Zoom out and keep the vi”“Bring a crown to the gir”双重驱动，实现镜头拉远和增加王冠的语义控制。",
+   "kind": "inference"
+  },
+  {
+   "text": "TeaCache 在 flux-kontext 上启用缓存，用两个约 0.2 的阈值和 0.9 的缓存起始步跳过部分去噪计算，属于明显的速度优化设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut + FluxGuidance 的组合让 KSampler 在 CFG=1 时仍能受到语义引导，这是 FLUX 系列常见的引导结构。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕 FLUX Kontext 的图像编辑能力设计：用 ReferenceLatent 锁定原图内容与身份特征，用 zoomout-fal-v1 LoRA 和具体提示词驱动镜头拉远/加王冠，再用 TeaCache 降低推理成本。最后通过 ImageStitch 和 CR Simple Image Compare 生成并排对比图，方便在无外部评测的情况下快速判断生成结果是否接近原图。整体似乎是一个面向“人像保持+轻度镜头变化”的高效实验流。",
+ "use_case": "适合做单张人像照片的风格化重绘，例如快速验证 FLUX Kontext 的“拉远镜头+增加饰品/王冠”能力，也适合作为批量出图前的调试模板。",
+ "limitation": "必须本地具备 flux1-dev-kontext_fp8_scaled.safetensors、ae.safetensors、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、zoomout-fal-v1.safetensors；依赖 TeaCache、FluxKontextImageScale/ReferenceLatent、CR Simple Image Compare、ShowText|pysssss 等自定义节点；CR Simple Image Compare 的中文标签依赖字体“阿里妈妈数黑体 Bold.ttf”，缺失时可能显示异常；三路 LoadImage 共用同一图片 hash，实际输入要求是同一张图的多个读取分支；KF步数固定 20，且 CFG=1，若没有 FluxGuidance 控制，语义强度会明显不足。",
+ "dependencies": [
+  "模型：flux1-dev-kontext_fp8_scaled.safetensors",
+  "VAE：ae.safetensors",
+  "CLIP：clip_l.safetensors, t5xxl_fp8_e4m3fn.safetensors",
+  "LoRA：zoomout-fal-v1.safetensors",
+  "自定义节点：TeaCache、FluxKontext 系列、CR Simple Image Compare、ShowText|pysssss",
+  "字体：阿里妈妈数黑体 Bold.ttf",
+  "硬件：CUDA 设备（TeaCache 指定 cuda）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "3（同一张图多路读取）"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps/sampler/scheduler",
+   "how_to_tune": "当前为 20 步、euler/simple。FLUX 类模型建议保持 CFG=1；若生成细节不足，可把 steps 增大到 25~30，但会降低速度。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "设为 2.5，是 FLUX Kontext 的常见起点。值越高提示词遵循越强，但可能让画面变硬或过饱和；建议在 2~4 之间微调。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength",
+   "how_to_tune": "zoomout-fal-v1 强度当前为 1，zoom out 效果最强。如果构图变化太大、人物/视角被破坏，可降到 0.6~0.8 保留更多原图信息。"
+  },
+  {
+   "param": "TeaCache",
+   "how_to_tune": "缓存阈值约 0.2、缓存起始步 0.9、设备 cuda。追求质量时可调低阈值/延后起始步；追求速度时可适度调高阈值。"
+  },
+  {
+   "param": "KSampler.seed",
+   "how_to_tune": "当前为 randomize，适合批量抽卡；若需复现某个结果，改为固定整数即可。"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照片，生成一张“镜头拉远并给人物加上王冠”的风格化图像，同时尽量保持人物身份/构图视角不变。；能力:将原图与生成图并排拼接，并用“原图/缩放后”标签生成对比图，便于人工快速验收效果。；能力:基于 FLUX Kontext 微调模型完成图像重绘，并非单纯文生图，而是以参考图为核心的图生图/图像编辑流程。；能力:支持随机种子多次采样，并启用 TeaCache 缓存加速，适合批量抽卡和快速迭代提示词。；特色:多段式可视化校验：ImageStitch 将原图和生成结果按 right 并排拼接，CR Simple Image Compare 再生成带“原图/缩放后”中文标签的对比图，形成 before/after 质控回路。；特色:三个 LoadImage 读取同一图片 hash，配合 ReferenceLatent 将原图同时作为内容参考和对比基准，可能用于强化 FLUX Kontext 的身份/视角保持。；特色:使用专门 LoRA“zoomout-fal-v1”与提示词“Zoom out and keep the vi”“Bring a crown to the gir”双重驱动，实现镜头拉远和增加王冠的语义控制。；特色:TeaCache 在 flux-kontext 上启用缓存，用两个约 0.2 的阈值和 0.9 的缓存起始步跳过部分去噪计算，属于明显的速度优化设计。；特色:ConditioningZeroOut + FluxGuidance 的组合让 KSampler 在 CFG=1 时仍能受到语义引导，这是 FLUX 系列常见的引导结构。；适合做单张人像照片的风格化重绘，例如快速验证 FLUX Kontext 的“拉远镜头+增加饰品/王冠”能力，也适合作为批量出图前的调试模板。；该工作流围绕 FLUX Kontext 的图像编辑能力设计：用 ReferenceLatent 锁定原图内容与身份特征，用 zoomout-fal-v1 LoRA 和具体提示词驱动镜头拉远/加王冠，再用 TeaCache 降低推理成本。最后通过 ImageStitch 和 CR Simple Image Compare 生成并排对比图，方便在无外部评测的情况下快速判断生成结果是否接近原图。整体似乎是一个面向“人像保持+轻度镜头变化”的高效实验流。"
+}

@@ -1,0 +1,98 @@
+{
+ "domain": [
+  "视频生成",
+  "背景替换",
+  "人物分割"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一段视频，自动分割出前景人物（person），保持人物动作和外观不变，根据中文文本提示词重绘背景，输出更换背景后的视频，并可经SeedVR2放大到1080p。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过LoadImage输入的单张人物图像作为参考，结合SAM2分割与Florence2 grounding，可锁定视频中特定对象进行背景替换（不限于人物，可改PrimitiveString的'person'）。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.2 T2V 文生视频",
+  "Wan2.2-Fun-VACE 区域条件控制",
+  "SAM2 视频分割",
+  "Florence2 phrase grounding 自动物体定位",
+  "SeedVR2 视频放大",
+  "双模型级联生成（LOW→HIGH）",
+  "LightX2V 蒸馏LoRA",
+  "Upscale-Hires",
+  "动态Mask处理（GrowMaskWithBlur）",
+  "视频分块与拼接（ImageStitch）"
+ ],
+ "special_features": [
+  {
+   "text": "双阶段级联生成：两个WanVideoModelLoader分别加载LOW与HIGH两个T2V模型，各接一个WanVideoSampler，先用低模型粗生成、再用高模型精修，并配合WanVideoEnhanceAVideo提升视频质量。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动前景分割流水线：Florence2Run执行caption_to_phrase_ground得到'person'坐标，再经Florence2toCoordinates与Sam2Segmentation生成精确视频mask，避免了手动抠像。",
+   "kind": "fact"
+  },
+  {
+   "text": "放置了4个VHS_VideoCombine输出节点，并配合Fast Groups Bypasser，可以分别输出低模型、高模型、增强、放大等中间结果，便于对比和返工。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用WanVideoSLG（skip layer guidance）和WanVideoBlockSwap/ TorchCompile 等技巧，在长视频生成中平衡质量、速度与显存。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "此工作流的核心目的是将人物视频的背景替换自动化且高质量化。它通过SAM2+Florence2自动建立前景mask，再借助Wan2.2 VACE的掩码条件注入，使生成模型只重绘背景区域，从而严格保留人物细节。采用LOW/HIGH级联和SeedVR2放大，是为了在有限显存下先快速生成低分辨率草稿，再逐步提升细节。整体设计模块化、多输出，似乎是为算法调试与参数实验而精心搭建的。",
+ "use_case": "适用于短视频/影视后期的AI背景换景、人物视频重背景合成、电商人物视频场景替换等。",
+ "limitation": "严重依赖Wan2.2 T2V（A14B）及VACE等大型模型，需要较高显存（建议40GB以上）；依赖多个自定义节点（ComfyUI-VideoHelperSuite, ComfyUI-WanVideoWrapper, KJNodes, rgthree等）；输入提示词为固定中文词，需手动修改；前景目标固定为'person'，对其他物体需要调整PrimitiveString和Florence2任务；视频长度受WanVideoContextOptions帧数限制，长视频需分块；SeedVR2放大仅支持特定分辨率设置。",
+ "dependencies": [
+  "seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+  "VACE/Wan2_2_Fun_VACE_module_A14B_LOW_fp8_e4m3fn_scaled_KJ.safetensors",
+  "Wan2_2-T2V-A14B-LOW_fp8_e4m3fn_scaled_KJ.safetensors",
+  "Wan2.2-Fun-A14B-InP-HIGH-MPS_resized_dynamic_avg_rank_21_bf16.safetensors",
+  "Wan2.2-Fun-A14B-InP-LOW-HPS2.1_resized_dynamic_avg_rank_15_bf16.safetensors",
+  "sam2.1_hiera_large.safetensors",
+  "ema_vae_fp16.safetensors",
+  "wan_2.1_vae.safetensors",
+  "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "lightx2v_T2V_14B_cfg_step_distill_v2_lora_rank16_bf16.safetensors"
+ ],
+ "geek_rating": 5,
+ "input": {
+  "type": "视频+图像+文本提示词",
+  "count": 3
+ },
+ "output": {
+  "type": "视频（4个VHS_VideoCombine输出可选）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler.steps",
+   "how_to_tune": "当前为6，值越大细节越丰富但速度越慢；追求质量可调至10-15。"
+  },
+  {
+   "param": "WanVideoSampler.cfg",
+   "how_to_tune": "当前为1（蒸馏LoRA风格），若使用非蒸馏模型应调高到4-6，避免生成过曝/纹理异常。"
+  },
+  {
+   "param": "WanVideoContextOptions (context_length,stride,overlap)",
+   "how_to_tune": "控制视频生成分块长度与衔接。81/4/16适合秒级短视频；更长视频需降低context或增大overlap避免闪烁。"
+  },
+  {
+   "param": "WanVideoEnhanceAVideo",
+   "how_to_tune": "参数2,0,1可能对应重绘次数/强度，增大可加强动态一致性但会拉长耗时。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler 目标分辨率",
+   "how_to_tune": "设为1080，若显存不足可调低至720；与WanVideoDecode分辨率配合。"
+  },
+  {
+   "param": "GrowMaskWithBlur grow/blur",
+   "how_to_tune": "grow=1可略扩大mask覆盖边缘，blur=0保留硬边，处理头发等细节时可适当增大blur减少边缘伪影。"
+  }
+ ],
+ "summary_text": "能力:输入一段视频，自动分割出前景人物（person），保持人物动作和外观不变，根据中文文本提示词重绘背景，输出更换背景后的视频，并可经SeedVR2放大到1080p。；能力:通过LoadImage输入的单张人物图像作为参考，结合SAM2分割与Florence2 grounding，可锁定视频中特定对象进行背景替换（不限于人物，可改PrimitiveString的'person'）。；特色:双阶段级联生成：两个WanVideoModelLoader分别加载LOW与HIGH两个T2V模型，各接一个WanVideoSampler，先用低模型粗生成、再用高模型精修，并配合WanVideoEnhanceAVideo提升视频质量。；特色:自动前景分割流水线：Florence2Run执行caption_to_phrase_ground得到'person'坐标，再经Florence2toCoordinates与Sam2Segmentation生成精确视频mask，避免了手动抠像。；特色:放置了4个VHS_VideoCombine输出节点，并配合Fast Groups Bypasser，可以分别输出低模型、高模型、增强、放大等中间结果，便于对比和返工。；特色:使用WanVideoSLG（skip layer guidance）和WanVideoBlockSwap/ TorchCompile 等技巧，在长视频生成中平衡质量、速度与显存。；适用于短视频/影视后期的AI背景换景、人物视频重背景合成、电商人物视频场景替换等。；此工作流的核心目的是将人物视频的背景替换自动化且高质量化。它通过SAM2+Florence2自动建立前景mask，再借助Wan2.2 VACE的掩码条件注入，使生成模型只重绘背景区域，从而严格保留人物细节。采用LOW/HIGH级联和SeedVR2放大，是为了在有限显存下先快速生成低分辨率草稿，再逐步提升细节。整体设计模块化、多输出，似乎是为算法调试与参数实验而精心搭建的。"
+}

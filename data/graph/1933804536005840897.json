@@ -1,0 +1,457 @@
+{
+ "node_count": 11,
+ "link_count": 9,
+ "active_node_count": 11,
+ "nodes": [
+  {
+   "id": 74,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    173
+   ],
+   "out_links": []
+  },
+  {
+   "id": 75,
+   "type": "TextNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 76,
+   "type": "ImageUntile+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    2,
+    2
+   ],
+   "in_links": [
+    174
+   ],
+   "out_links": [
+    175,
+    179
+   ]
+  },
+  {
+   "id": 78,
+   "type": "TextNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 79,
+   "type": "ImageTile+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ],
+   "in_links": [
+    176
+   ],
+   "out_links": [
+    178
+   ]
+  },
+  {
+   "id": 80,
+   "type": "ImageUpscaleWithModel",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    177,
+    178
+   ],
+   "out_links": [
+    174
+   ]
+  },
+  {
+   "id": 81,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4x-UltraSharp.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    177
+   ]
+  },
+  {
+   "id": 82,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_iqybz_00001_pzjyr_1749910484.png&type=temp&subfolder=&rand=0.7672494887283676&Rh-Comfy-Auth=eyJ1c2VySWQiOiI3MTFlMDhmMDMxMTUxM2YyZDY2YjMwNjA4NTI4YTcxYyIsInNpZ25FeHBpcmUiOjE3NTA1MTUxOTIxNTMsInRzIjoxNzQ5OTEwMzkyMTUzLCJzaWduIjoiMDdmODgyNTI4MTU5ZDE4ZjRhN2RhYTY2ZTZkOWYxMTkifQ==&Rh-Identify=711e08f0311513f2d66b30608528a71c"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_iqybz_00002_gtxmn_1749910490.png&type=temp&subfolder=&rand=0.7389939957879164&Rh-Comfy-Auth=eyJ1c2VySWQiOiI3MTFlMDhmMDMxMTUxM2YyZDY2YjMwNjA4NTI4YTcxYyIsInNpZ25FeHBpcmUiOjE3NTA1MTUxOTIxNTMsInRzIjoxNzQ5OTEwMzkyMTUzLCJzaWduIjoiMDdmODgyNTI4MTU5ZDE4ZjRhN2RhYTY2ZTZkOWYxMTkifQ==&Rh-Identify=711e08f0311513f2d66b30608528a71c"
+     }
+    ]
+   ],
+   "in_links": [
+    179,
+    180
+   ],
+   "out_links": []
+  },
+  {
+   "id": 73,
+   "type": "RH_ComfyFluxKontext",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Restoration of old photographs, preservation of their original features, removal of cracks, scratches, sharpening of sharpness, correction of colour balance, restoration of detail, ultra-high-level 4K paint, real recovery, natural texture, restoration of professional photographs, photo effects",
+    "flux-kontext-pro",
+    "",
+    "match_input_image",
+    1,
+    1131043041,
+    "randomize",
+    true,
+    3.5,
+    "ai.t8star.cn"
+   ],
+   "in_links": [
+    172
+   ],
+   "out_links": [
+    173,
+    176,
+    180
+   ]
+  },
+  {
+   "id": 72,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1c49c950fe2ba418c48a2cd7c3a399d6aed03e0c2af2e3425a961d926921225a.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    172
+   ]
+  },
+  {
+   "id": 77,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    175
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 72,
+   "to_node": 73,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 74,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 73,
+   "to_node": 82,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 77,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 76,
+   "to_node": 82,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 80,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 80,
+   "to_node": 76,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 81,
+   "to_node": 80,
+   "type": "UPSCALE_MODEL"
+  }
+ ],
+ "categories": {
+  "image_io": 3,
+  "utility": 6,
+  "upscale": 2
+ },
+ "assets": [
+  {
+   "node_id": 81,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4x-UltraSharp.pth"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 28,
+ "structure_hash": "46019792bf9f6ecb",
+ "param_face": [
+  {
+   "node_id": 74,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 74,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 75,
+   "node_type": "TextNode",
+   "widget_index": 0,
+   "value_preview": "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+  },
+  {
+   "node_id": 76,
+   "node_type": "ImageUntile+",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 76,
+   "node_type": "ImageUntile+",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 76,
+   "node_type": "ImageUntile+",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 76,
+   "node_type": "ImageUntile+",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 78,
+   "node_type": "TextNode",
+   "widget_index": 0,
+   "value_preview": "图像分块节点（Image Tile）行和列的数值要和\n\n图像逆分块节点(Image Untile)中的行和列数值保持一致"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageTile+",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageTile+",
+   "widget_index": 1,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageTile+",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageTile+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageTile+",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 81,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4x-UltraSharp.pth"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 1,
+   "value_preview": "flux-kontext-pro"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 3,
+   "value_preview": "match_input_image"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 5,
+   "value_preview": "1131043041"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 6,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 8,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 73,
+   "node_type": "RH_ComfyFluxKontext",
+   "widget_index": 9,
+   "value_preview": "ai.t8star.cn"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "1c49c950fe2ba418c48a2cd7c3a399d6aed03e0c2af2e3425a961d926921"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 72,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 77,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 77,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  }
+ ]
+}

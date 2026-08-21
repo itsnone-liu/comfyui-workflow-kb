@@ -1,0 +1,845 @@
+{
+ "node_count": 22,
+ "link_count": 26,
+ "active_node_count": 21,
+ "nodes": [
+  {
+   "id": 26,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.5
+   ],
+   "in_links": [
+    41
+   ],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 25,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    117886849211902,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    84
+   ]
+  },
+  {
+   "id": 47,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    122,
+    107
+   ],
+   "out_links": [
+    83
+   ]
+  },
+  {
+   "id": 27,
+   "type": "EmptySD3LatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    768,
+    1024,
+    1
+   ],
+   "in_links": [
+    133,
+    134,
+    135
+   ],
+   "out_links": [
+    86
+   ]
+  },
+  {
+   "id": 48,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    84,
+    83,
+    85,
+    93,
+    86
+   ],
+   "out_links": [
+    87
+   ]
+  },
+  {
+   "id": 53,
+   "type": "PulidFluxInsightFaceLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CPU"
+   ],
+   "in_links": [],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 51,
+   "type": "PulidFluxEvaClipLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 49,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    87,
+    88
+   ],
+   "out_links": [
+    149
+   ]
+  },
+  {
+   "id": 45,
+   "type": "PulidFluxModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "pulid_flux_v0.9.0.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 10,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    88
+   ]
+  },
+  {
+   "id": 62,
+   "type": "ApplyPulidFlux",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    146,
+    125,
+    123,
+    124,
+    126
+   ],
+   "out_links": [
+    122
+   ]
+  },
+  {
+   "id": 75,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    154
+   ],
+   "out_links": []
+  },
+  {
+   "id": 65,
+   "type": "CR SDXL Aspect Ratio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024,
+    "3:4 portrait 896x1152",
+    "Off",
+    1,
+    6
+   ],
+   "in_links": [],
+   "out_links": [
+    133,
+    134,
+    135
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "pl,Clothes made of white newspaper, pl,Clothes made of white newspaper, This is a high-resolution portrait of a modern style, featuring a young woman. She is wearing a tight dress white printed with English and patterns, the pattern of which resembles a newspaper. Her hair is black, falling over her shoulders, and she has one hand resting on the back of her head while the other hangs naturally by her side. Her eyes are fixed on the camera, and her expression is calm. She appears to be between the ages of 20 and 30, slim in figure, with delicate features, and fair skin. Her eyes are brown, and her lips are tinted with a subtle shade of red lipstick. Her hair falls to her shoulders, with a deep brown color, styled in loose waves without bangs. The image is a portrait of a young woman with dark hair and red lipstick. She is standing in front of a pink background and is posing with her hands behind her head. The woman is wearing a long-sleeved top with a plunging neckline and a black and white patterned design. The top has a high neckline with a deep V-neckline and long sleeves. Her hair is styled in loose waves and she is looking directly at the camera with a serious expression. The overall mood of the image is serious and edgy."
+   ],
+   "in_links": [
+    155
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 70,
+   "type": "LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Flux-绮梦流光-斗破苍穹-古熏儿_国漫经典_v1",
+    0.8,
+    1
+   ],
+   "in_links": [
+    144,
+    145
+   ],
+   "out_links": [
+    146,
+    147,
+    155
+   ]
+  },
+  {
+   "id": 72,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "pl",
+    ""
+   ],
+   "in_links": [
+    149
+   ],
+   "out_links": []
+  },
+  {
+   "id": 16,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    85
+   ]
+  },
+  {
+   "id": 17,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "normal",
+    30,
+    1
+   ],
+   "in_links": [
+    147
+   ],
+   "out_links": [
+    93
+   ]
+  },
+  {
+   "id": 54,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "879273bb3f8d7662c96d21401c17051cb5c32ad9aec9005875c7218952eaeb1a.png",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    126,
+    154
+   ]
+  },
+  {
+   "id": 69,
+   "type": "LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "模特02.safetensors",
+    0.8,
+    1
+   ],
+   "in_links": [
+    140,
+    143
+   ],
+   "out_links": [
+    144,
+    145
+   ]
+  },
+  {
+   "id": 64,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    143
+   ]
+  },
+  {
+   "id": 63,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Flux_redcraftCADSUpdatedMay11_newREVEAL.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    140
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 49,
+   "type": "VAE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 48,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 17,
+   "to_node": 48,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 25,
+   "to_node": 48,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 47,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 27,
+   "to_node": 48,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 45,
+   "to_node": 62,
+   "type": "PULIDFLUX"
+  },
+  {
+   "from_node": 47,
+   "to_node": 48,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 48,
+   "to_node": 49,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 49,
+   "to_node": 72,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 51,
+   "to_node": 62,
+   "type": "EVA_CLIP"
+  },
+  {
+   "from_node": 53,
+   "to_node": 62,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 54,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 75,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 62,
+   "to_node": 47,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 63,
+   "to_node": 69,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 64,
+   "to_node": 69,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 65,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 65,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 65,
+   "to_node": 27,
+   "type": "INT"
+  },
+  {
+   "from_node": 69,
+   "to_node": 70,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 69,
+   "to_node": 70,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 70,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 70,
+   "to_node": 62,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "utility": 3,
+  "sampler": 4,
+  "face": 4,
+  "vae": 2,
+  "image_io": 3,
+  "conditioning": 1,
+  "lora": 2,
+  "preprocessor": 1,
+  "clip": 1,
+  "checkpoint_loader": 1
+ },
+ "assets": [
+  {
+   "node_id": 45,
+   "node_type": "PulidFluxModelLoader",
+   "kind": "aux_model",
+   "name": "pulid_flux_v0.9.0.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoraLoader",
+   "kind": "lora",
+   "name": "模特02.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 63,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "Flux_redcraftCADSUpdatedMay11_newREVEAL.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "FLUX",
+  "SDXL"
+ ],
+ "param_face_size": 40,
+ "structure_hash": "9d8fef86fe728941",
+ "param_face": [
+  {
+   "node_id": 26,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "117886849211902"
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 0,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 27,
+   "node_type": "EmptySD3LatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "PulidFluxInsightFaceLoader",
+   "widget_index": 0,
+   "value_preview": "CPU"
+  },
+  {
+   "node_id": 45,
+   "node_type": "PulidFluxModelLoader",
+   "widget_index": 0,
+   "value_preview": "pulid_flux_v0.9.0.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 75,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 2,
+   "value_preview": "3:4 portrait 896x1152"
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 3,
+   "value_preview": "Off"
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "CR SDXL Aspect Ratio",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoraLoader",
+   "widget_index": 0,
+   "value_preview": "Flux-绮梦流光-斗破苍穹-古熏儿_国漫经典_v1"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoraLoader",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 70,
+   "node_type": "LoraLoader",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 72,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "pl"
+  },
+  {
+   "node_id": 72,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 16,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "879273bb3f8d7662c96d21401c17051cb5c32ad9aec9005875c7218952ea"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoraLoader",
+   "widget_index": 0,
+   "value_preview": "模特02.safetensors"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoraLoader",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 69,
+   "node_type": "LoraLoader",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 64,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 63,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "Flux_redcraftCADSUpdatedMay11_newREVEAL.safetensors"
+  },
+  {
+   "node_id": 63,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  }
+ ]
+}

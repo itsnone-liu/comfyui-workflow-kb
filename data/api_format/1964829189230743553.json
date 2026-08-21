@@ -1,0 +1,100 @@
+{
+ "12": {
+  "class_type": "LayerMask: LoadBiRefNetModel",
+  "inputs": {
+   "model": "BiRefNet-general-epoch_244.pth"
+  },
+  "_meta": {
+   "title": "LayerMask: Load BiRefNet Model(Advance)"
+  }
+ },
+ "5": {
+  "class_type": "LayerUtility: ImageRemoveAlpha",
+  "inputs": {
+   "background_color": [
+    "6",
+    0
+   ],
+   "fill_background": true,
+   "RGBA_image": [
+    "21",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "LayerUtility: ImageRemoveAlpha"
+  }
+ },
+ "16": {
+  "class_type": "LayerUtility: ImageCombineAlpha",
+  "inputs": {
+   "RGB_image": [
+    "5",
+    0
+   ],
+   "mask": [
+    "21",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "LayerUtility: ImageCombineAlpha"
+  }
+ },
+ "6": {
+  "class_type": "LayerUtility: ColorPicker",
+  "inputs": {
+   "mode": "HEX",
+   "color": "#ffffff"
+  },
+  "_meta": {
+   "title": "LayerUtility: ColorPicker"
+  }
+ },
+ "17": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "16",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ },
+ "19": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "14b4ce51c3b08d88cba7e33034711de04213a83c071434319aee763f530f333f.png"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "21": {
+  "class_type": "LayerMask: BiRefNetUltraV2",
+  "inputs": {
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": false,
+   "detail_dilate": 2,
+   "image": [
+    "19",
+    0
+   ],
+   "detail_erode": 4,
+   "birefnet_model": [
+    "12",
+    0
+   ],
+   "white_point": 0.99,
+   "max_megapixels": 2,
+   "device": "cuda"
+  },
+  "_meta": {
+   "title": "LayerMask: BiRefNet Ultra V2(Advance)"
+  }
+ }
+}

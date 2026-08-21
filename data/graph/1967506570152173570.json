@@ -1,0 +1,160 @@
+{
+ "node_count": 5,
+ "link_count": 4,
+ "active_node_count": 5,
+ "nodes": [
+  {
+   "id": 6,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    4
+   ],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "RH_Nano_Banana_Image2Image",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    977379818,
+    "randomize"
+   ],
+   "in_links": [
+    1,
+    2
+   ],
+   "out_links": [
+    3,
+    4
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2b05a660597dad0dd6b833dbbc72a30f2ee4cdc444949d4f82caf0245a9f296c.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 3,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "将上传的人像转换为美式风格的专业 headshot（企业高管摄影风格），需保留原照片人物的面部特征和身份。\n要求：半身像，蓝色纹理背景，自然柔和的棚拍打光，高清清晰，肤色真实自然，画面简洁优雅。\n人物穿无袖黑色连衣裙，简约优雅设计，直筒略收身版型，面料光滑无图案，现代感与专业感兼具，搭配简约金色首饰，整体现代干练。\n表情放松自信，眼神有神，自然露齿微笑。\n镜头对焦清晰，背景轻微虚化，整体效果专业、精致、干净。\n动作姿势为单手轻托下巴，肘部搭在另一只手臂上，姿态优雅知性。"
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 2,
+   "to_node": 4,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 4,
+   "type": "STRING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 6,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 3,
+  "utility": 2
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 6,
+ "structure_hash": "d5b6825784a8a247",
+ "param_face": [
+  {
+   "node_id": 6,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 4,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 4,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 1,
+   "value_preview": "977379818"
+  },
+  {
+   "node_id": 4,
+   "node_type": "RH_Nano_Banana_Image2Image",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "2b05a660597dad0dd6b833dbbc72a30f2ee4cdc444949d4f82caf0245a9f"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

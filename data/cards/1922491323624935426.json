@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "换脸",
+  "人像编辑"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张包含人物的待编辑图像和一张目标人脸图像，通过 InsertAnything 完成换脸生成",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 InsightFace + FaceEmbedDistance 对生成的人脸与目标人脸做身份相似度度量（L2 距离），提供可量化的验证结果",
+   "kind": "fact"
+  },
+  {
+   "text": "支持自动 PersonMaskUltra 人像分割掩码 + 用户 MaskOption 上传掩码两种掩码输入方式，可引导换脸区域",
+   "kind": "fact"
+  },
+  {
+   "text": "用两个 ImageConcatMulti 将三路预览按 right/down 布局拼接，并用 SaveImage 输出最终结果",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InsertAnything 图像编辑/换脸",
+  "InsightFace 人脸检测与特征提取",
+  "FaceEmbedDistance L2 距离度量",
+  "PersonMaskUltra V2 人像分割",
+  "MaskOption 手动掩码上传",
+  "ImageConcatMulti 图像拼接/网格预览"
+ ],
+ "special_features": [
+  {
+   "text": "FaceEmbedDistance 形成质量校验回路：阈值设为 100、下限为 0，可将生成脸与参考脸的距离结果作为换脸成功与否的旁路判据",
+   "kind": "inference"
+  },
+  {
+   "text": "双 PersonMaskUltra + 双 MaskOption 的对称掩码结构（8 个相关节点）说明流程很可能分别对源图与目标图各做一次人像分割，再交给 InsertAnythingImageProcessor 合并使用",
+   "kind": "inference"
+  },
+  {
+   "text": "InsertAnythingInferencer 固定随机种子 666（fixed 模式），保证每次生成的换脸结果可复现",
+   "kind": "fact"
+  },
+  {
+   "text": "三路 PreviewImage + SaveImage 并存，其中两路先经过 ImageConcatMulti 拼接，输出的是组合对比图而非单张结果",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕“可控、可验证的换脸”设计：输入侧用 PersonMaskUltra 自动分割人形，再用 MaskOption 让用户上传补充掩码，解决自动分割不准确的问题；生成侧使用 InsertAnythingInferencer 并固定种子，保证结果一致；输出侧用 FaceEmbedDistance 衡量换脸后的身份相似度，同时通过 ImageConcatMulti 输出多路对比预览，方便用户直观判断效果。整体上像是一套可复现、可审查的换脸流水线，而不仅是单次生成。",
+ "use_case": "适合个人创作者/直播运营在不进行二次模型训练的情况下快速生成换脸素材：输入 2-3 张照片和手动/自动掩码，即得到身份可验证的换脸图和拼接对比预览。",
+ "limitation": "依赖外部自定义节点 ComfyUI-InsertAnything、LayerMask: PersonMaskUltra、InsightFace（insightface）模型；两个 MaskOption 均需用户上传掩码，无法全自动运行；FaceEmbedDistance 的距离阈值 100 为工作流作者设定，对实际换脸身份一致性的判定精度未知；工作流未体现自动阻断低质量结果再保存的机制。",
+ "dependencies": [
+  "ComfyUI-InsertAnything（InsertAnythingLoader / Inferencer / ImageProcessor）",
+  "ComfyUI-LayerMask（PersonMaskUltra V2）",
+  "ComfyUI-FaceAnalysis（InsightFace / FaceEmbedDistance）",
+  "MaskOption 上传节点",
+  "ComfyUI-ImageConcatMulti"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "2 张图像（LoadImage ×2）+ 2 个用户上传掩码（MaskOption ×2）",
+  "count": "4"
+ },
+ "output": {
+  "type": "换脸结果图 / 拼接对比预览图（PreviewImage ×3，SaveImage ×1）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FaceEmbedDistance 阈值 (100)",
+   "how_to_tune": "控制身份判定严格程度：阈值越大越宽容，越小越严格。若换脸后多次报“距离过大”，可适当调高；反之若不同人的脸也被判定通过，则调低。注意该节点还带有下限 0 和 L2_norm 选项，实际距离分布需先跑一次日志观察。"
+  },
+  {
+   "param": "InsertAnythingInferencer 种子 (666, fixed)",
+   "how_to_tune": "需要可复现的结果保持 fixed；想探索更多换脸细节变化时，改为 random 或换种子数值。"
+  },
+  {
+   "param": "InsertAnythingLoader 精度 (bfloat16)",
+   "how_to_tune": "显存足够时优先 bfloat16；若出现精度错误/NaN，可换 fp16 或 fp32。显存紧张可尝试低比特量化。"
+  },
+  {
+   "param": "ImageConcatMulti 方向 (right/down)",
+   "how_to_tune": "right 用于左右并排对比，down 用于上下堆叠对比；可按输出展示比例调整。"
+  }
+ ],
+ "summary_text": "能力:上传一张包含人物的待编辑图像和一张目标人脸图像，通过 InsertAnything 完成换脸生成；能力:利用 InsightFace + FaceEmbedDistance 对生成的人脸与目标人脸做身份相似度度量（L2 距离），提供可量化的验证结果；能力:支持自动 PersonMaskUltra 人像分割掩码 + 用户 MaskOption 上传掩码两种掩码输入方式，可引导换脸区域；能力:用两个 ImageConcatMulti 将三路预览按 right/down 布局拼接，并用 SaveImage 输出最终结果；特色:FaceEmbedDistance 形成质量校验回路：阈值设为 100、下限为 0，可将生成脸与参考脸的距离结果作为换脸成功与否的旁路判据；特色:双 PersonMaskUltra + 双 MaskOption 的对称掩码结构（8 个相关节点）说明流程很可能分别对源图与目标图各做一次人像分割，再交给 InsertAnythingImageProcessor 合并使用；特色:InsertAnythingInferencer 固定随机种子 666（fixed 模式），保证每次生成的换脸结果可复现；特色:三路 PreviewImage + SaveImage 并存，其中两路先经过 ImageConcatMulti 拼接，输出的是组合对比图而非单张结果；适合个人创作者/直播运营在不进行二次模型训练的情况下快速生成换脸素材：输入 2-3 张照片和手动/自动掩码，即得到身份可验证的换脸图和拼接对比预览。；该工作流围绕“可控、可验证的换脸”设计：输入侧用 PersonMaskUltra 自动分割人形，再用 MaskOption 让用户上传补充掩码，解决自动分割不准确的问题；生成侧使用 InsertAnythingInferencer 并固定种子，保证结果一致；输出侧用 FaceEmbedDistance 衡量换脸后的身份相似度，同时通过 ImageConcatMulti 输出多路对比预览，方便用户直观判断效果。整体上像是一套可复现、可审查的换脸流水线，而不仅是单次生成。"
+}

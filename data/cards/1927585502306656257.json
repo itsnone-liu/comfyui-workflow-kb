@@ -1,0 +1,112 @@
+{
+ "domain": [
+  "视频换脸",
+  "视频转绘",
+  "Wan2.1/VACE",
+  "ComfyUI"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人脸照片和一段视频，输出保留原视频动作/场景、把人物面部替换为目标人脸的视频（换脸 + 转绘）。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过自然语言提示词控制换脸后的表情/动作，例如『女孩惊恐地说话』『在跳舞』，提示词会与参考人脸特征共同约束生成结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 person mask 生成、膨胀和 inpaint 预处理，将编辑区域限制在面部/头部附近，减少对背景和其他主体的破坏。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 RH_Captioner 自动把参考人脸的头部特征写成文字描述并拼入 prompt，形成『参考图 + 自动身份描述』的双重换脸约束。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Wan2.1-T2V-14B 文生视频底模 + Wan2.1-VACE 14B 视频条件编辑模块",
+  "WanVideoVACEEncode 将参考图/mask 编码为时空条件",
+  "ACE_ImageFaceCrop(insightface) 做人脸检测与裁剪",
+  "APersonMaskGenerator + GrowMaskWithBlur + InpaintPreprocessor 构建编辑区域掩码",
+  "ImageConcatMulti 多图拼接，用于把多路视觉条件组合进 VACE",
+  "RH_Captioner 自动生成人物头部特征描述，并用 Text Concatenate 组合正/负提示词",
+  "WanVideoTeaCache、WanVideoSLG、WanVideoBlockSwap、WanVideoTorchCompileSettings、PurgeVRAM 等显存与速度优化",
+  "Wan21_AccVid_T2V_14B_lora_rank32 LoRA 加速/稳定视频生成",
+  "VHS_LoadVideo / VHS_VideoCombine 视频读写，WanVideoEnhanceAVideo 后处理增强"
+ ],
+ "special_features": [
+  {
+   "text": "三层人脸/主体约束链：ACE_ImageFaceCrop 裁剪人脸 → Crop Face/APersonMaskGenerator 生成 person mask → GrowMaskWithBlur 膨胀并模糊边界，再交给 InpaintPreprocessor 和 ImageConcatMulti 组合控制；这是一套较完整的局部重绘条件链。",
+   "kind": "inference"
+  },
+  {
+   "text": "同一个生成结果接 3 个 VHS_VideoCombine(OUT)，可能用于分别保存/预览『原始视频、换脸结果、增强后视频』，方便进行质量控制与对比。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存/速度优化堆叠明显：TeaCache + SLG + BlockSwap + TorchCompile + PurgeVRAM + AccVid LoRA 同时出现，是让 14B 视频模型在有限显存上可实战运行的工程化配置。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动 caption 闭环：RH_Captioner 的『只描述人物头部特征，其他不要描述』输出作为 prompt 的一部分，减少手动写身份描述，同时提高跨视频的身份一致性。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "设计者似乎把『换脸』拆成『参考身份提取』和『视频生成条件』两段：先用 ACE_ImageFaceCrop 和 PersonMask 得到干净的人脸及可编辑区域，再通过 VACE 把参考图与 mask 注入 14B T2V 模型，而不是做传统像素级 alpha 混合。这样模型可以重绘表情、光线和细节，同时尽量保持原始视频的动作骨架；提示词和自动 caption 用来控制语义，多路视频输出则方便和原视频进行对比。",
+ "use_case": "适合短视频人物换脸/换脸转绘、角色一致性视频生成、主播/演员视觉替换、影视人物面部重绘，也适合在 14B 视频模型上研究 VACE 条件控制与显存优化。",
+ "limitation": "依赖 Wan2.1 14B 系列大模型和多个自定义节点（WanVideoWrapper、VideoHelperSuite、KJNodes、LayerStyle、ACE 人脸节点、APersonMaskGenerator、RH_Captioner 等），首次使用需下载对应权重；14B fp8 + VACE bf16 仍需较高显存，显存不足时可开 BlockSwap/offload 但会明显变慢；VHS_LoadVideo 输入视频需要能被 ffmpeg 读取，建议使用短片段；换脸效果受参考图清晰度、人脸角度和视频动作幅度影响，极端角度/遮挡可能效果不稳。",
+ "dependencies": [
+  "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+  "Wan2_1-VACE_module_14B_bf16.safetensors",
+  "Wan2_1_VAE_bf16.safetensors",
+  "umt5-xxl-enc-bf16.safetensors",
+  "Wan21_AccVid_T2V_14B_lora_rank32_fp16.safetensors",
+  "ComfyUI-WanVideoWrapper 系列节点",
+  "VideoHelperSuite (VHS)",
+  "KJNodes / ImageResizeKJ",
+  "ComfyUI_LayerStyle",
+  "ACE_ImageFaceCrop 对应自定义节点",
+  "APersonMaskGenerator 对应自定义节点",
+  "RH_Captioner 对应自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "参考图(LoadImage) + 参考视频(VHS_LoadVideo) + 文本提示词(PrimitiveNode/Text Concatenate)",
+  "count": "1 张参考图 + 1 段视频 + 1 组文本提示词"
+ },
+ "output": {
+  "type": "视频文件(VHS_VideoCombine ×3) + 预览输出(PreviewImage ×2)",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "WanVideoSampler/steps",
+   "how_to_tune": "默认 10 步偏向速度和显存友好；若追求更高质量可升到 15-20 步，但耗时明显增加，14B 模型下不建议盲目标得太高。"
+  },
+  {
+   "param": "WanVideoSampler/cfg",
+   "how_to_tune": "控制提示词跟随程度，过高会颜色过饱和/动作僵硬，过低会让换脸结果跑偏；建议在 6-12 之间按效果微调。"
+  },
+  {
+   "param": "WanVideoVACEEncode/width,height,frames",
+   "how_to_tune": "frames=33 约对应 1-2 秒短视频，帧数增加会显著增加显存和耗时；width/height 应与输入视频及解码参数匹配，避免拉伸变形。"
+  },
+  {
+   "param": "GrowMaskWithBlur",
+   "how_to_tune": "膨胀像素决定换脸重绘范围：脸小或要连发际线一起换时可加大 50 到 80；模糊值影响边缘过渡，太大容易把背景也带进重绘，太小可能出现边界硬边。"
+  },
+  {
+   "param": "WanVideoTeaCache",
+   "how_to_tune": "阈值 0.15 是速度和质量的较好平衡；调大缓存阈值可提速但可能丢失细节和动作连续性，显存/时间紧张时再逐步调大。"
+  },
+  {
+   "param": "WanVideoBlockSwap",
+   "how_to_tune": "block_swap 越大峰值显存越低但生成越慢；接近 OOM 时按 10/20/30 递增，配合 offload_device 使用，找到不爆显存且速度可接受的最小值。"
+  },
+  {
+   "param": "RH_Captioner/prompt",
+   "how_to_tune": "保持像『只描述人物头部特征，其他不要描述』这样缩窄范围的指令，能让 caption 专注于身份信息，避免把背景、服饰也写进 prompt 导致模型在换脸时误改场景。"
+  }
+ ],
+ "summary_text": "能力:上传单张人脸照片和一段视频，输出保留原视频动作/场景、把人物面部替换为目标人脸的视频（换脸 + 转绘）。；能力:通过自然语言提示词控制换脸后的表情/动作，例如『女孩惊恐地说话』『在跳舞』，提示词会与参考人脸特征共同约束生成结果。；能力:使用 person mask 生成、膨胀和 inpaint 预处理，将编辑区域限制在面部/头部附近，减少对背景和其他主体的破坏。；能力:用 RH_Captioner 自动把参考人脸的头部特征写成文字描述并拼入 prompt，形成『参考图 + 自动身份描述』的双重换脸约束。；特色:三层人脸/主体约束链：ACE_ImageFaceCrop 裁剪人脸 → Crop Face/APersonMaskGenerator 生成 person mask → GrowMaskWithBlur 膨胀并模糊边界，再交给 InpaintPreprocessor 和 ImageConcatMulti 组合控制；这是一套较完整的局部重绘条件链。；特色:同一个生成结果接 3 个 VHS_VideoCombine(OUT)，可能用于分别保存/预览『原始视频、换脸结果、增强后视频』，方便进行质量控制与对比。；特色:显存/速度优化堆叠明显：TeaCache + SLG + BlockSwap + TorchCompile + PurgeVRAM + AccVid LoRA 同时出现，是让 14B 视频模型在有限显存上可实战运行的工程化配置。；特色:自动 caption 闭环：RH_Captioner 的『只描述人物头部特征，其他不要描述』输出作为 prompt 的一部分，减少手动写身份描述，同时提高跨视频的身份一致性。；适合短视频人物换脸/换脸转绘、角色一致性视频生成、主播/演员视觉替换、影视人物面部重绘，也适合在 14B 视频模型上研究 VACE 条件控制与显存优化。；设计者似乎把『换脸』拆成『参考身份提取』和『视频生成条件』两段：先用 ACE_ImageFaceCrop 和 PersonMask 得到干净的人脸及可编辑区域，再通过 VACE 把参考图与 mask 注入 14B T2V 模型，而不是做传统像素级 alpha 混合。这样模型可以重绘表情、光线和细节，同时尽量保持原始视频的动作骨架；提示词和自动 caption 用来控制语义，多路视频输出则方便和原视频进行对比。"
+}

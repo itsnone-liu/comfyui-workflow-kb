@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "图生图"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张包含人物姿势的参考图，通过OpenPose提取骨架姿态，再结合固定文本提示词（如“a cute girl with cat's ears...”）生成一张保持该姿势的猫耳娘图像。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用负面提示词“blurry ugly bad”抑制模糊、丑陋等低质量生成结果，提高输出清晰度。",
+   "kind": "fact"
+  },
+  {
+   "text": "基于Z-Image-Turbo模型以steps=9进行快速采样，在姿势引导下快速出图。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "ControlNet",
+  "OpenPose",
+  "Z-Image-Turbo",
+  "Qwen-Image",
+  "ModelSamplingAuraFlow"
+ ],
+ "special_features": [
+  {
+   "text": "使用ModelPatchLoader加载Z-Image-Turbo-Fun-Controlnet-Union，并通过QwenImageDiffsynthControlnet节点以1.0强度注入姿态控制，和常规ControlNetLoader+ApplyControlNet组合不同。",
+   "kind": "fact"
+  },
+  {
+   "text": "加入ModelSamplingAuraFlow(mode4)节点，对Z-Image-Turbo的采样模式进行特殊调整，适配该模型的采样分布。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用ImageScaleByAspectRatio V2将输入图按比例缩放并letterbox到16倍数，与EmptySD3LatentImage设定的960x1280分辨率对齐。",
+   "kind": "fact"
+  },
+  {
+   "text": "包含easy cleanGpuUsed节点，在生成后主动清理显存，适合长时间连续出图场景。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流试图将Z-Image-Turbo的高效生成能力与OpenPose姿态控制结合，用一张参考图锁定目标姿势，同时利用Qwen-Image文本编码器强化提示词语义。通过ModelSamplingAuraFlow调整采样参数、ControlNet注入姿态、负面提示词抑制瑕疵，最终实现快速产出固定姿态的二次元/猫耳娘角色图。整体设计偏向单张姿势参考的图生图场景，而非多条件复杂组合。",
+ "use_case": "角色立绘姿势参考、给图片换动作或角色保持姿势等场景，具体表现为“上传姿势图→生成猫耳娘”。",
+ "limitation": "依赖外部模型文件：z_image_turbo_bf16.safetensors、qwen_3_4b.safetensors、ae.safetensors、Z-Image-Turbo-Fun-Controlnet-Union.safetensors；需要安装自定义节点LayerUtility（ImageScaleByAspectRatio V2）、QwenImageDiffsynthControlnet、easy cleanGpuUsed；输入图片需为可读取图像，且OpenPose预处理器对人物姿势提取效果依赖图片清晰度；生成分辨率固定为960x1280。",
+ "dependencies": [
+  "z_image_turbo_bf16.safetensors",
+  "qwen_3_4b.safetensors",
+  "ae.safetensors",
+  "Z-Image-Turbo-Fun-Controlnet-Union.safetensors",
+  "LayerUtility: ImageScaleByAspectRatio V2",
+  "QwenImageDiffsynthControlnet",
+  "easy cleanGpuUsed"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "当前为9，速度较快；若追求更高精细度可增大到20~30，但生成时间会明显增加。"
+  },
+  {
+   "param": "QwenImageDiffsynthControlnet/强度",
+   "how_to_tune": "当前为1.0，控制姿势约束力度；增大到1.5左右让姿态更强，降低到0.5左右可让模型更多自由发挥。"
+  },
+  {
+   "param": "OpenposePreprocessor/分辨率",
+   "how_to_tune": "当前为512，检测到低质量或小尺寸人物姿态时可提高到768或更高，但会增加预处理耗时。"
+  },
+  {
+   "param": "EmptySD3LatentImage/尺寸",
+   "how_to_tune": "当前为960x1280，若要改变输出比例，需保持宽高为16的倍数，并同步调整ImageScaleByAspectRatio V2的letterbox设置。"
+  },
+  {
+   "param": "CLIPTextEncode/正面提示词",
+   "how_to_tune": "当前为“a cute girl with cat's e...”，可替换为其他角色描述；提示词越具体，生成内容越贴合描述，但需注意与姿态控制之间的平衡。"
+  }
+ ],
+ "summary_text": "能力:输入一张包含人物姿势的参考图，通过OpenPose提取骨架姿态，再结合固定文本提示词（如“a cute girl with cat's ears...”）生成一张保持该姿势的猫耳娘图像。；能力:使用负面提示词“blurry ugly bad”抑制模糊、丑陋等低质量生成结果，提高输出清晰度。；能力:基于Z-Image-Turbo模型以steps=9进行快速采样，在姿势引导下快速出图。；特色:使用ModelPatchLoader加载Z-Image-Turbo-Fun-Controlnet-Union，并通过QwenImageDiffsynthControlnet节点以1.0强度注入姿态控制，和常规ControlNetLoader+ApplyControlNet组合不同。；特色:加入ModelSamplingAuraFlow(mode4)节点，对Z-Image-Turbo的采样模式进行特殊调整，适配该模型的采样分布。；特色:使用ImageScaleByAspectRatio V2将输入图按比例缩放并letterbox到16倍数，与EmptySD3LatentImage设定的960x1280分辨率对齐。；特色:包含easy cleanGpuUsed节点，在生成后主动清理显存，适合长时间连续出图场景。；角色立绘姿势参考、给图片换动作或角色保持姿势等场景，具体表现为“上传姿势图→生成猫耳娘”。；该工作流试图将Z-Image-Turbo的高效生成能力与OpenPose姿态控制结合，用一张参考图锁定目标姿势，同时利用Qwen-Image文本编码器强化提示词语义。通过ModelSamplingAuraFlow调整采样参数、ControlNet注入姿态、负面提示词抑制瑕疵，最终实现快速产出固定姿态的二次元/猫耳娘角色图。整体设计偏向单张姿势参考的图生图场景，而非多条件复杂组合。"
+}

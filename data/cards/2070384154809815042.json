@@ -1,0 +1,95 @@
+{
+ "domain": [
+  "图像编辑",
+  "人像美化",
+  "AI 重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物照片，端到端生成胸部放大（默认 G 罩杯）的美化结果图",
+   "kind": "fact"
+  },
+  {
+   "text": "自动生成带中文标注的“原图 vs 结果图”对比图，便于前后效果展示",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 ReferenceLatent 与提示词约束，尽可能保持人物身份和背景不变，仅改变胸部尺寸",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "LoRA 微调",
+  "文本引导图像重绘",
+  "VAE 编码/解码",
+  "对比图后处理"
+ ],
+ "special_features": [
+  {
+   "text": "使用专用 LoRA（f2_klein_9b_Enlarge chest2.0）针对“胸部放大”任务进行定向生成，强度预设 0.6",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ReferenceLatent 注入原图信息，似乎用于保持人物结构/身份，降低无关区域变化",
+   "kind": "inference"
+  },
+  {
+   "text": "末端使用 LayerUtility: ImageReel + ImageReelComposit 将原图与结果图拼接，并叠加中文标签（如“原图”“结果图”），形成成品对比卡",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 rgthree 的 Image Comparer 支持交互式滑动对比",
+   "kind": "fact"
+  },
+  {
+   "text": "调用 easy cleanGpuUsed 在流程结束后自动清理显存，适合反复试验",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流将“胸部增大”这一垂直需求封装为专用流水线：先用 FLUX.2 klein 9B 基座模型加定制 LoRA 确保生成效果，再用 ReferenceLatent 和提示词约束保持原图身份，最后自动输出带标注的前后对比图，方便创作者直接查看效果。整体设计偏向工程化交付，似乎是为了降低用户操作门槛，并适合作为固定模板反复使用。",
+ "use_case": "适用于电商模特图身材优化、写真修图、人物胸部放大等需要局部身材调整的内容创作场景。",
+ "limitation": "强依赖特定模型文件（flux-2-klein-9b.safetensors、qwen_3_8b.safetensors、flux2-vae.safetensors、f2_klein_9b_Enlarge chest2.0.safetensors）和多个自定义节点；输入需为清晰人物照片，对复杂遮挡或极端角度效果可能不稳定；生成分辨率与显存相关，默认 1024x1024，高分辨率会显著增加显存占用。",
+ "dependencies": [
+  "模型文件：flux-2-klein-9b.safetensors",
+  "CLIP：qwen_3_8b.safetensors",
+  "VAE：flux2-vae.safetensors",
+  "LoRA：f2_klein_9b_Enlarge chest2.0.safetensors",
+  "自定义节点：rgthree (Image Comparer)",
+  "自定义节点：ComfyUI-Easy-Use (easy cleanGpuUsed、easy imageScaleDownToSize)",
+  "自定义节点：ComfyUI_LayerStyle (LayerUtility: ImageReel、ImageReelComposit)",
+  "自定义节点：Comfyroll (CR Text)"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly 的 strength（当前 0.6）",
+   "how_to_tune": "增大可让胸部放大更明显，但过高易产生畸变/伪影；调低则更自然但效果减弱，建议 0.4~0.8 之间微调。"
+  },
+  {
+   "param": "CR Text（提示词“把照片中人物胸部变成G罩杯，其他保持不变”）",
+   "how_to_tune": "可修改罩杯（如 C、D、E）或补充“自然”“不过度”等风格词来控制生成强度与质感。"
+  },
+  {
+   "param": "Flux2Scheduler 的 width/height（当前 1024x1024）",
+   "how_to_tune": "生成分辨率越高细节越多，但显存消耗与耗时同步上升；若显存不足可降到 768，高显存可尝试 1280。"
+  },
+  {
+   "param": "RandomNoise 的 seed（当前 802972250181457）",
+   "how_to_tune": "固定 seed 可复现同一结果；更换 seed 可得到不同细节变化，便于筛选最佳效果。"
+  },
+  {
+   "param": "CFGGuider 的 cfg（当前 1）",
+   "how_to_tune": "FLUX 系列通常 cfg=1 最稳定，除非出现失真，否则不建议调到 2 以上。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物照片，端到端生成胸部放大（默认 G 罩杯）的美化结果图；能力:自动生成带中文标注的“原图 vs 结果图”对比图，便于前后效果展示；能力:利用 ReferenceLatent 与提示词约束，尽可能保持人物身份和背景不变，仅改变胸部尺寸；特色:使用专用 LoRA（f2_klein_9b_Enlarge chest2.0）针对“胸部放大”任务进行定向生成，强度预设 0.6；特色:通过 ReferenceLatent 注入原图信息，似乎用于保持人物结构/身份，降低无关区域变化；特色:末端使用 LayerUtility: ImageReel + ImageReelComposit 将原图与结果图拼接，并叠加中文标签（如“原图”“结果图”），形成成品对比卡；特色:集成 rgthree 的 Image Comparer 支持交互式滑动对比；特色:调用 easy cleanGpuUsed 在流程结束后自动清理显存，适合反复试验；适用于电商模特图身材优化、写真修图、人物胸部放大等需要局部身材调整的内容创作场景。；该工作流将“胸部增大”这一垂直需求封装为专用流水线：先用 FLUX.2 klein 9B 基座模型加定制 LoRA 确保生成效果，再用 ReferenceLatent 和提示词约束保持原图身份，最后自动输出带标注的前后对比图，方便创作者直接查看效果。整体设计偏向工程化交付，似乎是为了降低用户操作门槛，并适合作为固定模板反复使用。"
+}

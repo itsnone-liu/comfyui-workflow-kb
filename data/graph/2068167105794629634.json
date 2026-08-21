@@ -1,0 +1,633 @@
+{
+ "node_count": 17,
+ "link_count": 14,
+ "active_node_count": 12,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    7
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "生成2x2故事板四宫格，横版16:9，写实电影质感。左上：写实电影质感无人机俯拍镜头，彩色童话风格奶酪造型石砌小镇坐落在绿色丘陵间，建筑外墙石材纹理清晰、墙面整洁干净，屋顶色彩柔和温暖，小型木质风车在山坡上，明亮的自然阳光从云层中透出；右上：写实电影质感镜头，小镇广场中央一座三层奶酪堆叠造型的石砌喷泉，喷泉表面石材纹理真实，金色半透明液体从顶层缓缓流淌下来，在阳光下泛着柔和的光泽；左下：写实电影质感镜头，木质风车在阳光下缓慢转动，桨叶木纹清晰，远处奶酪造型建筑群错落有致，温暖的金色阳光在屋顶投下柔和阴影；右下：写实电影质感空镜，干净平整的镇口石板路延伸向镇内，温暖的阳光铺满路面，远处小路尽头有一个极小的橘色带红色模糊点正在快速靠近。全组风格统一为真实电影摄影，4k，自然光，建筑整洁清新，非插画非动画，无字幕无水印。"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 3,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "你是一个文本处理大师，请根据规则处理用户提供的文字信息\n用户输入要求格式：\n【格1单图提示词】\nXXXX\n\n【格2单图提示词】\nXXXX\n\n【格3单图提示词】\nXXXX\n\n【格4单图提示词】\nXXXX\n\n【本组四宫格总图提示词】\nXXXX\n\n文字处理要求：\n把【本组四宫格总图提示词】中左上的内容用【格1单图提示词】的内容代替，右上的内容用【格2单图提示词】的内容代替，左下用【格3单图提示词】的内容代替，右下的内容用【格4单图提示词】的内容代替，右下的内容遇到“。”结束，其他三个遇到“；”结束，最后直接输出替换后的【本组四宫格总图提示词】的内容即可",
+    "Hello",
+    0.6,
+    2020562208,
+    "randomize"
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 2,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【格1单图提示词】\n写实电影质感无人机俯拍镜头，彩色童话风格奶酪造型石砌小镇坐落在绿色丘陵间，建筑外墙石材纹理清晰、墙面整洁干净，屋顶色彩柔和温暖，小型木质风车在山坡上，明亮的自然阳光从云层中透出，4k画质，电影级浅景深，写实摄影风格，禁止插画，禁止卡通，禁止字幕，禁止水印\n\n【格2单图提示词】\n写实电影质感镜头，小镇广场中央一座三层奶酪堆叠造型的石砌喷泉，喷泉表面石材纹理真实，金色半透明液体从顶层缓缓流淌下来，在阳光下泛着柔和的光泽，广场石板地面干净平整，周围建筑整洁明亮，4k画质，电影感，自然光，禁止插画，禁止卡通，禁止字幕，禁止水印\n\n【格3单图提示词】\n写实电影质感镜头，木质风车在阳光下缓慢转动，桨叶木纹清晰，远处奶酪造型建筑群错落有致，温暖的金色阳光在屋顶投下柔和阴影，天空有真实云朵，整体氛围宁静明亮，4k画质，浅景深，写实摄影，禁止插画，禁止卡通，禁止文字，禁止水印\n\n【格4单图提示词】\n写实电影质感空镜，干净平整的镇口石板路延伸向镇内，温暖的阳光铺满路面，远处小路尽头有一个极小的橘色带红色模糊点正在快速靠近，画面静谧带有期待感，4k画质，写实摄影，自然光，禁止插画，禁止卡通，禁止字幕，禁止水印\n\n【本组四宫格总图提示词】\n生成2x2故事板四宫格，横版16:9，写实电影质感。左上：无人机俯拍绿色丘陵间奶酪造型石砌小镇全景；右上：镜头推进广场中央三层奶酪堆叠喷泉，金色液体流淌；左下：风车转动，阳光温暖，小镇宁静；右下：镇口空镜，远处极小橘色+红色模糊点靠近。全组风格统一为真实电影摄影，4k，自然光，建筑整洁清新，非插画非动画，无字幕无水印。"
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 6,
+   "type": "RH_RhartImageG2TextToImage",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "16:9",
+    false,
+    708264973,
+    "randomize",
+    "4k"
+   ],
+   "in_links": [
+    6
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 12,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481deefa6e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 15,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481deefa6e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 14,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481deefa6e.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 17,
+   "type": "StringConcatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    15,
+    20
+   ],
+   "out_links": [
+    21,
+    28
+   ]
+  },
+  {
+   "id": 19,
+   "type": "RH_LLMAPI_NODE",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    "",
+    "你是一个文本处理大师，请根据规则处理用户提供的文字信息\n用户输入要求格式：\n【格1单图提示词】\nXXXX\n\n【格2单图提示词】\nXXXX\n\n【格3单图提示词】\nXXXX\n\n【格4单图提示词】\nXXXX\n\n【本组四宫格总图提示词】\nXXXX\n\n文字处理要求：\n把【本组四宫格总图提示词】中左上的内容用【格1单图提示词】的内容代替，右上的内容用【格2单图提示词】的内容代替，左下用【格3单图提示词】的内容代替，右下的内容用【格4单图提示词】的内容代替，右下的内容遇到“。”结束，其他三个遇到“；”结束。整体要求及其内容需要保留，最后直接输出替换后的【本组四宫格总图提示词】的内容+整体要求即可",
+    "Hello",
+    0.6,
+    1988977816,
+    "randomize"
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": [
+    19,
+    20
+   ]
+  },
+  {
+   "id": 11,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    11
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图1是场景，图2是角色小棕兔，图3是木质信箱，生成一张专业故事板风格的 2x2 四宫格分镜总图，横版16:9 排版，干净背景，四个画面之间有清晰分隔。四个画面保持同一角色（穿着蓝色牛仔背带裤和黄色雨靴的小棕兔小葵）、同一场景逻辑（山坡顶的老橡树与许愿井旁）、同一光线逻辑（午后的温暖日光，光影斑驳）。四个面板内容如下：  \n左上格（起）：一只穿着蓝色牛仔背带裤和黄色雨靴的小棕兔小葵，坐在一棵巨大的老橡树下的草地上，背靠着粗糙的树干，阳光透过树叶在它身上洒下摇曳的光斑，远处的山坡下是小镇的远景，景色宁静而壮美，中景景别，微俯拍，cinematic still, natural light, realistic texture, clear composition, no subtitles, no watermark；  \n右上格（承）：老橡树的树根旁，草丛中隐约可见一口由灰色石块砌成的古井，井口上覆盖着翠绿的藤蔓和几朵不知名的白色小花，井口的木质轱辘已经有些年头，带着岁月的痕迹，阳光在井口的青苔上反射出湿润的微光，近景景别，微距细节，cinematic still, realistic texture, natural light, shallow depth of field, no subtitles, no watermark；  \n左下格（转）：一只穿着蓝色牛仔背带裤的小棕兔小葵的背面中景，它正站在古井旁边，两只前爪搭在井口边缘，微微探身向井内望去，井口的藤蔓垂落，井水如镜面般倒映着蓝天、飘动的云朵和兔子小小的轮廓，构图对称而宁静，cinematic still, natural light, clear composition, no subtitles, no watermark, no distorted hands；  \n右下格（合）：一只穿着蓝色牛仔背带裤的小棕兔小葵的侧面中近景（从腰部以上，避免面部大特写），它站在古井旁，双眼合上，两只毛茸茸的小爪子轻轻合拢在胸前，做出许愿的姿态，阳光透过老橡树的枝叶在它脸上和身上洒下斑驳的暖光，画面充满仪式感和童真，背景是虚化的山坡和远方天空，cinematic still, warm golden light, realistic texture, no subtitles, no watermark, no character inconsistency。  \n整体要求：叙事清晰，角色统一，空间统一，无字幕，无水印，无额外文字。"
+   ],
+   "in_links": [
+    28
+   ],
+   "out_links": []
+  },
+  {
+   "id": 20,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "生成一张专业故事板风格的 2x2 四宫格分镜总图，横版16:9 排版，干净背景，四个画面之间有清晰分隔。四个画面保持同一角色（穿着蓝色牛仔背带裤和黄色雨靴的小棕兔小葵）、同一场景逻辑（山坡顶的老橡树与许愿井旁）、同一光线逻辑（午后的温暖日光，光影斑驳）。四个面板内容如下：  \n左上格（起）：一只穿着蓝色牛仔背带裤和黄色雨靴的小棕兔小葵，坐在一棵巨大的老橡树下的草地上，背靠着粗糙的树干，阳光透过树叶在它身上洒下摇曳的光斑，远处的山坡下是小镇的远景，景色宁静而壮美，中景景别，微俯拍，cinematic still, natural light, realistic texture, clear composition, no subtitles, no watermark；  \n右上格（承）：老橡树的树根旁，草丛中隐约可见一口由灰色石块砌成的古井，井口上覆盖着翠绿的藤蔓和几朵不知名的白色小花，井口的木质轱辘已经有些年头，带着岁月的痕迹，阳光在井口的青苔上反射出湿润的微光，近景景别，微距细节，cinematic still, realistic texture, natural light, shallow depth of field, no subtitles, no watermark；  \n左下格（转）：一只穿着蓝色牛仔背带裤的小棕兔小葵的背面中景，它正站在古井旁边，两只前爪搭在井口边缘，微微探身向井内望去，井口的藤蔓垂落，井水如镜面般倒映着蓝天、飘动的云朵和兔子小小的轮廓，构图对称而宁静，cinematic still, natural light, clear composition, no subtitles, no watermark, no distorted hands；  \n右下格（合）：一只穿着蓝色牛仔背带裤的小棕兔小葵的侧面中近景（从腰部以上，避免面部大特写），它站在古井旁，双眼合上，两只毛茸茸的小爪子轻轻合拢在胸前，做出许愿的姿态，阳光透过老橡树的枝叶在它脸上和身上洒下斑驳的暖光，画面充满仪式感和童真，背景是虚化的山坡和远方天空，cinematic still, warm golden light, realistic texture, no subtitles, no watermark, no character inconsistency。  \n整体要求：叙事清晰，角色统一，空间统一，无字幕，无水印，无额外文字。"
+   ],
+   "in_links": [
+    19
+   ],
+   "out_links": []
+  },
+  {
+   "id": 16,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "图1是场景，图2是角色小棕兔，图3是木质信箱，"
+   ],
+   "in_links": [],
+   "out_links": [
+    15
+   ]
+  },
+  {
+   "id": 18,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【格1单图提示词】\n一只穿着蓝色牛仔背带裤和黄色雨靴的拟人化小棕兔小葵，抱着一个木质信箱，走在洒满阳光的小镇鹅卵石街道上，忽然停下脚步，两只长耳朵微微向前竖起，鼻尖轻轻抽动，表情带着好奇和欣喜（侧面中近景，避免正面大特写），背景是色彩柔和的小镇房屋和春日绿植，暖色自然光，cinematic still, natural light, realistic texture, clear composition, no subtitles, no watermark, no text overlay.\n\n【格2单图提示词】\n透过一扇明亮宽大的玻璃橱窗，可以看到一间温暖的手工蜂蜜工坊内部，金色的蜂蜜从木制离心提取装置中缓缓流出，在玻璃罐中呈现出琥珀般的光泽，一位穿着白色亚麻围裙的养蜂人（只显示背影和手臂动作）正在操作设备，木架上整齐排列着一排排装满金色蜂蜜的玻璃罐，每个罐子上系着小小的薰衣草干花标签，中景景别，玻璃上有极淡的反光，cinematic still, warm amber light, realistic texture, detailed scene, no subtitles, no watermark, no facial details.\n\n【格3单图提示词】\n一只穿着蓝色牛仔背带裤的小棕兔小葵的背面近景，它站在蜂蜜工坊的玻璃橱窗前，两只毛茸茸的爪子轻轻搭在玻璃上，玻璃表面反射出它好奇的侧脸轮廓（反射成像，避免直接面部特写），透过玻璃可以看到里面金色的蜂蜜在阳光下流淌，琥珀色的光晕映在兔子的身影上，暖色调，画面温馨梦幻，cinematic still, warm light, shallow depth of field, no subtitles, no watermark, no distorted hands.\n\n【格4单图提示词】\n一只穿着蓝色牛仔背带裤和黄色雨靴的小棕兔小葵的侧面中景，它站在蜂蜜工坊门口，一只爪子里捏着一小根木棒，木棒上裹着晶莹的金色蜂蜜，阳光透过蜂蜜呈现出半透明的琥珀质感，它正要伸出舌头品尝，表情期待而快乐（侧面，避免正面大特写），背景是工坊门口的木牌和一只蜂箱的轮廓，几只蜜蜂在画面虚化处飞舞，全景中景，逆光拍摄，cinematic still, golden hour light, realistic texture, clear composition, no subtitles, no watermark, no character inconsistency.\n\n【本组四宫格总图提示词】\n生成一张专业故事板风格的 2x2 四宫格分镜总图，横版16:9 排版，干净背景，四个画面之间有清晰分隔，整体像导演工作用的正式分镜板，而不是海报拼贴。四个画面必须保持同一角色外观锚点（穿着蓝色牛仔背带裤和黄色雨靴的拟人化小棕兔小葵）、同一服装、同一道具逻辑（怀中的未完成木制信箱）、同一场景逻辑（童话小镇的蜂蜜工坊及周边街道）、同一光线逻辑（明媚的春日自然光，暖色调）。四个面板内容如下：\n左上格（起）：兔子走在街道上，忽然停下，鼻子抽动嗅到甜香。\n右上格（承）：透过玻璃橱窗看工坊内景，金色蜂蜜流动，养蜂人背影在操作。\n左下格（转）：兔子背对镜头趴在橱窗前，爪子搭在玻璃上，好奇地张望。\n右下格（合）：兔子站在工坊门口，爪子里举着一根蘸满蜂蜜的木棒，阳光透亮，表情幸福。\n整体要求：叙事清晰，构图清楚，角色统一，道具统一，空间统一，工坊内人类角色无面部特写，无字幕，无水印，无额外文字。\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 13,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "RH_RhartImageG2ImageToImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "16:9",
+    false,
+    1394453556,
+    "randomize",
+    "4k"
+   ],
+   "in_links": [
+    12,
+    13,
+    14,
+    21
+   ],
+   "out_links": [
+    11
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 12,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 14,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 10,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 17,
+   "type": "STRING"
+  },
+  {
+   "from_node": 17,
+   "to_node": 10,
+   "type": "STRING"
+  },
+  {
+   "from_node": 17,
+   "to_node": 25,
+   "type": "*"
+  },
+  {
+   "from_node": 18,
+   "to_node": 19,
+   "type": "STRING"
+  },
+  {
+   "from_node": 19,
+   "to_node": 17,
+   "type": "STRING"
+  },
+  {
+   "from_node": 19,
+   "to_node": 20,
+   "type": "*"
+  },
+  {
+   "from_node": 2,
+   "to_node": 3,
+   "type": "STRING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 4,
+   "type": "*"
+  },
+  {
+   "from_node": 4,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 6,
+   "to_node": 5,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "image_io": 5,
+  "utility": 11,
+  "conditioning": 1
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 38,
+ "structure_hash": "42b658cb37d6a7f5",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": "Hello"
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "2020562208"
+  },
+  {
+   "node_id": 3,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 1,
+   "value_preview": "16:9"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 3,
+   "value_preview": "708264973"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 4,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 6,
+   "node_type": "RH_RhartImageG2TextToImage",
+   "widget_index": 5,
+   "value_preview": "4k"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481dee"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481dee"
+  },
+  {
+   "node_id": 15,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "984dc2c0aa2f6410d673400cefe00e281256d348ba8eb01214970e481dee"
+  },
+  {
+   "node_id": 14,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 17,
+   "node_type": "StringConcatenate",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 17,
+   "node_type": "StringConcatenate",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 17,
+   "node_type": "StringConcatenate",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 4,
+   "value_preview": "Hello"
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 5,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 6,
+   "value_preview": "1988977816"
+  },
+  {
+   "node_id": 19,
+   "node_type": "RH_LLMAPI_NODE",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 11,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 16,
+   "node_type": "PrimitiveStringMultiline",
+   "widget_index": 0,
+   "value_preview": "图1是场景，图2是角色小棕兔，图3是木质信箱，"
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 1,
+   "value_preview": "16:9"
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 3,
+   "value_preview": "1394453556"
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 4,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 10,
+   "node_type": "RH_RhartImageG2ImageToImage",
+   "widget_index": 5,
+   "value_preview": "4k"
+  }
+ ]
+}

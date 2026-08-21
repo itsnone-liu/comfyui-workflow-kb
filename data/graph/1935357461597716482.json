@@ -1,0 +1,3287 @@
+{
+ "node_count": 78,
+ "link_count": 77,
+ "active_node_count": 63,
+ "nodes": [
+  {
+   "id": 9,
+   "type": "WanVideoTorchCompileSettings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "inductor",
+    false,
+    "default",
+    false,
+    64,
+    true,
+    128
+   ],
+   "in_links": [],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 10,
+   "type": "WanVideoVAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1_VAE_bf16.safetensors",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    15
+   ]
+  },
+  {
+   "id": 11,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanVAE"
+   ],
+   "in_links": [
+    15
+   ],
+   "out_links": []
+  },
+  {
+   "id": 29,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanTextEncoder"
+   ],
+   "in_links": [
+    32
+   ],
+   "out_links": []
+  },
+  {
+   "id": 12,
+   "type": "LoadWanVideoT5TextEncoder",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5-xxl-enc-bf16.safetensors",
+    "bf16",
+    "offload_device",
+    "disabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    32
+   ]
+  },
+  {
+   "id": 7,
+   "type": "WanVideoModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-MiniMaxRemover_1_3B_fp16.safetensors",
+    "bf16",
+    "fp8_e4m3fn",
+    "offload_device",
+    "sageattn"
+   ],
+   "in_links": [
+    12,
+    13
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 19,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanTextEncoder"
+   ],
+   "in_links": [],
+   "out_links": [
+    19,
+    64
+   ]
+  },
+  {
+   "id": 18,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanModel"
+   ],
+   "in_links": [],
+   "out_links": [
+    20,
+    67
+   ]
+  },
+  {
+   "id": 53,
+   "type": "WanVideoSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    6,
+    1.0000000000000002,
+    4.000000000000001,
+    18,
+    "fixed",
+    true,
+    "unipc",
+    0,
+    1,
+    false,
+    "comfy"
+   ],
+   "in_links": [
+    56,
+    63,
+    62
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 27,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanVAE"
+   ],
+   "in_links": [],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 22,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanVAE"
+   ],
+   "in_links": [],
+   "out_links": [
+    157,
+    160
+   ]
+  },
+  {
+   "id": 274,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频分辨率-高"
+   ],
+   "in_links": [],
+   "out_links": [
+    380,
+    382
+   ]
+  },
+  {
+   "id": 23,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanModel"
+   ],
+   "in_links": [],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 142,
+   "type": "ImageConcanate",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "right",
+    true
+   ],
+   "in_links": [
+    386,
+    175
+   ],
+   "out_links": [
+    387
+   ]
+  },
+  {
+   "id": 278,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "输出视频图集-拼接"
+   ],
+   "in_links": [
+    387
+   ],
+   "out_links": []
+  },
+  {
+   "id": 279,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "输出视频图集-单图"
+   ],
+   "in_links": [
+    388
+   ],
+   "out_links": []
+  },
+  {
+   "id": 26,
+   "type": "WanVideoDecode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    272,
+    272,
+    144,
+    128
+   ],
+   "in_links": [
+    29,
+    30
+   ],
+   "out_links": [
+    175,
+    388
+   ]
+  },
+  {
+   "id": 143,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "pl-MiniMax-Remover",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "pl-MiniMax-Remover_00030_cnkzz_1750377250.mp4",
+      "workflow": "pl-MiniMax-Remover_00030.png",
+      "fullpath": "/data/ComfyUI/personal/dc555219c23018b8fa8b4774a3e25d14/output/pl-MiniMax-Remover_00030.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    390,
+    469,
+    317
+   ],
+   "out_links": []
+  },
+  {
+   "id": 133,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "pl-MiniMax-Remover",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "pl-MiniMax-Remover_00029_yjsqq_1750377235.mp4",
+      "workflow": "pl-MiniMax-Remover_00029.png",
+      "fullpath": "/data/ComfyUI/personal/dc555219c23018b8fa8b4774a3e25d14/output/pl-MiniMax-Remover_00029.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    389,
+    468,
+    316
+   ],
+   "out_links": []
+  },
+  {
+   "id": 277,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频原图集"
+   ],
+   "in_links": [],
+   "out_links": [
+    385,
+    386
+   ]
+  },
+  {
+   "id": 124,
+   "type": "DownloadAndLoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "microsoft/Florence-2-large",
+    "fp16",
+    "sdpa",
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    147
+   ]
+  },
+  {
+   "id": 286,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频原图集"
+   ],
+   "in_links": [],
+   "out_links": [
+    393
+   ]
+  },
+  {
+   "id": 55,
+   "type": "WanVideoEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    272,
+    272,
+    144,
+    128,
+    0,
+    1
+   ],
+   "in_links": [
+    157,
+    397
+   ],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 288,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    396
+   ],
+   "out_links": [
+    397
+   ]
+  },
+  {
+   "id": 137,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    170
+   ],
+   "out_links": [
+    171
+   ]
+  },
+  {
+   "id": 245,
+   "type": "VHS_VideoInfo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {},
+   "in_links": [
+    315
+   ],
+   "out_links": [
+    316,
+    317
+   ]
+  },
+  {
+   "id": 284,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "输出视频图集-单图"
+   ],
+   "in_links": [],
+   "out_links": [
+    389
+   ]
+  },
+  {
+   "id": 282,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "输出视频图集-拼接"
+   ],
+   "in_links": [],
+   "out_links": [
+    390
+   ]
+  },
+  {
+   "id": 271,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频分辨率-宽"
+   ],
+   "in_links": [
+    377
+   ],
+   "out_links": []
+  },
+  {
+   "id": 272,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频分辨率-高"
+   ],
+   "in_links": [
+    378
+   ],
+   "out_links": []
+  },
+  {
+   "id": 8,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WanModel"
+   ],
+   "in_links": [
+    14
+   ],
+   "out_links": []
+  },
+  {
+   "id": 1,
+   "type": "WanVideoBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10,
+    false,
+    false,
+    true,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    13
+   ]
+  },
+  {
+   "id": 295,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 1008 , Height: 1504"
+   ],
+   "in_links": [
+    405
+   ],
+   "out_links": []
+  },
+  {
+   "id": 48,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "16",
+    "longest",
+    512,
+    "#000000"
+   ],
+   "in_links": [
+    356,
+    403
+   ],
+   "out_links": [
+    384,
+    405,
+    377,
+    378
+   ]
+  },
+  {
+   "id": 276,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频原图集"
+   ],
+   "in_links": [
+    384
+   ],
+   "out_links": []
+  },
+  {
+   "id": 273,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频分辨率-宽"
+   ],
+   "in_links": [],
+   "out_links": [
+    379,
+    381
+   ]
+  },
+  {
+   "id": 136,
+   "type": "SolidMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.5000000000000001,
+    512,
+    512
+   ],
+   "in_links": [
+    379,
+    380
+   ],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 275,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频总帧数"
+   ],
+   "in_links": [],
+   "out_links": [
+    383
+   ]
+  },
+  {
+   "id": 56,
+   "type": "WanVideoMiniMaxRemoverEmbeds",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    832,
+    480,
+    81
+   ],
+   "in_links": [
+    158,
+    159,
+    381,
+    382,
+    383
+   ],
+   "out_links": [
+    62
+   ]
+  },
+  {
+   "id": 57,
+   "type": "WanVideoTextEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    true
+   ],
+   "in_links": [
+    64,
+    67
+   ],
+   "out_links": [
+    63
+   ]
+  },
+  {
+   "id": 304,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "\n\n1：自动识别\n2：手动识别"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 132,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    415
+   ],
+   "out_links": [
+    347,
+    394,
+    418
+   ]
+  },
+  {
+   "id": 255,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    347
+   ],
+   "out_links": []
+  },
+  {
+   "id": 303,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频遮罩图集"
+   ],
+   "in_links": [],
+   "out_links": [
+    414,
+    415
+   ]
+  },
+  {
+   "id": 307,
+   "type": "GetImageSizeAndCount",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    418
+   ],
+   "out_links": [
+    420,
+    421,
+    419
+   ]
+  },
+  {
+   "id": 311,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "80"
+   ],
+   "in_links": [
+    423
+   ],
+   "out_links": []
+  },
+  {
+   "id": 269,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频总帧数"
+   ],
+   "in_links": [
+    426
+   ],
+   "out_links": []
+  },
+  {
+   "id": 285,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频原图集"
+   ],
+   "in_links": [],
+   "out_links": [
+    391,
+    435
+   ]
+  },
+  {
+   "id": 131,
+   "type": "WanVideoEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    272,
+    272,
+    144,
+    128,
+    0,
+    1
+   ],
+   "in_links": [
+    160,
+    395
+   ],
+   "out_links": [
+    159
+   ]
+  },
+  {
+   "id": 254,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    346
+   ],
+   "out_links": []
+  },
+  {
+   "id": 49,
+   "type": "DownloadAndLoadSAM2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam2_hiera_base_plus.safetensors",
+    "video",
+    "cuda",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 38,
+   "type": "Sam2Segmentation",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    "",
+    "",
+    false
+   ],
+   "in_links": [
+    37,
+    435,
+    302,
+    354
+   ],
+   "out_links": [
+    319
+   ]
+  },
+  {
+   "id": 237,
+   "type": "PointsEditor",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "{\"positive\":[{\"x\":410.52649458456466,\"y\":616.930093250693},{\"x\":469.82476602455733,\"y\":957.8951540306508},{\"x\":116.31584013229332,\"y\":822.1933405429753},{\"x\":533.684442959934,\"y\":540.5265512030101},{\"x\":312.45627643380755,\"y\":995.5267493675692},{\"x\":607.8072822599248,\"y\":717.2810141491422},{\"x\":224.64922064766455,\"y\":632.8950124845371},{\"x\":274.8246810968891,\"y\":522.2809292214739},{\"x\":350.08787177072594,\"y\":459.5616036599432},{\"x\":445.877387173791,\"y\":442.456333052253},{\"x\":231.49132889074062,\"y\":754.9126094860605},{\"x\":274.8246810968891,\"y\":851.8424762629717},{\"x\":222.36851789997252,\"y\":889.4740715998901},{\"x\":188.15797668459211,\"y\":896.3161798429661},{\"x\":242.89484262920075,\"y\":977.2811273860331},{\"x\":427.6317651922548,\"y\":744.6494471214464}],\"negative\":[{\"x\":0,\"y\":0},{\"x\":708.158203158374,\"y\":204.1228959184363},{\"x\":393.42122397687444,\"y\":228.07027476920257},{\"x\":112.89478601075527,\"y\":309.03522231226947},{\"x\":776.5792855891348,\"y\":683.0704729337617},{\"x\":238.3334371338167,\"y\":1247.544402987538},{\"x\":782.2810424583648,\"y\":1000.0881548629533},{\"x\":99.21056952460312,\"y\":709.29855453222},{\"x\":799.386313066055,\"y\":1298.8602148106086}]}",
+    "[{\"x\":410.52649458456466,\"y\":616.930093250693},{\"x\":469.82476602455733,\"y\":957.8951540306508},{\"x\":116.31584013229332,\"y\":822.1933405429753},{\"x\":533.684442959934,\"y\":540.5265512030101},{\"x\":312.45627643380755,\"y\":995.5267493675692},{\"x\":607.8072822599248,\"y\":717.2810141491422},{\"x\":224.64922064766455,\"y\":632.8950124845371},{\"x\":274.8246810968891,\"y\":522.2809292214739},{\"x\":350.08787177072594,\"y\":459.5616036599432},{\"x\":445.877387173791,\"y\":442.456333052253},{\"x\":231.49132889074062,\"y\":754.9126094860605},{\"x\":274.8246810968891,\"y\":851.8424762629717},{\"x\":222.36851789997252,\"y\":889.4740715998901},{\"x\":188.15797668459211,\"y\":896.3161798429661},{\"x\":242.89484262920075,\"y\":977.2811273860331},{\"x\":427.6317651922548,\"y\":744.6494471214464}]",
+    "[{\"x\":0,\"y\":0},{\"x\":708.158203158374,\"y\":204.1228959184363},{\"x\":393.42122397687444,\"y\":228.07027476920257},{\"x\":112.89478601075527,\"y\":309.03522231226947},{\"x\":776.5792855891348,\"y\":683.0704729337617},{\"x\":238.3334371338167,\"y\":1247.544402987538},{\"x\":782.2810424583648,\"y\":1000.0881548629533},{\"x\":99.21056952460312,\"y\":709.29855453222},{\"x\":799.386313066055,\"y\":1298.8602148106086}]",
+    "[{}]",
+    "[{}]",
+    "xyxy",
+    848,
+    1504,
+    false,
+    "",
+    null
+   ],
+   "in_links": [
+    301
+   ],
+   "out_links": [
+    302,
+    354
+   ]
+  },
+  {
+   "id": 293,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "太大容易爆显存"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 227,
+   "type": "GetImageRangeFromBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1
+   ],
+   "in_links": [
+    391
+   ],
+   "out_links": [
+    301
+   ]
+  },
+  {
+   "id": 320,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频原图集"
+   ],
+   "in_links": [],
+   "out_links": [
+    437
+   ]
+  },
+  {
+   "id": 322,
+   "type": "GetImageRangeFromBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    1
+   ],
+   "in_links": [
+    437
+   ],
+   "out_links": [
+    438
+   ]
+  },
+  {
+   "id": 302,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频遮罩图集"
+   ],
+   "in_links": [
+    453
+   ],
+   "out_links": []
+  },
+  {
+   "id": 323,
+   "type": "PreviewBridge",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "$323-0",
+    true,
+    "never",
+    ""
+   ],
+   "in_links": [
+    438
+   ],
+   "out_links": [
+    452
+   ]
+  },
+  {
+   "id": 128,
+   "type": "ImageCompositeMasked",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0,
+    0,
+    false
+   ],
+   "in_links": [
+    385,
+    171,
+    414
+   ],
+   "out_links": [
+    346,
+    396,
+    436
+   ]
+  },
+  {
+   "id": 287,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    394
+   ],
+   "out_links": [
+    395
+   ]
+  },
+  {
+   "id": 310,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1504"
+   ],
+   "in_links": [
+    421
+   ],
+   "out_links": []
+  },
+  {
+   "id": 309,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "1008"
+   ],
+   "in_links": [
+    420
+   ],
+   "out_links": []
+  },
+  {
+   "id": 308,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "80"
+   ],
+   "in_links": [
+    419
+   ],
+   "out_links": []
+  },
+  {
+   "id": 126,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    0,
+    true,
+    false,
+    5,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    149
+   ],
+   "out_links": [
+    340,
+    454
+   ]
+  },
+  {
+   "id": 321,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    0,
+    true,
+    false,
+    5,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    452
+   ],
+   "out_links": [
+    458
+   ]
+  },
+  {
+   "id": 335,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频总帧数"
+   ],
+   "in_links": [],
+   "out_links": [
+    459
+   ]
+  },
+  {
+   "id": 334,
+   "type": "VHS_DuplicateMasks",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "multiply_by": 1
+   },
+   "in_links": [
+    458,
+    459
+   ],
+   "out_links": [
+    466
+   ]
+  },
+  {
+   "id": 246,
+   "type": "GrowMaskWithBlur",
+   "category": "postprocess",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    0,
+    true,
+    false,
+    5,
+    1,
+    1,
+    false
+   ],
+   "in_links": [
+    319
+   ],
+   "out_links": [
+    334,
+    342,
+    465
+   ]
+  },
+  {
+   "id": 333,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    454,
+    466,
+    465
+   ],
+   "out_links": [
+    453
+   ]
+  },
+  {
+   "id": 338,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "需要暂停后手工涂抹"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 319,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": false,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "AnimateDiff_00018_ffmpf_1750377015.mp4",
+      "workflow": "AnimateDiff_00018.png",
+      "fullpath": "/data/ComfyUI/personal/dc555219c23018b8fa8b4774a3e25d14/temp/AnimateDiff_00018.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "temp",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    436
+   ],
+   "out_links": []
+  },
+  {
+   "id": 332,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 292,
+   "type": "Primitive integer [Crystools]",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1500
+   ],
+   "in_links": [],
+   "out_links": [
+    403
+   ]
+  },
+  {
+   "id": 294,
+   "type": "Primitive integer [Crystools]",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    404
+   ]
+  },
+  {
+   "id": 340,
+   "type": "Text Multiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Text and watermark"
+   ],
+   "in_links": [],
+   "out_links": [
+    467
+   ]
+  },
+  {
+   "id": 122,
+   "type": "Florence2Run",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "caption_to_phrase_grounding",
+    true,
+    false,
+    1024,
+    3,
+    true,
+    "",
+    221455714619587,
+    "randomize"
+   ],
+   "in_links": [
+    393,
+    147,
+    467
+   ],
+   "out_links": [
+    149
+   ]
+  },
+  {
+   "id": 34,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 0,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 49,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "96b38fa1f0b381f37b9f585923037bf1e56f1ae50fd53f2a0af59493f2addd0b.mp4",
+      "force_rate": 0,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 49,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "96b38fa1f0b381f37b9f585923037bf1e56f1ae50fd53f2a0af59493f2addd0b.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [
+    404
+   ],
+   "out_links": [
+    356,
+    423,
+    426,
+    468,
+    469,
+    315
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 7,
+   "type": "BLOCKSWAPARGS"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "*"
+  },
+  {
+   "from_node": 12,
+   "to_node": 29,
+   "type": "*"
+  },
+  {
+   "from_node": 122,
+   "to_node": 126,
+   "type": "MASK"
+  },
+  {
+   "from_node": 124,
+   "to_node": 122,
+   "type": "FL2MODEL"
+  },
+  {
+   "from_node": 126,
+   "to_node": 333,
+   "type": "*"
+  },
+  {
+   "from_node": 128,
+   "to_node": 254,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 128,
+   "to_node": 288,
+   "type": "*"
+  },
+  {
+   "from_node": 128,
+   "to_node": 319,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 131,
+   "to_node": 56,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 132,
+   "to_node": 255,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 132,
+   "to_node": 287,
+   "type": "*"
+  },
+  {
+   "from_node": 132,
+   "to_node": 307,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 136,
+   "to_node": 137,
+   "type": "MASK"
+  },
+  {
+   "from_node": 137,
+   "to_node": 128,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 278,
+   "type": "*"
+  },
+  {
+   "from_node": 18,
+   "to_node": 57,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 19,
+   "to_node": 57,
+   "type": "WANTEXTENCODER"
+  },
+  {
+   "from_node": 22,
+   "to_node": 131,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 55,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 227,
+   "to_node": 237,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 23,
+   "to_node": 53,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 237,
+   "to_node": 38,
+   "type": "STRING"
+  },
+  {
+   "from_node": 237,
+   "to_node": 38,
+   "type": "STRING"
+  },
+  {
+   "from_node": 245,
+   "to_node": 133,
+   "type": "FLOAT,INT"
+  },
+  {
+   "from_node": 245,
+   "to_node": 143,
+   "type": "FLOAT,INT"
+  },
+  {
+   "from_node": 246,
+   "to_node": 333,
+   "type": "MASK"
+  },
+  {
+   "from_node": 26,
+   "to_node": 142,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 279,
+   "type": "*"
+  },
+  {
+   "from_node": 27,
+   "to_node": 26,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 273,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 273,
+   "to_node": 56,
+   "type": "INT"
+  },
+  {
+   "from_node": 274,
+   "to_node": 136,
+   "type": "INT"
+  },
+  {
+   "from_node": 274,
+   "to_node": 56,
+   "type": "INT"
+  },
+  {
+   "from_node": 275,
+   "to_node": 56,
+   "type": "INT"
+  },
+  {
+   "from_node": 277,
+   "to_node": 128,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 277,
+   "to_node": 142,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 282,
+   "to_node": 143,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 284,
+   "to_node": 133,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 285,
+   "to_node": 227,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 285,
+   "to_node": 38,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 286,
+   "to_node": 122,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 287,
+   "to_node": 131,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 288,
+   "to_node": 55,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 292,
+   "to_node": 48,
+   "type": "INT"
+  },
+  {
+   "from_node": 294,
+   "to_node": 34,
+   "type": "INT"
+  },
+  {
+   "from_node": 303,
+   "to_node": 128,
+   "type": "MASK"
+  },
+  {
+   "from_node": 303,
+   "to_node": 132,
+   "type": "MASK"
+  },
+  {
+   "from_node": 307,
+   "to_node": 308,
+   "type": "*"
+  },
+  {
+   "from_node": 307,
+   "to_node": 309,
+   "type": "*"
+  },
+  {
+   "from_node": 307,
+   "to_node": 310,
+   "type": "*"
+  },
+  {
+   "from_node": 320,
+   "to_node": 322,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 321,
+   "to_node": 334,
+   "type": "MASK"
+  },
+  {
+   "from_node": 322,
+   "to_node": 323,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 323,
+   "to_node": 321,
+   "type": "MASK"
+  },
+  {
+   "from_node": 333,
+   "to_node": 302,
+   "type": "*"
+  },
+  {
+   "from_node": 334,
+   "to_node": 333,
+   "type": "MASK"
+  },
+  {
+   "from_node": 335,
+   "to_node": 334,
+   "type": "INT"
+  },
+  {
+   "from_node": 34,
+   "to_node": 133,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 34,
+   "to_node": 143,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 34,
+   "to_node": 245,
+   "type": "VHS_VIDEOINFO"
+  },
+  {
+   "from_node": 34,
+   "to_node": 269,
+   "type": "INT"
+  },
+  {
+   "from_node": 34,
+   "to_node": 311,
+   "type": "*"
+  },
+  {
+   "from_node": 34,
+   "to_node": 48,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 340,
+   "to_node": 122,
+   "type": "STRING"
+  },
+  {
+   "from_node": 38,
+   "to_node": 246,
+   "type": "MASK"
+  },
+  {
+   "from_node": 48,
+   "to_node": 271,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 272,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 276,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 295,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 38,
+   "type": "SAM2MODEL"
+  },
+  {
+   "from_node": 53,
+   "to_node": 26,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 55,
+   "to_node": 56,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 56,
+   "to_node": 53,
+   "type": "WANVIDIMAGE_EMBEDS"
+  },
+  {
+   "from_node": 57,
+   "to_node": 53,
+   "type": "WANVIDEOTEXTEMBEDS"
+  },
+  {
+   "from_node": 7,
+   "to_node": 8,
+   "type": "*"
+  },
+  {
+   "from_node": 9,
+   "to_node": 7,
+   "type": "WANCOMPILEARGS"
+  }
+ ],
+ "categories": {
+  "utility": 62,
+  "vae": 1,
+  "video_io": 5,
+  "postprocess": 5,
+  "image_io": 2,
+  "preprocessor": 1,
+  "batch": 2
+ },
+ "assets": [
+  {
+   "node_id": 10,
+   "node_type": "WanVideoVAELoader",
+   "kind": "vae",
+   "name": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "kind": "checkpoint",
+   "name": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "kind": "checkpoint",
+   "name": "Wan2_1-MiniMaxRemover_1_3B_fp16.safetensors"
+  },
+  {
+   "node_id": 49,
+   "node_type": "DownloadAndLoadSAM2Model",
+   "kind": "checkpoint",
+   "name": "sam2_hiera_base_plus.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 219,
+ "structure_hash": "9b65981303fb3964",
+ "param_face": [
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 0,
+   "value_preview": "inductor"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 4,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 9,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 6,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 11,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "WanVAE"
+  },
+  {
+   "node_id": 29,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "WanTextEncoder"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 0,
+   "value_preview": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 12,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-MiniMaxRemover_1_3B_fp16.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 2,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 7,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 4,
+   "value_preview": "sageattn"
+  },
+  {
+   "node_id": 19,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "WanTextEncoder"
+  },
+  {
+   "node_id": 18,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "WanModel"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 0,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 2,
+   "value_preview": "4.000000000000001"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 3,
+   "value_preview": "18"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 4,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 6,
+   "value_preview": "unipc"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 53,
+   "node_type": "WanVideoSampler",
+   "widget_index": 10,
+   "value_preview": "comfy"
+  },
+  {
+   "node_id": 27,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "WanVAE"
+  },
+  {
+   "node_id": 22,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "WanVAE"
+  },
+  {
+   "node_id": 274,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频分辨率-高"
+  },
+  {
+   "node_id": 23,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "WanModel"
+  },
+  {
+   "node_id": 142,
+   "node_type": "ImageConcanate",
+   "widget_index": 0,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 142,
+   "node_type": "ImageConcanate",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 278,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "输出视频图集-拼接"
+  },
+  {
+   "node_id": 279,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "输出视频图集-单图"
+  },
+  {
+   "node_id": 26,
+   "node_type": "WanVideoDecode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 26,
+   "node_type": "WanVideoDecode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 26,
+   "node_type": "WanVideoDecode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 26,
+   "node_type": "WanVideoDecode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 26,
+   "node_type": "WanVideoDecode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "pl-MiniMax-Remover"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'p"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 143,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "pl-MiniMax-Remover"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'p"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 133,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 277,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频原图集"
+  },
+  {
+   "node_id": 124,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "microsoft/Florence-2-large"
+  },
+  {
+   "node_id": 124,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 124,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 2,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 124,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 286,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频原图集"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 55,
+   "node_type": "WanVideoEncode",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 284,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "输出视频图集-单图"
+  },
+  {
+   "node_id": 282,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "输出视频图集-拼接"
+  },
+  {
+   "node_id": 271,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "视频分辨率-宽"
+  },
+  {
+   "node_id": 272,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "视频分辨率-高"
+  },
+  {
+   "node_id": 8,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "WanModel"
+  },
+  {
+   "node_id": 1,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 1,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 1,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 1,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 295,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 1008 , Height: 1504"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 48,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 276,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "视频原图集"
+  },
+  {
+   "node_id": 273,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频分辨率-宽"
+  },
+  {
+   "node_id": 136,
+   "node_type": "SolidMask",
+   "widget_index": 0,
+   "value_preview": "0.5000000000000001"
+  },
+  {
+   "node_id": 136,
+   "node_type": "SolidMask",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 136,
+   "node_type": "SolidMask",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 275,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频总帧数"
+  },
+  {
+   "node_id": 56,
+   "node_type": "WanVideoMiniMaxRemoverEmbeds",
+   "widget_index": 0,
+   "value_preview": "832"
+  },
+  {
+   "node_id": 56,
+   "node_type": "WanVideoMiniMaxRemoverEmbeds",
+   "widget_index": 1,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 56,
+   "node_type": "WanVideoMiniMaxRemoverEmbeds",
+   "widget_index": 2,
+   "value_preview": "81"
+  },
+  {
+   "node_id": 57,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 57,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 57,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 304,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "\n\n1：自动识别\n2：手动识别"
+  },
+  {
+   "node_id": 303,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频遮罩图集"
+  },
+  {
+   "node_id": 311,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "80"
+  },
+  {
+   "node_id": 269,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "视频总帧数"
+  },
+  {
+   "node_id": 285,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频原图集"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 131,
+   "node_type": "WanVideoEncode",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 49,
+   "node_type": "DownloadAndLoadSAM2Model",
+   "widget_index": 0,
+   "value_preview": "sam2_hiera_base_plus.safetensors"
+  },
+  {
+   "node_id": 49,
+   "node_type": "DownloadAndLoadSAM2Model",
+   "widget_index": 1,
+   "value_preview": "video"
+  },
+  {
+   "node_id": 49,
+   "node_type": "DownloadAndLoadSAM2Model",
+   "widget_index": 2,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 49,
+   "node_type": "DownloadAndLoadSAM2Model",
+   "widget_index": 3,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 38,
+   "node_type": "Sam2Segmentation",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 38,
+   "node_type": "Sam2Segmentation",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 38,
+   "node_type": "Sam2Segmentation",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 38,
+   "node_type": "Sam2Segmentation",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 3,
+   "value_preview": "[{}]"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 4,
+   "value_preview": "[{}]"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 5,
+   "value_preview": "xyxy"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 6,
+   "value_preview": "848"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 7,
+   "value_preview": "1504"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 237,
+   "node_type": "PointsEditor",
+   "widget_index": 9,
+   "value_preview": ""
+  },
+  {
+   "node_id": 293,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "太大容易爆显存"
+  },
+  {
+   "node_id": 227,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 227,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 320,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频原图集"
+  },
+  {
+   "node_id": 322,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 322,
+   "node_type": "GetImageRangeFromBatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 302,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "视频遮罩图集"
+  },
+  {
+   "node_id": 323,
+   "node_type": "PreviewBridge",
+   "widget_index": 0,
+   "value_preview": "$323-0"
+  },
+  {
+   "node_id": 323,
+   "node_type": "PreviewBridge",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 323,
+   "node_type": "PreviewBridge",
+   "widget_index": 2,
+   "value_preview": "never"
+  },
+  {
+   "node_id": 323,
+   "node_type": "PreviewBridge",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 128,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 128,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 128,
+   "node_type": "ImageCompositeMasked",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 310,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "1504"
+  },
+  {
+   "node_id": 309,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "1008"
+  },
+  {
+   "node_id": 308,
+   "node_type": "easy showAnything",
+   "widget_index": 0,
+   "value_preview": "80"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 126,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 321,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 335,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "视频总帧数"
+  },
+  {
+   "node_id": 334,
+   "node_type": "VHS_DuplicateMasks",
+   "widget_name": "multiply_by",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 4,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 246,
+   "node_type": "GrowMaskWithBlur",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 338,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "需要暂停后手工涂抹"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'A"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 319,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 292,
+   "node_type": "Primitive integer [Crystools]",
+   "widget_index": 0,
+   "value_preview": "1500"
+  },
+  {
+   "node_id": 294,
+   "node_type": "Primitive integer [Crystools]",
+   "widget_index": 0,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 340,
+   "node_type": "Text Multiline",
+   "widget_index": 0,
+   "value_preview": "Text and watermark"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 1,
+   "value_preview": "caption_to_phrase_grounding"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 5,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 7,
+   "value_preview": ""
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 8,
+   "value_preview": "221455714619587"
+  },
+  {
+   "node_id": 122,
+   "node_type": "Florence2Run",
+   "widget_index": 9,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "49"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "96b38fa1f0b381f37b9f585923037bf1e56f1ae50fd53f2a0af59493f2ad"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 34,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  }
+ ]
+}

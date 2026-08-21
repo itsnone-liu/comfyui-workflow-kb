@@ -1,0 +1,125 @@
+{
+ "domain": [
+  "视频生成",
+  "图生视频",
+  "电商短视频",
+  "时间线分镜",
+  "视听联合生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张服装模特/商品照片和一段文案，端到端生成带时间线分镜、镜头运动与音轨的 LTX2.3 短视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "调用 Gemini 3 Flash 把用户文案拆成 GLOBAL 全局风格与 LOCAL 分镜提示词，并自动注入 PromptRelayEncodeTimeline，形成多镜头的分镜脚本。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时生成视频 latent 与音频 latent，再分别用 video VAE 和 audio VAE 解码，输出与视频同步的音频。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成三个 LoRA：Licon-VBVR-I2V 控制图生视频演化、Cinematic-Camera-Control 控制电影运镜、Dual-Character-Shot 控制双人镜头构图。",
+   "kind": "fact"
+  },
+  {
+   "text": "面向服装模特带货场景，用分镜时间线替代手工视频剪辑，降低短视频制作门槛。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LTX-2.3 22B 蒸馏图生视频（fp8 transformer）",
+  "DualCLIP 文本编码（Gemma 3 12B + LTX 文本投影）",
+  "PromptRelay 时间线提示词调度",
+  "LLM API 分镜生成 + 正则抽取（GLOBAL/LOCAL）",
+  "三 LoRA 联合调制：I2V / 电影运镜 / 双人镜头",
+  "视频-音频联合 latent 生成与分离解码（LTXVConcatAVLatent / LTXVSeparateAVLatent）",
+  "SageAttention 注意力优化 + fp8 低精度推理",
+  "euler_ancestral 采样 + BasicScheduler（linear_quadratic, steps=8）"
+ ],
+ "special_features": [
+  {
+   "text": "LLM 分镜 + PromptRelay：RH_LLMAPI_Pro_Node 生成分段提示词，RegexExtract 分别抽取 LOCAL/GLOBAL，再由 PromptRelayEncodeTimeline 按时间线调制视频 prompt，属于非手工逐镜头的设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "音频/视频双 latent 同生同解：LTXVConcatAVLatent 合并音视频条件，生成后再用 LTXVSeparateAVLatent 分离，配合两个 VAE（video_vae / audio_vae）分别解码。",
+   "kind": "fact"
+  },
+  {
+   "text": "三 LoRA 并行叠加：不是单一 LoRA，而是把 I2V 演算、电影运镜、双人构图三个专项目标叠加在同一个 LTX 模型上，体现模块化控制思路。",
+   "kind": "fact"
+  },
+  {
+   "text": "时间线分段帧号（150,150,151 等）疑似用于设置镜头切换与提示过渡，可在不重新剪辑的情况下改变分镜节奏。",
+   "kind": "inference"
+  },
+  {
+   "text": "设有 VisualizeSigmasKJ、LTX2SamplingPreviewOverride 和三个 PreviewAny，提供降噪轨迹与中间结果的可视化检查点。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 fp8 权重 + PathchSageAttentionKJ + ImageScaleByAspectRatio 先等比缩放，降低 22B 模型图生视频的显存压力。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流把一条带货短视频的生产拆成两条线：一条线是视觉分镜——用外部 LLM（Gemini）把商品文案转成带 GLOBAL/LOCAL 的时间线提示词，再交给 LTX2.3 图生视频；另一条线是影音同步——在同一模型里生成视频和音频 latent，最后分离解码。三支 LoRA 分别约束内容演化、运镜和双人构图，让单张服装模特图也能产生有镜头感的短视频。fp8、SageAttention 与低步数采样都指向在消费级/中等显存上跑 22B 模型。整体意图可能是让非专业用户用一张图加一句文案即可批量产出带货短视频。",
+ "use_case": "服装模特/电商带货短视频制作；输入商品图或模特图与产品文案，输出带分镜、运镜、音效/语音轨的短视频；也适合做商品素材的多版本快速试款。",
+ "limitation": "依赖外部 Gemini API（需 API key、网络和可能的费用）；LLM 输出不稳定时 RegexExtract 可能漏抽取 GLOBAL/LOCAL；需要下载指定的 22B checkpoint、双 CLIP、双 VAE 和 3 个 LoRA，且涉及的 KJNodes、VHS、PromptRelay、RH_LLMAPI、LayerUtility、ComfyMath 等自定义节点较多，迁移较麻烦；当前输入是单张图片，没有 ControlNet/首尾帧等强约束，身份与服装一致性主要靠 LoRA 和提示词维持；长度 489 帧、分辨率 736x1280，显存与耗时压力较大。",
+ "dependencies": [
+  "ltx-2.3-22b-distilled_transformer_only_fp8_scaled.safetensors",
+  "gemma_3_12B_it.safetensors",
+  "ltx-2.3_text_projection_bf16.safetensors",
+  "LTX23_video_vae_bf16.safetensors",
+  "LTX23_audio_vae_bf16.safetensors",
+  "Ltx2.3-Licon-VBVR-I2V-390K-R32-LoRA.safetensors",
+  "LTX2.3-Cinematic-Camera-Control-LoRA.safetensors",
+  "LTX2.3-IC-LORA-Dual-Character-Shot.safetensors",
+  "自定义节点：KJNodes/LTXV系列、VHS_VideoCombine、PromptRelay、RH_LLMAPI_Pro_Node、RegexExtract、LayerUtility、ComfyMath"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张图片（LoadImage IN）+ 一段商品/分镜文案（Text / LLM）",
+  "count": "1 图 + 1 文本"
+ },
+ "output": {
+  "type": "短视频（视频轨+音频轨，经 VAEDecode/LTXVAudioVAEDecode 后由 VHS_VideoCombine 合成，通常为 MP4）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler（linear_quadratic, steps=8, 第三参数=1）",
+   "how_to_tune": "当前为 8，低步数适合蒸馏模型；画面噪点/欠采样可提到 10-12，第三参数疑似 shift 或起始步，可尝试 1-2 改变降噪强度曲线。"
+  },
+  {
+   "param": "Licon-VBVR-I2V LoRA 强度",
+   "how_to_tune": "当前 0.5；0.3-0.6 偏保留原图像内容，0.7+ 运动/变化更强，过高容易变形，建议按商品细节做 0.1 步进测试。"
+  },
+  {
+   "param": "Cinematic-Camera-Control LoRA 强度",
+   "how_to_tune": "当前 1.0；0.8-1.2 运镜明显，太高会喧宾夺主；弱化运镜可调回 0.6-0.8。"
+  },
+  {
+   "param": "Dual-Character-Shot LoRA 强度",
+   "how_to_tune": "当前 0.8；需要更强双人构图/双角色关系时调到 1.0 左右，但要注意与 I2V LoRA 叠加后的冲突。"
+  },
+  {
+   "param": "sampler seed",
+   "how_to_tune": "当前 randomize；得到满意片段后固定 seed 可复现，换 seed 可快速试新构图/运动。"
+  },
+  {
+   "param": "EmptyLTXVLatentVideo length / audio length",
+   "how_to_tune": "当前 489 帧；时长=帧数/fps，LTXVConditioning 里疑似为 25，则 489/25≈19.6 秒；加长时长可加帧数，但显存会明显上升。"
+  },
+  {
+   "param": "PromptRelayEncodeTimeline segments 帧号",
+   "how_to_tune": "时间线分段中的帧号决定 prompt 何时切换/过渡；把分段点对准镜头切点，帧号越大该段提示词作用越长，可用来调整分镜节奏。"
+  },
+  {
+   "param": "ImageScaleByAspectRatio 缩放",
+   "how_to_tune": "当前按原图等比缩放；对非 16:9 或竖构图素材，用 crop/lanczos 保证送入模型的分辨率一致，避免拉伸变形。"
+  }
+ ],
+ "summary_text": "能力:输入一张服装模特/商品照片和一段文案，端到端生成带时间线分镜、镜头运动与音轨的 LTX2.3 短视频。；能力:调用 Gemini 3 Flash 把用户文案拆成 GLOBAL 全局风格与 LOCAL 分镜提示词，并自动注入 PromptRelayEncodeTimeline，形成多镜头的分镜脚本。；能力:同时生成视频 latent 与音频 latent，再分别用 video VAE 和 audio VAE 解码，输出与视频同步的音频。；能力:集成三个 LoRA：Licon-VBVR-I2V 控制图生视频演化、Cinematic-Camera-Control 控制电影运镜、Dual-Character-Shot 控制双人镜头构图。；能力:面向服装模特带货场景，用分镜时间线替代手工视频剪辑，降低短视频制作门槛。；特色:LLM 分镜 + PromptRelay：RH_LLMAPI_Pro_Node 生成分段提示词，RegexExtract 分别抽取 LOCAL/GLOBAL，再由 PromptRelayEncodeTimeline 按时间线调制视频 prompt，属于非手工逐镜头的设计。；特色:音频/视频双 latent 同生同解：LTXVConcatAVLatent 合并音视频条件，生成后再用 LTXVSeparateAVLatent 分离，配合两个 VAE（video_vae / audio_vae）分别解码。；特色:三 LoRA 并行叠加：不是单一 LoRA，而是把 I2V 演算、电影运镜、双人构图三个专项目标叠加在同一个 LTX 模型上，体现模块化控制思路。；特色:时间线分段帧号（150,150,151 等）疑似用于设置镜头切换与提示过渡，可在不重新剪辑的情况下改变分镜节奏。；特色:设有 VisualizeSigmasKJ、LTX2SamplingPreviewOverride 和三个 PreviewAny，提供降噪轨迹与中间结果的可视化检查点。；特色:使用 fp8 权重 + PathchSageAttentionKJ + ImageScaleByAspectRatio 先等比缩放，降低 22B 模型图生视频的显存压力。；服装模特/电商带货短视频制作；输入商品图或模特图与产品文案，输出带分镜、运镜、音效/语音轨的短视频；也适合做商品素材的多版本快速试款。；这个工作流把一条带货短视频的生产拆成两条线：一条线是视觉分镜——用外部 LLM（Gemini）把商品文案转成带 GLOBAL/LOCAL 的时间线提示词，再交给 LTX2.3 图生视频；另一条线是影音同步——在同一模型里生成视频和音频 latent，最后分离解码。三支 LoRA 分别约束内容演化、运镜和双人构图，让单张服装模特图也能产生有镜头感的短视频。fp8、SageAttention 与低步数采"
+}

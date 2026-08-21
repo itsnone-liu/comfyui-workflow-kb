@@ -1,0 +1,120 @@
+{
+ "domain": [
+  "视频生成",
+  "数字人",
+  "角色一致性",
+  "音频驱动生成"
+ ],
+ "capabilities": [
+  {
+   "text": "一键生成 30 秒左右的《凡人修仙传》角色数字人视频（如紫灵、韩立、燕如嫣等），通过预置 LoRA 保持角色面部/风格一致性。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持文生视频与图生视频双路径，通过条件分支切换；图生视频使用 LTXVImgToVideoInplace 基于输入图片生成视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持自定义音频或 IndexTTS2Run TTS 合成语音，并与视频 latent 拼接后联合生成音画内容。",
+   "kind": "inference"
+  },
+  {
+   "text": "内置多个角色 LoRA 和音频素材，可通过 easy anythingIndexSwitch 快速切换角色/音频组合。",
+   "kind": "fact"
+  },
+  {
+   "text": "输出带音频的完整视频文件，并可通过 Hires 上采样（ltx-2.3-spatial-upscaler）增强清晰度。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "LTX 2.3 22B 蒸馏视频生成（ltx-2.3-22b-distilled-1.1 transformer-only fp8）",
+  "双 CLIP 文本编码（gemma_3_12B_it_fp8 + ltx-2.3_text_projection, DualCLIPLoader）",
+  "角色一致性 LoRA 叠加（多个 LoraLoaderModelOnly）",
+  "音频-视频联合 latent 生成（LTXVAudioVAEEncode / LTXVConcatAVLatent / LTXVSeparateAVLatent）",
+  "Hires 上采样（LatentUpscaleModelLoader + ltx-2.3-spatial-upscaler-x2）",
+  "图生视频 inplace（LTXVImgToVideoInplace）",
+  "条件控制流（ImpactConditionalBranch / easy anythingIndexSwitch）",
+  "音频处理（MelBandRoFormerSampler 人声分离、IndexTTS2Run TTS）"
+ ],
+ "special_features": [
+  {
+   "text": "角色/音频双 IndexSwitch：通过 easy anythingIndexSwitch 在预置角色 LoRA 和音频素材之间即时切换，形成“角色包+音频包”多选工作流。",
+   "kind": "fact"
+  },
+  {
+   "text": "音频-视频 latent 拼接生成：LTXVConcatAVLatent 将视频 latent 与音频 VAE latent 拼接为联合条件，采样后用 LTXVSeparateAVLatent 分离，实现音画同步生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "人声分离前置：MelBandRoFormerSampler 对输入音频做解混/分离，可能用于提取干净人声以提升音画对齐质量。",
+   "kind": "inference"
+  },
+  {
+   "text": "文生/图生分支：ImpactConditionalBranch + PrimitiveBoolean 切换生成模式（Note 标注“true 是文生视频”），并配合 LTXVImgToVideoInplace 实现图生视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "动态时长计算：SoundFlow_GetLength / SimpleMath+ / ComfyMathExpression 根据音频长度计算 latent 帧数，自动适配视频时长。",
+   "kind": "inference"
+  },
+  {
+   "text": "显存管理：LayerUtility: PurgeVRAM V2 在关键阶段清理显存，避免长视频生成时 OOM。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流把 LTX 2.3 的多模态音视频生成能力封装成一套“角色化数字人流水线”：通过预置与快速切换角色 LoRA 和音频素材，将文本/图片与音频统一编码到 latent 空间联合生成；用 IndexSwitch 管理多个角色/音频，用条件分支切换文生/图生，用 Hires 上采样增强清晰度，从而实现“10 分钟生成 30 秒数字人”的工程化目标。整体设计偏向多角色复用与批量化产出，而非单次精修。",
+ "use_case": "适用于短视频创作者、同人内容制作者，用《凡人修仙传》角色快速生成口播、剧情片段或人物 Vlog；也适合需要多角色、多音频素材的数字人内容量产场景。",
+ "limitation": "需要较高显存（LTX 2.3 22B fp8 + Gemma 3 12B + 视频/音频 VAE）；依赖大量自定义节点（LTXV 系列、MelBandRoFormer、IndexTTS2Run、easy anythingIndexSwitch、SoundFlow_GetLength、LayerUtility 等）和特定模型文件；角色被限制在预置 LoRA 内，更换角色需重新训练/替换 LoRA；生成时长受显存限制，作者建议音频约 20 多秒/最多 30 秒；音频长度或图像分辨率变化时，可能需要手动调整 EmptyLTXVLatentVideo 等参数。",
+ "dependencies": [
+  "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+  "gemma_3_12B_it_fp8_e4m3fn.safetensors",
+  "ltx-2.3_text_projection_bf16.safetensors",
+  "LTX23_video_vae_bf16.safetensors",
+  "LTX23_audio_vae_bf16.safetensors",
+  "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+  "MelBandRoFormer_comfy/MelBandRoformer_fp16.safetensors",
+  "角色 LoRA（ltx2.3紫灵触发词ziling.safetensors、LTX23-燕如嫣、ltx2.3宋玉、ltx2.3梅凝、LTX2.3银月、ltx2.3韩立、双人 LoRA 等）",
+  "自定义节点：LTXV 系列节点、MelBandRoFormer 节点、IndexTTS2Run、easy anythingIndexSwitch、LayerUtility: PurgeVRAM V2、SoundFlow_GetLength、VHS_VideoCombine 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "文本/图片/音频",
+  "count": "多个（1 段提示文本、2 个 LoadImage 输入、多个 LoadAudio 音频选择 + 可选 TTS 文本）"
+ },
+ "output": {
+  "type": "视频文件（含音频，VHS_VideoCombine 输出）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "EmptyLTXVLatentVideo 的 width/height/length",
+   "how_to_tune": "默认 768×512×97；增大宽高或帧数会显著增加显存和时间。若需更长视频，可先保持低分辨率，仅增加 length；若显存不足，应降低 length。"
+  },
+  {
+   "param": "RandomNoise 的 seed",
+   "how_to_tune": "固定 seed 便于复现；修改 seed 可生成不同画面。若使用 fixed 模式仍觉得随机性不足，可改为 random。"
+  },
+  {
+   "param": "CFGGuider 的 cfg",
+   "how_to_tune": "蒸馏模型推荐 cfg=1。若画面过曝、对比度过强，可下调到 0.8-1.0；若内容不遵提示，可在 1.0-1.5 之间微调，但过高易出伪影。"
+  },
+  {
+   "param": "BasicScheduler 的 steps",
+   "how_to_tune": "默认 8 步，速度优先；想要更细致可提升到 10-15 步，但会延长生成时间。蒸馏模型不建议超过 20 步。"
+  },
+  {
+   "param": "LoraLoaderModelOnly 的 strength",
+   "how_to_tune": "角色 LoRA 权重通常 1.0；若角色特征过强或面部僵硬，可降至 0.7-0.9；若不够像，可尝试 1.0-1.2，注意过拟合风险。"
+  },
+  {
+   "param": "ModelSamplingSD3 的 shift",
+   "how_to_tune": "默认 10 是 LTX 2.3 常见值；增大会使时间步偏向前段，可能增强动态效果，但细节可能受损；减少则更稳，可在 8-12 之间试验。"
+  },
+  {
+   "param": "IndexTTS2Run 的参数（30, 0.8, 0.8, 1, 1500, 160）",
+   "how_to_tune": "参数含义取决于节点版本（可能为目标时长、温度、速度等）。建议对照 IndexTTS2 文档微调，以控制语音时长和自然度；若要匹配视频长度，需保证 TTS 输出音频时长与视频帧数对应。"
+  }
+ ],
+ "summary_text": "能力:一键生成 30 秒左右的《凡人修仙传》角色数字人视频（如紫灵、韩立、燕如嫣等），通过预置 LoRA 保持角色面部/风格一致性。；能力:支持文生视频与图生视频双路径，通过条件分支切换；图生视频使用 LTXVImgToVideoInplace 基于输入图片生成视频。；能力:支持自定义音频或 IndexTTS2Run TTS 合成语音，并与视频 latent 拼接后联合生成音画内容。；能力:内置多个角色 LoRA 和音频素材，可通过 easy anythingIndexSwitch 快速切换角色/音频组合。；能力:输出带音频的完整视频文件，并可通过 Hires 上采样（ltx-2.3-spatial-upscaler）增强清晰度。；特色:角色/音频双 IndexSwitch：通过 easy anythingIndexSwitch 在预置角色 LoRA 和音频素材之间即时切换，形成“角色包+音频包”多选工作流。；特色:音频-视频 latent 拼接生成：LTXVConcatAVLatent 将视频 latent 与音频 VAE latent 拼接为联合条件，采样后用 LTXVSeparateAVLatent 分离，实现音画同步生成。；特色:人声分离前置：MelBandRoFormerSampler 对输入音频做解混/分离，可能用于提取干净人声以提升音画对齐质量。；特色:文生/图生分支：ImpactConditionalBranch + PrimitiveBoolean 切换生成模式（Note 标注“true 是文生视频”），并配合 LTXVImgToVideoInplace 实现图生视频。；特色:动态时长计算：SoundFlow_GetLength / SimpleMath+ / ComfyMathExpression 根据音频长度计算 latent 帧数，自动适配视频时长。；特色:显存管理：LayerUtility: PurgeVRAM V2 在关键阶段清理显存，避免长视频生成时 OOM。；适用于短视频创作者、同人内容制作者，用《凡人修仙传》角色快速生成口播、剧情片段或人物 Vlog；也适合需要多角色、多音频素材的数字人内容量产场景。；该工作流把 LTX 2.3 的多模态音视频生成能力封装成一套“角色化数字人流水线”：通过预置与快速切换角色 LoRA 和音频素材，将文本/图片与音频统一编码到 latent 空间联合生成；用 IndexSwitch 管理多个角色/音频，用条件分支切换文生/图生，用 Hires 上采样增强清晰度，从而实现“10 分钟生成 30 秒数字人”的工程化目标。整体设计偏向多角色复用与批量化产出，而非单次精修。"
+}

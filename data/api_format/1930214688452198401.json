@@ -1,0 +1,197 @@
+{
+ "34": {
+  "class_type": "OpenposePreprocessor",
+  "inputs": {
+   "image": [
+    "36",
+    0
+   ],
+   "detect_body": "enable",
+   "detect_hand": "enable",
+   "detect_face": "enable",
+   "scale_stick_for_xinsr_cn": "disable",
+   "resolution": 512
+  },
+  "_meta": {
+   "title": "Openpose姿态预处理器"
+  }
+ },
+ "24": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "35": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "34",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "36": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "a42ad3cab25d51e47f4c1fb9c046f488d9f1306f7f05d7d71d25222ffc8bdd4a.jpg"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "19": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "control_v11p_sd15_openpose.pth"
+  },
+  "_meta": {
+   "title": "ControlNet加载器"
+  }
+ },
+ "3": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "karras",
+   "negative": [
+    "21",
+    1
+   ],
+   "denoise": 1,
+   "latent_image": [
+    "5",
+    0
+   ],
+   "seed": 8,
+   "cfg": 6,
+   "sampler_name": "dpmpp_2m_sde_gpu",
+   "model": [
+    "4",
+    0
+   ],
+   "positive": [
+    "21",
+    0
+   ],
+   "steps": 30
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ },
+ "4": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "SD1.5 dreamshaper_8.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "5": {
+  "class_type": "EmptyLatentImage",
+  "inputs": {
+   "batch_size": 1,
+   "width": 512,
+   "height": 768
+  },
+  "_meta": {
+   "title": "空Latent"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "Ice queen in a frozen castle, wearing a shimmering ice gown, commanding the blizzard, majestic and elegant. \n\nillustration, masterpiece, detailed",
+   "clip": [
+    "4",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "7": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "Low-quality, blurry, distorted, unrealistic proportions, dull colors, out of focus, messy background, duplicate characters.",
+   "clip": [
+    "4",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "8": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "4",
+    2
+   ],
+   "samples": [
+    "3",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "41": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "21": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "34",
+    0
+   ],
+   "negative": [
+    "7",
+    0
+   ],
+   "control_net": [
+    "19",
+    0
+   ],
+   "strength": 1,
+   "start_percent": 0,
+   "positive": [
+    "6",
+    0
+   ],
+   "vae": [
+    "4",
+    2
+   ],
+   "end_percent": 1
+  },
+  "_meta": {
+   "title": "ControlNet应用（旧版高级）"
+  }
+ }
+}

@@ -1,0 +1,108 @@
+{
+ "domain": [
+  "图生图",
+  "换脸",
+  "人像处理"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张参考人脸照片和一张待处理图片，生成保留参考人脸身份特征、姿态和背景与原图一致的高清换脸结果",
+   "kind": "inference"
+  },
+  {
+   "text": "只对目标图中的人脸区域进行局部重绘与无缝融合，最大程度保留原图的背景、身体、服装和光照",
+   "kind": "inference"
+  },
+  {
+   "text": "输出经过 SUPIR 超分与 ColorMatch 颜色匹配的最终结果，兼顾细节清晰度与色彩一致性",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "ControlNet",
+  "SUPIR 超分",
+  "局部 Inpaint / 遮罩重绘",
+  "insightface 人脸检测与关键点分析",
+  "PersonMaskUltraV2 人物分割",
+  "ColorMatch 色彩匹配",
+  "CropByMask / RestoreCropBox 裁剪还原"
+ ],
+ "special_features": [
+  {
+   "text": "多阶段局部换脸：通过 FaceBoundingBox + CropByMask + InpaintModelConditioning 将生成范围限制在人脸区域，而不是整图重绘",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 PersonMaskUltra V2 获取人物/脸部 mask，结合 MaskBlur+ 做边缘柔化，实现无缝融合",
+   "kind": "fact"
+  },
+  {
+   "text": "换脸后接 SUPIR_Upscale 两倍放大，并复用 Juggernaut XL 模型作为 SUPIR 的 SDXL 解码模型",
+   "kind": "fact"
+  },
+  {
+   "text": "ColorMatch 色彩匹配用于修正生成区域的色温/色调漂移，避免局部换脸产生色差",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 Image Comparer 进行前后对比，并配合 PreviewImage / SaveImage 输出，方便调试参数",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "工作流可能旨在实现“精准换脸”：不直接用 InstantID 重绘整张图，而是先锁定人脸区域，用 InstantID 生成新身份的面孔，再通过 mask 软化与色彩匹配贴回原图。这样可尽量保留原始构图、身体、服装和背景，避免整图重绘带来的风格漂移；同时 SUPIR 放大保证输出分辨率。整体像是一个可调试的局部合成流水线，适合对换脸精度和融合质量有要求的场景。",
+ "use_case": "适用于社交平台头像/写真换脸、影视及广告素材中的人物面部替换、创意摄影中的人物身份迁移等需要保留原图构图的高精度换脸场景。",
+ "limitation": "依赖 InstantID、SUPIR、LayerStyle 等第三方自定义节点以及多个大模型文件，需要较高显存；输入需包含清晰正面或半侧面人脸，否则 InstantID 身份特征可能丢失；默认参数针对 Juggernaut XL Lightning 模型调优，更换 checkpoint 需重新调整 KSampler 的 steps/cfg 与 ApplyInstantID 的 weight；两阶段（生成 + 超分）耗时较长。",
+ "dependencies": [
+  "ComfyUI-InstantID",
+  "ComfyUI-SUPIR",
+  "ComfyUI-LayerStyle",
+  "rgthree-comfy",
+  "ComfyUI-Essentials（ImageResize+ / MaskBlur+ 等）",
+  "ColorMatch 节点包",
+  "模型文件：juggernautXL_v9Rdphoto2Lightning.safetensors",
+  "模型文件：instantid/diffusion_pytorch_model.safetensors",
+  "模型文件：ip-adapter.bin",
+  "模型文件：SUPIR-v0Q_fp16.safetensors"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像（image）",
+  "count": "至少 2 张：参考人脸图 + 待换脸图（默认示例中两张可能相同）"
+ },
+ "output": {
+  "type": "图像（image）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "默认25；若使用 Juggernaut XL Lightning 可降至10-20，追求细节可增加到30，但会变慢并提高显存占用。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "默认2，适配 Lightning 模型的低 CFG 设置；换用普通 SDXL checkpoint 时需调到5-8，否则可能过曝或欠饱和。"
+  },
+  {
+   "param": "ApplyInstantID/weight",
+   "how_to_tune": "默认1，控制身份相似度；相似度不足时可升至1.2，但过高可能引入伪影或面部僵硬。"
+  },
+  {
+   "param": "GrowMask/expand",
+   "how_to_tune": "默认40像素，决定换脸融合覆盖范围；值太大会带入周围环境，太小会露出未替换的边缘。"
+  },
+  {
+   "param": "MaskBlur+/blur",
+   "how_to_tune": "默认60，控制融合边缘柔化程度；可根据输出图的接缝明显程度调整。"
+  },
+  {
+   "param": "SUPIR_Upscale/scale_by",
+   "how_to_tune": "默认2.0；放大倍数越高显存和耗时越大，建议控制在1.5-2.5之间。"
+  },
+  {
+   "param": "ImageResize+ 目标分辨率",
+   "how_to_tune": "1024x1024 是 SDXL 标准生成分辨率，原图非正方形会自动 pad；1152x1152 可作为 SUPIR 前的辅助分辨率，按实际输出需求调整。"
+  }
+ ],
+ "summary_text": "能力:上传一张参考人脸照片和一张待处理图片，生成保留参考人脸身份特征、姿态和背景与原图一致的高清换脸结果；能力:只对目标图中的人脸区域进行局部重绘与无缝融合，最大程度保留原图的背景、身体、服装和光照；能力:输出经过 SUPIR 超分与 ColorMatch 颜色匹配的最终结果，兼顾细节清晰度与色彩一致性；特色:多阶段局部换脸：通过 FaceBoundingBox + CropByMask + InpaintModelConditioning 将生成范围限制在人脸区域，而不是整图重绘；特色:使用 PersonMaskUltra V2 获取人物/脸部 mask，结合 MaskBlur+ 做边缘柔化，实现无缝融合；特色:换脸后接 SUPIR_Upscale 两倍放大，并复用 Juggernaut XL 模型作为 SUPIR 的 SDXL 解码模型；特色:ColorMatch 色彩匹配用于修正生成区域的色温/色调漂移，避免局部换脸产生色差；特色:集成 Image Comparer 进行前后对比，并配合 PreviewImage / SaveImage 输出，方便调试参数；适用于社交平台头像/写真换脸、影视及广告素材中的人物面部替换、创意摄影中的人物身份迁移等需要保留原图构图的高精度换脸场景。；工作流可能旨在实现“精准换脸”：不直接用 InstantID 重绘整张图，而是先锁定人脸区域，用 InstantID 生成新身份的面孔，再通过 mask 软化与色彩匹配贴回原图。这样可尽量保留原始构图、身体、服装和背景，避免整图重绘带来的风格漂移；同时 SUPIR 放大保证输出分辨率。整体像是一个可调试的局部合成流水线，适合对换脸精度和融合质量有要求的场景。"
+}

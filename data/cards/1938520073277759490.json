@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图像生成",
+  "换装"
+ ],
+ "capabilities": [
+  {
+   "text": "接收一张服装图片和中文换装描述，生成将该服装穿在18岁韩国女性身上的写实效果图",
+   "kind": "fact"
+  },
+  {
+   "text": "自动将中文提示词翻译为英文，用于FLUX模型的条件生成",
+   "kind": "fact"
+  },
+  {
+   "text": "同时输出原始生成图、拼接对比图和超分放大图等三种结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "ReferenceLatent",
+  "FluxKontextImageScale",
+  "RH_Translator",
+  "PMRF",
+  "ImageStitch",
+  "ImageConcatMulti",
+  "ConditioningZeroOut",
+  "FluxGuidance",
+  "VAEEncode/VAEDecode"
+ ],
+ "special_features": [
+  {
+   "text": "使用RH_Translator将中文提示翻译成英文，规避CLIP对中文支持不足的问题",
+   "kind": "inference"
+  },
+  {
+   "text": "通过ReferenceLatent + FluxKontextImageScale注入服装参考信息，实现保持服装外观的换装生成",
+   "kind": "inference"
+  },
+  {
+   "text": "使用ImageConcatMulti和ImageStitch进行多路图像拼接，生成前后对比或组合图",
+   "kind": "fact"
+  },
+  {
+   "text": "加入PMRF节点做超分后处理，提升输出图像清晰度",
+   "kind": "fact"
+  },
+  {
+   "text": "三个SaveImage节点多分支保存不同阶段/规格结果",
+   "kind": "fact"
+  },
+  {
+   "text": "ConditioningZeroOut与FluxGuidance组合可能用于调节FLUX的提示跟随强度",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "作者试图构建一个“文本驱动的服装迁移”工作流：先加载服装图，经VAEEncode和ReferenceLatent提取参考特征，再结合FluxKontextImageScale把服装几何信息注入FLUX生成过程；同时用RH_Translator将中文换装指令翻译成英文，配合固定风格提示“Using this elegant style”控制生成；之后用ImageStitch/ImageConcatMulti制作拼图便于对比，最后PMRF超分提升清晰度。这种多段式设计兼顾了提示理解、参考保持与输出质量。",
+ "use_case": "电商模特图生成、服装设计预览、虚拟试穿",
+ "limitation": "依赖多个自定义节点（RH_Translator、PMRF、ReferenceLatent、FluxKontextImageScale、ImageStitch/ImageConcatMulti等）；需下载FLUX dev模型及配套CLIP/VAE；输入需单张服装图，且背景简单；生成效果受模特描述影响；PMRF仅适用于特定分辨率。",
+ "dependencies": [
+  "flux1-dev-kontext_fp8_scaled.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.safetensors",
+  "自定义节点: RH_Translator, PMRF, ReferenceLatent, FluxKontextImageScale, ImageStitch, ImageConcatMulti, ShowText|pysssss"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "当前20步，增加步数可提升细节但耗时；FLUX一般15-30步足够"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "当前cfg=1，FLUX推荐1附近，可尝试0.5-2调整提示遵守度"
+  },
+  {
+   "param": "KSampler/sampler & scheduler",
+   "how_to_tune": "euler+simple是FLUX常见组合，可换dpm++/sgm_uniform对比"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前2.5，控制风格引导强度，值越大越贴近文本描述，过高易失真"
+  },
+  {
+   "param": "PMRF",
+   "how_to_tune": "参数2和25分别可能代表模型/尺度与迭代步数，增加步数提高清晰度但更耗时"
+  },
+  {
+   "param": "Text Multiline",
+   "how_to_tune": "中文描述需明确“衣服保持”“人物特征”等关键约束，翻译质量直接影响生成效果"
+  }
+ ],
+ "summary_text": "能力:接收一张服装图片和中文换装描述，生成将该服装穿在18岁韩国女性身上的写实效果图；能力:自动将中文提示词翻译为英文，用于FLUX模型的条件生成；能力:同时输出原始生成图、拼接对比图和超分放大图等三种结果；特色:使用RH_Translator将中文提示翻译成英文，规避CLIP对中文支持不足的问题；特色:通过ReferenceLatent + FluxKontextImageScale注入服装参考信息，实现保持服装外观的换装生成；特色:使用ImageConcatMulti和ImageStitch进行多路图像拼接，生成前后对比或组合图；特色:加入PMRF节点做超分后处理，提升输出图像清晰度；特色:三个SaveImage节点多分支保存不同阶段/规格结果；特色:ConditioningZeroOut与FluxGuidance组合可能用于调节FLUX的提示跟随强度；电商模特图生成、服装设计预览、虚拟试穿；作者试图构建一个“文本驱动的服装迁移”工作流：先加载服装图，经VAEEncode和ReferenceLatent提取参考特征，再结合FluxKontextImageScale把服装几何信息注入FLUX生成过程；同时用RH_Translator将中文换装指令翻译成英文，配合固定风格提示“Using this elegant style”控制生成；之后用ImageStitch/ImageConcatMulti制作拼图便于对比，最后PMRF超分提升清晰度。这种多段式设计兼顾了提示理解、参考保持与输出质量。"
+}

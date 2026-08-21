@@ -1,0 +1,106 @@
+{
+ "domain": [
+  "音乐生成",
+  "图像生成",
+  "音视频合成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一段主题/风格描述（如“端午節，女声，R&B”），先由 LLM 生成歌词与音乐 Tags，再驱动 ACE-Step 相关节点生成并保存音频（SaveAudio），可裁剪成 1:20 片段。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 FLUX.1-dev 的 int4 量化模型（NunchakuFluxDiTLoader）配合双 CLIP 文本编码器生成 768x512 写实人像图；固定人设 prompt 与 LLM 生成的 Tags 经 Text Concatenate 拼接后作为图像条件。",
+   "kind": "inference"
+  },
+  {
+   "text": "将生成音频与图像送入 VHS_VideoCombine，按 trim_to_audio 等设置合成带音轨短视频；同时输出歌词 txt（easy saveText）与预览图。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1-dev int4 量化推理（NunchakuFluxDiTLoader、ModelSamplingFlux、FluxGuidance）",
+  "ACE-Step 文生音乐（LoadFloatModels / float.pth、GenerationParameters、ACEStepGen、AudioCrop）",
+  "LLM 结构化输出与清洗（RH_LLMAPI_NODE → ReplaceText → LoadJsonFromText → GetTextFromJson）",
+  "ComfyUI 标准采样链（BasicScheduler / BasicGuider / KSamplerSelect / SamplerCustomAdvanced）",
+  "音视频合成（VHS_VideoCombine + SaveAudio）",
+  "显存控制（LayerUtility: PurgeVRAM）"
+ ],
+ "special_features": [
+  {
+   "text": "采用 NunchakuFluxDiTLoader 加载 svdq-int4-flux.1-dev，并在流水线关键位置插入 3 个 LayerUtility: PurgeVRAM，形成低显存友好的多阶段执行结构。",
+   "kind": "fact"
+  },
+  {
+   "text": "LLM 输出先经 ReplaceText 去掉 ```json 与 ``` 围栏，再用 LoadJsonFromText / GetTextFromJson 拆出 Tags 和 Lyrics，把自由文本可靠地路由到图像与音乐分支。",
+   "kind": "fact"
+  },
+  {
+   "text": "同一工作流串联“音乐生成（ACE-Step）”和“图像生成（FLUX）”，最后用 VHS_VideoCombine 合并成音视频，是典型的歌词/歌曲/封面一体化生成结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用固定人设短语“a Pretty Girl, real person...”与动态生成的 Tags 做 Text Concatenate 拼接，兼顾人设一致性与主题变化。",
+   "kind": "inference"
+  },
+  {
+   "text": "包含音频 Crop（0:00-1:20）和歌词 txt 落地，似乎面向带歌词卡片/短视频发布的后期流程。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流可能被设计成一条“主题 → 歌词/标签 → 歌曲 → 人像封面 → 短视频”的一站式创意产线：LLM 先把中文主题扩展成可用的结构化素材，ACE-Step 负责音乐的旋律/演唱，FLUX 提供匹配的视觉封面，最后 VHS 合成视频交付。为了能在本地 GPU 跑通，作者叠加了 int4 量化与多次显存清理，使多阶段生成不至于被峰值显存中断。",
+ "use_case": "适合生成节日主题/歌曲小样的 AI 音乐短视频、专辑封面配图或歌词视频；输入一句风格描述即可拿到歌词、音频、封面图和合成视频。",
+ "limitation": "依赖大量外部节点/模型：RH_LLMAPI_NODE 需要 API 与网络；Nunchaku int4 FLUX 需要对应驱动/环境；ACE-Step 需要 float.pth 及配套节点；VHS_VideoCombine 需要 VideoHelperSuite。LLM 一旦输出非 JSON 且 ReplaceText 未完全清洗，后续 GetTextFromJson 会失败；图像分辨率与音频时长都受限，需按 GPU 显存调整。",
+ "dependencies": [
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "clip_l.safetensors",
+  "ae.safetensors",
+  "svdq-int4-flux.1-dev",
+  "float.pth",
+  "RH_LLMAPI_NODE",
+  "ComfyUI-ACE-Step 节点集",
+  "Nunchaku 相关节点",
+  "LayerUtility（ComfyUI_LayerStyle）",
+  "VHS_VideoCombine（VideoHelperSuite）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "中文主题/风格文本（如“端午節，女声，R&B”）+ 可编辑的固定人设 prompt 和 LLM system prompt",
+  "count": "主要 1 路文本输入，另有若干可调常量"
+ },
+ "output": {
+  "type": "音频文件、歌词 txt、预览图、带音轨的视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "EmptyLatentImage width/height",
+   "how_to_tune": "当前 768x512；提高分辨率会让封面更清晰但增加显存与采样耗时，低显存可降到 512x512。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前 3.5；FLUX 对引导强度较敏感，出现过曝/伪影时可在 2.0-5.0 间微调。"
+  },
+  {
+   "param": "ModelSamplingFlux shift",
+   "how_to_tune": "当前 1.15；shift 改变时间步分布，画面脏或细节不足时可向 1.0 或 1.2 方向小步调节。"
+  },
+  {
+   "param": "BasicScheduler steps",
+   "how_to_tune": "当前 20；需要更精细的生成可升至 25-30，若为快速预览可降至 15。"
+  },
+  {
+   "param": "RandomNoise seed",
+   "how_to_tune": "当前 51；换 seed 可改变图像/音乐采样结果，increment 模式会在每次运行自动递增。"
+  },
+  {
+   "param": "GenerationParameters",
+   "how_to_tune": "当前为 210/60/15/euler/apg/10，具体含义由 ACE-Step 插件定义；增大数值大概率增加计算耗时，建议以插件默认值为基线微调。"
+  },
+  {
+   "param": "AudioCrop",
+   "how_to_tune": "当前裁剪 0:00-1:20；短视频场景可截取 0:00-0:30，但需保证 ACE-Step 实际生成了足够长的音频。"
+  }
+ ],
+ "summary_text": "能力:输入一段主题/风格描述（如“端午節，女声，R&B”），先由 LLM 生成歌词与音乐 Tags，再驱动 ACE-Step 相关节点生成并保存音频（SaveAudio），可裁剪成 1:20 片段。；能力:用 FLUX.1-dev 的 int4 量化模型（NunchakuFluxDiTLoader）配合双 CLIP 文本编码器生成 768x512 写实人像图；固定人设 prompt 与 LLM 生成的 Tags 经 Text Concatenate 拼接后作为图像条件。；能力:将生成音频与图像送入 VHS_VideoCombine，按 trim_to_audio 等设置合成带音轨短视频；同时输出歌词 txt（easy saveText）与预览图。；特色:采用 NunchakuFluxDiTLoader 加载 svdq-int4-flux.1-dev，并在流水线关键位置插入 3 个 LayerUtility: PurgeVRAM，形成低显存友好的多阶段执行结构。；特色:LLM 输出先经 ReplaceText 去掉 ```json 与 ``` 围栏，再用 LoadJsonFromText / GetTextFromJson 拆出 Tags 和 Lyrics，把自由文本可靠地路由到图像与音乐分支。；特色:同一工作流串联“音乐生成（ACE-Step）”和“图像生成（FLUX）”，最后用 VHS_VideoCombine 合并成音视频，是典型的歌词/歌曲/封面一体化生成结构。；特色:使用固定人设短语“a Pretty Girl, real person...”与动态生成的 Tags 做 Text Concatenate 拼接，兼顾人设一致性与主题变化。；特色:包含音频 Crop（0:00-1:20）和歌词 txt 落地，似乎面向带歌词卡片/短视频发布的后期流程。；适合生成节日主题/歌曲小样的 AI 音乐短视频、专辑封面配图或歌词视频；输入一句风格描述即可拿到歌词、音频、封面图和合成视频。；这个工作流可能被设计成一条“主题 → 歌词/标签 → 歌曲 → 人像封面 → 短视频”的一站式创意产线：LLM 先把中文主题扩展成可用的结构化素材，ACE-Step 负责音乐的旋律/演唱，FLUX 提供匹配的视觉封面，最后 VHS 合成视频交付。为了能在本地 GPU 跑通，作者叠加了 int4 量化与多次显存清理，使多阶段生成不至于被峰值显存中断。"
+}

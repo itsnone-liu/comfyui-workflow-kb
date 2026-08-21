@@ -1,0 +1,88 @@
+{
+ "domain": [
+  "图像处理",
+  "批量抠图",
+  "BiRefNet",
+  "压缩包批量处理"
+ ],
+ "capabilities": [
+  {
+   "text": "上传 ZIP 压缩包，自动解压内部图片，批量执行 BiRefNet 抠图（移除背景），并将结果 PNG 打包为 ZIP 下载",
+   "kind": "fact"
+  },
+  {
+   "text": "也支持单张图片模式：通过 LoadImage 载入单图，抠图后保存 PNG 或预览",
+   "kind": "inference"
+  },
+  {
+   "text": "批量处理过程中自动清理显存与缓存，降低长时间运行的资源占用",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "BiRefNet 高精度抠图 (RembgByBiRefNet)",
+  "压缩包上传/解压/压缩 (RHUploadZip / RHExtractImage / CompressImages)",
+  "批量图像转 batch 处理 (ImageListToBatch_)",
+  "for 循环批量控制 (easy forLoopStart/End)",
+  "显存/缓存清理 (easy cleanGpuUsed / clearCacheAll)"
+ ],
+ "special_features": [
+  {
+   "text": "以 ZIP 压缩包作为输入输出载体，绕过逐张上传下载，适合批量交付",
+   "kind": "fact"
+  },
+  {
+   "text": "存在 mode4 标记的并行 LoadImage / RembgByBiRefNet / SaveImage，可能支持单图输入或不同的执行分支",
+   "kind": "inference"
+  },
+  {
+   "text": "批量流程中插入显存清理和缓存清除节点，属于长任务稳定性设计",
+   "kind": "fact"
+  },
+  {
+   "text": "循环结构与 batch 机制共用 (easy forLoopStart + ImageListToBatch_)，实现解压图片逐批处理",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流的核心目标是解决批量抠图的交付效率：用户一次性提交 zip，服务器端解压、逐张抠图、再压缩回 zip，同时通过显存清理保证长时间批量稳定。可能采用双模式（单张预览与 zip 批处理）兼顾调试和生产。",
+ "use_case": "电商商品图批量去背景、设计素材整理、人像证件照批量抠图等需要成批获得透明底 PNG 的场景。",
+ "limitation": "使用 BiRefNet 模型（Matting.safetensors）依赖预训练权重；需要通过自定义节点 RHUploadZip/RHExtractImage 等实现压缩包交互，运行平台需安装相应插件；输入需为 zip 压缩包，不支持文件夹直接拖入；输出为 PNG 压缩包，若原图非常大可能因内存/显存压力导致 OOM，需依赖显存清理节点缓解。",
+ "dependencies": [
+  "ComfyUI-BiRefNet",
+  "ComfyUI-RH (RHUploadZip/RHExtractImage/RHBatchImages)",
+  "ComfyUI-Easy-Use (easy forLoopStart/easy cleanGpuUsed...)",
+  "Bjornulf_ShowInt / CompressImages 等扩展节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "zip 压缩包 / 单张图片",
+  "count": "多张"
+ },
+ "output": {
+  "type": "zip 压缩包（PNG 透明底）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoadRembgByBiRefNetModel / LoadRembgByBiRefNetModel(mode4)",
+   "how_to_tune": "widgets 为 ['Matting.safetensors','AUTO','False']，可选不同抠图模型；device 用 AUTO 自动选择 GPU/CPU，False 可能为不载入预处理？保持 AUTO 即可。"
+  },
+  {
+   "param": "RHUploadZip",
+   "how_to_tune": "上传 zip 的接口，无参数调优；需保证 zip 内为直接可读图片格式。"
+  },
+  {
+   "param": "easy forLoopStart",
+   "how_to_tune": "widgets 为 ['2']，疑似设置循环批次数或 batch size；调整时根据图片总量与显存平衡；显存小可设更小。"
+  },
+  {
+   "param": "RHBatchImages",
+   "how_to_tune": "widgets 为 ['0-100']，可能是批处理图片数量范围或选择索引区间，用于指定处理多少张。"
+  },
+  {
+   "param": "CompressImages",
+   "how_to_tune": "widgets 为 ['DM批量抠图后的素材','PNG','']，可修改输出 zip 名称（如 'DM批量抠图后的素材'）和格式；当前为 PNG。"
+  }
+ ],
+ "summary_text": "能力:上传 ZIP 压缩包，自动解压内部图片，批量执行 BiRefNet 抠图（移除背景），并将结果 PNG 打包为 ZIP 下载；能力:也支持单张图片模式：通过 LoadImage 载入单图，抠图后保存 PNG 或预览；能力:批量处理过程中自动清理显存与缓存，降低长时间运行的资源占用；特色:以 ZIP 压缩包作为输入输出载体，绕过逐张上传下载，适合批量交付；特色:存在 mode4 标记的并行 LoadImage / RembgByBiRefNet / SaveImage，可能支持单图输入或不同的执行分支；特色:批量流程中插入显存清理和缓存清除节点，属于长任务稳定性设计；特色:循环结构与 batch 机制共用 (easy forLoopStart + ImageListToBatch_)，实现解压图片逐批处理；电商商品图批量去背景、设计素材整理、人像证件照批量抠图等需要成批获得透明底 PNG 的场景。；该工作流的核心目标是解决批量抠图的交付效率：用户一次性提交 zip，服务器端解压、逐张抠图、再压缩回 zip，同时通过显存清理保证长时间批量稳定。可能采用双模式（单张预览与 zip 批处理）兼顾调试和生产。"
+}

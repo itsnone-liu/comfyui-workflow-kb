@@ -1,0 +1,1572 @@
+{
+ "node_count": 41,
+ "link_count": 52,
+ "active_node_count": 38,
+ "nodes": [
+  {
+   "id": 128,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    374,
+    238
+   ],
+   "out_links": [
+    233
+   ]
+  },
+  {
+   "id": 127,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    232,
+    233,
+    234,
+    235,
+    236
+   ],
+   "out_links": [
+    256,
+    257
+   ]
+  },
+  {
+   "id": 134,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    250
+   ],
+   "out_links": [
+    247
+   ]
+  },
+  {
+   "id": 133,
+   "type": "MiniMaxH3ImageToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    73
+   ],
+   "in_links": [
+    241,
+    242,
+    323,
+    333,
+    298,
+    325,
+    326,
+    247
+   ],
+   "out_links": [
+    238,
+    236
+   ]
+  },
+  {
+   "id": 161,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "bicubic",
+    "crop",
+    "0, 0, 0",
+    "center",
+    32,
+    "cpu"
+   ],
+   "in_links": [
+    322,
+    320,
+    321
+   ],
+   "out_links": [
+    323,
+    325,
+    326
+   ]
+  },
+  {
+   "id": 136,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "以上传图片为首尾帧，制作15秒高质量视频：普通女性闭眼，缓缓睁开双眼，眼中爆发银白色光芒。黑银色能量从身体内部释放，金属碎片高速环绕飞舞，液态暗银装甲从肩部、胸甲、手臂、腿部依次凝聚覆盖全身。机械纹路亮起，瞬间变身为暗银色全身盔甲女性战神。\n\n她右手向侧面伸出，空间扭曲，地面裂开，燃烧火焰中的黑银长刀破土飞射而出，被她精准握住。火星四散，刀身燃烧符文流动。镜头高速环绕，从侧面掠过刀锋，最后正面特写战神双眼与极致细节刀身，电影级慢动作，震撼变身，超高细节，史诗感，暗黑科幻奇幻风格。"
+   ],
+   "in_links": [],
+   "out_links": [
+    298
+   ]
+  },
+  {
+   "id": 124,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    256,
+    230
+   ],
+   "out_links": [
+    351
+   ]
+  },
+  {
+   "id": 123,
+   "type": "VAEDecodeAudio",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    257,
+    229
+   ],
+   "out_links": [
+    342
+   ]
+  },
+  {
+   "id": 170,
+   "type": "CreateVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8
+   ],
+   "in_links": [
+    351,
+    342
+   ],
+   "out_links": [
+    358
+   ]
+  },
+  {
+   "id": 135,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "时长/秒",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10
+   ],
+   "in_links": [],
+   "out_links": [
+    250
+   ]
+  },
+  {
+   "id": 142,
+   "type": "Float",
+   "category": "utility",
+   "title": "像素/百万",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.6000000000000001
+   ],
+   "in_links": [],
+   "out_links": [
+    318
+   ]
+  },
+  {
+   "id": 172,
+   "type": "ZML_SwitchOutput",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [
+    358,
+    361
+   ],
+   "out_links": [
+    347,
+    368,
+    359
+   ]
+  },
+  {
+   "id": 175,
+   "type": "PrimitiveBoolean",
+   "category": "utility",
+   "title": "Boolean加密开关",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    361
+   ]
+  },
+  {
+   "id": 185,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    371
+   ],
+   "out_links": [
+    372
+   ]
+  },
+  {
+   "id": 155,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "bicubic",
+    "crop",
+    "0, 0, 0",
+    "center",
+    32,
+    "cpu"
+   ],
+   "in_links": [
+    312,
+    305,
+    306
+   ],
+   "out_links": [
+    332
+   ]
+  },
+  {
+   "id": 129,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    282,
+    369
+   ]
+  },
+  {
+   "id": 181,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+    1
+   ],
+   "in_links": [
+    369
+   ],
+   "out_links": []
+  },
+  {
+   "id": 144,
+   "type": "PathchSageAttentionKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    false
+   ],
+   "in_links": [
+    282
+   ],
+   "out_links": []
+  },
+  {
+   "id": 184,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_fl2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    371
+   ]
+  },
+  {
+   "id": 165,
+   "type": "AnyBooleanSwitch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    332,
+    337
+   ],
+   "out_links": [
+    333
+   ]
+  },
+  {
+   "id": 130,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    241
+   ]
+  },
+  {
+   "id": 121,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    230,
+    242
+   ]
+  },
+  {
+   "id": 122,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    229
+   ]
+  },
+  {
+   "id": 137,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c41aa1e3c0f9a2276ac1cd588f891fcb4dd066f8ccee03478e77d1dfadca240d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    299,
+    322
+   ]
+  },
+  {
+   "id": 152,
+   "type": "ImageScaleToTotalPixels",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bicubic",
+    0.4000000000000001,
+    24
+   ],
+   "in_links": [
+    299,
+    318
+   ],
+   "out_links": [
+    302
+   ]
+  },
+  {
+   "id": 154,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    302
+   ],
+   "out_links": [
+    305,
+    320,
+    306,
+    321
+   ]
+  },
+  {
+   "id": 186,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_turbo_4step-convertedByAIEverything.safetensors",
+    1
+   ],
+   "in_links": [
+    372
+   ],
+   "out_links": [
+    374,
+    375
+   ]
+  },
+  {
+   "id": 125,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    234
+   ]
+  },
+  {
+   "id": 126,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    8,
+    1
+   ],
+   "in_links": [
+    375
+   ],
+   "out_links": [
+    235
+   ]
+  },
+  {
+   "id": 131,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    483946184717480,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    232
+   ]
+  },
+  {
+   "id": 178,
+   "type": "GetVideoComponents",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    368
+   ],
+   "out_links": [
+    365,
+    366
+   ]
+  },
+  {
+   "id": 180,
+   "type": "CompressImages",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ComfyUI",
+    "PNG",
+    ""
+   ],
+   "in_links": [
+    367
+   ],
+   "out_links": []
+  },
+  {
+   "id": 179,
+   "type": "SaveMP4",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "MP4Video",
+    24,
+    23
+   ],
+   "in_links": [
+    365,
+    366
+   ],
+   "out_links": [
+    367
+   ]
+  },
+  {
+   "id": 173,
+   "type": "SaveMP4",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "MP4Video",
+    24,
+    23
+   ],
+   "in_links": [
+    356,
+    357
+   ],
+   "out_links": [
+    352
+   ]
+  },
+  {
+   "id": 174,
+   "type": "GetVideoComponents",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    359
+   ],
+   "out_links": [
+    356,
+    376,
+    357,
+    377
+   ]
+  },
+  {
+   "id": 139,
+   "type": "CompressImages",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ComfyUI",
+    "PNG",
+    ""
+   ],
+   "in_links": [
+    352
+   ],
+   "out_links": []
+  },
+  {
+   "id": 188,
+   "type": "DuckHideNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "",
+    24,
+    2,
+    true,
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "in_links": [
+    376,
+    377
+   ],
+   "out_links": [
+    378
+   ]
+  },
+  {
+   "id": 189,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    378
+   ],
+   "out_links": []
+  },
+  {
+   "id": 171,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/MiniMax_H3",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    347
+   ],
+   "out_links": []
+  },
+  {
+   "id": 143,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c41aa1e3c0f9a2276ac1cd588f891fcb4dd066f8ccee03478e77d1dfadca240d.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    312
+   ]
+  },
+  {
+   "id": 159,
+   "type": "PrimitiveBoolean",
+   "category": "utility",
+   "title": "尾帧开关",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    337
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 121,
+   "to_node": 124,
+   "type": "VAE"
+  },
+  {
+   "from_node": 121,
+   "to_node": 133,
+   "type": "VAE"
+  },
+  {
+   "from_node": 122,
+   "to_node": 123,
+   "type": "VAE"
+  },
+  {
+   "from_node": 123,
+   "to_node": 170,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 124,
+   "to_node": 170,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 125,
+   "to_node": 127,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 126,
+   "to_node": 127,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 127,
+   "to_node": 123,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 127,
+   "to_node": 124,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 128,
+   "to_node": 127,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 129,
+   "to_node": 144,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 129,
+   "to_node": 181,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 130,
+   "to_node": 133,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 131,
+   "to_node": 127,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 133,
+   "to_node": 127,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 133,
+   "to_node": 128,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 134,
+   "to_node": 133,
+   "type": "INT"
+  },
+  {
+   "from_node": 135,
+   "to_node": 134,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 136,
+   "to_node": 133,
+   "type": "STRING"
+  },
+  {
+   "from_node": 137,
+   "to_node": 152,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 137,
+   "to_node": 161,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 142,
+   "to_node": 152,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 143,
+   "to_node": 155,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 154,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 154,
+   "to_node": 155,
+   "type": "INT"
+  },
+  {
+   "from_node": 154,
+   "to_node": 155,
+   "type": "INT"
+  },
+  {
+   "from_node": 154,
+   "to_node": 161,
+   "type": "INT"
+  },
+  {
+   "from_node": 154,
+   "to_node": 161,
+   "type": "INT"
+  },
+  {
+   "from_node": 155,
+   "to_node": 165,
+   "type": "*"
+  },
+  {
+   "from_node": 159,
+   "to_node": 165,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 161,
+   "to_node": 133,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 161,
+   "to_node": 133,
+   "type": "INT"
+  },
+  {
+   "from_node": 161,
+   "to_node": 133,
+   "type": "INT"
+  },
+  {
+   "from_node": 165,
+   "to_node": 133,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 170,
+   "to_node": 172,
+   "type": "*"
+  },
+  {
+   "from_node": 172,
+   "to_node": 171,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 172,
+   "to_node": 174,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 172,
+   "to_node": 178,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 173,
+   "to_node": 139,
+   "type": "*"
+  },
+  {
+   "from_node": 174,
+   "to_node": 173,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 174,
+   "to_node": 173,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 174,
+   "to_node": 188,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 174,
+   "to_node": 188,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 175,
+   "to_node": 172,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 178,
+   "to_node": 179,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 178,
+   "to_node": 179,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 179,
+   "to_node": 180,
+   "type": "*"
+  },
+  {
+   "from_node": 184,
+   "to_node": 185,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 185,
+   "to_node": 186,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 186,
+   "to_node": 126,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 186,
+   "to_node": 128,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 188,
+   "to_node": 189,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "sampler": 4,
+  "utility": 23,
+  "vae": 4,
+  "checkpoint_loader": 2,
+  "lora": 2,
+  "clip": 1,
+  "image_io": 3,
+  "preprocessor": 1,
+  "video_io": 1
+ },
+ "assets": [
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 181,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors"
+  },
+  {
+   "node_id": 184,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 121,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 122,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 186,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_turbo_4step-convertedByAIEverything.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 78,
+ "structure_hash": "47e03e933d0c224d",
+ "param_face": [
+  {
+   "node_id": 134,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 133,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 133,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 133,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 133,
+   "node_type": "MiniMaxH3ImageToVideo",
+   "widget_index": 3,
+   "value_preview": "73"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 161,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 170,
+   "node_type": "CreateVideo",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 170,
+   "node_type": "CreateVideo",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 135,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 142,
+   "node_type": "Float",
+   "widget_index": 0,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 172,
+   "node_type": "ZML_SwitchOutput",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 175,
+   "node_type": "PrimitiveBoolean",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "crop"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 155,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 7,
+   "value_preview": "cpu"
+  },
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 129,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 181,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors"
+  },
+  {
+   "node_id": 181,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 144,
+   "node_type": "PathchSageAttentionKJ",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 184,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 184,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 165,
+   "node_type": "AnyBooleanSwitch",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 130,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 121,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 122,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c41aa1e3c0f9a2276ac1cd588f891fcb4dd066f8ccee03478e77d1dfadca"
+  },
+  {
+   "node_id": 137,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 152,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 0,
+   "value_preview": "bicubic"
+  },
+  {
+   "node_id": 152,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 1,
+   "value_preview": "0.4000000000000001"
+  },
+  {
+   "node_id": 152,
+   "node_type": "ImageScaleToTotalPixels",
+   "widget_index": 2,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 186,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_turbo_4step-convertedByAIEverything.safetensors"
+  },
+  {
+   "node_id": 186,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 125,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 126,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 131,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "483946184717480"
+  },
+  {
+   "node_id": 131,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 180,
+   "node_type": "CompressImages",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 180,
+   "node_type": "CompressImages",
+   "widget_index": 1,
+   "value_preview": "PNG"
+  },
+  {
+   "node_id": 180,
+   "node_type": "CompressImages",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 179,
+   "node_type": "SaveMP4",
+   "widget_index": 0,
+   "value_preview": "MP4Video"
+  },
+  {
+   "node_id": 179,
+   "node_type": "SaveMP4",
+   "widget_index": 1,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 179,
+   "node_type": "SaveMP4",
+   "widget_index": 2,
+   "value_preview": "23"
+  },
+  {
+   "node_id": 173,
+   "node_type": "SaveMP4",
+   "widget_index": 0,
+   "value_preview": "MP4Video"
+  },
+  {
+   "node_id": 173,
+   "node_type": "SaveMP4",
+   "widget_index": 1,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 173,
+   "node_type": "SaveMP4",
+   "widget_index": 2,
+   "value_preview": "23"
+  },
+  {
+   "node_id": 139,
+   "node_type": "CompressImages",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 139,
+   "node_type": "CompressImages",
+   "widget_index": 1,
+   "value_preview": "PNG"
+  },
+  {
+   "node_id": 139,
+   "node_type": "CompressImages",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 188,
+   "node_type": "DuckHideNode",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 188,
+   "node_type": "DuckHideNode",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 188,
+   "node_type": "DuckHideNode",
+   "widget_index": 2,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 188,
+   "node_type": "DuckHideNode",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 188,
+   "node_type": "DuckHideNode",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 189,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 171,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/MiniMax_H3"
+  },
+  {
+   "node_id": 171,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 171,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 143,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c41aa1e3c0f9a2276ac1cd588f891fcb4dd066f8ccee03478e77d1dfadca"
+  },
+  {
+   "node_id": 143,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 159,
+   "node_type": "PrimitiveBoolean",
+   "widget_index": 0,
+   "value_preview": "False"
+  }
+ ]
+}

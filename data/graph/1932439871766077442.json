@@ -1,0 +1,5232 @@
+{
+ "node_count": 96,
+ "link_count": 99,
+ "active_node_count": 24,
+ "nodes": [
+  {
+   "id": 819,
+   "type": "GIMMVFI_interpolate",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    4,
+    700046316281003,
+    "randomize"
+   ],
+   "in_links": [
+    1062,
+    1063
+   ],
+   "out_links": [
+    1066
+   ]
+  },
+  {
+   "id": 825,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "基础算法_F.1",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    1059,
+    1069
+   ]
+  },
+  {
+   "id": 821,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "wanvideo",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "wanvideo_00007_qaggp_1749471128.mp4",
+      "workflow": "wanvideo_00007.png",
+      "fullpath": "/data/ComfyUI/personal/ba8ed947dcb211ac36c51fba860f2eda/output/wanvideo_00007.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    1066
+   ],
+   "out_links": []
+  },
+  {
+   "id": 818,
+   "type": "DownloadAndLoadGIMMVFIModel",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gimmvfi_r_arb_lpips_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1062
+   ]
+  },
+  {
+   "id": 822,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 16,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "force_rate": 16,
+      "filename": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63da56a.mp4",
+      "select_every_nth": 1,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "name": "抖音2024731-708303.mp4",
+      "skip_first_frames": 0,
+      "type": "input",
+      "value": "video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4",
+      "url": "https://liblibai-tmp-image.liblib.cloud/video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63da56a.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    1063
+   ]
+  },
+  {
+   "id": 834,
+   "type": "UltimateSDUpscaleCustomSample",
+   "category": "upscale",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.2,
+    962963007046814,
+    "randomize",
+    20,
+    1,
+    "dpmpp_2m",
+    "beta",
+    0.1,
+    "Linear",
+    1024,
+    1024,
+    32,
+    64,
+    "None",
+    1,
+    64,
+    8,
+    16,
+    true,
+    true
+   ],
+   "in_links": [
+    1083,
+    1084,
+    1085,
+    1086,
+    1087,
+    1088,
+    1089,
+    1090
+   ],
+   "out_links": [
+    1091,
+    1094,
+    1097,
+    1159
+   ]
+  },
+  {
+   "id": 686,
+   "type": "WanVideoTeaCache",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.13000000000000003,
+    1,
+    -1,
+    "offload_device",
+    true,
+    "e"
+   ],
+   "in_links": [],
+   "out_links": [
+    868
+   ]
+  },
+  {
+   "id": 689,
+   "type": "WanVideoEnhanceAVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    0,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    867
+   ]
+  },
+  {
+   "id": 688,
+   "type": "WanVideoBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    20,
+    false,
+    false,
+    true,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    852
+   ]
+  },
+  {
+   "id": 684,
+   "type": "WanVideoDecode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    272,
+    272,
+    144,
+    128
+   ],
+   "in_links": [
+    849,
+    850
+   ],
+   "out_links": [
+    851,
+    869,
+    871
+   ]
+  },
+  {
+   "id": 685,
+   "type": "LayerUtility: PurgeVRAM",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true
+   ],
+   "in_links": [
+    851
+   ],
+   "out_links": []
+  },
+  {
+   "id": 829,
+   "type": "LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "增加细节SYK_Mild detail adjuster_V1.0_4（MINI）",
+    1,
+    1
+   ],
+   "in_links": [
+    1069,
+    1070
+   ],
+   "out_links": [
+    1098,
+    1099,
+    1068
+   ]
+  },
+  {
+   "id": 830,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1071
+   ],
+   "out_links": [
+    1075,
+    1086
+   ]
+  },
+  {
+   "id": 814,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "4x-UltraSharp.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    1077,
+    1088
+   ]
+  },
+  {
+   "id": 813,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    1076,
+    1087
+   ]
+  },
+  {
+   "id": 812,
+   "type": "LyingSigmaSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    -0.05,
+    1,
+    0.5
+   ],
+   "in_links": [
+    1060
+   ],
+   "out_links": [
+    1078,
+    1089
+   ]
+  },
+  {
+   "id": 815,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "dpmpp_2m"
+   ],
+   "in_links": [],
+   "out_links": [
+    1060
+   ]
+  },
+  {
+   "id": 841,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    20,
+    0.25000000000000006
+   ],
+   "in_links": [
+    1098
+   ],
+   "out_links": [
+    1090
+   ]
+  },
+  {
+   "id": 842,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "beta",
+    20,
+    0.30000000000000004
+   ],
+   "in_links": [
+    1099
+   ],
+   "out_links": [
+    1079
+   ]
+  },
+  {
+   "id": 836,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1093
+   ],
+   "out_links": []
+  },
+  {
+   "id": 835,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A1",
+      "selected": true,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00021_.png&type=temp&subfolder=&rand=0.47592072391682017"
+     },
+     {
+      "name": "A2",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00022_.png&type=temp&subfolder=&rand=0.8764683799624247"
+     },
+     {
+      "name": "A3",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00023_.png&type=temp&subfolder=&rand=0.7259754093465831"
+     },
+     {
+      "name": "A4",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00024_.png&type=temp&subfolder=&rand=0.1086663316966634"
+     },
+     {
+      "name": "A5",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00025_.png&type=temp&subfolder=&rand=0.36418199501962234"
+     },
+     {
+      "name": "A6",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00026_.png&type=temp&subfolder=&rand=0.5547874909464634"
+     },
+     {
+      "name": "A7",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00027_.png&type=temp&subfolder=&rand=0.38454815060751946"
+     },
+     {
+      "name": "A8",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00028_.png&type=temp&subfolder=&rand=0.8796117367919065"
+     },
+     {
+      "name": "A9",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00029_.png&type=temp&subfolder=&rand=0.9704529620655087"
+     },
+     {
+      "name": "A10",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00030_.png&type=temp&subfolder=&rand=0.6452048702295701"
+     },
+     {
+      "name": "A11",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00031_.png&type=temp&subfolder=&rand=0.7784006120761133"
+     },
+     {
+      "name": "A12",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00032_.png&type=temp&subfolder=&rand=0.3596105866129675"
+     },
+     {
+      "name": "A13",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00033_.png&type=temp&subfolder=&rand=0.24212046279334976"
+     },
+     {
+      "name": "A14",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00034_.png&type=temp&subfolder=&rand=0.8811623455967545"
+     },
+     {
+      "name": "A15",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00035_.png&type=temp&subfolder=&rand=0.8075924007394972"
+     },
+     {
+      "name": "A16",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00036_.png&type=temp&subfolder=&rand=0.24246681539786596"
+     },
+     {
+      "name": "A17",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00037_.png&type=temp&subfolder=&rand=0.5669310547204034"
+     },
+     {
+      "name": "A18",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00038_.png&type=temp&subfolder=&rand=0.9403642860921471"
+     },
+     {
+      "name": "A19",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00039_.png&type=temp&subfolder=&rand=0.4110230247627882"
+     },
+     {
+      "name": "A20",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00040_.png&type=temp&subfolder=&rand=0.4720761811391385"
+     },
+     {
+      "name": "A21",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00041_.png&type=temp&subfolder=&rand=0.9002131754657814"
+     },
+     {
+      "name": "A22",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00042_.png&type=temp&subfolder=&rand=0.5297151921377554"
+     },
+     {
+      "name": "B1",
+      "selected": true,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00043_.png&type=temp&subfolder=&rand=0.22996203377589586"
+     },
+     {
+      "name": "B2",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00044_.png&type=temp&subfolder=&rand=0.542654301823136"
+     },
+     {
+      "name": "B3",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00045_.png&type=temp&subfolder=&rand=0.8169244979872028"
+     },
+     {
+      "name": "B4",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00046_.png&type=temp&subfolder=&rand=0.2173083333386474"
+     },
+     {
+      "name": "B5",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00047_.png&type=temp&subfolder=&rand=0.13135335181208663"
+     },
+     {
+      "name": "B6",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00048_.png&type=temp&subfolder=&rand=0.7412362898475708"
+     },
+     {
+      "name": "B7",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00049_.png&type=temp&subfolder=&rand=0.31163571199956674"
+     },
+     {
+      "name": "B8",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00050_.png&type=temp&subfolder=&rand=0.5125619700152768"
+     },
+     {
+      "name": "B9",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00051_.png&type=temp&subfolder=&rand=0.8989979228149798"
+     },
+     {
+      "name": "B10",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00052_.png&type=temp&subfolder=&rand=0.07195001443434212"
+     },
+     {
+      "name": "B11",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00053_.png&type=temp&subfolder=&rand=0.4040529221521447"
+     },
+     {
+      "name": "B12",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00054_.png&type=temp&subfolder=&rand=0.8683085047270966"
+     },
+     {
+      "name": "B13",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00055_.png&type=temp&subfolder=&rand=0.00005325359658781004"
+     },
+     {
+      "name": "B14",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00056_.png&type=temp&subfolder=&rand=0.3913689528028814"
+     },
+     {
+      "name": "B15",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00057_.png&type=temp&subfolder=&rand=0.3412574769157031"
+     },
+     {
+      "name": "B16",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00058_.png&type=temp&subfolder=&rand=0.2472616490576105"
+     },
+     {
+      "name": "B17",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00059_.png&type=temp&subfolder=&rand=0.7252738260350771"
+     },
+     {
+      "name": "B18",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00060_.png&type=temp&subfolder=&rand=0.16357310825094173"
+     },
+     {
+      "name": "B19",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00061_.png&type=temp&subfolder=&rand=0.7446458557773394"
+     },
+     {
+      "name": "B20",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00062_.png&type=temp&subfolder=&rand=0.9173260320300927"
+     },
+     {
+      "name": "B21",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00063_.png&type=temp&subfolder=&rand=0.6907603613244462"
+     },
+     {
+      "name": "B22",
+      "selected": false,
+      "url": "/api/view?filename=rgthree.compare._temp_iydls_00064_.png&type=temp&subfolder=&rand=0.6575386460537371"
+     }
+    ]
+   ],
+   "in_links": [
+    1091,
+    1092
+   ],
+   "out_links": []
+  },
+  {
+   "id": 837,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1094
+   ],
+   "out_links": []
+  },
+  {
+   "id": 820,
+   "type": "GIMMVFI_interpolate",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    7,
+    196886322011567,
+    "randomize"
+   ],
+   "in_links": [
+    1064,
+    1065
+   ],
+   "out_links": [
+    1061
+   ]
+  },
+  {
+   "id": 817,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "wanvideo",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "wanvideo_00007_qaggp_1749471128.mp4",
+      "workflow": "wanvideo_00007.png",
+      "fullpath": "/data/ComfyUI/personal/ba8ed947dcb211ac36c51fba860f2eda/output/wanvideo_00007.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 28,
+    "pingpong": false
+   },
+   "in_links": [
+    1061
+   ],
+   "out_links": []
+  },
+  {
+   "id": 816,
+   "type": "DownloadAndLoadGIMMVFIModel",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "gimmvfi_r_arb_lpips_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1064
+   ]
+  },
+  {
+   "id": 845,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 840,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 2056 , Height: 2056"
+   ],
+   "in_links": [
+    1097
+   ],
+   "out_links": []
+  },
+  {
+   "id": 828,
+   "type": "CLIPTextEncodeFlux",
+   "category": "conditioning",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Rich in details, high quality, super clear",
+    "Rich in details, high quality, super clear",
+    3
+   ],
+   "in_links": [
+    1068
+   ],
+   "out_links": [
+    1071,
+    1074,
+    1085
+   ]
+  },
+  {
+   "id": 700,
+   "type": "WanVideoSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    20,
+    6,
+    5,
+    277025630082821,
+    "randomize",
+    true,
+    "unipc",
+    0,
+    1,
+    false,
+    "comfy"
+   ],
+   "in_links": [
+    864,
+    865,
+    866,
+    867,
+    868
+   ],
+   "out_links": [
+    850
+   ]
+  },
+  {
+   "id": 687,
+   "type": "WanVideoVAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1_VAE_bf16.safetensors",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    849,
+    859
+   ]
+  },
+  {
+   "id": 696,
+   "type": "LoadWanVideoT5TextEncoder",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5-xxl-enc-fp8_e4m3fn.safetensors",
+    "bf16",
+    "offload_device",
+    "disabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    863
+   ]
+  },
+  {
+   "id": 824,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "clip_l.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    1070
+   ]
+  },
+  {
+   "id": 690,
+   "type": "WanVideoModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors",
+    "fp16",
+    "fp8_e4m3fn",
+    "offload_device",
+    "sdpa"
+   ],
+   "in_links": [
+    852,
+    853
+   ],
+   "out_links": [
+    864
+   ]
+  },
+  {
+   "id": 811,
+   "type": "ModelSamplingFlux",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.15,
+    0.5,
+    1024,
+    1024
+   ],
+   "in_links": [
+    1059
+   ],
+   "out_links": [
+    1073,
+    1084
+   ]
+  },
+  {
+   "id": 827,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    1067
+   ],
+   "out_links": []
+  },
+  {
+   "id": 833,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/api/view?filename=rgthree.compare._temp_qkuuf_00005_.png&type=temp&subfolder=&rand=0.9704295030753238"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/api/view?filename=rgthree.compare._temp_qkuuf_00006_.png&type=temp&subfolder=&rand=0.7419710481544974"
+     }
+    ]
+   ],
+   "in_links": [
+    1081,
+    1082
+   ],
+   "out_links": []
+  },
+  {
+   "id": 839,
+   "type": "easy imageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Width: 2056 , Height: 2056"
+   ],
+   "in_links": [
+    1096
+   ],
+   "out_links": []
+  },
+  {
+   "id": 823,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 16,
+    "custom_width": 0,
+    "select_every_nth": 4,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "force_rate": 16,
+      "filename": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63da56a.mp4",
+      "select_every_nth": 4,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "name": "抖音2024731-708303.mp4",
+      "skip_first_frames": 2,
+      "type": "input",
+      "value": "video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4",
+      "url": "https://liblibai-tmp-image.liblib.cloud/video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63da56a.mp4",
+    "skip_first_frames": 2,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    1065
+   ]
+  },
+  {
+   "id": 846,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 870,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1152
+   ],
+   "out_links": [
+    1153
+   ]
+  },
+  {
+   "id": 872,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    1155
+   ]
+  },
+  {
+   "id": 874,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1156
+   ],
+   "out_links": [
+    1154
+   ]
+  },
+  {
+   "id": 699,
+   "type": "WanVideoTextEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "In the video, the boy on the left opens his hands, then reaches out with one hand using his index finger and ring finger to lift the girl's chin bone on the right. The girl then tilts her head upward and backward at a 30-degree angle.",
+    "bad quality video,色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+    true
+   ],
+   "in_links": [
+    863
+   ],
+   "out_links": [
+    865
+   ]
+  },
+  {
+   "id": 698,
+   "type": "ImageResizeKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    600,
+    480,
+    "nearest-exact",
+    false,
+    2,
+    "disabled"
+   ],
+   "in_links": [
+    862
+   ],
+   "out_links": [
+    858,
+    860,
+    861
+   ]
+  },
+  {
+   "id": 860,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    " 上传一张双人图片就可以让他们调起来\n\n1.  全网首发，       调戏抬下巴骨220wan2.1万相图生视视\n      \n2.     56帧  尺寸宽高1.58：1 建议尺寸600x480，左右，尺寸小权重小\n， \n       这个尺寸对应0.75权重左右\n\n3.  权重：     0.75    动作差一点，可以上下0.05权重，\n\n4.  提示词\n\nIn the video, the boy on the left opens his hands, then reaches out with one hand using his index finger and ring finger to lift the girl's chin bone on the right. The girl then tilts her head upward and backward at a 30-degree angle."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 697,
+   "type": "WanVideoImageClipEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    768,
+    57,
+    true,
+    0.030000000000000006,
+    1,
+    1,
+    true
+   ],
+   "in_links": [
+    857,
+    858,
+    859,
+    860,
+    861
+   ],
+   "out_links": [
+    866
+   ]
+  },
+  {
+   "id": 702,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "04c40b812b73861e25f711fa7a8133f98f2d730d011fcd95192ad0b6632901c3.gif",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    862
+   ]
+  },
+  {
+   "id": 703,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "xiao",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "coverUrl": "https://liblibai-tmp-image.liblib.cloud/sd-images/8e031f7c008f79a58345377ff73d596534227eb617697114f0b58829fc26d102.jpg?Token=9a036523e3aa449a9f18b58fa12348ff",
+      "filename": "xiao_00007_cqplm_1749564948.mp4",
+      "workflow": "xiao_00007.png",
+      "fullpath": "/data/ComfyUI/personal/60aa66f6dfb0fa5220aa08737c333fe9/output/xiao_00007.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16,
+      "url": "https://liblibai-tmp-image.liblib.cloud/sd-images/88d056fe1b74a54614b7f65c29a2fe38be9581d0033f525f5b159fbf8b63111b.mp4?Token=9a036523e3aa449a9f18b58fa12348ff"
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    869
+   ],
+   "out_links": []
+  },
+  {
+   "id": 876,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "xiao",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "coverUrl": "https://liblibai-tmp-image.liblib.cloud/sd-images/8e031f7c008f79a58345377ff73d596534227eb617697114f0b58829fc26d102.jpg?Token=9a036523e3aa449a9f18b58fa12348ff",
+      "filename": "output.mp4",
+      "workflow": "xiao_00015.png",
+      "fullpath": "/data/ComfyUI/personal/ba8ed947dcb211ac36c51fba860f2eda/output/xiao_00015.mp4",
+      "format": "video/mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16,
+      "url": "https://liblibai-tmp-image.liblib.cloud/sd-images/88d056fe1b74a54614b7f65c29a2fe38be9581d0033f525f5b159fbf8b63111b.mp4?Token=9a036523e3aa449a9f18b58fa12348ff"
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    1158
+   ],
+   "out_links": []
+  },
+  {
+   "id": 877,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "xiao",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "coverUrl": "https://liblibai-tmp-image.liblib.cloud/sd-images/8e031f7c008f79a58345377ff73d596534227eb617697114f0b58829fc26d102.jpg?Token=9a036523e3aa449a9f18b58fa12348ff",
+      "filename": "output.mp4",
+      "workflow": "xiao_00015.png",
+      "fullpath": "/data/ComfyUI/personal/ba8ed947dcb211ac36c51fba860f2eda/output/xiao_00015.mp4",
+      "format": "video/mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16,
+      "url": "https://liblibai-tmp-image.liblib.cloud/sd-images/88d056fe1b74a54614b7f65c29a2fe38be9581d0033f525f5b159fbf8b63111b.mp4?Token=9a036523e3aa449a9f18b58fa12348ff"
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    1159
+   ],
+   "out_links": []
+  },
+  {
+   "id": 705,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "xiao",
+    "loop_count": 0,
+    "dither": "sierra2_4a",
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "coverUrl": "https://liblibai-tmp-image.liblib.cloud/sd-images/8c3d7d0813cb28cf14b8123bf8668ea05e4f1e07f424c1c84cfd6381c6c89706.jpg?Token=9a036523e3aa449a9f18b58fa12348ff",
+      "filename": "xiao_00008_pvsvh_1749564963.gif",
+      "workflow": "xiao_00008.png",
+      "fullpath": "/data/ComfyUI/personal/60aa66f6dfb0fa5220aa08737c333fe9/output/xiao_00008.gif",
+      "format": "video/ffmpeg-gif",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16,
+      "url": "https://liblibai-tmp-image.liblib.cloud/sd-images/62c2b4b65a94979148218b192978b784fd9d9b2d56e93b2dd2ddcfcd2dee0708.gif?Token=9a036523e3aa449a9f18b58fa12348ff"
+     }
+    },
+    "format": "video/ffmpeg-gif",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    871
+   ],
+   "out_links": []
+  },
+  {
+   "id": 826,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 16,
+    "custom_width": 0,
+    "select_every_nth": 4,
+    "frame_load_cap": 0,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "force_rate": 16,
+      "filename": "MimicMotion_00043.mp4",
+      "select_every_nth": 4,
+      "frame_load_cap": 0,
+      "format": "video/mp4",
+      "name": "抖音2024731-708303.mp4",
+      "skip_first_frames": 0,
+      "type": "input",
+      "value": "video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4",
+      "url": "https://liblibai-tmp-image.liblib.cloud/video/24f60b1ebb24492da7ba9d8bfd128f3e/177803debda050afba39ab16674f8fe15e2d526973aeacbbf47eea62eb87e8a0.mp4"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "MimicMotion_00043.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    1067,
+    1072,
+    1082
+   ]
+  },
+  {
+   "id": 831,
+   "type": "UltimateSDUpscaleCustomSample",
+   "category": "upscale",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1.8,
+    811682336455432,
+    "randomize",
+    20,
+    1,
+    "dpmpp_2m",
+    "beta",
+    0.1,
+    "Linear",
+    1024,
+    1024,
+    32,
+    64,
+    "None",
+    1,
+    64,
+    8,
+    16,
+    true,
+    true
+   ],
+   "in_links": [
+    1072,
+    1073,
+    1074,
+    1075,
+    1076,
+    1077,
+    1078,
+    1079
+   ],
+   "out_links": [
+    1081,
+    1083,
+    1092,
+    1093,
+    1096,
+    1158
+   ]
+  },
+  {
+   "id": 843,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 844,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 879,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "街舞单手倒立200.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1170
+   ],
+   "out_links": [
+    1160
+   ]
+  },
+  {
+   "id": 880,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "街舞单手倒立228.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1160
+   ],
+   "out_links": [
+    1161
+   ]
+  },
+  {
+   "id": 882,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "倒立直转236.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1171
+   ],
+   "out_links": [
+    1162
+   ]
+  },
+  {
+   "id": 883,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "倒立直转204.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1162
+   ],
+   "out_links": [
+    1163
+   ]
+  },
+  {
+   "id": 885,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "托马斯改252.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1172
+   ],
+   "out_links": [
+    1164
+   ]
+  },
+  {
+   "id": 886,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人对战160.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1164
+   ],
+   "out_links": [
+    1165
+   ]
+  },
+  {
+   "id": 887,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人对打180.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1165
+   ],
+   "out_links": [
+    1169
+   ]
+  },
+  {
+   "id": 888,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "8527编号00320.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1166
+   ],
+   "out_links": [
+    1170
+   ]
+  },
+  {
+   "id": 881,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "大风车176.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1161
+   ],
+   "out_links": [
+    1171
+   ]
+  },
+  {
+   "id": 884,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "托马斯改256.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1163
+   ],
+   "out_links": [
+    1172
+   ]
+  },
+  {
+   "id": 891,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9527ko00632.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1168
+   ],
+   "out_links": [
+    1166
+   ]
+  },
+  {
+   "id": 871,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1154
+   ],
+   "out_links": [
+    1157
+   ]
+  },
+  {
+   "id": 869,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1157
+   ],
+   "out_links": [
+    1152
+   ]
+  },
+  {
+   "id": 873,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1155
+   ],
+   "out_links": [
+    1156
+   ]
+  },
+  {
+   "id": 890,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9527001起火016.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1183
+   ],
+   "out_links": [
+    1168
+   ]
+  },
+  {
+   "id": 704,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "220调戏.safetensors",
+    0.75,
+    false
+   ],
+   "in_links": [
+    1184
+   ],
+   "out_links": [
+    853
+   ]
+  },
+  {
+   "id": 892,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人1对打100.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1169
+   ],
+   "out_links": [
+    1184
+   ]
+  },
+  {
+   "id": 868,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1153
+   ],
+   "out_links": [
+    1183
+   ]
+  },
+  {
+   "id": 701,
+   "type": "LoadWanVideoClipTextEncoder",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "open-clip-xlm-roberta-large-vit-huge-14_fp16.safetensors",
+    "fp16",
+    "offload_device"
+   ],
+   "in_links": [],
+   "out_links": [
+    857
+   ]
+  },
+  {
+   "id": 875,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 893,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1185
+   ],
+   "out_links": [
+    1203
+   ]
+  },
+  {
+   "id": 894,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    1200
+   ]
+  },
+  {
+   "id": 895,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1186
+   ],
+   "out_links": [
+    1198
+   ]
+  },
+  {
+   "id": 896,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "街舞单手倒立200.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1187
+   ],
+   "out_links": [
+    1188
+   ]
+  },
+  {
+   "id": 897,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "街舞单手倒立228.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1188
+   ],
+   "out_links": [
+    1195
+   ]
+  },
+  {
+   "id": 898,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "倒立直转236.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1189
+   ],
+   "out_links": [
+    1190
+   ]
+  },
+  {
+   "id": 899,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "倒立直转204.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1190
+   ],
+   "out_links": [
+    1196
+   ]
+  },
+  {
+   "id": 900,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "托马斯改252.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1191
+   ],
+   "out_links": [
+    1192
+   ]
+  },
+  {
+   "id": 901,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人对战160.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1192
+   ],
+   "out_links": [
+    1193
+   ]
+  },
+  {
+   "id": 902,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人对打180.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1193
+   ],
+   "out_links": [
+    1202
+   ]
+  },
+  {
+   "id": 903,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "8527编号00320.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1194
+   ],
+   "out_links": [
+    1187
+   ]
+  },
+  {
+   "id": 904,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "大风车176.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1195
+   ],
+   "out_links": [
+    1189
+   ]
+  },
+  {
+   "id": 905,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "托马斯改256.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1196
+   ],
+   "out_links": [
+    1191
+   ]
+  },
+  {
+   "id": 906,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9527ko00632.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1197
+   ],
+   "out_links": [
+    1194
+   ]
+  },
+  {
+   "id": 907,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1198
+   ],
+   "out_links": [
+    1199
+   ]
+  },
+  {
+   "id": 908,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1199
+   ],
+   "out_links": [
+    1185
+   ]
+  },
+  {
+   "id": 909,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1200
+   ],
+   "out_links": [
+    1186
+   ]
+  },
+  {
+   "id": 910,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9527001起火016.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1201
+   ],
+   "out_links": [
+    1197
+   ]
+  },
+  {
+   "id": 911,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "双人1对打100.safetensors",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1202
+   ],
+   "out_links": []
+  },
+  {
+   "id": 912,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora",
+    0.010000000000000002,
+    false
+   ],
+   "in_links": [
+    1203
+   ],
+   "out_links": [
+    1201
+   ]
+  },
+  {
+   "id": 724,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 684,
+   "to_node": 685,
+   "type": "*"
+  },
+  {
+   "from_node": 684,
+   "to_node": 703,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 684,
+   "to_node": 705,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 686,
+   "to_node": 700,
+   "type": "TEACACHEARGS"
+  },
+  {
+   "from_node": 687,
+   "to_node": 684,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 687,
+   "to_node": 697,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 688,
+   "to_node": 690,
+   "type": "BLOCKSWAPARGS"
+  },
+  {
+   "from_node": 689,
+   "to_node": 700,
+   "type": "FETAARGS"
+  },
+  {
+   "from_node": 690,
+   "to_node": 700,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 696,
+   "to_node": 699,
+   "type": "WANTEXTENCODER"
+  },
+  {
+   "from_node": 697,
+   "to_node": 700,
+   "type": "WANVIDIMAGE_EMBEDS"
+  },
+  {
+   "from_node": 698,
+   "to_node": 697,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 698,
+   "to_node": 697,
+   "type": "INT"
+  },
+  {
+   "from_node": 698,
+   "to_node": 697,
+   "type": "INT"
+  },
+  {
+   "from_node": 699,
+   "to_node": 700,
+   "type": "WANVIDEOTEXTEMBEDS"
+  },
+  {
+   "from_node": 700,
+   "to_node": 684,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 701,
+   "to_node": 697,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 702,
+   "to_node": 698,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 704,
+   "to_node": 690,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 811,
+   "to_node": 831,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 811,
+   "to_node": 834,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 812,
+   "to_node": 831,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 812,
+   "to_node": 834,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 813,
+   "to_node": 831,
+   "type": "VAE"
+  },
+  {
+   "from_node": 813,
+   "to_node": 834,
+   "type": "VAE"
+  },
+  {
+   "from_node": 814,
+   "to_node": 831,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 814,
+   "to_node": 834,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 815,
+   "to_node": 812,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 816,
+   "to_node": 820,
+   "type": "GIMMVIF_MODEL"
+  },
+  {
+   "from_node": 818,
+   "to_node": 819,
+   "type": "GIMMVIF_MODEL"
+  },
+  {
+   "from_node": 819,
+   "to_node": 821,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 820,
+   "to_node": 817,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 822,
+   "to_node": 819,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 823,
+   "to_node": 820,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 824,
+   "to_node": 829,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 825,
+   "to_node": 811,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 825,
+   "to_node": 829,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 826,
+   "to_node": 827,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 826,
+   "to_node": 831,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 826,
+   "to_node": 833,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 828,
+   "to_node": 830,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 828,
+   "to_node": 831,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 828,
+   "to_node": 834,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 829,
+   "to_node": 828,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 829,
+   "to_node": 841,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 829,
+   "to_node": 842,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 830,
+   "to_node": 831,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 830,
+   "to_node": 834,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 831,
+   "to_node": 833,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 831,
+   "to_node": 834,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 831,
+   "to_node": 835,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 831,
+   "to_node": 836,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 831,
+   "to_node": 839,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 831,
+   "to_node": 876,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 834,
+   "to_node": 835,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 834,
+   "to_node": 837,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 834,
+   "to_node": 840,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 834,
+   "to_node": 877,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 841,
+   "to_node": 834,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 842,
+   "to_node": 831,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 868,
+   "to_node": 890,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 869,
+   "to_node": 870,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 870,
+   "to_node": 868,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 871,
+   "to_node": 869,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 872,
+   "to_node": 873,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 873,
+   "to_node": 874,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 874,
+   "to_node": 871,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 879,
+   "to_node": 880,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 880,
+   "to_node": 881,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 881,
+   "to_node": 882,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 882,
+   "to_node": 883,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 883,
+   "to_node": 884,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 884,
+   "to_node": 885,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 885,
+   "to_node": 886,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 886,
+   "to_node": 887,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 887,
+   "to_node": 892,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 888,
+   "to_node": 879,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 890,
+   "to_node": 891,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 891,
+   "to_node": 888,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 892,
+   "to_node": 704,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 893,
+   "to_node": 912,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 894,
+   "to_node": 909,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 895,
+   "to_node": 907,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 896,
+   "to_node": 897,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 897,
+   "to_node": 904,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 898,
+   "to_node": 899,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 899,
+   "to_node": 905,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 900,
+   "to_node": 901,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 901,
+   "to_node": 902,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 902,
+   "to_node": 911,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 903,
+   "to_node": 896,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 904,
+   "to_node": 898,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 905,
+   "to_node": 900,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 906,
+   "to_node": 903,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 907,
+   "to_node": 908,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 908,
+   "to_node": 893,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 909,
+   "to_node": 895,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 910,
+   "to_node": 906,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 912,
+   "to_node": 910,
+   "type": "WANVIDLORA"
+  }
+ ],
+ "categories": {
+  "utility": 70,
+  "checkpoint_loader": 1,
+  "video_io": 9,
+  "upscale": 3,
+  "lora": 1,
+  "vae": 2,
+  "sampler": 1,
+  "preprocessor": 2,
+  "image_io": 4,
+  "conditioning": 2,
+  "clip": 1
+ },
+ "assets": [
+  {
+   "node_id": 818,
+   "node_type": "DownloadAndLoadGIMMVFIModel",
+   "kind": "checkpoint",
+   "name": "gimmvfi_r_arb_lpips_fp32.safetensors"
+  },
+  {
+   "node_id": 814,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "4x-UltraSharp.pth"
+  },
+  {
+   "node_id": 813,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 816,
+   "node_type": "DownloadAndLoadGIMMVFIModel",
+   "kind": "checkpoint",
+   "name": "gimmvfi_r_arb_lpips_fp32.safetensors"
+  },
+  {
+   "node_id": 687,
+   "node_type": "WanVideoVAELoader",
+   "kind": "vae",
+   "name": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 696,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "kind": "checkpoint",
+   "name": "umt5-xxl-enc-fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "kind": "checkpoint",
+   "name": "Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 879,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "街舞单手倒立200.safetensors"
+  },
+  {
+   "node_id": 880,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "街舞单手倒立228.safetensors"
+  },
+  {
+   "node_id": 882,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "倒立直转236.safetensors"
+  },
+  {
+   "node_id": 883,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "倒立直转204.safetensors"
+  },
+  {
+   "node_id": 885,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "托马斯改252.safetensors"
+  },
+  {
+   "node_id": 886,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人对战160.safetensors"
+  },
+  {
+   "node_id": 887,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人对打180.safetensors"
+  },
+  {
+   "node_id": 888,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "8527编号00320.safetensors"
+  },
+  {
+   "node_id": 881,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "大风车176.safetensors"
+  },
+  {
+   "node_id": 884,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "托马斯改256.safetensors"
+  },
+  {
+   "node_id": 891,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "9527ko00632.safetensors"
+  },
+  {
+   "node_id": 890,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "9527001起火016.safetensors"
+  },
+  {
+   "node_id": 704,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "220调戏.safetensors"
+  },
+  {
+   "node_id": 892,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人1对打100.safetensors"
+  },
+  {
+   "node_id": 701,
+   "node_type": "LoadWanVideoClipTextEncoder",
+   "kind": "clip",
+   "name": "open-clip-xlm-roberta-large-vit-huge-14_fp16.safetensors"
+  },
+  {
+   "node_id": 896,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "街舞单手倒立200.safetensors"
+  },
+  {
+   "node_id": 897,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "街舞单手倒立228.safetensors"
+  },
+  {
+   "node_id": 898,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "倒立直转236.safetensors"
+  },
+  {
+   "node_id": 899,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "倒立直转204.safetensors"
+  },
+  {
+   "node_id": 900,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "托马斯改252.safetensors"
+  },
+  {
+   "node_id": 901,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人对战160.safetensors"
+  },
+  {
+   "node_id": 902,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人对打180.safetensors"
+  },
+  {
+   "node_id": 903,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "8527编号00320.safetensors"
+  },
+  {
+   "node_id": 904,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "大风车176.safetensors"
+  },
+  {
+   "node_id": 905,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "托马斯改256.safetensors"
+  },
+  {
+   "node_id": 906,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "9527ko00632.safetensors"
+  },
+  {
+   "node_id": 910,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "9527001起火016.safetensors"
+  },
+  {
+   "node_id": 911,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "双人1对打100.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 363,
+ "structure_hash": "25180150ac3eb9cd",
+ "param_face": [
+  {
+   "node_id": 819,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 819,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 819,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 2,
+   "value_preview": "700046316281003"
+  },
+  {
+   "node_id": 819,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 3,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 825,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "基础算法_F.1"
+  },
+  {
+   "node_id": 825,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "wanvideo"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'w"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 821,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 818,
+   "node_type": "DownloadAndLoadGIMMVFIModel",
+   "widget_index": 0,
+   "value_preview": "gimmvfi_r_arb_lpips_fp32.safetensors"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'force_rate': "
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63d"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 822,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 0,
+   "value_preview": "1.2"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 1,
+   "value_preview": "962963007046814"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 5,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 6,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 7,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 8,
+   "value_preview": "Linear"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 9,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 10,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 11,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 12,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 13,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 15,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 16,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 17,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 18,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 834,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 19,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 0,
+   "value_preview": "0.13000000000000003"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 2,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 4,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 686,
+   "node_type": "WanVideoTeaCache",
+   "widget_index": 5,
+   "value_preview": "e"
+  },
+  {
+   "node_id": 689,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 689,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 689,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 688,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 0,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 688,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 688,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 688,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 688,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 684,
+   "node_type": "WanVideoDecode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 684,
+   "node_type": "WanVideoDecode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 684,
+   "node_type": "WanVideoDecode",
+   "widget_index": 2,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 684,
+   "node_type": "WanVideoDecode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 684,
+   "node_type": "WanVideoDecode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 685,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 685,
+   "node_type": "LayerUtility: PurgeVRAM",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 829,
+   "node_type": "LoraLoader",
+   "widget_index": 0,
+   "value_preview": "增加细节SYK_Mild detail adjuster_V1.0_4（MINI）"
+  },
+  {
+   "node_id": 829,
+   "node_type": "LoraLoader",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 829,
+   "node_type": "LoraLoader",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 814,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "4x-UltraSharp.pth"
+  },
+  {
+   "node_id": 813,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 812,
+   "node_type": "LyingSigmaSampler",
+   "widget_index": 0,
+   "value_preview": "-0.05"
+  },
+  {
+   "node_id": 812,
+   "node_type": "LyingSigmaSampler",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 812,
+   "node_type": "LyingSigmaSampler",
+   "widget_index": 2,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 815,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 841,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 841,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 841,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "0.25000000000000006"
+  },
+  {
+   "node_id": 842,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 842,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 842,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "0.30000000000000004"
+  },
+  {
+   "node_id": 820,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 820,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 1,
+   "value_preview": "7"
+  },
+  {
+   "node_id": 820,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 2,
+   "value_preview": "196886322011567"
+  },
+  {
+   "node_id": 820,
+   "node_type": "GIMMVFI_interpolate",
+   "widget_index": 3,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "wanvideo"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': 'w"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "28"
+  },
+  {
+   "node_id": 817,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 816,
+   "node_type": "DownloadAndLoadGIMMVFIModel",
+   "widget_index": 0,
+   "value_preview": "gimmvfi_r_arb_lpips_fp32.safetensors"
+  },
+  {
+   "node_id": 840,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 2056 , Height: 2056"
+  },
+  {
+   "node_id": 828,
+   "node_type": "CLIPTextEncodeFlux",
+   "widget_index": 0,
+   "value_preview": "Rich in details, high quality, super clear"
+  },
+  {
+   "node_id": 828,
+   "node_type": "CLIPTextEncodeFlux",
+   "widget_index": 1,
+   "value_preview": "Rich in details, high quality, super clear"
+  },
+  {
+   "node_id": 828,
+   "node_type": "CLIPTextEncodeFlux",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 0,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 1,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 2,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 3,
+   "value_preview": "277025630082821"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 4,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 6,
+   "value_preview": "unipc"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 700,
+   "node_type": "WanVideoSampler",
+   "widget_index": 10,
+   "value_preview": "comfy"
+  },
+  {
+   "node_id": 687,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 687,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 696,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 0,
+   "value_preview": "umt5-xxl-enc-fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 696,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 696,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 696,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 824,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 2,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 690,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 4,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 811,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 0,
+   "value_preview": "1.15"
+  },
+  {
+   "node_id": 811,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 1,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 811,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 811,
+   "node_type": "ModelSamplingFlux",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 839,
+   "node_type": "easy imageSize",
+   "widget_index": 0,
+   "value_preview": "Width: 2056 , Height: 2056"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "4"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'force_rate': "
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "e880e3bff7cc18fbd9a63f4fa789484d4d2aa69f51a99003f0cd79aae63d"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "2"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 823,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 870,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 870,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 870,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 872,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 872,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 872,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 874,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 874,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 874,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 699,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 0,
+   "value_preview": "600"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 1,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 698,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 5,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 1,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 2,
+   "value_preview": "57"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 4,
+   "value_preview": "0.030000000000000006"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 697,
+   "node_type": "WanVideoImageClipEncode",
+   "widget_index": 7,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "04c40b812b73861e25f711fa7a8133f98f2d730d011fcd95192ad0b66329"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 702,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "xiao"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'coverUrl': 'h"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 703,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "xiao"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'coverUrl': 'h"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 876,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "xiao"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'coverUrl': 'h"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 877,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "xiao"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "dither",
+   "value_preview": "sierra2_4a"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'coverUrl': 'h"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/ffmpeg-gif"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 705,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "4"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'force_rate': "
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "MimicMotion_00043.mp4"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 826,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 0,
+   "value_preview": "1.8"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 1,
+   "value_preview": "811682336455432"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 5,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 6,
+   "value_preview": "beta"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 7,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 8,
+   "value_preview": "Linear"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 9,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 10,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 11,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 12,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 13,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 15,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 16,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 17,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 18,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 831,
+   "node_type": "UltimateSDUpscaleCustomSample",
+   "widget_index": 19,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 879,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "街舞单手倒立200.safetensors"
+  },
+  {
+   "node_id": 879,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 879,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 880,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "街舞单手倒立228.safetensors"
+  },
+  {
+   "node_id": 880,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 880,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 882,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "倒立直转236.safetensors"
+  },
+  {
+   "node_id": 882,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 882,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 883,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "倒立直转204.safetensors"
+  },
+  {
+   "node_id": 883,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 883,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 885,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "托马斯改252.safetensors"
+  },
+  {
+   "node_id": 885,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 885,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 886,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人对战160.safetensors"
+  },
+  {
+   "node_id": 886,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 886,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 887,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人对打180.safetensors"
+  },
+  {
+   "node_id": 887,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 887,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 888,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "8527编号00320.safetensors"
+  },
+  {
+   "node_id": 888,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 888,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 881,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "大风车176.safetensors"
+  },
+  {
+   "node_id": 881,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 881,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 884,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "托马斯改256.safetensors"
+  },
+  {
+   "node_id": 884,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 884,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 891,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "9527ko00632.safetensors"
+  },
+  {
+   "node_id": 891,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 891,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 871,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 871,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 871,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 869,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 869,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 869,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 873,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 873,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 873,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 890,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "9527001起火016.safetensors"
+  },
+  {
+   "node_id": 890,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 890,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 704,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "220调戏.safetensors"
+  },
+  {
+   "node_id": 704,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.75"
+  },
+  {
+   "node_id": 704,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 892,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人1对打100.safetensors"
+  },
+  {
+   "node_id": 892,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 892,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 868,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 868,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 868,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 701,
+   "node_type": "LoadWanVideoClipTextEncoder",
+   "widget_index": 0,
+   "value_preview": "open-clip-xlm-roberta-large-vit-huge-14_fp16.safetensors"
+  },
+  {
+   "node_id": 701,
+   "node_type": "LoadWanVideoClipTextEncoder",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 701,
+   "node_type": "LoadWanVideoClipTextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 893,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 893,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 893,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 894,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 894,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 894,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 895,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 895,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 895,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 896,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "街舞单手倒立200.safetensors"
+  },
+  {
+   "node_id": 896,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 896,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 897,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "街舞单手倒立228.safetensors"
+  },
+  {
+   "node_id": 897,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 897,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 898,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "倒立直转236.safetensors"
+  },
+  {
+   "node_id": 898,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 898,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 899,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "倒立直转204.safetensors"
+  },
+  {
+   "node_id": 899,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 899,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 900,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "托马斯改252.safetensors"
+  },
+  {
+   "node_id": 900,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 900,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 901,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人对战160.safetensors"
+  },
+  {
+   "node_id": 901,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 901,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 902,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人对打180.safetensors"
+  },
+  {
+   "node_id": 902,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 902,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 903,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "8527编号00320.safetensors"
+  },
+  {
+   "node_id": 903,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 903,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 904,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "大风车176.safetensors"
+  },
+  {
+   "node_id": 904,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 904,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 905,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "托马斯改256.safetensors"
+  },
+  {
+   "node_id": 905,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 905,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 906,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "9527ko00632.safetensors"
+  },
+  {
+   "node_id": 906,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 906,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 907,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 907,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 907,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 908,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 908,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 908,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 909,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 909,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 909,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 910,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "9527001起火016.safetensors"
+  },
+  {
+   "node_id": 910,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 910,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 911,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "双人1对打100.safetensors"
+  },
+  {
+   "node_id": 911,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 911,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 912,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "wan2.1万相图生视lora拔刀特效_wan2.1万相图生视lora"
+  },
+  {
+   "node_id": 912,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.010000000000000002"
+  },
+  {
+   "node_id": 912,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  }
+ ]
+}

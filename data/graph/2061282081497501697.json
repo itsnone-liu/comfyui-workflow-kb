@@ -1,0 +1,3507 @@
+{
+ "node_count": 80,
+ "link_count": 114,
+ "active_node_count": 51,
+ "nodes": [
+  {
+   "id": 98,
+   "type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    10,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    169
+   ]
+  },
+  {
+   "id": 99,
+   "type": "UltralyticsDetectorProvider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "bbox/face_yolov8m.pt"
+   ],
+   "in_links": [],
+   "out_links": [
+    167
+   ]
+  },
+  {
+   "id": 100,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    165
+   ],
+   "out_links": []
+  },
+  {
+   "id": 108,
+   "type": "SAMLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h_4b8939.pth",
+    "AUTO"
+   ],
+   "in_links": [],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 104,
+   "type": "UpscaleModelLoader",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "RealESRGAN_x4plus_anime_6B.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    173
+   ]
+  },
+  {
+   "id": 79,
+   "type": "IPAdapterNoise",
+   "category": "ipadapter",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fade",
+    1,
+    0
+   ],
+   "in_links": [
+    154
+   ],
+   "out_links": [
+    129,
+    130
+   ]
+  },
+  {
+   "id": 2,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    199,
+    12,
+    1,
+    2,
+    145
+   ],
+   "out_links": [
+    17,
+    18
+   ]
+  },
+  {
+   "id": 101,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    166
+   ],
+   "out_links": []
+  },
+  {
+   "id": 106,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_ltizb_00001_sohfr_1779228682.jpg&type=temp&subfolder=&rand=0.5861011829872462&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_ltizb_00002_faprr_1779228683.jpg&type=temp&subfolder=&rand=0.2137849706222812&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     }
+    ]
+   ],
+   "in_links": [
+    317,
+    174
+   ],
+   "out_links": []
+  },
+  {
+   "id": 18,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "DepthAnythingV2Preprocessor",
+    1024
+   ],
+   "in_links": [
+    295
+   ],
+   "out_links": [
+    20,
+    21
+   ]
+  },
+  {
+   "id": 95,
+   "type": "CoreMLDetailerHookProvider",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "768x768"
+   ],
+   "in_links": [],
+   "out_links": [
+    170
+   ]
+  },
+  {
+   "id": 96,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    163
+   ],
+   "out_links": []
+  },
+  {
+   "id": 97,
+   "type": "MaskPreview+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    164
+   ],
+   "out_links": []
+  },
+  {
+   "id": 52,
+   "type": "StringFunction|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "append",
+    "yes",
+    "",
+    "",
+    ""
+   ],
+   "in_links": [
+    136,
+    229,
+    345
+   ],
+   "out_links": [
+    226
+   ]
+  },
+  {
+   "id": 103,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": []
+  },
+  {
+   "id": 105,
+   "type": "UltimateSDUpscale",
+   "category": "upscale",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    516297713881884,
+    "randomize",
+    30,
+    4,
+    "euler_ancestral",
+    "normal",
+    0.25,
+    "Linear",
+    1024,
+    1024,
+    8,
+    32,
+    "Band Pass",
+    1,
+    64,
+    8,
+    16,
+    false,
+    false
+   ],
+   "in_links": [
+    172,
+    184,
+    182,
+    183,
+    185,
+    173
+   ],
+   "out_links": [
+    171,
+    175
+   ]
+  },
+  {
+   "id": 107,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_crjut_00001_prqxc_1779228715.jpg&type=temp&subfolder=&rand=0.9027363946552605&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_crjut_00002_jvksq_1779228716.jpg&type=temp&subfolder=&rand=0.05988121693177295&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     }
+    ]
+   ],
+   "in_links": [
+    232,
+    175
+   ],
+   "out_links": []
+  },
+  {
+   "id": 85,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    134
+   ],
+   "out_links": [
+    136
+   ]
+  },
+  {
+   "id": 11,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.8,
+    0,
+    1
+   ],
+   "in_links": [
+    17,
+    18,
+    319,
+    20,
+    146
+   ],
+   "out_links": [
+    308,
+    309
+   ]
+  },
+  {
+   "id": 63,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.8,
+    0,
+    1
+   ],
+   "in_links": [
+    200,
+    201,
+    109,
+    110,
+    202
+   ],
+   "out_links": [
+    297,
+    298
+   ]
+  },
+  {
+   "id": 62,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    297,
+    298,
+    107,
+    108,
+    286
+   ],
+   "out_links": [
+    299,
+    300
+   ]
+  },
+  {
+   "id": 68,
+   "type": "IPAdapterAdvanced",
+   "category": "ipadapter",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.8,
+    "strong style transfer",
+    "concat",
+    0,
+    0.8,
+    "V only"
+   ],
+   "in_links": [
+    363,
+    362,
+    122,
+    130,
+    131
+   ],
+   "out_links": [
+    150,
+    312
+   ]
+  },
+  {
+   "id": 92,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    158,
+    159
+   ],
+   "out_links": [
+    160,
+    223,
+    314
+   ]
+  },
+  {
+   "id": 64,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "UniFormer-SemSegPreprocessor",
+    1024
+   ],
+   "in_links": [
+    291
+   ],
+   "out_links": [
+    110,
+    111
+   ]
+  },
+  {
+   "id": 65,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    111
+   ],
+   "out_links": []
+  },
+  {
+   "id": 66,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    112
+   ],
+   "out_links": []
+  },
+  {
+   "id": 56,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "DepthAnythingV2Preprocessor",
+    1024
+   ],
+   "in_links": [
+    292
+   ],
+   "out_links": [
+    108,
+    112
+   ]
+  },
+  {
+   "id": 164,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "latent1"
+   ],
+   "in_links": [
+    343
+   ],
+   "out_links": []
+  },
+  {
+   "id": 165,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "latent2"
+   ],
+   "in_links": [
+    344
+   ],
+   "out_links": []
+  },
+  {
+   "id": 166,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_latent2",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "latent2"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 158,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    307
+   ],
+   "out_links": []
+  },
+  {
+   "id": 157,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_tllpk_00001_tfkpm_1777270535.jpg&type=temp&subfolder=&rand=0.7140296148439741&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzc4NzQ5OTUxNTMsInRzIjoxNzc3MjcwMTk1MTUzLCJzaWduIjoiOGFlODc0N2E0MDFkZWFiYzk1YmU1ZWIwMDE2NjQyYzgifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_tllpk_00002_jczvr_1777270536.jpg&type=temp&subfolder=&rand=0.990848646273938&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzc4NzQ5OTUxNTMsInRzIjoxNzc3MjcwMTk1MTUzLCJzaWduIjoiOGFlODc0N2E0MDFkZWFiYzk1YmU1ZWIwMDE2NjQyYzgifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     }
+    ]
+   ],
+   "in_links": [
+    306,
+    305
+   ],
+   "out_links": []
+  },
+  {
+   "id": 93,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    160
+   ],
+   "out_links": []
+  },
+  {
+   "id": 94,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_zfvnk_00001_lzrrp_1779228667.jpg&type=temp&subfolder=&rand=0.9915194056265387&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_zfvnk_00002_uhykm_1779228668.jpg&type=temp&subfolder=&rand=0.6638877555686136&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzZiMzE1YjMyMWI1N2UxZWRkOTFjNjEwNjNjYmY4OSIsInNpZ25FeHBpcmUiOjE3Nzk4MzMxNzA3OTQsInRzIjoxNzc5MjI4MzcwNzk0LCJzaWduIjoiODc2YzdiNjM1NjBlYjZlMWE0NjI3ZjJmMjNmOWVkYzEifQ==&Rh-Identify=f36b315b321b57e1edd91c61063cbf89"
+     }
+    ]
+   ],
+   "in_links": [
+    296,
+    223
+   ],
+   "out_links": []
+  },
+  {
+   "id": 59,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    104
+   ],
+   "out_links": []
+  },
+  {
+   "id": 57,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.35,
+    0,
+    0.6
+   ],
+   "in_links": [
+    299,
+    300,
+    103,
+    285,
+    287
+   ],
+   "out_links": [
+    302,
+    303
+   ]
+  },
+  {
+   "id": 152,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    290
+   ],
+   "out_links": [
+    291,
+    292,
+    293,
+    294,
+    295,
+    296
+   ]
+  },
+  {
+   "id": 14,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    15
+   ],
+   "out_links": []
+  },
+  {
+   "id": 19,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    21
+   ],
+   "out_links": []
+  },
+  {
+   "id": 20,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    134456880657139,
+    "randomize",
+    30,
+    5,
+    "dpmpp_2m",
+    "karras",
+    1
+   ],
+   "in_links": [
+    150,
+    308,
+    309,
+    341
+   ],
+   "out_links": [
+    158
+   ]
+  },
+  {
+   "id": 3,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "LineArtPreprocessor",
+    1024
+   ],
+   "in_links": [
+    294
+   ],
+   "out_links": [
+    2,
+    15
+   ]
+  },
+  {
+   "id": 155,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    788915505812588,
+    "randomize",
+    30,
+    5,
+    "dpmpp_2m",
+    "karras",
+    1
+   ],
+   "in_links": [
+    312,
+    302,
+    303,
+    342
+   ],
+   "out_links": [
+    301
+   ]
+  },
+  {
+   "id": 156,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    301,
+    304
+   ],
+   "out_links": [
+    305,
+    307,
+    318
+   ]
+  },
+  {
+   "id": 160,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    314,
+    318
+   ],
+   "out_links": [
+    316,
+    317
+   ]
+  },
+  {
+   "id": 54,
+   "type": "CR Text Concatenate",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ","
+   ],
+   "in_links": [
+    226,
+    382
+   ],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 4,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "high quality，1 "
+   ],
+   "in_links": [
+    148,
+    98
+   ],
+   "out_links": [
+    180,
+    182,
+    199,
+    200
+   ]
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "(worst quality:2), (low quality:2), normal quality, deformed, distorted, disfigured, bad anatomy, ugly, blurry, extra limbs, missing limbs, floating limbs, bad hands, mutated hands, poorly drawn hands, poorly drawn face, extra fingers, missing fingers, cross-eyed, watermark, text, signature, cropped\n"
+   ],
+   "in_links": [
+    149
+   ],
+   "out_links": [
+    12,
+    181,
+    183,
+    201
+   ]
+  },
+  {
+   "id": 22,
+   "type": "SDXLEmptyLatentSizePicker+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "768x1280 (0.6)",
+    1,
+    0,
+    0
+   ],
+   "in_links": [
+    33,
+    35
+   ],
+   "out_links": [
+    341,
+    342,
+    343,
+    344
+   ]
+  },
+  {
+   "id": 163,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_latent1",
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "latent1"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 102,
+   "type": "FaceDetailer",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    true,
+    1024,
+    705318595431729,
+    "randomize",
+    28,
+    4,
+    "dpmpp_2m_sde",
+    "karras",
+    0.5,
+    5,
+    true,
+    true,
+    0.5,
+    10,
+    3,
+    "center-1",
+    0,
+    0.93,
+    0,
+    0.7,
+    "False",
+    10,
+    "",
+    1,
+    false,
+    20,
+    false,
+    false
+   ],
+   "in_links": [
+    316,
+    177,
+    178,
+    179,
+    180,
+    181,
+    167,
+    168,
+    169,
+    170
+   ],
+   "out_links": [
+    166,
+    172,
+    174,
+    232,
+    165,
+    163,
+    164
+   ]
+  },
+  {
+   "id": 58,
+   "type": "AIO_Preprocessor",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ColorPreprocessor",
+    1024
+   ],
+   "in_links": [
+    293
+   ],
+   "out_links": [
+    104,
+    285
+   ]
+  },
+  {
+   "id": 81,
+   "type": "CLIPVisionLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    131
+   ]
+  },
+  {
+   "id": 83,
+   "type": "DownloadAndLoadFlorence2Model",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "microsoft/Florence-2-large",
+    "fp16",
+    "sdpa",
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    133
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "waiNsfwIllustrious16.bhnI.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    87,
+    89,
+    145,
+    146,
+    159,
+    179,
+    185,
+    202,
+    286,
+    287,
+    304
+   ]
+  },
+  {
+   "id": 51,
+   "type": "LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SDXL 厚涂艺术 LORA.safetensors",
+    1,
+    1
+   ],
+   "in_links": [
+    87,
+    89
+   ],
+   "out_links": [
+    94,
+    95
+   ]
+  },
+  {
+   "id": 71,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "332cc27a0ec154360a208b7b72b1c20d7a6e8077c79186b6788ad8759e16bc16.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    122,
+    135,
+    154
+   ]
+  },
+  {
+   "id": 1,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "controlnet-union-sdxl-1.0.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1,
+    319
+   ]
+  },
+  {
+   "id": 60,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "controlnet-union-sdxl-1.0.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    109
+   ]
+  },
+  {
+   "id": 61,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "controlnet-union-sdxl-1.0.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 67,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "lllyasviel_sd_control_collection/sai_xl_recolor_256lora.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    103
+   ]
+  },
+  {
+   "id": 70,
+   "type": "IPAdapterModelLoader",
+   "category": "ipadapter",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ip-adapter-plus_sdxl_vit-h.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    362
+   ]
+  },
+  {
+   "id": 80,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    129
+   ],
+   "out_links": []
+  },
+  {
+   "id": 84,
+   "type": "Florence2Run",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    "more_detailed_caption",
+    true,
+    false,
+    1024,
+    3,
+    true,
+    "",
+    377742721758388,
+    "randomize"
+   ],
+   "in_links": [
+    135,
+    133
+   ],
+   "out_links": [
+    134
+   ]
+  },
+  {
+   "id": 53,
+   "type": "LoraLoader",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SDXL 极炫幻彩 幻彩高质量光影 _v1.0 LORA.safetensors",
+    0.7,
+    0.7
+   ],
+   "in_links": [
+    94,
+    95
+   ],
+   "out_links": [
+    177,
+    184,
+    363,
+    148,
+    149,
+    178
+   ]
+  },
+  {
+   "id": 126,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 55,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "void arcanist,hyper detailed,volumetric lighting,fantasy art,octane render),\nwatercolor_(medium),transparent\n"
+   ],
+   "in_links": [],
+   "out_links": [
+    229
+   ]
+  },
+  {
+   "id": 125,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 172,
+   "type": "RH_Translator",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    213,
+    "randomize",
+    "auto"
+   ],
+   "in_links": [],
+   "out_links": [
+    345
+   ]
+  },
+  {
+   "id": 148,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 149,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 130,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 129,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 9,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "letterbox",
+    "lanczos",
+    "8",
+    "longest",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    7
+   ],
+   "out_links": [
+    290,
+    306,
+    384,
+    33,
+    35
+   ]
+  },
+  {
+   "id": 187,
+   "type": "llama_cpp_model_loader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen3.5-9B-Q8_0.gguf",
+    "Qwen3.5-9B-mmproj-F16.gguf",
+    "Qwen3.5",
+    8192,
+    -1,
+    0,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    380
+   ]
+  },
+  {
+   "id": 171,
+   "type": "ShowText|pysssss",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    383
+   ],
+   "out_links": [
+    382
+   ]
+  },
+  {
+   "id": 186,
+   "type": "llama_cpp_parameters",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    4096,
+    30,
+    0.9,
+    0.05,
+    1,
+    0.8,
+    1,
+    0,
+    1,
+    0,
+    0.1,
+    5,
+    -1
+   ],
+   "in_links": [],
+   "out_links": [
+    381
+   ]
+  },
+  {
+   "id": 188,
+   "type": "llama_cpp_instruct_adv",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Prompt Style - Extreme Detailed",
+    "对这张目标图片进行完整深度解析，按照主体内容（性别、肤色、头发、脸型、服装、配饰等一切信息）、主体姿态、光照和光源信息、相机构图信息、艺术质量（艺术风格：CG、写实、摄影、二次元、赛璐璐等）、构图信息、图片景深信息等7个维度逐一项精细化描述，最终生成一段结构完整、逻辑清晰可直接用于AI文生图工具复刻同款画面的专业提示词。提示词输出为中文，2000个字以内,不输出提示词以外的任何信息。\n",
+    "",
+    "one by one",
+    24,
+    256,
+    998737890695841,
+    "randomize",
+    true,
+    false
+   ],
+   "in_links": [
+    380,
+    381,
+    384,
+    390
+   ],
+   "out_links": [
+    383
+   ]
+  },
+  {
+   "id": 189,
+   "type": "RHHiddenNodes",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    389
+   ],
+   "out_links": [
+    390
+   ]
+  },
+  {
+   "id": 179,
+   "type": "CR Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    389
+   ]
+  },
+  {
+   "id": 8,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "332cc27a0ec154360a208b7b72b1c20d7a6e8077c79186b6788ad8759e16bc16.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    7
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 11,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 1,
+   "to_node": 2,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 102,
+   "to_node": 100,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 101,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 105,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 106,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 96,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 102,
+   "to_node": 97,
+   "type": "MASK"
+  },
+  {
+   "from_node": 104,
+   "to_node": 105,
+   "type": "UPSCALE_MODEL"
+  },
+  {
+   "from_node": 105,
+   "to_node": 103,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 105,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 108,
+   "to_node": 102,
+   "type": "SAM_MODEL"
+  },
+  {
+   "from_node": 11,
+   "to_node": 20,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 11,
+   "to_node": 20,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 152,
+   "to_node": 18,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 3,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 56,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 58,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 64,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 152,
+   "to_node": 94,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 155,
+   "to_node": 156,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 156,
+   "to_node": 157,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 156,
+   "to_node": 158,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 156,
+   "to_node": 160,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 160,
+   "to_node": 102,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 160,
+   "to_node": 106,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 171,
+   "to_node": 54,
+   "type": "STRING"
+  },
+  {
+   "from_node": 172,
+   "to_node": 52,
+   "type": "STRING"
+  },
+  {
+   "from_node": 179,
+   "to_node": 189,
+   "type": "STRING"
+  },
+  {
+   "from_node": 18,
+   "to_node": 11,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 18,
+   "to_node": 19,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 186,
+   "to_node": 188,
+   "type": "LLAMACPPARAMS"
+  },
+  {
+   "from_node": 187,
+   "to_node": 188,
+   "type": "LLAMACPPMODEL"
+  },
+  {
+   "from_node": 188,
+   "to_node": 171,
+   "type": "STRING"
+  },
+  {
+   "from_node": 189,
+   "to_node": 188,
+   "type": "STRING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 11,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 11,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 20,
+   "to_node": 92,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 155,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 164,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 165,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 22,
+   "to_node": 20,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 3,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 2,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 102,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 105,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 63,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 102,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 105,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 5,
+   "to_node": 63,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 51,
+   "to_node": 53,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 51,
+   "to_node": 53,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 52,
+   "to_node": 54,
+   "type": "STRING"
+  },
+  {
+   "from_node": 53,
+   "to_node": 102,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 53,
+   "to_node": 102,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 53,
+   "to_node": 105,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 53,
+   "to_node": 4,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 53,
+   "to_node": 5,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 53,
+   "to_node": 68,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 54,
+   "to_node": 4,
+   "type": "STRING"
+  },
+  {
+   "from_node": 55,
+   "to_node": 52,
+   "type": "STRING"
+  },
+  {
+   "from_node": 56,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 56,
+   "to_node": 66,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 155,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 57,
+   "to_node": 155,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 58,
+   "to_node": 57,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 58,
+   "to_node": 59,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 102,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 105,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 156,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 2,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 51,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 6,
+   "to_node": 51,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 6,
+   "to_node": 57,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 62,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 63,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 92,
+   "type": "VAE"
+  },
+  {
+   "from_node": 60,
+   "to_node": 63,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 61,
+   "to_node": 62,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 62,
+   "to_node": 57,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 62,
+   "to_node": 57,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 63,
+   "to_node": 62,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 63,
+   "to_node": 62,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 64,
+   "to_node": 63,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 64,
+   "to_node": 65,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 67,
+   "to_node": 57,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 68,
+   "to_node": 155,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 68,
+   "to_node": 20,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 70,
+   "to_node": 68,
+   "type": "IPADAPTER"
+  },
+  {
+   "from_node": 71,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 84,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 80,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 9,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 81,
+   "to_node": 68,
+   "type": "CLIP_VISION"
+  },
+  {
+   "from_node": 83,
+   "to_node": 84,
+   "type": "FL2MODEL"
+  },
+  {
+   "from_node": 84,
+   "to_node": 85,
+   "type": "STRING"
+  },
+  {
+   "from_node": 85,
+   "to_node": 52,
+   "type": "STRING"
+  },
+  {
+   "from_node": 9,
+   "to_node": 152,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 157,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 188,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 22,
+   "type": "INT"
+  },
+  {
+   "from_node": 9,
+   "to_node": 22,
+   "type": "INT"
+  },
+  {
+   "from_node": 92,
+   "to_node": 160,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 93,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 92,
+   "to_node": 94,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 95,
+   "to_node": 102,
+   "type": "DETAILER_HOOK"
+  },
+  {
+   "from_node": 98,
+   "to_node": 102,
+   "type": "SEGM_DETECTOR"
+  },
+  {
+   "from_node": 99,
+   "to_node": 102,
+   "type": "BBOX_DETECTOR"
+  }
+ ],
+ "categories": {
+  "utility": 35,
+  "image_io": 14,
+  "upscale": 2,
+  "ipadapter": 3,
+  "controlnet": 9,
+  "preprocessor": 5,
+  "vae": 2,
+  "sampler": 2,
+  "conditioning": 3,
+  "face": 1,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "lora": 2
+ },
+ "assets": [
+  {
+   "node_id": 99,
+   "node_type": "UltralyticsDetectorProvider",
+   "kind": "aux_model",
+   "name": "bbox/face_yolov8m.pt"
+  },
+  {
+   "node_id": 108,
+   "node_type": "SAMLoader",
+   "kind": "checkpoint",
+   "name": "sam_vit_h_4b8939.pth"
+  },
+  {
+   "node_id": 104,
+   "node_type": "UpscaleModelLoader",
+   "kind": "upscaler",
+   "name": "RealESRGAN_x4plus_anime_6B.pth"
+  },
+  {
+   "node_id": 81,
+   "node_type": "CLIPVisionLoader",
+   "kind": "clip",
+   "name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "waiNsfwIllustrious16.bhnI.safetensors"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LoraLoader",
+   "kind": "lora",
+   "name": "SDXL 厚涂艺术 LORA.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 60,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "ControlNetLoader",
+   "kind": "lora",
+   "name": "lllyasviel_sd_control_collection/sai_xl_recolor_256lora.safetensors"
+  },
+  {
+   "node_id": 70,
+   "node_type": "IPAdapterModelLoader",
+   "kind": "aux_model",
+   "name": "ip-adapter-plus_sdxl_vit-h.safetensors"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoraLoader",
+   "kind": "lora",
+   "name": "SDXL 极炫幻彩 幻彩高质量光影 _v1.0 LORA.safetensors"
+  }
+ ],
+ "techniques": [
+  "IP-Adapter",
+  "FaceDetailer",
+  "ControlNet",
+  "SDXL",
+  "Upscale-Hires"
+ ],
+ "param_face_size": 204,
+ "structure_hash": "878ba63f4f14b9aa",
+ "param_face": [
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 0,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 98,
+   "node_type": "MediaPipeFaceMeshDetectorProvider //Inspire",
+   "widget_index": 8,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 99,
+   "node_type": "UltralyticsDetectorProvider",
+   "widget_index": 0,
+   "value_preview": "bbox/face_yolov8m.pt"
+  },
+  {
+   "node_id": 108,
+   "node_type": "SAMLoader",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h_4b8939.pth"
+  },
+  {
+   "node_id": 108,
+   "node_type": "SAMLoader",
+   "widget_index": 1,
+   "value_preview": "AUTO"
+  },
+  {
+   "node_id": 104,
+   "node_type": "UpscaleModelLoader",
+   "widget_index": 0,
+   "value_preview": "RealESRGAN_x4plus_anime_6B.pth"
+  },
+  {
+   "node_id": 79,
+   "node_type": "IPAdapterNoise",
+   "widget_index": 0,
+   "value_preview": "fade"
+  },
+  {
+   "node_id": 79,
+   "node_type": "IPAdapterNoise",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 79,
+   "node_type": "IPAdapterNoise",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 2,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 2,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 2,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 101,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 18,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "DepthAnythingV2Preprocessor"
+  },
+  {
+   "node_id": 18,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 95,
+   "node_type": "CoreMLDetailerHookProvider",
+   "widget_index": 0,
+   "value_preview": "768x768"
+  },
+  {
+   "node_id": 52,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 0,
+   "value_preview": "append"
+  },
+  {
+   "node_id": 52,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 1,
+   "value_preview": "yes"
+  },
+  {
+   "node_id": 52,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 52,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 3,
+   "value_preview": ""
+  },
+  {
+   "node_id": 52,
+   "node_type": "StringFunction|pysssss",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 103,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 1,
+   "value_preview": "516297713881884"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 3,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 4,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 5,
+   "value_preview": "euler_ancestral"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 6,
+   "value_preview": "normal"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 7,
+   "value_preview": "0.25"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 8,
+   "value_preview": "Linear"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 9,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 10,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 11,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 12,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 13,
+   "value_preview": "Band Pass"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 14,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 15,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 16,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 17,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 18,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 105,
+   "node_type": "UltimateSDUpscale",
+   "widget_index": 19,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 11,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 11,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 11,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 63,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 1,
+   "value_preview": "strong style transfer"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 2,
+   "value_preview": "concat"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 4,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 68,
+   "node_type": "IPAdapterAdvanced",
+   "widget_index": 5,
+   "value_preview": "V only"
+  },
+  {
+   "node_id": 64,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "UniFormer-SemSegPreprocessor"
+  },
+  {
+   "node_id": 64,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 56,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "DepthAnythingV2Preprocessor"
+  },
+  {
+   "node_id": 56,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 164,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "latent1"
+  },
+  {
+   "node_id": 165,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "latent2"
+  },
+  {
+   "node_id": 166,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "latent2"
+  },
+  {
+   "node_id": 57,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "0.35"
+  },
+  {
+   "node_id": 57,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 57,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "134456880657139"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "karras"
+  },
+  {
+   "node_id": 20,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 3,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "LineArtPreprocessor"
+  },
+  {
+   "node_id": 3,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "788915505812588"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "dpmpp_2m"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "karras"
+  },
+  {
+   "node_id": 155,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "CR Text Concatenate",
+   "widget_index": 0,
+   "value_preview": ","
+  },
+  {
+   "node_id": 4,
+   "node_type": "CLIPTextEncode",
+   "widget_index": 0,
+   "value_preview": "high quality，1 "
+  },
+  {
+   "node_id": 22,
+   "node_type": "SDXLEmptyLatentSizePicker+",
+   "widget_index": 0,
+   "value_preview": "768x1280 (0.6)"
+  },
+  {
+   "node_id": 22,
+   "node_type": "SDXLEmptyLatentSizePicker+",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 22,
+   "node_type": "SDXLEmptyLatentSizePicker+",
+   "widget_index": 2,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 22,
+   "node_type": "SDXLEmptyLatentSizePicker+",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 163,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "latent1"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 2,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 3,
+   "value_preview": "705318595431729"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 4,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 5,
+   "value_preview": "28"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 6,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 7,
+   "value_preview": "dpmpp_2m_sde"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 8,
+   "value_preview": "karras"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 9,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 10,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 11,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 13,
+   "value_preview": "0.5"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 14,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 15,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 16,
+   "value_preview": "center-1"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 17,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 18,
+   "value_preview": "0.93"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 19,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 20,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 21,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 22,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 23,
+   "value_preview": ""
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 24,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 25,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 26,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 27,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 102,
+   "node_type": "FaceDetailer",
+   "widget_index": 28,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 58,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 0,
+   "value_preview": "ColorPreprocessor"
+  },
+  {
+   "node_id": 58,
+   "node_type": "AIO_Preprocessor",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 81,
+   "node_type": "CLIPVisionLoader",
+   "widget_index": 0,
+   "value_preview": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+  },
+  {
+   "node_id": 83,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 0,
+   "value_preview": "microsoft/Florence-2-large"
+  },
+  {
+   "node_id": 83,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 83,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 2,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 83,
+   "node_type": "DownloadAndLoadFlorence2Model",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "waiNsfwIllustrious16.bhnI.safetensors"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LoraLoader",
+   "widget_index": 0,
+   "value_preview": "SDXL 厚涂艺术 LORA.safetensors"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LoraLoader",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LoraLoader",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "332cc27a0ec154360a208b7b72b1c20d7a6e8077c79186b6788ad8759e16"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 1,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 60,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 61,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "lllyasviel_sd_control_collection/sai_xl_recolor_256lora.safe"
+  },
+  {
+   "node_id": 70,
+   "node_type": "IPAdapterModelLoader",
+   "widget_index": 0,
+   "value_preview": "ip-adapter-plus_sdxl_vit-h.safetensors"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 1,
+   "value_preview": "more_detailed_caption"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 5,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 7,
+   "value_preview": ""
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 8,
+   "value_preview": "377742721758388"
+  },
+  {
+   "node_id": 84,
+   "node_type": "Florence2Run",
+   "widget_index": 9,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoraLoader",
+   "widget_index": 0,
+   "value_preview": "SDXL 极炫幻彩 幻彩高质量光影 _v1.0 LORA.safetensors"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoraLoader",
+   "widget_index": 1,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoraLoader",
+   "widget_index": 2,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 55,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": "void arcanist,hyper detailed,volumetric lighting,fantasy art"
+  },
+  {
+   "node_id": 172,
+   "node_type": "RH_Translator",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 172,
+   "node_type": "RH_Translator",
+   "widget_index": 1,
+   "value_preview": "213"
+  },
+  {
+   "node_id": 172,
+   "node_type": "RH_Translator",
+   "widget_index": 2,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 172,
+   "node_type": "RH_Translator",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "letterbox"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 0,
+   "value_preview": "Qwen3.5-9B-Q8_0.gguf"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 1,
+   "value_preview": "Qwen3.5-9B-mmproj-F16.gguf"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 2,
+   "value_preview": "Qwen3.5"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 3,
+   "value_preview": "8192"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 4,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 187,
+   "node_type": "llama_cpp_model_loader",
+   "widget_index": 6,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 0,
+   "value_preview": "4096"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 1,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 3,
+   "value_preview": "0.05"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 4,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 5,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 9,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 10,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 11,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 186,
+   "node_type": "llama_cpp_parameters",
+   "widget_index": 12,
+   "value_preview": "-1"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 0,
+   "value_preview": "Prompt Style - Extreme Detailed"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 3,
+   "value_preview": "one by one"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 4,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 5,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 6,
+   "value_preview": "998737890695841"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 7,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 188,
+   "node_type": "llama_cpp_instruct_adv",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 189,
+   "node_type": "RHHiddenNodes",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 179,
+   "node_type": "CR Text",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 8,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "332cc27a0ec154360a208b7b72b1c20d7a6e8077c79186b6788ad8759e16"
+  },
+  {
+   "node_id": 8,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  }
+ ]
+}

@@ -1,0 +1,1008 @@
+{
+ "node_count": 27,
+ "link_count": 32,
+ "active_node_count": 25,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    67,
+    83
+   ]
+  },
+  {
+   "id": 53,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    90,
+    99
+   ],
+   "out_links": [
+    79
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    66,
+    87
+   ]
+  },
+  {
+   "id": 3,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    65
+   ]
+  },
+  {
+   "id": 43,
+   "type": "MiniMaxH3ReferenceToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "match"
+   ],
+   "in_links": [
+    65,
+    66,
+    67,
+    68,
+    69,
+    100,
+    101,
+    92,
+    70,
+    71,
+    72
+   ],
+   "out_links": [
+    99,
+    84
+   ]
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_ref2va_int8_convrot.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 17,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    26
+   ],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 56,
+   "type": "AudioToFPS",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    24,
+    8,
+    true
+   ],
+   "in_links": [
+    94
+   ],
+   "out_links": [
+    95
+   ]
+  },
+  {
+   "id": 15,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    95
+   ],
+   "out_links": [
+    72
+   ]
+  },
+  {
+   "id": 35,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 12,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": false,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": 60,
+      "filename": "stable_4v4a_00002_p83-audio_ldsqo_1786676333.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//ed2ba08d2de2cc4fbc101c02bfacfd2e/output/MiniMaxH3/stable_4v4a_00002_p83-audio_ldsqo_1786676333.mp4",
+      "workflow": "stable_4v4a_00002_p83.png",
+      "fullpath": "/data/ComfyUI/personal/ed2ba08d2de2cc4fbc101c02bfacfd2e/output/MiniMaxH3/stable_4v4a_00002_p83-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    88,
+    89
+   ],
+   "out_links": []
+  },
+  {
+   "id": 52,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 51,
+   "type": "VRGDG_MiniMaxH3AudioDrive",
+   "category": "utility",
+   "title": "LOCK SOURCE AUDIO / GENERATE VIDEO ONLY",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    84,
+    98,
+    83
+   ],
+   "out_links": [
+    82,
+    89
+   ]
+  },
+  {
+   "id": 63,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    101
+   ]
+  },
+  {
+   "id": 60,
+   "type": "PreviewAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    96
+   ],
+   "out_links": []
+  },
+  {
+   "id": 62,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    100
+   ]
+  },
+  {
+   "id": 13,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    69
+   ]
+  },
+  {
+   "id": 50,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    78,
+    79,
+    80,
+    81,
+    82
+   ],
+   "out_links": [
+    86
+   ]
+  },
+  {
+   "id": 55,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    86,
+    87
+   ],
+   "out_links": [
+    88
+   ]
+  },
+  {
+   "id": 16,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "2:3 (Portrait Photo)",
+    0.6000000000000001,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    70,
+    71
+   ]
+  },
+  {
+   "id": 54,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    742338770397149,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LoraLoaderBypassModelOnly",
+   "category": "lora",
+   "title": "lora only",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "T8-minimax_h3_turbo_4步加速_comfyui.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    27
+   ],
+   "out_links": [
+    90,
+    91
+   ]
+  },
+  {
+   "id": 49,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "simple",
+    8,
+    1
+   ],
+   "in_links": [
+    91
+   ],
+   "out_links": [
+    81
+   ]
+  },
+  {
+   "id": 40,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    68
+   ]
+  },
+  {
+   "id": 59,
+   "type": "TrimAudioDuration",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    20.000000000000004,
+    10.000000000000002
+   ],
+   "in_links": [
+    93
+   ],
+   "out_links": [
+    94,
+    96,
+    98
+   ]
+  },
+  {
+   "id": 39,
+   "type": "PrimitiveStringMultiline",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "FL2VA首尾帧参考：<Picture 1>（人物：光头短发、白框眼镜、胡子、壮硕熊系身材、上身赤裸，穿粉色真丝三角内裤）+<Picture 2>（舞台：蓝色灯光演唱会舞台、弧形吊顶屏、蓝色射灯阵、反光地板、观众剪影）。全程人物面容身材100%一致。\n\n\n10秒一镜到底，MV运镜，副歌高潮→结尾。\n\n20-23秒：延续第二段结尾全景，副歌高潮爆发。20秒唱到副歌最强句，头猛然抬起，眼睛睁开，眼神炽热，右手持麦仍贴嘴边，脖子青筋微起，声音爆发力强，镜头全景有轻微抖动（情绪冲击力），21秒他收回双臂，身体后仰再收回，胸肌剧烈起伏，22秒头低下再抬起，镜头从全景推到中近景（面部特写，下巴到头顶占画面60%），捕捉白框眼镜片蓝光反射、胡茬细节、演唱时的喉结滚动。\n\n23-26秒：远景互动段。23秒镜头从中近景急速拉远变远景——展示整个舞台+观众席+远景上层看台，男子在舞台中央变小，他放下话筒（远景允许），举起左手向观众挥手，同时右手持麦自然下垂，脸上露出灿烂笑容，24秒他举起右手再挥一下，身体左右晃动互动，观众席闪光灯闪烁回应，25秒他双手张开做出拥抱天空的姿态，全场灯光最亮，26秒镜头从远景缓慢推回全景，他重新将话筒举回嘴边。\n\n27-29秒：全景→中景温柔收尾。27秒全景，他站在舞台中央，右手持麦贴嘴边，左手轻搭胸口，头微微低下，表情温柔坚定，全场蓝色灯光柔和下来，弧形吊顶屏幕出现温柔蓝色渐变，28秒镜头从全景推到中景，他抬起头，眼神看向正前方，嘴角上扬，29秒唱到收尾段，声音温柔有力。\n\n30秒定格结尾。他向前走一步停下，右手持麦最后一个长音唱出，头微微后仰，舞台灯光缓慢调暗（主灯渐暗侧灯保持），定格在右手持麦贴嘴边、眼神看向舞台上方的姿态，背景柔和蓝光，画面渐隐。\n\n音景：20-23秒高潮全编制最强音，23-26秒远景有观众欢呼声叠加，27-29秒配器渐弱，30秒最后长音+弦乐延长+掌声渐起。\n配乐：高潮持续→远景间奏（电吉他独奏过渡）→温柔收尾段→最后长音+弦乐收束。"
+   ],
+   "in_links": [],
+   "out_links": [
+    92
+   ]
+  },
+  {
+   "id": 58,
+   "type": "LoadAudio",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "da27ad42dbec5ff5b98ce227dc888b88c358f0c22cee251ad224ef9ecc0def2d.MP3",
+    null,
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    93
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 13,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 15,
+   "to_node": 43,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 43,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 43,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 2,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 2,
+   "to_node": 49,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 2,
+   "to_node": 53,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 3,
+   "to_node": 43,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 39,
+   "to_node": 43,
+   "type": "STRING"
+  },
+  {
+   "from_node": 4,
+   "to_node": 43,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 55,
+   "type": "VAE"
+  },
+  {
+   "from_node": 40,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 43,
+   "to_node": 51,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 43,
+   "to_node": 53,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 49,
+   "to_node": 50,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 5,
+   "to_node": 43,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 51,
+   "type": "VAE"
+  },
+  {
+   "from_node": 50,
+   "to_node": 55,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 51,
+   "to_node": 12,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 51,
+   "to_node": 50,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 52,
+   "to_node": 50,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 53,
+   "to_node": 50,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 54,
+   "to_node": 50,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 55,
+   "to_node": 12,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 56,
+   "to_node": 15,
+   "type": "INT"
+  },
+  {
+   "from_node": 58,
+   "to_node": 59,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 59,
+   "to_node": 51,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 59,
+   "to_node": 56,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 59,
+   "to_node": 60,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 62,
+   "to_node": 43,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 63,
+   "to_node": 43,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "vae": 3,
+  "sampler": 4,
+  "clip": 1,
+  "utility": 11,
+  "checkpoint_loader": 1,
+  "video_io": 1,
+  "image_io": 4,
+  "lora": 1,
+  "preprocessor": 1
+ },
+ "assets": [
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "minimax_h3_ref2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "kind": "lora",
+   "name": "T8-minimax_h3_turbo_4步加速_comfyui.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 46,
+ "structure_hash": "23759cbfe4ab4813",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 43,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 43,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 43,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 43,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 43,
+   "node_type": "MiniMaxH3ReferenceToVideo",
+   "widget_index": 4,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_ref2va_int8_convrot.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 56,
+   "node_type": "AudioToFPS",
+   "widget_index": 0,
+   "value_preview": "24"
+  },
+  {
+   "node_id": 56,
+   "node_type": "AudioToFPS",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 56,
+   "node_type": "AudioToFPS",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 15,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': 60, '"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 52,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 63,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 62,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "2:3 (Portrait Photo)"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.6000000000000001"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 54,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "742338770397149"
+  },
+  {
+   "node_id": 54,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 0,
+   "value_preview": "T8-minimax_h3_turbo_4步加速_comfyui.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 49,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 49,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 49,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 40,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 59,
+   "node_type": "TrimAudioDuration",
+   "widget_index": 0,
+   "value_preview": "20.000000000000004"
+  },
+  {
+   "node_id": 59,
+   "node_type": "TrimAudioDuration",
+   "widget_index": 1,
+   "value_preview": "10.000000000000002"
+  },
+  {
+   "node_id": 58,
+   "node_type": "LoadAudio",
+   "widget_index": 0,
+   "value_preview": "da27ad42dbec5ff5b98ce227dc888b88c358f0c22cee251ad224ef9ecc0d"
+  }
+ ]
+}

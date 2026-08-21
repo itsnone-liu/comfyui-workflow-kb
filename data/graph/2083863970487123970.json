@@ -1,0 +1,162 @@
+{
+ "node_count": 4,
+ "link_count": 3,
+ "active_node_count": 4,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "SaveVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "video/ComfyUI",
+    "auto",
+    "auto"
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": []
+  },
+  {
+   "id": 2,
+   "type": "RH_MinimaxHailuoH3TextToVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Minimax H3 \"10 second visual blockbuster (fashion MV+extreme parkour)\nRole: Minimax H3 (short black hair, Korean style trendy beauty, wearing a black pink contrasting waist revealing short jacket and spicy work pants).\nSound effects: heavy bass Synth Pop, wind sound, glass shattering sound, laser cutting sound.\nShot 1 (1s | Close up): A bright pink background, Minimax H3 with short black hair and sunglasses looking sideways at the camera, with yellow 3D characters \"H3\" flashing behind.\nSound effect: Clear electronic prelude.\nCamera 2 (1s | Parkour): Crash Zoom, Minimax H3 sprints and parkour at high speed on the colorful rooftop, with short hair flying and dragging colorful shadows.\nSound effects: The sound of stepping on the ground and the gust of wind.\nCamera 3 (1s | Jump): Low angle overhead shot, Minimax H3 jumps high at the edge of the rooftop, and flips 360 degrees in the air.\nSound effect: Music instantly takes a break (Filter effect).\nShot 4 (1s | Layout): Extreme slow motion, with huge white bold letters \"FLY\" shuttling past her, creating a poster layout sense.\nSound effect: ethereal whistling sound.\nCamera 5 (1s | Fight): Minimax H3's gaze suddenly changes in mid air, and he unleashes a heavy punch wrapped in electric particles.\nSound effect: Energy charging and sizzling sound.\nCamera 6 (1s | Broken Screen): [Core Explosion] Fist hits the camera, the punch blows the screen, and fluorescent glass fragments burst and splash.\nSound effect: Extremely crisp glass shattering sound+Bass Drop.\nCamera 7 (1s | Landing): Passing through fragments (transition), Minimax H3 lands on the ground with one hand and rolls forward, splashing colored smoke.\nSound effect: Heavy landing sound.\nCamera 8 (1s | Weapon): Minimax H3 stands up and pulls out a pink laser nunchucks, playing dazzling light trail shadows in front of him.\nSound effect: Laser cutting air sound.\nShot 9 (1s | freeze frame): Quick push close-up, Minimax H3 retracts the nunchucks to the armpits, hands against sunglasses blink and smile sweetly at the camera, and the background is filled with the words \"DANCE\".\nSound effect: The music reaches its climax with a loud freeze.\nCamera 10 (1s | Closing): Minimax H3 gracefully turns around and steps into a minimalist pink background, with the Minimax H3 brand logo popping up in the center.\nSound effects: Key sound effects, clean and crisp pauses.",
+    "2K",
+    "10",
+    "16:9",
+    false,
+    173335921,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    1,
+    3,
+    4
+   ]
+  },
+  {
+   "id": 5,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com/b4bdef25a145694b9c9e2b44f7e8dc26/output/75b11c05-1193-4a90-a18e-68b8ffcec094.mp4"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "easy showAnything",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "{\n  \"taskId\": \"2083162576610795522\",\n  \"status\": \"SUCCESS\",\n  \"errorCode\": \"\",\n  \"errorMessage\": \"\",\n  \"results\": [\n    {\n      \"url\": \"https://rh-images-1252422369.cos.ap-beijing.myqcloud.com/b4bdef25a145694b9c9e2b44f7e8dc26/output/75b11c05-1193-4a90-a18e-68b8ffcec094.mp4\",\n      \"outputType\": \"mp4\",\n      \"text\": null\n    }\n  ],\n  \"clientId\": \"\",\n  \"promptTips\": \"\",\n  \"failedReason\": {},\n  \"usage\": {\n    \"consumeMoney\": null,\n    \"consumeCoins\": null,\n    \"taskCostTime\": \"0\",\n    \"thirdPartyConsumeMoney\": \"7.7\"\n  },\n  \"parentTaskId\": \"2083162565831258113\",\n  \"taskUsageList\": [\n    {\n      \"taskId\": \"2083162565831258113\",\n      \"parentTaskId\": null,\n      \"taskStatus\": \"RUNNING\",\n      \"usage\": {\n        \"consumeMoney\": null,\n        \"consumeCoins\": null,\n        \"taskCostTime\": \"0\",\n        \"thirdPartyConsumeMoney\": null\n      }\n    },\n    {\n      \"taskId\": \"2083162576610795522\",\n      \"parentTaskId\": \"2083162565831258113\",\n      \"taskStatus\": \"SUCCESS\",\n      \"usage\": {\n        \"consumeMoney\": null,\n        \"consumeCoins\": null,\n        \"taskCostTime\": \"0\",\n        \"thirdPartyConsumeMoney\": \"7.7\"\n      }\n    }\n  ]\n}"
+   ],
+   "in_links": [
+    4
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 2,
+   "to_node": 3,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 2,
+   "to_node": 5,
+   "type": "*"
+  },
+  {
+   "from_node": 2,
+   "to_node": 6,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "video_io": 1,
+  "utility": 3
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 9,
+ "structure_hash": "87ece332e417a0dd",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "SaveVideo",
+   "widget_index": 0,
+   "value_preview": "video/ComfyUI"
+  },
+  {
+   "node_id": 3,
+   "node_type": "SaveVideo",
+   "widget_index": 1,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 3,
+   "node_type": "SaveVideo",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 1,
+   "value_preview": "2K"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 3,
+   "value_preview": "16:9"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 5,
+   "value_preview": "173335921"
+  },
+  {
+   "node_id": 2,
+   "node_type": "RH_MinimaxHailuoH3TextToVideo",
+   "widget_index": 6,
+   "value_preview": "randomize"
+  }
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "domain": [
+  "视频编辑",
+  "视频生成"
+ ],
+ "capabilities": [
+  {
+   "text": "输入视频，通过 SAM3 与 SeC 多路分割生成目标区域的精确 mask，配合人工点选/背景移除，可指定要编辑或移除的视频元素",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 MiniMax H3 Reference-to-Video 模型，配合 LoRA turbo 和低步数采样，对视频局部区域进行重绘/替换，保持非编辑区域与背景不变",
+   "kind": "fact"
+  },
+  {
+   "text": "同时编码视频与音频 latent 并拼接，使编辑后的视频保留原始音轨或生成同步音频，实现带声音的视频生视频",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 BiRefNet 移除背景，结合 mask 合成，将前景单独提取后做局部编辑，再与背景融合，适合人物/物体替换场景",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "视频语义分割 (SAM3, SeC)",
+  "背景移除 (BiRefNet)",
+  "引用视频生成 (MiniMax H3 Ref2V + LoRA turbo)",
+  "音频视频联合 latent (LTXVConcatAVLatent)",
+  "mask 引导局部生成 (SetLatentNoiseMask + ConditioningZeroOut)",
+  "注意力优化 (SageAttention + ModelAttentionBackend)"
+ ],
+ "special_features": [
+  {
+   "text": "多级分割 + 人工修正：SAM3 视频分割、SeC 语义分割、PointsEditor 人工点选、BiRefNet 背景移除同时存在，形成高精度目标 mask 生成链路",
+   "kind": "fact"
+  },
+  {
+   "text": "双重掩码控制生成区域：ConditioningZeroOut 与两个 SetLatentNoiseMask 同时作用，使模型只对 mask 内部进行重绘，外部条件归零以保持原视频内容",
+   "kind": "fact"
+  },
+  {
+   "text": "音频保留/同步设计：视频 VAE 与音频 VAE 分离编码，再通过 LTXVConcatAVLatent 拼接，使编辑过程不丢声音",
+   "kind": "fact"
+  },
+  {
+   "text": "长视频显存优化：MiniMaxH3MemoryEfficientSageAttentionPatch 与 ModelAttentionBackend 切换，配合 LoRA turbo 低步数采样，支持 124 帧生成",
+   "kind": "fact"
+  },
+  {
+   "text": "组旁路快速实验：Fast Groups Bypasser 可快速开关不同处理组，便于对比不同 mask 来源或背景移除模块的效果",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者似乎希望构建一个‘精准局部重绘/移除视频元素’的受控管线。先用 SAM3 和 SeC 自动生成目标 mask，并通过 PointsEditor 与 BiRefNet 优化 mask 边界；接着用 MiniMax H3 引用视频生成，结合 LoRA turbo 实现快速局部生成；同时保留音频 latent 来避免音画分离。这种设计使可以在不动背景的前提下移除/替换指定物体，兼顾了编辑精度与生成效率。",
+ "use_case": "移除视频中误入的路人/物体，或对指定区域进行替换（如换装、换物、清除瑕疵），保留背景、非编辑区域和原始音轨。",
+ "limitation": "依赖多个大型模型与自定义节点，显存/部署要求高；SAM3/SeC 对遮挡、快速运动可能分割不准，需要人工点选修正；生成分辨率与帧数受限（本工作流默认 1344x768、124 帧），长视频需分段处理。",
+ "dependencies": [
+  "sam3.pt",
+  "birefnet.safetensors",
+  "minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "taeh3.safetensors",
+  "rgthree (Fast Groups Bypasser)",
+  "KJNodes",
+  "ComfyUI-VideoHelperSuite",
+  "ComfyUI-SeC (SeCModelLoader/SeCVideoSegmentation)",
+  "easy sam3 节点套件",
+  "MiniMax H3 自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "video + image + text",
+  "count": "3"
+ },
+ "output": {
+  "type": "video (with audio)",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "MiniMaxH3ReferenceToVideo.prompt",
+   "how_to_tune": "使用 '<Subject 1>' 指代输入主体，后续用英文描述目标动作或场景；提示词应简洁，避免引入额外主体，否则会导致非编辑区域被误改。"
+  },
+  {
+   "param": "KSampler.steps / cfg",
+   "how_to_tune": "当前 steps=6, cfg=1 是 turbo LoRA 推荐的快速配置；若细节不足可增至 steps=8，cfg 不宜超过 2，否则采样崩溃或过度锐化。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength",
+   "how_to_tune": "当前 0.75 偏平衡；输出与输入参考视频过像时降低到 0.5~0.6，过远时提高到 0.85~0.9。"
+  },
+  {
+   "param": "GrowMask.margin",
+   "how_to_tune": "当前 119 像素用于放大 mask 边缘；目标边缘有分割遗漏时增大，若背景被连带修改则减小。"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "选择 9:16 适合竖屏人像编辑，16:9 适合横屏场景；高分辨率会显著增加显存和耗时，建议根据 GPU 能力选择。"
+  }
+ ],
+ "summary_text": "能力:输入视频，通过 SAM3 与 SeC 多路分割生成目标区域的精确 mask，配合人工点选/背景移除，可指定要编辑或移除的视频元素；能力:使用 MiniMax H3 Reference-to-Video 模型，配合 LoRA turbo 和低步数采样，对视频局部区域进行重绘/替换，保持非编辑区域与背景不变；能力:同时编码视频与音频 latent 并拼接，使编辑后的视频保留原始音轨或生成同步音频，实现带声音的视频生视频；能力:利用 BiRefNet 移除背景，结合 mask 合成，将前景单独提取后做局部编辑，再与背景融合，适合人物/物体替换场景；特色:多级分割 + 人工修正：SAM3 视频分割、SeC 语义分割、PointsEditor 人工点选、BiRefNet 背景移除同时存在，形成高精度目标 mask 生成链路；特色:双重掩码控制生成区域：ConditioningZeroOut 与两个 SetLatentNoiseMask 同时作用，使模型只对 mask 内部进行重绘，外部条件归零以保持原视频内容；特色:音频保留/同步设计：视频 VAE 与音频 VAE 分离编码，再通过 LTXVConcatAVLatent 拼接，使编辑过程不丢声音；特色:长视频显存优化：MiniMaxH3MemoryEfficientSageAttentionPatch 与 ModelAttentionBackend 切换，配合 LoRA turbo 低步数采样，支持 124 帧生成；特色:组旁路快速实验：Fast Groups Bypasser 可快速开关不同处理组，便于对比不同 mask 来源或背景移除模块的效果；移除视频中误入的路人/物体，或对指定区域进行替换（如换装、换物、清除瑕疵），保留背景、非编辑区域和原始音轨。；作者似乎希望构建一个‘精准局部重绘/移除视频元素’的受控管线。先用 SAM3 和 SeC 自动生成目标 mask，并通过 PointsEditor 与 BiRefNet 优化 mask 边界；接着用 MiniMax H3 引用视频生成，结合 LoRA turbo 实现快速局部生成；同时保留音频 latent 来避免音画分离。这种设计使可以在不动背景的前提下移除/替换指定物体，兼顾了编辑精度与生成效率。"
+}

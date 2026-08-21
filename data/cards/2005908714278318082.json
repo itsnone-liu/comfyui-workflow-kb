@@ -1,0 +1,113 @@
+{
+ "domain": [
+  "AI图像生成",
+  "人像写真"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人物照片，自动生成多张不同机位（近景、中景、特写）和场景（海边、都市雪景、新年灯笼街等）的新年氛围写真。",
+   "kind": "fact"
+  },
+  {
+   "text": "在生成的写真相片上自动叠加“万事胜意”“团圆美满”等书法祝福文字，输出可直接分享的节日贺卡图。",
+   "kind": "fact"
+  },
+  {
+   "text": "结合LLM提示词助手与多语言翻译，自动扩写/翻译分镜提示词，实现输入一张图输出一组风格统一的节日写真。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过Batch与List切片节点实现多分镜批量处理，一次运行产出多张结果的组合图/序列图。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image-Edit（基于指令的图像编辑/生成）",
+  "多LoRA组合（Lightning 4步加速、F2P真实感、ypj_lora_v2人物一致性）",
+  "多分镜Batch处理（ImageFromBatch/ImageListToImageBatch/ImpactImageBatchToImageList）",
+  "文本叠加/排版（CR Overlay Text）",
+  "提示词自动生成与翻译（RH_LLMAPI_NODE + RH_Translator）",
+  "图像尺寸/宽高比调整（LayerUtility: ImageScaleByAspectRatio V2）",
+  "采样优化（CFGNorm + ModelSamplingAuraFlow + FlowMatchEulerDiscreteSc）"
+ ],
+ "special_features": [
+  {
+   "text": "多段式条件生成：通过多个GODMT_ListSlice和ImpactSwitch将输入图/提示词列表切分重组，形成若干独立生成分支。",
+   "kind": "fact"
+  },
+  {
+   "text": "动态提示词组装：使用ACE_TextConcatenate、ttN text7BOX_concat、ReplaceText将LLM输出、场景描述、人物特征等拼接成具体prompt。",
+   "kind": "fact"
+  },
+  {
+   "text": "质量控制回路：利用ConditioningZeroOut、CFGNorm与CFG=1实现Qwen-Image-Edit的低CFG稳定生成；用ModelSamplingAuraFlow调整flow shift。",
+   "kind": "fact"
+  },
+  {
+   "text": "后期叠加中文书法字：多处CR Overlay Text使用不同字体/字号/位置，为每张输出添加祝福语。",
+   "kind": "fact"
+  },
+  {
+   "text": "双语翻译链：RH_Translator多实例将中文提示词转英文给模型，适应Qwen-Image模型的英文prompt偏好。",
+   "kind": "inference"
+  },
+  {
+   "text": "LLM增强：RH_LLMAPI_NODE以特定角色提示词（“新年雪景氛围写真提示词助手”等）生成多个场景描述，再经翻译/填充进入采样。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "通过多分镜Pipeline把一张普通照片变成一套多场景、多构图的节日写真贺卡；利用Qwen-Image-Edit保持人物身份，用Lightning LoRA降低推理成本，用LLM自动化生成创意文案，最后叠加中文祝福文字，使输出不是单纯AI图片而是Ready-to-share的节日贺卡。",
+ "use_case": "适合个人用户在节日/新年时期上传自拍或人像照，自动生成多张含有祝福语的节日写真，用于社交媒体分享、头像、贺卡。",
+ "limitation": "依赖Qwen-Image-Edit系列大模型及多个定制节点，需要足够显存；需要可用的LLM API密钥（RH_LLMAPI_NODE）；输入需为清晰正脸或半身照；输出图像中的文字为后叠加，若原提示词含文字可能干扰；自定义节点多，环境搭建复杂。",
+ "dependencies": [
+  "checkpoint: qwen_image_edit_2511_bf16.safetensors",
+  "clip: qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "vae: qwen_image_vae.safetensors",
+  "lora: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors",
+  "lora: Qwen-Image-Edit-F2P.safetensors",
+  "lora: ypj_lora_v2 step8000.safetensors",
+  "custom nodes: ImpactPack, ComfyRoll, ACE, ttN, LayerUtility, RH, SDVM, EasyUse, KJNodes等系列节点",
+  "fonts: 千图笔锋手写体.TTF 及 models/fonts/fronts/Zhan* 字体文件",
+  "API: LLM API Key（RH_LLMAPI_NODE）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps=6",
+   "how_to_tune": "Lightning LoRA设计为4步，6步可兼顾质量与速度；若显存充裕可调8-10步提高细节，但可能过拟合。"
+  },
+  {
+   "param": "KSampler.cfg=1",
+   "how_to_tune": "Qwen-Image-Edit配合CFGNorm使用，保持CFG=1；不要调高，否则色彩过饱和。"
+  },
+  {
+   "param": "KSampler.scheduler=FlowMatchEulerDiscreteSc",
+   "how_to_tune": "使用FlowMatch系列调度，这是Qwen-Image的推荐配置，不建议更换。"
+  },
+  {
+   "param": "LoraLoaderModelOnly: Qwen-Image-Edit-F2P 权重=0.5",
+   "how_to_tune": "控制真实感强度，建议0.4-0.7；过低效果不明显，过高可能出现伪影。"
+  },
+  {
+   "param": "LoraLoaderModelOnly: ypj_lora_v2 权重=0.2",
+   "how_to_tune": "控制人物一致性，可调0.1-0.3；太大反而破坏相似度。"
+  },
+  {
+   "param": "ModelSamplingAuraFlow.shift=3",
+   "how_to_tune": "控制flow匹配偏移，调节画面明暗/对比；可尝试2-4，值越大越偏向细节锐化。"
+  },
+  {
+   "param": "RH_LLMAPI_NODE temperature=0.6",
+   "how_to_tune": "LLM提示词随机性，调高可产生更多创意但可能偏离主题；调低更稳定。"
+  }
+ ],
+ "summary_text": "能力:上传单张人物照片，自动生成多张不同机位（近景、中景、特写）和场景（海边、都市雪景、新年灯笼街等）的新年氛围写真。；能力:在生成的写真相片上自动叠加“万事胜意”“团圆美满”等书法祝福文字，输出可直接分享的节日贺卡图。；能力:结合LLM提示词助手与多语言翻译，自动扩写/翻译分镜提示词，实现输入一张图输出一组风格统一的节日写真。；能力:通过Batch与List切片节点实现多分镜批量处理，一次运行产出多张结果的组合图/序列图。；特色:多段式条件生成：通过多个GODMT_ListSlice和ImpactSwitch将输入图/提示词列表切分重组，形成若干独立生成分支。；特色:动态提示词组装：使用ACE_TextConcatenate、ttN text7BOX_concat、ReplaceText将LLM输出、场景描述、人物特征等拼接成具体prompt。；特色:质量控制回路：利用ConditioningZeroOut、CFGNorm与CFG=1实现Qwen-Image-Edit的低CFG稳定生成；用ModelSamplingAuraFlow调整flow shift。；特色:后期叠加中文书法字：多处CR Overlay Text使用不同字体/字号/位置，为每张输出添加祝福语。；特色:双语翻译链：RH_Translator多实例将中文提示词转英文给模型，适应Qwen-Image模型的英文prompt偏好。；特色:LLM增强：RH_LLMAPI_NODE以特定角色提示词（“新年雪景氛围写真提示词助手”等）生成多个场景描述，再经翻译/填充进入采样。；适合个人用户在节日/新年时期上传自拍或人像照，自动生成多张含有祝福语的节日写真，用于社交媒体分享、头像、贺卡。；通过多分镜Pipeline把一张普通照片变成一套多场景、多构图的节日写真贺卡；利用Qwen-Image-Edit保持人物身份，用Lightning LoRA降低推理成本，用LLM自动化生成创意文案，最后叠加中文祝福文字，使输出不是单纯AI图片而是Ready-to-share的节日贺卡。"
+}

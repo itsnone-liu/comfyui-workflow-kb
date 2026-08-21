@@ -1,0 +1,118 @@
+{
+ "domain": [
+  "图像生成",
+  "人物换装",
+  "AI摄影后期"
+ ],
+ "capabilities": [
+  {
+   "text": "输入人物图、服装图、背景图/人脸参考图，端到端生成保持原人物姿态与身材比例的换装照片，并支持背景替换、换脸/换发型",
+   "kind": "fact"
+  },
+  {
+   "text": "通过三个独立的 PainterFluxImageEdit 分支分别处理“背景替换”、“服装更换”、“脸/发型替换”，可分别输出各任务结果",
+   "kind": "fact"
+  },
+  {
+   "text": "将生成结果经过 SeedVR2VideoUpscaler 放大至最高 2560x1920 分辨率，并同时保存普通版与放大版图像",
+   "kind": "fact"
+  },
+  {
+   "text": "利用 FaceAnalysisModels + FaceEmbedDistance 计算生成人脸与参考人脸的欧氏距离，对换脸结果进行相似度质量控制",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Upscale-Hires",
+  "LoRA微调",
+  "人像分割与蒙版处理",
+  "人脸相似度验证",
+  "多阶段图像编辑"
+ ],
+ "special_features": [
+  {
+   "text": "三段式分支结构：使用三个 PainterFluxImageEdit 分别执行背景替换、服装更换、人脸/发型替换，每个分支搭配不同的 LoRA（KleinBase9B_ReplaceScene、flux2klein_change_clothes、DarkKlein9b）和独立 KSampler",
+   "kind": "fact"
+  },
+  {
+   "text": "人脸质量回路：FaceAnalysisModels 检测人脸后经 FaceEmbedDistance 计算相似度并设置阈值 2.0，可能用于筛选或校验生成结果，确保换脸后身份一致",
+   "kind": "inference"
+  },
+  {
+   "text": "影像级后处理管线：PersonMaskUltra V2 人像分割 → CropByMask 局部裁剪 → RestoreCropBox 还原，再叠加 ImageColorMatchAdobe+ 颜色匹配和 LayerFilter: FilmV2 胶片颗粒效果，提升视觉融合度",
+   "kind": "fact"
+  },
+  {
+   "text": "多尺寸输出策略：使用 SeedVR2VideoUpscaler + PrimitiveInt(2560/1920) 控制放大目标分辨率，同时保留普通输出和放大输出两个 SaveImage 节点",
+   "kind": "fact"
+  },
+  {
+   "text": "显存优化：在多个阶段插入 LayerUtility: PurgeVRAM V2，清理临时显存占用，支持长流水线执行",
+   "kind": "fact"
+  },
+  {
+   "text": "多模态条件输入：使用多个 easy imageConcat 节点将图像信息拼接进条件编码，可能让 FLUX.2 的 Qwen3 文本编码器同时理解图像与文本指令",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "工作流将“换装”这一复杂任务解耦为背景替换、服装更换、人脸/发型替换三个独立子任务，每个子任务由针对性的 LoRA 和独立采样器完成，降低单次生成时的属性干扰。随后通过 PersonMask、CropByMask、颜色匹配等后处理将局部编辑结果融合并统一风格，再用 SeedVR2 进行高分辨率放大。人脸相似度验证作为质量关卡，似乎用于确保换脸结果的身份可信度。整体设计体现了“模块化解耦—定向修复—后期增强”的工程化思路，适合对单图进行多维度可控编辑。",
+ "use_case": "适用于电商模特换装、虚拟试衣、广告海报人物背景重制、影视人物脸型/发型替换等需要保持人物姿态并改变衣物、场景、身份的创作场景。",
+ "limitation": "依赖特定模型文件（Flux.2 Klein-9B、qwen_3_8b、seedvr2_ema_7b 等）和多个 ComfyUI 自定义插件（LayerStyle、EasyUse、rgthree、FaceAnalysis、SeedVR2 等），部署门槛高。需要足够显存（尤其 SeedVR2 7B 模型）。输入图片需符合角色设定（人物图、服装图、背景图/人脸图），且内置提示词为中文固定文本，若输入语义不符需手动修改节点内提示词。模型含 nsfw 版本，使用时应遵守内容合规要求。",
+ "dependencies": [
+  "Flux.2 Klein-9B_fp16_nsfw.safetensors",
+  "flux-2-klein-9b.safetensors",
+  "flux2-vae.safetensors",
+  "ema_vae_fp16.safetensors",
+  "qwen_3_8b_fp8mixed.safetensors",
+  "flux2klein_change_clothes.safetensors",
+  "DarkKlein9b_v2BFS_extracted_lora_r256.safetensors",
+  "KleinBase9B_ReplaceScene.safetensors",
+  "seedvr2_ema_7b_sharp-Q4_... (SeedVR2 DiT 模型)",
+  "insightface 模型",
+  "RMBG-2.0 模型",
+  "ComfyUI-Easy-Use (easy imageConcat, easy imageRemBg)",
+  "ComfyUI-LayerStyle (LayerFilter, LayerMask, LayerUtility)",
+  "rgthree-comfy (Image Comparer)",
+  "ComfyUI-FaceAnalysis (FaceAnalysisModels, FaceEmbedDistance)",
+  "ComfyUI-SeedVR2 (SeedVR2VideoUpscaler, SeedVR2LoadDiTModel)",
+  "ZML 节点 (ZML_ImageSelectorNode)",
+  "PainterFluxImageEdit 自定义节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "多张参考图像（LoadImage(IN) 共 5 个，分别对应人物图、服装图、背景图、人脸图等）",
+  "count": "5"
+ },
+ "output": {
+  "type": "图像文件（PreviewImage / SaveImage / 放大保存）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "LoraLoaderModelOnly strength (flux2klein_change_clothes)",
+   "how_to_tune": "默认 1.0，控制换装 LoRA 的影响强度。增大可让服装纹理更贴合目标服装，但可能影响姿态和身材比例；建议在 0.8~1.2 之间微调。"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength (KleinBase9B_ReplaceScene)",
+   "how_to_tune": "默认 0.9，控制背景替换程度。过低时背景替换不彻底，过高可能破坏人物边缘；可先 0.9，再上下浮动 0.1 观察平衡。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "三个分支分别设为 6/6/4，FLUX 系列通常 4~8 步即可出图。步数越高细节越丰富但生成更慢；若画面不干净可尝试提高至 8，若追求速度可降到 4。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler width/height",
+   "how_to_tune": "当前目标宽度 2560、高度 1920。数值越大清晰度越高，但显存占用和耗时显著增长；低显存环境可降低到 1920/1280。"
+  },
+  {
+   "param": "FaceEmbedDistance threshold",
+   "how_to_tune": "当前阈值 2.0。降低阈值（如 1.5）会提高人脸相似度要求，更适合严格的身份保持场景；但阈值过低可能导致多次生成都无结果，需配合随机种子重试。"
+  },
+  {
+   "param": "GrowMaskWithBlur grow",
+   "how_to_tune": "当前人像蒙版扩展 150 像素、模糊 15。增大 grow 可扩大处理区域，避免换装/换背景后边缘残留，但过大可能影响背景细节；残边明显时可适当增加到 200。"
+  }
+ ],
+ "summary_text": "能力:输入人物图、服装图、背景图/人脸参考图，端到端生成保持原人物姿态与身材比例的换装照片，并支持背景替换、换脸/换发型；能力:通过三个独立的 PainterFluxImageEdit 分支分别处理“背景替换”、“服装更换”、“脸/发型替换”，可分别输出各任务结果；能力:将生成结果经过 SeedVR2VideoUpscaler 放大至最高 2560x1920 分辨率，并同时保存普通版与放大版图像；能力:利用 FaceAnalysisModels + FaceEmbedDistance 计算生成人脸与参考人脸的欧氏距离，对换脸结果进行相似度质量控制；特色:三段式分支结构：使用三个 PainterFluxImageEdit 分别执行背景替换、服装更换、人脸/发型替换，每个分支搭配不同的 LoRA（KleinBase9B_ReplaceScene、flux2klein_change_clothes、DarkKlein9b）和独立 KSampler；特色:人脸质量回路：FaceAnalysisModels 检测人脸后经 FaceEmbedDistance 计算相似度并设置阈值 2.0，可能用于筛选或校验生成结果，确保换脸后身份一致；特色:影像级后处理管线：PersonMaskUltra V2 人像分割 → CropByMask 局部裁剪 → RestoreCropBox 还原，再叠加 ImageColorMatchAdobe+ 颜色匹配和 LayerFilter: FilmV2 胶片颗粒效果，提升视觉融合度；特色:多尺寸输出策略：使用 SeedVR2VideoUpscaler + PrimitiveInt(2560/1920) 控制放大目标分辨率，同时保留普通输出和放大输出两个 SaveImage 节点；特色:显存优化：在多个阶段插入 LayerUtility: PurgeVRAM V2，清理临时显存占用，支持长流水线执行；特色:多模态条件输入：使用多个 easy imageConcat 节点将图像信息拼接进条件编码，可能让 FLUX.2 的 Qwen3 文本编码器同时理解图像与文本指令；适用于电商模特换装、虚拟试衣、广告海报人物背景重制、影视人物脸型/发型替换等需要保持人物姿态并改变衣物、场景、身份的创作场景。；工作流将“换装”这一复杂任务解耦为背景替换、服装更换、人脸/发型替换三个独立子任务，每个子任务由针对性的 LoRA 和独立采样器完成，降低单次生成时的属性干扰。随后通过 PersonMask、CropByMask、颜色匹配等后处理将局部编辑结果融合并统一风格，再用 SeedVR2 进行高分辨率放大。人脸相似度验证作为质量关卡，似乎用于确保换脸结果的身份可信度。整体设计体现了“模块化解耦—定向修复—后期增强”的工程化思路，适合对单图进行多维度可控编辑。"
+}

@@ -1,0 +1,116 @@
+{
+ "domain": [
+  "图像编辑",
+  "换脸",
+  "妆容",
+  "人脸"
+ ],
+ "capabilities": [
+  {
+   "text": "输入多张人脸照片，将脸部区域贴合到目标人像上，生成保持身份特征的多姿态换脸结果",
+   "kind": "fact"
+  },
+  {
+   "text": "支持最多5路图像同时输入，通过多个人脸检测/遮罩节点完成多人脸或多张图批量换脸",
+   "kind": "inference"
+  },
+  {
+   "text": "结合 FLUX Fill Inpaint 与 DifferentialDiffusion 进行局部重绘，仅修改脸部区域，保留背景、发型和姿态",
+   "kind": "fact"
+  },
+  {
+   "text": "应用 PULID 身份向量保持面部一致性，并可通过 style model 调节风格/妆容",
+   "kind": "inference"
+  },
+  {
+   "text": "提供 PreviewImage 和 Image Comparer 对比环节，便于人工筛选最优结果",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Fill Inpainting/Outpainting",
+  "PULID (pulid_flux_v0.9.1) 身份保持",
+  "InsightFace 人脸检测与分析",
+  "DifferentialDiffusion + InpaintModelConditioning 局部可控重绘",
+  "Dual CLIP (CLIP-L + T5) 文本编码",
+  "LoRA 加速/风格微调 (FLUX.1-Turbo-Alpha-8-step, portrait_lora64)",
+  "StyleModelApply 风格模型应用"
+ ],
+ "special_features": [
+  {
+   "text": "5个 LoadImage 输入 + 4组 FaceAnalysisModels/FaceBoundingBox + 2组 PersonMaskUltra V2，实现多路人脸并行提取和分批换脸；这说明工作流不只单脸换脸，而是面向多图/多脸场景",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 FLUX.1-Turbo-Alpha-8-step LoRA 将采样步数压到 8，并在 KSampler (Efficient) 中设置 euler/simple/denoise=1，速度与质量兼顾",
+   "kind": "fact"
+  },
+  {
+   "text": "在换脸结果上叠加 CropByMask V2 + ImageScaleByAspectRatio + MaskGrow + MaskToImage 等后处理，可能用于修正边缘羽化/扩展遮罩，减少拼接硬边",
+   "kind": "inference"
+  },
+  {
+   "text": "集成 workflow>1 (疑似 PULID 换脸节点) 与 workflow>2 (疑似二次裁剪遮罩节点)，与 InpaintModelConditioning 组合成主/副两段式结构，一个负责身份迁移，一个负责精细化合成",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 easy cleanGpuUsed 和 easy clearCacheAll 穿插在工作流中，在长步数/多图场景下自动清理显存和缓存，属于对多输入处理的优化设计",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流围绕 FLUX 强大的局部重绘能力设计，以 PULID 解决扩散模型换脸的身份漂移问题。它采用多路输入、多个人脸检测与遮罩节点，将复杂换脸拆分为“检测-遮罩-重绘-后处理”多个阶段，并用 Turbo LoRA 加速采样、用 StyleModel 控制风格。整体意图是在保证身份相似度的前提下，尽可能精细地控制换脸边界与画质，适合对妆容和面部细节有要求的场景。由于节点众多且含大量自定义扩展，设计上更接近一个功能完整的“换脸工具箱”，而非简单 bash 组合。",
+ "use_case": "输入一张/多张源人脸照片和目标人像图，自动将源人脸换到目标人像上，保持目标姿态、背景、光照。可用于妆容迁移、虚拟试妆、写真换脸、创意视频首帧等。",
+ "limitation": "依赖大量大模型文件（FLUX Fill, ae.sft, T5, PULID 等）和自定义节点包（Impact Pack，ComfyUI-Easy-Use，LayerStyle，rgthree 等），首次配置成本高；换脸结果与源/目标人脸角度相关，Note 中提醒角度应尽量一致；对于刘海、长发遮挡可能无法准确遮挡，只勾选面部时效果受限；一次最多5张输入，批量再大需分次；显存要求较高（CUDA）。",
+ "dependencies": [
+  "F.1-Fill-fp16_Inpaint_Outpaint_1.0.safetensors",
+  "FLUX.1-Turbo-Alpha-8-step .safetensors",
+  "portrait_lora64.safetensors",
+  "ae.sft",
+  "flex1_redux_siglip2_512.safetensors",
+  "siglip2_so400m_patch16_512.safetensors",
+  "sd3/clip_l.safetensors",
+  "sd3/t5xxl_fp16.safetensors",
+  "pulid_flux_v0.9.1.safetensors",
+  "自定义节点: Impact Pack, ComfyUI-Easy-Use, ComfyUI_LayerStyle, rgthree-comfyui, Efficiency Nodes"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图片（LoadImage 输入）",
+  "count": "5"
+ },
+ "output": {
+  "type": "换脸后的图片（SaveImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler_steps",
+   "how_to_tune": "默认8步（与 Turbo LoRA 匹配）。若需更精细五官，可试 10~15 步；但会降低效率。可在 KSampler (Efficient) 的 widgets 中修改第2个值。"
+  },
+  {
+   "param": "KSampler_cfg",
+   "how_to_tune": "widgets 中第3个值为1，FLUX 通常 cfg=1，不要乱调高；调高会导致色彩过饱和。"
+  },
+  {
+   "param": "KSampler_denoise",
+   "how_to_tune": "widgets 第6个值为1，表示全图重绘。若只想微调局部，可降到 0.75~0.95，使边缘过渡更自然。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认50。FluxGuidance 控制提示词引导强度，推荐范围 30~70。脸与描述不符可适度提高到60，但不建议超过80。"
+  },
+  {
+   "param": "LoraLoaderModelOnly_strength",
+   "how_to_tune": "两个 LoRA 权重均为1。portrait_lora64 若导致妆感过重，可降到0.5~0.8；Turbo LoRA 不建议低于1。"
+  },
+  {
+   "param": "FaceBoundingBox 阈值/扩展（0,0.3,-1）",
+   "how_to_tune": "中间值0.3可能为人脸检测置信度阈值；-1可能表示使用全图裁剪。若人脸未被框选，尝试降低阈值至0.1-0.2；若框选过大，可调整 padding。"
+  },
+  {
+   "param": "workflow>1 (PULID weight 0.4)",
+   "how_to_tune": "widgets 中包含 '1.0','0','1','0.4'，疑似身份权重/风格权重/清晰度/融合比例。可小幅调整最后的0.4（融合强度）：越大越像源脸，越小融合越自然。"
+  }
+ ],
+ "summary_text": "能力:输入多张人脸照片，将脸部区域贴合到目标人像上，生成保持身份特征的多姿态换脸结果；能力:支持最多5路图像同时输入，通过多个人脸检测/遮罩节点完成多人脸或多张图批量换脸；能力:结合 FLUX Fill Inpaint 与 DifferentialDiffusion 进行局部重绘，仅修改脸部区域，保留背景、发型和姿态；能力:应用 PULID 身份向量保持面部一致性，并可通过 style model 调节风格/妆容；能力:提供 PreviewImage 和 Image Comparer 对比环节，便于人工筛选最优结果；特色:5个 LoadImage 输入 + 4组 FaceAnalysisModels/FaceBoundingBox + 2组 PersonMaskUltra V2，实现多路人脸并行提取和分批换脸；这说明工作流不只单脸换脸，而是面向多图/多脸场景；特色:使用 FLUX.1-Turbo-Alpha-8-step LoRA 将采样步数压到 8，并在 KSampler (Efficient) 中设置 euler/simple/denoise=1，速度与质量兼顾；特色:在换脸结果上叠加 CropByMask V2 + ImageScaleByAspectRatio + MaskGrow + MaskToImage 等后处理，可能用于修正边缘羽化/扩展遮罩，减少拼接硬边；特色:集成 workflow>1 (疑似 PULID 换脸节点) 与 workflow>2 (疑似二次裁剪遮罩节点)，与 InpaintModelConditioning 组合成主/副两段式结构，一个负责身份迁移，一个负责精细化合成；特色:通过 easy cleanGpuUsed 和 easy clearCacheAll 穿插在工作流中，在长步数/多图场景下自动清理显存和缓存，属于对多输入处理的优化设计；输入一张/多张源人脸照片和目标人像图，自动将源人脸换到目标人像上，保持目标姿态、背景、光照。可用于妆容迁移、虚拟试妆、写真换脸、创意视频首帧等。；该工作流围绕 FLUX 强大的局部重绘能力设计，以 PULID 解决扩散模型换脸的身份漂移问题。它采用多路输入、多个人脸检测与遮罩节点，将复杂换脸拆分为“检测-遮罩-重绘-后处理”多个阶段，并用 Turbo LoRA 加速采样、用 StyleModel 控制风格。整体意图是在保证身份相似度的前提下，尽可能精细地控制换脸边界与画质，适合对妆容和面部细节有要求的场景。由于节点众多且含大量自定义扩展，设计上更接近一个功能完整的“换脸工具箱”，而非简单 bash 组合。"
+}

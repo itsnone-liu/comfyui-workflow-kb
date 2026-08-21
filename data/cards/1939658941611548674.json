@@ -1,0 +1,101 @@
+{
+ "domain": [
+  "AI绘画",
+  "图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传多张参考图（如人脸、姿势图），自动进行抠像、缩放和拼接，配合自然语言描述，通过 FLUX Kontext 多图控制生成风格一致的新图像",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 RH_LLMAPI_NODE 将用户简单指令（如“让图中女生拿着一瓶红酒坐在沙发上”）扩展为专业提示词，无需手动编写复杂 prompt",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Nunchaku int4 量化加载 FLUX Kontext 模型，在较低显存下完成高质量生成，并输出带/不带合成构图的多个结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Kontext 多参考图像上下文",
+  "Nunchaku int4 量化推理",
+  "ClIP 双编码器 + FLUX Guidance",
+  "图像抠像（Inspyrenet）与多图拼接",
+  "LLM API 提示词增强",
+  "VAE 编解码与参考图 latent 注入"
+ ],
+ "special_features": [
+  {
+   "text": "使用 NunchakuFluxDiTLoader 加载 svdq-int4_r32-flux.1-kontext-dev 量化模型，配合 bfloat16 精度，实现加速与省显存",
+   "kind": "fact"
+  },
+  {
+   "text": "多张参考图依次经过 easy imageRemBg 抠像、ImageScaleToMegapixels 统一尺寸，再通过 ImageConcatMulti（向下拼接）和 ImageConcanate（向右拼接）组成多图上下文",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 RH_LLMAPI_NODE 作为“FLUX Kontext prompt 助理”，将用户概述自动改写为适合 FLUX 的提示词，并通过 ShowText 展示结果",
+   "kind": "fact"
+  },
+  {
+   "text": "Compositor3 + CompositorConfig3 实现输出图像的构图/合成，配合两个 SaveImage 节点保存普通版与合成版，便于对比",
+   "kind": "fact"
+  },
+  {
+   "text": "工作流内嵌 MarkdownNote 和 Note Plus (mtb) 课件说明，属于教学向的极客设计",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流试图将多图参考、LLM 智能提示词和量化推理结合为一个易用的端到端生成方案。通过拼接多张参考图形成上下文（Kontext），让 FLUX 模型理解参考对象与姿态；借助 LLM 降低用户编写提示词的门槛；同时用 Nunchaku int4 量化降低对显卡的要求。设计上可能希望创作者只需输入简单指令和示例图，即可得到可控且高质量的人物图像。",
+ "use_case": "适合需要保持人物一致性或多参考图控制的创作场景，如 AI 写真、角色设计、电商模特图替换/重绘、多图融合二次创作等。",
+ "limitation": "依赖 Nunchaku 自定义节点，仅支持其兼容的 NVIDIA GPU 与算子；必须下载指定量化模型 svdq-int4_r32-flux.1-kontext-dev；RH_LLMAPI_NODE 需要网络和 API 密钥；输入参考图的质量和一致性会显著影响出图效果；拼接方向与尺寸参数相对固定，复杂构图需手动调整。",
+ "dependencies": [
+  "clip_l.safetensors",
+  "t5xxl_fp16.safetensors",
+  "ae.safetensors",
+  "svdq-int4_r32-flux.1-kontext-dev.safetensors",
+  "Nunchaku 自定义节点",
+  "CG Compositor 节点",
+  "easy imageRemBg 节点",
+  "RH_LLMAPI_NODE 节点",
+  "ShowText|pysssss 节点",
+  "FluxKontextImageScale / ReferenceLatent 节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "多张参考图 + 自然语言指令",
+  "count": "3 图 + 1 文本"
+ },
+ "output": {
+  "type": "图像（PreviewImage + 2× SaveImage）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "默认 20，可提高到 30 获得更精细细节，但耗时增加；追求速度可降至 15。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "设为 1 是 FLUX 常用配置；若发现构图偏离，可微调到 1.5-2.0，但过高会引入伪影。"
+  },
+  {
+   "param": "FluxGuidance.guidance",
+   "how_to_tune": "默认 2.5，控制文本提示的服从度；若生成内容与描述偏离可增大到 3.0-3.5，若过度死板可降低。"
+  },
+  {
+   "param": "RH_LLMAPI_NODE temperature",
+   "how_to_tune": "widgets 中的 0.6 为生成温度；调低（如 0.4）可获得更保守稳定的提示词，调高（如 0.8）可增加多样性与创意性。"
+  },
+  {
+   "param": "CompositorConfig3 宽高",
+   "how_to_tune": "输出画布尺寸，分别设为 736 和 1280 用于竖构图；若目标比例不同，需按比例修改，并注意合成时的对齐。"
+  },
+  {
+   "param": "ImageScaleToMegapixels 目标像素",
+   "how_to_tune": "所有参考图统一缩放至约 1 百万像素；若参考图细节不足可提高至 1.5，但会增大内存占用。"
+  }
+ ],
+ "summary_text": "能力:上传多张参考图（如人脸、姿势图），自动进行抠像、缩放和拼接，配合自然语言描述，通过 FLUX Kontext 多图控制生成风格一致的新图像；能力:使用 RH_LLMAPI_NODE 将用户简单指令（如“让图中女生拿着一瓶红酒坐在沙发上”）扩展为专业提示词，无需手动编写复杂 prompt；能力:通过 Nunchaku int4 量化加载 FLUX Kontext 模型，在较低显存下完成高质量生成，并输出带/不带合成构图的多个结果；特色:使用 NunchakuFluxDiTLoader 加载 svdq-int4_r32-flux.1-kontext-dev 量化模型，配合 bfloat16 精度，实现加速与省显存；特色:多张参考图依次经过 easy imageRemBg 抠像、ImageScaleToMegapixels 统一尺寸，再通过 ImageConcatMulti（向下拼接）和 ImageConcanate（向右拼接）组成多图上下文；特色:引入 RH_LLMAPI_NODE 作为“FLUX Kontext prompt 助理”，将用户概述自动改写为适合 FLUX 的提示词，并通过 ShowText 展示结果；特色:Compositor3 + CompositorConfig3 实现输出图像的构图/合成，配合两个 SaveImage 节点保存普通版与合成版，便于对比；特色:工作流内嵌 MarkdownNote 和 Note Plus (mtb) 课件说明，属于教学向的极客设计；适合需要保持人物一致性或多参考图控制的创作场景，如 AI 写真、角色设计、电商模特图替换/重绘、多图融合二次创作等。；该工作流试图将多图参考、LLM 智能提示词和量化推理结合为一个易用的端到端生成方案。通过拼接多张参考图形成上下文（Kontext），让 FLUX 模型理解参考对象与姿态；借助 LLM 降低用户编写提示词的门槛；同时用 Nunchaku int4 量化降低对显卡的要求。设计上可能希望创作者只需输入简单指令和示例图，即可得到可控且高质量的人物图像。"
+}

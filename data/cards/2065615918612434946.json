@@ -1,0 +1,120 @@
+{
+ "domain": [
+  "AI图像生成",
+  "Cosplay",
+  "人像写真"
+ ],
+ "capabilities": [
+  {
+   "text": "输入一张真人照片和一张动漫角色参考图，输出保持人物原有身份特征并转换为指定Cosplay风格的写真相",
+   "kind": "fact"
+  },
+  {
+   "text": "批量生成16张不同姿势/场景的Cosplay写真图（可通过删减提示词减少数量）",
+   "kind": "fact"
+  },
+  {
+   "text": "对生成结果进行高清放大至1080p，提升最终输出可用性",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image Edit 指令编辑",
+  "LoRA 风格/身份注入",
+  "FLUX 采样",
+  "分段式采样生成",
+  "SegmentAnything 分割抠图",
+  "Inpaint 条件重绘",
+  "SeedVR2 图像超分",
+  "多阶段流程编排"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个 Easy_QwenEdit2509 节点串联：先用中文指令'让图1人物cosplay图2角色'做角色融合，再用英文指令'transform the image to r...'做动作/风格转换",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 Any2Cosplay_25 和 Z-image绝对真人像写真 两个 LoRA，分别控制Cosplay风格和真人质感，权重均设为0.8",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 SegmentAnythingUltra V3 + GroundingDINO + InpaintModelConditioning，先分割目标区域再重绘，可能用于精确处理面部/服装与背景",
+   "kind": "inference"
+  },
+  {
+   "text": "多处使用 PurgeVRAM / PurgeVRAM_UTK / RunningHub Deepcleaner 手动控制显存释放，适配长流程批处理",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Image Comparer (rgthree) 配合多个 SaveImage，方便对多分支生成结果进行对比输出",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 CFGNorm、ModelSamplingAuraFlow 调整采样参数，并采用 4/8 步超低步数采样（配合 Lightning 加速 LoRA）",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 Seed (rgthree) 和多个 KSampler 实现多种子并行批次，配合 Fast Groups Muter 控制组开关",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流采用'身份注入→角色转换→多姿势批量生成→高清放大'的分段式设计：先以 Qwen-Image Edit 的跨图编辑能力将真人身份与动漫角色进行融合，再用 LoRA 强化Cosplay风格与真人质感，接着通过多组采样器和姿势提示词批量生成不同姿态的写真图，最终用 SeedVR2 统一放大到1080p。使用分割重绘和显存清理是为了在长流程中稳定控制局部细节与资源占用，整体设计可能旨在平衡多样性和输出质量。",
+ "use_case": "适用于真人Cosplay动漫角色、AI写真集批量制作、风格化人像生成等场景，用户只需提供一张真人照和一张角色参考图即可自动产出多张高质量Cosplay写真。",
+ "limitation": "依赖大量特定模型文件（如 qwen_image_edit_2511_bf16.safetensors、z_image_turbo_bf16.safetensors、seedvr2_ema_3b_fp8_e4m3fn.safetensors）与自定义节点（rgthree、LayerMask、Easy_QwenEdit2509、CFGNorm、SeedVR2 等），需要较高 VRAM 的 GPU；输入必须是清晰的真人照片和动漫角色图，对提示词数量较敏感，且生成张数受提示词条数影响。",
+ "dependencies": [
+  "qwen_image_edit_2511_bf16.safetensors",
+  "z_image_turbo_bf16.safetensors",
+  "seedvr2_ema_3b_fp8_e4m3fn.safetensors",
+  "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+  "qwen_3_4b.safetensors",
+  "Qwen_Image_Edit_2511_Lightning_4步加速Lora_fp32.safetensors",
+  "Any2Cosplay_25.safetensors",
+  "Z-image绝对真人像写真.safetensors",
+  "cospose_20.safetensors",
+  "SegmentAnythingUltra V3",
+  "Easy_QwenEdit2509",
+  "CFGNorm",
+  "SeedVR2VideoUpscaler",
+  "ImageScaleRestore_UTK"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "Any2Cosplay_25 LoRA 权重",
+   "how_to_tune": "默认0.8，增大则动漫化/Cosplay特征更强，减小则更接近真人原貌，建议0.6~1.0之间调整。"
+  },
+  {
+   "param": "Z-image绝对真人像写真 LoRA 权重",
+   "how_to_tune": "默认0.8，增大可提升真人皮肤/光影质感，过大会导致风格僵化，过小易失去真实感。"
+  },
+  {
+   "param": "Qwen_Image_Edit_2511_Lightning LoRA 权重",
+   "how_to_tune": "固定为1，用于加速采样，若出现画质下降可尝试降低到0.8~0.9。"
+  },
+  {
+   "param": "cospose_20 LoRA 权重",
+   "how_to_tune": "权重1，用于控制动作姿势，可结合姿势提示词微调以得到更自然的姿态。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "主采样器steps为4，KSamplerAdvanced为8，借助加速LoRA实现低步数生成；若细节不足可适当增加至8~12，但会降低速度。"
+  },
+  {
+   "param": "CFGNorm 值",
+   "how_to_tune": "widget为1，用于调节CFG归一化，数值越高越严格遵循提示词，但可能损失多样性。"
+  },
+  {
+   "param": "SeedVR2VideoUpscaler 目标分辨率",
+   "how_to_tune": "默认1080，可调至更高如2K/4K，但显存占用和时间成本会显著增加。"
+  }
+ ],
+ "summary_text": "能力:输入一张真人照片和一张动漫角色参考图，输出保持人物原有身份特征并转换为指定Cosplay风格的写真相；能力:批量生成16张不同姿势/场景的Cosplay写真图（可通过删减提示词减少数量）；能力:对生成结果进行高清放大至1080p，提升最终输出可用性；特色:使用两个 Easy_QwenEdit2509 节点串联：先用中文指令'让图1人物cosplay图2角色'做角色融合，再用英文指令'transform the image to r...'做动作/风格转换；特色:引入 Any2Cosplay_25 和 Z-image绝对真人像写真 两个 LoRA，分别控制Cosplay风格和真人质感，权重均设为0.8；特色:集成 SegmentAnythingUltra V3 + GroundingDINO + InpaintModelConditioning，先分割目标区域再重绘，可能用于精确处理面部/服装与背景；特色:多处使用 PurgeVRAM / PurgeVRAM_UTK / RunningHub Deepcleaner 手动控制显存释放，适配长流程批处理；特色:使用 Image Comparer (rgthree) 配合多个 SaveImage，方便对多分支生成结果进行对比输出；特色:使用 CFGNorm、ModelSamplingAuraFlow 调整采样参数，并采用 4/8 步超低步数采样（配合 Lightning 加速 LoRA）；特色:通过 Seed (rgthree) 和多个 KSampler 实现多种子并行批次，配合 Fast Groups Muter 控制组开关；适用于真人Cosplay动漫角色、AI写真集批量制作、风格化人像生成等场景，用户只需提供一张真人照和一张角色参考图即可自动产出多张高质量Cosplay写真。；该工作流采用'身份注入→角色转换→多姿势批量生成→高清放大'的分段式设计：先以 Qwen-Image Edit 的跨图编辑能力将真人身份与动漫角色进行融合，再用 LoRA 强化Cosplay风格与真人质感，接着通过多组采样器和姿势提示词批量生成不同姿态的写真图，最终用 SeedVR2 统一放大到1080p。使用分割重绘和显存清理是为了在长流程中稳定控制局部细节与资源占用，整体设计可能旨在平衡多样性和输出质量。"
+}

@@ -1,0 +1,3757 @@
+{
+ "node_count": 101,
+ "link_count": 93,
+ "active_node_count": 85,
+ "nodes": [
+  {
+   "id": 2,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "如果你安装了 Triton，连接这个可以提升约30% 的速度"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "根据您的VRAM调整块以进行交换，这是在速度和内存使用量之间的权衡。\n或者，可以使用DiffSynt-Studios中引入的VRAM管理选项。这通常速度较慢，但与BlockSwap相比可以节省更多的VRAM。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 5,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "如选14B模型 那么\nWanVideo Lora Select\nWanVideo VACE Model Select\nWanVideo Model Loader \n这三个节点 都需要选14B的模型"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuot5"
+   ],
+   "in_links": [
+    1
+   ],
+   "out_links": []
+  },
+  {
+   "id": 7,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuomodel"
+   ],
+   "in_links": [
+    2
+   ],
+   "out_links": []
+  },
+  {
+   "id": 9,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuotvae"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": []
+  },
+  {
+   "id": 10,
+   "type": "WanVideoBlockSwap",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    30,
+    false,
+    false,
+    true,
+    0
+   ],
+   "in_links": [],
+   "out_links": [
+    6
+   ]
+  },
+  {
+   "id": 11,
+   "type": "WanVideoVRAMManagement",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 12,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WAN\\吉卜力风格-14B.safetensors",
+    0.8,
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    4
+   ]
+  },
+  {
+   "id": 13,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "\n\n模型存放位置： ComfyUI/models/diffusion_models/\n\nWan 2.1 T2V: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1-T2V-14B_fp8_e4m3fn.safetensors\n\nWan 2.1 VACE MODULE: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors\n\n----------------------------------------------------------------------\n模型存放位置 ComfyUI/models/loras/\n\nWan 2.1 CausVid LORA 13bn: \nhttps://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan21_CarusVid_14B_T2V_lora_rank32.safetensors\n\n----------------------------------------------------------------------\n\n模型存放位置 ComfyUI/models/vae/\n\nWAN 2.1 VAE: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1_VAE_bf16.safetensors\n\n----------------------------------------------------------------------\n\n模型存放位置 ComfyUI/models/text_encoders/\n\numt5-xxl-enc-bf16: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/umt5-xxl-enc-bf16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 15,
+   "type": "WanVideoVACEModelSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    8
+   ]
+  },
+  {
+   "id": 16,
+   "type": "WanVideoVAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1_VAE_bf16.safetensors",
+    "bf16"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 17,
+   "type": "LoadWanVideoT5TextEncoder",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "umt5-xxl-enc-bf16.safetensors",
+    "bf16",
+    "offload_device",
+    "disabled"
+   ],
+   "in_links": [],
+   "out_links": [
+    1
+   ]
+  },
+  {
+   "id": 18,
+   "type": "WanVideoModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors",
+    "fp16",
+    "fp8_e4m3fn",
+    "offload_device",
+    "sageattn"
+   ],
+   "in_links": [
+    94,
+    6,
+    96,
+    8
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 19,
+   "type": "WanVideoSLG",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9,10",
+    0.1,
+    0.9
+   ],
+   "in_links": [],
+   "out_links": [
+    77
+   ]
+  },
+  {
+   "id": 21,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "增强视频可以增加结果的保真度，过高的值会导致噪声结果。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 22,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "TeaCache可以被视为某种自动步骤跳转器。\n相对11阈值-值决定了这是多么激进，值越高速度越快，但质量下降更多。使用此模型时，绝对不应跳过最初的几步，否则会破坏运动。使用预先计算的系数时，闯值值应远高于默认系数。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuot5"
+   ],
+   "in_links": [],
+   "out_links": [
+    16
+   ]
+  },
+  {
+   "id": 25,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuomodel"
+   ],
+   "in_links": [],
+   "out_links": [
+    73
+   ]
+  },
+  {
+   "id": 28,
+   "type": "String Literal",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WAN-VACE"
+   ],
+   "in_links": [],
+   "out_links": [
+    12
+   ]
+  },
+  {
+   "id": 29,
+   "type": "JoinStrings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "_",
+    "",
+    " "
+   ],
+   "in_links": [
+    11,
+    12
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 43,
+   "type": "WanVideoTextEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "The boy looks serious, holding the camera",
+    "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+    true
+   ],
+   "in_links": [
+    16,
+    17
+   ],
+   "out_links": [
+    74
+   ]
+  },
+  {
+   "id": 44,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "prompt_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 45,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "seed_1"
+   ],
+   "in_links": [
+    18
+   ],
+   "out_links": []
+  },
+  {
+   "id": 46,
+   "type": "String Literal",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "视频"
+   ],
+   "in_links": [],
+   "out_links": [
+    19
+   ]
+  },
+  {
+   "id": 47,
+   "type": "JoinStrings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "/",
+    "",
+    " "
+   ],
+   "in_links": [
+    19,
+    20
+   ],
+   "out_links": [
+    30
+   ]
+  },
+  {
+   "id": 48,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Name_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    11
+   ]
+  },
+  {
+   "id": 49,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "prompt_1"
+   ],
+   "in_links": [
+    21
+   ],
+   "out_links": []
+  },
+  {
+   "id": 53,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "down",
+    true,
+    null
+   ],
+   "in_links": [
+    22,
+    23
+   ],
+   "out_links": [
+    25
+   ]
+  },
+  {
+   "id": 54,
+   "type": "Mute / Bypass Repeater (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    24
+   ],
+   "out_links": []
+  },
+  {
+   "id": 55,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    25,
+    26
+   ],
+   "out_links": [
+    36
+   ]
+  },
+  {
+   "id": 56,
+   "type": "ImageConcatMulti",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    "right",
+    true,
+    null
+   ],
+   "in_links": [
+    27,
+    28
+   ],
+   "out_links": [
+    37
+   ]
+  },
+  {
+   "id": 57,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output1_1"
+   ],
+   "in_links": [
+    29
+   ],
+   "out_links": [
+    26,
+    28
+   ]
+  },
+  {
+   "id": 58,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output1_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    38
+   ]
+  },
+  {
+   "id": 59,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Name_1"
+   ],
+   "in_links": [
+    30
+   ],
+   "out_links": []
+  },
+  {
+   "id": 60,
+   "type": "VHS_VideoInfo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {},
+   "in_links": [
+    31
+   ],
+   "out_links": [
+    40,
+    63
+   ]
+  },
+  {
+   "id": 61,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image1_1"
+   ],
+   "in_links": [
+    32
+   ],
+   "out_links": []
+  },
+  {
+   "id": 62,
+   "type": "JoinStrings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "_",
+    "",
+    " "
+   ],
+   "in_links": [
+    33,
+    34
+   ],
+   "out_links": [
+    64
+   ]
+  },
+  {
+   "id": 63,
+   "type": "String Literal",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "WAN-VACE"
+   ],
+   "in_links": [],
+   "out_links": [
+    34
+   ]
+  },
+  {
+   "id": 64,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Name_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 65,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output2_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 66,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "output2_1"
+   ],
+   "in_links": [
+    35
+   ],
+   "out_links": []
+  },
+  {
+   "id": 67,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    36,
+    37
+   ],
+   "out_links": [
+    35
+   ]
+  },
+  {
+   "id": 68,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image1_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    22,
+    27
+   ]
+  },
+  {
+   "id": 69,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image2_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 70,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "视频 Name WAN-VACE_00004-audio_rqder_1749010208.mp4",
+      "workflow": "视频 Name WAN-VACE_00004.png",
+      "fullpath": "/data/ComfyUI/personal/b8e358272f700a5c3c7678cf7d848116/output/视频 Name WAN-VACE_00004-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    38,
+    39,
+    40,
+    41
+   ],
+   "out_links": []
+  },
+  {
+   "id": 74,
+   "type": "WanVideoExperimentalArgs",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    true,
+    false,
+    0,
+    false,
+    1,
+    1.25,
+    20
+   ],
+   "in_links": [],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 76,
+   "type": "String Literal",
+   "category": "utility",
+   "title": "保存图片的名称 保存到“output/视频” 文件夹里面",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Name"
+   ],
+   "in_links": [],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 78,
+   "type": "Bookmark (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "3",
+    0.9
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 79,
+   "type": "ImageResizeKJ",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "nearest-exact",
+    true,
+    2,
+    0
+   ],
+   "in_links": [
+    42,
+    43,
+    44
+   ],
+   "out_links": [
+    32
+   ]
+  },
+  {
+   "id": 80,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "seed_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    79
+   ]
+  },
+  {
+   "id": 83,
+   "type": "InvertMask",
+   "category": "utility",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    53
+   ],
+   "out_links": [
+    67
+   ]
+  },
+  {
+   "id": 87,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image2_1"
+   ],
+   "in_links": [
+    59
+   ],
+   "out_links": []
+  },
+  {
+   "id": 88,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "size_0"
+   ],
+   "in_links": [
+    60
+   ],
+   "out_links": []
+  },
+  {
+   "id": 89,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "size_0"
+   ],
+   "in_links": [],
+   "out_links": [
+    69,
+    70
+   ]
+  },
+  {
+   "id": 90,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "AnimateDiff",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "filename": "视频 Name WAN-VACE_00003-audio_qnafm_1749010198.mp4",
+      "workflow": "视频 Name WAN-VACE_00003.png",
+      "fullpath": "/data/ComfyUI/personal/b8e358272f700a5c3c7678cf7d848116/output/视频 Name WAN-VACE_00003-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "",
+      "type": "output",
+      "frame_rate": 16
+     }
+    },
+    "format": "video/h264-mp4",
+    "frame_rate": 16,
+    "pingpong": false
+   },
+   "in_links": [
+    61,
+    62,
+    63,
+    64
+   ],
+   "out_links": []
+  },
+  {
+   "id": 91,
+   "type": "easy seed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    40,
+    "fixed",
+    null
+   ],
+   "in_links": [],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 93,
+   "type": "easy int",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024
+   ],
+   "in_links": [],
+   "out_links": [
+    43,
+    44,
+    60
+   ]
+  },
+  {
+   "id": 97,
+   "type": "GrowMask",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5,
+    false
+   ],
+   "in_links": [
+    67
+   ],
+   "out_links": [
+    84,
+    85
+   ]
+  },
+  {
+   "id": 101,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    null,
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    59,
+    81
+   ]
+  },
+  {
+   "id": 102,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image2_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    68
+   ]
+  },
+  {
+   "id": 103,
+   "type": "ImageResizeKJv2",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    512,
+    "nearest-exact",
+    "resize",
+    "0, 0, 0",
+    "center",
+    32
+   ],
+   "in_links": [
+    68,
+    69,
+    70
+   ],
+   "out_links": [
+    48
+   ]
+  },
+  {
+   "id": 104,
+   "type": "LayerMask: SegmentAnythingUltra V2",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam_vit_h (2.56GB)",
+    "GroundingDINO_SwinB (938MB)",
+    0.30000000000000027,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "shoes",
+    "cuda",
+    2,
+    false
+   ],
+   "in_links": [
+    71,
+    72
+   ],
+   "out_links": [
+    55,
+    57
+   ]
+  },
+  {
+   "id": 108,
+   "type": "Mute / Bypass Relay (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    81
+   ],
+   "out_links": [
+    24,
+    82
+   ]
+  },
+  {
+   "id": 109,
+   "type": "Mute / Bypass Repeater (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    82
+   ],
+   "out_links": []
+  },
+  {
+   "id": 113,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam"
+   ],
+   "in_links": [],
+   "out_links": [
+    86
+   ]
+  },
+  {
+   "id": 114,
+   "type": "GoogleTranslateTextNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    "en",
+    false,
+    "Manual Trasnlate",
+    ""
+   ],
+   "in_links": [
+    86
+   ],
+   "out_links": [
+    15,
+    72
+   ]
+  },
+  {
+   "id": 116,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "image1_1"
+   ],
+   "in_links": [],
+   "out_links": [
+    13,
+    65,
+    71,
+    83
+   ]
+  },
+  {
+   "id": 95,
+   "type": "LayerMask: LoadBiRefNetModelV2",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "BiRefNet-General"
+   ],
+   "in_links": [],
+   "out_links": [
+    66
+   ]
+  },
+  {
+   "id": 96,
+   "type": "LayerMask: BiRefNetUltraV2",
+   "category": "utility",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "VITMatte",
+    4,
+    2,
+    0.01,
+    0.99,
+    false,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    65,
+    66
+   ],
+   "out_links": [
+    58
+   ]
+  },
+  {
+   "id": 23,
+   "type": "WanVideoDecode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    272,
+    273,
+    144,
+    128
+   ],
+   "in_links": [
+    9,
+    90
+   ],
+   "out_links": [
+    29
+   ]
+  },
+  {
+   "id": 106,
+   "type": "WanVideoSampler",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    9,
+    1,
+    5,
+    1057359483639311,
+    "fixed",
+    true,
+    "unipc/beta",
+    0,
+    1,
+    false,
+    "comfy"
+   ],
+   "in_links": [
+    73,
+    74,
+    92,
+    76,
+    77,
+    78,
+    79
+   ],
+   "out_links": [
+    89
+   ]
+  },
+  {
+   "id": 118,
+   "type": "easy cleanGpuUsed",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    89
+   ],
+   "out_links": [
+    90
+   ]
+  },
+  {
+   "id": 110,
+   "type": "Fast Groups Muter (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 3,
+   "type": "WanVideoTorchCompileSettings",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "inductor",
+    false,
+    "default",
+    false,
+    128,
+    true,
+    128
+   ],
+   "in_links": [],
+   "out_links": [
+    93
+   ]
+  },
+  {
+   "id": 1,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "fp8_fast 似乎会导致质量严重下降\nfp_16_快速启用“在FP16 GEM中的FP16完全Accmumulation”功能，在最新的pytorch可用，这是大约20%的速度提升。\n如果你安装了 Sageattn，几乎可以将推理速度提高一倍。"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 121,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    93
+   ],
+   "out_links": [
+    94
+   ]
+  },
+  {
+   "id": 122,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    95
+   ],
+   "out_links": [
+    96
+   ]
+  },
+  {
+   "id": 14,
+   "type": "WanVideoLoraSelect",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Wan21_CausVid_14B_T2V_lora_rank32.safetensors",
+    0.8,
+    false
+   ],
+   "in_links": [
+    4
+   ],
+   "out_links": [
+    95
+   ]
+  },
+  {
+   "id": 86,
+   "type": "Any Switch (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    102,
+    57,
+    58
+   ],
+   "out_links": [
+    53
+   ]
+  },
+  {
+   "id": 81,
+   "type": "GetImageSizeAndCount",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    100
+   ],
+   "out_links": [
+    47,
+    50,
+    51,
+    52
+   ]
+  },
+  {
+   "id": 120,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    91
+   ],
+   "out_links": [
+    92
+   ]
+  },
+  {
+   "id": 82,
+   "type": "WanVideoVACEEncode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    480,
+    480,
+    53,
+    1,
+    0,
+    1,
+    false
+   ],
+   "in_links": [
+    98,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+   ],
+   "out_links": [
+    91
+   ]
+  },
+  {
+   "id": 123,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    97
+   ],
+   "out_links": [
+    98
+   ]
+  },
+  {
+   "id": 112,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "input_masks"
+   ],
+   "in_links": [
+    85
+   ],
+   "out_links": [
+    49
+   ]
+  },
+  {
+   "id": 111,
+   "type": "INPAINT_MaskedFill",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "neutral",
+    0
+   ],
+   "in_links": [
+    83,
+    84
+   ],
+   "out_links": [
+    99
+   ]
+  },
+  {
+   "id": 124,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    99
+   ],
+   "out_links": [
+    100
+   ]
+  },
+  {
+   "id": 85,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 2,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    55
+   ],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 105,
+   "type": "VHS_LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": {
+    "custom_height": 0,
+    "force_rate": 16,
+    "custom_width": 0,
+    "select_every_nth": 1,
+    "frame_load_cap": 64,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "custom_height": 0,
+      "filename": "937f1ca9123b6fa55c9103c85656027273f189a5598a56fcb4564b7eeb47d68c.mp4",
+      "force_rate": 16,
+      "custom_width": 0,
+      "select_every_nth": 1,
+      "frame_load_cap": 64,
+      "format": "video/mp4",
+      "skip_first_frames": 0,
+      "type": "input"
+     }
+    },
+    "format": "AnimateDiff",
+    "video": "937f1ca9123b6fa55c9103c85656027273f189a5598a56fcb4564b7eeb47d68c.mp4",
+    "skip_first_frames": 0,
+    "force_size": "Disabled",
+    "choose video to upload": "image"
+   },
+   "in_links": [],
+   "out_links": [
+    42,
+    39,
+    62,
+    31
+   ]
+  },
+  {
+   "id": 98,
+   "type": "Fast Groups Muter (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 84,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "sam"
+   ],
+   "in_links": [
+    54
+   ],
+   "out_links": []
+  },
+  {
+   "id": 107,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    80
+   ],
+   "out_links": []
+  },
+  {
+   "id": 41,
+   "type": "Florence2ModelLoader",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Florence-2-large",
+    "fp16",
+    "sdpa",
+    false
+   ],
+   "in_links": [],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 100,
+   "type": "easy positive",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "subject"
+   ],
+   "in_links": [],
+   "out_links": [
+    54
+   ]
+  },
+  {
+   "id": 92,
+   "type": "easy positive",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "室外,场地"
+   ],
+   "in_links": [],
+   "out_links": [
+    21
+   ]
+  },
+  {
+   "id": 99,
+   "type": "Fast Groups Bypasser (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 77,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ashuotvae"
+   ],
+   "in_links": [],
+   "out_links": [
+    9,
+    97
+   ]
+  },
+  {
+   "id": 125,
+   "type": "easy clearCacheAll",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    101
+   ],
+   "out_links": [
+    102
+   ]
+  },
+  {
+   "id": 42,
+   "type": "Florence2Run",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "face",
+    "caption_to_phrase_grounding",
+    true,
+    false,
+    1024,
+    3,
+    true,
+    "",
+    247848799958370,
+    "fixed"
+   ],
+   "in_links": [
+    13,
+    14,
+    15
+   ],
+   "out_links": [
+    101
+   ]
+  },
+  {
+   "id": 20,
+   "type": "WanVideoEnhanceAVideo",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    0,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    76
+   ]
+  },
+  {
+   "id": 94,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "使用前先看！！！！！！！！！！！",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "\n\n# Wan VACE-局部编辑1\n\n利用深度或者姿势图 控制视频生成\n\n## 用法1：\n1. 载入视频 \n2. 开启控制功能 \n2. 输入提示词 \n3. 生成即可\n\n## 用法2：\n1. 载入视频\n2. 开启参考图片功能\n2. 载入参考图 \n2. 开启控制功能 \n2. 输入提示词 \n3. 生成即可\n\n## 功能：\n1. 识别为矩形遮罩：根据你填入的扣除物品 生成矩形遮罩 （矩形识别，如果提示词不输入主体，只输入场景信息，就会达到擦除主体的效果，最终生成的就只有场景）\n2. 精准识别遮罩： 根据你填入的扣除物品 生成精准的遮罩（例如把视频中的衣服换成其他颜色，精准识别就要写衣服，提示词要写什么颜色的衣服等等）\n3. 开启参考图片： 根据你上传的参考图生成相应的物品\n4. 识别主体并抠图： 有主体的图片才能识别 对于场景会出错\n\n## 参数：\n1. 随机种子：改变随机种子会改变生成结果\n2. 限制分辨率：图片\\视频的最大的宽高不会超过设置的值 另一边会等比的缩放\n\n3. 跳过视频前多少帧： 根据视频原来的帧数来控制 例如原视频30帧一秒  这里设置30 就是跳过前1秒 \n4. 生成视频的时长： 这里根据视频模型来设置 例如wan2.1官方例子生成时长为81帧 每秒帧数是16 最后出来的是5秒视频\n6. 正面提示词： 控制生成图片\\视频的词 根据上传的图片输入合理的描述\n\n\n\n## 注意：\n\n1. **载入视频**节点的force_rate 决定视频的每秒帧数 输入16就是每秒16帧\n\n1. **载入视频**节点的  frame_load_cap 和skip_first_frames 只是作为预览参考 \n最终决定跳过帧和视频生成帧 是绿色的参数按钮\n\n1. 保存位置 \n\n视频将会保存到“output/视频” 文件夹里面\n\n2. 视频加速\n\n如果你comfyui没有安装triton 和sageattn 那么请把\nwan2.1图生视频的 WanVideo Torch Compile Settings 删掉\n把 WanVideo Model Loader的attention_mode 改成sdpa\n否则会出错\n\n如果你显存低生成不了 可以在WanVideo BlockSwap 设置 blocks_to_swap 到30~40 这样虽然慢一点 但是起码能生成"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 18,
+   "type": "BLOCKSWAPARGS"
+  },
+  {
+   "from_node": 100,
+   "to_node": 84,
+   "type": "*"
+  },
+  {
+   "from_node": 101,
+   "to_node": 108,
+   "type": "*"
+  },
+  {
+   "from_node": 101,
+   "to_node": 87,
+   "type": "*"
+  },
+  {
+   "from_node": 102,
+   "to_node": 103,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 103,
+   "to_node": 82,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 104,
+   "to_node": 85,
+   "type": "MASK"
+  },
+  {
+   "from_node": 104,
+   "to_node": 86,
+   "type": "MASK"
+  },
+  {
+   "from_node": 105,
+   "to_node": 60,
+   "type": "VHS_VIDEOINFO"
+  },
+  {
+   "from_node": 105,
+   "to_node": 70,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 105,
+   "to_node": 79,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 105,
+   "to_node": 90,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 106,
+   "to_node": 118,
+   "type": "*"
+  },
+  {
+   "from_node": 108,
+   "to_node": 109,
+   "type": "*"
+  },
+  {
+   "from_node": 108,
+   "to_node": 54,
+   "type": "*"
+  },
+  {
+   "from_node": 111,
+   "to_node": 124,
+   "type": "*"
+  },
+  {
+   "from_node": 112,
+   "to_node": 82,
+   "type": "MASK"
+  },
+  {
+   "from_node": 113,
+   "to_node": 114,
+   "type": "STRING"
+  },
+  {
+   "from_node": 114,
+   "to_node": 104,
+   "type": "STRING"
+  },
+  {
+   "from_node": 114,
+   "to_node": 42,
+   "type": "STRING"
+  },
+  {
+   "from_node": 116,
+   "to_node": 104,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 116,
+   "to_node": 111,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 116,
+   "to_node": 42,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 116,
+   "to_node": 96,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 118,
+   "to_node": 23,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 12,
+   "to_node": 14,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 120,
+   "to_node": 106,
+   "type": "WANVIDIMAGE_EMBEDS"
+  },
+  {
+   "from_node": 121,
+   "to_node": 18,
+   "type": "WANCOMPILEARGS"
+  },
+  {
+   "from_node": 122,
+   "to_node": 18,
+   "type": "WANVIDLORA"
+  },
+  {
+   "from_node": 123,
+   "to_node": 82,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 124,
+   "to_node": 81,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 125,
+   "to_node": 86,
+   "type": "MASK"
+  },
+  {
+   "from_node": 14,
+   "to_node": 122,
+   "type": "*"
+  },
+  {
+   "from_node": 15,
+   "to_node": 18,
+   "type": "VACEPATH"
+  },
+  {
+   "from_node": 16,
+   "to_node": 9,
+   "type": "*"
+  },
+  {
+   "from_node": 17,
+   "to_node": 6,
+   "type": "*"
+  },
+  {
+   "from_node": 18,
+   "to_node": 7,
+   "type": "*"
+  },
+  {
+   "from_node": 19,
+   "to_node": 106,
+   "type": "SLGARGS"
+  },
+  {
+   "from_node": 20,
+   "to_node": 106,
+   "type": "FETAARGS"
+  },
+  {
+   "from_node": 23,
+   "to_node": 57,
+   "type": "*"
+  },
+  {
+   "from_node": 24,
+   "to_node": 43,
+   "type": "WANTEXTENCODER"
+  },
+  {
+   "from_node": 25,
+   "to_node": 106,
+   "type": "WANVIDEOMODEL"
+  },
+  {
+   "from_node": 28,
+   "to_node": 29,
+   "type": "STRING"
+  },
+  {
+   "from_node": 29,
+   "to_node": 70,
+   "type": "STRING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 121,
+   "type": "*"
+  },
+  {
+   "from_node": 41,
+   "to_node": 42,
+   "type": "FL2MODEL"
+  },
+  {
+   "from_node": 42,
+   "to_node": 125,
+   "type": "*"
+  },
+  {
+   "from_node": 43,
+   "to_node": 106,
+   "type": "WANVIDEOTEXTEMBEDS"
+  },
+  {
+   "from_node": 44,
+   "to_node": 43,
+   "type": "STRING"
+  },
+  {
+   "from_node": 46,
+   "to_node": 47,
+   "type": "STRING"
+  },
+  {
+   "from_node": 47,
+   "to_node": 59,
+   "type": "*"
+  },
+  {
+   "from_node": 48,
+   "to_node": 29,
+   "type": "STRING"
+  },
+  {
+   "from_node": 53,
+   "to_node": 55,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 55,
+   "to_node": 67,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 56,
+   "to_node": 67,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 55,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 57,
+   "to_node": 56,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 58,
+   "to_node": 70,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 60,
+   "to_node": 70,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 60,
+   "to_node": 90,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 62,
+   "to_node": 90,
+   "type": "STRING"
+  },
+  {
+   "from_node": 63,
+   "to_node": 62,
+   "type": "STRING"
+  },
+  {
+   "from_node": 64,
+   "to_node": 62,
+   "type": "STRING"
+  },
+  {
+   "from_node": 65,
+   "to_node": 90,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 67,
+   "to_node": 66,
+   "type": "*"
+  },
+  {
+   "from_node": 68,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 68,
+   "to_node": 56,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 69,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 74,
+   "to_node": 106,
+   "type": "EXPERIMENTALARGS"
+  },
+  {
+   "from_node": 76,
+   "to_node": 47,
+   "type": "STRING"
+  },
+  {
+   "from_node": 77,
+   "to_node": 123,
+   "type": "*"
+  },
+  {
+   "from_node": 77,
+   "to_node": 23,
+   "type": "WANVAE"
+  },
+  {
+   "from_node": 79,
+   "to_node": 61,
+   "type": "*"
+  },
+  {
+   "from_node": 80,
+   "to_node": 106,
+   "type": "INT"
+  },
+  {
+   "from_node": 81,
+   "to_node": 82,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 81,
+   "to_node": 82,
+   "type": "INT"
+  },
+  {
+   "from_node": 81,
+   "to_node": 82,
+   "type": "INT"
+  },
+  {
+   "from_node": 81,
+   "to_node": 82,
+   "type": "INT"
+  },
+  {
+   "from_node": 82,
+   "to_node": 120,
+   "type": "*"
+  },
+  {
+   "from_node": 83,
+   "to_node": 97,
+   "type": "MASK"
+  },
+  {
+   "from_node": 85,
+   "to_node": 107,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 86,
+   "to_node": 83,
+   "type": "MASK"
+  },
+  {
+   "from_node": 89,
+   "to_node": 103,
+   "type": "INT"
+  },
+  {
+   "from_node": 89,
+   "to_node": 103,
+   "type": "INT"
+  },
+  {
+   "from_node": 91,
+   "to_node": 45,
+   "type": "*"
+  },
+  {
+   "from_node": 92,
+   "to_node": 49,
+   "type": "*"
+  },
+  {
+   "from_node": 93,
+   "to_node": 79,
+   "type": "INT"
+  },
+  {
+   "from_node": 93,
+   "to_node": 79,
+   "type": "INT"
+  },
+  {
+   "from_node": 93,
+   "to_node": 88,
+   "type": "*"
+  },
+  {
+   "from_node": 95,
+   "to_node": 96,
+   "type": "BIREFNET_MODEL"
+  },
+  {
+   "from_node": 96,
+   "to_node": 86,
+   "type": "MASK"
+  },
+  {
+   "from_node": 97,
+   "to_node": 111,
+   "type": "MASK"
+  },
+  {
+   "from_node": 97,
+   "to_node": 112,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "utility": 89,
+  "vae": 1,
+  "conditioning": 3,
+  "video_io": 4,
+  "image_io": 2,
+  "preprocessor": 1,
+  "postprocess": 1
+ },
+ "assets": [
+  {
+   "node_id": 12,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "WAN\\吉卜力风格-14B.safetensors"
+  },
+  {
+   "node_id": 13,
+   "node_type": "Note",
+   "kind": "lora",
+   "name": "模型存放位置： ComfyUI/models/diffusion_models/\n\nWan 2.1 T2V: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1-T2V-14B_fp8_e4m3fn.safetensors\n\nWan 2.1 VACE MODULE: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors\n\n----------------------------------------------------------------------\n模型存放位置 ComfyUI/models/loras/\n\nWan 2.1 CausVid LORA 13bn: \nhttps://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan21_CarusVid_14B_T2V_lora_rank32.safetensors\n\n----------------------------------------------------------------------\n\n模型存放位置 ComfyUI/models/vae/\n\nWAN 2.1 VAE: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1_VAE_bf16.safetensors\n\n----------------------------------------------------------------------\n\n模型存放位置 ComfyUI/models/text_encoders/\n\numt5-xxl-enc-bf16: https://huggingface.co/Kijai/WanVideo_comfy/blob/main/umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "WanVideoVACEModelSelect",
+   "kind": "checkpoint",
+   "name": "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 16,
+   "node_type": "WanVideoVAELoader",
+   "kind": "vae",
+   "name": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "kind": "checkpoint",
+   "name": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "kind": "checkpoint",
+   "name": "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 14,
+   "node_type": "WanVideoLoraSelect",
+   "kind": "lora",
+   "name": "Wan21_CausVid_14B_T2V_lora_rank32.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 225,
+ "structure_hash": "b6e6cc3538edf81c",
+ "param_face": [
+  {
+   "node_id": 2,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "如果你安装了 Triton，连接这个可以提升约30% 的速度"
+  },
+  {
+   "node_id": 4,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "根据您的VRAM调整块以进行交换，这是在速度和内存使用量之间的权衡。\n或者，可以使用DiffSynt-Studios中引"
+  },
+  {
+   "node_id": 5,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "如选14B模型 那么\nWanVideo Lora Select\nWanVideo VACE Model Select\nW"
+  },
+  {
+   "node_id": 6,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ashuot5"
+  },
+  {
+   "node_id": 7,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ashuomodel"
+  },
+  {
+   "node_id": 9,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "ashuotvae"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 0,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 10,
+   "node_type": "WanVideoBlockSwap",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 11,
+   "node_type": "WanVideoVRAMManagement",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 12,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "WAN\\吉卜力风格-14B.safetensors"
+  },
+  {
+   "node_id": 12,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 12,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 15,
+   "node_type": "WanVideoVACEModelSelect",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-VACE_module_14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 16,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1_VAE_bf16.safetensors"
+  },
+  {
+   "node_id": 16,
+   "node_type": "WanVideoVAELoader",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 0,
+   "value_preview": "umt5-xxl-enc-bf16.safetensors"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 1,
+   "value_preview": "bf16"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 2,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 17,
+   "node_type": "LoadWanVideoT5TextEncoder",
+   "widget_index": 3,
+   "value_preview": "disabled"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 0,
+   "value_preview": "Wan2_1-T2V-14B_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 2,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 3,
+   "value_preview": "offload_device"
+  },
+  {
+   "node_id": 18,
+   "node_type": "WanVideoModelLoader",
+   "widget_index": 4,
+   "value_preview": "sageattn"
+  },
+  {
+   "node_id": 19,
+   "node_type": "WanVideoSLG",
+   "widget_index": 0,
+   "value_preview": "9,10"
+  },
+  {
+   "node_id": 19,
+   "node_type": "WanVideoSLG",
+   "widget_index": 1,
+   "value_preview": "0.1"
+  },
+  {
+   "node_id": 19,
+   "node_type": "WanVideoSLG",
+   "widget_index": 2,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 21,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "增强视频可以增加结果的保真度，过高的值会导致噪声结果。"
+  },
+  {
+   "node_id": 22,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "TeaCache可以被视为某种自动步骤跳转器。\n相对11阈值-值决定了这是多么激进，值越高速度越快，但质量下降更多。使用"
+  },
+  {
+   "node_id": 24,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ashuot5"
+  },
+  {
+   "node_id": 25,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ashuomodel"
+  },
+  {
+   "node_id": 28,
+   "node_type": "String Literal",
+   "widget_index": 0,
+   "value_preview": "WAN-VACE"
+  },
+  {
+   "node_id": 29,
+   "node_type": "JoinStrings",
+   "widget_index": 0,
+   "value_preview": "_"
+  },
+  {
+   "node_id": 29,
+   "node_type": "JoinStrings",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 29,
+   "node_type": "JoinStrings",
+   "widget_index": 2,
+   "value_preview": " "
+  },
+  {
+   "node_id": 43,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 0,
+   "value_preview": "The boy looks serious, holding the camera"
+  },
+  {
+   "node_id": 43,
+   "node_type": "WanVideoTextEncode",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 44,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "prompt_1"
+  },
+  {
+   "node_id": 45,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "seed_1"
+  },
+  {
+   "node_id": 46,
+   "node_type": "String Literal",
+   "widget_index": 0,
+   "value_preview": "视频"
+  },
+  {
+   "node_id": 47,
+   "node_type": "JoinStrings",
+   "widget_index": 0,
+   "value_preview": "/"
+  },
+  {
+   "node_id": 47,
+   "node_type": "JoinStrings",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 47,
+   "node_type": "JoinStrings",
+   "widget_index": 2,
+   "value_preview": " "
+  },
+  {
+   "node_id": 48,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "Name_1"
+  },
+  {
+   "node_id": 49,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "prompt_1"
+  },
+  {
+   "node_id": 53,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 53,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "down"
+  },
+  {
+   "node_id": 53,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 55,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 55,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 55,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 56,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 56,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 1,
+   "value_preview": "right"
+  },
+  {
+   "node_id": 56,
+   "node_type": "ImageConcatMulti",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 57,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "output1_1"
+  },
+  {
+   "node_id": 58,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "output1_1"
+  },
+  {
+   "node_id": 59,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "Name_1"
+  },
+  {
+   "node_id": 61,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "image1_1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "JoinStrings",
+   "widget_index": 0,
+   "value_preview": "_"
+  },
+  {
+   "node_id": 62,
+   "node_type": "JoinStrings",
+   "widget_index": 1,
+   "value_preview": ""
+  },
+  {
+   "node_id": 62,
+   "node_type": "JoinStrings",
+   "widget_index": 2,
+   "value_preview": " "
+  },
+  {
+   "node_id": 63,
+   "node_type": "String Literal",
+   "widget_index": 0,
+   "value_preview": "WAN-VACE"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "Name_1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "output2_1"
+  },
+  {
+   "node_id": 66,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "output2_1"
+  },
+  {
+   "node_id": 68,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "image1_1"
+  },
+  {
+   "node_id": 69,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "image2_1"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': '视"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 70,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 3,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 6,
+   "value_preview": "1.25"
+  },
+  {
+   "node_id": 74,
+   "node_type": "WanVideoExperimentalArgs",
+   "widget_index": 7,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 76,
+   "node_type": "String Literal",
+   "widget_index": 0,
+   "value_preview": "Name"
+  },
+  {
+   "node_id": 78,
+   "node_type": "Bookmark (rgthree)",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 78,
+   "node_type": "Bookmark (rgthree)",
+   "widget_index": 1,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 3,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 4,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 79,
+   "node_type": "ImageResizeKJ",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 80,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "seed_1"
+  },
+  {
+   "node_id": 87,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "image2_1"
+  },
+  {
+   "node_id": 88,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "size_0"
+  },
+  {
+   "node_id": 89,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "size_0"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'filename': '视"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 90,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 91,
+   "node_type": "easy seed",
+   "widget_index": 0,
+   "value_preview": "40"
+  },
+  {
+   "node_id": 91,
+   "node_type": "easy seed",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 93,
+   "node_type": "easy int",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 97,
+   "node_type": "GrowMask",
+   "widget_index": 0,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 97,
+   "node_type": "GrowMask",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 101,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 102,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "image2_1"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 2,
+   "value_preview": "nearest-exact"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 3,
+   "value_preview": "resize"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 4,
+   "value_preview": "0, 0, 0"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 5,
+   "value_preview": "center"
+  },
+  {
+   "node_id": 103,
+   "node_type": "ImageResizeKJv2",
+   "widget_index": 6,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 0,
+   "value_preview": "sam_vit_h (2.56GB)"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 1,
+   "value_preview": "GroundingDINO_SwinB (938MB)"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 2,
+   "value_preview": "0.30000000000000027"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 3,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 4,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 5,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 7,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 8,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 9,
+   "value_preview": "shoes"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 10,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 11,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 104,
+   "node_type": "LayerMask: SegmentAnythingUltra V2",
+   "widget_index": 12,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 113,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "sam"
+  },
+  {
+   "node_id": 114,
+   "node_type": "GoogleTranslateTextNode",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 114,
+   "node_type": "GoogleTranslateTextNode",
+   "widget_index": 1,
+   "value_preview": "en"
+  },
+  {
+   "node_id": 114,
+   "node_type": "GoogleTranslateTextNode",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 114,
+   "node_type": "GoogleTranslateTextNode",
+   "widget_index": 3,
+   "value_preview": "Manual Trasnlate"
+  },
+  {
+   "node_id": 114,
+   "node_type": "GoogleTranslateTextNode",
+   "widget_index": 4,
+   "value_preview": ""
+  },
+  {
+   "node_id": 116,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "image1_1"
+  },
+  {
+   "node_id": 95,
+   "node_type": "LayerMask: LoadBiRefNetModelV2",
+   "widget_index": 0,
+   "value_preview": "BiRefNet-General"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 0,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 1,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 2,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 3,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 4,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 6,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 96,
+   "node_type": "LayerMask: BiRefNetUltraV2",
+   "widget_index": 7,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 23,
+   "node_type": "WanVideoDecode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 23,
+   "node_type": "WanVideoDecode",
+   "widget_index": 1,
+   "value_preview": "272"
+  },
+  {
+   "node_id": 23,
+   "node_type": "WanVideoDecode",
+   "widget_index": 2,
+   "value_preview": "273"
+  },
+  {
+   "node_id": 23,
+   "node_type": "WanVideoDecode",
+   "widget_index": 3,
+   "value_preview": "144"
+  },
+  {
+   "node_id": 23,
+   "node_type": "WanVideoDecode",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 0,
+   "value_preview": "9"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 2,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 3,
+   "value_preview": "1057359483639311"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 4,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 6,
+   "value_preview": "unipc/beta"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 7,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 9,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 106,
+   "node_type": "WanVideoSampler",
+   "widget_index": 10,
+   "value_preview": "comfy"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 0,
+   "value_preview": "inductor"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 4,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 5,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 3,
+   "node_type": "WanVideoTorchCompileSettings",
+   "widget_index": 6,
+   "value_preview": "128"
+  },
+  {
+   "node_id": 14,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 0,
+   "value_preview": "Wan21_CausVid_14B_T2V_lora_rank32.safetensors"
+  },
+  {
+   "node_id": 14,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 14,
+   "node_type": "WanVideoLoraSelect",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 0,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 1,
+   "value_preview": "480"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 2,
+   "value_preview": "53"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 4,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 5,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 82,
+   "node_type": "WanVideoVACEEncode",
+   "widget_index": 6,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 112,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "input_masks"
+  },
+  {
+   "node_id": 111,
+   "node_type": "INPAINT_MaskedFill",
+   "widget_index": 0,
+   "value_preview": "neutral"
+  },
+  {
+   "node_id": 111,
+   "node_type": "INPAINT_MaskedFill",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_height",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_rate",
+   "value_preview": "16"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "custom_width",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "select_every_nth",
+   "value_preview": "1"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "frame_load_cap",
+   "value_preview": "64"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'custom_height"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "format",
+   "value_preview": "AnimateDiff"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "video",
+   "value_preview": "937f1ca9123b6fa55c9103c85656027273f189a5598a56fcb4564b7eeb47"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "skip_first_frames",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "force_size",
+   "value_preview": "Disabled"
+  },
+  {
+   "node_id": 105,
+   "node_type": "VHS_LoadVideo",
+   "widget_name": "choose video to upload",
+   "value_preview": "image"
+  },
+  {
+   "node_id": 84,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "sam"
+  },
+  {
+   "node_id": 41,
+   "node_type": "Florence2ModelLoader",
+   "widget_index": 0,
+   "value_preview": "Florence-2-large"
+  },
+  {
+   "node_id": 41,
+   "node_type": "Florence2ModelLoader",
+   "widget_index": 1,
+   "value_preview": "fp16"
+  },
+  {
+   "node_id": 41,
+   "node_type": "Florence2ModelLoader",
+   "widget_index": 2,
+   "value_preview": "sdpa"
+  },
+  {
+   "node_id": 41,
+   "node_type": "Florence2ModelLoader",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 100,
+   "node_type": "easy positive",
+   "widget_index": 0,
+   "value_preview": "subject"
+  },
+  {
+   "node_id": 92,
+   "node_type": "easy positive",
+   "widget_index": 0,
+   "value_preview": "室外,场地"
+  },
+  {
+   "node_id": 77,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "ashuotvae"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 0,
+   "value_preview": "face"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 1,
+   "value_preview": "caption_to_phrase_grounding"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 4,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 5,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 6,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 7,
+   "value_preview": ""
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 8,
+   "value_preview": "247848799958370"
+  },
+  {
+   "node_id": 42,
+   "node_type": "Florence2Run",
+   "widget_index": 9,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 20,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 20,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 20,
+   "node_type": "WanVideoEnhanceAVideo",
+   "widget_index": 2,
+   "value_preview": "1"
+  }
+ ]
+}

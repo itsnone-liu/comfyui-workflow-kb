@@ -1,0 +1,98 @@
+{
+ "domain": [
+  "图像编辑",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张包含待移除物体的图像，自动检测/分割目标并生成遮罩，通过 FLUX-Fill 局部重绘实现指定物体移除或替换，最终输出重绘图像及前后对比拼接图。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过文本提示词（如 'Remove the selected object'）与主体/背景标签（human, sword, grass, sky 等）控制重绘内容，实现选择性编辑。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "Nunchaku 量化推理 (svdq-int4-flux.1-fill-de)",
+  "Florence-2 目标检测",
+  "SAM2 分割",
+  "DifferentialDiffusion 局部重绘",
+  "InpaintModelConditioning",
+  "LoRA (removal-v2)"
+ ],
+ "special_features": [
+  {
+   "text": "全自动“检测→分割→重绘”管线：Florence-2 检测物体 → SAM2 生成精确 mask → 结合 FLUX-Fill 进行局部重绘。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 DifferentialDiffusion 节点让模型在重绘时只对 mask 区域进行去噪，而非整图重绘，提升局部重绘自然度。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 Nunchaku 量化 FLUX 模型 + removal-v2 LoRA，在降低显存占用同时强化物体移除能力。",
+   "kind": "inference"
+  },
+  {
+   "text": "多处 PurgeVRAM 显存清理节点穿插于流水线中，防止长链路显存溢出。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ImageConcanate 将输入与输出拼接成一张对比图，便于直观查看编辑效果。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该流程的核心目标是简化“局部重绘/物体移除”的人工干预：无需手动涂抹 mask，而是利用视觉模型自动定位并分割目标，再交由量化后的 FLUX-Fill 模型执行语义一致的填充。removal-v2 LoRA 可能专门针对“物体移除”任务微调，增强填充的真实感。DifferentialDiffusion 与 InpaintModelConditioning 配合，确保重绘区域与上下文融合。多个显存管理节点表明设计者注意到了量化模型下仍可能存在的显存压力，以保证流水线能稳定运行。整体采用模块化组装，方便替换检测/分割模型或调整提示词。",
+ "use_case": "适用于照片去杂物、移除多余人物/物体并自然填补背景，也可用于电商图片清理、创意图像合成等场景。",
+ "limitation": "依赖多个外部模型文件：Nunchaku 量化 FLUX 模型 (svdq-int4-flux.1-fill-de)、ae.safetensors、clip_l.safetensors、t5xxl_fp16.safetensors、removal-v2.safetensors、Florence-2-Flux-Large 以及 sam2_hiera_base_plus.safetensors，需预先放置到正确目录；需要安装支持 Nunchaku/Florence2/SAM2/LayerMask 等自定义节点；自动检测的精度影响最终效果，对复杂小目标可能不准确；提示词中 'Remove the selected obje' 疑似截断，可能需完整编写；输出质量无自动校验，可能需要人工筛选。",
+ "dependencies": [
+  "ComfyUI",
+  "NunchakuFluxDiTLoader (svdq-int4-flux.1-fill-de)",
+  "NunchakuFluxLoraLoader (removal-v2.safetensors)",
+  "DualCLIPLoader (clip_l.safetensors, t5xxl_fp16.safetensors)",
+  "VAELoader (ae.safetensors)",
+  "Florence-2-Flux-Large",
+  "sam2_hiera_base_plus.safetensors",
+  "DifferentialDiffusion 节点",
+  "LayerMask 系列节点 (ObjectDetectorFL2, SAM2Ultra, LoadFlorence2Model)",
+  "LayerUtility 节点 (ImageScaleByAspectRatio V2, PurgeVRAM)"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "控制去噪步数，步数越多细节越丰富但耗时增加；重绘任务通常 20-30 步，若结果粗糙可提高到 30-40。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "FLUX 模型建议 1.0，保持提示词与生成平衡；值增大会过拟合提示词并可能带来伪影。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "控制文本引导强度，默认 30。值越高越贴近提示词；若移除区域与周围不一致可降低，若未按提示重绘可提高。"
+  },
+  {
+   "param": "NunchakuFluxLoraLoader/strength",
+   "how_to_tune": "LoRA 权重，0-1；增强移除效果时可适当增大，但过大会造成图像扭曲，通常 0.8-1.2 之间微调。"
+  },
+  {
+   "param": "GrowMaskWithBlur/expand",
+   "how_to_tune": "第一参数为 mask 扩张像素数，增大可覆盖更广的重绘区域，避免边缘残留，但太大会影响周围背景；建议 2-10。"
+  },
+  {
+   "param": "ObjectDetectorFL2/prompt",
+   "how_to_tune": "可指定要检测的物体类别，留空表示检测所有；如需移除特定物体可填写如 'person' 提高命中率。"
+  }
+ ],
+ "summary_text": "能力:上传一张包含待移除物体的图像，自动检测/分割目标并生成遮罩，通过 FLUX-Fill 局部重绘实现指定物体移除或替换，最终输出重绘图像及前后对比拼接图。；能力:通过文本提示词（如 'Remove the selected object'）与主体/背景标签（human, sword, grass, sky 等）控制重绘内容，实现选择性编辑。；特色:全自动“检测→分割→重绘”管线：Florence-2 检测物体 → SAM2 生成精确 mask → 结合 FLUX-Fill 进行局部重绘。；特色:使用 DifferentialDiffusion 节点让模型在重绘时只对 mask 区域进行去噪，而非整图重绘，提升局部重绘自然度。；特色:集成 Nunchaku 量化 FLUX 模型 + removal-v2 LoRA，在降低显存占用同时强化物体移除能力。；特色:多处 PurgeVRAM 显存清理节点穿插于流水线中，防止长链路显存溢出。；特色:通过 ImageConcanate 将输入与输出拼接成一张对比图，便于直观查看编辑效果。；适用于照片去杂物、移除多余人物/物体并自然填补背景，也可用于电商图片清理、创意图像合成等场景。；该流程的核心目标是简化“局部重绘/物体移除”的人工干预：无需手动涂抹 mask，而是利用视觉模型自动定位并分割目标，再交由量化后的 FLUX-Fill 模型执行语义一致的填充。removal-v2 LoRA 可能专门针对“物体移除”任务微调，增强填充的真实感。DifferentialDiffusion 与 InpaintModelConditioning 配合，确保重绘区域与上下文融合。多个显存管理节点表明设计者注意到了量化模型下仍可能存在的显存压力，以保证流水线能稳定运行。整体采用模块化组装，方便替换检测/分割模型或调整提示词。"
+}

@@ -1,0 +1,115 @@
+{
+ "domain": [
+  "视频生成",
+  "角色设计",
+  "创意转场"
+ ],
+ "capabilities": [
+  {
+   "text": "输入首、中、尾三张关键帧图片，自动生成一段包含平滑转场和视频音频的创意短视频，支持中文提示词描述转场效果",
+   "kind": "fact"
+  },
+  {
+   "text": "通过多模态模型（Qwen3-VL-4B-Instruct）自动理解三张图片内容，结合 LLM 指令生成视频提示词，显著降低提示词编写门槛",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 LTX-2.3 模型生成视频，并通过 ltx-2.3-spatial-upscaler 进行潜在空间上采样，提升最终视频分辨率",
+   "kind": "fact"
+  },
+  {
+   "text": "同时生成视频与音频（LTXVEmptyLatentAudio + LTXVAudioVAEDecode），实现带声道的完片输出",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "LTX-2.3 视频生成与多模态理解",
+  "Qwen3-VL-4B-Instruct 图像理解与提示词自动生成",
+  "三帧图像条件控制（LTXVImgToVideoInplace）",
+  "LoRA 转场风格控制（ltx2.3-transition）",
+  "双阶段采样策略（ManualSigmas + SamplerCustomAdvanced）",
+  "潜在空间上采样（ltx-2.3-spatial-upscaler）",
+  "音频 VAE 解码与合并（LTX23_audio_vae）",
+  "引导参数控制（LTXVAddGuideMulti / LTX2_NAG）"
+ ],
+ "special_features": [
+  {
+   "text": "三帧关键帧条件控制：通过 LTXVImgToVideoInplace 将首、中、尾三张图片内嵌到视频 latent 序列对应位置，实现严格的画面约束，这是该工作流最核心的特殊设计",
+   "kind": "fact"
+  },
+  {
+   "text": "多模态+LLM 自动提示词生成：三张图片经 Image Stitch 拼接后送入 Qwen3-VL，再通过 easy positive 的 LLM 系统指令生成提示词，实现从图像到文本的自动化",
+   "kind": "fact"
+  },
+  {
+   "text": "双采样阶段：两个 SamplerCustomAdvanced 分别使用 euler_ancestral_cfg_pp 和 euler_cfg_pp，配合两组 ManualSigmas，可能用于先粗后精、先动态后稳定的两段式生成",
+   "kind": "inference"
+  },
+  {
+   "text": "音频视频联合生成：使用 LTXVEmptyLatentAudio 初始化音频 latent，LTXVSeparateAVLatent / LTXVConcatAVLatent 分离与合并音视频 latent，最终输出带音频视频",
+   "kind": "fact"
+  },
+  {
+   "text": "条件分支与显存管理：LayerUtility: If + BooleanOperator 根据条件动态切换处理路径，并配合 PurgeVRAM 自动清理显存，提升复杂工作流的鲁棒性",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流旨在将“创意首中尾三帧视频”这一复杂创作任务拆解为高度自动化的流水线：用户只需提供三张关键帧，系统便自动理解图像内容并生成提示词，再通过 LTX-2.3 的视频+音频联合生成能力，在三帧之间填充平滑且富有创意的运动与转场，同时用 LoRA 和引导参数控制风格与动态强度。设计上明显希望降低视频创作门槛，同时保留极客用户通过节点参数进行精细调控的空间。",
+ "use_case": "适用于角色设计展示、产品创意视频、短视频分镜转场模板生成，以及需要首/中/尾精确控制的影视预演或动态故事版制作。",
+ "limitation": "必须安装 LTXV 系列自定义节点、AILab_QwenVL_Advanced、TT_img_enc、KJNodes、LayerUtility、VHS 等第三方节点；依赖指定的 LTX-2.3 模型、Qwen3-VL-4B-Instruct、Gemma3 CLIP 和 LoRA 文件；输入严格为三张图片，且建议分辨率与 EmptyLTXVLatentVideo 参数匹配；同时生成视频+音频对 GPU 显存和推理耗时要求较高；部分参数（如固定噪声种子、sigmas）已预设，直接使用可能限制生成多样性。",
+ "dependencies": [
+  "ltx-2.3-22b-distilled_transformer_only_fp8_input_scaled.safetensors",
+  "LTX23_video_vae_bf16.safetensors",
+  "LTX23_audio_vae_bf16.safetensors",
+  "gemma_3_12B_it.safetensors",
+  "ltx-2.3_text_projection_bf16.safetensors",
+  "ltx2.3-transition.safetensors",
+  "ltx-2.3-spatial-upscaler-x2-1.0.safetensors",
+  "Qwen3-VL-4B-Instruct (AILab_QwenVL_Advanced)",
+  "自定义节点：ComfyUI-LTXV, AILab_QwenVL, TT_img_enc, KJNodes, LayerUtility, ComfyMath, VideoHelperSuite"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image (3张：首帧/中帧/尾帧)",
+  "count": "3"
+ },
+ "output": {
+  "type": "video (含音频)",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "EmptyLTXVLatentVideo.frames",
+   "how_to_tune": "当前为 97，控制视频总帧数。增大可延长视频时长，但显存和推理时间会显著上升；减小则可快速验证效果。"
+  },
+  {
+   "param": "LTXVImgToVideoInplace.strength",
+   "how_to_tune": "当前为 1/False，决定关键帧图像在生成中的控制强度。值越高越贴合三张输入图，值越低生成自由度越大。"
+  },
+  {
+   "param": "LoraLoaderModelOnly.strength",
+   "how_to_tune": "当前约为 1.0，控制 ltx2.3-transition LoRA 的转场特效强度。可先设为 0.8 测试稳定性，再按需增强至 1.0 以上。"
+  },
+  {
+   "param": "ManualSigmas (两组)",
+   "how_to_tune": "分别控制两阶段采样器的去噪曲线。整体提高 sigma 值可保留更多结构，降低 sigma 值可获得更细腻的动态细节。"
+  },
+  {
+   "param": "LTXVAddGuideMulti",
+   "how_to_tune": "当前为 0, 0.7, 120, 0.65, -1, 1，用于设置多区域引导权重。调整数值可改变提示词对视频不同时空位置的约束强度，权重越高越贴合提示词。"
+  },
+  {
+   "param": "LTX2_NAG",
+   "how_to_tune": "当前为 11, 0.25, 2.5, True。控制噪声增强幅度，影响运动的剧烈程度。增大可让转场更夸张，减小则更自然。"
+  },
+  {
+   "param": "RandomNoise.seed",
+   "how_to_tune": "固定为 42 和 23，用于复现结果。想要更多随机创意可更换种子。"
+  },
+  {
+   "param": "PrimitiveStringMultiline",
+   "how_to_tune": "当前为“环绕运镜 zhuanchang 转身变身。”，这是核心中文提示词，直接描述转场方式和动作，修改它会最直观地改变视频内容。"
+  }
+ ],
+ "summary_text": "能力:输入首、中、尾三张关键帧图片，自动生成一段包含平滑转场和视频音频的创意短视频，支持中文提示词描述转场效果；能力:通过多模态模型（Qwen3-VL-4B-Instruct）自动理解三张图片内容，结合 LLM 指令生成视频提示词，显著降低提示词编写门槛；能力:使用 LTX-2.3 模型生成视频，并通过 ltx-2.3-spatial-upscaler 进行潜在空间上采样，提升最终视频分辨率；能力:同时生成视频与音频（LTXVEmptyLatentAudio + LTXVAudioVAEDecode），实现带声道的完片输出；特色:三帧关键帧条件控制：通过 LTXVImgToVideoInplace 将首、中、尾三张图片内嵌到视频 latent 序列对应位置，实现严格的画面约束，这是该工作流最核心的特殊设计；特色:多模态+LLM 自动提示词生成：三张图片经 Image Stitch 拼接后送入 Qwen3-VL，再通过 easy positive 的 LLM 系统指令生成提示词，实现从图像到文本的自动化；特色:双采样阶段：两个 SamplerCustomAdvanced 分别使用 euler_ancestral_cfg_pp 和 euler_cfg_pp，配合两组 ManualSigmas，可能用于先粗后精、先动态后稳定的两段式生成；特色:音频视频联合生成：使用 LTXVEmptyLatentAudio 初始化音频 latent，LTXVSeparateAVLatent / LTXVConcatAVLatent 分离与合并音视频 latent，最终输出带音频视频；特色:条件分支与显存管理：LayerUtility: If + BooleanOperator 根据条件动态切换处理路径，并配合 PurgeVRAM 自动清理显存，提升复杂工作流的鲁棒性；适用于角色设计展示、产品创意视频、短视频分镜转场模板生成，以及需要首/中/尾精确控制的影视预演或动态故事版制作。；该工作流旨在将“创意首中尾三帧视频”这一复杂创作任务拆解为高度自动化的流水线：用户只需提供三张关键帧，系统便自动理解图像内容并生成提示词，再通过 LTX-2.3 的视频+音频联合生成能力，在三帧之间填充平滑且富有创意的运动与转场，同时用 LoRA 和引导参数控制风格与动态强度。设计上明显希望降低视频创作门槛，同时保留极客用户通过节点参数进行精细调控的空间。"
+}

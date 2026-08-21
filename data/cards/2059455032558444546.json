@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "角色设计",
+  "人像写真生成",
+  "社交媒体美图"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张或多张人物照片，生成保留人物身份特征的多风格写真海报（标题与提示词强调『保留原图人物 100%』）",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 Comfly API 调用 gpt-image-2 模型完成文生图/图生图，降低本地 GPU 依赖",
+   "kind": "fact"
+  },
+  {
+   "text": "一次运行并行生成 4 组风格化人像变体，并输出 5 路图像结果（4 张单图 + 1 张拼贴/汇总图），适配抖音/快手/小红书等内容平台",
+   "kind": "inference"
+  },
+  {
+   "text": "支持多图输入（4 个 LoadImage）与多路输出（5 个 SaveImage），构建批量出图流水线",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "API 驱动的图像生成（Comfly_gpt_image_2 / gpt-image-2）",
+  "图像到图像转换（RH_RhartImageG2ImageToImage）",
+  "身份保持与人物一致性提示（基于单张人物照片，保留原图人物 100%）",
+  "并行多路生成（4 个并行的图生图节点）",
+  "动态提示词与文本模板（CR Prompt Text / JjkText）",
+  "输出比例控制（AspectRatioSelect 9:16/1024）",
+  "随机种子配置（randomize + 多组 seed）",
+  "分组快速通断（Fast Groups Bypasser rgthree）"
+ ],
+ "special_features": [
+  {
+   "text": "全流程依赖外部 API（Comfly_api_set + Comfly_gpt_image_2），未使用本地检查点模型，属于云端生成式工作流",
+   "kind": "fact"
+  },
+  {
+   "text": "4 个 RH_RhartImageG2ImageToImage 节点以不同种子并行生成，形成批量风格探索架构，后接 5 个 SaveImage 输出，疑似支持“单张保存 + 拼贴海报汇总”的双层输出",
+   "kind": "inference"
+  },
+  {
+   "text": "引入 Fast Groups Bypasser (rgthree)，允许用户在运行时快速启用/停用某一组生成分支，便于对比调试",
+   "kind": "fact"
+  },
+  {
+   "text": "提示词中出现 “（各种API）：https://ai.t8sta...” 和展示节点中的 **Model**: gpt-image-2，表明该工作流围绕第三方 API 中转服务构建，可替换不同后端模型",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者似乎希望打造一个“低门槛、高并发”的社交媒体写真生产流水线：用外部 API 替代本地算力，让没有高端 GPU 的用户也能生成高质量人像；同时通过 4 路并行生成和统一的提示词模板，一次产出多张可分发到抖音/快手/小红书的美图素材，并以 9:16 竖版比例适配移动端阅读。最后多路 SaveImage 可能用于同时保存单图和拼贴海报，方便内容创作者快速筛选和发布。",
+ "use_case": "面向抖音/快手/小红书等平台的内容创作者，上传人物照片后批量生成多风格写真海报，用于头像、穿搭展示、角色宣传或社交分享。",
+ "limitation": "依赖 Comfly 云端 API（需要有效 API Key），网络不通或服务欠费时工作流不可用；同时依赖多个自定义节点（Comfly、RH_RhartImageG2ImageToImage、JjkText、rgthree Fast Groups Bypasser、easy showAnything），节点缺失则无法运行。输入需要 4 张人物图片，且生成质量受远端 gpt-image-2 模型与提示词质量影响，存在 API 调用成本。",
+ "dependencies": [
+  "ComfyUI",
+  "Comfly 自定义节点（Comfly_api_set、Comfly_gpt_image_2）",
+  "RH_RhartImageG2ImageToImage",
+  "JjkText",
+  "rgthree Fast Groups Bypasser",
+  "easy showAnything",
+  "CR Prompt Text (Comfyroll)"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "4"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_RhartImageG2ImageToImage 的 ratio",
+   "how_to_tune": "当前设为 3:4，适合小红书/抖音竖版信息流；若目标为横版海报可改为 16:9，但需同步调整 AspectRatioSelect 以保持构图一致"
+  },
+  {
+   "param": "RH_RhartImageG2ImageToImage 的 seed / randomize",
+   "how_to_tune": "开启 randomize 可每次生成不同风格变体，便于探索；固定 seed（如 214669051/22994143/1184496533/2044003963）可复现某组结果，适合精调后批量出图"
+  },
+  {
+   "param": "AspectRatioSelect",
+   "how_to_tune": "当前配置 9:16、1024 分辨率，是短视频平台标准尺寸；如需更高清成图可提升到 2k，但会显著增加 API 耗时与费用"
+  },
+  {
+   "param": "提示词中的“保留原图人物 100%”",
+   "how_to_tune": "该短语是身份保持的关键约束，若生成结果与人物相似度不足，可强化为“保持五官、脸型、肤色完全一致”；若需要夸张风格则可降低该约束权重"
+  }
+ ],
+ "summary_text": "能力:上传单张或多张人物照片，生成保留人物身份特征的多风格写真海报（标题与提示词强调『保留原图人物 100%』）；能力:通过 Comfly API 调用 gpt-image-2 模型完成文生图/图生图，降低本地 GPU 依赖；能力:一次运行并行生成 4 组风格化人像变体，并输出 5 路图像结果（4 张单图 + 1 张拼贴/汇总图），适配抖音/快手/小红书等内容平台；能力:支持多图输入（4 个 LoadImage）与多路输出（5 个 SaveImage），构建批量出图流水线；特色:全流程依赖外部 API（Comfly_api_set + Comfly_gpt_image_2），未使用本地检查点模型，属于云端生成式工作流；特色:4 个 RH_RhartImageG2ImageToImage 节点以不同种子并行生成，形成批量风格探索架构，后接 5 个 SaveImage 输出，疑似支持“单张保存 + 拼贴海报汇总”的双层输出；特色:引入 Fast Groups Bypasser (rgthree)，允许用户在运行时快速启用/停用某一组生成分支，便于对比调试；特色:提示词中出现 “（各种API）：https://ai.t8sta...” 和展示节点中的 **Model**: gpt-image-2，表明该工作流围绕第三方 API 中转服务构建，可替换不同后端模型；面向抖音/快手/小红书等平台的内容创作者，上传人物照片后批量生成多风格写真海报，用于头像、穿搭展示、角色宣传或社交分享。；作者似乎希望打造一个“低门槛、高并发”的社交媒体写真生产流水线：用外部 API 替代本地算力，让没有高端 GPU 的用户也能生成高质量人像；同时通过 4 路并行生成和统一的提示词模板，一次产出多张可分发到抖音/快手/小红书的美图素材，并以 9:16 竖版比例适配移动端阅读。最后多路 SaveImage 可能用于同时保存单图和拼贴海报，方便内容创作者快速筛选和发布。"
+}

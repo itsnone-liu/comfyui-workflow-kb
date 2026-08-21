@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "图像编辑",
+  "人像处理"
+ ],
+ "capabilities": [
+  {
+   "text": "上传两张图片（一张提供人脸/头部特征，一张为目标底图），生成换脸/换头后自然融合的图像",
+   "kind": "inference"
+  },
+  {
+   "text": "利用 FLUX.1 Redux (dev) 的参考图能力，对目标人脸进行表情复刻与妆容迁移",
+   "kind": "inference"
+  },
+  {
+   "text": "通过人体/头部遮罩自动识别重绘区域，支持手动调整遮罩以控制换脸/换头范围",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 FLUX.1 Fill (dev) 进行局部重绘，并通过边缘融合/颜色匹配保证换头区域自然衔接",
+   "kind": "inference"
+  },
+  {
+   "text": "支持眼镜等配饰的遮挡处理，可在重绘时保留或重新生成眼镜区域",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.1 Redux (dev) 图像条件生成",
+  "FLUX.1 Fill (dev) 局部填充/重绘",
+  "CLIP Vision (sigclip) + StyleModelApply 参考图特征注入",
+  "PersonMaskUltra V2 人像/头部遮罩分割",
+  "Florence2 图像理解与 detailed_caption 描述",
+  "InpaintModelConditioning + CutForInpaint + BlendInpaint 局部重绘链",
+  "ColorMatch (mkl) 色调/颜色匹配",
+  "GrowMaskWithBlur 遮罩扩张/模糊后处理",
+  "DifferentialDiffusion 渐进式扩散",
+  "portrait_lora64 人像细节增强 LoRA"
+ ],
+ "special_features": [
+  {
+   "text": "双 FLUX 模型串联：Redux 负责人物身份/表情参考，Fill 负责遮罩区域的几何修补与重绘，形成完整换头链路",
+   "kind": "inference"
+  },
+  {
+   "text": "多段遮罩控制链：PersonMaskUltra → 多次 GrowMaskWithBlur → AddMask/SubtractMask → ImageMaskSwitch，可手动精细控制重绘范围",
+   "kind": "fact"
+  },
+  {
+   "text": "Florence2 生成更详细的图像描述，可能用于增强 Redux 的文本/语义引导",
+   "kind": "inference"
+  },
+  {
+   "text": "RepeatLatentBatch 设置 batch=2，配合多个 CachePreviewBridge 支持多候选/过程缓存",
+   "kind": "fact"
+  },
+  {
+   "text": "大量 ImageConcanate 与 ImageAndMaskPreview 组合，方便分阶段调试与效果对比",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 RHHiddenNodes 与 workflow>123/zz 等隐藏节点，将复杂逻辑折叠，降低主界面认知负担",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "工作流将换脸/换头拆解为内容理解、区域分割、遮罩精修、局部重绘、颜色融合五个阶段。先通过 PersonMaskUltra 与 Florence2 获得可编辑的语义区域，再使用 FLUX.1 Redux 的表情/妆容参考能力注入源人脸特征，最终用 FLUX.1 Fill 在遮罩范围内修复生成，并通过 ColorMatch 与 ImageBlend 实现整体一致。多级手动开关和遮罩加减节点让用户可以在‘完全重绘’与‘保留眼镜等配饰’之间自由切换。",
+ "use_case": "适合内容创作者快速制作人像写真、角色换脸/换头素材：输入一张人脸特写和一张目标底图，即可生成保持源人脸身份、同时具有目标姿态/场景的合成图，并微调表情、妆容和配件。",
+ "limitation": "依赖 FLUX.1 dev 系列模型（redux + fill），需要较大显存；需安装多个自定义节点（LayerUtility、Florence2、Impact、EasyUse、CachePreviewBridge 等），部署门槛较高；输入强制为两张图像且内部缩放/裁剪到 512~1024 分辨率，高细节场景可能有损；LoRA 强度与遮罩参数需要手动调试才能达到自然效果。",
+ "dependencies": [
+  "flux1-redux-dev.safetensors",
+  "flux1-fill-dev.safetensors",
+  "sigclip_vision_patch14_384.safetensors",
+  "ae.safetensors",
+  "portrait_lora64.safetensors",
+  "ComfyUI 自定义节点: LayerStyle, Florence2, Impact, EasyUse, 等"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "2"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "GrowMaskWithBlur",
+   "how_to_tune": "第一个数值控制遮罩外扩像素，越大重绘区域越大；配合 blur 值可柔化边缘。做换脸时建议从 49 左右开始，避免裁掉发际线。"
+  },
+  {
+   "param": "KSampler steps",
+   "how_to_tune": "默认 25 步，兼顾质量与速度；细节不足时可上调至 35-40，但耗时明显增加。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "默认 50，控制参考图/文本对生成结果的引导强度。值越大越贴近参考图，但可能丢失自然感；表情/妆容迁移时可适当上下浮动。"
+  },
+  {
+   "param": "ColorMatch mode",
+   "how_to_tune": "默认 mkl，强度调节参数影响颜色迁移程度。若换头区域肤色发灰或偏差，可改为其他模式或降低强度。"
+  },
+  {
+   "param": "LoraLoaderModelOnly strength",
+   "how_to_tune": "portrait_lora64 的强度，默认 1；遇到脸部畸变可降至 0.6-0.8，若像真人感不足可升至 1.2-1.5。"
+  }
+ ],
+ "summary_text": "能力:上传两张图片（一张提供人脸/头部特征，一张为目标底图），生成换脸/换头后自然融合的图像；能力:利用 FLUX.1 Redux (dev) 的参考图能力，对目标人脸进行表情复刻与妆容迁移；能力:通过人体/头部遮罩自动识别重绘区域，支持手动调整遮罩以控制换脸/换头范围；能力:使用 FLUX.1 Fill (dev) 进行局部重绘，并通过边缘融合/颜色匹配保证换头区域自然衔接；能力:支持眼镜等配饰的遮挡处理，可在重绘时保留或重新生成眼镜区域；特色:双 FLUX 模型串联：Redux 负责人物身份/表情参考，Fill 负责遮罩区域的几何修补与重绘，形成完整换头链路；特色:多段遮罩控制链：PersonMaskUltra → 多次 GrowMaskWithBlur → AddMask/SubtractMask → ImageMaskSwitch，可手动精细控制重绘范围；特色:Florence2 生成更详细的图像描述，可能用于增强 Redux 的文本/语义引导；特色:RepeatLatentBatch 设置 batch=2，配合多个 CachePreviewBridge 支持多候选/过程缓存；特色:大量 ImageConcanate 与 ImageAndMaskPreview 组合，方便分阶段调试与效果对比；特色:使用 RHHiddenNodes 与 workflow>123/zz 等隐藏节点，将复杂逻辑折叠，降低主界面认知负担；适合内容创作者快速制作人像写真、角色换脸/换头素材：输入一张人脸特写和一张目标底图，即可生成保持源人脸身份、同时具有目标姿态/场景的合成图，并微调表情、妆容和配件。；工作流将换脸/换头拆解为内容理解、区域分割、遮罩精修、局部重绘、颜色融合五个阶段。先通过 PersonMaskUltra 与 Florence2 获得可编辑的语义区域，再使用 FLUX.1 Redux 的表情/妆容参考能力注入源人脸特征，最终用 FLUX.1 Fill 在遮罩范围内修复生成，并通过 ColorMatch 与 ImageBlend 实现整体一致。多级手动开关和遮罩加减节点让用户可以在‘完全重绘’与‘保留眼镜等配饰’之间自由切换。"
+}

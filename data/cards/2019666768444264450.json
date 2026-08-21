@@ -1,0 +1,94 @@
+{
+ "domain": [
+  "角色一致性",
+  "Q版贴纸生成",
+  "FLUX图像生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张包含清晰主体（人物/宠物/角色）的图片，利用 FLUX 模型与 chibi6250 LoRA，生成保持该角色形象特征的 Q 版贴纸，并输出图片文件。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 RH_Translator 将中文描述自动翻译/改写成模型可理解的英文提示（如“根据上传图片的特征，为她创建一套全新的Q版贴纸”），降低手动编写 Prompt 的门槛。",
+   "kind": "inference"
+  },
+  {
+   "text": "结合 ImageConcatMulti 多图拼接、ReferenceLatent 和 FluxKontextImageScale 实现参考图条件注入，使生成结果与上传的原始角色保持一致。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "LoRA",
+  "ReferenceLatent",
+  "ImageConcatMulti",
+  "FluxKontextImageScale",
+  "RH_Translator",
+  "DualCLIPLoader",
+  "FluxGuidance",
+  "VAE 编解码"
+ ],
+ "special_features": [
+  {
+   "text": "使用 RH_Translator 节点接收中文自然语言描述（如“根据上传图片的特征，为她创建一套全新的Q版贴纸”），参数中带有 randomize/auto 控制，直接面向中文用户设计。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 FluxKontextImageScale、ImageConcatMulti、ReferenceLatent 的组合，将参考图缩放、拼接并注入潜空间，形成多段式条件控制链路。",
+   "kind": "inference"
+  },
+  {
+   "text": "设置了 ConditioningZeroOut 节点，可将某一路 Conditioning 置零，疑似用于消融对比或条件强度切换；同时用两个 SaveImage 节点分别保存 PDuse 和 ComfyUI 命名的结果，便于不同场景取用。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流以“单图角色一致性”为核心目标：先用 RH_Translator 将中文创作意图转化为模型可用的提示，再通过 LoadImage/缩放/填充将输入图转换为标准尺寸，经 VAE 编码后由 ReferenceLatent 和 ImageConcatMulti 将参考特征与文本条件融合；随后用 FLUX dev + chibi LoRA 生成 Q 版贴纸。这种设计兼顾了中文用户的易用性和角色一致性，同时通过 FluxKontextImageScale 确保上下文图与模型训练时的分辨率/布局匹配，整体上是一条“单图条件注入+风格 LoRA”的工程化管线。",
+ "use_case": "适合需要为特定人物、宠物或 IP 角色快速生成一套统一风格的 Q 版贴纸、头像或表情包；用户只需提供一张清晰参考图并输入中文描述即可批量出图。",
+ "limitation": "依赖多个非标准自定义节点（RH_Translator、FluxKontextImageScale、ImageConcatMulti、ReferenceLatent、LayerUtility、JWImageResizeByLongerSide 等），部署门槛较高；需下载 flux1-dev-kontext_fp8.safetensors、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、ae.sft 和 chibi6250 LoRA 等大型模型，且 FLUX 在低显存环境下可能无法流畅运行；输入图片主体不清晰或背景复杂时，参考特征提取会受影响；chibi LoRA 会固化 Q 版风格，不适合写实或其他风格需求。",
+ "dependencies": [
+  "flux1-dev-kontext_fp8.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "chibi6250_6250.safetensors",
+  "ComfyUI 自定义节点：RH_Translator",
+  "ComfyUI 自定义节点：FluxKontextImageScale",
+  "ComfyUI 自定义节点：ImageConcatMulti",
+  "ComfyUI 自定义节点：ReferenceLatent",
+  "ComfyUI 自定义节点：LayerUtility (ImageScaleByAspectRatio V2)",
+  "ComfyUI 自定义节点：JWImageResizeByLongerSide"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler (steps/cfg/sampler/scheduler)",
+   "how_to_tune": "当前 steps=30, cfg=2, euler, simple。FLUX 模型通常建议 cfg 在 1~2 之间，steps 20~30 已经足够；cfg 过高会导致色彩过饱和，steps 过大只会增加耗时，不会明显提升质量。"
+  },
+  {
+   "param": "FluxGuidance",
+   "how_to_tune": "当前值 2.5。控制对 Prompt 的跟随程度：数值越高越贴合文本，但可能引入伪影；数值越低越依赖模型先验。建议在 2~6 之间调节，若主体特征丢失可调高，若画面脏乱可调低。"
+  },
+  {
+   "param": "LoraLoaderModelOnly (strength)",
+   "how_to_tune": "当前值 1。chibi6250 LoRA 的权重决定了 Q 版化程度：0.6~0.8 更接近原角色，1.0~1.2 更 Q 更夸张；超过 1.3 可能导致结构畸变。"
+  },
+  {
+   "param": "RH_Translator (width/randomize/auto)",
+   "how_to_tune": "其中的 1199 可能与生成提示的最大长度/输出宽度有关，randomize 控制随机采样，auto 可能代表自动模式。如果翻译结果太简单，可增大上限；若每次结果不稳定，建议关闭 randomize。"
+  },
+  {
+   "param": "LayerUtility ImageScaleByAspectRatio V2 与 JWImageResizeByLongerSide",
+   "how_to_tune": "用于把上传图统一到模型支持的分辨率（例如长边 1024，比例 3:4）。若出图构图被裁剪，可将 letterbox 改为 crop 或调整比例；若精细度不足，可适当增大输出分辨率。"
+  }
+ ],
+ "summary_text": "能力:上传一张包含清晰主体（人物/宠物/角色）的图片，利用 FLUX 模型与 chibi6250 LoRA，生成保持该角色形象特征的 Q 版贴纸，并输出图片文件。；能力:通过 RH_Translator 将中文描述自动翻译/改写成模型可理解的英文提示（如“根据上传图片的特征，为她创建一套全新的Q版贴纸”），降低手动编写 Prompt 的门槛。；能力:结合 ImageConcatMulti 多图拼接、ReferenceLatent 和 FluxKontextImageScale 实现参考图条件注入，使生成结果与上传的原始角色保持一致。；特色:使用 RH_Translator 节点接收中文自然语言描述（如“根据上传图片的特征，为她创建一套全新的Q版贴纸”），参数中带有 randomize/auto 控制，直接面向中文用户设计。；特色:通过 FluxKontextImageScale、ImageConcatMulti、ReferenceLatent 的组合，将参考图缩放、拼接并注入潜空间，形成多段式条件控制链路。；特色:设置了 ConditioningZeroOut 节点，可将某一路 Conditioning 置零，疑似用于消融对比或条件强度切换；同时用两个 SaveImage 节点分别保存 PDuse 和 ComfyUI 命名的结果，便于不同场景取用。；适合需要为特定人物、宠物或 IP 角色快速生成一套统一风格的 Q 版贴纸、头像或表情包；用户只需提供一张清晰参考图并输入中文描述即可批量出图。；该工作流以“单图角色一致性”为核心目标：先用 RH_Translator 将中文创作意图转化为模型可用的提示，再通过 LoadImage/缩放/填充将输入图转换为标准尺寸，经 VAE 编码后由 ReferenceLatent 和 ImageConcatMulti 将参考特征与文本条件融合；随后用 FLUX dev + chibi LoRA 生成 Q 版贴纸。这种设计兼顾了中文用户的易用性和角色一致性，同时通过 FluxKontextImageScale 确保上下文图与模型训练时的分辨率/布局匹配，整体上是一条“单图条件注入+风格 LoRA”的工程化管线。"
+}

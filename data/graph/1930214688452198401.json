@@ -1,0 +1,538 @@
+{
+ "node_count": 13,
+ "link_count": 17,
+ "active_node_count": 13,
+ "nodes": [
+  {
+   "id": 5,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512,
+    768,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Ice queen in a frozen castle, wearing a shimmering ice gown, commanding the blizzard, majestic and elegant. \n\nillustration, masterpiece, detailed"
+   ],
+   "in_links": [
+    3
+   ],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 7,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Low-quality, blurry, distorted, unrealistic proportions, dull colors, out of focus, messy background, duplicate characters."
+   ],
+   "in_links": [
+    5
+   ],
+   "out_links": [
+    18
+   ]
+  },
+  {
+   "id": 3,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8,
+    "fixed",
+    30,
+    6,
+    "dpmpp_2m_sde_gpu",
+    "karras",
+    1
+   ],
+   "in_links": [
+    1,
+    23,
+    24,
+    2
+   ],
+   "out_links": [
+    7
+   ]
+  },
+  {
+   "id": 21,
+   "type": "ControlNetApplyAdvanced",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    1
+   ],
+   "in_links": [
+    17,
+    18,
+    19,
+    42,
+    22
+   ],
+   "out_links": [
+    23,
+    24
+   ]
+  },
+  {
+   "id": 24,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    29
+   ],
+   "out_links": []
+  },
+  {
+   "id": 4,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SD1.5 dreamshaper_8.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    1,
+    3,
+    5,
+    22,
+    25
+   ]
+  },
+  {
+   "id": 36,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ebce79e63f8c9e93e46dc9d7d432849703e3caf555c4a8d2c1ec383f6a284604.jpg",
+    "image",
+    ""
+   ],
+   "in_links": [],
+   "out_links": [
+    44
+   ]
+  },
+  {
+   "id": 35,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    ""
+   ],
+   "in_links": [
+    43
+   ],
+   "out_links": []
+  },
+  {
+   "id": 34,
+   "type": "OpenposePreprocessor",
+   "category": "pose",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "enable",
+    "enable",
+    "enable",
+    512,
+    "disable"
+   ],
+   "in_links": [
+    44
+   ],
+   "out_links": [
+    42,
+    43
+   ]
+  },
+  {
+   "id": 19,
+   "type": "ControlNetLoader",
+   "category": "controlnet",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "control_v11p_sd15_openpose.pth"
+   ],
+   "in_links": [],
+   "out_links": [
+    19
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    25
+   ],
+   "out_links": [
+    29,
+    45
+   ]
+  },
+  {
+   "id": 41,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI",
+    ""
+   ],
+   "in_links": [
+    45
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 19,
+   "to_node": 21,
+   "type": "CONTROL_NET"
+  },
+  {
+   "from_node": 21,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 21,
+   "to_node": 3,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 8,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 34,
+   "to_node": 21,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 34,
+   "to_node": 35,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 36,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 21,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 3,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 4,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 4,
+   "to_node": 7,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 4,
+   "to_node": 8,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 21,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 21,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 8,
+   "to_node": 24,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 41,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 1,
+  "conditioning": 2,
+  "sampler": 1,
+  "controlnet": 2,
+  "image_io": 4,
+  "checkpoint_loader": 1,
+  "pose": 1,
+  "vae": 1
+ },
+ "assets": [
+  {
+   "node_id": 4,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "SD1.5 dreamshaper_8.safetensors"
+  },
+  {
+   "node_id": 19,
+   "node_type": "ControlNetLoader",
+   "kind": "controlnet",
+   "name": "control_v11p_sd15_openpose.pth"
+  }
+ ],
+ "techniques": [
+  "ControlNet",
+  "OpenPose"
+ ],
+ "param_face_size": 27,
+ "structure_hash": "12554d09a2c7469d",
+ "param_face": [
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 5,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "dpmpp_2m_sde_gpu"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "karras"
+  },
+  {
+   "node_id": 3,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 21,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 21,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 21,
+   "node_type": "ControlNetApplyAdvanced",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 24,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 4,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "SD1.5 dreamshaper_8.safetensors"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "ebce79e63f8c9e93e46dc9d7d432849703e3caf555c4a8d2c1ec383f6a28"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 36,
+   "node_type": "LoadImage",
+   "widget_index": 2,
+   "value_preview": ""
+  },
+  {
+   "node_id": 35,
+   "node_type": "PreviewImage",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 34,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 0,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 34,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 1,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 34,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 2,
+   "value_preview": "enable"
+  },
+  {
+   "node_id": 34,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 3,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 34,
+   "node_type": "OpenposePreprocessor",
+   "widget_index": 4,
+   "value_preview": "disable"
+  },
+  {
+   "node_id": 19,
+   "node_type": "ControlNetLoader",
+   "widget_index": 0,
+   "value_preview": "control_v11p_sd15_openpose.pth"
+  },
+  {
+   "node_id": 41,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 41,
+   "node_type": "SaveImage",
+   "widget_index": 1,
+   "value_preview": ""
+  }
+ ]
+}

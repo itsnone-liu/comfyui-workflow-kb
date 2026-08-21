@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "角色概念设计",
+  "人物设定生成",
+  "多模态文生图/图生图",
+  "视觉前期美术"
+ ],
+ "capabilities": [
+  {
+   "text": "输入文字描述或参考图片，一键生成影视/3A级角色设定图（21:9宽幅、2K分辨率）",
+   "kind": "fact"
+  },
+  {
+   "text": "通过内置的多段提示词系统（# Role: 首席影视/3A级视觉概念设计总监）将用户灵感转换为专业角色设定指令，再驱动图像模型生成",
+   "kind": "fact"
+  },
+  {
+   "text": "借助双 Gemini 3.1 Pro 节点形成流水线式 Prompt 工程，可能分别完成需求解析、视觉锚点提取与最终角色描述生成",
+   "kind": "inference"
+  },
+  {
+   "text": "端到端完成从 LoadImage 输入参考图 → LLM 解析想法 → Nano Banana 2 生成角色设定集 → SaveImage 输出的完整链路",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "LLM API 编排（RH_LLMAPI_Pro_Node × 2，Gemini 3.1 Pro）",
+  "多段式 Prompt 工程 / 系统角色预设（Role prompting）",
+  "多模态图像生成（RH_Nano_Banana2_Gemini31Flash）",
+  "参考图引导设计（LoadImage + 文本联合输入）",
+  "宽幅角色设定图输出（21:9 画幅，2k 分辨率）",
+  "随机种子与温度控制（temperature=0.4, randomize）"
+ ],
+ "special_features": [
+  {
+   "text": "并行部署两个配置几乎相同的 Gemini 3.1 Pro LLM 节点，一个可能面向'灵感解析与视觉锚点'，另一个面向完整角色设定指令生成，形成两段式 Prompt 流水线",
+   "kind": "inference"
+  },
+  {
+   "text": "大量使用 Text Multiline + PreviewTextNode 构建多层系统提示词，并明确标注'模块一：【灵感解析与视觉锚点】'等结构化提示模块，提示词工程痕迹明显",
+   "kind": "fact"
+  },
+  {
+   "text": "Note 节点中写明'收到用户的指令+灵感时，立刻判断其需求类型'，暗示工作流设计有需求分类/路由的意图，但路由逻辑主要由 LLM 在 Prompt 层完成",
+   "kind": "inference"
+  },
+  {
+   "text": "生成参数固定为 21:9 超宽幅 + 2k 分辨率，非常适配角色设定集/三视图/多姿态排版，而非普通单张方图",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流将角色设计这一创意任务拆解为流水线：用户只需提供文字或参考图，系统先用大模型理解用户意图，再去生成专业角色设定。两个 LLM 节点的设计可能意图在于分离'用户灵感解析'和'角色设计稿生成指令'，让中间提示词更可控、更专业；最终交给 Nano Banana 2（Gemini 3.1 Flash 图像模型）生成宽幅角色设定图。整体意图是让非专业用户也能通过日常语言获得接近影视/3A级的角色概念设计图，同时依托 RunningHub 平台的 API 与 RH 币体系完成商业化调度。",
+ "use_case": "适合角色概念设计师、游戏/影视前期美术、小说与动漫人设可视化等场景。用户提供文字描述或一张参考图，即可快速获得用于灵感参考或提案展示的角色设定图。",
+ "limitation": "依赖 RunningHub 平台的第三方 API 节点（RH_LLMAPI_Pro_Node、RH_Nano_Banana2_Gemini31Flash），需要有效 API 凭证和 RH 币余额；实际生成效果受 gemini-3.1-pro-preview 与 Nano Banana 2 模型能力限制；输出为单一角色设定图，无法保证多角色交互构图；输入需要用户提供较明确的文字描述或参考图，否则 LLM 可能产生不可控的角色偏离。",
+ "dependencies": [
+  "RH_LLMAPI_Pro_Node（自定义节点，Gemini 3.1 Pro API）",
+  "RH_Nano_Banana2_Gemini31Flash（自定义节点，Nano Banana 2 图像生成 API）",
+  "ComfyUI 基础节点：LoadImage / SaveImage / PreviewTextNode / Text Multiline",
+  "RunningHub 平台账号与 RH 币（第三方 API 调用计费）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张参考图片（LoadImage）+ 多段文本提示（Text Multiline 注入角色定位/系统提示词）",
+  "count": "1 张图片 + 3 段文本模板（另含 2 段 PreviewTextNode 提示文本）"
+ },
+ "output": {
+  "type": "角色设定图（21:9 宽幅，2K 分辨率，PNG/JPG）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "RH_LLMAPI_Pro_Node.temperature（当前 0.4）",
+   "how_to_tune": "若希望角色描述更稳定、遵循用户原意，可调低至 0.2~0.3；若希望生成更具创意和意外感的角色设定，可调高至 0.6~0.8。"
+  },
+  {
+   "param": "RH_LLMAPI_Pro_Node.model（当前 gemini-3.1-pro-preview）",
+   "how_to_tune": "追求更强推理与更专业的角色设定时可用 pro 系列；若需降低 API 成本或加快响应，可考虑 flash 级别模型。"
+  },
+  {
+   "param": "RH_Nano_Banana2_Gemini31Flash 分辨率（当前 2k）",
+   "how_to_tune": "2k 适合高质量角色设定与印刷级展示；若仅为快速预览或降低 API 消耗，可以调整为 1k。"
+  },
+  {
+   "param": "RH_Nano_Banana2_Gemini31Flash 画幅（当前 21:9）",
+   "how_to_tune": "21:9 适合三视图/多姿态卡牌式角色设定；若需要头像特写或竖版角色立绘，可改为 3:4、2:3 或 1:1。"
+  },
+  {
+   "param": "RH_LLMAPI_Pro_Node.randomize（当前 randomize）",
+   "how_to_tune": "保持 randomize 可让每次生成不同角色形象，适合灵感探索；若需复现某一版角色设计，可固定为具体随机种子。"
+  }
+ ],
+ "summary_text": "能力:输入文字描述或参考图片，一键生成影视/3A级角色设定图（21:9宽幅、2K分辨率）；能力:通过内置的多段提示词系统（# Role: 首席影视/3A级视觉概念设计总监）将用户灵感转换为专业角色设定指令，再驱动图像模型生成；能力:借助双 Gemini 3.1 Pro 节点形成流水线式 Prompt 工程，可能分别完成需求解析、视觉锚点提取与最终角色描述生成；能力:端到端完成从 LoadImage 输入参考图 → LLM 解析想法 → Nano Banana 2 生成角色设定集 → SaveImage 输出的完整链路；特色:并行部署两个配置几乎相同的 Gemini 3.1 Pro LLM 节点，一个可能面向'灵感解析与视觉锚点'，另一个面向完整角色设定指令生成，形成两段式 Prompt 流水线；特色:大量使用 Text Multiline + PreviewTextNode 构建多层系统提示词，并明确标注'模块一：【灵感解析与视觉锚点】'等结构化提示模块，提示词工程痕迹明显；特色:Note 节点中写明'收到用户的指令+灵感时，立刻判断其需求类型'，暗示工作流设计有需求分类/路由的意图，但路由逻辑主要由 LLM 在 Prompt 层完成；特色:生成参数固定为 21:9 超宽幅 + 2k 分辨率，非常适配角色设定集/三视图/多姿态排版，而非普通单张方图；适合角色概念设计师、游戏/影视前期美术、小说与动漫人设可视化等场景。用户提供文字描述或一张参考图，即可快速获得用于灵感参考或提案展示的角色设定图。；该工作流将角色设计这一创意任务拆解为流水线：用户只需提供文字或参考图，系统先用大模型理解用户意图，再去生成专业角色设定。两个 LLM 节点的设计可能意图在于分离'用户灵感解析'和'角色设计稿生成指令'，让中间提示词更可控、更专业；最终交给 Nano Banana 2（Gemini 3.1 Flash 图像模型）生成宽幅角色设定图。整体意图是让非专业用户也能通过日常语言获得接近影视/3A级的角色概念设计图，同时依托 RunningHub 平台的 API 与 RH 币体系完成商业化调度。"
+}

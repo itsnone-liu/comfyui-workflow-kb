@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "婚纱摄影",
+  "人像精修",
+  "AI修图"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端实现：输入单张婚纱/人像原片，经 FLUX.1-Kontext-dev + 婚纱照写真精修 LoRA 重绘，再保存为精修图；面向“拯救废片”场景，效果目标为人物皮肤白皙、瘦脸。",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 ReferenceLatent + VAEEncode 将原图编码为参考 latent 注入采样，使输出在保留原片构图、人物姿态的基础上重绘，而不是完全自由生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "提供两路文本条件入口：CLIPTextEncode 使用 'Using this elegant style'，JjkText 使用 'Refine the characters in'，可调整风格与精修描述。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX",
+  "FLUX.1-Kontext-dev FP8 检查点",
+  "LoRA：婚纱照写真精修.safetensors",
+  "参考图 Latent 注入：ReferenceLatent + VAEEncode",
+  "图生图/重绘管线：VAEEncode → KSampler → VAEDecode",
+  "FluxGuidance 引导（value=3.5）",
+  "双 CLIP 文本条件：clip_l.safetensors + sd3/t5xxl_fp8_e4m3fn.safetensors",
+  "Anything Everywhere3 自动广播接线",
+  "ConstrainImage 分辨率约束到 1536×1536"
+ ],
+ "special_features": [
+  {
+   "text": "图中出现 2 个 Anything Everywhere3 节点，利用这类“任意输入/任意分发”节点做隐式接线，避免把同一路图像或 latent 显式连到大量节点，是偏极客的图结构。",
+   "kind": "inference"
+  },
+  {
+   "text": "VAEEncode 后接 ReferenceLatent 形成参考图控制回路：原片先被编码成 latent，再作为参考条件参与 FLUX 的采样过程，实现“基于原片重绘+精修”。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ConditioningZeroOut + FluxGuidance + KSampler(cfg=1) 的 FLUX 标准引导结构，而不是传统 SD 的高 CFG 放大；cfg 保持 1、guidance 单独控制文本影响，是 FLUX 工作流的特征。",
+   "kind": "inference"
+  },
+  {
+   "text": "ConstrainImage|pysssss 将出图尺寸限制为 1536×1536，并用 Note 明确提示用户调整尺寸，工作是“先归一化原图，再进 FLUX 重绘”的防护性设计。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流可能是想把 FLUX.1-Kontext-dev 的上下文图像编辑能力与人像精修 LoRA 组合成一条低门槛“废片抢救”流水线：原片经 VAEEncode 后交给 ReferenceLatent 作为参考，让重绘不丢失原始构图与人物身份；再用婚纱照写真精修 LoRA 施加美白、瘦脸等婚纱修图风格；FluxGuidance=3.5、cfg=1 符合 FLUX 的引导习惯，避免传统 CFG 带来的过饱和或崩坏。双 Anything Everywhere3 简化了连线，ConstrainImage 则把图像统一限制到 1536 内，兼顾细节与显存压力。整体思路更像“参考图 + 专用 LoRA + 英文短提示”的一键重绘管道。",
+ "use_case": "适合婚纱摄影工作室或个人影楼在选片/废片阶段快速产出美白、瘦脸、风格统一的精修预览；也可用于普通人像照片的一键美颜，但整体效果偏婚纱写真风格。",
+ "limitation": "强依赖 FLUX.1-Kontext-dev 系列模型、T5 文本编码器、ae.sft VAE、婚纱照写真精修 LoRA 以及 Anything Everywhere3、ConstrainImage|pysssss、JjkText、ReferenceLatent 等节点，缺少任意一个都无法完整运行；输出尺寸被 ConstrainImage 默认限制在 1536×1536，不是任意高清尺寸；该流程没有人脸关键点/遮罩/皮肤分割等细粒度控制，瘦脸和白皙范围主要靠 LoRA 与提示词统摄，极端废片或严重畸变可能无法精细修复。",
+ "dependencies": [
+  "flux1-kontext-dev-fp8-e4m3fn.safetensors",
+  "clip_l.safetensors",
+  "sd3/t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "婚纱照写真精修.safetensors",
+  "Anything Everywhere3",
+  "ConstrainImage|pysssss",
+  "JjkText",
+  "ReferenceLatent"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人像/婚纱摄影原片，通过 LoadImage(IN) 导入",
+  "count": "1"
+ },
+ "output": {
+  "type": "精修重绘后的图片，通过 SaveImage(OUT) 保存",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "当前为 30；若细节不够干净可提高到 40，若追求速度可降到 20，但精修痕迹可能变少。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "当前为 1，这是 FLUX 工作流的常见设置；不要按 SD 习惯调大，否则容易过曝或色彩异常。要增强提示词控图效果应优先调 FluxGuidance。"
+  },
+  {
+   "param": "FluxGuidance/guidance",
+   "how_to_tune": "当前为 3.5；数值越高越贴近提示词和 LoRA 风格，越低越接近原片；可在 2~6 之间尝试。"
+  },
+  {
+   "param": "LoraLoaderModelOnly/strength",
+   "how_to_tune": "当前约 1.0；想要更强的美白/瘦脸效果可微调到 1.1~1.2，想更自然可降到 0.7~0.9。"
+  },
+  {
+   "param": "ConstrainImage|pysssss 尺寸",
+   "how_to_tune": "当前 1536×1536；显存紧张可降到 1280 或 1024，需更高像素可试 1920，但要留意显存占用和 FLUX 的生成上限。"
+  },
+  {
+   "param": "CLIPTextEncode / JjkText 提示词",
+   "how_to_tune": "当前分别写着 'Using this elegant style' 和 'Refine the characters in'；想强化白皙/瘦脸可加入 'fair skin, slimmer face, clear skin, delicate bridal makeup' 等英文词，FLUX 对英文提示词的理解通常更好。"
+  },
+  {
+   "param": "seed/control_after_generate",
+   "how_to_tune": "当前固定 seed 且 control_after_generate 为 randomize；固定 seed 可复现同一种精修倾向，randomize 则每次生成不同细节。"
+  }
+ ],
+ "summary_text": "能力:端到端实现：输入单张婚纱/人像原片，经 FLUX.1-Kontext-dev + 婚纱照写真精修 LoRA 重绘，再保存为精修图；面向“拯救废片”场景，效果目标为人物皮肤白皙、瘦脸。；能力:通过 ReferenceLatent + VAEEncode 将原图编码为参考 latent 注入采样，使输出在保留原片构图、人物姿态的基础上重绘，而不是完全自由生成。；能力:提供两路文本条件入口：CLIPTextEncode 使用 'Using this elegant style'，JjkText 使用 'Refine the characters in'，可调整风格与精修描述。；特色:图中出现 2 个 Anything Everywhere3 节点，利用这类“任意输入/任意分发”节点做隐式接线，避免把同一路图像或 latent 显式连到大量节点，是偏极客的图结构。；特色:VAEEncode 后接 ReferenceLatent 形成参考图控制回路：原片先被编码成 latent，再作为参考条件参与 FLUX 的采样过程，实现“基于原片重绘+精修”。；特色:使用 ConditioningZeroOut + FluxGuidance + KSampler(cfg=1) 的 FLUX 标准引导结构，而不是传统 SD 的高 CFG 放大；cfg 保持 1、guidance 单独控制文本影响，是 FLUX 工作流的特征。；特色:ConstrainImage|pysssss 将出图尺寸限制为 1536×1536，并用 Note 明确提示用户调整尺寸，工作是“先归一化原图，再进 FLUX 重绘”的防护性设计。；适合婚纱摄影工作室或个人影楼在选片/废片阶段快速产出美白、瘦脸、风格统一的精修预览；也可用于普通人像照片的一键美颜，但整体效果偏婚纱写真风格。；这个工作流可能是想把 FLUX.1-Kontext-dev 的上下文图像编辑能力与人像精修 LoRA 组合成一条低门槛“废片抢救”流水线：原片经 VAEEncode 后交给 ReferenceLatent 作为参考，让重绘不丢失原始构图与人物身份；再用婚纱照写真精修 LoRA 施加美白、瘦脸等婚纱修图风格；FluxGuidance=3.5、cfg=1 符合 FLUX 的引导习惯，避免传统 CFG 带来的过饱和或崩坏。双 Anything Everywhere3 简化了连线，ConstrainImage 则把图像统一限制到 1536 内，兼顾细节与显存压力。整体思路更像“参考图 + 专用 LoRA + 英文短提示”的一键重绘管道。"
+}

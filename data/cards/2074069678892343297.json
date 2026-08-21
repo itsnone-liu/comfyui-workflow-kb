@@ -1,0 +1,89 @@
+{
+ "domain": [
+  "图像生成",
+  "风格迁移"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张参考图像，结合文本语义描述，生成保留参考风格的全新图像（例如将照片风格迁移到目标人物）。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过Krea2 Turbo模型和少量采样步数（steps=8）实现相对低延迟的图像生成。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "Krea2StyleReference：从参考图像提取风格特征",
+  "Krea2StyleTransfer：执行风格迁移与内容融合",
+  "UNETLoader + krea2_turbo_fp8.safetensors：加载Krea2 Turbo UNET，支持快速采样",
+  "CLIPLoader + qwen3vl_4b_fp8_scaled.safetensors：使用Qwen3VL视觉语言模型作为文本编码器",
+  "ConditioningZeroOut + CFG=1：通过零条件与低CFG配合，降低对负面提示的依赖并加速",
+  "ResolutionSelector：动态选择输出分辨率比例",
+  "euler_ancestral采样器 + simple调度器",
+  "FP8量化模型加载，降低显存占用"
+ ],
+ "special_features": [
+  {
+   "text": "使用Krea2StyleReference + Krea2StyleTransfer专用节点组合，形成“风格参考+风格迁移”两段式结构，而非传统ControlNet或IPAdapter方式。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时存在CLIPTextEncode（a girl，a boy）与CR Text（A boy in his twenties...）两个文本节点，可能分别控制内容主体与附加细节，构成双文本引导。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用ConditioningZeroOut将条件置零，同时KSampler设置CFG=1，避免无分类器引导的额外开销，配合Turbo模型实现快速采样。",
+   "kind": "fact"
+  },
+  {
+   "text": "所有加载模型均为FP8版本（UNet、CLIP、VAE），体现对显存优化的极致考量。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流似乎旨在构建一个轻量、快速、风格可控的图像生成管线。通过Krea2 Turbo的步进式蒸馏能力，大幅减少采样步数；利用Qwen3VL作为CLIP增强语义理解；通过Krea2风格迁移节点直接对参考图进行风格提取与迁移，绕过了传统的ControlNet等复杂结构。ConditioningZeroOut和CFG=1进一步压缩计算量，使普通GPU也能快速完成风格化生成。",
+ "use_case": "适用于需要快速将任意参考图像风格迁移到指定内容的任务，例如艺术风格画作生成、人物照片动漫化、产品概念图风格统一等。用户只需提供一张参考图，即可获得与参考风格一致的新图像。",
+ "limitation": "依赖Krea2系列自定义节点（Krea2StyleReference/Transfer），需要额外安装；模型文件固定为krea2_turbo_fp8.safetensors、qwen3vl_4b_fp8_scaled.safetensors、qwen_image_vae.safetensors，缺失时无法运行。输入为单张图像，且文本提示已预设，若需自定义需修改节点参数。输出尺寸受ResolutionSelector限制，不同比例可能需要重新设定。",
+ "dependencies": [
+  "模型文件：krea2_turbo_fp8.safetensors",
+  "模型文件：qwen3vl_4b_fp8_scaled.safetensors",
+  "模型文件：qwen_image_vae.safetensors",
+  "自定义节点：Krea2StyleReference、Krea2StyleTransfer、ResolutionSelector、CR Text"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1"
+ },
+ "output": {
+  "type": "image",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler/steps",
+   "how_to_tune": "当前为8，这是Turbo模型的典型低步数设置。若追求更快生成可降至4-6，但可能损失细节；若质量不足可增至10-12。"
+  },
+  {
+   "param": "KSampler/cfg",
+   "how_to_tune": "当前为1，配合ConditioningZeroOut使用。若生成内容与提示不符，可尝试增大到1.5-2.0，但会牺牲部分速度。"
+  },
+  {
+   "param": "Krea2StyleTransfer/strength",
+   "how_to_tune": "当前为0.65，控制风格迁移动强度。调高（如0.8）更接近参考图风格，调低（如0.5）保留更多原始内容。"
+  },
+  {
+   "param": "CLIPTextEncode/text",
+   "how_to_tune": "当前为'a girl，a boy'，可修改为具体场景/人物描述，直接影响生成内容。"
+  },
+  {
+   "param": "CR Text/text",
+   "how_to_tune": "当前为'A boy in his twenties...'，可能是附加的细节或负面提示。建议根据实际需要调整，或尝试将其作为风格描述。"
+  },
+  {
+   "param": "ResolutionSelector/aspect_ratio",
+   "how_to_tune": "当前为'3:4 (Portrait Standard)'，可切换为其他比例（如1:1、4:3）以适配不同输出用途。"
+  }
+ ],
+ "summary_text": "能力:上传单张参考图像，结合文本语义描述，生成保留参考风格的全新图像（例如将照片风格迁移到目标人物）。；能力:通过Krea2 Turbo模型和少量采样步数（steps=8）实现相对低延迟的图像生成。；特色:使用Krea2StyleReference + Krea2StyleTransfer专用节点组合，形成“风格参考+风格迁移”两段式结构，而非传统ControlNet或IPAdapter方式。；特色:同时存在CLIPTextEncode（a girl，a boy）与CR Text（A boy in his twenties...）两个文本节点，可能分别控制内容主体与附加细节，构成双文本引导。；特色:使用ConditioningZeroOut将条件置零，同时KSampler设置CFG=1，避免无分类器引导的额外开销，配合Turbo模型实现快速采样。；特色:所有加载模型均为FP8版本（UNet、CLIP、VAE），体现对显存优化的极致考量。；适用于需要快速将任意参考图像风格迁移到指定内容的任务，例如艺术风格画作生成、人物照片动漫化、产品概念图风格统一等。用户只需提供一张参考图，即可获得与参考风格一致的新图像。；该工作流似乎旨在构建一个轻量、快速、风格可控的图像生成管线。通过Krea2 Turbo的步进式蒸馏能力，大幅减少采样步数；利用Qwen3VL作为CLIP增强语义理解；通过Krea2风格迁移节点直接对参考图进行风格提取与迁移，绕过了传统的ControlNet等复杂结构。ConditioningZeroOut和CFG=1进一步压缩计算量，使普通GPU也能快速完成风格化生成。"
+}

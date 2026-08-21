@@ -1,0 +1,120 @@
+{
+ "domain": [
+  "角色一致性",
+  "分镜生成",
+  "图生图/局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "加载两张参考图（LoadImage 与 LoadImage(mode4)），并通过 VAEEncode / ReferenceLatent 构造角色身份参考条件，端到端产出角色一致的分镜图",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 FLUX.2 Klein + qwen_3_8b_fp8mixed 文本编码器，按提示词生成 1920x1280 静态分镜图（EmptyFlux2LatentImage 控制画幅）",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Wan2.2 Remix + umt5_xxl + Wan2.1_VAE 作为第二条生成/重绘链路，结合 InpaintModelConditioning 与 GrowMaskWithBlur 做局部重绘",
+   "kind": "fact"
+  },
+  {
+   "text": "调用 Florence2Run 对参考图生成 detailed_caption，再由 Qwen3_VQA 将故事梗概/下一幕描述扩写为具体图像提示词",
+   "kind": "fact"
+  },
+  {
+   "text": "输出两路图像信号（PreviewImage、SaveImage、SaveImage(mode4)），可对比 FLUX 静态分镜与 Wan 重绘/动态分支的结果",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 Klein 文生图",
+  "Wan2.2 Remix",
+  "Qwen3-VQA 提示词工程",
+  "Florence2 detailed_caption",
+  "ReferenceLatent 角色一致性注入",
+  "InpaintModelConditioning 局部重绘",
+  "GrowMaskWithBlur + LayerMask 遮罩控制",
+  "ModelSamplingSD3 shift 调度",
+  "CFGGuider / SamplerCustomAdvanced",
+  "Fast Groups Bypasser 双链路切换"
+ ],
+ "special_features": [
+  {
+   "text": "两套 UNETLoader/CLIPLoader/VAELoader 并行：FLUX 分支负责高质量静态分镜，Wan2.2 Remix 分支负责参考图重绘/动态化，并用 Fast Groups Bypasser 控制切换",
+   "kind": "fact"
+  },
+  {
+   "text": "ReferenceLatent x2 + VAEEncode 将参考角色图作为视觉条件注入采样过程，是角色一致性的核心设计",
+   "kind": "inference"
+  },
+  {
+   "text": "Qwen3_VQA + Florence2Run + CR Prompt Text + easy promptLine + MarkdownNote 模板构成 LLM 自动写提示词链路，且内置通用类/战斗类两套提示词模板",
+   "kind": "fact"
+  },
+  {
+   "text": "Wan 分支通过 InpaintModelConditioning + GrowMaskWithBlur + LayerUtility:ImageScaleByAspectRatio V2 + LayerMask:MaskPreview 形成遮罩/局部重绘回路",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Image Comparer (rgthree) 做双路输出对比，方便调参时看 FLUX 与 Wan 分支的差异",
+   "kind": "fact"
+  },
+  {
+   "text": "GetImageSize + INTConstant(1920/1280) + ImageScaleToTotalPixels 做分辨率先行控制，保证两条生成链路画幅对齐",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流可能是为了把“分镜脚本编写”和“图像生成”解耦：用户只需给角色参考图和故事梗概，Florence2 先提取画面事实，Qwen3-VQA 再按模板扩写成 FLUX/Wan 可用的提示词，降低手写提示词成本。同时并置 FLUX 与 Wan2.2 Remix 两条链路，让 FLUX 出高质量静态分镜、Wan 分支做参考图重绘或动态延伸；ReferenceLatent 和 VAEEncode 把上传角色图变成视觉先验，从而约束角色身份一致。Fast Groups Bypasser 则让用户能在两套生成后端之间快速切换、对比或只跑其中一条。",
+ "use_case": "适用于漫画/短剧前期分镜、多格剧情图、角色一致性概念设计，以及基于已有角色图的局部重绘/二次创作；也可以把一句“Next Scene”快速变成连续镜头画面。",
+ "limitation": "依赖多套外部模型与自定义节点，首次运行需要联网下载或预装 Florence2/Qwen3-VQA 相关依赖；1920x1280 分镜生成显存占用高，低端显卡可能无法丝滑运行；输入参考图角度/光线差异太大会导致身份一致性漂移；涉及 Wan2.2_Remix_NSFW 模型，使用与分享需注意内容安全与模型许可。",
+ "dependencies": [
+  "checkpoint: flux-2-klein-9b-fp8.safetensors",
+  "checkpoint: Wan2.2_Remix_NSFW_t2v_14b_low_lighting-v2.0.safetensors",
+  "clip: qwen_3_8b_fp8mixed.safetensors",
+  "clip: umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+  "vae: flux2-vae.safetensors",
+  "vae: Wan2.1_VAE.pth",
+  "Florence-2-base（DownloadAndLoadFlorence2Model 自动下载）",
+  "Qwen3-VL-8B-Instruct（Qwen3_VQA 节点所需）",
+  "自定义节点: rgthree（Fast Groups Bypasser / Image Comparer）",
+  "自定义节点: ComfyUI LayerStyle（LayerUtility/LayerMask）",
+  "自定义节点: ComfyUI Easy Use（easy promptLine / easy showAnything）",
+  "自定义节点: JWStringConcat / Qwen3_VQA / Florence2Run / InpaintModelConditioning / ReferenceLatent"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两张参考图（LoadImage 与 LoadImage(mode4)）+ 文本（CR Prompt Text 故事梗概 / easy promptLine 场景描述）",
+  "count": "2 图像 + 多路文本"
+ },
+ "output": {
+  "type": "图像（PreviewImage、SaveImage、SaveImage(mode4)）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler(mode4) steps / cfg / sampler / scheduler",
+   "how_to_tune": "默认 steps=6、cfg=1、sampler=euler、scheduler=beta，适合 Wan2.2 Remix 快速出图；如果重绘质量不足，可优先把 steps 提到 8-12，cfg 保持 1 附近，过高容易失真"
+  },
+  {
+   "param": "ModelSamplingSD3(mode4) shift",
+   "how_to_tune": "默认 shift=8.0，是较激进的 Wan 视频/重绘模型设置；若构图复杂或出现伪影，可尝试降到 4-6，让采样更稳定"
+  },
+  {
+   "param": "EmptyFlux2LatentImage width/height",
+   "how_to_tune": "当前为 1920x1280，决定 FLUX 最终画幅；显存不足时先降到 1280x832 或 1024x1024，再通过 ImageScaleToTotalPixels 对齐另一路"
+  },
+  {
+   "param": "Flux2Scheduler steps",
+   "how_to_tune": "当前 steps=4，偏快速预览；正式成图可提高到 8-16 步，画面细节和稳定性通常更好"
+  },
+  {
+   "param": "Qwen3_VQA temperature / system prompt",
+   "how_to_tune": "当前 temperature=0.7，兼顾平稳与创意；若连续输出出现角色特征描述漂移，可降低到 0.3-0.5，或在系统提示中加入更严格的角色特征清单"
+  },
+  {
+   "param": "easy promptLine Next Scene 文本 / seed / max_tokens",
+   "how_to_tune": "第一个输入框写下一幕场景描述，seed 控制变体，max_tokens=1000 左右足够生成一个分镜提示词；多用几个 seed 可获得不同构图候选"
+  }
+ ],
+ "summary_text": "能力:加载两张参考图（LoadImage 与 LoadImage(mode4)），并通过 VAEEncode / ReferenceLatent 构造角色身份参考条件，端到端产出角色一致的分镜图；能力:使用 FLUX.2 Klein + qwen_3_8b_fp8mixed 文本编码器，按提示词生成 1920x1280 静态分镜图（EmptyFlux2LatentImage 控制画幅）；能力:使用 Wan2.2 Remix + umt5_xxl + Wan2.1_VAE 作为第二条生成/重绘链路，结合 InpaintModelConditioning 与 GrowMaskWithBlur 做局部重绘；能力:调用 Florence2Run 对参考图生成 detailed_caption，再由 Qwen3_VQA 将故事梗概/下一幕描述扩写为具体图像提示词；能力:输出两路图像信号（PreviewImage、SaveImage、SaveImage(mode4)），可对比 FLUX 静态分镜与 Wan 重绘/动态分支的结果；特色:两套 UNETLoader/CLIPLoader/VAELoader 并行：FLUX 分支负责高质量静态分镜，Wan2.2 Remix 分支负责参考图重绘/动态化，并用 Fast Groups Bypasser 控制切换；特色:ReferenceLatent x2 + VAEEncode 将参考角色图作为视觉条件注入采样过程，是角色一致性的核心设计；特色:Qwen3_VQA + Florence2Run + CR Prompt Text + easy promptLine + MarkdownNote 模板构成 LLM 自动写提示词链路，且内置通用类/战斗类两套提示词模板；特色:Wan 分支通过 InpaintModelConditioning + GrowMaskWithBlur + LayerUtility:ImageScaleByAspectRatio V2 + LayerMask:MaskPreview 形成遮罩/局部重绘回路；特色:使用 Image Comparer (rgthree) 做双路输出对比，方便调参时看 FLUX 与 Wan 分支的差异；特色:GetImageSize + INTConstant(1920/1280) + ImageScaleToTotalPixels 做分辨率先行控制，保证两条生成链路画幅对齐；适用于漫画/短剧前期分镜、多格剧情图、角色一致性概念设计，以及基于已有角色图的局部重绘/二次创作；也可以把一句“Next Scene”快速变成连续镜头画面。；这个工作流可能是为了把“分镜脚本编写”和“图像生成”解耦：用户只需给角色参考图和故事梗概，Florence2 先提取画面事实，Qwen3-VQA 再按模板"
+}

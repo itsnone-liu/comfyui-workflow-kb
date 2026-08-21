@@ -1,0 +1,83 @@
+{
+ "domain": [
+  "人像写真",
+  "图生图",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "上传一张清晰人脸参考图 + 一张人物/场景底图，端到端完成“身份保持 + 脸部精细换脸”的人像写真生成：先由 SDXL+InstantID 粗生成身份一致底图，再用 FLUX klein 模型二阶局部重绘换脸。",
+   "kind": "fact"
+  },
+  {
+   "text": "生成结果可同时输出多路预览并保存，且管线内含背景移除（RMBG）与人物分割模块，适合直接用于写真后期合成。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "InstantID（人脸身份保持，基于 ControlNet + IP-Adapter）",
+  "ControlNet（instantid/diffusion_pytorch_model.safetensors 控制条件注入）",
+  "FLUX（darkBeast klein 二阶模型底座，配合 qwen_3_8b_fp8mixed CLIP 与 flux2-vae）",
+  "SDXL 基础生成（juggernautXL_v9Rdphoto2Lightning）",
+  "局部重绘 / Inpainting（InpaintCropImproved + InpaintModelConditioning + InpaintStitchImproved）",
+  "人像分割与背景抠像（LayerMask: PersonMaskUltra V2 + RMBG(mode4)）",
+  "模型缓存加速（ApplyFBCacheOnModel）"
+ ],
+ "special_features": [
+  {
+   "text": "双阶段换脸管线：第一阶段用 jUggernautXL (SDXL) + InstantID 生成身份一致底图，第二阶段用 darkBeast klein (FLUX) + PainterFluxImageEdit 做人脸特征替换/精修，两个 KSampler 分别负责粗生成与细换脸。",
+   "kind": "fact"
+  },
+  {
+   "text": "精细面部蒙版回路：PersonMaskUltra V2 多次提取人物蒙版，配合 InpaintCropImproved 裁剪、GH_MaskGrowthBlur 扩展、LayerMask: MaskGrow 生长，形成“裁剪-扩展-模糊-重绘-缝合”的局部换脸闭环。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 ApplyFBCacheOnModel 对 diffusion_model 做缓存（可能为 First-Block Cache），在二阶 FLUX 重绘时显著提速。",
+   "kind": "inference"
+  },
+  {
+   "text": "内置单张图多次 LoadImage + Image Comparer (rgthree) 对比预览，且用 Note 文本提示“水印问题重跑”，形成人工质量校验流程。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流采用“粗生成 + 二阶精修”的分阶段设计，很可能是为了绕开单一模型在“身份一致性”与“脸部精细度”之间的权衡：先让 SDXL 搭配 InstantID 快速输出与参考人脸相似、姿态自由的底图，再用 klein（FLUX 系）这类强人脸模型只对脸部区域做局部重绘，把换脸细节推到极致。而 FLUX 推理成本高，所以先用小步数 euler/simple 粗出图，后用 euler_ancestral/sgm_uniform 细修，并借助 FBCache 与 InpaintCrop 小尺寸裁剪来提速。整体更像一条精心编排的“工业级换脸流水线”，而非单模型直出方案。",
+ "use_case": "适合“换脸写真”类创作：用户提供一张身份照（人像参考）和一张想换脸的底图，即可获得身份一致、脸部细节强化的高质感写真。典型场景包括虚拟模特、角色一致性生成、写真模板换脸等。",
+ "limitation": "① 需要自行下载并放置多个大模型与辅助模型：juggernautXL_v9Rdphoto2Lightning.safetensors、darkBeastMar0326Latest_dbkleinv2BFS.safetensors、flux2-vae.safetensors、qwen_3_8b_fp8mixed.safetensors、ip-adapter.bin、instantid/diffusion_pytorch_model.safetensors、RMBG-2.0；② 依赖较多第三方自定义节点（InstantID、rgthree、KJNodes、comfyui_inpaint_nodes、PainterFluxImageEdit、RMBG、GH_MaskGrowthBlur 等），环境配置较繁琐；③ 输入必须是包含清晰可检测人脸的图像，InstantIDFaceAnalysis 设置 CPU 时速度偏慢；④ 换脸后偶发“脸上水印”，需要手动改变采样 seed 重跑；⑤ 蒙版扩展参数需按底图人脸尺寸调节。",
+ "dependencies": [
+  "模型：juggernautXL_v9Rdphoto2Lightning.safetensors、darkBeastMar0326Latest_dbkleinv2BFS.safetensors、flux2-vae.safetensors、qwen_3_8b_fp8mixed.safetensors、ip-adapter.bin、instantid/diffusion_pytorch_model.safetensors、RMBG-2.0",
+  "自定义节点：ComfyUI_InstantID（InstantIDModelLoader / InstantIDFaceAnalysis / ApplyInstantID）、rgthree-comfy（Image Comparer）、KJNodes / LayerMask 系列（PersonMaskUltra V2、MaskGrow）、comfyui_inpaint_nodes（InpaintCropImproved / InpaintStitchImproved / InpaintModelConditioning）、PainterFluxImageEdit、ComfyUI_RMBG、GH_MaskGrowthBlur、ApplyFBCacheOnModel"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "2 张图像：人脸参考图 + 目标/底图（均通过 LoadImage(IN) 上传）",
+  "count": "2 张"
+ },
+ "output": {
+  "type": "图像（多路 PreviewImage 预览 + SaveImage 保存，含遮罩与合成中间结果可视化）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler（第一阶段）steps / sampler",
+   "how_to_tune": "默认 4 步 + euler/simple，用于快速铺底图；若姿态或构图不满意，可先加大到 6~10 步再降回。"
+  },
+  {
+   "param": "KSampler（第二阶段）steps / sampler",
+   "how_to_tune": "默认 8 步 + euler_ancestral/sgm_uniform，控制二阶换脸精度；追求极致细节可提升到 12~20 步，但耗时增加。"
+  },
+  {
+   "param": "GH_MaskGrowthBlur / MaskGrow 数值",
+   "how_to_tune": "注释建议 1-15；数值越大重绘范围越大，越能消除接缝/水印，但过大会导致脸型向底图偏移。"
+  },
+  {
+   "param": "ApplyInstantID 参数（weight / controlnet）",
+   "how_to_tune": "weight 控制身份相似度，默认 1；若换脸后不像本人，可提高；若出现伪影/过拟合，可降低并结合 controlnet 强度微调。"
+  },
+  {
+   "param": "InpaintCropImproved 分辨率",
+   "how_to_tune": "固定 1024×1024，决定二阶重绘脸部的细节量；若底图人脸很小可调低，避免放大后丢失表情。"
+  }
+ ],
+ "summary_text": "能力:上传一张清晰人脸参考图 + 一张人物/场景底图，端到端完成“身份保持 + 脸部精细换脸”的人像写真生成：先由 SDXL+InstantID 粗生成身份一致底图，再用 FLUX klein 模型二阶局部重绘换脸。；能力:生成结果可同时输出多路预览并保存，且管线内含背景移除（RMBG）与人物分割模块，适合直接用于写真后期合成。；特色:双阶段换脸管线：第一阶段用 jUggernautXL (SDXL) + InstantID 生成身份一致底图，第二阶段用 darkBeast klein (FLUX) + PainterFluxImageEdit 做人脸特征替换/精修，两个 KSampler 分别负责粗生成与细换脸。；特色:精细面部蒙版回路：PersonMaskUltra V2 多次提取人物蒙版，配合 InpaintCropImproved 裁剪、GH_MaskGrowthBlur 扩展、LayerMask: MaskGrow 生长，形成“裁剪-扩展-模糊-重绘-缝合”的局部换脸闭环。；特色:通过 ApplyFBCacheOnModel 对 diffusion_model 做缓存（可能为 First-Block Cache），在二阶 FLUX 重绘时显著提速。；特色:内置单张图多次 LoadImage + Image Comparer (rgthree) 对比预览，且用 Note 文本提示“水印问题重跑”，形成人工质量校验流程。；适合“换脸写真”类创作：用户提供一张身份照（人像参考）和一张想换脸的底图，即可获得身份一致、脸部细节强化的高质感写真。典型场景包括虚拟模特、角色一致性生成、写真模板换脸等。；该工作流采用“粗生成 + 二阶精修”的分阶段设计，很可能是为了绕开单一模型在“身份一致性”与“脸部精细度”之间的权衡：先让 SDXL 搭配 InstantID 快速输出与参考人脸相似、姿态自由的底图，再用 klein（FLUX 系）这类强人脸模型只对脸部区域做局部重绘，把换脸细节推到极致。而 FLUX 推理成本高，所以先用小步数 euler/simple 粗出图，后用 euler_ancestral/sgm_uniform 细修，并借助 FBCache 与 InpaintCrop 小尺寸裁剪来提速。整体更像一条精心编排的“工业级换脸流水线”，而非单模型直出方案。"
+}

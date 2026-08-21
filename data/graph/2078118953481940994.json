@@ -1,0 +1,707 @@
+{
+ "node_count": 19,
+ "link_count": 24,
+ "active_node_count": 19,
+ "nodes": [
+  {
+   "id": 9,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors",
+    1
+   ],
+   "in_links": [
+    5
+   ],
+   "out_links": [
+    152,
+    190
+   ]
+  },
+  {
+   "id": 6,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    5
+   ]
+  },
+  {
+   "id": 62,
+   "type": "LazySwitch2way",
+   "category": "utility",
+   "title": "🎈 Inert switch (dual)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [
+    190,
+    163,
+    162,
+    189,
+    166
+   ],
+   "out_links": [
+    164,
+    165
+   ]
+  },
+  {
+   "id": 60,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "QIE-2511-Extract-Outfit-4200.safetensors",
+    1.0000000000000002
+   ],
+   "in_links": [
+    152
+   ],
+   "out_links": [
+    162
+   ]
+  },
+  {
+   "id": 7,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    97
+   ]
+  },
+  {
+   "id": 8,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    104,
+    107
+   ]
+  },
+  {
+   "id": 18,
+   "type": "QwenEditTextEncode_EditUtils",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "TRYON Replace the outfit with description as shown in the reference images, while keeping the face and body shape consistent.",
+    1280
+   ],
+   "in_links": [
+    97,
+    104,
+    187,
+    165,
+    168,
+    170
+   ],
+   "out_links": [
+    1,
+    10,
+    12
+   ]
+  },
+  {
+   "id": 2,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    1
+   ],
+   "out_links": [
+    169
+   ]
+  },
+  {
+   "id": 12,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    320387622066608,
+    "randomize",
+    4,
+    1,
+    "euler",
+    "simple",
+    1
+   ],
+   "in_links": [
+    164,
+    10,
+    169,
+    12
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    2,
+    107
+   ],
+   "out_links": [
+    4,
+    171
+   ]
+  },
+  {
+   "id": 65,
+   "type": "Switch string [Crystools]",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "TRYON Replace the outfit with description as shown in the reference images, while keeping the face and body shape consistent.",
+    "Extract the clothing and create a flat mockup",
+    true
+   ],
+   "in_links": [
+    167
+   ],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 5,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vmyjs_00001_fssvb_1784642602.jpg&type=temp&subfolder=&rand=0.979795520033653&Rh-Comfy-Auth=eyJ1c2VySWQiOiIzNmQ1MjMyN2U3ZWViOWYzNmZlOWM3MzRiYjNhM2Y2YSIsInNpZ25FeHBpcmUiOjE3ODUyNDc0MDgyNTEsInRzIjoxNzg0NjQyNjA4MjUxLCJzaWduIjoiZmM1YjZlYTJkNmJkMTBiNTM1NGIwMDkxM2E2ZmNjYzcifQ==&Rh-Identify=36d52327e7eeb9f36fe9c734bb3a3f6a"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vmyjs_00002_kbkip_1784642610.jpg&type=temp&subfolder=&rand=0.8550896259154841&Rh-Comfy-Auth=eyJ1c2VySWQiOiIzNmQ1MjMyN2U3ZWViOWYzNmZlOWM3MzRiYjNhM2Y2YSIsInNpZ25FeHBpcmUiOjE3ODUyNDc0MDgyNTEsInRzIjoxNzg0NjQyNjA4MjUxLCJzaWduIjoiZmM1YjZlYTJkNmJkMTBiNTM1NGIwMDkxM2E2ZmNjYzcifQ==&Rh-Identify=36d52327e7eeb9f36fe9c734bb3a3f6a"
+     }
+    ]
+   ],
+   "in_links": [
+    140,
+    4
+   ],
+   "out_links": []
+  },
+  {
+   "id": 89,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Workflow Guide",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "This workflow combines **Virtual Try-On** and **Clothing Extraction** using FireRed Image Edit 1.1 in ComfyUI.\n\n## Before You Start\n\n1. Download every model and LoRA listed in **Model Downloads**.\n2. Put each file in the matching ComfyUI model folder.\n3. Restart ComfyUI, then load this workflow.\n\n## Input Images\n\n**Base Image**: The person and scene to preserve. Use a clear image with the subject visible and minimal occlusion.\n\n**Clothing Image**: The outfit reference for the try-on branch. A clean, well-lit garment reference gives the most stable result.\n\n## Mode Switch\n\n**Replace / Try-On**: Uses the clothing image as a reference and replaces the subject's outfit while preserving the person, pose, lighting, and background.\n\n**Clothing Extraction**: Uses the QIE-2511 Extract-Outfit LoRA to generate a clean product-style flat-lay image from the clothing worn in the source image.\n\n> Clothing extraction is a generative reconstruction, not a pixel-perfect transparent-background cutout. Check logos, small text, patterns, seams, and colors before commercial use.\n\n## LoRA Settings\n\n**Try-On speed LoRA**: `Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors` - strength `1.0` in this workflow.\n\n**Clothing extraction LoRA**: `QIE-2511-Extract-Outfit-4200.safetensors` - strength `1.0` in this workflow.\n\nKeep the supplied sampler settings when using the 8-step Lightning LoRA. If you change a LoRA or its strength, test the try-on and extraction branches separately.\n\n## Suggested Prompt: Try-On\n\n~~~text\nReplace the outfit in image one with the garment from image two. Preserve the face, hair, body proportions, hands, pose, camera framing, lighting, shadows, and background. Keep the same person and scene.\n~~~\n\n## Suggested Prompt: Clothing Extraction\n\n~~~text\nCreate a clean e-commerce flat-lay image of the clothing worn in image one. Show the garment only, centered on a plain light background. Preserve the color, fabric, pattern, neckline, sleeves, buttons, and pockets. Remove the person, body, hands, and background.\n~~~"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 88,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Model Downloads",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "## Model Downloads (Local ComfyUI)\n\nThis workflow uses **FireRed Image Edit 1.1** for the editing model, plus two LoRAs: one for fast 8-step generation and one for clothing extraction.\n\n> Keep the filenames unchanged. The workflow selects these exact names.\n\n**diffusion_models**\n- [FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors (21.4 GB)](https://huggingface.co/cocorang/FireRed-Image-Edit-1.1-FP8_And_BF16/resolve/main/FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors?download=true) - exact FP8 mixed model used here\n\n**text_encoders**\n- [qwen_2.5_vl_7b_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors?download=true)\n\n**vae**\n- [qwen_image_vae.safetensors](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors?download=true)\n\n**loras**\n- [Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors](https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors?download=true) - fast try-on LoRA\n- [QIE-2511-Extract-Outfit-4200.safetensors](https://huggingface.co/prithivMLmods/QIE-2511-Extract-Outfit/resolve/main/QIE-2511-Extract-Outfit-4200.safetensors?download=true) - clothing extraction LoRA\n\n## Model Storage Location\n\n```\nComfyUI/\n`-- models/\n    |-- diffusion_models/\n    |   `-- FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors\n    |-- text_encoders/\n    |   `-- qwen_2.5_vl_7b_fp8_scaled.safetensors\n    |-- vae/\n    |   `-- qwen_image_vae.safetensors\n    `-- loras/\n        |-- Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors\n        `-- QIE-2511-Extract-Outfit-4200.safetensors\n```\n\n## Support\n\n- [Official FireRed Image Edit 1.1 ComfyUI repository](https://huggingface.co/FireRedTeam/FireRed-Image-Edit-1.1-ComfyUI)\n- [Official Qwen Image ComfyUI package](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI)\n- [Update ComfyUI](https://docs.comfy.org/installation/update_comfyui)\n\nIf a model does not appear in its loader after copying it, restart ComfyUI and verify the filename and folder exactly match this list."
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 66,
+   "type": "easy boolean",
+   "category": "utility",
+   "title": "Boolean【Open: Replace; Close: Clothing Extraction】",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true
+   ],
+   "in_links": [],
+   "out_links": [
+    166,
+    167
+   ]
+  },
+  {
+   "id": 13,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c3881bc86ae0330f24281c8407cac0bbe5bfda6817444207a6ce8461b2bdedbf.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    140,
+    187,
+    189
+   ]
+  },
+  {
+   "id": 68,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "FireRed"
+   ],
+   "in_links": [
+    171
+   ],
+   "out_links": []
+  },
+  {
+   "id": 53,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "c3881bc86ae0330f24281c8407cac0bbe5bfda6817444207a6ce8461b2bdedbf.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    163
+   ]
+  },
+  {
+   "id": 67,
+   "type": "INTConstant",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2560
+   ],
+   "in_links": [],
+   "out_links": [
+    170
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 12,
+   "to_node": 3,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 13,
+   "to_node": 18,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 13,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 18,
+   "to_node": 12,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 18,
+   "to_node": 12,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 18,
+   "to_node": 2,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 2,
+   "to_node": 12,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 3,
+   "to_node": 5,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 3,
+   "to_node": 68,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 53,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 9,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 60,
+   "to_node": 62,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 62,
+   "to_node": 12,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 62,
+   "to_node": 18,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 65,
+   "to_node": 18,
+   "type": "STRING"
+  },
+  {
+   "from_node": 66,
+   "to_node": 62,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 66,
+   "to_node": 65,
+   "type": "BOOLEAN"
+  },
+  {
+   "from_node": 67,
+   "to_node": 18,
+   "type": "INT"
+  },
+  {
+   "from_node": 7,
+   "to_node": 18,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 8,
+   "to_node": 18,
+   "type": "VAE"
+  },
+  {
+   "from_node": 8,
+   "to_node": 3,
+   "type": "VAE"
+  },
+  {
+   "from_node": 9,
+   "to_node": 60,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 9,
+   "to_node": 62,
+   "type": "*"
+  }
+ ],
+ "categories": {
+  "lora": 2,
+  "checkpoint_loader": 1,
+  "utility": 9,
+  "clip": 1,
+  "vae": 2,
+  "sampler": 1,
+  "image_io": 3
+ },
+ "assets": [
+  {
+   "node_id": 9,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors"
+  },
+  {
+   "node_id": 6,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "QIE-2511-Extract-Outfit-4200.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "qwen_image_vae.safetensors"
+  }
+ ],
+ "techniques": [
+  "Qwen-Image"
+ ],
+ "param_face_size": 28,
+ "structure_hash": "deb6bb9a6e28f192",
+ "param_face": [
+  {
+   "node_id": 9,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors"
+  },
+  {
+   "node_id": 9,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 6,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "FireRed-Image-Edit-1.1_fp8mixed_comfy.safetensors"
+  },
+  {
+   "node_id": 6,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 62,
+   "node_type": "LazySwitch2way",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "QIE-2511-Extract-Outfit-4200.safetensors"
+  },
+  {
+   "node_id": 60,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "1.0000000000000002"
+  },
+  {
+   "node_id": 7,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+  },
+  {
+   "node_id": 7,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "qwen_image"
+  },
+  {
+   "node_id": 7,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 8,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "qwen_image_vae.safetensors"
+  },
+  {
+   "node_id": 18,
+   "node_type": "QwenEditTextEncode_EditUtils",
+   "widget_index": 1,
+   "value_preview": "1280"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "320387622066608"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "simple"
+  },
+  {
+   "node_id": 12,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 65,
+   "node_type": "Switch string [Crystools]",
+   "widget_index": 1,
+   "value_preview": "Extract the clothing and create a flat mockup"
+  },
+  {
+   "node_id": 65,
+   "node_type": "Switch string [Crystools]",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 66,
+   "node_type": "easy boolean",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c3881bc86ae0330f24281c8407cac0bbe5bfda6817444207a6ce8461b2bd"
+  },
+  {
+   "node_id": 13,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 68,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "FireRed"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "c3881bc86ae0330f24281c8407cac0bbe5bfda6817444207a6ce8461b2bd"
+  },
+  {
+   "node_id": 53,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 67,
+   "node_type": "INTConstant",
+   "widget_index": 0,
+   "value_preview": "2560"
+  }
+ ]
+}

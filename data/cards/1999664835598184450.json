@@ -1,0 +1,83 @@
+{
+ "domain": [
+  "图像处理",
+  "人像",
+  "换脸"
+ ],
+ "capabilities": [
+  {
+   "text": "输入两张人物图像，一键生成高还原度的脸部替换/换脸结果",
+   "kind": "fact"
+  },
+  {
+   "text": "自动进行脸部遮罩迁移，精确控制重绘区域并保持背景自然",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "FLUX fill 图像填充修复",
+  "Differential Diffusion 差分扩散",
+  "InpaintModelConditioning 修复条件控制",
+  "RMBG 背景移除",
+  "LoRA 人像增强",
+  "CLIP 文本条件"
+ ],
+ "special_features": [
+  {
+   "text": "使用 DifferentialDiffusion 与 InpaintModelConditioning 组合，将生成限制在遮罩区域内，保护背景细节",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 RMBG（RMBG-2.0）自动提取主体并生成遮罩，省去手动蒙版步骤",
+   "kind": "fact"
+  },
+  {
+   "text": "两个 ImageConcanate 节点将图像拼接，可能用于同时输入目标图与身份参考图给 FLUX",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "这个工作流将 FLUX fill 模型与差分扩散结合，利用遮罩精确控制重绘区域，避免背景被破坏；同时添加人像 LoRA 与 FluxGuidance 调参，以平衡真实感和一致性。可能通过拼接图让模型同时看到待换脸图和参考身份图，从而实现高还原度的面部迁移。",
+ "use_case": "适合肖像照片快速换脸、妆容迁移、AI写真等场景，用户只需提供两张人物图片即可获得自然融合的换脸结果。",
+ "limitation": "依赖指定的 FLUX 模型文件（flux1-fill-dev.safetensors）、T5/CLIP 文本编码器、AE VAE；需要安装 LayerUtility、RMBG 等自定义节点；输入图像建议为人像，否则面部提取可能不准确。",
+ "dependencies": [
+  "flux1-fill-dev.safetensors",
+  "sd3/t5xxl_fp16.safetensors",
+  "sd3/clip_l.safetensors",
+  "ae.sft",
+  "comfyui_portrait.safetensors",
+  "RMBG-2.0 模型",
+  "ComfyUI 自定义节点（LayerUtility、RMBG）"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "图像",
+  "count": "2"
+ },
+ "output": {
+  "type": "图像（PNG/JPEG 保存）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler steps=28",
+   "how_to_tune": "生成质量与速度的平衡；调高可增加细节，但耗时增加。"
+  },
+  {
+   "param": "KSampler cfg=1",
+   "how_to_tune": "FLUX 模型通常使用 cfg=1，保持默认即可；若出现不自然可微调 0.5-1.5。"
+  },
+  {
+   "param": "FluxGuidance=50",
+   "how_to_tune": "指导缩放因子，值越大文本/参考控制越强；过高会产生过饱和。"
+  },
+  {
+   "param": "LoraLoaderModelOnly 权重=1",
+   "how_to_tune": "控制人像 LoRA 强度，0.8-1.2 区间调节，过高易失真。"
+  },
+  {
+   "param": "ImageResize+ 目标宽度=512",
+   "how_to_tune": "输出分辨率基准；可按需调整，但注意显存占用。"
+  }
+ ],
+ "summary_text": "能力:输入两张人物图像，一键生成高还原度的脸部替换/换脸结果；能力:自动进行脸部遮罩迁移，精确控制重绘区域并保持背景自然；特色:使用 DifferentialDiffusion 与 InpaintModelConditioning 组合，将生成限制在遮罩区域内，保护背景细节；特色:通过 RMBG（RMBG-2.0）自动提取主体并生成遮罩，省去手动蒙版步骤；特色:两个 ImageConcanate 节点将图像拼接，可能用于同时输入目标图与身份参考图给 FLUX；适合肖像照片快速换脸、妆容迁移、AI写真等场景，用户只需提供两张人物图片即可获得自然融合的换脸结果。；这个工作流将 FLUX fill 模型与差分扩散结合，利用遮罩精确控制重绘区域，避免背景被破坏；同时添加人像 LoRA 与 FluxGuidance 调参，以平衡真实感和一致性。可能通过拼接图让模型同时看到待换脸图和参考身份图，从而实现高还原度的面部迁移。"
+}

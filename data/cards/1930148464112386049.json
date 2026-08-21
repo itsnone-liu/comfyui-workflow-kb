@@ -1,0 +1,129 @@
+{
+ "domain": [
+  "图像生成",
+  "换脸",
+  "人像写真",
+  "身份保持生成"
+ ],
+ "capabilities": [
+  {
+   "text": "以单张/多张人脸照为输入，端到端完成“身份保持生成（InstantID+SDXL 与 PuLID+FLUX 双引擎）→ 面部细节精修（检测/裁剪/重绘/回贴）→ 4x 高清放大与校色”的完整换脸/写真人像出图。",
+   "kind": "fact"
+  },
+  {
+   "text": "自动执行面部精修管线：DetectFaces→CropFaces→DetailerForEach→WarpFacesBack→ImageCompositeMasked，对人脸区域局部重绘后回贴融合，提升五官与皮肤细节。",
+   "kind": "fact"
+  },
+  {
+   "text": "同一身份可并行产出多风格版本：realvisxlV40 / juggernautXL / epicrealismXL 三款 SDXL 底模与 close up portrait / freckles / Exquisite skin details 等提示词分支对照生成。",
+   "kind": "inference"
+  },
+  {
+   "text": "输出前经 4x-UltraSharp 两路超分放大与 ColorMatch（mkl）校色，并通过 Image Comparer 多路对比后保存成片。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "InstantID",
+  "PuLID",
+  "ControlNet（instantid ControlNet + controlnet-tile）",
+  "FLUX（Nunchaku int4 量化）",
+  "Upscale-Hires（4x-UltraSharp）",
+  "Face Detailer 局部重绘回路",
+  "ColorMatch 颜色匹配",
+  "Florence2 自动精细打标",
+  "多 Checkpoint 风格并行",
+  "Tiled VAE 编解码"
+ ],
+ "special_features": [
+  {
+   "text": "双身份保持引擎同场部署：同一工作流同时使用 InstantID（ip-adapter.bin，服务 SDXL 路线）与 PuLID（PulidFluxFaceDetector + PulidFluxInsightFaceLoader，服务 FLUX 路线）两套换脸/身份保持手段，互为对照与备份。",
+   "kind": "fact"
+  },
+  {
+   "text": "引入 Nunchaku 量化 FLUX（svdq-int4-flux.1-dev + nunchaku-fp16）承载 PuLID，int4 低比特部署 FLUX 显著降低显存门槛，属于较前沿的低比特扩散方案。",
+   "kind": "fact"
+  },
+  {
+   "text": "FLUX 路径使用 VAEEncodeTiled / VAEDecodeTiled（tile 64/512）配合 ae.safetensors 分块编解码，规避 FLUX 大 VAE 的高显存开销。",
+   "kind": "fact"
+  },
+  {
+   "text": "面部精修形成闭环：CropFaces（1024, padding 1.3）→ DetailerForEach（配合 ControlNet Tile）→ WarpFacesBack 形变回贴 → GrowMaskWithBlur 遮罩控制 → ImageCompositeMasked 融合，是典型的“检测-裁剪-重绘-回贴”质量控制回路。",
+   "kind": "fact"
+  },
+  {
+   "text": "Image Crop Face 节点配置为 lbpcascade_animeface.xml（anime 人脸级联），在写实换脸管线中使用二次元向人脸检测器，选型非常规。",
+   "kind": "fact"
+  },
+  {
+   "text": "FLUX 路径挂载中文社区皮肤质感 LoRA（适配麦橘超然…皮肤质感增强_去油_氛围感提升，强度 0.70），显式针对人像皮肤做风格强化。",
+   "kind": "fact"
+  },
+  {
+   "text": "密集使用 RHHiddenNodes 与 Reroute 隐藏连线整理图面，并配 Image Comparer 多路对照预览，工程化组织程度较高。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流似乎意图构建一条“身份保真 + 画质精修”双保险的写实换脸/人像生产线：SDXL+InstantID 负责快速稳定的身份保持，PuLID+FLUX 负责更高语义理解与画质上限，两条技术路线同场部署可互相备份或按需择优；随后用统一的面部检测→裁剪→细节重绘→回贴回路对脸部做二次精修，再用 4x 放大、ColorMatch 校色等后处理收尾。多底模、多提示词分支与 Florence2 自动打标的加入，使同一身份可以批量产出多种风格，整体像是兼顾实验对照与生产出图的复合型管线。",
+ "use_case": "适用于需要保持指定人脸身份的写实人像生成/换脸场景，例如个人写真生成、AI 摄影、角色一致性创作、多风格人像批量出图；也可作为“身份保持双引擎 + 面部精修 + 高清放大”的模板工作流。",
+ "limitation": "依赖大量自定义节点与模型：需安装 ComfyUI Impact Pack、KJNodes、rgthree、pysssss、ComfyUI Layer Mask、Nunchaku、PuLID 与 InstantID 等插件；需下载量化 flux.1-dev（svdq-int4）、ae.safetensors、clip_l/t5xxl_fp8、三款 SDXL 底模、instantid ControlNet + ip-adapter.bin、controlnet-tile-sdxl-1.0-xinsir、4x-UltraSharp、Florence-2-base、皮肤质感 LoRA 等；输入依赖清晰可检测的人脸图，insightface 与 anime 级联对角度、遮挡、模糊敏感；整条管线包含多轮采样、放大与细节重绘，对 GPU 显存和耗时要求较高；5 个 LoadImage 当前指向同一资源，实际使用时需按需替换。",
+ "dependencies": [
+  "ComfyUI Impact Pack（DetailerForEach/DetectFaces/CropFaces/WarpFacesBack）",
+  "KJNodes（ImageResizeKJ/GrowMaskWithBlur）",
+  "rgthree-comfyui（Image Comparer）",
+  "ComfyUI-Custom-Scripts（ShowText|pysssss）",
+  "ComfyUI Layer Mask（PersonMaskUltra V2）",
+  "Nunchaku（svdq-int4-flux.1-dev 量化 FLUX）",
+  "PuLID 自定义节点（PulidFlux*）",
+  "InstantID 自定义节点（ApplyInstantID/InstantIDModelLoader）",
+  "Florence-2-base 模型",
+  "insightface（CUDA）",
+  "flux.1-dev 量化权重 + clip_l.safetensors + t5xxl_fp8_e4m3fn.safetensors",
+  "realvisxlV40 / juggernautXL / epicrealismXL 三个 SDXL checkpoint",
+  "instantid/diffusion_pytorch_model.safetensors + ip-adapter.bin",
+  "controlnet-tile-sdxl-1.0-xinsir.safetensors",
+  "4x-UltraSharp.pth",
+  "皮肤质感增强 LoRA"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "人脸参考图像（5 个 LoadImage 入口，当前均指向同一资源 3bdd4e3289d91f5513a5983c，替换为不同人脸图即可做批量换脸；推荐清晰正脸/多角度照）",
+  "count": "至少 1 张，最多 5 张"
+ },
+ "output": {
+  "type": "多路预览图（PreviewImage×4）与最终保存图（SaveImage）：身份保持的多风格人像/换脸结果，含面部精修、4x 放大与校色",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler（steps=11, cfg=1, euler_ancestral/sgm_uniform）",
+   "how_to_tune": "11 步低 CFG 适合 Lightning 类蒸馏 SDXL 快速出图；若质量不稳可提高 steps 到 20-30、CFG 到 3-5，但速度下降；固定 seed 用于复现，调风格时可改 randomize。"
+  },
+  {
+   "param": "皮肤质感 LoRA 强度（0.70）",
+   "how_to_tune": "值越高皮肤质感/氛围感越强，但过高可能损失身份相似度或产生塑料感；建议在 0.4-0.8 范围配合预览图微调。"
+  },
+  {
+   "param": "CropFaces（crop_size=1024, padding=1.3）",
+   "how_to_tune": "crop_size 决定送入细节重绘的人脸分辨率，越大细节越充分但更吃显存；padding 1.3 表示保留约 30% 边距防裁到五官，人脸占比大时可适当降低。"
+  },
+  {
+   "param": "DetailerForEach（guide_size=512, max_size=1024, denoise≈30）",
+   "how_to_tune": "控制面部局部重绘的尺度与强度；若重绘后脸部与周围不一致，可减小重绘范围或降低 denoise；若细节不足则提高 max_size。"
+  },
+  {
+   "param": "GrowMaskWithBlur（grow=30）",
+   "how_to_tune": "控制面部精修遮罩向外扩张的像素数，值越大融合过渡越自然，但可能把重绘影响扩散到头发/背景；脸部边缘出现断层时优先调此参数。"
+  },
+  {
+   "param": "Florence2Run（task=more_detailed_caption）",
+   "how_to_tune": "自动生成精细图像描述作为 prompt 增强；若不想让原始图像内容干扰风格，可改用其他 caption 任务或关闭该分支。"
+  },
+  {
+   "param": "ColorMatch（mkl, 0.4/0.5）",
+   "how_to_tune": "两路校色强度不同，分别用于不同放大分支；校色过强会吃掉风格色调，过弱则与参考图肤色不一致，建议按肤色统一度在 0.3-0.6 间调整。"
+  }
+ ],
+ "summary_text": "能力:以单张/多张人脸照为输入，端到端完成“身份保持生成（InstantID+SDXL 与 PuLID+FLUX 双引擎）→ 面部细节精修（检测/裁剪/重绘/回贴）→ 4x 高清放大与校色”的完整换脸/写真人像出图。；能力:自动执行面部精修管线：DetectFaces→CropFaces→DetailerForEach→WarpFacesBack→ImageCompositeMasked，对人脸区域局部重绘后回贴融合，提升五官与皮肤细节。；能力:同一身份可并行产出多风格版本：realvisxlV40 / juggernautXL / epicrealismXL 三款 SDXL 底模与 close up portrait / freckles / Exquisite skin details 等提示词分支对照生成。；能力:输出前经 4x-UltraSharp 两路超分放大与 ColorMatch（mkl）校色，并通过 Image Comparer 多路对比后保存成片。；特色:双身份保持引擎同场部署：同一工作流同时使用 InstantID（ip-adapter.bin，服务 SDXL 路线）与 PuLID（PulidFluxFaceDetector + PulidFluxInsightFaceLoader，服务 FLUX 路线）两套换脸/身份保持手段，互为对照与备份。；特色:引入 Nunchaku 量化 FLUX（svdq-int4-flux.1-dev + nunchaku-fp16）承载 PuLID，int4 低比特部署 FLUX 显著降低显存门槛，属于较前沿的低比特扩散方案。；特色:FLUX 路径使用 VAEEncodeTiled / VAEDecodeTiled（tile 64/512）配合 ae.safetensors 分块编解码，规避 FLUX 大 VAE 的高显存开销。；特色:面部精修形成闭环：CropFaces（1024, padding 1.3）→ DetailerForEach（配合 ControlNet Tile）→ WarpFacesBack 形变回贴 → GrowMaskWithBlur 遮罩控制 → ImageCompositeMasked 融合，是典型的“检测-裁剪-重绘-回贴”质量控制回路。；特色:Image Crop Face 节点配置为 lbpcascade_animeface.xml（anime 人脸级联），在写实换脸管线中使用二次元向人脸检测器，选型非常规。；特色:FLUX 路径挂载中文社区皮肤质感 LoRA（适配麦橘超然…皮肤质感增强_去油_氛围感提升，强度 0.70），显式针对人像皮肤做风格强化。；特色:密集使用 RHHiddenNodes 与 Reroute 隐藏连线整理图面，并配 Image Comparer 多路"
+}

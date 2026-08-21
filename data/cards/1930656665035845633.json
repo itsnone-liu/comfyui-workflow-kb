@@ -1,0 +1,107 @@
+{
+ "domain": [
+  "图像生成",
+  "换脸",
+  "人像写真"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成从多张人脸参考图到最终高清换脸/写真人像的生成：先由 PuLID/InstantID 提取并注入身份特征，再通过 SDXL 与 FLUX 管线生成保持人物辨识度的新图像，最后做人脸局部重绘、4x 放大与颜色校正。",
+   "kind": "inference"
+  },
+  {
+   "text": "支持多图输入：结构中有 5 个 LoadImage(IN) 和 ImageListToImageBatch，可一次处理多张人脸参考图或多组成果对比。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 DetectFaces、CropFaces、DetailerForEach、WarpFacesBack 等节点自动执行人脸检测、裁脸、局部细化并贴回原图，形成人脸质量优化闭环。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 FLUX.1-dev 的 Nunchaku 量化版本与风格 LoRA，可能用于第二道风格/皮肤质感增强，实现偏向小红书日常照片和商业人像皮肤去油光的效果。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "PuLID 人脸身份注入",
+  "InstantID 人脸身份注入",
+  "ControlNet（InstantID 专用 ControlNet + Tile 结构控制）",
+  "FLUX.1-dev + Nunchaku int4 量化部署",
+  "SDXL 多模型生成",
+  "Impact Pack DetailerForEach 人脸局部重绘",
+  "Differential Diffusion / InpaintModelConditioning 区域扩散",
+  "4x 图像超分（UltraSharp / NMKD-Siax）",
+  "ColorMatch 色彩匹配",
+  "Florence2 自动详细描述生成"
+ ],
+ "special_features": [
+  {
+   "text": "同时堆叠 InstantID 和 PuLID 两条身份控制链路，似乎想用双重条件锁住人物五官；代价是节点多、显存和调度复杂度高。",
+   "kind": "inference"
+  },
+  {
+   "text": "SDXL 与 FLUX 两套生成路径共存：SDXL 侧用 euler_ancestral/sgm_uniform，FLUX 侧用 euler/kl_optimal 且 cfg=1，可能是为了在粗生成和精修/风格化阶段分别取长补短。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 Nunchaku int4 量化 FLUX，是较极客的部署方式，能降低 FLUX.1-dev 的显存门槛。",
+   "kind": "fact"
+  },
+  {
+   "text": "集成 Florence2 自动生成图像详细描述，并连接到 ShowText 显示，可能用于辅助 prompt 改写或记录生成内容。",
+   "kind": "inference"
+  },
+  {
+   "text": "后处理链路包含 ColorMatch、双 4x 超分模型、GrowMaskWithBlur、MaskToSEGS、PersonMaskUltra、WarpFacesBack，像是一条工业级换脸/精修流水线。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "这个工作流想解决“上传几张人脸照片，就能得到高清换脸/写真人像”的一站式问题。作者可能采用了两阶段策略：先用 SDXL 配合 InstantID+PuLID 快速生成多个身份可控的底图，再用 Nunchaku 量化后的 FLUX 配合风格 LoRA 提升质感和皮肤细节；最后用 Impact Pack 的人脸 Detailer 和 4x 超分修复五官清晰度。整个图结构像在搭建一个可调试的人脸精修工厂，多个预览节点和 Image Comparer 便于人工挑图与对比。",
+ "use_case": "人脸照片换脸、多风格人像写真生成、社交媒体头像批量制作",
+ "limitation": "依赖大量第三方自定义节点（Impact Pack、PuLID、InstantID、Florence2、Nunchaku、KJNodes、rgthree 等）和多个外部模型文件；需要 insightface（CUDA）做人脸对齐；至少需要一张清晰可检测的人脸作为源；输入人脸角度过大或遮挡严重会降低 InstantID/PuLID 的相似度；FLUX 量化版需要 Nunchaku 后端支持；整体显存和运行时间成本较高。",
+ "dependencies": [
+  "ComfyUI_InstantID",
+  "ComfyUI_PuLID",
+  "ComfyUI_Impact_Pack",
+  "ComfyUI-Nunchaku",
+  "Florence2 及 CogFlorence-2.2-Large 模型",
+  "KJNodes / rgthree / pysssss 等节点包",
+  "模型文件：ip-adapter_pulid_sdxl_fp16.safetensors、ip-adapter.bin、instantid/diffusion_pytorch_model.safetensors、controlnet-tile-sdxl-1.0-xinsir.safetensors、4x-UltraSharp.pth、4x_NMKD-Siax_200k.pth、ae.safetensors、clip_l.safetensors、t5xxl_fp8_e4m3fn.safetensors、svdq-int4-flux.1-dev，以及 3 个 SDXL checkpoint 和 LoRA"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "image",
+  "count": "5 个 LoadImage(IN)"
+ },
+ "output": {
+  "type": "图像（PreviewImage / SaveImage）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyPulid 的 fidelity/weight (0.7)",
+   "how_to_tune": "提高权重可增强与参考人脸相似度，但过高会让表情僵硬；建议 0.5~0.8 之间微调。"
+  },
+  {
+   "param": "InstantID 的 strength（widget 第一个值 1）",
+   "how_to_tune": "控制身份特征叠加强度；若五官太像或太不像，可尝试降到 0.7~0.9，或从 0.5 起步。"
+  },
+  {
+   "param": "KSampler steps/cfg",
+   "how_to_tune": "FLUX 侧 cfg 保持 1 左右，steps 15 已够；SDXL 侧 cfg 可 4~7 调整，steps 11~20 按效果与耗时平衡。"
+  },
+  {
+   "param": "DetailerForEach 的 denoise/guide_size",
+   "how_to_tune": "denoise 决定人脸重绘程度，太小修不干净，太大容易改变身份；配合 guide_size 512 可保持五官稳定。"
+  },
+  {
+   "param": "LoRA 权重（add-detail 0.65 / 小红书 0.9 / 流萤 0.88）",
+   "how_to_tune": "按目标风格调节：皮肤质感、去油光、小红书感过强时可把对应 LoRA 降到 0.5~0.7。"
+  },
+  {
+   "param": "ColorMatch 的 blend 比例（0.5 / 0.4）",
+   "how_to_tune": "控制超分/换脸结果与原图的颜色贴合度；混合度过低颜色偏色，过高会丢失细节层次。"
+  }
+ ],
+ "summary_text": "能力:端到端完成从多张人脸参考图到最终高清换脸/写真人像的生成：先由 PuLID/InstantID 提取并注入身份特征，再通过 SDXL 与 FLUX 管线生成保持人物辨识度的新图像，最后做人脸局部重绘、4x 放大与颜色校正。；能力:支持多图输入：结构中有 5 个 LoadImage(IN) 和 ImageListToImageBatch，可一次处理多张人脸参考图或多组成果对比。；能力:通过 DetectFaces、CropFaces、DetailerForEach、WarpFacesBack 等节点自动执行人脸检测、裁脸、局部细化并贴回原图，形成人脸质量优化闭环。；能力:使用 FLUX.1-dev 的 Nunchaku 量化版本与风格 LoRA，可能用于第二道风格/皮肤质感增强，实现偏向小红书日常照片和商业人像皮肤去油光的效果。；特色:同时堆叠 InstantID 和 PuLID 两条身份控制链路，似乎想用双重条件锁住人物五官；代价是节点多、显存和调度复杂度高。；特色:SDXL 与 FLUX 两套生成路径共存：SDXL 侧用 euler_ancestral/sgm_uniform，FLUX 侧用 euler/kl_optimal 且 cfg=1，可能是为了在粗生成和精修/风格化阶段分别取长补短。；特色:使用 Nunchaku int4 量化 FLUX，是较极客的部署方式，能降低 FLUX.1-dev 的显存门槛。；特色:集成 Florence2 自动生成图像详细描述，并连接到 ShowText 显示，可能用于辅助 prompt 改写或记录生成内容。；特色:后处理链路包含 ColorMatch、双 4x 超分模型、GrowMaskWithBlur、MaskToSEGS、PersonMaskUltra、WarpFacesBack，像是一条工业级换脸/精修流水线。；人脸照片换脸、多风格人像写真生成、社交媒体头像批量制作；这个工作流想解决“上传几张人脸照片，就能得到高清换脸/写真人像”的一站式问题。作者可能采用了两阶段策略：先用 SDXL 配合 InstantID+PuLID 快速生成多个身份可控的底图，再用 Nunchaku 量化后的 FLUX 配合风格 LoRA 提升质感和皮肤细节；最后用 Impact Pack 的人脸 Detailer 和 4x 超分修复五官清晰度。整个图结构像在搭建一个可调试的人脸精修工厂，多个预览节点和 Image Comparer 便于人工挑图与对比。"
+}

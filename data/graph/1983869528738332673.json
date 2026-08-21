@@ -1,0 +1,1889 @@
+{
+ "node_count": 45,
+ "link_count": 60,
+ "active_node_count": 45,
+ "nodes": [
+  {
+   "id": 16,
+   "type": "KSamplerSelect",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "euler"
+   ],
+   "in_links": [],
+   "out_links": [
+    85,
+    186
+   ]
+  },
+  {
+   "id": 25,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    530810059801398,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    84
+   ]
+  },
+  {
+   "id": 267,
+   "type": "SUPIR_first_stage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    436,
+    437,
+    438,
+    439
+   ],
+   "out_links": [
+    452,
+    453,
+    448
+   ]
+  },
+  {
+   "id": 268,
+   "type": "SUPIR_sample",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    174277455657960,
+    "fixed",
+    10,
+    2,
+    1.5,
+    5,
+    1.002,
+    1,
+    1,
+    0.9,
+    1,
+    false,
+    "RestoreDPMPP2MSampler",
+    512,
+    256
+   ],
+   "in_links": [
+    440,
+    441,
+    442,
+    443,
+    444,
+    445,
+    446
+   ],
+   "out_links": [
+    450
+   ]
+  },
+  {
+   "id": 269,
+   "type": "SUPIR_conditioner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "high quality, detailed, photograph",
+    "bad quality, blurry, messy"
+   ],
+   "in_links": [
+    447,
+    448
+   ],
+   "out_links": [
+    442,
+    443
+   ]
+  },
+  {
+   "id": 270,
+   "type": "SUPIR_decode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512
+   ],
+   "in_links": [
+    449,
+    450,
+    451
+   ],
+   "out_links": [
+    457
+   ]
+  },
+  {
+   "id": 271,
+   "type": "SUPIR_encode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    512,
+    "auto"
+   ],
+   "in_links": [
+    452,
+    453,
+    454
+   ],
+   "out_links": [
+    441
+   ]
+  },
+  {
+   "id": 272,
+   "type": "Reroute",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": null,
+   "in_links": [
+    455
+   ],
+   "out_links": [
+    440,
+    447
+   ]
+  },
+  {
+   "id": 273,
+   "type": "ColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "mkl",
+    1,
+    true
+   ],
+   "in_links": [
+    456,
+    457
+   ],
+   "out_links": [
+    462
+   ]
+  },
+  {
+   "id": 275,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "InputImage"
+   ],
+   "in_links": [],
+   "out_links": [
+    456
+   ]
+  },
+  {
+   "id": 276,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIRVAE"
+   ],
+   "in_links": [
+    458
+   ],
+   "out_links": [
+    436
+   ]
+  },
+  {
+   "id": 277,
+   "type": "GetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIRVAE"
+   ],
+   "in_links": [],
+   "out_links": [
+    449
+   ]
+  },
+  {
+   "id": 278,
+   "type": "SUPIR_model_loader_v2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "SUPIR-v0F_fp16.safetensors",
+    false,
+    "auto",
+    false
+   ],
+   "in_links": [
+    459,
+    460,
+    461
+   ],
+   "out_links": [
+    455,
+    458
+   ]
+  },
+  {
+   "id": 280,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024
+   ],
+   "in_links": [],
+   "out_links": [
+    438,
+    439,
+    445,
+    451,
+    454
+   ]
+  },
+  {
+   "id": 281,
+   "type": "ImpactInt",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    512
+   ],
+   "in_links": [],
+   "out_links": [
+    446
+   ]
+  },
+  {
+   "id": 282,
+   "type": "Seed_",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    293310264378650,
+    "randomize"
+   ],
+   "in_links": [],
+   "out_links": [
+    444
+   ]
+  },
+  {
+   "id": 283,
+   "type": "ImageResize+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2000,
+    2000,
+    "nearest",
+    "keep proportion",
+    "always",
+    0
+   ],
+   "in_links": [
+    463
+   ],
+   "out_links": [
+    437
+   ]
+  },
+  {
+   "id": 53,
+   "type": "PulidFluxInsightFaceLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "CPU"
+   ],
+   "in_links": [],
+   "out_links": [
+    124
+   ]
+  },
+  {
+   "id": 51,
+   "type": "PulidFluxEvaClipLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    123
+   ]
+  },
+  {
+   "id": 10,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ae.sft"
+   ],
+   "in_links": [],
+   "out_links": [
+    281
+   ]
+  },
+  {
+   "id": 17,
+   "type": "BasicScheduler",
+   "category": "preprocessor",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "ddim_uniform",
+    30,
+    1
+   ],
+   "in_links": [
+    392
+   ],
+   "out_links": [
+    145
+   ]
+  },
+  {
+   "id": 45,
+   "type": "PulidFluxModelLoader",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "pulid_flux_v0.9.0.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    125
+   ]
+  },
+  {
+   "id": 62,
+   "type": "ApplyPulidFlux",
+   "category": "face",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    0,
+    0.98
+   ],
+   "in_links": [
+    391,
+    125,
+    123,
+    124,
+    198
+   ],
+   "out_links": [
+    168
+   ]
+  },
+  {
+   "id": 48,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    84,
+    83,
+    85,
+    183,
+    387
+   ],
+   "out_links": [
+    195
+   ]
+  },
+  {
+   "id": 47,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    168,
+    107
+   ],
+   "out_links": [
+    83,
+    185
+   ]
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "category": "conditioning",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Half body portrait of 60 years old guy, with an surprised expression, he is lost in vectors of AI models, sourounded by PC monitors and many cables, on his tshirt is a text with words printed in Arial font:\"PuLID Flux\", detailed, glowy background, photorealistic style with skin inperfections, looks like shot with an smartphone, skin details without plastic look, ASUS Keyboard."
+   ],
+   "in_links": [
+    295,
+    429
+   ],
+   "out_links": [
+    41
+   ]
+  },
+  {
+   "id": 26,
+   "type": "FluxGuidance",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3.5
+   ],
+   "in_links": [
+    41
+   ],
+   "out_links": [
+    107
+   ]
+  },
+  {
+   "id": 75,
+   "type": "SplitSigmasDenoise",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    0.6
+   ],
+   "in_links": [
+    145
+   ],
+   "out_links": [
+    183,
+    189
+   ]
+  },
+  {
+   "id": 93,
+   "type": "InjectLatentNoise+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    460950966008163,
+    "randomize",
+    0.3,
+    "true"
+   ],
+   "in_links": [
+    195
+   ],
+   "out_links": [
+    194
+   ]
+  },
+  {
+   "id": 90,
+   "type": "DisableNoise",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [],
+   "out_links": [
+    190
+   ]
+  },
+  {
+   "id": 284,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    462
+   ],
+   "out_links": []
+  },
+  {
+   "id": 89,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    190,
+    185,
+    186,
+    189,
+    194
+   ],
+   "out_links": [
+    232
+   ]
+  },
+  {
+   "id": 91,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    232,
+    281
+   ],
+   "out_links": [
+    201,
+    463,
+    464
+   ]
+  },
+  {
+   "id": 274,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "InputImage"
+   ],
+   "in_links": [
+    464
+   ],
+   "out_links": []
+  },
+  {
+   "id": 71,
+   "type": "LayerUtility: CropByMask V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    false,
+    "mask_area",
+    20,
+    20,
+    20,
+    20,
+    "8"
+   ],
+   "in_links": [
+    139,
+    433
+   ],
+   "out_links": [
+    198
+   ]
+  },
+  {
+   "id": 266,
+   "type": "LayerMask: PersonMaskUltra V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    0.4,
+    "VITMatte",
+    6,
+    6,
+    0.01,
+    0.99,
+    true,
+    "cuda",
+    2
+   ],
+   "in_links": [
+    432
+   ],
+   "out_links": [
+    433
+   ]
+  },
+  {
+   "id": 239,
+   "type": "EmptyLatentImage",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    896,
+    1152,
+    1
+   ],
+   "in_links": [],
+   "out_links": [
+    387
+   ]
+  },
+  {
+   "id": 263,
+   "type": "Joy_caption_two",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Descriptive",
+    "long",
+    false
+   ],
+   "in_links": [
+    427,
+    428
+   ],
+   "out_links": [
+    429
+   ]
+  },
+  {
+   "id": 95,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "ComfyUI"
+   ],
+   "in_links": [
+    201
+   ],
+   "out_links": []
+  },
+  {
+   "id": 54,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "32f44b87295c70fd4ca1221b34ca30447822754612fbe2d570ae327ef34bbf7b.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    139,
+    432
+   ]
+  },
+  {
+   "id": 67,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "32f44b87295c70fd4ca1221b34ca30447822754612fbe2d570ae327ef34bbf7b.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    428
+   ]
+  },
+  {
+   "id": 279,
+   "type": "CheckpointLoaderSimple",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "XLL dreamshaperXL_lightningDPMSDE.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    459,
+    460,
+    461
+   ]
+  },
+  {
+   "id": 264,
+   "type": "Joy_caption_two_load",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "unsloth/Meta-Llama-3.1-8B-bnb-4bit"
+   ],
+   "in_links": [],
+   "out_links": [
+    427
+   ]
+  },
+  {
+   "id": 163,
+   "type": "DualCLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "clip_l.safetensors",
+    "t5xxl_fp8_e4m3fn.safetensors",
+    "flux",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    295
+   ]
+  },
+  {
+   "id": 94,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux1-dev-fp8.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    391,
+    392
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 10,
+   "to_node": 91,
+   "type": "VAE"
+  },
+  {
+   "from_node": 16,
+   "to_node": 48,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 16,
+   "to_node": 89,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 163,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 17,
+   "to_node": 75,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 239,
+   "to_node": 48,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 25,
+   "to_node": 48,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 26,
+   "to_node": 47,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 263,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 264,
+   "to_node": 263,
+   "type": "JoyTwoPipeline"
+  },
+  {
+   "from_node": 266,
+   "to_node": 71,
+   "type": "MASK"
+  },
+  {
+   "from_node": 267,
+   "to_node": 269,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 267,
+   "to_node": 271,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 267,
+   "to_node": 271,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 268,
+   "to_node": 270,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 269,
+   "to_node": 268,
+   "type": "SUPIR_cond_pos"
+  },
+  {
+   "from_node": 269,
+   "to_node": 268,
+   "type": "SUPIR_cond_neg"
+  },
+  {
+   "from_node": 270,
+   "to_node": 273,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 271,
+   "to_node": 268,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 272,
+   "to_node": 268,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 272,
+   "to_node": 269,
+   "type": "SUPIRMODEL"
+  },
+  {
+   "from_node": 273,
+   "to_node": 284,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 275,
+   "to_node": 273,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 276,
+   "to_node": 267,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 277,
+   "to_node": 270,
+   "type": "SUPIRVAE"
+  },
+  {
+   "from_node": 278,
+   "to_node": 272,
+   "type": "*"
+  },
+  {
+   "from_node": 278,
+   "to_node": 276,
+   "type": "*"
+  },
+  {
+   "from_node": 279,
+   "to_node": 278,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 279,
+   "to_node": 278,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 279,
+   "to_node": 278,
+   "type": "VAE"
+  },
+  {
+   "from_node": 280,
+   "to_node": 267,
+   "type": "INT"
+  },
+  {
+   "from_node": 280,
+   "to_node": 267,
+   "type": "INT"
+  },
+  {
+   "from_node": 280,
+   "to_node": 268,
+   "type": "INT"
+  },
+  {
+   "from_node": 280,
+   "to_node": 270,
+   "type": "INT"
+  },
+  {
+   "from_node": 280,
+   "to_node": 271,
+   "type": "INT"
+  },
+  {
+   "from_node": 281,
+   "to_node": 268,
+   "type": "INT"
+  },
+  {
+   "from_node": 282,
+   "to_node": 268,
+   "type": "INT"
+  },
+  {
+   "from_node": 283,
+   "to_node": 267,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 62,
+   "type": "PULIDFLUX"
+  },
+  {
+   "from_node": 47,
+   "to_node": 48,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 47,
+   "to_node": 89,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 48,
+   "to_node": 93,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 51,
+   "to_node": 62,
+   "type": "EVA_CLIP"
+  },
+  {
+   "from_node": 53,
+   "to_node": 62,
+   "type": "FACEANALYSIS"
+  },
+  {
+   "from_node": 54,
+   "to_node": 266,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 71,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 26,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 62,
+   "to_node": 47,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 67,
+   "to_node": 263,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 71,
+   "to_node": 62,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 75,
+   "to_node": 48,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 75,
+   "to_node": 89,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 89,
+   "to_node": 91,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 90,
+   "to_node": 89,
+   "type": "NOISE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 274,
+   "type": "*"
+  },
+  {
+   "from_node": 91,
+   "to_node": 283,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 91,
+   "to_node": 95,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 93,
+   "to_node": 89,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 94,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 94,
+   "to_node": 62,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "sampler": 5,
+  "utility": 24,
+  "postprocess": 1,
+  "face": 4,
+  "vae": 2,
+  "preprocessor": 1,
+  "conditioning": 1,
+  "image_io": 4,
+  "checkpoint_loader": 2,
+  "clip": 1
+ },
+ "assets": [
+  {
+   "node_id": 278,
+   "node_type": "SUPIR_model_loader_v2",
+   "kind": "checkpoint",
+   "name": "SUPIR-v0F_fp16.safetensors"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "ae.sft"
+  },
+  {
+   "node_id": 45,
+   "node_type": "PulidFluxModelLoader",
+   "kind": "aux_model",
+   "name": "pulid_flux_v0.9.0.safetensors"
+  },
+  {
+   "node_id": 279,
+   "node_type": "CheckpointLoaderSimple",
+   "kind": "checkpoint",
+   "name": "XLL dreamshaperXL_lightningDPMSDE.safetensors"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "clip_l.safetensors"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "kind": "clip",
+   "name": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 94,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "flux1-dev-fp8.safetensors"
+  }
+ ],
+ "techniques": [
+  "PuLID",
+  "FLUX"
+ ],
+ "param_face_size": 107,
+ "structure_hash": "a0ee4b208ded2d86",
+ "param_face": [
+  {
+   "node_id": 16,
+   "node_type": "KSamplerSelect",
+   "widget_index": 0,
+   "value_preview": "euler"
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "530810059801398"
+  },
+  {
+   "node_id": 25,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 267,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 267,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 267,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 2,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 267,
+   "node_type": "SUPIR_first_stage",
+   "widget_index": 3,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 0,
+   "value_preview": "174277455657960"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 2,
+   "value_preview": "10"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 3,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 4,
+   "value_preview": "1.5"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 5,
+   "value_preview": "5"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 6,
+   "value_preview": "1.002"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 7,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 8,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 9,
+   "value_preview": "0.9"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 10,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 11,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 12,
+   "value_preview": "RestoreDPMPP2MSampler"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 13,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 268,
+   "node_type": "SUPIR_sample",
+   "widget_index": 14,
+   "value_preview": "256"
+  },
+  {
+   "node_id": 269,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 0,
+   "value_preview": "high quality, detailed, photograph"
+  },
+  {
+   "node_id": 269,
+   "node_type": "SUPIR_conditioner",
+   "widget_index": 1,
+   "value_preview": "bad quality, blurry, messy"
+  },
+  {
+   "node_id": 270,
+   "node_type": "SUPIR_decode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 270,
+   "node_type": "SUPIR_decode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 271,
+   "node_type": "SUPIR_encode",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 271,
+   "node_type": "SUPIR_encode",
+   "widget_index": 1,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 271,
+   "node_type": "SUPIR_encode",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 273,
+   "node_type": "ColorMatch",
+   "widget_index": 0,
+   "value_preview": "mkl"
+  },
+  {
+   "node_id": 273,
+   "node_type": "ColorMatch",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 273,
+   "node_type": "ColorMatch",
+   "widget_index": 2,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 275,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "InputImage"
+  },
+  {
+   "node_id": 276,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "SUPIRVAE"
+  },
+  {
+   "node_id": 277,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "SUPIRVAE"
+  },
+  {
+   "node_id": 278,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 0,
+   "value_preview": "SUPIR-v0F_fp16.safetensors"
+  },
+  {
+   "node_id": 278,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 1,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 278,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 2,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 278,
+   "node_type": "SUPIR_model_loader_v2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 280,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 281,
+   "node_type": "ImpactInt",
+   "widget_index": 0,
+   "value_preview": "512"
+  },
+  {
+   "node_id": 282,
+   "node_type": "Seed_",
+   "widget_index": 0,
+   "value_preview": "293310264378650"
+  },
+  {
+   "node_id": 282,
+   "node_type": "Seed_",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 0,
+   "value_preview": "2000"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 1,
+   "value_preview": "2000"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 2,
+   "value_preview": "nearest"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 3,
+   "value_preview": "keep proportion"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 4,
+   "value_preview": "always"
+  },
+  {
+   "node_id": 283,
+   "node_type": "ImageResize+",
+   "widget_index": 5,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 53,
+   "node_type": "PulidFluxInsightFaceLoader",
+   "widget_index": 0,
+   "value_preview": "CPU"
+  },
+  {
+   "node_id": 10,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "ae.sft"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 0,
+   "value_preview": "ddim_uniform"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 1,
+   "value_preview": "30"
+  },
+  {
+   "node_id": 17,
+   "node_type": "BasicScheduler",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 45,
+   "node_type": "PulidFluxModelLoader",
+   "widget_index": 0,
+   "value_preview": "pulid_flux_v0.9.0.safetensors"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 1,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 62,
+   "node_type": "ApplyPulidFlux",
+   "widget_index": 2,
+   "value_preview": "0.98"
+  },
+  {
+   "node_id": 26,
+   "node_type": "FluxGuidance",
+   "widget_index": 0,
+   "value_preview": "3.5"
+  },
+  {
+   "node_id": 75,
+   "node_type": "SplitSigmasDenoise",
+   "widget_index": 0,
+   "value_preview": "0.6"
+  },
+  {
+   "node_id": 93,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 0,
+   "value_preview": "460950966008163"
+  },
+  {
+   "node_id": 93,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 93,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 2,
+   "value_preview": "0.3"
+  },
+  {
+   "node_id": 93,
+   "node_type": "InjectLatentNoise+",
+   "widget_index": 3,
+   "value_preview": "true"
+  },
+  {
+   "node_id": 284,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 274,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "InputImage"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 0,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 1,
+   "value_preview": "mask_area"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 2,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 3,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 4,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 5,
+   "value_preview": "20"
+  },
+  {
+   "node_id": 71,
+   "node_type": "LayerUtility: CropByMask V2",
+   "widget_index": 6,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 0,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 3,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 4,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 5,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 6,
+   "value_preview": "0.4"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 7,
+   "value_preview": "VITMatte"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 8,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 9,
+   "value_preview": "6"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 10,
+   "value_preview": "0.01"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 11,
+   "value_preview": "0.99"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 12,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 13,
+   "value_preview": "cuda"
+  },
+  {
+   "node_id": 266,
+   "node_type": "LayerMask: PersonMaskUltra V2",
+   "widget_index": 14,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 239,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 0,
+   "value_preview": "896"
+  },
+  {
+   "node_id": 239,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 1,
+   "value_preview": "1152"
+  },
+  {
+   "node_id": 239,
+   "node_type": "EmptyLatentImage",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 263,
+   "node_type": "Joy_caption_two",
+   "widget_index": 0,
+   "value_preview": "Descriptive"
+  },
+  {
+   "node_id": 263,
+   "node_type": "Joy_caption_two",
+   "widget_index": 1,
+   "value_preview": "long"
+  },
+  {
+   "node_id": 263,
+   "node_type": "Joy_caption_two",
+   "widget_index": 2,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 95,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "32f44b87295c70fd4ca1221b34ca30447822754612fbe2d570ae327ef34b"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 67,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "32f44b87295c70fd4ca1221b34ca30447822754612fbe2d570ae327ef34b"
+  },
+  {
+   "node_id": 67,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 279,
+   "node_type": "CheckpointLoaderSimple",
+   "widget_index": 0,
+   "value_preview": "XLL dreamshaperXL_lightningDPMSDE.safetensors"
+  },
+  {
+   "node_id": 264,
+   "node_type": "Joy_caption_two_load",
+   "widget_index": 0,
+   "value_preview": "unsloth/Meta-Llama-3.1-8B-bnb-4bit"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 0,
+   "value_preview": "clip_l.safetensors"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 1,
+   "value_preview": "t5xxl_fp8_e4m3fn.safetensors"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 2,
+   "value_preview": "flux"
+  },
+  {
+   "node_id": 163,
+   "node_type": "DualCLIPLoader",
+   "widget_index": 3,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 94,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "flux1-dev-fp8.safetensors"
+  },
+  {
+   "node_id": 94,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  }
+ ]
+}

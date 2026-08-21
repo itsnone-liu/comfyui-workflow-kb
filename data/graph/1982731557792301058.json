@@ -1,0 +1,400 @@
+{
+ "node_count": 8,
+ "link_count": 9,
+ "active_node_count": 8,
+ "nodes": [
+  {
+   "id": 12,
+   "type": "AutoDownloadBiRefNetModel",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "General",
+    "AUTO"
+   ],
+   "in_links": [],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 14,
+   "type": "RembgByBiRefNet",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    17,
+    44
+   ],
+   "out_links": [
+    52,
+    47
+   ]
+  },
+  {
+   "id": 23,
+   "type": "GetVideoComponents",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    43
+   ],
+   "out_links": [
+    44,
+    53,
+    46,
+    55
+   ]
+  },
+  {
+   "id": 26,
+   "type": "MaskToImage",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    47
+   ],
+   "out_links": [
+    48
+   ]
+  },
+  {
+   "id": 22,
+   "type": "LoadVideo",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f380682b294be215661b35aabae6aa9c512845b80480372e8fb47278e50782fb.mp4",
+    null,
+    {
+     "paused": false,
+     "hidden": false,
+     "params": {}
+    }
+   ],
+   "in_links": [],
+   "out_links": [
+    43
+   ]
+  },
+  {
+   "id": 29,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "birefnet",
+    "loop_count": 0,
+    "save_metadata": true,
+    "crf": 23,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "birefnet_00001_p81_mtedb_1771573721.mov",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//d048c885777cf708430543e1d671b039/output/birefnet_00001_p81_mtedb_1771573721.mov",
+      "workflow": "birefnet_00001_p81.png",
+      "fullpath": "/data/ComfyUI/personal/d048c885777cf708430543e1d671b039/output/birefnet_00001_p81.mov",
+      "format": "video/mov",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     },
+     "muted": false
+    },
+    "format": "video/mov",
+    "no_preview": false,
+    "frame_rate": 30,
+    "pingpong": false
+   },
+   "in_links": [
+    52,
+    53,
+    55
+   ],
+   "out_links": []
+  },
+  {
+   "id": 9,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "Alpha",
+    "loop_count": 0,
+    "save_metadata": true,
+    "crf": 23,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "Alpha_00001_p81_yansi_1771573725.mov",
+      "cos_url": "https://rh-images-1252422369.cos.ap-beijing.myqcloud.com//d048c885777cf708430543e1d671b039/output/Alpha_00001_p81_yansi_1771573725.mov",
+      "workflow": "Alpha_00001_p81.png",
+      "fullpath": "/data/ComfyUI/personal/d048c885777cf708430543e1d671b039/output/Alpha_00001_p81.mov",
+      "format": "video/mov",
+      "subfolder": "",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     },
+     "muted": false
+    },
+    "format": "video/mov",
+    "no_preview": false,
+    "frame_rate": 30,
+    "pingpong": false
+   },
+   "in_links": [
+    48,
+    46
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "支持透明背景的视频格式可以选择MOV\n\n支持透明背景的图片序列可以选择PNG\n\n如果任务列表不显示视频请保存到本地再观看"
+   ],
+   "in_links": [],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 12,
+   "to_node": 14,
+   "type": "BiRefNetMODEL"
+  },
+  {
+   "from_node": 14,
+   "to_node": 26,
+   "type": "MASK"
+  },
+  {
+   "from_node": 14,
+   "to_node": 29,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 22,
+   "to_node": 23,
+   "type": "VIDEO"
+  },
+  {
+   "from_node": 23,
+   "to_node": 14,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 23,
+   "to_node": 29,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 23,
+   "to_node": 29,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 23,
+   "to_node": 9,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 26,
+   "to_node": 9,
+   "type": "IMAGE"
+  }
+ ],
+ "categories": {
+  "utility": 4,
+  "postprocess": 1,
+  "video_io": 3
+ },
+ "assets": [],
+ "techniques": [],
+ "param_face_size": 24,
+ "structure_hash": "d7dbbdeaaf237455",
+ "param_face": [
+  {
+   "node_id": 12,
+   "node_type": "AutoDownloadBiRefNetModel",
+   "widget_index": 0,
+   "value_preview": "General"
+  },
+  {
+   "node_id": 12,
+   "node_type": "AutoDownloadBiRefNetModel",
+   "widget_index": 1,
+   "value_preview": "AUTO"
+  },
+  {
+   "node_id": 22,
+   "node_type": "LoadVideo",
+   "widget_index": 0,
+   "value_preview": "f380682b294be215661b35aabae6aa9c512845b80480372e8fb47278e507"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "birefnet"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "23"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/mov"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "30"
+  },
+  {
+   "node_id": 29,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "Alpha"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "23"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/mov"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "30"
+  },
+  {
+   "node_id": 9,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 25,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "支持透明背景的视频格式可以选择MOV\n\n支持透明背景的图片序列可以选择PNG\n\n如果任务列表不显示视频请保存到本地再观看"
+  }
+ ]
+}

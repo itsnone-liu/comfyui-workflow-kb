@@ -1,0 +1,119 @@
+{
+ "domain": [
+  "人像写真",
+  "AI摄影",
+  "身份保持生成"
+ ],
+ "capabilities": [
+  {
+   "text": "上传两张参考图（人脸身份照 + 风格/姿态参考图）→ 生成保持身份一致性的专业人像写真",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 Qwen3VL-4B 视觉语言模型自动理解参考图并生成/优化中文提示词",
+   "kind": "inference"
+  },
+  {
+   "text": "通过 Krea2 identity_edit LoRA（强度0.85）对生成结果进行身份约束，保证人物脸部特征一致",
+   "kind": "fact"
+  },
+  {
+   "text": "叠加胶片颗粒、滤波旁路、Ins风人像三种 LoRA（0.39/0.26/0.26）实现风格化摄影质感控制",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "Qwen-Image 扩散模型 + turbo 加速低步数采样（8步, CFG=1, euler/sgm_uniform）",
+  "Qwen3VL-4B 多模态视觉语言模型（4-bit 量化, SDPA）驱动提示词生成与图像理解",
+  "Krea2 Edit 双路接地编码（Krea2EditGroundedEncode x2）+ Krea2EditModelPatch 模型补丁嵌入",
+  "四路 LoRA 叠加：krea2_identity_edit + KREA2film grain + krea2filterbypass + krea2-Cc-Ins风-人像",
+  "多段文本管线：CR Prompt Text 元指令模板 + Text Replace 占位符替换 + ProcessString 去空行"
+ ],
+ "special_features": [
+  {
+   "text": "两个 LoadImage 节点默认共用同一张占位图 id（854d4adf09d6463e0848d00f），需用户分别替换为身份照和风格参考照，形成双图引导输入",
+   "kind": "fact"
+  },
+  {
+   "text": "双路 Krea2EditGroundedEncode（768）分别对两张参考图做接地编码，再经 Krea2EditModelPatch（1,1,fit）融合注入编辑能力，实现'身份+风格'双条件解耦控制",
+   "kind": "inference"
+  },
+  {
+   "text": "Qwen3VL_Chat 与 CR 系列文本节点构成多段式提示词工程：元指令模板→触发词替换→去空行→字符串拼接，疑似为 VLM 输出提示词的后处理管线",
+   "kind": "fact"
+  },
+  {
+   "text": "4个 LoraLoaderModelOnly 以差异化强度（0.85/0.39/0.26/0.26）堆叠，区分身份保持、胶片质感、滤波旁路、Ins风格的控制优先级",
+   "kind": "fact"
+  },
+  {
+   "text": "嵌入 easy cleanGpuUsed 显存清理节点，配合 4-bit 量化模型，显存管理意识明确",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 easy anythingIndexSwitch 索引开关 + Seed (rgthree) 随机种子 + KSampler 外部种子，支持在多组预设提示词/风格间切换或固定复现",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流围绕 Krea2 身份编辑模型设计了一条'理解-编辑-渲染'的 AI 人像写真流水线：先用 Qwen3VL-4B 视觉语言模型理解输入参考图并自动生成专业提示词，再通过两路 grounded encode 将身份图与风格参考图分别编码，由 Krea2EditModelPatch 注入编辑能力，最后以四层 LoRA（身份、胶片、旁路、风格）分层控制生成结果。turbo 采样器（8步/CFG=1）和显存清理节点的加入，似乎表明设计者在意生成速度与显存占用，可能面向批量化或在线服务场景。",
+ "use_case": "输入一张人脸身份照 + 一张姿态/风格参考图，即可快速生成保持身份特征的 AI 人像写真，适用于写真馆出片、模特图生成、个人形象照制作等场景",
+ "limitation": "依赖大量自定义节点包（Comfyroll CR 系列、Krea2Edit*、Qwen3VL_Chat、JDCN_StringToList、easy use、rgthree、LayerUtility），缺少任一包则工作流无法运行；需准备 samKrea2_turboV10.safetensors、qwen3vl_4b_fp8_scaled.safetensors、qwen_image_vae.safetensors 及4个 LoRA 模型文件；双输入均为图像文件且两个 LoadImage 默认指向同一占位图，必须手动替换为不同的身份照与参考照；Qwen3VL-4B 4-bit 运行仍需较大显存；输出尺寸受 EmptyLatentImage 固定为 1024×1536 或由 ImageScaleByAspectRatio 等比缩放决定，无法直接文本控制。",
+ "dependencies": [
+  "samKrea2_turboV10.safetensors",
+  "qwen3vl_4b_fp8_scaled.safetensors",
+  "qwen_image_vae.safetensors",
+  "krea2_identity_edit_v1_2_编辑模型.safetensors",
+  "KREA2film grain.safetensors",
+  "krea2filterbypass.safetensors",
+  "krea2-Cc-Ins风-人像.safetensors",
+  "自定义节点包：Comfyroll Studio（CR_*）、Krea2Edit*、Qwen3VL_Chat、JDCN、easy use、rgthree、LayerUtility"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "两路图像输入：人脸身份照 + 风格/姿态参考图",
+  "count": "2"
+ },
+ "output": {
+  "type": "1024×1536 竖构图人像写真图像（可通过 ImageScaleByAspectRatio/EmptyLatentImage 调整）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "当前8步，基于 turbo 模型低步数设计，可尝试10-12步提升细节，不建议超过16步否则速度收益下降明显"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "当前1，turbo 模型建议范围1-2，CFG 调高易导致过曝/色彩失真"
+  },
+  {
+   "param": "krea2_identity_edit LoRA strength",
+   "how_to_tune": "当前0.85，身份相似度不足时可上调至0.9-1.0，但过高可能导致面部僵硬或表情不自然"
+  },
+  {
+   "param": "KREA2film grain LoRA strength",
+   "how_to_tune": "当前0.39，需更强胶片颗粒质感时可上调至0.5-0.6，噪点感会增强"
+  },
+  {
+   "param": "krea2-Cc-Ins风-人像 LoRA strength",
+   "how_to_tune": "当前0.26，控制 Ins 风格化强度，可微调0.2-0.35 平衡风格与写实"
+  },
+  {
+   "param": "Krea2EditModelPatch 参数",
+   "how_to_tune": "当前为1,1,fit，第一参数控制编辑强度、第二参数控制保真度；保持1,1 较平衡，若人物变形可降低第一参数"
+  },
+  {
+   "param": "Qwen3VL_Chat max_tokens",
+   "how_to_tune": "当前512，若生成提示词被截断可提高至768-1024"
+  },
+  {
+   "param": "Qwen3VL_Chat temperature",
+   "how_to_tune": "当前0.7，值越低提示词越稳定可复现，越高越多样但有跑题风险"
+  },
+  {
+   "param": "EmptyLatentImage 尺寸",
+   "how_to_tune": "当前1024×1536竖构图，可改为1024×1024 方图或1536×1024 横构图以适应不同输出需求"
+  }
+ ],
+ "summary_text": "能力:上传两张参考图（人脸身份照 + 风格/姿态参考图）→ 生成保持身份一致性的专业人像写真；能力:使用 Qwen3VL-4B 视觉语言模型自动理解参考图并生成/优化中文提示词；能力:通过 Krea2 identity_edit LoRA（强度0.85）对生成结果进行身份约束，保证人物脸部特征一致；能力:叠加胶片颗粒、滤波旁路、Ins风人像三种 LoRA（0.39/0.26/0.26）实现风格化摄影质感控制；特色:两个 LoadImage 节点默认共用同一张占位图 id（854d4adf09d6463e0848d00f），需用户分别替换为身份照和风格参考照，形成双图引导输入；特色:双路 Krea2EditGroundedEncode（768）分别对两张参考图做接地编码，再经 Krea2EditModelPatch（1,1,fit）融合注入编辑能力，实现'身份+风格'双条件解耦控制；特色:Qwen3VL_Chat 与 CR 系列文本节点构成多段式提示词工程：元指令模板→触发词替换→去空行→字符串拼接，疑似为 VLM 输出提示词的后处理管线；特色:4个 LoraLoaderModelOnly 以差异化强度（0.85/0.39/0.26/0.26）堆叠，区分身份保持、胶片质感、滤波旁路、Ins风格的控制优先级；特色:嵌入 easy cleanGpuUsed 显存清理节点，配合 4-bit 量化模型，显存管理意识明确；特色:使用 easy anythingIndexSwitch 索引开关 + Seed (rgthree) 随机种子 + KSampler 外部种子，支持在多组预设提示词/风格间切换或固定复现；输入一张人脸身份照 + 一张姿态/风格参考图，即可快速生成保持身份特征的 AI 人像写真，适用于写真馆出片、模特图生成、个人形象照制作等场景；该工作流围绕 Krea2 身份编辑模型设计了一条'理解-编辑-渲染'的 AI 人像写真流水线：先用 Qwen3VL-4B 视觉语言模型理解输入参考图并自动生成专业提示词，再通过两路 grounded encode 将身份图与风格参考图分别编码，由 Krea2EditModelPatch 注入编辑能力，最后以四层 LoRA（身份、胶片、旁路、风格）分层控制生成结果。turbo 采样器（8步/CFG=1）和显存清理节点的加入，似乎表明设计者在意生成速度与显存占用，可能面向批量化或在线服务场景。"
+}

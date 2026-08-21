@@ -1,0 +1,93 @@
+{
+ "domain": [
+  "图生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "输入首帧和尾帧图像，结合文本提示，端到端生成一段由首尾帧约束的视频（使用 MiniMax H3 模型，输出 mp4 视频文件）。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持通过 BasicScheduler 和随机噪声种子控制生成过程，能生成固定种子下的可复现视频结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持视频分辨率和帧数的自动计算（ResolutionSelector 与 ComfyMathExpression 联动），可适配不同宽高比。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "首尾帧视频生成（MiniMaxH3ImageToVideo）",
+  "FL2V Turbo 8-step LoRA（minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors）加速采样",
+  "Block Cache 缓存加速（MiniMaxH3BlockCacheT8）",
+  "SageAttention 注意力优化（PathchSageAttentionKJ）",
+  "ResMultistep 采样器 + BasicGuider",
+  "视频 VAE 和音频 VAE 分别解码（VAEDecode / VAEDecodeAudio）",
+  "Qwen3VL 文本编码器（qwen3vl_32b_minimax_h3_int8_convrot.safetensors）"
+ ],
+ "special_features": [
+  {
+   "text": "三路 LoadImage 节点均使用相同的默认图片占位符，但工作流语义上需要两个不同输入（首帧与尾帧），第三个可能是预留或冗余输入。",
+   "kind": "inference"
+  },
+  {
+   "text": "包含音频 VAE 解码（VAEDecodeAudio）和音频 VAE 加载器，表明该工作流设计为可生成带音频的视频，而不仅限于无声视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "MiniMaxH3BlockCacheT8 使用 CPU offload 和分层缓存率（0.14/0.15/0.9）以显存换取速度，属于高级显存优化策略。",
+   "kind": "fact"
+  },
+  {
+   "text": "BasicScheduler 的 'simple' 模式与采样步数 8 配合 Turbo LoRA，形成少步数采样链路，是典型的加速推理设计。",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 ComfyMathExpression 计算帧数（max(5, round(a * 24)) + ...），将时长（秒）动态转换为视频帧数，避免手动计算。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流旨在以 MiniMax H3 模型实现高质量的首尾帧视频生成，并通过 Turbo LoRA、Block Cache、SageAttention、少步数采样等工程手段大幅降低推理门槛和显存占用。设计上同时考虑视频和音频的生成，可能面向需要镜头运动或首尾场景一致的短视频创作场景。由于使用了 int8 量化 checkpoint 和 CPU offload，疑似为单卡低显存用户也能运行而优化。",
+ "use_case": "适合需要从两张静态图（起始帧和结束帧）生成过渡视频的创作者，例如制作镜头推拉、人物动作衔接、场景变化等视觉内容；也适合希望在本低配置 GPU 上运行 MiniMax H3 视频模型并产出带音频短视频的进阶用户。",
+ "limitation": "依赖外部自定义节点（如 MiniMaxH3 系列节点、ComfyMathExpression、PathchSageAttentionKJ、easy showAnything）和特定模型文件（MiniMax-H3-FL2VA-int8-convrot.safetensors、qwen3vl_32b_minimax_h3_int8_convrot.safetensors、两个 VAE 文件、Turbo LoRA）；输入首帧和尾帧需为图像文件，且第三方节点未安装时无法运行。",
+ "dependencies": [
+  "MiniMax-H3-FL2VA-int8-convrot.safetensors",
+  "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+  "minimax_h3_video_vae_fp16.safetensors",
+  "minimax_h3_audio_vae_fp32.safetensors",
+  "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+  "自定义节点：MiniMaxH3ImageToVideo、MiniMaxH3BlockCacheT8、PathchSageAttentionKJ、ComfyMathExpression、easy showAnything"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "图像文件（首帧和尾帧，均为 PNG/JPG 等常见格式）",
+  "count": "2（但界面提供 3 个 LoadImage，第三个用途不明，可能为预留）"
+ },
+ "output": {
+  "type": "视频文件（mp4，SaveVideo，含音频轨道）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler (steps=8)",
+   "how_to_tune": "与 Turbo LoRA 配套，8 步是默认加速配置；若画质不稳可尝试 10-12 步，但会降低速度。"
+  },
+  {
+   "param": "MiniMaxH3ImageToVideo (length=73, resolution=1344x768)",
+   "how_to_tune": "length 决定总帧数（与 ComfyMathExpression 联动），分辨率由 ResolutionSelector 控制；增大分辨率会提高细节但显存占用显著增加。"
+  },
+  {
+   "param": "MiniMaxH3BlockCacheT8 (cache_range 0.14/0.15/0.9, offload=cpu)",
+   "how_to_tune": "cache_range 越高缓存越多、速度越快但可能损失运动连贯性；显存不足时保持 cpu offload，显存充足可将 offload 设为 none 提升速度。"
+  },
+  {
+   "param": "RandomNoise (seed=1058158424724271, noise_mode=fixed)",
+   "how_to_tune": "固定种子可复现结果；更换种子可探索不同运动轨迹，若要变化视频内容，调整种子是首要手段。"
+  },
+  {
+   "param": "LoraLoaderModelOnly (strength=1)",
+   "how_to_tune": "默认 1.0 为 Turbo LoRA 的标准强度；若生成过曝或运动不自然可降到 0.8-0.9，但会偏离 8 步加速的预设。"
+  }
+ ],
+ "summary_text": "能力:输入首帧和尾帧图像，结合文本提示，端到端生成一段由首尾帧约束的视频（使用 MiniMax H3 模型，输出 mp4 视频文件）。；能力:支持通过 BasicScheduler 和随机噪声种子控制生成过程，能生成固定种子下的可复现视频结果。；能力:支持视频分辨率和帧数的自动计算（ResolutionSelector 与 ComfyMathExpression 联动），可适配不同宽高比。；特色:三路 LoadImage 节点均使用相同的默认图片占位符，但工作流语义上需要两个不同输入（首帧与尾帧），第三个可能是预留或冗余输入。；特色:包含音频 VAE 解码（VAEDecodeAudio）和音频 VAE 加载器，表明该工作流设计为可生成带音频的视频，而不仅限于无声视频。；特色:MiniMaxH3BlockCacheT8 使用 CPU offload 和分层缓存率（0.14/0.15/0.9）以显存换取速度，属于高级显存优化策略。；特色:BasicScheduler 的 'simple' 模式与采样步数 8 配合 Turbo LoRA，形成少步数采样链路，是典型的加速推理设计。；特色:使用 ComfyMathExpression 计算帧数（max(5, round(a * 24)) + ...），将时长（秒）动态转换为视频帧数，避免手动计算。；适合需要从两张静态图（起始帧和结束帧）生成过渡视频的创作者，例如制作镜头推拉、人物动作衔接、场景变化等视觉内容；也适合希望在本低配置 GPU 上运行 MiniMax H3 视频模型并产出带音频短视频的进阶用户。；该工作流旨在以 MiniMax H3 模型实现高质量的首尾帧视频生成，并通过 Turbo LoRA、Block Cache、SageAttention、少步数采样等工程手段大幅降低推理门槛和显存占用。设计上同时考虑视频和音频的生成，可能面向需要镜头运动或首尾场景一致的短视频创作场景。由于使用了 int8 量化 checkpoint 和 CPU offload，疑似为单卡低显存用户也能运行而优化。"
+}

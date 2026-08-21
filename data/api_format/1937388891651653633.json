@@ -1,0 +1,298 @@
+{
+ "11": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "24",
+    0
+   ],
+   "vae": [
+    "4",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "VAE编码"
+  }
+ },
+ "22": {
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "6",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "条件零化"
+  }
+ },
+ "24": {
+  "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+  "inputs": {
+   "fit": "letterbox",
+   "aspect_ratio": "original",
+   "image": [
+    "10",
+    0
+   ],
+   "method": "lanczos",
+   "background_color": "#000000",
+   "round_to_multiple": "8",
+   "scale_to_side": "height",
+   "proportional_height": 1,
+   "proportional_width": 1,
+   "scale_to_length": 1024
+  },
+  "_meta": {
+   "title": "按宽高比缩放_V2"
+  }
+ },
+ "47": {
+  "class_type": "ApplyPulid",
+  "inputs": {
+   "end_at": 1,
+   "image": [
+    "51",
+    0
+   ],
+   "pulid": [
+    "48",
+    0
+   ],
+   "method": "fidelity",
+   "weight": 1,
+   "model": [
+    "4",
+    0
+   ],
+   "eva_clip": [
+    "49",
+    0
+   ],
+   "face_analysis": [
+    "50",
+    0
+   ],
+   "start_at": 0
+  },
+  "_meta": {
+   "title": "应用PuLID"
+  }
+ },
+ "26": {
+  "class_type": "ControlNetApplyAdvanced",
+  "inputs": {
+   "image": [
+    "40",
+    0
+   ],
+   "negative": [
+    "22",
+    0
+   ],
+   "control_net": [
+    "27",
+    0
+   ],
+   "strength": 1,
+   "start_percent": 0,
+   "positive": [
+    "6",
+    0
+   ],
+   "vae": [
+    "4",
+    2
+   ],
+   "end_percent": 1
+  },
+  "_meta": {
+   "title": "ControlNet应用（旧版高级）"
+  }
+ },
+ "48": {
+  "class_type": "PulidModelLoader",
+  "inputs": {
+   "pulid_file": "ip-adapter_pulid_sdxl_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "PuLID模型加载器"
+  }
+ },
+ "27": {
+  "class_type": "ControlNetLoader",
+  "inputs": {
+   "control_net_name": "controlnet-union-sdxl-1.0.safetensors"
+  },
+  "_meta": {
+   "title": "ControlNet加载器"
+  }
+ },
+ "49": {
+  "class_type": "PulidEvaClipLoader",
+  "inputs": {},
+  "_meta": {
+   "title": "PuLIDEVAClip加载器"
+  }
+ },
+ "17": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "3": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "karras",
+   "negative": [
+    "26",
+    0
+   ],
+   "denoise": 1,
+   "latent_image": [
+    "11",
+    0
+   ],
+   "seed": 809349636113329,
+   "cfg": 7,
+   "sampler_name": "dpmpp_2m",
+   "model": [
+    "47",
+    0
+   ],
+   "positive": [
+    "26",
+    0
+   ],
+   "steps": 25
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ },
+ "4": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "Juggernaut_X_RunDiffusion.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": [
+    "31",
+    0
+   ],
+   "clip": [
+    "4",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "8": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "4",
+    2
+   ],
+   "samples": [
+    "3",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "50": {
+  "class_type": "PulidInsightFaceLoader",
+  "inputs": {
+   "provider": "CPU"
+  },
+  "_meta": {
+   "title": "PuLIDInsightFace加载器"
+  }
+ },
+ "40": {
+  "class_type": "AIO_Preprocessor",
+  "inputs": {
+   "image": [
+    "24",
+    0
+   ],
+   "preprocessor": "DepthAnythingV2Preprocessor",
+   "resolution": [
+    "24",
+    4
+   ]
+  },
+  "_meta": {
+   "title": "Aux集成预处理器"
+  }
+ },
+ "51": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "58a2b603f4ed9be8b53b4264a4c3c1faabb17c5262090296c464978f01ba51f7.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "31": {
+  "class_type": "WD14Tagger|pysssss",
+  "inputs": {
+   "replace_underscore": false,
+   "image": [
+    "10",
+    0
+   ],
+   "character_threshold": 0.85,
+   "model": "wd-v1-4-moat-tagger-v2",
+   "threshold": 0.35,
+   "trailing_comma": false,
+   "exclude_tags": "",
+   "tags": "solo, looking_at_viewer, simple_background, black_hair, 1boy, brown_eyes, upper_body, male_focus, dark_skin, sweater, turtleneck, facial_hair, dark-skinned_male, beard, realistic, mustache, blue_sweater"
+  },
+  "_meta": {
+   "title": "WD14反推提示词"
+  }
+ },
+ "10": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "27d488c665942861ecfc9e8fffd4887f2313dc589a4cb4a9899d5fa90beb491b.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "32": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "40",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ }
+}

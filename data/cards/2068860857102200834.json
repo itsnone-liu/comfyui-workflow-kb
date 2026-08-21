@@ -1,0 +1,102 @@
+{
+ "domain": [
+  "人像精修"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人像照 → 自动完成『分块（1024×1024）→ Flux2-Klein-9B 局部精修（去油光/脏污/噪点、修复皮肤质感）→ 拼回完整图像 → 高清放大（最大边≈2160）』的人像精修流程，输出可保存/预览的精修大图。",
+   "kind": "fact"
+  },
+  {
+   "text": "同时挂载三个 LoRA（lcs_consist 0.7 / Turbo 0.2 / 皮肤质感 0.2），分别控制跨块一致性、生成速度与皮肤细节程度，参数可调。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 LCSColorAnchor + easy imageColorMatch（wavelet 模式）对修复结果做二次色彩锚定与匹配，避免 AI 重绘导致的人像偏色。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX.2 图像精修（Flux2-Klein-9B checkpoint + fp8 加载）",
+  "Qwen-3-8B 文本编码（CLIPLoader + Flux2KleinEditTextEncode）",
+  "多 LoRA 联合注入（一致性 / Turbo 加速 / 皮肤细节增强）",
+  "分块 Tile 处理与重装配（TTP_Image_Tile_Batch / TTP_Image_Assy）",
+  "Lanczos 缩放与比例恢复（LayerUtility ImageScaleByAspectRatio V2 / ImageScaleRestore V2）",
+  "色彩锚定与 wavelet 色彩匹配（LCSColorAnchor / easy imageColorMatch）",
+  "快速采样配置（4 steps、CFG=1、res_2s 采样器 + bong_tangent 调度器）"
+ ],
+ "special_features": [
+  {
+   "text": "瓦片式精修架构：TTP_Image_Tile_Batch 将原图切成 1024×1024 瓦片批次，经 easy imageBatchToImageList 逐张送入 Flux 模型修复，再由 TTP_Image_Assy 重组。『切块-重绘-拼回』显著降低显存压力，并让模型更聚焦局部瑕疵。",
+   "kind": "fact"
+  },
+  {
+   "text": "三 LoRA 职责分离：lcs_consist（0.7）、Turbo（0.2）、皮肤质感（0.2）同时加载，实现『一致性 + 速度 + 肤质』的联合控制，是少见的组合方式。",
+   "kind": "fact"
+  },
+  {
+   "text": "缩放恢复回路：模型处理前先用 1/8、1/16 比例降采样适配输入，精修后用 ImageScaleRestore V2 按原比例 Lanczos 放大，再通过 INTConstant(2160)+SimpleMath 决定最终输出边长，形成灵活的放大控制。",
+   "kind": "fact"
+  },
+  {
+   "text": "色彩双保险：LCSColorAnchor 负责整体色彩锚定，easy imageColorMatch 采用 wavelet 模式做精细色彩匹配，两者串联有效抑制重绘带来的偏色和 AI 味。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "作者针对 AI 生成人像的『油腻感/假肤质』痛点，把精修设计成两条腿走路：先分块让模型在小图局部做精细重绘，三个 LoRA 分别兜住一致性、速度和肤质细节；再通过缩放恢复出高分辨率大图，并用 LCSColorAnchor + wavelet 色彩匹配保证重绘后的色调不漂移。整体带有明显的生产环境工程化取向——低步数、显存可控、有对照与清理节点。",
+ "use_case": "人像照片后期精修，特别适合 AI 生成人像或数码直出图的『去AI感』处理：去油光、脏污、噪点、提升肤质，并输出最高约 2560 边长的展示级高清大图。",
+ "limitation": "Flux2-Klein-9B fp8 + Qwen-3-8B 文本端占用显存较高；依赖 TTP_*、LayerUtility、rgthree、LCS 系列等第三方自定义节点，安装不全会报错；输入默认为单张人像照（LoadImage），且输出尺寸受放大配置限制（示例为最大边 2160，注释建议 2560）；采样步数和 LoRA 权重需要按显卡与画质要求微调。",
+ "dependencies": [
+  "Flux2-Klein-9B-True-v2-bf16.safetensors",
+  "qwen_3_8b.safetensors",
+  "flux2-vae.safetensors",
+  "f2k_9B_lcs_consist_20260415.safetensors",
+  "klein_9B_Turbo_r128.safetensors",
+  "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors",
+  "自定义节点：ComfyUI-Easy-Use、ComfyUI_LayerStyle、rgthree-comfy、TTP_Tools、LCS 系列"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张人像照片（LoadImage(IN)）",
+  "count": "1"
+ },
+ "output": {
+  "type": "精修后高清图像（PreviewImage(OUT) / SaveImage(OUT)，PNG）",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "KSampler.steps",
+   "how_to_tune": "默认4，配合 Turbo LoRA 快速出图；若局部修复不干净可调到6~8，细节更好但速度线性变慢。"
+  },
+  {
+   "param": "KSampler.cfg",
+   "how_to_tune": "固定为1（Turbo 模式标准），不建议调大，否则易过饱和/色彩失真。"
+  },
+  {
+   "param": "KSampler.sampler_name",
+   "how_to_tune": "当前 res_2s 适合中等精细度重绘；可尝试 euler / dpmpp_2m 对比纹理细节。"
+  },
+  {
+   "param": "KSampler.scheduler",
+   "how_to_tune": "bong_tangent 为适配 FLUX 系列的经验调度器，建议保持默认。"
+  },
+  {
+   "param": "lcs_consist LoRA 强度",
+   "how_to_tune": "默认0.7；瓦片接缝明显或整体风格不统一时可升至0.8~0.9，过高会让画面束缚。"
+  },
+  {
+   "param": "Turbo LoRA 强度",
+   "how_to_tune": "默认0.2；提速需求强时可微升，超过0.4画质劣化明显。"
+  },
+  {
+   "param": "皮肤质感 LoRA 强度",
+   "how_to_tune": "默认0.2；0.1~0.25为安全区，大于0.3容易塑料感/磨皮过度。"
+  },
+  {
+   "param": "INTConstant 输出目标尺寸",
+   "how_to_tune": "当前2160，注释建议最大可设2560；值越大显存占用与耗时越高，建议2048~2560。"
+  }
+ ],
+ "summary_text": "能力:上传单张人像照 → 自动完成『分块（1024×1024）→ Flux2-Klein-9B 局部精修（去油光/脏污/噪点、修复皮肤质感）→ 拼回完整图像 → 高清放大（最大边≈2160）』的人像精修流程，输出可保存/预览的精修大图。；能力:同时挂载三个 LoRA（lcs_consist 0.7 / Turbo 0.2 / 皮肤质感 0.2），分别控制跨块一致性、生成速度与皮肤细节程度，参数可调。；能力:通过 LCSColorAnchor + easy imageColorMatch（wavelet 模式）对修复结果做二次色彩锚定与匹配，避免 AI 重绘导致的人像偏色。；特色:瓦片式精修架构：TTP_Image_Tile_Batch 将原图切成 1024×1024 瓦片批次，经 easy imageBatchToImageList 逐张送入 Flux 模型修复，再由 TTP_Image_Assy 重组。『切块-重绘-拼回』显著降低显存压力，并让模型更聚焦局部瑕疵。；特色:三 LoRA 职责分离：lcs_consist（0.7）、Turbo（0.2）、皮肤质感（0.2）同时加载，实现『一致性 + 速度 + 肤质』的联合控制，是少见的组合方式。；特色:缩放恢复回路：模型处理前先用 1/8、1/16 比例降采样适配输入，精修后用 ImageScaleRestore V2 按原比例 Lanczos 放大，再通过 INTConstant(2160)+SimpleMath 决定最终输出边长，形成灵活的放大控制。；特色:色彩双保险：LCSColorAnchor 负责整体色彩锚定，easy imageColorMatch 采用 wavelet 模式做精细色彩匹配，两者串联有效抑制重绘带来的偏色和 AI 味。；人像照片后期精修，特别适合 AI 生成人像或数码直出图的『去AI感』处理：去油光、脏污、噪点、提升肤质，并输出最高约 2560 边长的展示级高清大图。；作者针对 AI 生成人像的『油腻感/假肤质』痛点，把精修设计成两条腿走路：先分块让模型在小图局部做精细重绘，三个 LoRA 分别兜住一致性、速度和肤质细节；再通过缩放恢复出高分辨率大图，并用 LCSColorAnchor + wavelet 色彩匹配保证重绘后的色调不漂移。整体带有明显的生产环境工程化取向——低步数、显存可控、有对照与清理节点。"
+}

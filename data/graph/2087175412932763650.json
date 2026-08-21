@@ -1,0 +1,916 @@
+{
+ "node_count": 21,
+ "link_count": 27,
+ "active_node_count": 21,
+ "nodes": [
+  {
+   "id": 3,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    3
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    4,
+    15
+   ]
+  },
+  {
+   "id": 5,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    5,
+    16
+   ]
+  },
+  {
+   "id": 8,
+   "type": "BasicGuider",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    7,
+    8
+   ],
+   "out_links": [
+    10
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MiniMaxH3AVDecodeT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    14,
+    15,
+    16
+   ],
+   "out_links": [
+    17,
+    18
+   ]
+  },
+  {
+   "id": 10,
+   "type": "SamplerCustomAdvanced",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   "out_links": [
+    14
+   ]
+  },
+  {
+   "id": 15,
+   "type": "ComfyMathExpression",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+   ],
+   "in_links": [
+    20
+   ],
+   "out_links": [
+    23
+   ]
+  },
+  {
+   "id": 17,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    26
+   ],
+   "out_links": [
+    27
+   ]
+  },
+  {
+   "id": 7,
+   "type": "MiniMaxH3DualClockSamplerT8",
+   "category": "sampler",
+   "title": "STABLE 4 video / 4 audio",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    8,
+    12,
+    3,
+    "dual_clock_euler",
+    "native_flow"
+   ],
+   "in_links": [
+    2,
+    6
+   ],
+   "out_links": [
+    7,
+    11,
+    12
+   ]
+  },
+  {
+   "id": 12,
+   "type": "VHS_VideoCombine",
+   "category": "video_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": {
+    "save_output": true,
+    "filename_prefix": "MiniMaxH3/stable_4v4a",
+    "loop_count": 0,
+    "pix_fmt": "yuv420p",
+    "save_metadata": true,
+    "crf": 19,
+    "trim_to_audio": false,
+    "videopreview": {
+     "paused": false,
+     "hidden": false,
+     "params": {
+      "score": "0",
+      "filename": "stable_4v4a_00001_p80-audio_cjaim_1786460017.mp4",
+      "cos_url": "https://rh-hk-images.xiaoyaoyou.com//f6d704443ad167d7e120569a692d2108/output/MiniMaxH3/stable_4v4a_00001_p80-audio_cjaim_1786460017.mp4",
+      "workflow": "stable_4v4a_00001_p80.png",
+      "fullpath": "/data/ComfyUI/personal/f6d704443ad167d7e120569a692d2108/output/MiniMaxH3/stable_4v4a_00001_p80-audio.mp4",
+      "format": "video/h264-mp4",
+      "subfolder": "MiniMaxH3",
+      "label": "Normal",
+      "type": "output",
+      "frame_rate": 24
+     }
+    },
+    "format": "video/h264-mp4",
+    "no_preview": false,
+    "frame_rate": 24,
+    "pingpong": false
+   },
+   "in_links": [
+    17,
+    18
+   ],
+   "out_links": []
+  },
+  {
+   "id": 6,
+   "type": "MiniMaxH3AudioConditioningT8",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "",
+    1344,
+    768,
+    124,
+    "Ref2VA — 参考生音视频",
+    "native",
+    1,
+    false,
+    0,
+    true,
+    "match",
+    "official_2_to_15s"
+   ],
+   "in_links": [
+    3,
+    4,
+    5,
+    56,
+    60,
+    61,
+    53,
+    21,
+    22,
+    23
+   ],
+   "out_links": [
+    8,
+    6,
+    13
+   ]
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "10Eros_Max_h3_fl2va_bf16_test4_pruned_B.safetensors",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    26
+   ]
+  },
+  {
+   "id": 9,
+   "type": "RandomNoise",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    123456789,
+    "fixed"
+   ],
+   "in_links": [],
+   "out_links": [
+    9
+   ]
+  },
+  {
+   "id": 2,
+   "type": "LoraLoaderBypassModelOnly",
+   "category": "lora",
+   "title": "lora only",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "minimax_h3_turbo_4step_10ErosMax_test4_pruned_curveproj1025_exp_v001-T8.safetensors",
+    1
+   ],
+   "in_links": [
+    27
+   ],
+   "out_links": [
+    2
+   ]
+  },
+  {
+   "id": 16,
+   "type": "ResolutionSelector",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "9:16 (Portrait Widescreen)",
+    0.7,
+    32
+   ],
+   "in_links": [],
+   "out_links": [
+    21,
+    22
+   ]
+  },
+  {
+   "id": 37,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f762685e7.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    56
+   ]
+  },
+  {
+   "id": 42,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f762685e7.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    60
+   ]
+  },
+  {
+   "id": 43,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f762685e7.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 35,
+   "type": "MarkdownNote",
+   "category": "utility",
+   "title": "Note: Size Settings Reference",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 14,
+   "type": "PrimitiveFloat",
+   "category": "utility",
+   "title": "Float (duration)",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    5
+   ],
+   "in_links": [],
+   "out_links": [
+    20
+   ]
+  },
+  {
+   "id": 36,
+   "type": "CR Prompt Text",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "生成一段10秒、16:9、2K、原生立体声、超写实电影级都市情感短片。以黑色高马尾、齐刘海、身穿白色单肩上衣与白色短裤的年轻女性（@图片1）为固定女主角，以黑色短发、身穿蓝色牛仔外套、灰色T恤与深色牛仔裤的年轻男性（@图片3）为固定男主角，以洒满金色夕阳、摆放旧沙发、书架、唱片机和木质茶几的温暖客厅（@图片2）为唯一场景。全片保持两人的面部、发型、服装和身材比例一致。故事发生在一次没有说出口的离别前，表演克制自然，情绪从疏离逐渐转为不舍，对白使用普通话。\n0—2.20秒：客厅（@图片2）全景，摄影机从书架边缘缓慢横移。年轻女性（@图片1）背对门口站在唱片机旁，双手轻轻撑着柜面；年轻男性（@图片3）停在画面左后方的门口，身体朝向门外，右手却仍握着门把。窗边的猫安静蜷卧，唱片播放到尾声，夕阳在两人之间形成一条明亮光带。男主低声说：“钥匙，还你。”\n2.20—4.10秒：硬切到茶几俯侧近景。年轻男性（@图片3）的手进入画面，将一枚旧钥匙轻轻放在打开的书页上；钥匙落下后旋转半圈，在夕阳中闪出一道短促高光。摄影机随他的手稍微上抬，捕捉到手指松开钥匙前一瞬间的迟疑，背景中的年轻女性（@图片1）保持虚焦，只轻轻吸了一口气。\n4.10—6.30秒：切到年轻女性（@图片1）面部近景。她没有立刻回头，视线先落向窗台上的猫，嘴角努力维持平静，眼眶逐渐泛红，随后用很轻的声音说：“猫还会等你。”说完后，她缓慢转过半张脸，目光越过肩膀望向门口。摄影机进行极轻微的手持推进，清楚呈现睫毛颤动、呼吸停顿和眼底湿润反光。\n6.30—8.20秒：切到年轻男性（@图片3）胸像近景。门外的冷色走廊位于他身后，客厅（@图片2）的暖金色光线落在他半边脸上。他握住门把的手逐渐放松，喉结轻微滚动，视线从钥匙移向女主，低声问：“那你呢？”摄影机保持稳定，让他的眼神、克制的呼吸和几乎消失的苦笑完整发生。\n8.20—10.00秒：切回双人侧面中景。年轻女性（@图片1）终于完全转身，伸手将唱针轻轻拨回唱片开头，说：“唱完再走。”音乐重新响起。年轻男性（@图片3）停顿半秒，缓慢松开门把，向室内迈回一步。摄影机沿两人之间的夕阳光带轻轻后退，钥匙留在前景书页上，两人隔着客厅沉默相望，画面结束在尚未和解却重新靠近的瞬间。\n剪辑与动作：采用四次直接切镜，始终保持女主位于客厅内侧、男主位于门口一侧的空间关系。用“门把—钥匙—唱片”构成连续动作链：男主准备离开、交还钥匙、女主用猫试探、男主反问、女主重新播放唱片、男主迈回室内。所有动作保留真实停顿与呼吸，每句对白之后留出可见的表情反应，最后一步成为全片唯一明确的关系转折。\n视觉风格：电影级写实生活质感，温暖怀旧的金棕色调，夕阳穿过薄纱窗帘形成柔和体积光，书架、旧唱片、木质家具和织物呈现细腻纹理。门外使用克制的冷灰色，与室内暖光形成情感分界。面部采用自然皮肤质感、细微眼部湿润反光和柔和高光滚降；近景使用浅景深，全景保留清楚的空间层次和人物距离。\n声音设计：原生立体声呈现唱片底噪、窗帘摩擦、远处城市环境声、门锁轻响和钥匙落在纸页上的清脆碰撞。对白贴近真实耳语质感，女主声音轻柔而压抑，男主声音低沉且略带迟疑。4秒后音乐逐渐减弱，让呼吸与停顿变得清晰；8.20秒唱针重新落下，旧唱片旋律温柔回归，并在男主迈回室内的脚步声中形成克制的情绪收束。"
+   ],
+   "in_links": [],
+   "out_links": [
+    53
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 1,
+   "to_node": 17,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 10,
+   "to_node": 11,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 11,
+   "to_node": 12,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 11,
+   "to_node": 12,
+   "type": "AUDIO"
+  },
+  {
+   "from_node": 14,
+   "to_node": 15,
+   "type": "FLOAT"
+  },
+  {
+   "from_node": 15,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 16,
+   "to_node": 6,
+   "type": "INT"
+  },
+  {
+   "from_node": 17,
+   "to_node": 2,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 2,
+   "to_node": 7,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 3,
+   "to_node": 6,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 36,
+   "to_node": 6,
+   "type": "STRING"
+  },
+  {
+   "from_node": 37,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 4,
+   "to_node": 6,
+   "type": "VAE"
+  },
+  {
+   "from_node": 42,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 43,
+   "to_node": 6,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 11,
+   "type": "VAE"
+  },
+  {
+   "from_node": 5,
+   "to_node": 6,
+   "type": "VAE"
+  },
+  {
+   "from_node": 6,
+   "to_node": 10,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 7,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 6,
+   "to_node": 8,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "SAMPLER"
+  },
+  {
+   "from_node": 7,
+   "to_node": 10,
+   "type": "SIGMAS"
+  },
+  {
+   "from_node": 7,
+   "to_node": 8,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 8,
+   "to_node": 10,
+   "type": "GUIDER"
+  },
+  {
+   "from_node": 9,
+   "to_node": 10,
+   "type": "NOISE"
+  }
+ ],
+ "categories": {
+  "clip": 1,
+  "vae": 2,
+  "sampler": 4,
+  "utility": 8,
+  "video_io": 1,
+  "checkpoint_loader": 1,
+  "lora": 1,
+  "image_io": 3
+ },
+ "assets": [
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "10Eros_Max_h3_fl2va_bf16_test4_pruned_B.safetensors"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "kind": "lora",
+   "name": "minimax_h3_turbo_4step_10ErosMax_test4_pruned_curveproj1025_exp_v001-T8.safetensors"
+  }
+ ],
+ "techniques": [],
+ "param_face_size": 51,
+ "structure_hash": "51ecfa6086badc46",
+ "param_face": [
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "minimax"
+  },
+  {
+   "node_id": 3,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 4,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  {
+   "node_id": 5,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  {
+   "node_id": 15,
+   "node_type": "ComfyMathExpression",
+   "widget_index": 0,
+   "value_preview": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) %"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 0,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 1,
+   "value_preview": "12"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 2,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 3,
+   "value_preview": "dual_clock_euler"
+  },
+  {
+   "node_id": 7,
+   "node_type": "MiniMaxH3DualClockSamplerT8",
+   "widget_index": 4,
+   "value_preview": "native_flow"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_output",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "filename_prefix",
+   "value_preview": "MiniMaxH3/stable_4v4a"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "loop_count",
+   "value_preview": "0"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pix_fmt",
+   "value_preview": "yuv420p"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "save_metadata",
+   "value_preview": "True"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "crf",
+   "value_preview": "19"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "trim_to_audio",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "videopreview",
+   "value_preview": "{'paused': False, 'hidden': False, 'params': {'score': '0', "
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "format",
+   "value_preview": "video/h264-mp4"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "no_preview",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "frame_rate",
+   "value_preview": "24"
+  },
+  {
+   "node_id": 12,
+   "node_type": "VHS_VideoCombine",
+   "widget_name": "pingpong",
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 0,
+   "value_preview": ""
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 1,
+   "value_preview": "1344"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 2,
+   "value_preview": "768"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 3,
+   "value_preview": "124"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 4,
+   "value_preview": "Ref2VA — 参考生音视频"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 5,
+   "value_preview": "native"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 7,
+   "value_preview": "False"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 8,
+   "value_preview": "0"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 9,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 10,
+   "value_preview": "match"
+  },
+  {
+   "node_id": 6,
+   "node_type": "MiniMaxH3AudioConditioningT8",
+   "widget_index": 11,
+   "value_preview": "official_2_to_15s"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "10Eros_Max_h3_fl2va_bf16_test4_pruned_B.safetensors"
+  },
+  {
+   "node_id": 1,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 9,
+   "node_type": "RandomNoise",
+   "widget_index": 0,
+   "value_preview": "123456789"
+  },
+  {
+   "node_id": 9,
+   "node_type": "RandomNoise",
+   "widget_index": 1,
+   "value_preview": "fixed"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 0,
+   "value_preview": "minimax_h3_turbo_4step_10ErosMax_test4_pruned_curveproj1025_"
+  },
+  {
+   "node_id": 2,
+   "node_type": "LoraLoaderBypassModelOnly",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 0,
+   "value_preview": "9:16 (Portrait Widescreen)"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 1,
+   "value_preview": "0.7"
+  },
+  {
+   "node_id": 16,
+   "node_type": "ResolutionSelector",
+   "widget_index": 2,
+   "value_preview": "32"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f7626"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 42,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f7626"
+  },
+  {
+   "node_id": 42,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 43,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "acb021a23e765098b10bfadf363d4f24ad06aa736188d7ecab92961f7626"
+  },
+  {
+   "node_id": 43,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 14,
+   "node_type": "PrimitiveFloat",
+   "widget_index": 0,
+   "value_preview": "5"
+  }
+ ]
+}

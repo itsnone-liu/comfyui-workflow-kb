@@ -1,0 +1,104 @@
+{
+ "domain": [
+  "图生视频",
+  "视频生视频",
+  "文生视频"
+ ],
+ "capabilities": [
+  {
+   "text": "加载单张参考图，配合提示词和 MiniMax H3 生成一段短视频（MiniMaxH3ReferenceToVideo + UNETLoader + CLIPLoader）。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过视频 VAE 与音频 VAE 分别解码画面和音频，并用 VHS_VideoCombine 输出带音轨的 MP4 视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "结构上保留 VHS_LoadVideo 和 LoadAudio，可切换或扩展为视频生视频、音频引导的视频生成。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 PrimitiveFloat 控制视频秒数，由 ComfyMathExpression 自动换算帧数，能端到端产出成品视频。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "MiniMax H3 ref2va 参考图到视频生成",
+  "Qwen3VL 多模态文本编码（CLIPLoader：qwen3vl_32b_minimax_h3）",
+  "双 VAE 解码：minimax_h3_video_vae 解码画面，minimax_h3_audio_vae 解码音频",
+  "自定义采样链：BasicScheduler / BasicGuider / KSamplerSelect(res_multistep) / RandomNoise / SamplerCustomAdvanced",
+  "动态分辨率与宽高比选择（ResolutionSelector）",
+  "帧数/时长自动换算（ComfyMathExpression）",
+  "视频合成与预览（VHS_LoadVideo / VHS_VideoCombine）",
+  "性能优化（EasyCache、PathchSageAttentionKJ）"
+ ],
+ "special_features": [
+  {
+   "text": "双 VAE 多模态输出：视频 VAE 与音频 VAE 分别解码画面和声音，VAEDecodeAudio + VHS_VideoCombine 可把音频直接合成进成片。",
+   "kind": "fact"
+  },
+  {
+   "text": "动态帧数表达式：PrimitiveFloat(5) 作为秒数，ComfyMathExpression 用 max(5, round(a * 24)) 自动换算帧数，实现按秒数控制视频长度。",
+   "kind": "fact"
+  },
+  {
+   "text": "四路参考图输入：存在 4 个 LoadImage(IN)，可能用于多视角/多风格/多示例参考，具体参考语义由 MiniMaxH3ReferenceToVideo 的接线决定。",
+   "kind": "inference"
+  },
+  {
+   "text": "模式切换设计：两个 Fast Groups Bypasser (rgthree) 配合 VHS_LoadVideo、LoadAudio 和 EasyCache，很可能用于快速切换单图/视频/音频输入模式的组级旁路。",
+   "kind": "inference"
+  },
+  {
+   "text": "注意力加速与缓存：PathchSageAttentionKJ(auto, False) 可开启 Sage Attention 降低显存，EasyCache 可缓存大模型，减少重复加载。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "整个工作流似乎想围绕 MiniMax H3 的多模态能力，把“参考图 + 提示词”直接变成“视频 + 音频”成片。Qwen3VL 负责理解文本条件，参考图保留主体特征，视频/音频 VAE 分开解码两类模态，再用 VideoHelperSuite 封装输出。同时加入动态时长、分辨率选择、Sage Attention 和模型缓存，目的是让单图生成短视频更实用、更省显存，并减少手动调帧数和分辨率的成本。",
+ "use_case": "适合短视频创作者用一张角色立绘、产品图或实拍照片，快速生成 5 秒左右的竖屏动态镜头，并在本地直接得到带音效/配乐的 MP4，也可作为 MiniMax H3 的提示词效果测试台。",
+ "limitation": "依赖特定模型文件（ref2va checkpoint、Qwen3VL CLIP、视频/音频 VAE）和多个第三方节点；需要 FFmpeg 环境。输入以单张图片为主，若要切换到视频生视频/音频引导，需要正确操作 Fast Groups Bypasser，否则可能因输入类型不匹配报错；高分辨率 + 长视频非常吃显存，普通消费级显卡可能只能运行低分辨率或短视频。",
+ "dependencies": [
+  "模型文件：minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+  "模型文件：qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+  "模型文件：minimax_h3_video_vae_fp16.safetensors",
+  "模型文件：minimax_h3_audio_vae_fp32.safetensors",
+  "视频工具链：FFmpeg",
+  "自定义节点：ComfyUI-VideoHelperSuite（VHS_LoadVideo / VHS_VideoCombine）",
+  "自定义节点：rgthree-comfy（Fast Groups Bypasser）",
+  "自定义节点：ComfyMath（ComfyMathExpression）",
+  "自定义节点：EasyCache",
+  "自定义节点：KJNodes / Sage Attention 对应节点（PathchSageAttentionKJ）"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "参考图片 + 提示词；可选音频、参考视频",
+  "count": "LoadImage×4，LoadAudio×1，VHS_LoadVideo×1"
+ },
+ "output": {
+  "type": "MP4 视频（画面 + 音频轨道）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "BasicScheduler.steps / denoise",
+   "how_to_tune": "steps=25 是默认平衡值；画面不稳定可提高到 30-50，速度太慢可降到 15-20。denoise=1 表示从噪声完整重建；若走 VHS_LoadVideo 的视频生成分支，建议降到 0.6-0.8 保留原视频结构。"
+  },
+  {
+   "param": "PrimitiveFloat / ComfyMathExpression",
+   "how_to_tune": "默认 5 秒会按 24fps 换算为约 120 帧；加大秒数会生成更多帧，显存占用和时间显著上升，建议在 3-8 秒之间调整。"
+  },
+  {
+   "param": "MiniMaxH3ReferenceToVideo width / height / video_length / fps",
+   "how_to_tune": "1344x768 是较高分辨率，OOM 时可降到 1024x576。widgets 中的 124 对应视频帧数配置，约 5 秒；fps='match' 会尝试匹配参考输入，无参考时建议固定为 24。"
+  },
+  {
+   "param": "ResolutionSelector",
+   "how_to_tune": "选择 9:16 等预设控制输出宽高；后面的 0.4 / 32 与缩放和取整对齐有关，调整时尽量让宽高是 32 的倍数，避免模型 shape 报错。"
+  },
+  {
+   "param": "PathchSageAttentionKJ",
+   "how_to_tune": "auto + False 是较安全默认；显存不足或需要提速时可开启 Sage Attention，不同显卡/驱动需要测试是否支持。"
+  }
+ ],
+ "summary_text": "能力:加载单张参考图，配合提示词和 MiniMax H3 生成一段短视频（MiniMaxH3ReferenceToVideo + UNETLoader + CLIPLoader）。；能力:通过视频 VAE 与音频 VAE 分别解码画面和音频，并用 VHS_VideoCombine 输出带音轨的 MP4 视频。；能力:结构上保留 VHS_LoadVideo 和 LoadAudio，可切换或扩展为视频生视频、音频引导的视频生成。；能力:用 PrimitiveFloat 控制视频秒数，由 ComfyMathExpression 自动换算帧数，能端到端产出成品视频。；特色:双 VAE 多模态输出：视频 VAE 与音频 VAE 分别解码画面和声音，VAEDecodeAudio + VHS_VideoCombine 可把音频直接合成进成片。；特色:动态帧数表达式：PrimitiveFloat(5) 作为秒数，ComfyMathExpression 用 max(5, round(a * 24)) 自动换算帧数，实现按秒数控制视频长度。；特色:四路参考图输入：存在 4 个 LoadImage(IN)，可能用于多视角/多风格/多示例参考，具体参考语义由 MiniMaxH3ReferenceToVideo 的接线决定。；特色:模式切换设计：两个 Fast Groups Bypasser (rgthree) 配合 VHS_LoadVideo、LoadAudio 和 EasyCache，很可能用于快速切换单图/视频/音频输入模式的组级旁路。；特色:注意力加速与缓存：PathchSageAttentionKJ(auto, False) 可开启 Sage Attention 降低显存，EasyCache 可缓存大模型，减少重复加载。；适合短视频创作者用一张角色立绘、产品图或实拍照片，快速生成 5 秒左右的竖屏动态镜头，并在本地直接得到带音效/配乐的 MP4，也可作为 MiniMax H3 的提示词效果测试台。；整个工作流似乎想围绕 MiniMax H3 的多模态能力，把“参考图 + 提示词”直接变成“视频 + 音频”成片。Qwen3VL 负责理解文本条件，参考图保留主体特征，视频/音频 VAE 分开解码两类模态，再用 VideoHelperSuite 封装输出。同时加入动态时长、分辨率选择、Sage Attention 和模型缓存，目的是让单图生成短视频更实用、更省显存，并减少手动调帧数和分辨率的成本。"
+}

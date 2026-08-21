@@ -1,0 +1,96 @@
+{
+ "domain": [
+  "老照片修复",
+  "图像上色",
+  "生成式图像修复"
+ ],
+ "capabilities": [
+  {
+   "text": "输入单张老照片后，工作流通过 DDColor_Colorize 的 ddcolor_paper.pth 模型执行照片上色，并通过 RH_ComfyFluxKontext 调用 flux-kontext-pro 模型，结合提示词 'Fix this old photo, keep' 执行生成式修复/增强，端到端输出修复后的照片。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 4 个 SaveImage 输出分支，并通过两个 ImageConcanate（direction=right）将原图与处理结果拼接，产生前后对比图，方便用户快速检查修复效果。",
+   "kind": "fact"
+  },
+  {
+   "text": "面向 RunningHub 平台分享场景：Note 节点明确提示 apikey 可留空，留空时使用 RunningHub 默认 API，用户无需自行配置密钥即可运行。",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FLUX Kontext Pro 生成式图像修复",
+  "DDColor 老照片上色",
+  "云端 API 调用（RH_ComfyFluxKontext）",
+  "图像左右拼接对比（ImageConcanate）",
+  "检查点模型 ddcolor_paper.pth"
+ ],
+ "special_features": [
+  {
+   "text": "两段式修复设计：DDColor 负责颜色重建/上色，FLUX Kontext Pro 负责语义级修复与细节补全，两个模型串联而不是只依赖单一模型。",
+   "kind": "inference"
+  },
+  {
+   "text": "4 个 SaveImage 输出口 + 2 个 ImageConcanate，把不同阶段的图像结果都保存下来，并提供拼接对比图，方便用户挑选最佳修复结果。",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 easy showAnything 显示云端返回的图片 URL 和当前提示词，让工作流在界面中具备可视化的过程/调试信息。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 Note 节点明确提示 apikey 可留空，属于面向 RunningHub 分享场景的轻配置/零配置设计。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流似乎刻意把传统上色与生成式修复拆成两个阶段：DDColor 擅长为黑白或褪色照片还原自然色彩，FLUX Kontext Pro 擅长理解图片内容并进行语义级修复，两者结合可能比单模型更稳。同时加入多路 SaveImage 和 ImageConcanate，目的是让用户既能拿到最终成品，也能直接看到原图/中间图/结果图的对比。Note 中说明 apikey 可留空，则可能是为了降低分享门槛，让其他用户复制工作流后无需任何密钥配置就能运行。",
+ "use_case": "老照片翻新、黑白照片上色、家庭老照片数字化、历史影像整理、修复前后对比展示。",
+ "limitation": "依赖 RH_ComfyFluxKontext 调用的 flux-kontext-pro 云端 API，断网或 API 配额不足时无法运行；DDColor_Colorize 的 512 处理分辨率会限制输出细节，过大原图可能被压缩或丢失细节；需要提前安装 DDColor、Comfyroll（CR Prompt Text）、RH_ComfyFluxKontext、ImageConcanate、easy showAnything 等自定义节点，并准备好 ddcolor_paper.pth 模型。",
+ "dependencies": [
+  "ddcolor_paper.pth（DDColor 检查点）",
+  "RH_ComfyFluxKontext 自定义节点",
+  "flux-kontext-pro 云端模型/API",
+  "DDColor_Colorize 节点（ComfyUI-DDColor）",
+  "CR Prompt Text（Comfyroll Studio）",
+  "ImageConcanate 节点",
+  "easy showAnything 节点",
+  "RunningHub 平台联网环境"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "image",
+  "count": "1（LoadImage 单张图片）"
+ },
+ "output": {
+  "type": "image",
+  "count": "4（4 个 SaveImage 节点）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "DDColor_Colorize 的 512（处理分辨率）",
+   "how_to_tune": "控制上色/修复时的处理尺寸；512 适合快速预览，若老照片本身清晰且需要保留细节，可适当调大；调大后耗时和显存占用会上升。"
+  },
+  {
+   "param": "DDColor_Colorize 的 ddcolor_paper.pth（模型）",
+   "how_to_tune": "不同 DDColor 权重的上色风格不同，paper 版偏向照片级自然颜色；如果偏色或褪色严重，可尝试换成其它 DDColor 模型。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 的 flux-kontext-pro（模型）",
+   "how_to_tune": "这是生成式修复的云端模型，一般保持 pro 版本；若需要更快/更便宜可尝试同系列轻量版本，但修复质量可能下降。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 的 1:1（aspect ratio）",
+   "how_to_tune": "需要与 PrimitiveNode 的宽高比保持一致；老照片若是竖构图或宽构图，改为 4:5、3:4、16:9 等，避免生成结果裁掉内容。"
+  },
+  {
+   "param": "RH_ComfyFluxKontext 的 355439119（seed）",
+   "how_to_tune": "固定 seed 能复现同一修复结果；随机变化可换 seed 来尝试不同的细节纹理、去划痕和补全效果。"
+  },
+  {
+   "param": "CR Prompt Text 的 'Fix this old photo, keep'（提示词）",
+   "how_to_tune": "修改此提示词会影响 FLUX 的修复目标；例如强调 'remove scratches, enhance face' 可增加对应处理强度，'keep' 看起来是保留原人物特征，建议保留该约束。"
+  }
+ ],
+ "summary_text": "能力:输入单张老照片后，工作流通过 DDColor_Colorize 的 ddcolor_paper.pth 模型执行照片上色，并通过 RH_ComfyFluxKontext 调用 flux-kontext-pro 模型，结合提示词 'Fix this old photo, keep' 执行生成式修复/增强，端到端输出修复后的照片。；能力:使用 4 个 SaveImage 输出分支，并通过两个 ImageConcanate（direction=right）将原图与处理结果拼接，产生前后对比图，方便用户快速检查修复效果。；能力:面向 RunningHub 平台分享场景：Note 节点明确提示 apikey 可留空，留空时使用 RunningHub 默认 API，用户无需自行配置密钥即可运行。；特色:两段式修复设计：DDColor 负责颜色重建/上色，FLUX Kontext Pro 负责语义级修复与细节补全，两个模型串联而不是只依赖单一模型。；特色:4 个 SaveImage 输出口 + 2 个 ImageConcanate，把不同阶段的图像结果都保存下来，并提供拼接对比图，方便用户挑选最佳修复结果。；特色:使用 easy showAnything 显示云端返回的图片 URL 和当前提示词，让工作流在界面中具备可视化的过程/调试信息。；特色:用 Note 节点明确提示 apikey 可留空，属于面向 RunningHub 分享场景的轻配置/零配置设计。；老照片翻新、黑白照片上色、家庭老照片数字化、历史影像整理、修复前后对比展示。；该工作流似乎刻意把传统上色与生成式修复拆成两个阶段：DDColor 擅长为黑白或褪色照片还原自然色彩，FLUX Kontext Pro 擅长理解图片内容并进行语义级修复，两者结合可能比单模型更稳。同时加入多路 SaveImage 和 ImageConcanate，目的是让用户既能拿到最终成品，也能直接看到原图/中间图/结果图的对比。Note 中说明 apikey 可留空，则可能是为了降低分享门槛，让其他用户复制工作流后无需任何密钥配置就能运行。"
+}

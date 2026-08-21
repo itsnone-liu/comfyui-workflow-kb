@@ -1,0 +1,92 @@
+{
+ "domain": [
+  "图像编辑",
+  "换装",
+  "抠图"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成‘人物图 + 参考服装图 → 自动分割并替换服装 → 输出无缝换装结果图’；额外通过 FaceDetailer 固定人物面部细节。",
+   "kind": "inference"
+  },
+  {
+   "text": "用 GroundingDINO + SAM 以 'dress' 为提示词自动抠出衣服区域，不需要手绘蒙版。",
+   "kind": "fact"
+  },
+  {
+   "text": "用 IP-Adapter v2 将参考服装的视觉风格注入局部重绘区域，使新服装与人物姿态/背景融合。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "IP-Adapter (IPAdapterUnifiedLoader/IPAdapterAdvanced，weight_type=style transfer，CLIP-ViT-H-14 视觉编码)",
+  "GroundingDINO + SAM 开放词汇图像分割 (GroundingDinoSAMSegment，prompt='dress')",
+  "局部重绘 / masked inpainting (VAEEncodeForInpaint + KSampler)",
+  "FaceDetailer 面部细节修复",
+  "蒙版羽化 FeatherMask",
+  "真境写真XL 底模 + 正/负面 CLIP 条件 ('Dress' 与空文本)"
+ ],
+ "special_features": [
+  {
+   "text": "‘分割-羽化-局部重绘-面部修复’的多段式换装链路：不是简单文生图，而是用分割结果生成 inpaint mask 后只重绘服装区域。",
+   "kind": "inference"
+  },
+  {
+   "text": "IPAdapterAdvanced 使用 style transfer 权重类型 + concat embedding 合并 + V only 缩放，配合 IPAdapterUnifiedLoader 的 'PLUS (high strength)'，把参考服装特征强行注入重绘区域。",
+   "kind": "fact"
+  },
+  {
+   "text": "FeatherMask 对 4 个方向做羽化，并将 MaskToImage 的掩码结果暴露为预览，边缘过渡经过显式处理。",
+   "kind": "fact"
+  },
+  {
+   "text": "FaceDetailer 串联在最后，并且带 SAMLoader/UltralyticsDetectorProvider，像是用检测/分割引导的局部放大重绘来兜底修复面部。",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "整个流程的设计意图似乎是：把‘换衣服’约束在图像中的衣服区域内，而不是重新生成整张图。先由 GroundingDINO+SAM 精确找出 dress 区域，再经 FeatherMask 羽化保证边界柔和；随后在 VAEEncodeForInpaint 的蒙版潜空间中，用 IP-Adapter 参考服装图控制重绘内容，使新衣服尽可能匹配参考款式而不动背景和姿态；最后以 FaceDetailer 修复重绘过程中容易受损的面部，以保证人物身份。",
+ "use_case": "适用于虚拟试衣/模特电商换装：用户提供一张人物全身照和一张参考服装图，期望生成该人物穿着新衣服但脸仍保持像本人的照片。",
+ "limitation": "分割提示词固定为英文 'dress'，严格说主要处理连衣裙/上衣类服装；依赖外部模型与自定义节点，首次运行需要下载 GroundingDINO、SAM、DeepFashion2 YOLOv8 等权重；输入人物与参考图的光线、角度、体型差异过大时，IP-Adapter 生成的衣服褶皱/版型可能不自然；FaceDetailer 在面部被遮挡或极小的情况下可能无法有效修复。",
+ "dependencies": [
+  "真境写真XL_Red_V_RED_V3.3.safetensors",
+  "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+  "GroundingDINO_SwinB 模型",
+  "sam_vit_h_4b8939.pth",
+  "segm/deepfashion2_yolov8s-seg.pt",
+  "ComfyUI-IPAdapter_Plus 自定义节点",
+  "ComfyUI-Impact-Pack（FaceDetailer/SAMLoader/UltralyticsDetectorProvider）",
+  "ComfyUI GroundingDINO + SAM 相关节点"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "2 个 LoadImage 输入：目标人物图 + 参考服装图",
+  "count": 2
+ },
+ "output": {
+  "type": "SaveImage 输出换装结果图，另有多路 PreviewImage 预览生成图/蒙版",
+  "quality_control": true
+ },
+ "parameter_knowledge": [
+  {
+   "param": "GroundingDinoSAMSegment 的 prompt / threshold",
+   "how_to_tune": "当前 prompt 为 'dress'、threshold 为 0.3。漏检衣服时可把 threshold 降到 0.2 左右；误检背景时升高到 0.4-0.5。"
+  },
+  {
+   "param": "IPAdapterAdvanced 的 weight / weight_type / combine_embeds / embeds_scaling",
+   "how_to_tune": "当前为 1 / style transfer / concat / V only。换装风格太弱时调高 weight 到 1.2-1.5；参考服装特征压过人物姿态时调低到 0.6-0.8；embeds_scaling 不一定需要改。"
+  },
+  {
+   "param": "VAEEncodeForInpaint 的 grow_mask_by",
+   "how_to_tune": "当前为 9，表示蒙版向外扩张像素。值太小时新衣服边缘容易贴着原图；太大时背景/身体轮廓会被多改，建议 6-12 之间调整。"
+  },
+  {
+   "param": "KSampler 的 steps / cfg / sampler_name / scheduler",
+   "how_to_tune": "当前为 30 / 8 / dpmpp_2m / karras。写实风格下 25-40 步即可；cfg 在 5-10 之间调节，过高压出塑料感，过低细节不足。"
+  },
+  {
+   "param": "FaceDetailer 的 guide_size / max_size / steps 等",
+   "how_to_tune": "当前 guide_size=384、max_size=1024、steps=20。面部模糊时提高 max_size 和 denoise；面部被改得不像时降低 denoise，或让 bbox 检测更精准。"
+  }
+ ],
+ "summary_text": "能力:端到端完成‘人物图 + 参考服装图 → 自动分割并替换服装 → 输出无缝换装结果图’；额外通过 FaceDetailer 固定人物面部细节。；能力:用 GroundingDINO + SAM 以 'dress' 为提示词自动抠出衣服区域，不需要手绘蒙版。；能力:用 IP-Adapter v2 将参考服装的视觉风格注入局部重绘区域，使新服装与人物姿态/背景融合。；特色:‘分割-羽化-局部重绘-面部修复’的多段式换装链路：不是简单文生图，而是用分割结果生成 inpaint mask 后只重绘服装区域。；特色:IPAdapterAdvanced 使用 style transfer 权重类型 + concat embedding 合并 + V only 缩放，配合 IPAdapterUnifiedLoader 的 'PLUS (high strength)'，把参考服装特征强行注入重绘区域。；特色:FeatherMask 对 4 个方向做羽化，并将 MaskToImage 的掩码结果暴露为预览，边缘过渡经过显式处理。；特色:FaceDetailer 串联在最后，并且带 SAMLoader/UltralyticsDetectorProvider，像是用检测/分割引导的局部放大重绘来兜底修复面部。；适用于虚拟试衣/模特电商换装：用户提供一张人物全身照和一张参考服装图，期望生成该人物穿着新衣服但脸仍保持像本人的照片。；整个流程的设计意图似乎是：把‘换衣服’约束在图像中的衣服区域内，而不是重新生成整张图。先由 GroundingDINO+SAM 精确找出 dress 区域，再经 FeatherMask 羽化保证边界柔和；随后在 VAEEncodeForInpaint 的蒙版潜空间中，用 IP-Adapter 参考服装图控制重绘内容，使新衣服尽可能匹配参考款式而不动背景和姿态；最后以 FaceDetailer 修复重绘过程中容易受损的面部，以保证人物身份。"
+}

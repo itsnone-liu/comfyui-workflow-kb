@@ -1,0 +1,109 @@
+{
+ "domain": [
+  "角色一致性",
+  "人脸生成",
+  "FLUX生态"
+ ],
+ "capabilities": [
+  {
+   "text": "输入人脸参考图，通过PuLID提取面部身份特征，结合FLUX.1-dev生成保持该身份的多姿态写实图像",
+   "kind": "fact"
+  },
+  {
+   "text": "通过FLUX.1-dev-Controlnet-Union-InstantX + OpenPose 实现姿态/结构控制，生成时可按骨架约束人物动作",
+   "kind": "fact"
+  },
+  {
+   "text": "利用Florence-2自动为参考图生成detailed_caption，并将其作为提示词参与生成，减少手动写Prompt的工作量",
+   "kind": "fact"
+  },
+  {
+   "text": "将参考图/生成图按4宫格拆分与拼接，配合多路PreviewImage/SaveImage形成对比预览，便于批量筛选最优结果",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "PuLID (pulid_flux_v0.9.0.safetensors)",
+  "FLUX.1-dev (fp8_e4m3fn_fast)",
+  "ControlNet (FLUX.1-dev-Controlnet-Union-InstantX)",
+  "OpenPose 骨架预处理器",
+  "Florence-2 自动图像描述",
+  "CLIP多编码器 DualCLIPLoader (clip_l + t5xxl)",
+  "ModelSamplingFlux 采样偏移",
+  "Deis 采样器 + SamplerCustomAdvanced"
+ ],
+ "special_features": [
+  {
+   "text": "双条件控制回路：ApplyPulidFlux负责身份条件，ControlNetApplySD3负责结构条件，两者串行作用于同一UNet采样链路，是一种身份+姿态解耦控制的典型组合",
+   "kind": "fact"
+  },
+  {
+   "text": "Florence2Run + ShowText|pysssss：先自动理解参考图内容生成详细描述，再把描述显示出来供人确认/复制，实现『图像理解→文本→生成』的半自动化提示词工作流",
+   "kind": "fact"
+  },
+  {
+   "text": "easy imageSplitGrid + easy imagesSplitImage + ImageConcatMulti：将一张图拆成4块、再把生成结果横向拼合为对比图，支持快速挑选不同seed/参数下的输出",
+   "kind": "fact"
+  },
+  {
+   "text": "5个LoadImage节点使用同一资源ID（616cb192ebb8c4c0c7b602a4），且被4网格拆分图同时消费，推测设计为『多参考图联盟』——即便只有一张照片，也能通过拆分/重复加载提供多帧身份参考",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "该工作流以『面部角色一致性』为第一目标，采用PuLID（专门为FLUX优化的身份注入方案）作为身份特征主通道，权重设为0.8以兼顾相似度与自然度；同时并联ControlNet+OpenPose控制姿态结构，使同一个人物可以变换姿势与构图。为了降低上手门槛，设计成分段式自动化：先用Florence-2自动理解参考图并生成详细提示词，再经CR Prompt Text组合基础模板与负面词，最后统一进入类SD3的采样流程。输出侧通过4宫格拼接对比，加快参数调优与结果筛选。整体设计体现『自动描述 + 身份保持 + 结构控制 + 批量对比』的产品化思路。",
+ "use_case": "适用于电商模特图、IP角色多姿态立绘、人像摄影前期预览等需要保持同一人脸身份但变换姿态/构图的批量生成场景；用户只需准备一张清晰人脸照，即可产出多个候选姿势图。",
+ "limitation": "依赖大量自定义节点（PuLID Flux系列、AIO_Preprocessor、Florence2Run、easy_use套件等），且需预下载多个大模型（FLUX fp8、ControlNet Union、Florence-2-lar、PuLID v0.9.0、CLIP双模型），总模型体积可达20GB以上；输入图像必须包含清晰可检测的人脸，否则InsightFace提取身份向量会失败；FLUX.1-dev的许可协议仅限非商业用途；高分辨率生成（1120×1024）对VRAM要求较高，建议24GB以上。",
+ "dependencies": [
+  "flux1-dev-fp8.safetensors",
+  "pulid_flux_v0.9.0.safetensors",
+  "FLUX.1-dev-Controlnet-Union-InstantX.safetensors",
+  "clip_l.safetensors",
+  "t5xxl_fp8_e4m3fn.safetensors",
+  "ae.sft",
+  "microsoft/Florence-2-large (fp16)",
+  "embedding:easynegative",
+  "PuLID Flux自定义节点集",
+  "AIO_Preprocessor (OpenposePreprocessor)",
+  "ComfyUI_Fill-Nodes / easy_use"
+ ],
+ "geek_rating": 4,
+ "input": {
+  "type": "单张/多张人脸照片（LoadImage可直接浏览选择替换，默认资源ID相同；结构上最多5路图像输入）",
+  "count": "1~5（多个LoadImage共享同一默认图，实际可通过替换资源路径实现多参考图输入）"
+ },
+ "output": {
+  "type": "多张生成图预览（4路PreviewImage + 1路SaveImage；配合ImageConcatMulti实现横向拼接组合图）",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "ApplyPulidFlux.weight (0.8)",
+   "how_to_tune": "控制身份特征注入强度：值越大面部越像参考图，但可能限制姿态/表情自由度；若生成图不像，可提高至0.9~1.0；若出现面部僵硬或构图雷同，可降至0.6~0.7。"
+  },
+  {
+   "param": "ControlNetApplySD3.strength (0.66) / end (0.4)",
+   "how_to_tune": "strength控制结构跟随程度，0.66是『姿态贴合与自由生成』的中间值；若骨架忽忽略，可提高到0.75+；若背景/形状被骨架锁死，可调低。end=0.4表示只在去噪前40%步数施加结构约束，后60%步数释放自由度，是精妙的质量-可控平衡设计。"
+  },
+  {
+   "param": "FluxGuidance (4.2)",
+   "how_to_tune": "FLUX的蒸馏引导尺度：值越大文本/构图贴合越强，但过高会引入色彩伪影；风格化内容建议4.0~5.0，写实内容建议3.5~4.5。"
+  },
+  {
+   "param": "ModelSamplingFlux.shift (1.15)",
+   "how_to_tune": "采样时间步偏置，影响整体亮度与对比度分布：shift增大可改善高分辨率下的暗部/亮部畸形，是FLUX-1024+分辨率的必要适配项，一般保持1.15附近。"
+  },
+  {
+   "param": "KSamplerSelect.sampler (deis)",
+   "how_to_tune": "采用DEIS低步数采样器，配合BasicGuider和25步调度，在质量/速度之间取平衡；若出图不稳定可换euler或dpmpp_2m。"
+  },
+  {
+   "param": "RandomNoise.seed (111326915933603 / randomize)",
+   "how_to_tune": "固定种子可复现实验、对比不同参数；打开randomize则每轮随机生成，适合批量探索多样性输出。"
+  },
+  {
+   "param": "Florence2Run (detailed_caption, 1024分辨率)",
+   "how_to_tune": "使用detailed_caption模式生成更丰富描述；若显存紧张，可将输入分辨率从1024降到768，或把最大token数从3降为2，以换取速度。"
+  }
+ ],
+ "summary_text": "能力:输入人脸参考图，通过PuLID提取面部身份特征，结合FLUX.1-dev生成保持该身份的多姿态写实图像；能力:通过FLUX.1-dev-Controlnet-Union-InstantX + OpenPose 实现姿态/结构控制，生成时可按骨架约束人物动作；能力:利用Florence-2自动为参考图生成detailed_caption，并将其作为提示词参与生成，减少手动写Prompt的工作量；能力:将参考图/生成图按4宫格拆分与拼接，配合多路PreviewImage/SaveImage形成对比预览，便于批量筛选最优结果；特色:双条件控制回路：ApplyPulidFlux负责身份条件，ControlNetApplySD3负责结构条件，两者串行作用于同一UNet采样链路，是一种身份+姿态解耦控制的典型组合；特色:Florence2Run + ShowText|pysssss：先自动理解参考图内容生成详细描述，再把描述显示出来供人确认/复制，实现『图像理解→文本→生成』的半自动化提示词工作流；特色:easy imageSplitGrid + easy imagesSplitImage + ImageConcatMulti：将一张图拆成4块、再把生成结果横向拼合为对比图，支持快速挑选不同seed/参数下的输出；特色:5个LoadImage节点使用同一资源ID（616cb192ebb8c4c0c7b602a4），且被4网格拆分图同时消费，推测设计为『多参考图联盟』——即便只有一张照片，也能通过拆分/重复加载提供多帧身份参考；适用于电商模特图、IP角色多姿态立绘、人像摄影前期预览等需要保持同一人脸身份但变换姿态/构图的批量生成场景；用户只需准备一张清晰人脸照，即可产出多个候选姿势图。；该工作流以『面部角色一致性』为第一目标，采用PuLID（专门为FLUX优化的身份注入方案）作为身份特征主通道，权重设为0.8以兼顾相似度与自然度；同时并联ControlNet+OpenPose控制姿态结构，使同一个人物可以变换姿势与构图。为了降低上手门槛，设计成分段式自动化：先用Florence-2自动理解参考图并生成详细提示词，再经CR Prompt Text组合基础模板与负面词，最后统一进入类SD3的采样流程。输出侧通过4宫格拼接对比，加快参数调优与结果筛选。整体设计体现『自动描述 + 身份保持 + 结构控制 + 批量对比』的产品化思路。"
+}

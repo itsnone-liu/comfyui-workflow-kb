@@ -1,0 +1,70 @@
+{
+ "domain": [
+  "图生视频",
+  "人物类特效",
+  "数字人"
+ ],
+ "capabilities": [
+  {
+   "text": "端到端完成：上传首帧和尾帧两张图片，并输入一段文字提示（如“图中的女子在念诗”），调用海螺H3(minimax H3)模型生成短视频并保存到本地。",
+   "kind": "fact"
+  },
+  {
+   "text": "支持海螺H3模型的“图生视频”与“首尾帧”两种生成模式，可用于人物类特效和数字人动态视频制作。",
+   "kind": "inference"
+  }
+ ],
+ "core_techniques": [
+  "图像到视频生成 (Image-to-Video)",
+  "首尾帧插值/驱动",
+  "文本提示词条件生成",
+  "云端大模型推理 (Minimax H3 API)",
+  "视频保存与预览"
+ ],
+ "special_features": [
+  {
+   "text": "使用两个 LoadImage 节点分别加载首帧和尾帧，同时输入到同一个 RH_MinimaxHailuoH3ImageToVideo 生成节点，实现首尾帧控制的图生视频。",
+   "kind": "fact"
+  },
+  {
+   "text": "通过两个 easy showAnything 节点分别展示任务ID和结果预览/链接，便于跟踪云端任务状态和快速查看生成效果。",
+   "kind": "fact"
+  }
+ ],
+ "design_intent": "该工作流设计极其简洁，核心是将两张图片（首帧和尾帧）与一句文字提示直接喂给海螺H3云端API生成视频。两个 LoadImage 分别提供起点和终点画面，提示词控制中间动态内容；生成结果通过 showAnything 实时反馈，并用 SaveVideo 落盘。整体意图是让用户以最小节点数快速完成首尾帧驱动的视频创作，降低使用门槛。",
+ "use_case": "适合内容创作者快速制作数字人或人物类特效短视频，如让照片中的人物念诗、做动作，或生成具有明确起止画面的动态片段。",
+ "limitation": "依赖云端 Minimax H3 API，需联网和有效API凭证；生成速度、质量及可用性受服务商限制；自定义节点 RH_MinimaxHailuoH3ImageToVideo 非官方内置，需手动安装；输入图片需符合模型要求（尺寸/格式/内容），否则可能报错或效果不佳。",
+ "dependencies": [
+  "ComfyUI",
+  "RH_MinimaxHailuoH3ImageToVideo (自定义节点)",
+  "easy-use (easy showAnything)"
+ ],
+ "geek_rating": 1,
+ "input": {
+  "type": "两张图片（首帧和尾帧）",
+  "count": "2"
+ },
+ "output": {
+  "type": "视频",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "prompt",
+   "how_to_tune": "用自然语言描述画面中的人物动作、表情或场景变化，越具体则生成结果越贴近预期，可包含动作细节和氛围词。"
+  },
+  {
+   "param": "resolution",
+   "how_to_tune": "选择生成分辨率，如2K；更高分辨率画质更好但耗时更长，需根据需求权衡。"
+  },
+  {
+   "param": "duration",
+   "how_to_tune": "设置视频时长（秒），10表示10秒；时长越长生成越慢且可能增加资源消耗，建议根据内容需要选择。"
+  },
+  {
+   "param": "seed",
+   "how_to_tune": "固定随机种子可让生成结果可复现；设置为randomize时每次结果不同，适合探索多种效果。"
+  }
+ ],
+ "summary_text": "能力:端到端完成：上传首帧和尾帧两张图片，并输入一段文字提示（如“图中的女子在念诗”），调用海螺H3(minimax H3)模型生成短视频并保存到本地。；能力:支持海螺H3模型的“图生视频”与“首尾帧”两种生成模式，可用于人物类特效和数字人动态视频制作。；特色:使用两个 LoadImage 节点分别加载首帧和尾帧，同时输入到同一个 RH_MinimaxHailuoH3ImageToVideo 生成节点，实现首尾帧控制的图生视频。；特色:通过两个 easy showAnything 节点分别展示任务ID和结果预览/链接，便于跟踪云端任务状态和快速查看生成效果。；适合内容创作者快速制作数字人或人物类特效短视频，如让照片中的人物念诗、做动作，或生成具有明确起止画面的动态片段。；该工作流设计极其简洁，核心是将两张图片（首帧和尾帧）与一句文字提示直接喂给海螺H3云端API生成视频。两个 LoadImage 分别提供起点和终点画面，提示词控制中间动态内容；生成结果通过 showAnything 实时反馈，并用 SaveVideo 落盘。整体意图是让用户以最小节点数快速完成首尾帧驱动的视频创作，降低使用门槛。"
+}

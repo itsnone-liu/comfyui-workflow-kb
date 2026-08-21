@@ -1,0 +1,86 @@
+{
+ "domain": [
+  "图像处理",
+  "人像修复",
+  "局部重绘"
+ ],
+ "capabilities": [
+  {
+   "text": "上传单张人脸图像，自动检测人脸并基于 Flux 模型进行局部重绘，输出修复后的图像",
+   "kind": "fact"
+  },
+  {
+   "text": "通过 face_yolov8m 检测人脸，并用 person_yolov8m-seg 进行人体分割，从而约束修复范围，尽量保持背景和衣物不变",
+   "kind": "fact"
+  },
+  {
+   "text": "使用 SAM (sam_vit_b) 生成精细遮罩，提高修复区域边缘质量，适合去除瑕疵、恢复细节",
+   "kind": "fact"
+  }
+ ],
+ "core_techniques": [
+  "FaceDetailer",
+  "Flux.1 Dev (RealisticVision Flux Dev FP8)",
+  "DualCLIPLoader (clip_l + t5xxl_fp8_e4m3fn)",
+  "fp8 模型量化",
+  "UltralyticsDetectorProvider 人脸检测 (face_yolov8m.pt)",
+  "UltralyticsDetectorProvider 人体分割 (person_yolov8m-seg.pt)",
+  "SAM (sam_vit_b) 分割生成遮罩",
+  "VAE (ae.sft) 与采样器结合完成局部重绘"
+ ],
+ "special_features": [
+  {
+   "text": "同时加载 face_yolov8m 与 person_yolov8m-seg 两个检测器，可能与 FaceDetailer 的 bbox_detector 和 segm_detector_opt 相连，用人体分割进一步收紧修复范围，避免改动身体其他区域",
+   "kind": "inference"
+  },
+  {
+   "text": "使用 fp8 量化的 RealisticVision Flux Dev，以较低显存运行 Flux 级修复，UNETLoader 中显式指定 fp8_e4m3fn",
+   "kind": "fact"
+  },
+  {
+   "text": "FaceDetailer 参数中出现固定种子 505470441408987 与 randomize 共存，可能允许在固定复现与随机多样性之间切换，steps=20 是速度与质量的折中",
+   "kind": "inference"
+  }
+ ],
+ "design_intent": "工作流以 FaceDetailer 为核心，先用 UltralyticsDetectorProvider 的 face_yolov8m 定位人脸，再用 SAM 生成高精度局部遮罩，然后由 Flux Dev 在遮罩区域内执行局部重绘。额外加入 person_yolov8m-seg 分割模型，似乎是为了让修复范围严格限制在人体内部，避免背景、墙壁等被误改。FP8 量化与双 CLIP 加载是 Flux 生态的标准搭配，既保证生成质量又降低显存压力。整体设计意图是在‘只修脸’与‘尽量真实’之间取得平衡。",
+ "use_case": "人脸修复、老照片面部还原、人像瑕疵去除、局部重绘精修",
+ "limitation": "依赖 ComfyUI Impact Pack 的 FaceDetailer 等自定义节点；需要下载多个外部模型（RealisticVision Flux Dev FP8、ae.sft、clip_l、t5xxl、sam_vit_b、face_yolov8m、person_yolov8m-seg）；输入仅支持单张图像；对极端角度、严重遮挡、极小或模糊人脸可能效果不佳；Flux 模型推理速度较慢，高分辨率下需要较多显存。",
+ "dependencies": [
+  "ComfyUI Impact Pack (FaceDetailer)",
+  "RealisticVision Flux Dev_Flux_Dev_FP8.safetensors (checkpoint)",
+  "ae.sft (VAE)",
+  "clip_l.safetensors (CLIP)",
+  "t5xxl_fp8_e4m3fn.safetensors (CLIP)",
+  "sam_vit_b_01ec64.pth (SAM)",
+  "bbox/face_yolov8m.pt (检测器)",
+  "segm/person_yolov8m-seg.pt (检测器)"
+ ],
+ "geek_rating": 3,
+ "input": {
+  "type": "单张图像",
+  "count": "1"
+ },
+ "output": {
+  "type": "修复后图像",
+  "quality_control": false
+ },
+ "parameter_knowledge": [
+  {
+   "param": "FaceDetailer guide_size",
+   "how_to_tune": "默认 512，控制人脸检测框的参考分辨率；如需更精细的面部纹理可适当增大至 640 或 768，但会提高显存和耗时。"
+  },
+  {
+   "param": "FaceDetailer max_size",
+   "how_to_tune": "默认 1024，限制允许的最大尺寸；显存不足时降低到 768，追求更精细效果时可提高到 1280。"
+  },
+  {
+   "param": "FaceDetailer steps",
+   "how_to_tune": "默认 20，是采样步数；若出现粗燥或细节不足，可增大到 25-30，速度会下降但质量通常更好。"
+  },
+  {
+   "param": "FaceDetailer seed / randomize",
+   "how_to_tune": "固定种子（如 505470441408987）用于复现同一结果；改为 randomize 可每次生成不同修复效果，适合多结果筛选。"
+  }
+ ],
+ "summary_text": "能力:上传单张人脸图像，自动检测人脸并基于 Flux 模型进行局部重绘，输出修复后的图像；能力:通过 face_yolov8m 检测人脸，并用 person_yolov8m-seg 进行人体分割，从而约束修复范围，尽量保持背景和衣物不变；能力:使用 SAM (sam_vit_b) 生成精细遮罩，提高修复区域边缘质量，适合去除瑕疵、恢复细节；特色:同时加载 face_yolov8m 与 person_yolov8m-seg 两个检测器，可能与 FaceDetailer 的 bbox_detector 和 segm_detector_opt 相连，用人体分割进一步收紧修复范围，避免改动身体其他区域；特色:使用 fp8 量化的 RealisticVision Flux Dev，以较低显存运行 Flux 级修复，UNETLoader 中显式指定 fp8_e4m3fn；特色:FaceDetailer 参数中出现固定种子 505470441408987 与 randomize 共存，可能允许在固定复现与随机多样性之间切换，steps=20 是速度与质量的折中；人脸修复、老照片面部还原、人像瑕疵去除、局部重绘精修；工作流以 FaceDetailer 为核心，先用 UltralyticsDetectorProvider 的 face_yolov8m 定位人脸，再用 SAM 生成高精度局部遮罩，然后由 Flux Dev 在遮罩区域内执行局部重绘。额外加入 person_yolov8m-seg 分割模型，似乎是为了让修复范围严格限制在人体内部，避免背景、墙壁等被误改。FP8 量化与双 CLIP 加载是 Flux 生态的标准搭配，既保证生成质量又降低显存压力。整体设计意图是在‘只修脸’与‘尽量真实’之间取得平衡。"
+}

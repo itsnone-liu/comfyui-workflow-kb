@@ -1,0 +1,1316 @@
+{
+ "node_count": 33,
+ "link_count": 45,
+ "active_node_count": 31,
+ "nodes": [
+  {
+   "id": 37,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "fill",
+    "lanczos",
+    "16",
+    "None",
+    1024,
+    "#000000"
+   ],
+   "in_links": [
+    43
+   ],
+   "out_links": [
+    22,
+    35,
+    62
+   ]
+  },
+  {
+   "id": 21,
+   "type": "VAEDecode",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    17,
+    18
+   ],
+   "out_links": [
+    60
+   ]
+  },
+  {
+   "id": 39,
+   "type": "ConditioningZeroOut",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    48
+   ],
+   "out_links": [
+    33
+   ]
+  },
+  {
+   "id": 50,
+   "type": "easy imageListToImageBatch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    60
+   ],
+   "out_links": [
+    61
+   ]
+  },
+  {
+   "id": 44,
+   "type": "CLIPLoader",
+   "category": "clip",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "qwen_3_8b.safetensors",
+    "flux2",
+    "default"
+   ],
+   "in_links": [],
+   "out_links": [
+    49
+   ]
+  },
+  {
+   "id": 45,
+   "type": "VAELoader",
+   "category": "vae",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ],
+   "in_links": [],
+   "out_links": [
+    18,
+    21,
+    46,
+    50
+   ]
+  },
+  {
+   "id": 33,
+   "type": "GetImageSize",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "width: 960, height: 1200\n batch size: 4fc6ede57115e7a0c366785d67fc62cea"
+   ],
+   "in_links": [
+    35
+   ],
+   "out_links": [
+    23,
+    24
+   ]
+  },
+  {
+   "id": 30,
+   "type": "MemoryCleaner",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    3,
+    true
+   ],
+   "in_links": [
+    29
+   ],
+   "out_links": []
+  },
+  {
+   "id": 63,
+   "type": "SetNode",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Final_image"
+   ],
+   "in_links": [
+    86
+   ],
+   "out_links": []
+  },
+  {
+   "id": 25,
+   "type": "SimpleMath+",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "max(a,b)"
+   ],
+   "in_links": [
+    23,
+    24
+   ],
+   "out_links": [
+    52
+   ]
+  },
+  {
+   "id": 52,
+   "type": "TTP_Image_Assy",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    64
+   ],
+   "in_links": [
+    63,
+    64,
+    65,
+    66
+   ],
+   "out_links": [
+    54
+   ]
+  },
+  {
+   "id": 23,
+   "type": "LCSLoadData",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    21
+   ],
+   "out_links": [
+    45
+   ]
+  },
+  {
+   "id": 69,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "【lora 注解】\n\nklein_9B_Turbo_r128  加速模型\n\nf2k_9B_Ics_consist_20260415  一致性模型\n\nFlux2-Klein9B-Anything2Real_V1.0  真实质感\n---------------------------------------------------------------\n\n【备选 lora】\nF2Klein9b 高清细节增强皮肤质感v2.0    增强皮肤质感\n\nF2K 9B Anything2Real A     增强写实方面的表现\n\n\n"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 42,
+   "type": "UNETLoader",
+   "category": "checkpoint_loader",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Flux2-Klein-9B-True-v2-bf16.safetensors",
+    "fp8_e4m3fn"
+   ],
+   "in_links": [],
+   "out_links": [
+    77
+   ]
+  },
+  {
+   "id": 53,
+   "type": "Image Comparer (rgthree)",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vrnho_00001_uzanu_1782090805.jpg&type=temp&subfolder=&rand=0.8604515028063352&Rh-Comfy-Auth=eyJ1c2VySWQiOiJlYjA2YTYwMzMyZTM2YTc3ZTZiYWNlNGRlYjY0ODc0MCIsInNpZ25FeHBpcmUiOjE3ODI2OTU0ODQxOTEsInRzIjoxNzgyMDkwNjg0MTkxLCJzaWduIjoiZmFlNjZmMTIyNzgxMWZmM2Y4YTkxODY4NDc0ZjM4N2IifQ==&Rh-Identify=eb06a60332e36a77e6bace4deb648740"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_vrnho_00002_spmyi_1782090807.jpg&type=temp&subfolder=&rand=0.8681585695612147&Rh-Comfy-Auth=eyJ1c2VySWQiOiJlYjA2YTYwMzMyZTM2YTc3ZTZiYWNlNGRlYjY0ODc0MCIsInNpZ25FeHBpcmUiOjE3ODI2OTU0ODQxOTEsInRzIjoxNzgyMDkwNjg0MTkxLCJzaWduIjoiZmFlNjZmMTIyNzgxMWZmM2Y4YTkxODY4NDc0ZjM4N2IifQ==&Rh-Identify=eb06a60332e36a77e6bace4deb648740"
+     }
+    ]
+   ],
+   "in_links": [
+    88,
+    74
+   ],
+   "out_links": []
+  },
+  {
+   "id": 24,
+   "type": "easy imageBatchToImageList",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [],
+   "in_links": [
+    22
+   ],
+   "out_links": [
+    47,
+    51
+   ]
+  },
+  {
+   "id": 41,
+   "type": "easy imageColorMatch",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "wavelet",
+    "Preview",
+    "ComfyUI"
+   ],
+   "in_links": [
+    73,
+    54
+   ],
+   "out_links": [
+    29,
+    86
+   ]
+  },
+  {
+   "id": 51,
+   "type": "LayerUtility: ImageScaleRestore V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1,
+    "lanczos",
+    "by_scale",
+    1024
+   ],
+   "in_links": [
+    61,
+    62
+   ],
+   "out_links": [
+    63
+   ]
+  },
+  {
+   "id": 38,
+   "type": "LCSColorAnchor",
+   "category": "postprocess",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "auto",
+    0.8
+   ],
+   "in_links": [
+    92,
+    45,
+    46,
+    47
+   ],
+   "out_links": [
+    93
+   ]
+  },
+  {
+   "id": 35,
+   "type": "TTP_Image_Tile_Batch",
+   "category": "batch",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    1024,
+    1024
+   ],
+   "in_links": [
+    72,
+    40,
+    41
+   ],
+   "out_links": [
+    42,
+    43,
+    64,
+    65,
+    66
+   ]
+  },
+  {
+   "id": 36,
+   "type": "PreviewImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [],
+   "in_links": [
+    42
+   ],
+   "out_links": []
+  },
+  {
+   "id": 40,
+   "type": "Flux2KleinEditTextEncode_EditUtils",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "smooth and natural shading , soft diffused lighting , controlled details , minimal but refined texture , high clarity , crisp refined edges , clean color transitions , smooth gradients balanced contrast , polished finish clear subject , visually clean composition -- no noise , no grain , no artifacts , no dirty texture , no muddy colors , no over - sharpening , no blotchy shadows , no chaotic details , no excessive high - frequency noise , no harsh contrast , no greasy highlights .",
+    1024
+   ],
+   "in_links": [
+    49,
+    50,
+    51,
+    52
+   ],
+   "out_links": [
+    32,
+    48,
+    34
+   ]
+  },
+  {
+   "id": 64,
+   "type": "GetNode",
+   "category": "utility",
+   "title": "Get_Final_image",
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "Final_image"
+   ],
+   "in_links": [],
+   "out_links": [
+    87,
+    88
+   ]
+  },
+  {
+   "id": 54,
+   "type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "original",
+    1,
+    1,
+    "fill",
+    "lanczos",
+    "8",
+    "longest",
+    3840,
+    "#000000"
+   ],
+   "in_links": [
+    97,
+    80
+   ],
+   "out_links": [
+    71,
+    72,
+    73
+   ]
+  },
+  {
+   "id": 57,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "f2k_9B_lcs_consist_20260415.safetensors",
+    0.7000000000000002
+   ],
+   "in_links": [
+    78
+   ],
+   "out_links": [
+    91
+   ]
+  },
+  {
+   "id": 32,
+   "type": "KSampler",
+   "category": "sampler",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    358902491652147,
+    "randomize",
+    4,
+    1,
+    "res_2s",
+    "bong_tangent",
+    1
+   ],
+   "in_links": [
+    93,
+    32,
+    33,
+    34
+   ],
+   "out_links": [
+    17
+   ]
+  },
+  {
+   "id": 56,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "klein_9B_Turbo_r128.safetensors",
+    0.20000000000000004
+   ],
+   "in_links": [
+    77
+   ],
+   "out_links": [
+    78
+   ]
+  },
+  {
+   "id": 67,
+   "type": "LoraLoaderModelOnly",
+   "category": "lora",
+   "title": null,
+   "mode": 4,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors",
+    0.20000000000000004
+   ],
+   "in_links": [
+    91
+   ],
+   "out_links": [
+    92
+   ]
+  },
+  {
+   "id": 34,
+   "type": "TTP_Tile_image_size",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2,
+    2,
+    0.2
+   ],
+   "in_links": [
+    71
+   ],
+   "out_links": [
+    40,
+    41
+   ]
+  },
+  {
+   "id": 58,
+   "type": "Note",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "放大尺寸，设置放大后最大边的尺寸\n2560 = 2K \n3840 = 4K"
+   ],
+   "in_links": [],
+   "out_links": []
+  },
+  {
+   "id": 59,
+   "type": "INTConstant",
+   "category": "utility",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": false,
+   "widgets_values": [
+    2160
+   ],
+   "in_links": [],
+   "out_links": [
+    80
+   ]
+  },
+  {
+   "id": 49,
+   "type": "LoadImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": true,
+   "is_output_boundary": false,
+   "widgets_values": [
+    "b42a1a5fff7f9c01a62e67b30a4ca98b1511006cd44bb7d3be5bc4cf080e2b02.png",
+    "image"
+   ],
+   "in_links": [],
+   "out_links": [
+    74,
+    97
+   ]
+  },
+  {
+   "id": 27,
+   "type": "SaveImage",
+   "category": "image_io",
+   "title": null,
+   "mode": 0,
+   "is_input_boundary": false,
+   "is_output_boundary": true,
+   "widgets_values": [
+    "qq"
+   ],
+   "in_links": [
+    87
+   ],
+   "out_links": []
+  }
+ ],
+ "edges": [
+  {
+   "from_node": 21,
+   "to_node": 50,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 23,
+   "to_node": 38,
+   "type": "LCS_DATA"
+  },
+  {
+   "from_node": 24,
+   "to_node": 38,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 24,
+   "to_node": 40,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 25,
+   "to_node": 40,
+   "type": "INT"
+  },
+  {
+   "from_node": 32,
+   "to_node": 21,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 33,
+   "to_node": 25,
+   "type": "*"
+  },
+  {
+   "from_node": 33,
+   "to_node": 25,
+   "type": "*"
+  },
+  {
+   "from_node": 34,
+   "to_node": 35,
+   "type": "INT"
+  },
+  {
+   "from_node": 34,
+   "to_node": 35,
+   "type": "INT"
+  },
+  {
+   "from_node": 35,
+   "to_node": 36,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 37,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 52,
+   "type": "LIST"
+  },
+  {
+   "from_node": 35,
+   "to_node": 52,
+   "type": "TUPLE"
+  },
+  {
+   "from_node": 35,
+   "to_node": 52,
+   "type": "TUPLE"
+  },
+  {
+   "from_node": 37,
+   "to_node": 24,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 37,
+   "to_node": 33,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 37,
+   "to_node": 51,
+   "type": "BOX"
+  },
+  {
+   "from_node": 38,
+   "to_node": 32,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 39,
+   "to_node": 32,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 32,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 40,
+   "to_node": 32,
+   "type": "LATENT"
+  },
+  {
+   "from_node": 40,
+   "to_node": 39,
+   "type": "CONDITIONING"
+  },
+  {
+   "from_node": 41,
+   "to_node": 30,
+   "type": "*"
+  },
+  {
+   "from_node": 41,
+   "to_node": 63,
+   "type": "*"
+  },
+  {
+   "from_node": 42,
+   "to_node": 56,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 44,
+   "to_node": 40,
+   "type": "CLIP"
+  },
+  {
+   "from_node": 45,
+   "to_node": 21,
+   "type": "VAE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 23,
+   "type": "VAE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 38,
+   "type": "VAE"
+  },
+  {
+   "from_node": 45,
+   "to_node": 40,
+   "type": "VAE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 49,
+   "to_node": 54,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 50,
+   "to_node": 51,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 51,
+   "to_node": 52,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 52,
+   "to_node": 41,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 34,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 35,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 54,
+   "to_node": 41,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 56,
+   "to_node": 57,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 57,
+   "to_node": 67,
+   "type": "MODEL"
+  },
+  {
+   "from_node": 59,
+   "to_node": 54,
+   "type": "INT"
+  },
+  {
+   "from_node": 64,
+   "to_node": 27,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 64,
+   "to_node": 53,
+   "type": "IMAGE"
+  },
+  {
+   "from_node": 67,
+   "to_node": 38,
+   "type": "MODEL"
+  }
+ ],
+ "categories": {
+  "utility": 17,
+  "vae": 2,
+  "batch": 3,
+  "clip": 1,
+  "checkpoint_loader": 1,
+  "postprocess": 2,
+  "image_io": 3,
+  "lora": 3,
+  "sampler": 1
+ },
+ "assets": [
+  {
+   "node_id": 44,
+   "node_type": "CLIPLoader",
+   "kind": "clip",
+   "name": "qwen_3_8b.safetensors"
+  },
+  {
+   "node_id": 45,
+   "node_type": "VAELoader",
+   "kind": "vae",
+   "name": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 42,
+   "node_type": "UNETLoader",
+   "kind": "checkpoint",
+   "name": "Flux2-Klein-9B-True-v2-bf16.safetensors"
+  },
+  {
+   "node_id": 57,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "f2k_9B_lcs_consist_20260415.safetensors"
+  },
+  {
+   "node_id": 56,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "klein_9B_Turbo_r128.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "LoraLoaderModelOnly",
+   "kind": "lora",
+   "name": "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors"
+  }
+ ],
+ "techniques": [
+  "FLUX"
+ ],
+ "param_face_size": 64,
+ "structure_hash": "162b785a1ff16d03",
+ "param_face": [
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "fill"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "16"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "None"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 37,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 44,
+   "node_type": "CLIPLoader",
+   "widget_index": 0,
+   "value_preview": "qwen_3_8b.safetensors"
+  },
+  {
+   "node_id": 44,
+   "node_type": "CLIPLoader",
+   "widget_index": 1,
+   "value_preview": "flux2"
+  },
+  {
+   "node_id": 44,
+   "node_type": "CLIPLoader",
+   "widget_index": 2,
+   "value_preview": "default"
+  },
+  {
+   "node_id": 45,
+   "node_type": "VAELoader",
+   "widget_index": 0,
+   "value_preview": "flux2-vae.safetensors"
+  },
+  {
+   "node_id": 33,
+   "node_type": "GetImageSize",
+   "widget_index": 0,
+   "value_preview": "width: 960, height: 1200\n batch size: 4fc6ede57115e7a0c36678"
+  },
+  {
+   "node_id": 30,
+   "node_type": "MemoryCleaner",
+   "widget_index": 0,
+   "value_preview": "3"
+  },
+  {
+   "node_id": 30,
+   "node_type": "MemoryCleaner",
+   "widget_index": 1,
+   "value_preview": "True"
+  },
+  {
+   "node_id": 63,
+   "node_type": "SetNode",
+   "widget_index": 0,
+   "value_preview": "Final_image"
+  },
+  {
+   "node_id": 25,
+   "node_type": "SimpleMath+",
+   "widget_index": 0,
+   "value_preview": "max(a,b)"
+  },
+  {
+   "node_id": 52,
+   "node_type": "TTP_Image_Assy",
+   "widget_index": 0,
+   "value_preview": "64"
+  },
+  {
+   "node_id": 42,
+   "node_type": "UNETLoader",
+   "widget_index": 0,
+   "value_preview": "Flux2-Klein-9B-True-v2-bf16.safetensors"
+  },
+  {
+   "node_id": 42,
+   "node_type": "UNETLoader",
+   "widget_index": 1,
+   "value_preview": "fp8_e4m3fn"
+  },
+  {
+   "node_id": 41,
+   "node_type": "easy imageColorMatch",
+   "widget_index": 0,
+   "value_preview": "wavelet"
+  },
+  {
+   "node_id": 41,
+   "node_type": "easy imageColorMatch",
+   "widget_index": 1,
+   "value_preview": "Preview"
+  },
+  {
+   "node_id": 41,
+   "node_type": "easy imageColorMatch",
+   "widget_index": 2,
+   "value_preview": "ComfyUI"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LayerUtility: ImageScaleRestore V2",
+   "widget_index": 0,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LayerUtility: ImageScaleRestore V2",
+   "widget_index": 1,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LayerUtility: ImageScaleRestore V2",
+   "widget_index": 2,
+   "value_preview": "by_scale"
+  },
+  {
+   "node_id": 51,
+   "node_type": "LayerUtility: ImageScaleRestore V2",
+   "widget_index": 3,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 38,
+   "node_type": "LCSColorAnchor",
+   "widget_index": 0,
+   "value_preview": "auto"
+  },
+  {
+   "node_id": 38,
+   "node_type": "LCSColorAnchor",
+   "widget_index": 1,
+   "value_preview": "0.8"
+  },
+  {
+   "node_id": 35,
+   "node_type": "TTP_Image_Tile_Batch",
+   "widget_index": 0,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 35,
+   "node_type": "TTP_Image_Tile_Batch",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 40,
+   "node_type": "Flux2KleinEditTextEncode_EditUtils",
+   "widget_index": 1,
+   "value_preview": "1024"
+  },
+  {
+   "node_id": 64,
+   "node_type": "GetNode",
+   "widget_index": 0,
+   "value_preview": "Final_image"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 0,
+   "value_preview": "original"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 1,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 2,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 3,
+   "value_preview": "fill"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 4,
+   "value_preview": "lanczos"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 5,
+   "value_preview": "8"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 6,
+   "value_preview": "longest"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 7,
+   "value_preview": "3840"
+  },
+  {
+   "node_id": 54,
+   "node_type": "LayerUtility: ImageScaleByAspectRatio V2",
+   "widget_index": 8,
+   "value_preview": "#000000"
+  },
+  {
+   "node_id": 57,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "f2k_9B_lcs_consist_20260415.safetensors"
+  },
+  {
+   "node_id": 57,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.7000000000000002"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 0,
+   "value_preview": "358902491652147"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 1,
+   "value_preview": "randomize"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 2,
+   "value_preview": "4"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 3,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 4,
+   "value_preview": "res_2s"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 5,
+   "value_preview": "bong_tangent"
+  },
+  {
+   "node_id": 32,
+   "node_type": "KSampler",
+   "widget_index": 6,
+   "value_preview": "1"
+  },
+  {
+   "node_id": 56,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "klein_9B_Turbo_r128.safetensors"
+  },
+  {
+   "node_id": 56,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 67,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 0,
+   "value_preview": "F2Klein9b 高清细节增强皮肤质感v2.0.safetensors"
+  },
+  {
+   "node_id": 67,
+   "node_type": "LoraLoaderModelOnly",
+   "widget_index": 1,
+   "value_preview": "0.20000000000000004"
+  },
+  {
+   "node_id": 34,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 0,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 34,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 1,
+   "value_preview": "2"
+  },
+  {
+   "node_id": 34,
+   "node_type": "TTP_Tile_image_size",
+   "widget_index": 2,
+   "value_preview": "0.2"
+  },
+  {
+   "node_id": 58,
+   "node_type": "Note",
+   "widget_index": 0,
+   "value_preview": "放大尺寸，设置放大后最大边的尺寸\n2560 = 2K \n3840 = 4K"
+  },
+  {
+   "node_id": 59,
+   "node_type": "INTConstant",
+   "widget_index": 0,
+   "value_preview": "2160"
+  },
+  {
+   "node_id": 49,
+   "node_type": "LoadImage",
+   "widget_index": 0,
+   "value_preview": "b42a1a5fff7f9c01a62e67b30a4ca98b1511006cd44bb7d3be5bc4cf080e"
+  },
+  {
+   "node_id": 49,
+   "node_type": "LoadImage",
+   "widget_index": 1,
+   "value_preview": "image"
+  },
+  {
+   "node_id": 27,
+   "node_type": "SaveImage",
+   "widget_index": 0,
+   "value_preview": "qq"
+  }
+ ]
+}
