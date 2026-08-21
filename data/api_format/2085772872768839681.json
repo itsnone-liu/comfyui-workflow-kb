@@ -1,0 +1,285 @@
+{
+ "11": {
+  "class_type": "MiniMaxH3AVDecodeT8",
+  "inputs": {
+   "av_latent": [
+    "10",
+    0
+   ],
+   "audio_vae": [
+    "5",
+    0
+   ],
+   "video_vae": [
+    "4",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "MiniMax H3 AV Decode (T8)"
+  }
+ },
+ "12": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "images": [
+    "11",
+    0
+   ],
+   "pix_fmt": "yuv420p",
+   "format": "video/h264-mp4",
+   "frame_rate": 24,
+   "pingpong": false,
+   "save_output": true,
+   "filename_prefix": "H3",
+   "loop_count": 0,
+   "save_metadata": true,
+   "crf": 19,
+   "trim_to_audio": false,
+   "no_preview": false,
+   "audio": [
+    "11",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "Video Combine 🎥🅥🅗🅢"
+  }
+ },
+ "14": {
+  "class_type": "PrimitiveFloat",
+  "inputs": {
+   "value": 15
+  },
+  "_meta": {
+   "title": "Float (duration)"
+  }
+ },
+ "36": {
+  "class_type": "CR Prompt Text",
+  "inputs": {
+   "prompt": "subject_definitions:\n《Subject1》源自Picture_X的年轻女性，白皙皮肤，浅金色齐肩短发自然垂落，眉眼精致，唇色自然裸粉；在视频中担任魔法变身主角，穿黑色格纹露肩短裙（格纹为深灰与黑色交织，裙摆A字型，腰部收束），脚踩黑色细带高跟鞋。\n<Subject2> 无配角或群演。\n<Picture_X>参考关键帧：<Subject1>的全身中景，站立于白色圆形台面，背景为纯白无干扰环境，服装与发型清晰可见，画面构图居中、简洁。\n\nsummary:\n[keyfrane completion:referencegeneration] 以<Picture_X>中女性的外貌与黑色格纹露肩短裙造型为依据，生成一段30秒、15个镜头的奇幻变身魔法MV，她作为主角在纯白空间中完成从凡人到银发精灵的蜕变，镜头节奏由静谧转激昂，画面精致、充满视觉冲击力与魔法氛围。\n\nretention_analysis:\n<Subject1>：fully_preserved，面部特征、肤色、浅金色短发、黑色格纹露肩短裙、黑色高跟鞋贯穿全片，变身前后身份一致但造型风格转换。\n<Subject2>：ignore，无配角参与。\n<Picture_X>：fully_preserved，作为初始造型与动作基准，纯白背景与中景构图作为变身前的“锚点”。\n服装材质（格纹布料质感）：attribute_transfer，其纹理与剪裁逻辑将被保留用于后续魔法特效中“羽翼”与“白纱裙”的材质联想。\n\ndetailed_description:\n奇幻魔法变身MV，从静谧纯白空间开始，逐步展开视觉奇观，镜头由静态锁定转为动态追踪，伴随魔法音效与视觉特效，最终定格于悬浮于水面的精灵形态。\n\n[Shot1] At00:00.000，特写，<Subject1>正面凝视镜头，浅金色短发柔顺垂落，黑色格纹短裙肩带自然下垂，背景纯白，镜头轻微呼吸式抖动，营造“静待爆发”的氛围。\n[Shot2] At00:00.800，中景锁定，她双手自然下垂，脚尖微点，全身姿态稳定，裙摆轻微垂落，镜头保持水平，构图居中，强化“变身前的宁静”。\n[Shot3] At00:01.600，快速俯拍，她突然下蹲，膝盖弯曲，身体重心降低，裙摆因动作掀起，镜头快速下压，捕捉裙摆与地面接触的瞬间。\n[Shot4] At00:02.400，急速推镜，她扭头向右回望，脖颈线条清晰，发丝随动作微扬，镜头聚焦面部，背景模糊，强化“回望”动作的戏剧性。\n[Shot5] At00:03.200，特写，她背部瞬间爆发式生长出巨大白色羽翼，羽翼边缘发光，伴随“破空声”与“布料撕裂摩擦声”，镜头保持中景锁定，羽翼遮挡部分身体，形成“无缝转场”视觉。\n[Shot6] At00:04.000，镜头快速拉远，羽翼合拢包裹全身，形成“茧状”遮蔽，画面由羽翼边缘的光晕过渡至黑暗，伴随“羽毛遮挡”特效，实现场景切换。\n[Shot7] At00:04.800，全景，场景切换至暗夜水面，<Subject1>已变为银发精灵形象，面部特征保持一致（浅金色发丝变为银白，眼眸泛蓝光），身着繁复层叠白纱裙，悬浮于水面，巨大白翼向两侧张开，激起气流啸叫声，镜头从水面低角度仰拍，羽毛与雪花飘落。\n[Shot8] At00:05.600，急速推镜，镜头冲入其面部特写，聚焦于发光的蓝色瞳孔，瞳孔中闪烁魔法纹路，伴随“尖锐魔法穿梭音效”，背景模糊，突出“瞳孔内部”视觉。\n[Shot9] At00:06.400，螺旋拉出，镜头从瞳孔急速拉出至全景，角色悬浮于水面，双翼扇动，发出“低沉轰鸣声”与“水流哗哗声”，镜头环绕其旋转，展现全身造型。\n[Shot10] At00:07.200，中景跟随，角色优雅旋转，手臂舒展指向前方，镜头微调焦距，捕捉手指细节，背景羽翼缓慢拍打，水面涟漪层层扩散。\n[Shot11] At00:08.000，特写，镜头聚焦于她伸出的指尖，指尖泛微光，背景羽翼在夜色中缓慢拍打，水面涟漪与羽毛飘落形成动态背景。\n[Shot12] At00:08.800，中景，角色全身定格，双翼微张，悬浮于水面，镜头缓慢上移，展现白纱裙的层叠细节与发光羽毛。\n[Shot13] At00:09.600，低角度仰拍，镜头从水面仰视，角色双翼扇动，水流被搅动，发出“哗哗”声，羽翼边缘泛蓝光，强化“悬浮”与“力量”感。\n[Shot14] At00:10.400，慢镜头，角色手臂轻柔舒展，手指指向远方，镜头跟随手势微调，背景羽翼缓慢拍打，羽毛飘落，伴随“空灵吟唱”与“风铃声”。\n[Shot15] At00:11.200，远景收尾，角色悬浮于水面中央，双翼缓缓合拢，水面涟漪渐息，镜头缓缓拉远，背景渐暗，画面定格于“悬浮精灵”全身，羽翼微光渐隐。\n\noverall_soundscape:\n变身前：环境静谧，仅可闻“轻呼吸声”与“布料轻拂声”。\n变身中：“破空声”、“布料撕裂摩擦声”、“羽翼展开的气流啸叫”、“羽毛飘落声”。\n场景切换后：“水流哗哗声”、“低沉轰鸣声”、“风铃清脆声”、“空灵吟唱人声”。\n最终定格：“魔法穿梭音效”渐弱，环境音沉入寂静。\n\nnon_diegetic_music:\n开场为轻柔钢琴与弦乐铺垫，节奏缓慢，营造“静待”氛围。\n变身爆发段加入“魔法交响乐”与“电子合成器音效”，节奏骤快，音量激增。\n中段“精灵悬浮”段落切换为“空灵女声吟唱+风铃旋律”，节奏舒缓，氛围梦幻。\n高潮段“双翼扇动”加入“厚重鼓点+铜管采样”，节奏强劲，推动情绪。\n结尾渐弱，音乐收束于“钢琴余韵”，画面定格，余音袅袅。"
+  },
+  "_meta": {
+   "title": "⚙️ CR Prompt Text"
+  }
+ },
+ "15": {
+  "class_type": "ComfyMathExpression",
+  "inputs": {
+   "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+   "values.a": [
+    "14",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Math Expression"
+  }
+ },
+ "37": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "07a878b38c3024c52335898d87afa73fb289823c3a3bf87fa5d11133d4827064.png"
+  },
+  "_meta": {
+   "title": "Load Image"
+  }
+ },
+ "16": {
+  "class_type": "ResolutionSelector",
+  "inputs": {
+   "aspect_ratio": "9:16 (Portrait Widescreen)",
+   "megapixels": 0.9,
+   "multiple": 32
+  },
+  "_meta": {
+   "title": "Resolution Selector"
+  }
+ },
+ "17": {
+  "class_type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "MiniMax H3 Memory Efficient Sage Attention Patch"
+  }
+ },
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "weight_dtype": "default",
+   "unet_name": "minimax_h3_fl2va_int8_convrot.safetensors"
+  },
+  "_meta": {
+   "title": "Load Diffusion Model"
+  }
+ },
+ "2": {
+  "class_type": "LoraLoaderBypassModelOnly",
+  "inputs": {
+   "lora_name": "minimax_h3_turbo_4步加速_comfyui.safetensors",
+   "strength_model": 1,
+   "model": [
+    "17",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "lora only"
+  }
+ },
+ "3": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+   "type": "minimax",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "Load CLIP"
+  }
+ },
+ "4": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "5": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  "_meta": {
+   "title": "Load VAE"
+  }
+ },
+ "6": {
+  "class_type": "MiniMaxH3AudioConditioningT8",
+  "inputs": {
+   "length": [
+    "15",
+    1
+   ],
+   "audio_denoise_strength": 1,
+   "ref_image_size": "match",
+   "audio_vae": [
+    "5",
+    0
+   ],
+   "strict_prompt_tags": true,
+   "video_vae": [
+    "4",
+    0
+   ],
+   "reference_video_policy": "official_2_to_15s",
+   "prompt_primary_audio_ordinal": 0,
+   "width": [
+    "16",
+    0
+   ],
+   "audio_mode": "native",
+   "task_type": "I2VA",
+   "prompt": [
+    "36",
+    0
+   ],
+   "add_source_as_reference": false,
+   "clip": [
+    "3",
+    0
+   ],
+   "height": [
+    "16",
+    1
+   ],
+   "first_frame": [
+    "37",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "MiniMax H3 Audio Conditioning (T8)"
+  }
+ },
+ "7": {
+  "class_type": "MiniMaxH3DualClockSamplerT8",
+  "inputs": {
+   "shift_audio": 3,
+   "shift_video": 12,
+   "av_latent": [
+    "6",
+    1
+   ],
+   "model": [
+    "2",
+    0
+   ],
+   "steps": 8
+  },
+  "_meta": {
+   "title": "STABLE 4 video / 4 audio"
+  }
+ },
+ "8": {
+  "class_type": "BasicGuider",
+  "inputs": {
+   "conditioning": [
+    "6",
+    0
+   ],
+   "model": [
+    "7",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Basic Guider"
+  }
+ },
+ "9": {
+  "class_type": "RandomNoise",
+  "inputs": {
+   "noise_seed": 123456788
+  },
+  "_meta": {
+   "title": "RandomNoise"
+  }
+ },
+ "10": {
+  "class_type": "SamplerCustomAdvanced",
+  "inputs": {
+   "guider": [
+    "8",
+    0
+   ],
+   "latent_image": [
+    "6",
+    1
+   ],
+   "noise": [
+    "9",
+    0
+   ],
+   "sigmas": [
+    "7",
+    2
+   ],
+   "sampler": [
+    "7",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "SamplerCustomAdvanced"
+  }
+ }
+}

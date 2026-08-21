@@ -298,7 +298,7 @@ def compose_from_spec(name: str, spec: dict, base_wf: str, *, n: int = 4,
         urls = rh_task.collect_file_urls(out)
         result["outputs"] = urls
         arm_dir = OUT_DIR / f"{prefix}_{base_wf}"
-        files = [str(rh_task.download(u, arm_dir / f"out_{i:02d}.png"))
+        files = [str(rh_task.download(u, arm_dir / f"out_{i:02d}{_url_ext(u)}"))
                  for i, u in enumerate(urls)]
         result["files"] = files
         if metric:
@@ -333,6 +333,13 @@ def _apply_metric(name: str, files: list[str], ctx: dict, base_wf: str) -> dict:
 
 
 # ---------------- helpers ----------------
+
+def _url_ext(url: str) -> str:
+    """Extension for a downloaded output URL (.mp4/.png/...)."""
+    import re
+    m = re.search(r"\.(\w{3,4})(?:\?|$)", url, re.I)
+    return "." + m.group(1).lower() if m else ".png"
+
 
 def _default_image_nodeinfo(base_wf: str, api: dict) -> list[dict]:
     """If the composed graph has LoadImage nodes, feed the base's own cover_0

@@ -52,5 +52,16 @@
       {"op": "prune"}
     ],
     "metric": "outputs_ge1"
+  },
+  "h3_boost": {
+    "desc": "H3 加速件移植：SageAttention 显存优化补丁（单输入 MODEL 口）插入无加速 H3 底座的模型管线",
+    "prefix": "h3boost",
+    "steps": [
+      {"op": "load", "prune": true},
+      {"op": "sink", "class": "BasicGuider"},
+      {"op": "transplant", "anchor": "MiniMaxH3MemoryEfficientSageAttentionPatch", "dangling": ["model"], "sink_input": "model"},
+      {"op": "prune"}
+    ],
+    "metric": "outputs_ge1"
   }
 }

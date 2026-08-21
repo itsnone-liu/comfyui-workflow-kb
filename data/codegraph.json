@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-21 19:24:28",
+ "generated_at": "2026-08-22 01:26:11",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -44,7 +44,7 @@
   },
   "analyzer.composer": {
    "file": "analyzer\\composer.py",
-   "lines": 29,
+   "lines": 30,
    "doc": "M6-1 Composer: assemble new workflows from library patterns, verify in cloud.",
    "entry": true,
    "imports": [
@@ -57,6 +57,7 @@
     "kb.store",
     "parser.graph_ops",
     "copy",
+    "re",
     "cv2",
     "cv2",
     "cv2",
@@ -433,7 +434,7 @@
   },
   "experiments.metrics": {
    "file": "experiments\\metrics.py",
-   "lines": 11,
+   "lines": 13,
    "doc": "Face similarity metrics for M5 experiments (YuNet detect + SFace embed).",
    "entry": true,
    "imports": [
@@ -499,14 +500,16 @@
     "pathlib",
     "experiments.rh_task",
     "experiments.metrics",
-    "kb.store"
+    "kb.store",
+    "experiments.metrics"
    ],
    "aliases": {
     "annotations": "__future__",
     "Path": "pathlib",
     "task_api": "experiments.rh_task",
     "FaceComparator": "experiments.metrics",
-    "store": "kb.store"
+    "store": "kb.store",
+    "VideoComparator": "experiments.metrics"
    },
    "imported_by": [
     "mcp.server"
@@ -1312,6 +1315,17 @@
    "doc": ""
   },
   {
+   "id": "analyzer.composer._url_ext",
+   "kind": "function",
+   "module": "analyzer.composer",
+   "name": "_url_ext",
+   "args": [
+    "url"
+   ],
+   "line": 337,
+   "doc": "Extension for a downloaded output URL (.mp4/.png/...)."
+  },
+  {
    "id": "analyzer.composer._default_image_nodeinfo",
    "kind": "function",
    "module": "analyzer.composer",
@@ -1320,7 +1334,7 @@
     "base_wf",
     "api"
    ],
-   "line": 337,
+   "line": 344,
    "doc": "If the composed graph has LoadImage nodes, feed the base's own cover_0"
   },
   {
@@ -1332,7 +1346,7 @@
     "files",
     "base_wf"
    ],
-   "line": 349,
+   "line": 356,
    "doc": "Metric for the upscale recipe: output resolution must exceed input's."
   },
   {
@@ -1344,7 +1358,7 @@
     "files",
     "base_wf"
    ],
-   "line": 364,
+   "line": 371,
    "doc": "FaceDetailer recipe metric: output face sharpness (Laplacian var)"
   },
   {
@@ -1355,7 +1369,7 @@
    "args": [
     "files"
    ],
-   "line": 378,
+   "line": 385,
    "doc": "bg_remove metric: output PNG carries an alpha channel with real cutout."
   },
   {
@@ -1364,7 +1378,7 @@
    "module": "analyzer.composer",
    "name": "main",
    "args": [],
-   "line": 398,
+   "line": 405,
    "doc": ""
   },
   {
@@ -1863,6 +1877,52 @@
    "doc": "Identity similarity between two images (largest face each)."
   },
   {
+   "id": "experiments.metrics.VideoComparator",
+   "kind": "class",
+   "module": "experiments.metrics",
+   "name": "VideoComparator",
+   "args": [],
+   "line": 128,
+   "doc": "Intra-video quality metrics (no external reference needed)."
+  },
+  {
+   "id": "experiments.metrics.VideoComparator.__init__",
+   "kind": "method",
+   "module": "experiments.metrics",
+   "name": "__init__",
+   "args": [
+    "self",
+    "face",
+    "n_frames"
+   ],
+   "line": 138,
+   "doc": ""
+  },
+  {
+   "id": "experiments.metrics.VideoComparator._sample",
+   "kind": "method",
+   "module": "experiments.metrics",
+   "name": "_sample",
+   "args": [
+    "self",
+    "path"
+   ],
+   "line": 142,
+   "doc": ""
+  },
+  {
+   "id": "experiments.metrics.VideoComparator.score",
+   "kind": "method",
+   "module": "experiments.metrics",
+   "name": "score",
+   "args": [
+    "self",
+    "path"
+   ],
+   "line": 157,
+   "doc": ""
+  },
+  {
    "id": "experiments.rh_task.RhTaskError",
    "kind": "class",
    "module": "experiments.rh_task",
@@ -2197,7 +2257,8 @@
     "poll",
     "max_wait",
     "dry_run",
-    "max_arms"
+    "max_arms",
+    "video_mode"
    ],
    "line": 124,
    "doc": ""
@@ -2210,7 +2271,7 @@
    "args": [
     "experiment_id"
    ],
-   "line": 324,
+   "line": 386,
    "doc": ""
   },
   {
@@ -2219,7 +2280,7 @@
    "module": "experiments.runner",
    "name": "main",
    "args": [],
-   "line": 336,
+   "line": 398,
    "doc": ""
   },
   {
@@ -2557,7 +2618,7 @@
    "args": [
     "workflow_id"
    ],
-   "line": 188,
+   "line": 189,
    "doc": ""
   },
   {
@@ -2569,7 +2630,7 @@
     "graph",
     "anchor_types"
    ],
-   "line": 197,
+   "line": 198,
    "doc": "Induced subgraph around nodes whose type matches any anchor substring."
   },
   {
@@ -2580,7 +2641,7 @@
    "args": [
     "segment"
    ],
-   "line": 243,
+   "line": 244,
    "doc": "Dangling ports of a segment: inputs it needs from outside, outputs it offers."
   },
   {
@@ -2592,7 +2653,7 @@
     "base",
     "segment"
    ],
-   "line": 280,
+   "line": 281,
    "doc": "Insert `segment` into `base` upstream of node `splice_into`."
   },
   {
@@ -2603,7 +2664,7 @@
    "args": [
     "graph"
    ],
-   "line": 341,
+   "line": 342,
    "doc": "Normalized graph -> ComfyUI API format."
   },
   {
@@ -2615,7 +2676,7 @@
     "graph",
     "type_substr"
    ],
-   "line": 397,
+   "line": 398,
    "doc": "First active node whose type contains the substring."
   },
   {
@@ -3976,114 +4037,119 @@
    "line": 332
   },
   {
+   "from": "analyzer.composer._url_ext",
+   "raw": "re.search",
+   "line": 340
+  },
+  {
    "from": "analyzer.composer._default_image_nodeinfo",
    "raw": "api.items",
-   "line": 342
+   "line": 349
   },
   {
    "from": "analyzer.composer._resolution_check",
    "raw": "cv2.imread",
-   "line": 354
+   "line": 361
   },
   {
    "from": "analyzer.composer._resolution_check",
    "raw": "cv2.imread",
-   "line": 358
+   "line": 365
   },
   {
    "from": "analyzer.composer._face_metric",
    "raw": "cv2.imread",
-   "line": 370
+   "line": 377
   },
   {
    "from": "analyzer.composer._face_metric",
    "raw": "cv2.cvtColor",
-   "line": 373
+   "line": 380
   },
   {
    "from": "analyzer.composer._alpha_check",
    "raw": "cv2.imread",
-   "line": 384
-  },
-  {
-   "from": "analyzer.composer._alpha_check",
-   "raw": "float",
-   "line": 390
-  },
-  {
-   "from": "analyzer.composer._alpha_check",
-   "raw": "float",
    "line": 391
+  },
+  {
+   "from": "analyzer.composer._alpha_check",
+   "raw": "float",
+   "line": 397
+  },
+  {
+   "from": "analyzer.composer._alpha_check",
+   "raw": "float",
+   "line": 398
   },
   {
    "from": "analyzer.composer.main",
    "raw": "argparse.ArgumentParser",
-   "line": 399
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "ap.add_subparsers",
-   "line": 400
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "sub.add_parser",
-   "line": 401
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "sub.add_parser",
-   "line": 402
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "p_fs.add_argument",
-   "line": 403
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "sub.add_parser",
-   "line": 404
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "p_c.add_argument",
-   "line": 405
-  },
-  {
-   "from": "analyzer.composer.main",
-   "raw": "p_c.add_argument",
    "line": 406
   },
   {
    "from": "analyzer.composer.main",
-   "raw": "p_c.add_argument",
+   "raw": "ap.add_subparsers",
    "line": 407
   },
   {
    "from": "analyzer.composer.main",
-   "raw": "p_c.add_argument",
+   "raw": "sub.add_parser",
    "line": 408
   },
   {
    "from": "analyzer.composer.main",
-   "raw": "p_c.add_argument",
+   "raw": "sub.add_parser",
    "line": 409
   },
   {
    "from": "analyzer.composer.main",
-   "raw": "ap.parse_args",
+   "raw": "p_fs.add_argument",
    "line": 410
   },
   {
    "from": "analyzer.composer.main",
+   "raw": "sub.add_parser",
+   "line": 411
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "p_c.add_argument",
+   "line": 412
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "p_c.add_argument",
+   "line": 413
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "p_c.add_argument",
+   "line": 414
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "p_c.add_argument",
+   "line": 415
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "p_c.add_argument",
+   "line": 416
+  },
+  {
+   "from": "analyzer.composer.main",
+   "raw": "ap.parse_args",
+   "line": 417
+  },
+  {
+   "from": "analyzer.composer.main",
    "raw": "print",
-   "line": 424
+   "line": 431
   },
   {
    "from": "analyzer.composer.main",
    "raw": "sys.exit",
-   "line": 429
+   "line": 436
   },
   {
    "from": "analyzer.composer.find_segment_source",
@@ -4258,44 +4324,44 @@
   {
    "from": "analyzer.composer._resolution_check",
    "raw": "str",
-   "line": 358
+   "line": 365
   },
   {
    "from": "analyzer.composer._face_metric",
    "raw": "round",
-   "line": 375
+   "line": 382
   },
   {
    "from": "analyzer.composer._alpha_check",
    "raw": "round",
-   "line": 393
+   "line": 400
   },
   {
    "from": "analyzer.composer._alpha_check",
    "raw": "round",
-   "line": 394
+   "line": 401
   },
   {
    "from": "analyzer.composer.main",
    "raw": "SPECS.items",
-   "line": 413
+   "line": 420
   },
   {
    "from": "analyzer.composer.main",
    "raw": "find_segment_source",
-   "line": 419,
+   "line": 426,
    "to": "analyzer.composer.find_segment_source",
    "resolved": true
   },
   {
    "from": "analyzer.composer.main",
    "raw": "print",
-   "line": 420
+   "line": 427
   },
   {
    "from": "analyzer.composer.main",
    "raw": "main",
-   "line": 429,
+   "line": 436,
    "to": "analyzer.composer.main",
    "resolved": true
   },
@@ -4403,27 +4469,27 @@
   {
    "from": "analyzer.composer._default_image_nodeinfo",
    "raw": "node_info.append",
-   "line": 344
+   "line": 351
   },
   {
    "from": "analyzer.composer._face_metric",
    "raw": "float",
-   "line": 375
+   "line": 382
   },
   {
    "from": "analyzer.composer.main",
    "raw": "list",
-   "line": 405
+   "line": 412
   },
   {
    "from": "analyzer.composer.main",
    "raw": "print",
-   "line": 414
+   "line": 421
   },
   {
    "from": "analyzer.composer.main",
    "raw": "print",
-   "line": 415
+   "line": 422
   },
   {
    "from": "analyzer.composer",
@@ -4534,7 +4600,7 @@
   {
    "from": "analyzer.composer.main",
    "raw": "json.dumps",
-   "line": 424
+   "line": 431
   },
   {
    "from": "analyzer.composer._segment_for",
@@ -4610,6 +4676,11 @@
    "from": "analyzer.composer.compose_from_spec",
    "raw": "print",
    "line": 297
+  },
+  {
+   "from": "analyzer.composer._url_ext",
+   "raw": "m.group",
+   "line": 341
   },
   {
    "from": "analyzer.composer._pose_segment",
@@ -4698,12 +4769,12 @@
   {
    "from": "analyzer.composer._face_metric",
    "raw": "cv2.Laplacian",
-   "line": 375
+   "line": 382
   },
   {
    "from": "analyzer.composer.main",
    "raw": "spec.get",
-   "line": 414
+   "line": 421
   },
   {
    "from": "analyzer.composer.find_segment_source",
@@ -4758,6 +4829,13 @@
    "from": "analyzer.composer._exec_ops",
    "raw": "print",
    "line": 258
+  },
+  {
+   "from": "analyzer.composer.compose_from_spec",
+   "raw": "_url_ext",
+   "line": 301,
+   "to": "analyzer.composer._url_ext",
+   "resolved": true
   },
   {
    "from": "analyzer.composer._synthesize_pose_segment",
@@ -9612,26 +9690,26 @@
    "line": 25
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "FaceComparator",
-   "line": 129,
+   "line": 196,
    "to": "experiments.metrics.FaceComparator",
    "resolved": true
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "sorted",
-   "line": 132
+   "line": 199
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "print",
-   "line": 143
+   "line": 210
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "sys.exit",
-   "line": 144
+   "line": 211
   },
   {
    "from": "experiments.metrics.FaceComparator.__init__",
@@ -9744,19 +9822,39 @@
    "line": 114
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "cv2.VideoCapture",
+   "line": 143
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "cap.release",
+   "line": 154
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "Path",
+   "line": 158
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "self._sample",
+   "line": 161
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "raw_root.iterdir",
-   "line": 132
+   "line": 199
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "cmp_.score",
-   "line": 136
+   "line": 203
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "r.get",
-   "line": 137
+   "line": 204
   },
   {
    "from": "experiments.metrics.FaceComparator.__init__",
@@ -9874,14 +9972,76 @@
    "line": 121
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
-   "raw": "int",
-   "line": 139
+   "from": "experiments.metrics.VideoComparator.__init__",
+   "raw": "FaceComparator",
+   "line": 139,
+   "to": "experiments.metrics.FaceComparator",
+   "resolved": true
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "str",
+   "line": 143
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "int",
+   "line": 144
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "set",
+   "line": 147
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "cap.set",
+   "line": 149
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "cap.read",
+   "line": 150
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "self.face.largest_face",
+   "line": 168
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "self.face.embed",
+   "line": 171
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "float",
+   "line": 176
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "float",
+   "line": 178
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 183
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "round",
+   "line": 187
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "int",
+   "line": 206
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "print",
-   "line": 140
+   "line": 207
   },
   {
    "from": "experiments.metrics",
@@ -9954,14 +10114,69 @@
    "line": 120
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
-   "raw": "c0.exists",
-   "line": 134
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "cap.get",
+   "line": 144
   },
   {
-   "from": "experiments.metrics.FaceComparator.score",
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "round",
+   "line": 145
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "got.add",
+   "line": 153
+  },
+  {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "sorted",
+   "line": 155
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "path.suffix.lower",
+   "line": 159
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "path.suffix.lower",
+   "line": 159
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "cosines.append",
+   "line": 175
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "range",
+   "line": 180
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 184
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "round",
+   "line": 185
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "round",
+   "line": 188
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "c0.exists",
+   "line": 201
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
    "raw": "c1.exists",
-   "line": 134
+   "line": 201
   },
   {
    "from": "experiments.metrics.FaceComparator.largest_face",
@@ -9984,6 +10199,31 @@
    "line": 58
   },
   {
+   "from": "experiments.metrics.VideoComparator._sample",
+   "raw": "range",
+   "line": 145
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "self.face.cosine",
+   "line": 175
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 180
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "sum",
+   "line": 187
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 187
+  },
+  {
    "from": "experiments.metrics.FaceComparator.largest_face",
    "raw": "int",
    "line": 49
@@ -9997,6 +10237,41 @@
    "from": "experiments.metrics.FaceComparator.largest_face",
    "raw": "np.argmax",
    "line": 54
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "cv2.Laplacian",
+   "line": 176
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "np.abs",
+   "line": 178
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "sum",
+   "line": 185
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 185
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "sum",
+   "line": 188
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "len",
+   "line": 188
+  },
+  {
+   "from": "experiments.metrics.VideoComparator.score",
+   "raw": "cv2.cvtColor",
+   "line": 176
   },
   {
    "from": "experiments.rh_task.load_api_key",
@@ -10818,148 +11093,153 @@
   {
    "from": "experiments.runner.show",
    "raw": "store.connect",
-   "line": 325,
+   "line": 387,
    "to": "kb.store.connect",
    "resolved": true
   },
   {
    "from": "experiments.runner.show",
    "raw": "ensure_experiment_columns",
-   "line": 326,
+   "line": 388,
    "to": "experiments.runner.ensure_experiment_columns",
    "resolved": true
   },
   {
    "from": "experiments.runner.show",
    "raw": "conn.close",
-   "line": 328
+   "line": 390
   },
   {
    "from": "experiments.runner.show",
    "raw": "dict",
-   "line": 331
+   "line": 393
   },
   {
    "from": "experiments.runner.main",
    "raw": "argparse.ArgumentParser",
-   "line": 337
+   "line": 399
   },
   {
    "from": "experiments.runner.main",
    "raw": "ap.add_subparsers",
-   "line": 339
+   "line": 401
   },
   {
    "from": "experiments.runner.main",
    "raw": "sub.add_parser",
-   "line": 341
+   "line": 403
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_in.add_argument",
-   "line": 342
+   "line": 404
   },
   {
    "from": "experiments.runner.main",
    "raw": "sub.add_parser",
-   "line": 344
+   "line": 406
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 345
+   "line": 407
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 346
+   "line": 408
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 347
+   "line": 409
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 350
+   "line": 412
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 352
+   "line": 414
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 354
+   "line": 416
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 355
+   "line": 417
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 356
+   "line": 418
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 357
+   "line": 419
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 358
+   "line": 420
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 359
+   "line": 421
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_run.add_argument",
-   "line": 360
+   "line": 422
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "p_run.add_argument",
+   "line": 424
   },
   {
    "from": "experiments.runner.main",
    "raw": "sub.add_parser",
-   "line": 363
+   "line": 428
   },
   {
    "from": "experiments.runner.main",
    "raw": "p_show.add_argument",
-   "line": 364
+   "line": 429
   },
   {
    "from": "experiments.runner.main",
    "raw": "ap.parse_args",
-   "line": 366
+   "line": 431
   },
   {
    "from": "experiments.runner.main",
    "raw": "ExperimentRunner",
-   "line": 383,
+   "line": 448,
    "to": "experiments.runner.ExperimentRunner",
    "resolved": true
   },
   {
    "from": "experiments.runner.main",
    "raw": "runner.run",
-   "line": 384
+   "line": 449
   },
   {
    "from": "experiments.runner.main",
    "raw": "result.get",
-   "line": 388
+   "line": 453
   },
   {
    "from": "experiments.runner.main",
    "raw": "sys.exit",
-   "line": 397
+   "line": 462
   },
   {
    "from": "experiments.runner.load_api_inputs",
@@ -11050,122 +11330,122 @@
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "store.connect",
-   "line": 148,
+   "line": 149,
    "to": "kb.store.connect",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "ensure_experiment_columns",
-   "line": 149,
+   "line": 150,
    "to": "experiments.runner.ensure_experiment_columns",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "get_workflow",
-   "line": 150,
+   "line": 151,
    "to": "experiments.runner.get_workflow",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "Path",
-   "line": 151
+   "line": 152
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "load_api_inputs",
-   "line": 152,
+   "line": 153,
    "to": "experiments.runner.load_api_inputs",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "parse_field",
-   "line": 159,
+   "line": 160,
    "to": "experiments.runner.parse_field",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "image_map.items",
-   "line": 178
+   "line": 180
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.execute",
-   "line": 196
+   "line": 198
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.execute",
-   "line": 204
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "conn.commit",
    "line": 206
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.commit",
+   "line": 208
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "results.items",
-   "line": 248
+   "line": 310
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.execute",
-   "line": 301
+   "line": 363
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.commit",
-   "line": 303
+   "line": 365
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.close",
-   "line": 319
+   "line": 381
   },
   {
    "from": "experiments.runner.show",
    "raw": "SystemExit",
-   "line": 330
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
-   "line": 371
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
-   "line": 372
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
-   "line": 380
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
-   "line": 389
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
-   "line": 390
-  },
-  {
-   "from": "experiments.runner.main",
-   "raw": "print",
    "line": 392
   },
   {
    "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 436
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 437
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 445
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 454
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 455
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "print",
+   "line": 457
+  },
+  {
+   "from": "experiments.runner.main",
    "raw": "main",
-   "line": 397,
+   "line": 462,
    "to": "experiments.runner.main",
    "resolved": true
   },
@@ -11229,57 +11509,47 @@
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "SystemExit",
-   "line": 129
+   "line": 130
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 131
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "SystemExit",
    "line": 132
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "SystemExit",
-   "line": 134
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "str",
-   "line": 139
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "pairs.append",
-   "line": 144
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 145
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 145
+   "line": 133
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "SystemExit",
+   "line": 135
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "str",
+   "line": 140
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "pairs.append",
+   "line": 145
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
    "line": 146
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "api_inputs.get",
-   "line": 153
+   "raw": "len",
+   "line": 146
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "api_inputs.get",
-   "line": 153
+   "raw": "SystemExit",
+   "line": 147
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
@@ -11288,124 +11558,154 @@
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "conn.close",
-   "line": 156
+   "raw": "api_inputs.get",
+   "line": 154
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "SystemExit",
+   "raw": "api_inputs.get",
+   "line": 155
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.close",
    "line": 157
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "SystemExit",
+   "line": 158
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "kv_arg",
-   "line": 162,
+   "line": 163,
    "to": "experiments.runner.kv_arg",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "kv_arg",
-   "line": 166,
+   "line": 167,
    "to": "experiments.runner.kv_arg",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.close",
-   "line": 172
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "SystemExit",
    "line": 173
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "SystemExit",
+   "line": 174
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 188
+   "line": 190
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "build_node_info",
-   "line": 209,
+   "line": 211,
    "to": "experiments.runner.build_node_info",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.execute",
-   "line": 212
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "conn.commit",
-   "line": 213
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "conn.close",
    "line": 214
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.commit",
+   "line": 215
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.close",
+   "line": 216
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "print",
-   "line": 221
+   "line": 223
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "FaceComparator",
-   "line": 246
+   "raw": "VideoComparator",
+   "line": 255
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "res.get",
-   "line": 249
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "list",
-   "line": 279
+   "raw": "results.items",
+   "line": 257
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.execute",
-   "line": 313
+   "line": 300
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "conn.commit",
-   "line": 318
+   "line": 302
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "FaceComparator",
+   "line": 308
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "res.get",
+   "line": 311
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "list",
+   "line": 341
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.execute",
+   "line": 375
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.commit",
+   "line": 380
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 321
+   "line": 383
   },
   {
    "from": "experiments.runner.show",
    "raw": "conn.execute",
-   "line": 327
+   "line": 389
   },
   {
    "from": "experiments.runner.main",
    "raw": "ai.get",
-   "line": 373
+   "line": 438
   },
   {
    "from": "experiments.runner.main",
    "raw": "print",
-   "line": 374
+   "line": 439
   },
   {
    "from": "experiments.runner.main",
    "raw": "json.dumps",
-   "line": 380
+   "line": 445
   },
   {
    "from": "experiments.runner.main",
    "raw": "a.strip",
-   "line": 385
+   "line": 450
   },
   {
    "from": "experiments.runner",
@@ -11430,37 +11730,25 @@
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 133
+   "line": 134
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "a.split",
-   "line": 141
+   "line": 142
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "parse_field",
-   "line": 163,
+   "line": 164,
    "to": "experiments.runner.parse_field",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "parse_field",
-   "line": 167,
+   "line": 168,
    "to": "experiments.runner.parse_field",
-   "resolved": true
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "print",
-   "line": 182
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "task_api.upload_file",
-   "line": 183,
-   "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
@@ -11470,119 +11758,71 @@
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "task_api.upload_file",
+   "line": 185,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "print",
+   "line": 186
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "json.dumps",
-   "line": 200
+   "line": 202
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 205
+   "line": 207
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "task_api.run_webapp",
-   "line": 224,
+   "line": 226,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "print",
-   "line": 226
+   "line": 228
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "time.time",
-   "line": 227
+   "line": 229
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "task_api.wait_task",
-   "line": 228,
+   "line": 230,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "task_api.collect_file_urls",
-   "line": 231,
+   "line": 233,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "enumerate",
-   "line": 235
+   "line": 238
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "print",
-   "line": 237
+   "line": 245
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "self.cmp.score",
-   "line": 256
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "scores.append",
-   "line": 257
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 259
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 259
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "max",
-   "line": 261
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "round",
-   "line": 262
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "metrics.items",
-   "line": 274
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 277
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 277
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "ok_arms.values",
-   "line": 279
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "max",
-   "line": 280
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "min",
-   "line": 280
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "m.get",
-   "line": 281
+   "raw": "res.get",
+   "line": 258
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
@@ -11601,117 +11841,319 @@
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "json.dumps",
-   "line": 302
+   "raw": "str",
+   "line": 305
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "conn.execute",
-   "line": 307
+   "raw": "self.cmp.score",
+   "line": 318
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "scores.append",
+   "line": 319
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 309
+   "line": 321
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 321
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "max",
+   "line": 323
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "round",
+   "line": 324
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "metrics.items",
+   "line": 336
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 339
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 339
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "ok_arms.values",
+   "line": 341
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "max",
+   "line": 342
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "min",
+   "line": 342
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 343
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 349
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "max",
+   "line": 350
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "min",
+   "line": 351
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "json.dumps",
+   "line": 364
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "conn.execute",
+   "line": 369
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 371
   },
   {
    "from": "experiments.runner.main",
    "raw": "ExperimentRunner",
-   "line": 369,
+   "line": 434,
    "to": "experiments.runner.ExperimentRunner",
    "resolved": true
   },
   {
    "from": "experiments.runner.main",
    "raw": "show",
-   "line": 380,
+   "line": 445,
    "to": "experiments.runner.show",
    "resolved": true
   },
   {
    "from": "experiments.runner.main",
    "raw": "args.arms.split",
-   "line": 385
+   "line": 450
   },
   {
    "from": "experiments.runner.main",
    "raw": "json.dumps",
-   "line": 389
+   "line": 454
   },
   {
    "from": "experiments.runner.main",
    "raw": "json.dumps",
-   "line": 392
+   "line": 457
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "list",
-   "line": 170
+   "line": 171
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "fixed_map.items",
-   "line": 190
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "image_map.items",
-   "line": 191
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "uploads.items",
    "line": 192
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "image_map.items",
+   "line": 193
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "uploads.items",
+   "line": 194
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "re.search",
+   "line": 240
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "local_files.append",
-   "line": 236
+   "line": 244
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 238
+   "line": 246
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 238
+   "line": 246
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "print",
-   "line": 241
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "s.get",
-   "line": 258
+   "line": 249
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 263
+   "line": 273
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "round",
-   "line": 265
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "m.get",
+   "raw": "len",
    "line": 274
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "metrics.values",
-   "line": 281
+   "raw": "round",
+   "line": 276
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "min",
+   "line": 277
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "round",
+   "line": 279
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "metrics.items",
+   "line": 284
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
    "line": 294
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "json.dumps",
+   "line": 301
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "s.get",
+   "line": 320
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 325
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "round",
+   "line": 327
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 336
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "metrics.values",
+   "line": 343
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 356
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 360
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 360
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "any",
+   "line": 360
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 133
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "image_map.values",
+   "line": 171
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "re.search",
+   "line": 235
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "task_api.download",
+   "line": 244,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "out.get",
+   "line": 246
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "str",
+   "line": 247
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "str",
+   "line": 250
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "vcmp.score",
+   "line": 265
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "s.get",
+   "line": 272
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 285
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "json.dumps",
+   "line": 295
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
@@ -11730,110 +12172,128 @@
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "sum",
+   "line": 324
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 132
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "image_map.values",
-   "line": 170
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "re.search",
-   "line": 232
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "task_api.download",
-   "line": 236,
-   "to": "experiments.rh_task.download",
-   "resolved": true
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "out.get",
-   "line": 238
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "str",
-   "line": 239
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "str",
-   "line": 242
+   "line": 324
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "sum",
-   "line": 262
+   "line": 326
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 262
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "sum",
-   "line": 264
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 264
+   "line": 326
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "m.get",
-   "line": 282
+   "line": 344
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "json.dumps",
-   "line": 295
+   "line": 357
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "map",
-   "line": 311
+   "line": 373
   },
   {
    "from": "experiments.runner.main",
    "raw": "ai.get",
-   "line": 372
+   "line": 437
   },
   {
    "from": "experiments.runner.main",
    "raw": "ai.get",
-   "line": 372
+   "line": 437
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "print",
-   "line": 230
+   "line": 232
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 237
+   "line": 245
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "str",
-   "line": 242
+   "line": 250
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "vcmp.score",
+   "line": 267
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "s.get",
+   "line": 271
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "sum",
+   "line": 276
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 283
+   "line": 276
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "sum",
+   "line": 279
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 279
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 345
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "next",
-   "line": 283
+   "line": 345
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "r.get",
+   "line": 361
+  },
+  {
+   "from": "experiments.runner.main",
+   "raw": "str",
+   "line": 441
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "time.time",
+   "line": 245
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "s.get",
+   "line": 271
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "metrics.items",
+   "line": 293
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
@@ -11841,49 +12301,44 @@
    "line": 299
   },
   {
-   "from": "experiments.runner.main",
-   "raw": "str",
-   "line": 376
-  },
-  {
-   "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "time.time",
-   "line": 237
-  },
-  {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "sum",
-   "line": 266
+   "line": 328
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "len",
-   "line": 267
+   "line": 329
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "iter",
-   "line": 283
+   "line": 345
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "results.values",
-   "line": 299
+   "line": 361
   },
   {
    "from": "experiments.runner.main",
    "raw": "n.get",
-   "line": 376
+   "line": 441
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "sum",
-   "line": 285
+   "raw": "m.group",
+   "line": 241
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
-   "raw": "len",
-   "line": 285
+   "raw": "m.group",
+   "line": 243
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 293
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
@@ -11897,13 +12352,48 @@
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "results.values",
+   "line": 299
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "sum",
+   "line": 347
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "len",
+   "line": 347
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 358
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "metrics.items",
+   "line": 358
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
    "raw": "Path",
-   "line": 254
+   "line": 262
   },
   {
    "from": "experiments.runner.ExperimentRunner.run",
    "raw": "m.get",
    "line": 296
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "Path",
+   "line": 316
+  },
+  {
+   "from": "experiments.runner.ExperimentRunner.run",
+   "raw": "m.get",
+   "line": 358
   },
   {
    "from": "guess_wf_api",
@@ -13828,27 +14318,22 @@
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "set",
-   "line": 173
+   "line": 174
   },
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "list",
-   "line": 174
+   "line": 175
   },
   {
    "from": "parser.graph_ops.load_graph",
    "raw": "json.loads",
-   "line": 192
+   "line": 193
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "set",
-   "line": 209
-  },
-  {
-   "from": "parser.graph_ops.extract_segment",
-   "raw": "defaultdict",
-   "line": 211
+   "line": 210
   },
   {
    "from": "parser.graph_ops.extract_segment",
@@ -13857,70 +14342,75 @@
   },
   {
    "from": "parser.graph_ops.extract_segment",
-   "raw": "set",
-   "line": 216
+   "raw": "defaultdict",
+   "line": 213
   },
   {
    "from": "parser.graph_ops.extract_segment",
-   "raw": "range",
+   "raw": "set",
    "line": 217
   },
   {
    "from": "parser.graph_ops.extract_segment",
-   "raw": "set",
-   "line": 225
+   "raw": "range",
+   "line": 218
   },
   {
    "from": "parser.graph_ops.extract_segment",
-   "raw": "range",
+   "raw": "set",
    "line": 226
   },
   {
    "from": "parser.graph_ops.extract_segment",
+   "raw": "range",
+   "line": 227
+  },
+  {
+   "from": "parser.graph_ops.extract_segment",
    "raw": "segment_ports",
-   "line": 238,
+   "line": 239,
    "to": "parser.graph_ops.segment_ports",
    "resolved": true
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "sorted",
-   "line": 239
+   "line": 240
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "next",
-   "line": 317
+   "line": 318
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "set",
-   "line": 319
+   "line": 320
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "new_edges.append",
-   "line": 332
+   "line": 333
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "new_edges.append",
-   "line": 334
+   "line": 335
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "defaultdict",
-   "line": 360
-  },
-  {
-   "from": "parser.graph_ops.to_api_format",
-   "raw": "sorted",
    "line": 361
   },
   {
    "from": "parser.graph_ops.to_api_format",
+   "raw": "sorted",
+   "line": 362
+  },
+  {
+   "from": "parser.graph_ops.to_api_format",
    "raw": "defaultdict",
-   "line": 368
+   "line": 369
   },
   {
    "from": "parser.graph_ops.load_api_format",
@@ -14017,62 +14507,57 @@
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "ValueError",
-   "line": 172
+   "line": 173
   },
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "stack.pop",
-   "line": 176
+   "line": 177
   },
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "keep.add",
-   "line": 179
+   "line": 180
   },
   {
    "from": "parser.graph_ops.load_graph",
    "raw": "p.exists",
-   "line": 190
-  },
-  {
-   "from": "parser.graph_ops.load_graph",
-   "raw": "FileNotFoundError",
    "line": 191
   },
   {
    "from": "parser.graph_ops.load_graph",
-   "raw": "p.read_text",
+   "raw": "FileNotFoundError",
    "line": 192
+  },
+  {
+   "from": "parser.graph_ops.load_graph",
+   "raw": "p.read_text",
+   "line": 193
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "ValueError",
-   "line": 208
+   "line": 209
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "set",
-   "line": 218
+   "line": 219
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "set",
-   "line": 227
+   "line": 228
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "any",
-   "line": 259
+   "line": 260
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "any",
-   "line": 268
-  },
-  {
-   "from": "parser.graph_ops.graft",
-   "raw": "dict",
-   "line": 296
+   "line": 269
   },
   {
    "from": "parser.graph_ops.graft",
@@ -14081,27 +14566,27 @@
   },
   {
    "from": "parser.graph_ops.graft",
-   "raw": "new_edges.append",
-   "line": 300
+   "raw": "dict",
+   "line": 298
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "new_edges.append",
-   "line": 302
+   "line": 301
+  },
+  {
+   "from": "parser.graph_ops.graft",
+   "raw": "new_edges.append",
+   "line": 303
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "ValueError",
-   "line": 310
+   "line": 311
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "segment.get",
-   "line": 314
-  },
-  {
-   "from": "parser.graph_ops.graft",
-   "raw": "ports.get",
    "line": 315
   },
   {
@@ -14111,23 +14596,28 @@
   },
   {
    "from": "parser.graph_ops.graft",
-   "raw": "next",
-   "line": 320
+   "raw": "ports.get",
+   "line": 317
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "next",
-   "line": 322
+   "line": 321
+  },
+  {
+   "from": "parser.graph_ops.graft",
+   "raw": "next",
+   "line": 323
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "ValueError",
-   "line": 324
+   "line": 325
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "enumerate",
-   "line": 388
+   "line": 389
   },
   {
    "from": "parser.graph_ops.load_api_format",
@@ -14182,57 +14672,57 @@
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "api.items",
-   "line": 169
+   "line": 170
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "any",
-   "line": 206
+   "line": 207
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "segment.get",
-   "line": 264
+   "line": 265
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "segment.get",
-   "line": 272
+   "line": 273
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "dict",
-   "line": 300
+   "line": 301
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "segment.get",
-   "line": 319
+   "line": 320
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "n.get",
-   "line": 378
+   "line": 379
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "n.get",
-   "line": 386
+   "line": 387
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "widget_names.get",
-   "line": 387
+   "line": 388
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "WELL_KNOWN.get",
-   "line": 387
+   "line": 388
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "str",
-   "line": 392
+   "line": 393
   },
   {
    "from": "parser.graph_ops",
@@ -14307,22 +14797,22 @@
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "isinstance",
-   "line": 181
+   "line": 182
   },
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "stack.append",
-   "line": 182
+   "line": 183
   },
   {
    "from": "parser.graph_ops.find_node",
    "raw": "n.get",
-   "line": 400
+   "line": 401
   },
   {
    "from": "parser.graph_ops.find_node",
    "raw": "type_substr.lower",
-   "line": 400
+   "line": 401
   },
   {
    "from": "parser.graph_ops.extract_segment_api",
@@ -14377,62 +14867,62 @@
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "len",
-   "line": 181
+   "line": 182
   },
   {
    "from": "parser.graph_ops.prune_to_outputs",
    "raw": "str",
-   "line": 182
+   "line": 183
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "keep.add",
-   "line": 222
-  },
-  {
-   "from": "parser.graph_ops.extract_segment",
-   "raw": "nxt.add",
    "line": 223
   },
   {
    "from": "parser.graph_ops.extract_segment",
+   "raw": "nxt.add",
+   "line": 224
+  },
+  {
+   "from": "parser.graph_ops.extract_segment",
    "raw": "keep.add",
-   "line": 231
+   "line": 232
   },
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "nxt.add",
-   "line": 232
+   "line": 233
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "segment.get",
-   "line": 261
+   "line": 262
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "needs.append",
-   "line": 266
+   "line": 267
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "segment.get",
-   "line": 270
+   "line": 271
   },
   {
    "from": "parser.graph_ops.segment_ports",
    "raw": "offers.append",
-   "line": 274
+   "line": 275
   },
   {
    "from": "parser.graph_ops.graft",
    "raw": "max",
-   "line": 293
+   "line": 294
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "str",
-   "line": 385
+   "line": 386
   },
   {
    "from": "parser.graph_ops.graft_api",
@@ -14447,12 +14937,12 @@
   {
    "from": "parser.graph_ops.extract_segment",
    "raw": "a.lower",
-   "line": 206
+   "line": 207
   },
   {
    "from": "parser.graph_ops.to_api_format",
    "raw": "len",
-   "line": 389
+   "line": 390
   },
   {
    "from": "parser.graph_ops.graft_api",

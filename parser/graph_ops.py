@@ -163,7 +163,8 @@ def graft_multi(base: dict, segment: dict, rewires: list[tuple]) -> dict:
     return out
 
 
-def prune_to_outputs(api: dict, output_classes: tuple = ("SaveImage",)) -> dict:
+def prune_to_outputs(api: dict, output_classes: tuple = ("SaveImage", "SaveVideo",
+                                                         "VHS_VideoCombine")) -> dict:
     """Keep only nodes backward-reachable from output nodes (drops previews,
     UI helpers like rgthree bypassers, dead branches)."""
     sinks = [nid for nid, spec in api.items()

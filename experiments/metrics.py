@@ -122,6 +122,73 @@ class FaceComparator:
         }
 
 
+VIDEO_EXTS = {".mp4", ".webm", ".avi", ".mov", ".mkv", ".gif"}
+
+
+class VideoComparator:
+    """Intra-video quality metrics (no external reference needed).
+
+    Samples up to `n_frames` evenly spaced frames and reports:
+      - identity_stability: mean cosine of each frame's largest face vs the
+        first frame's face (>=0.363 = same person across the video)
+      - sharpness: mean Laplacian variance of sampled frames
+      - motion: mean abs diff between consecutive sampled frames (temporal change)
+    """
+
+    def __init__(self, face: "FaceComparator | None" = None, n_frames: int = 5):
+        self.face = face or FaceComparator()
+        self.n_frames = n_frames
+
+    def _sample(self, path: Path) -> list[np.ndarray]:
+        cap = cv2.VideoCapture(str(path))
+        total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or 0
+        idxs = ([round(i * (total - 1) / (self.n_frames - 1)) for i in range(self.n_frames)]
+                if total > 1 else [0])
+        frames, got = {}, set()
+        for i in idxs:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, i)
+            ok, frame = cap.read()
+            if ok:
+                frames[i] = frame
+                got.add(i)
+        cap.release()
+        return [frames[i] for i in sorted(got)]
+
+    def score(self, path: str | Path) -> dict:
+        path = Path(path)
+        if path.suffix.lower() not in VIDEO_EXTS and path.suffix.lower() != ".webp":
+            return {"video_ok": False, "error": f"not a video: {path.name}"}
+        frames = self._sample(path)
+        if not frames:
+            return {"video_ok": False, "error": "no decodable frames"}
+        # identity stability vs first frame's face
+        ref_emb = None
+        cosines = []
+        for f in frames:
+            face = self.face.largest_face(f)
+            if face is None:
+                continue
+            emb = self.face.embed(face)
+            if ref_emb is None:
+                ref_emb = emb
+            else:
+                cosines.append(self.face.cosine(ref_emb, emb))
+        sharp = [float(cv2.Laplacian(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY),
+                                     cv2.CV_64F).var()) for f in frames]
+        motion = [float(np.abs(frames[i].astype(np.int16)
+                              - frames[i - 1].astype(np.int16)).mean())
+                  for i in range(1, len(frames))]
+        return {
+            "video_ok": True,
+            "n_frames_sampled": len(frames),
+            "face_frames": len(cosines) + (1 if ref_emb is not None else 0),
+            "identity_stability": (round(sum(cosines) / len(cosines), 4)
+                                   if cosines else None),
+            "sharpness": round(sum(sharp) / len(sharp), 1),
+            "motion": round(sum(motion) / len(motion), 2) if motion else None,
+        }
+
+
 if __name__ == "__main__":
     # self-test: compare the first two covers of every raw dir that has both
     import sys

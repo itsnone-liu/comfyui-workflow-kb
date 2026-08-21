@@ -124,7 +124,8 @@ class ExperimentRunner:
     def run(self, workflow_id: str, var_field: str, arms: list[str],
             image_args: list[str], fixed_args: list[str], ref_path: str = "",
             name: str = "", poll: float = 10.0, max_wait: float = 1500.0,
-            dry_run: bool = False, max_arms: int = MAX_ARMS_DEFAULT) -> dict:
+            dry_run: bool = False, max_arms: int = MAX_ARMS_DEFAULT,
+            video_mode: bool = False) -> dict:
         if not self.key and not dry_run:
             raise SystemExit("no api key: set RH_API_KEY or create .rh_apikey "
                              "(https://www.runninghub.ai personal center -> API)")
@@ -166,12 +167,13 @@ class ExperimentRunner:
             k, v = kv_arg(arg)
             fixed_map[parse_field(k)] = v
 
-        # reference image for identity metric
+        # reference image for identity metric (not needed in --video mode)
         ref_local = ref_path or (list(image_map.values())[0] if image_map else "")
-        if not ref_local and not dry_run:
+        if not ref_local and not dry_run and not video_mode:
             conn.close()
             raise SystemExit("identity metric needs a reference face: --ref path.jpg "
-                             "or at least one --image nodeId.field=path.jpg")
+                             "or at least one --image nodeId.field=path.jpg "
+                             "(or pass --video for intra-video metrics)")
 
         # upload images once (shared across arms)
         uploads: dict[tuple[str, str], str] = {}
@@ -229,11 +231,17 @@ class ExperimentRunner:
                                          base=self.base,
                                          on_progress=lambda tid, st: print(f"[task] {st}"))
                 urls = task_api.collect_file_urls(out)
-                img_urls = [u for u in urls if re.search(r"\.(png|jpe?g|webp)(\?|$)", u, re.I)]
+                img_urls = [u for u in urls
+                            if re.search(r"\.(png|jpe?g|webp|mp4|webm|gif|avi|mov|mkv)(\?|$)", u, re.I)]
                 arm_dir = exp_dir / f"arm_{arm}"
                 local_files = []
                 for i, u in enumerate(img_urls):
-                    local_files.append(task_api.download(u, arm_dir / f"out_{i:02d}.png"))
+                    ext = ".png"
+                    m = re.search(r"\.(\w{3,4})(\?|$)", u, re.I)
+                    if m and m.group(1).lower() in ("mp4", "webm", "gif", "webp",
+                                                    "avi", "mov", "mkv", "jpg", "jpeg"):
+                        ext = "." + m.group(1).lower()
+                    local_files.append(task_api.download(u, arm_dir / f"out_{i:02d}{ext}"))
                 print(f"[task] done in {time.time()-t0:.0f}s, {len(img_urls)} outputs")
                 results[str(arm)] = {"task_id": task_id, "state": str(out.get("taskState")),
                                      "outputs": [str(f) for f in local_files]}
@@ -242,6 +250,60 @@ class ExperimentRunner:
                 results[str(arm)] = {"task_id": task_id, "error": str(exc)[:300]}
 
         # metrics
+        if video_mode:
+            from experiments.metrics import VideoComparator
+            vcmp = VideoComparator()
+            metrics: dict[str, dict] = {}
+            for arm, res in results.items():
+                if res.get("error"):
+                    metrics[arm] = {"error": res["error"]}
+                    continue
+                vids = [f for f in res["outputs"]
+                        if Path(f).suffix.lower() in {".mp4", ".webm", ".gif",
+                                                      ".avi", ".mov", ".mkv"}]
+                if vids:
+                    scores = [vcmp.score(f) for f in vids]
+                elif res["outputs"]:
+                    scores = [vcmp.score(res["outputs"][0])]
+                else:
+                    scores = []
+                stabs = [s["identity_stability"] for s in scores
+                         if s.get("video_ok") and s.get("identity_stability") is not None]
+                sharps = [s["sharpness"] for s in scores if s.get("video_ok")]
+                entry = {"n_videos": len(vids),
+                         "n_face_videos": len(stabs)}
+                if stabs:
+                    entry["stability_mean"] = round(sum(stabs) / len(stabs), 4)
+                    entry["stability_min"] = min(stabs)
+                if sharps:
+                    entry["sharpness_mean"] = round(sum(sharps) / len(sharps), 1)
+                if scores and not scores[0].get("video_ok"):
+                    entry["note"] = scores[0].get("error", "?")
+                metrics[arm] = entry
+            # verdict on stability
+            ok_arms = {a: m["stability_mean"] for a, m in metrics.items()
+                       if m.get("stability_mean") is not None}
+            verdict = ""
+            if len(ok_arms) >= 2:
+                best = max(ok_arms, key=ok_arms.get)
+                worst = min(ok_arms, key=ok_arms.get)
+                verdict = (f"[video] var {config['var_field']}: arm {best} 帧间身份一致性最高 "
+                           f"(stab {ok_arms[best]:.3f} vs {ok_arms[worst]:.3f}); "
+                           f"清晰度: " + ", ".join(
+                               f"{a}={m.get('sharpness_mean')}" for a, m in metrics.items()))
+            elif len(metrics) >= 2:
+                verdict = "视频实验完成但指标不完整: " + json.dumps(
+                    {a: m.get("note", m.get("error", "?"))[:60] for a, m in metrics.items()},
+                    ensure_ascii=False)
+            status = "done" if len(results) == len(arms) and not any(
+                r.get("error") for r in results.values()) else "partial"
+            conn.execute("UPDATE experiments SET metrics_json=?, verdict=?, status=? WHERE id=?",
+                         (json.dumps({"arms": metrics}, ensure_ascii=False), verdict, status, exp_id))
+            conn.commit()
+            return {"experiment_id": exp_id, "status": status, "verdict": verdict,
+                    "metrics": metrics,
+                    "outputs_dir": str(exp_dir)}
+
         if self.cmp is None:
             self.cmp = FaceComparator()
         metrics: dict[str, dict] = {}
@@ -359,6 +421,9 @@ def main() -> int:
     p_run.add_argument("--domain", default="", help="https://www.runninghub.cn (default) or https://www.runninghub.ai")
     p_run.add_argument("--dry-run", action="store_true",
                        help="build payloads + write config, do NOT create tasks")
+    p_run.add_argument("--video", action="store_true",
+                       help="video metric mode: intra-video identity stability + "
+                            "sharpness (no reference image needed)")
 
     p_show = sub.add_parser("show", help="print one experiment row")
     p_show.add_argument("experiment_id", type=int)
@@ -384,7 +449,7 @@ def main() -> int:
     result = runner.run(
         args.workflow_id, args.var, [a.strip() for a in args.arms.split(",")],
         args.image, args.fixed, args.ref, args.name, args.poll, args.max_wait,
-        args.dry_run, args.max_arms)
+        args.dry_run, args.max_arms, video_mode=args.video)
     if result.get("dry_run"):
         print(json.dumps(result, ensure_ascii=False, indent=1)[:4000])
         print("\n[dry-run] payload 未创建任务。去掉 --dry-run 并确保 .rh_apikey 就绪后重跑。")

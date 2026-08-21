@@ -59,7 +59,7 @@ parser/graph_ops.py      API-format 段操作：extract_segment_api / graft_api 
 analyzer/composer.py     配方驱动组装：recipes / find-segment / compose upscale|face_detail [--run --metric]
 ```
 
-### M6-1 Composer（五个配方均已实跑验证 ✅）
+### M6-1 Composer（六个配方均已实跑验证 ✅）
 
 | 配方 | 类型 | 结果 |
 |---|---|---|
@@ -67,7 +67,8 @@ analyzer/composer.py     配方驱动组装：recipes / find-segment / compose u
 | `compose face_detail` | 段移植（9 节点 FaceDetailer+SAM+双检测器） | SUCCESS，1952×2944 |
 | `compose batch --n 4` | 参数变换（batch_size） | SUCCESS，**恰好 4 张输出** |
 | `compose bg_remove` | 段移植（2 节点 BiRefNetUltraV2 抠图段） | SUCCESS，RGBA alpha 抠图（81% 透明） |
-| `compose pose_transfer` | **多端口注入 + 跨源合成** | SUCCESS，22 节点（详见下） |
+| `compose pose_transfer` | **多端口注入 + 跨源合成** | SUCCESS，22 节点 |
+| `compose h3_boost` | **H3 加速件移植（纯 JSON 新增）** | SUCCESS，23 节点，视频正常产出 |
 
 pose_transfer 是组合能力的完整证明：
 - **多端口 graft**（graft_multi）：positive+negative 双条件边同时改道经移植段
@@ -76,6 +77,9 @@ pose_transfer 是组合能力的完整证明：
   家族匹配（FLUX base→FLUX CN）合成，union 类型自动切 "pose"
 - 教训：SD1.5 openpose CN 直接接到 FLUX conditioning 会运行时 FAILED（提交校验不拦，
   跨模型不兼容在采样时爆）——家族匹配是必须的，不是优化
+- **h3_boost 是声明式引擎的首个"零代码"配方**：`MiniMaxH3MemoryEfficientSageAttentionPatch`
+  （单输入 MODEL 口插件）从加速版流移植进无加速底座 `2090636870803103746`，
+  接线 UNET→Lora→SigmaShift→**Patch**→BasicGuider，云端 SUCCESS 出视频
 
 两类组装能力：**跨作者段移植/合成**（extract → graft → prune）与**参数化变换**（batch_size 等）。
 产物在 `data/composed/`。
@@ -86,11 +90,24 @@ transplant/pose_transplant/param/prune + metric 名），`composer.py` 退化为
 （upscale 17 / face_detail 24 / bg_remove 17 / pose 22 跨源合成同源 / batch4 同路径）。
 新增配方 = 加 JSON，不再写代码。
 
-### M5 实验引擎（exp006/010 曲线 + exp015 种子方差修正 + exp016 诊断）
+### M5 实验引擎（exp006/010/015/016/017 + **exp019 平台期复测推翻峰值论**）
 
-**denoise 完整曲线（exp006+exp010，5 点）**：0.10→0.351，0.15→0.378，0.20→0.356，
-0.30→0.328，0.35→0.329（详见 #735；exp015 后"0.15 峰值"降级为平台期波动）。
-输出在 `data/experiments/exp010/`。
+**exp019（denoise 平台期复测，#1851）——结论修正**：0.10/0.15/0.20 每点 2 次
+（固定输入，6 臂）→ 均值 **0.372 / 0.340 / 0.322**，单调递减。
+**"#735 的 0.15 峰值"不成立**——原 0.378 系种子噪声推高（exp015 已证极差 0.063）。
+修正后：身份保持随 denoise 单调下降，0.10-0.20 为平缓区，>0.30 断崖；
+实用建议：保身份取最低可用 denoise，无需迷信 0.15。
+
+**exp020/021/022（H3 步数扫描，#1852）——首个视频实验闭环**：底座
+`2085286954253791233`（唯一暴露 `124.steps` 的 H3 webapp），固定种子跨臂，
+新 `--video` 模式（VideoComparator：帧间身份一致性/清晰度/运动量，无需参考图）：
+steps 4/8/20 → 稳定性 **0.248 / 0.159 / 0.364**，清晰度 195/85/97。
+**4/8 步加速版以牺牲帧间身份稳定为代价**（4 步帧稳但模糊，8 步漂移且最糊，
+20 步满血最优）；固定种子重跑 stability 仍差 0.02（平台非完全确定性），
+清晰度几乎复现（85.0/85.1）——方差在时序不在画质。arm8 首跑 805 为瞬时故障，重复臂补齐。
+
+**denoise 完整曲线（exp006+exp010+exp019 修正版）**：0.10→0.372*，0.15→0.340*，
+0.20→0.322*（*为 2 次均值），0.30→0.328，0.35→0.329——单调下降 + >0.30 断崖。
 
 **exp015（种子稳定性，#1488）——方法学修正**：同配置同输入重跑两次 denoise=0.15
 → cos **0.339 / 0.402，极差 0.063**（臂内 std 无法算，单输出）。平台随机种子方差远超此前
