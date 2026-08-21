@@ -122,6 +122,27 @@ mcp/server.py               MCP stdio server：10 个工具（见下）
 其中 **MiniMax H3 细分专库 40 条**（`collector/batch_h3.py` 采集，`data/h3_report.md`
 细分报告：T8 原生节点族 vs RH API 封装两条路线，十个任务面，质量-成本-显存知识核心）。
 
+## Git 仓库与 CodeGraph 索引
+
+独立 git 仓库（父目录 harness 仓库不跟踪本目录）。**已入库**：全部代码/文档 +
+`data/kb.db`（3.2MB 知识库本体）+ `data/graph|cards|api_format`（解析产物）+
+`data/composed/*.api.json`（已验证的自拼图）。**已排除**（.gitignore）：`.rh_*`
+密钥与浏览器 profile、`data/raw`（782MB 原始采集，可用 collector 重采）、
+`data/models`（onnx）、实验/组合的输出图片（结论都在 kb.db）。
+
+```powershell
+git log --oneline                  # 94a52b0 init(M0-M7) → aec29ff codegraph → ...
+$env:PYTHONPATH=''
+& "...\python.exe" analyzer\codegraph.py index     # 重建索引（改代码后）
+& "...\python.exe" analyzer\codegraph.py stats     # 模块/def/热点（fan-in 榜）
+& "...\python.exe" analyzer\codegraph.py query graft_api    # 符号 + 1 跳调用者/被调
+& "...\python.exe" analyzer\codegraph.py tree      # 模块/def 树
+& "...\python.exe" analyzer\codegraph.py dot       # 模块导入图 (graphviz)
+```
+
+索引产物：`data/codegraph.json`（50 模块 / 173 defs / 2816 调用点，别名感知解析
+`go.graft_api → parser.graph_ops.graft_api`）+ `data/codegraph_modules.dot`。
+
 ### MCP 工具（`mcp/server.py`，已注册到 DSH web profile，名为 `comfyui_kb`）
 
 | 工具 | 作用 |
