@@ -147,6 +147,13 @@ WORKFLOWS: dict[str, dict] = {
                 "基准) — Flux2KleinColorAnchor x2 + RefLatentController, 治换脸后"
                 "脸部色彩与场景不匹配",
     },
+    "reactor": {
+        "workflow_id": "_reactor_single",
+        "webapp_id": "",
+        "ref": "2.image", "target": "1.image",
+        "note": "自拼最小 inswapper 单图流(表情按构造保留): 1=被换脸图, 2=参考图 — "
+                "ReActorFaceSwap(inswapper_128+GFPGAN), 最佳身份+表情, 弱点色彩需后处理",
+    },
 }
 
 
@@ -177,7 +184,13 @@ def run_swap(wf_key: str, target: Path, ref: Path, tag: str = "",
     if cfg.get("api_mods") or not cfg.get("webapp_id"):
         # self-built variant: patch widget values in the API json, run as workflow
         from parser import graph_ops as go
-        api = go.load_api_format(cfg["workflow_id"], fetch=True)
+        wf_id = cfg["workflow_id"]
+        if wf_id.startswith("_"):
+            api = json.loads(
+                (ROOT / f"data/api_format/{wf_id}.json").read_text(
+                    encoding="utf-8"))
+        else:
+            api = go.load_api_format(wf_id, fetch=True)
         for nid, mods in cfg.get("api_mods", {}).items():
             api[str(nid)]["inputs"].update(mods)
         tid = rh_task.run_workflow_json(key, api, node_info_list=node_info)
@@ -232,6 +245,41 @@ def run_swap(wf_key: str, target: Path, ref: Path, tag: str = "",
     except Exception as e:  # metrics optional
         metrics = {"error": str(e)}
     print("[metrics]", json.dumps(metrics, ensure_ascii=False, indent=1))
+
+    # closed-loop auto-diagnosis (mechanism v1): fire rules + suggest fixes
+    try:
+        from analyzer.auto_explore import diagnose, evaluate, commands_for
+        fam = {"instantid": "diffusion_regenerate",
+               "instantid_cfg": "diffusion_regenerate",
+               "instantid_expr": "diffusion_regenerate",
+               "instantid_ref": "diffusion_regenerate",
+               "instantid_ref18": "diffusion_regenerate",
+               "instantid_d85": "diffusion_regenerate",
+               "instantid_max": "diffusion_regenerate",
+               "swap_full": "diffusion_regenerate",
+               "maskflux": "diffusion_regenerate",
+               "pulid_flux": "diffusion_regenerate",
+               "qwen_swap": "instruction",
+               "qwen_edit": "instruction",
+               "icfg_klein": "klein",
+               "reactor": "inswapper"}.get(wf_key, "diffusion_regenerate")
+        print("[auto-explore] closed-loop diagnosis:")
+        for f in files:
+            ev = evaluate(Path(f), target, ref, fam, vl=True)
+            ev["fired"] = diagnose(ev)
+            cmds = []
+            for hit in ev["fired"]:
+                cmds += commands_for(hit["candidate_ops"], ev, target, ref)
+            if ev["fired"]:
+                print(f"  {Path(f).name}: {len(ev['fired'])} rule(s) fired")
+                for hit in ev["fired"]:
+                    print(f"    [rule] {hit['rule']}")
+                for c in dict.fromkeys(cmds):
+                    print(f"    $ {c}")
+            else:
+                print(f"  {Path(f).name}: all bars passed")
+    except Exception as e:  # diagnosis optional
+        print(f"[auto-explore] skipped: {e}")
     return {"task_id": tid, "outputs": urls, "files": files,
             "metrics": metrics, "dir": str(out_dir)}
 

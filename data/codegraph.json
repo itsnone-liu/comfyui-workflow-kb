@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-22 12:05:47",
+ "generated_at": "2026-08-22 13:08:12",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -60,6 +60,35 @@
     "_hist_intersection": "swap_face"
    },
    "imported_by": []
+  },
+  "analyzer.auto_explore": {
+   "file": "analyzer\\auto_explore.py",
+   "lines": 25,
+   "doc": "auto_explore.py — closed-loop result diagnosis (mechanism v1).",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "re",
+    "sqlite3",
+    "sys",
+    "pathlib",
+    "cv2",
+    "swap_face",
+    "experiments.metrics",
+    "vl"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "sf": "swap_face",
+    "FaceComparator": "experiments.metrics",
+    "VLClient": "vl"
+   },
+   "imported_by": [
+    "swap_face"
+   ]
   },
   "analyzer.codegraph": {
    "file": "analyzer\\codegraph.py",
@@ -188,6 +217,17 @@
     "Path": "pathlib",
     "store": "kb.store"
    },
+   "imported_by": []
+  },
+  "analyzer.seed_explore_kb": {
+   "file": "analyzer\\seed_explore_kb.py",
+   "lines": 11,
+   "doc": "Seed exploration mechanism tables: diagnosis_rules + tech_families.",
+   "entry": false,
+   "imports": [
+    "sqlite3"
+   ],
+   "aliases": {},
    "imported_by": []
   },
   "analyzer.vl": {
@@ -557,6 +597,7 @@
    },
    "imported_by": [
     "_tmp_qwait",
+    "analyzer.auto_explore",
     "analyzer.color_match",
     "experiments.runner",
     "swap_face"
@@ -1067,7 +1108,10 @@
     "re",
     "parser.graph_ops",
     "cv2",
-    "experiments.metrics"
+    "experiments.metrics",
+    "analyzer.auto_explore",
+    "analyzer.auto_explore",
+    "analyzer.auto_explore"
    ],
    "aliases": {
     "annotations": "__future__",
@@ -1075,10 +1119,14 @@
     "np": "numpy",
     "rh_task": "experiments.rh_task",
     "go": "parser.graph_ops",
-    "FaceComparator": "experiments.metrics"
+    "FaceComparator": "experiments.metrics",
+    "diagnose": "analyzer.auto_explore",
+    "evaluate": "analyzer.auto_explore",
+    "commands_for": "analyzer.auto_explore"
    },
    "imported_by": [
-    "_tmp_qwait"
+    "_tmp_qwait",
+    "analyzer.auto_explore"
    ]
   },
   "test_tag_filter": {
@@ -1172,6 +1220,94 @@
   }
  },
  "defs": [
+  {
+   "id": "analyzer.auto_explore._face_tables",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "_face_tables",
+   "args": [
+    "fc",
+    "img"
+   ],
+   "line": 52,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.auto_explore.classify_faces",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "classify_faces",
+   "args": [
+    "fc",
+    "img",
+    "faces",
+    "e_ref",
+    "e_tgt"
+   ],
+   "line": 59,
+   "doc": "Return [(face, kind, ident, resid)] with kind in result/copy/render."
+  },
+  {
+   "id": "analyzer.auto_explore.evaluate",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "evaluate",
+   "args": [
+    "image",
+    "target",
+    "ref",
+    "family",
+    "vl"
+   ],
+   "line": 82,
+   "doc": "Full evaluation of one output image (result-face selected)."
+  },
+  {
+   "id": "analyzer.auto_explore._cond_ok",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "_cond_ok",
+   "args": [
+    "cond",
+    "ev"
+   ],
+   "line": 145,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.auto_explore.diagnose",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "diagnose",
+   "args": [
+    "ev"
+   ],
+   "line": 163,
+   "doc": "Fire matching diagnosis_rules + threshold breaches."
+  },
+  {
+   "id": "analyzer.auto_explore.commands_for",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "commands_for",
+   "args": [
+    "ops",
+    "ev",
+    "target",
+    "ref"
+   ],
+   "line": 199,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.auto_explore.main",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "main",
+   "args": [],
+   "line": 212,
+   "doc": ""
+  },
   {
    "id": "analyzer.codegraph.module_name",
    "kind": "function",
@@ -3487,7 +3623,7 @@
     "tag",
     "max_wait"
    ],
-   "line": 153,
+   "line": 160,
    "doc": ""
   },
   {
@@ -3499,7 +3635,7 @@
     "fc",
     "img_path"
    ],
-   "line": 239,
+   "line": 287,
    "doc": "Normalized 5-landmark geometry of the largest face (expression/pose proxy)."
   },
   {
@@ -3511,7 +3647,7 @@
     "g1",
     "g2"
    ],
-   "line": 276,
+   "line": 324,
    "doc": "Mean normalized landmark distance (0=identical geometry, ~1+ = very different)."
   },
   {
@@ -3523,7 +3659,7 @@
     "fc",
     "img_path"
    ],
-   "line": 282,
+   "line": 330,
    "doc": "HSV hue-sat histogram of the hair band (strip above the face bbox)."
   },
   {
@@ -3535,7 +3671,7 @@
     "h1",
     "h2"
    ],
-   "line": 312,
+   "line": 360,
    "doc": ""
   },
   {
@@ -3546,7 +3682,7 @@
    "args": [
     "url"
    ],
-   "line": 316,
+   "line": 364,
    "doc": ""
   },
   {
@@ -3555,7 +3691,7 @@
    "module": "swap_face",
    "name": "main",
    "args": [],
-   "line": 322,
+   "line": 370,
    "doc": ""
   },
   {
@@ -3940,6 +4076,692 @@
    "from": "_tmp_qwait",
    "raw": "u.lower",
    "line": 15
+  },
+  {
+   "from": "analyzer.auto_explore",
+   "raw": "sys.path.insert",
+   "line": 30
+  },
+  {
+   "from": "analyzer.auto_explore",
+   "raw": "sys.path.insert",
+   "line": 31
+  },
+  {
+   "from": "analyzer.auto_explore",
+   "raw": "str",
+   "line": 30
+  },
+  {
+   "from": "analyzer.auto_explore",
+   "raw": "str",
+   "line": 31
+  },
+  {
+   "from": "analyzer.auto_explore._face_tables",
+   "raw": "fc.det.setInputSize",
+   "line": 54
+  },
+  {
+   "from": "analyzer.auto_explore._face_tables",
+   "raw": "fc.det.detect",
+   "line": 55
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "FaceComparator",
+   "line": 85
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imread",
+   "line": 86
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "fc.embed",
+   "line": 89
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "fc.embed",
+   "line": 90
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "classify_faces",
+   "line": 91,
+   "to": "analyzer.auto_explore.classify_faces",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "max",
+   "line": 96
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "tmp.parent.mkdir",
+   "line": 99
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imwrite",
+   "line": 100
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_geometry",
+   "line": 101,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_geometry",
+   "line": 102,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_geometry",
+   "line": 103,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._hair_hist",
+   "line": 116,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._hair_hist",
+   "line": 117,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._hair_hist",
+   "line": 118,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "all",
+   "line": 119
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "tmp.unlink",
+   "line": 123
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "cond.strip",
+   "line": 146
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "sqlite3.connect",
+   "line": 165
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "BARS.items",
+   "line": 181
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 213
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 214
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 215
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 216
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 217
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 219
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.parse_args",
+   "line": 220
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "out.mkdir",
+   "line": 248
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "f.write_text",
+   "line": 250
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 252
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "sys.exit",
+   "line": 257
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "fc.embed",
+   "line": 65
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "float",
+   "line": 68
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "float",
+   "line": 69
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "out.append",
+   "line": 76
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 86
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "fc.largest_face",
+   "line": 89
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "fc.largest_face",
+   "line": 90
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "_face_tables",
+   "line": 91,
+   "to": "analyzer.auto_explore._face_tables",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 100
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 101
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 102
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 105
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "len",
+   "line": 106
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "len",
+   "line": 106
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 112
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 113
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 116
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 117
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 120
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 121
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "all",
+   "line": 172
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "ev.get",
+   "line": 182
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "Path",
+   "line": 221
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "Path",
+   "line": 221
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "Path",
+   "line": 224
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "evaluate",
+   "line": 229,
+   "to": "analyzer.auto_explore.evaluate",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "diagnose",
+   "line": 230,
+   "to": "analyzer.auto_explore.diagnose",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "report.append",
+   "line": 235
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 236
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 237
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "dict.fromkeys",
+   "line": 244
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "json.dumps",
+   "line": 250
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "main",
+   "line": 257,
+   "to": "analyzer.auto_explore.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "int",
+   "line": 63
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "fc.largest_face",
+   "line": 65
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "fc.cosine",
+   "line": 68
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "fc.cosine",
+   "line": 69
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 88
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imread",
+   "line": 89
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imread",
+   "line": 90
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 94
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_distance",
+   "line": 112,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_distance",
+   "line": 113,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._hist_intersection",
+   "line": 120,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._hist_intersection",
+   "line": 121,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 134
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 135
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "bool",
+   "line": 138
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "conn.execute",
+   "line": 167
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "fired.append",
+   "line": 177
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "isinstance",
+   "line": 183
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "fired.append",
+   "line": 184
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "pp.is_dir",
+   "line": 225
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "sorted",
+   "line": 225
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "commands_for",
+   "line": 233,
+   "to": "analyzer.auto_explore.commands_for",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "json.dumps",
+   "line": 237
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 241
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 245
+  },
+  {
+   "from": "analyzer.auto_explore",
+   "raw": "Path",
+   "line": 29
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "round",
+   "line": 77
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "round",
+   "line": 77
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 89
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 90
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "sf._expr_distance",
+   "line": 115,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "v.get",
+   "line": 134
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "v.get",
+   "line": 135
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "s.strip",
+   "line": 149
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "isinstance",
+   "line": 153
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "re.split",
+   "line": 171
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "_cond_ok",
+   "line": 172,
+   "to": "analyzer.auto_explore._cond_ok",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.diagnose",
+   "raw": "json.loads",
+   "line": 174
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "key.lower",
+   "line": 203
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "op.lower",
+   "line": 203
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "pp.glob",
+   "line": 225
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 243
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "int",
+   "line": 249
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "max",
+   "line": 64
+  },
+  {
+   "from": "analyzer.auto_explore.classify_faces",
+   "raw": "max",
+   "line": 64
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "VLClient",
+   "line": 128
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 141
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "cond.split",
+   "line": 149
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "val.lower",
+   "line": 154
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "float",
+   "line": 156
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "float",
+   "line": 156
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "str",
+   "line": 206
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "out.append",
+   "line": 208
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ev.items",
+   "line": 230
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "val.lower",
+   "line": 158
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ev.items",
+   "line": 237
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "str",
+   "line": 154
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "str",
+   "line": 205
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "__import__",
+   "line": 249
+  },
+  {
+   "from": "analyzer.auto_explore._cond_ok",
+   "raw": "str",
+   "line": 158
+  },
+  {
+   "from": "analyzer.auto_explore.commands_for",
+   "raw": "tmpl.replace",
+   "line": 204
   },
   {
    "from": "analyzer.codegraph.module_name",
@@ -7460,6 +8282,51 @@
    "from": "analyzer.pattern_miner.build_report",
    "raw": "map",
    "line": 328
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "sqlite3.connect",
+   "line": 95
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.executescript",
+   "line": 96
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.executemany",
+   "line": 115
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.commit",
+   "line": 121
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "print",
+   "line": 122
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "print",
+   "line": 124
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.execute",
+   "line": 119
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.execute",
+   "line": 122
+  },
+  {
+   "from": "analyzer.seed_explore_kb",
+   "raw": "conn.execute",
+   "line": 124
   },
   {
    "from": "analyzer.vl._data_url",
@@ -19333,51 +20200,19 @@
   {
    "from": "swap_face.run_swap",
    "raw": "cfg.get",
-   "line": 156
+   "line": 163
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.load_api_key",
-   "line": 158,
+   "line": 165,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "out_dir.mkdir",
-   "line": 160
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "print",
-   "line": 162
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "print",
-   "line": 163
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "print",
-   "line": 164
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "print",
-   "line": 166
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "rh_task.upload_file",
-   "line": 167,
-   "to": "experiments.rh_task.upload_file",
-   "resolved": true
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "print",
-   "line": 168
+   "line": 167
   },
   {
    "from": "swap_face.run_swap",
@@ -19386,10 +20221,8 @@
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "rh_task.upload_file",
-   "line": 170,
-   "to": "experiments.rh_task.upload_file",
-   "resolved": true
+   "raw": "print",
+   "line": 170
   },
   {
    "from": "swap_face.run_swap",
@@ -19399,313 +20232,350 @@
   {
    "from": "swap_face.run_swap",
    "raw": "print",
-   "line": 186
+   "line": 173
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.upload_file",
+   "line": 174,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 175
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 176
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.upload_file",
+   "line": 177,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 178
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 199
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.wait_task",
-   "line": 187,
+   "line": 200,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.collect_file_urls",
-   "line": 189,
+   "line": 202,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "print",
-   "line": 192
+   "line": 205
   },
   {
    "from": "swap_face.run_swap",
    "raw": "print",
-   "line": 234
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "cv2.imread",
    "line": 247
   },
   {
    "from": "swap_face._expr_geometry",
+   "raw": "cv2.imread",
+   "line": 295
+  },
+  {
+   "from": "swap_face._expr_geometry",
    "raw": "fc.det.setInputSize",
-   "line": 251
+   "line": 299
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "fc.det.detect",
-   "line": 252
+   "line": 300
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "np.array",
-   "line": 264
+   "line": 312
   },
   {
    "from": "swap_face._expr_distance",
    "raw": "float",
-   "line": 279
+   "line": 327
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "cv2.imread",
-   "line": 289
+   "line": 337
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "fc.det.setInputSize",
-   "line": 293
+   "line": 341
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "fc.det.detect",
-   "line": 294
+   "line": 342
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "cv2.cvtColor",
-   "line": 306
+   "line": 354
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "cv2.calcHist",
-   "line": 307
+   "line": 355
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "cv2.normalize",
-   "line": 308
+   "line": 356
   },
   {
    "from": "swap_face._hist_intersection",
    "raw": "float",
-   "line": 313
+   "line": 361
   },
   {
    "from": "swap_face._url_ext",
    "raw": "re.search",
-   "line": 318
+   "line": 366
   },
   {
    "from": "swap_face.main",
    "raw": "argparse.ArgumentParser",
-   "line": 323
+   "line": 371
   },
   {
    "from": "swap_face.main",
    "raw": "ap.add_argument",
-   "line": 325
+   "line": 373
   },
   {
    "from": "swap_face.main",
    "raw": "ap.add_argument",
-   "line": 326
+   "line": 374
   },
   {
    "from": "swap_face.main",
    "raw": "ap.add_argument",
-   "line": 327
+   "line": 375
   },
   {
    "from": "swap_face.main",
    "raw": "ap.add_argument",
-   "line": 330
+   "line": 378
   },
   {
    "from": "swap_face.main",
    "raw": "ap.add_argument",
-   "line": 331
+   "line": 379
   },
   {
    "from": "swap_face.main",
    "raw": "ap.parse_args",
-   "line": 332
+   "line": 380
   },
   {
    "from": "swap_face.main",
    "raw": "run_swap",
-   "line": 333,
+   "line": 381,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "swap_face.main",
    "raw": "sys.exit",
-   "line": 339
+   "line": 387
   },
   {
    "from": "swap_face.run_swap",
    "raw": "SystemExit",
-   "line": 157
+   "line": 164
   },
   {
    "from": "swap_face.run_swap",
    "raw": "cfg.get",
-   "line": 177
+   "line": 184
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "go.load_api_format",
-   "line": 180,
-   "to": "parser.graph_ops.load_api_format",
-   "resolved": true
+   "raw": "wf_id.startswith",
+   "line": 188
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.run_workflow_json",
-   "line": 183,
+   "line": 196,
    "to": "experiments.rh_task.run_workflow_json",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.run_webapp",
-   "line": 185,
+   "line": 198,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "str",
-   "line": 190
+   "line": 203
   },
   {
    "from": "swap_face.run_swap",
    "raw": "FaceComparator",
-   "line": 199
+   "line": 212
   },
   {
    "from": "swap_face.run_swap",
    "raw": "fc.embed",
-   "line": 200
+   "line": 213
   },
   {
    "from": "swap_face.run_swap",
    "raw": "fc.embed",
-   "line": 201
+   "line": 214
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_expr_geometry",
-   "line": 202,
+   "line": 215,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_expr_geometry",
-   "line": 203,
+   "line": 216,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "json.dumps",
-   "line": 234
+   "line": 247
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 266
   },
   {
    "from": "swap_face.run_swap",
    "raw": "str",
-   "line": 236
+   "line": 284
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "str",
-   "line": 247
+   "line": 295
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "int",
-   "line": 256
+   "line": 304
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "np.linalg.norm",
-   "line": 259
+   "line": 307
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "np.linalg.norm",
-   "line": 263
+   "line": 311
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "coords",
-   "line": 270
+   "line": 318
   },
   {
    "from": "swap_face._expr_geometry",
    "raw": "coords",
-   "line": 271
+   "line": 319
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "str",
-   "line": 289
+   "line": 337
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "int",
-   "line": 298
+   "line": 346
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "int",
-   "line": 299
+   "line": 347
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "int",
-   "line": 299
+   "line": 347
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "int",
-   "line": 299
+   "line": 347
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "int",
-   "line": 299
+   "line": 347
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "max",
-   "line": 301
+   "line": 349
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "min",
-   "line": 301
+   "line": 349
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "max",
-   "line": 302
+   "line": 350
   },
   {
    "from": "swap_face._hair_hist",
    "raw": "min",
-   "line": 302
+   "line": 350
   },
   {
    "from": "swap_face.main",
    "raw": "Path",
-   "line": 333
+   "line": 381
   },
   {
    "from": "swap_face.main",
    "raw": "Path",
-   "line": 333
+   "line": 381
   },
   {
    "from": "swap_face.main",
    "raw": "main",
-   "line": 339,
+   "line": 387,
    "to": "swap_face.main",
    "resolved": true
   },
@@ -19717,329 +20587,406 @@
   {
    "from": "swap_face.run_swap",
    "raw": "cfg.get",
-   "line": 177
+   "line": 184
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "json.loads",
+   "line": 189
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "go.load_api_format",
+   "line": 193,
+   "to": "parser.graph_ops.load_api_format",
+   "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "rh_task.download",
-   "line": 190,
+   "line": 203,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "enumerate",
-   "line": 191
+   "line": 204
   },
   {
    "from": "swap_face.run_swap",
    "raw": "fc.largest_face",
-   "line": 200
+   "line": 213
   },
   {
    "from": "swap_face.run_swap",
    "raw": "fc.largest_face",
-   "line": 201
+   "line": 214
   },
   {
    "from": "swap_face.run_swap",
    "raw": "fc.embed",
-   "line": 205
+   "line": 218
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_expr_geometry",
-   "line": 214,
+   "line": 227,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_hair_hist",
-   "line": 223,
+   "line": 236,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_hair_hist",
-   "line": 224,
+   "line": 237,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_hair_hist",
-   "line": 225,
+   "line": 238,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
-   "from": "swap_face._expr_geometry",
-   "raw": "len",
-   "line": 253
+   "from": "swap_face.run_swap",
+   "raw": "evaluate",
+   "line": 268
   },
   {
-   "from": "swap_face._expr_geometry",
-   "raw": "np.argmax",
-   "line": 256
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "np.array",
-   "line": 257
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "float",
-   "line": 267
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "float",
-   "line": 267
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "float",
+   "from": "swap_face.run_swap",
+   "raw": "diagnose",
    "line": 269
-  },
-  {
-   "from": "swap_face._expr_distance",
-   "raw": "np.linalg.norm",
-   "line": 278
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "len",
-   "line": 295
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "np.argmax",
-   "line": 298
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "int",
-   "line": 301
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "int",
-   "line": 301
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "int",
-   "line": 302
-  },
-  {
-   "from": "swap_face._hair_hist",
-   "raw": "int",
-   "line": 302
-  },
-  {
-   "from": "swap_face._hist_intersection",
-   "raw": "max",
-   "line": 313
-  },
-  {
-   "from": "swap_face.main",
-   "raw": "sorted",
-   "line": 327
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "cfg.get",
-   "line": 181
   },
   {
    "from": "swap_face.run_swap",
    "raw": "print",
-   "line": 188
+   "line": 282
   },
   {
-   "from": "swap_face.run_swap",
+   "from": "swap_face._expr_geometry",
    "raw": "len",
-   "line": 192
+   "line": 301
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.argmax",
+   "line": 304
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.array",
+   "line": 305
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 315
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 315
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 317
+  },
+  {
+   "from": "swap_face._expr_distance",
+   "raw": "np.linalg.norm",
+   "line": 326
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "len",
+   "line": 343
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "np.argmax",
+   "line": 346
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 349
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 349
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 350
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 350
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "max",
+   "line": 361
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "sorted",
+   "line": 375
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "cv2.imread",
-   "line": 200
+   "raw": "cfg.get",
+   "line": 194
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "cv2.imread",
+   "raw": "print",
    "line": 201
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "fc.largest_face",
+   "raw": "len",
    "line": 205
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "round",
-   "line": 210
+   "raw": "cv2.imread",
+   "line": 213
   },
   {
    "from": "swap_face.run_swap",
-   "raw": "round",
-   "line": 211
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "Path",
+   "raw": "cv2.imread",
    "line": 214
   },
   {
    "from": "swap_face.run_swap",
+   "raw": "fc.largest_face",
+   "line": 218
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 223
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 224
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 227
+  },
+  {
+   "from": "swap_face.run_swap",
    "raw": "_expr_distance",
-   "line": 216,
+   "line": 229,
    "to": "swap_face._expr_distance",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "round",
-   "line": 217
+   "line": 230
   },
   {
    "from": "swap_face.run_swap",
    "raw": "Path",
+   "line": 238
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 240
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 241
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 246
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 268
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "commands_for",
+   "line": 272
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 274
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "dict.fromkeys",
+   "line": 277
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 280
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.linalg.norm",
+   "line": 317
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "h1.sum",
+   "line": 361
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "int",
+   "line": 166
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 213
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 214
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cv2.imread",
+   "line": 218
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
+   "line": 223
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
+   "line": 224
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
    "line": 225
   },
   {
    "from": "swap_face.run_swap",
    "raw": "round",
-   "line": 227
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "round",
-   "line": 228
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "str",
-   "line": 233
-  },
-  {
-   "from": "swap_face._expr_geometry",
-   "raw": "np.linalg.norm",
-   "line": 269
-  },
-  {
-   "from": "swap_face._hist_intersection",
-   "raw": "h1.sum",
-   "line": 313
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "int",
-   "line": 159
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "str",
-   "line": 200
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "str",
-   "line": 201
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "cv2.imread",
-   "line": 205
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "fc.cosine",
-   "line": 210
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "fc.cosine",
-   "line": 211
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "fc.cosine",
-   "line": 212
-  },
-  {
-   "from": "swap_face.run_swap",
-   "raw": "round",
-   "line": 219
+   "line": 232
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_hist_intersection",
-   "line": 227,
+   "line": 240,
    "to": "swap_face._hist_intersection",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_hist_intersection",
-   "line": 228,
+   "line": 241,
    "to": "swap_face._hist_intersection",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "Path",
-   "line": 231
+   "line": 244
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 276
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 278
   },
   {
    "from": "swap_face._hist_intersection",
    "raw": "np.minimum",
-   "line": 313
+   "line": 361
   },
   {
    "from": "swap_face._url_ext",
    "raw": "m.group",
-   "line": 319
+   "line": 367
   },
   {
    "from": "swap_face.run_swap",
    "raw": "time.time",
-   "line": 159
+   "line": 166
   },
   {
    "from": "swap_face.run_swap",
    "raw": "Path",
-   "line": 207
+   "line": 220
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_expr_distance",
-   "line": 220,
+   "line": 233,
    "to": "swap_face._expr_distance",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "str",
-   "line": 182
+   "line": 195
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_url_ext",
-   "line": 190,
+   "line": 203,
    "to": "swap_face._url_ext",
    "resolved": true
   },
   {
    "from": "swap_face.run_swap",
    "raw": "_expr_distance",
-   "line": 222,
+   "line": 235,
    "to": "swap_face._expr_distance",
    "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "len",
+   "line": 274
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 274
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 280
   },
   {
    "from": "test_tag_filter",
