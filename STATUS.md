@@ -1,10 +1,64 @@
-# 进度快照 —— 2026-08-22（M0–M7 完成；git 仓库 + codegraph 索引已建 ✅）
+# 进度快照 —— 2026-08-22（M0–M9 完成；git + codegraph 已更新 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
-> gitignore，知识库本体 kb.db+graph+cards 入库）。代码结构查询：`analyzer/codegraph.py`。
+> gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
+> 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M3 + M5/M5+ + M6-0/M6-1 + M4' + 后续三项 + **M7 H3 细分** ✅
+## 当前状态：M0–M7 + **M8 换脸实战** + **M9 自主探索机制 v1** ✅
+
+### M9：自主探索机制 v1（闭环 A）✅
+
+**问题背景**：换脸测试暴露自主性缺口——色彩/表情问题靠用户目测发现，Klein/FaceFusion
+方向靠用户领域知识给出。系统只自主完成了"方向→实现"中段。
+
+**机制三层**（`53b08e4` + `1de278f`）：
+1. `analyzer/auto_explore.py`：逐脸分类（拼图安全：host-copy=resid≥0.8 /
+   ref-render=ident<0.3 / result=其余最高 ident）→ 几何+VL 双评审 → 规则匹配 →
+   候选算子+可执行命令。**已接入 `swap_face.py run_swap` 默认路径**
+2. `diagnosis_rules` 表 6 条：症状→机制假设→排序候选，全部带 evidence/status
+3. `tech_families` 表 7 族：inswapper/InstantID/PuLID-Flux/Klein/VACE/Qwen-Edit/本地算子
+   ——机制级知识（表情按构造保留 vs 扩散向均值脸松弛 vs 稠密逐帧条件）
+
+**验证**：回放旧 icfg 输出（零提示）自动复现了用户会话中的完整诊断路径（色彩+嘴形
+双规则触发→Klein/LAB/inswapper 建议）；reactor 端到端自动检出色彩弱点。
+**校准**：VL identity 打分主观偏严（cos 0.74 给 6/10）→ 身份判定权归几何 cos 0.363 线，
+VL 线降 5；VL 管几何看不见的语义维度（嘟嘴分类/色彩协调/光照方向）。
+
+### M8：换脸任务管线（端到端实战）✅
+
+**用户需求**：身份+发型跟参考图，表情跟被换图。**最终 final_v3 达标**（用户确认）。
+
+**全路线终榜**（用户真实图对，身份差 cos 0.127）：
+
+| 路线 | 身份 | 表情跟随 | 色彩/光照(VL) | 嘟嘴 | 结论 |
+|---|---|---|---|---|---|
+| instantid_cfg（扩散一阶） | 0.673 | 0.084 | 7/8 | ✗丢成微笑 | 表情向均值脸松弛 |
+| final_v2（Klein 双锚） | 0.621 | 0.064 | 8/7 | ✓ | 色彩↑身份↓ |
+| **run3 reactor（纯 inswapper）** | **0.741** | **0.032** | 7/6 | ✓ | 身份+表情双冠 |
+| **final_v3（混合管线）** | 0.720 | 0.049 | **9/8** | ✓ | **最终采纳** |
+
+final_v3 = **ReActor → Klein 单锚 → LAB 统一**。锚定次数-身份权衡实测：
+0/1/2 锚 → 身份 0.741/0.694/0.599，色彩 7/8/9。
+
+**沉淀的机制知识**（全部 verified_result 入库，共 23 条）：
+- kps-slot 耦合定律：InstantID 族身份+表情经同一槽位锁死
+- 发型-表情耦合定律：非指令路线发型与表情同源，`hair=True` mask 不迁移发型
+- 表情传递机制：扩散重生成→均值脸松弛；inswapper 按构造保留；VACE 表情是输入不是推断
+- 身份杠杆优先级：路线 > cfg > weight/denoise（后两者实测无效）
+- Klein 拼图陷阱：debug SaveImage 输出 [结果|参考] 拼图，最大脸启发式会取错（LRN-002）
+- 视频换脸表情好的机制拆解（用户提问驱动）
+
+**工具与资产**：
+- `swap_face.py`：19 预设一键流（上传→跑→逐脸评分→自动诊断→画廊）；`--wf reactor`
+  走自拼 4 节点流（`data/api_format/_reactor_single.json`，从视频流提取 ReActorFaceSwap
+  节点自拼——组合能力的直接证明）
+- `analyzer/vl.py`：Qwen-VL 客户端（dashscope，`qwen-vl-max`；`.qwen_key`）
+- `analyzer/vl_judge.py`：三图语义评审（六维+瑕疵+嘴形分类）
+- `analyzer/color_match.py`：LAB 色彩统一算子（零硬币后处理）
+- 画廊：本机 :8820（全量）、**Tailscale http://100.84.28.40:8821**（data/swap）
+- `.learnings/`：self-improvement 日志（LRN-001 dashscope 模型名 403 / LRN-002 拼图取脸 /
+  ERR-001 下载损坏 / FEAT-001~003）
 
 ### M7：MiniMax H3（海螺 Hailuo H3）细分专库 ✅（详见 `data/h3_report.md`）
 
@@ -19,11 +73,12 @@
 
 | 指标 | 值 |
 |---|---|
-| 工作流入库 | **208 条**（92 原始 + 76 定向 + **40 MiniMax H3**；全部已解析 `data/graph/`） |
+| 工作流入库 | **208 条**（92 原始 + 76 定向 + 40 MiniMax H3；全部已解析 `data/graph/`） |
 | 知识卡 | **208 张**（全覆盖；主库 geek 5★×3 4★×113 + H3 4★×31） |
-| 知识条目 | **1847 条**：fact 1027 / inference 813 / verified_result 7 |
-| patterns | **1245 条**（1165 链 + 技术 signature + 65 边界挂点；TeaCache×14 新入） |
-| 技术覆盖 | FaceAnalysis×44, Inpaint×37, Upscale×36, Kontext×24, **InstantID×20**, ControlNet×19, Florence2×17, WanVideo×17, **PuLID×16**, BiRefNet×11, VACE×11, **OpenPose×6**, FaceDetailer×6 |
+| 知识条目 | **1873+ 条**：fact/inference 若干 + **verified_result 23**（M8 换脸实证 16 条为最大增量） |
+| patterns | **1245 条**（1165 链 + 技术 signature + 65 边界挂点） |
+| 探索机制 | **diagnosis_rules 6 条 + tech_families 7 族**（M9） |
+| 技术覆盖 | FaceAnalysis×44, Inpaint×37, Upscale×36, Kontext×24+11编辑族, **InstantID×20**, ControlNet×19, Florence2×17, WanVideo×17, **PuLID×16**, BiRefNet×11, VACE×11, **OpenPose×6**, FaceDetailer×6, Klein×7, ReActor×2 |
 
 ### M4' 定向采集（完成，三渠道接力）
 
@@ -153,12 +208,12 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 ### 下一步
 
-- **H3 细分实验**（`data/h3_report.md` §5）：步数 4/8/满血扫描、量化 vs 全精度、
-  3图 vs 9图参考；视频臂成本高，先重复臂标定种子方差
-- H3 可移植段验证：把 H3 加速件（SageAttentionPatch/BlockCache/双时钟）移植到主库视频流
-- M6-1 再扩展：多段同时移植、pose 定量指标（关键点 IoU）
-- denoise 平台期三臂各重跑 2 次取均值（检验"0.15 峰值"是否成立）
-- MCP 10 工具已注册 DSH（`cordis.patch.yml` 的 `comfyui_kb`），重启 DSH 生效
+- **M10 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
+- **M11 外部研究通道**：web+Qwen 文本消化 → external_fact；**B站/C站知识源方案等用户定**
+- 夸张表情压力测试（用户待办；`swap_face.py --wf reactor` 自动诊断已就位）
+- M13 边界羽化算子（Rope 式）——若夸张表情测试放大边缘伪影则提前
+- H3 细分实验（`data/h3_report.md` §5）；MCP 10 工具已注册 DSH
+- git remote 仍未配置——用户给地址后 `git remote add + push`
 
 **关键命令**（cwd=820）：
 ```powershell
@@ -170,7 +225,19 @@ $env:PYTHONPATH=''
 ```
 
 **Token/key**：`.rh_token` 网页 token（采集用，~2026-09 中过期）；`.rh_apikey` 官方 Task API key
-（已验证可用）；`.rh_sandbox_wf` 沙箱副本 workflowId（自拼流验证用，勿删）。
+（已验证可用）；`.rh_sandbox_wf` 沙箱副本 workflowId（自拼流验证用，勿删）；
+`.qwen_key` Qwen-VL key（dashscope 国内站，模型 `qwen-vl-max`——**`-latest` 别名 403 勿用**）。
+
+**关键命令**（cwd=820，均需先 `$env:PYTHONPATH=''`）：
+```powershell
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" swap_face.py --wf reactor --target in\target.jpg --ref in\ref.jpg --tag <名>   # 一键换脸+自动诊断
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\vl_judge.py <输出图>            # 单图语义评审
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\color_match.py <图> <基准图>     # LAB 色彩统一
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\auto_explore.py <目录> --target <t> --ref <r>  # 回放诊断
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" serve_results.py --host 100.84.28.40 --port 8821 data\swap  # Tailscale 画廊
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" experiments\runner.py run <wf_id> --var <node.field> --arms a,b --image "<node.field>=<path>"
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\composer.py compose upscale --base <wf_id> --run --metric
+```
 
 ## 其他挂起事项
 
