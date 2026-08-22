@@ -1,11 +1,43 @@
-# 进度快照 —— 2026-08-22（M0–M9 完成；git + codegraph 已更新 ✅）
+# 进度快照 —— 2026-08-22（M0–M10 完成；git + codegraph 已更新 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + **M8 换脸实战** + **M9 自主探索机制 v1** ✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + **M10 Web 前端** ✅
+
+### M10：Web 前端 + 自主编排后端（v1）✅
+
+**架构**（`webapp/`，端口 8830，绑定 0.0.0.0 走 Tailscale 可达）：
+```
+webapp/orchestrator.py   任务循环线程: planning(qwen-plus 规划) -> building/running
+                         (swap_face 预设链/composer/RH) -> evaluating(auto_explore
+                         几何+VL 双评审+规则诊断) -> review(等用户反馈) ->
+                         修订(反馈分类->意图->路线切换) -> final(satisfied/limited/error)
+webapp/app.py            ThreadingHTTPServer: / 静态UI + /api/task(POST/GET) +
+                         /api/task/{id}/feedback + /api/task/{id}/workflow(下载) +
+                         /img?path=(限 data/webtasks+data/swap)
+webapp/static/index.html 零依赖前端: 需求+双图上传 -> 时间线 -> 结果图+指标 ->
+                         反馈框[修订/达标] -> 结论+机制解释+工作流 JSON 下载
+```
+
+**路线链注册表** `ROUTE_CHAINS`：hybrid_final（reactor→klein单锚→LAB，默认）/reactor_pure/
+klein_double/instantid_cfg/pulid_flux/qwen_swap/maskflux。反馈意图→路线映射：
+expression→hybrid_final、color→klein_double、identity→reactor_pure、hair→pulid_flux。
+
+**验证**（2026-08-22）：
+- 零硬币路径：缺图任务 → 规划 LLM 正确分类 face_swap → limited + 补图指引
+- 真实端到端（花硬币）：换脸任务 → reactor 执行 → 自动评审**正确触发色彩规则**
+  （vl_color_harmony≤7）→ review 态 → 结果图 HTTP 服务 464KB → 达标反馈 →
+  final：identity 0.682/expr 0.101/嘴形9 + LLM 机制解释（准确引用 inswapper
+  128 分辨率潜空间不重生成光照的机制）+ 工作流清单（含 task_id/指标/预设链）
+- 拼图安全：klein 步骤自动 extract_result_image 裁结果面板
+
+**已知边界（v1）**：kb_generic 族只跑单图 webapp；反馈修订为路线级切换
+（参数级微调在 M14）；任务态存内存+task.json 落盘（重启不恢复运行线程）。
+
+**访问**：本机 http://localhost:8830 ；Tailscale http://100.84.28.40:8830
 
 ### M9：自主探索机制 v1（闭环 A）✅
 
@@ -208,7 +240,8 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 ### 下一步
 
-- **M10 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
+- **M10b 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
+- **M14 webapp 扩展**：反馈参数级微调（锚次数/GFPGAN）、kb_generic 视频任务、任务持久化恢复
 - **M11 外部研究通道**：web+Qwen 文本消化 → external_fact；**B站/C站知识源方案等用户定**
 - 夸张表情压力测试（用户待办；`swap_face.py --wf reactor` 自动诊断已就位）
 - M13 边界羽化算子（Rope 式）——若夸张表情测试放大边缘伪影则提前
@@ -235,6 +268,7 @@ $env:PYTHONPATH=''
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\color_match.py <图> <基准图>     # LAB 色彩统一
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\auto_explore.py <目录> --target <t> --ref <r>  # 回放诊断
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" serve_results.py --host 100.84.28.40 --port 8821 data\swap  # Tailscale 画廊
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" webapp\app.py --port 8830                    # 自主构建 Web 前端(浏览器开)
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" experiments\runner.py run <wf_id> --var <node.field> --arms a,b --image "<node.field>=<path>"
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\composer.py compose upscale --base <wf_id> --run --metric
 ```

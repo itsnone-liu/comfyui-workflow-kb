@@ -160,6 +160,42 @@ def _cond_ok(cond: str, ev: dict) -> bool:
     return False  # unparsable condition
 
 
+def extract_result_image(image: Path, target: Path, ref: Path,
+                         out_path: Path | None = None) -> tuple[Path, dict]:
+    """Return the actual swap-result image, cropping composite panels.
+
+    Klein-style debug SaveImage nodes emit [result | reference] side-by-side
+    composites; this classifies every face and crops the half-panel holding
+    the result face (max ident among non-copy/non-render faces). Single-face
+    images pass through unchanged.
+    """
+    fc = FaceComparator()
+    img = cv2.imread(str(image))
+    if img is None:
+        raise ValueError(f"unreadable image: {image}")
+    e_ref = fc.embed(fc.largest_face(cv2.imread(str(ref))))
+    e_tgt = fc.embed(fc.largest_face(cv2.imread(str(target))))
+    entries = classify_faces(fc, img, _face_tables(fc, img), e_ref, e_tgt)
+    results = [e_ for e_ in entries if e_["kind"] == "result"]
+    meta = {"faces": len(entries),
+            "kinds": [e_["kind"] for e_ in entries]}
+    if len(entries) <= 1 or not results:
+        out_path = out_path or image
+        if out_path != image:
+            cv2.imwrite(str(out_path), img)
+        return out_path, meta
+    best = max(results, key=lambda e_: e_["ident"])
+    h, w = img.shape[:2]
+    panel = img[:, :w // 2] if best["bbox"][0] < w / 2 else img[:, w // 2:]
+    out_path = out_path or image.with_name(
+        image.stem + "_result" + image.suffix)
+    cv2.imwrite(str(out_path), panel)
+    meta["cropped"] = True
+    meta["picked"] = {"bbox": best["bbox"], "ident": best["ident"],
+                      "resid": best["resid"]}
+    return out_path, meta
+
+
 def diagnose(ev: dict) -> list[dict]:
     """Fire matching diagnosis_rules + threshold breaches."""
     conn = sqlite3.connect(ROOT / "data/kb.db")

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ComfyUI 自主工作流构建</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1d212b; --line:#2a2f3c;
+  --fg:#e8eaf0; --dim:#9aa3b5; --acc:#5b9dff; --ok:#3ecf8e; --warn:#e6b455;
+  --err:#ef6b6b; --chip:#232838;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;font-size:14px}
+.wrap{max-width:1080px;margin:0 auto;padding:18px}
+header{display:flex;align-items:baseline;gap:12px;padding:6px 2px 14px}
+header h1{font-size:19px;margin:0}
+header .sub{color:var(--dim);font-size:12px}
+.grid{display:grid;grid-template-columns:minmax(320px,5fr) minmax(340px,7fr);
+  gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:14px}
+.card h2{font-size:14px;margin:0 0 10px;color:var(--dim);font-weight:600;
+  letter-spacing:.4px}
+textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--fg);
+  border:1px solid var(--line);border-radius:8px;padding:10px;font-size:14px;
+  resize:vertical;font-family:inherit}
+.row{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+label.slot{display:flex;flex-direction:column;gap:6px;font-size:12px;
+  color:var(--dim);flex:1;min-width:140px}
+.slot input[type=file]{display:none}
+.slot .box{border:1px dashed var(--line);border-radius:8px;padding:12px 10px;
+  text-align:center;cursor:pointer;background:var(--panel2)}
+.slot .box.has{border-style:solid;border-color:var(--acc)}
+.slot img{max-width:100%;max-height:110px;border-radius:6px;display:block;
+  margin:0 auto}
+button{background:var(--acc);border:none;color:#fff;border-radius:8px;
+  padding:10px 18px;font-size:14px;cursor:pointer;font-family:inherit}
+button.sec{background:var(--panel2);border:1px solid var(--line);color:var(--fg)}
+button.ok{background:var(--ok)}
+button:disabled{opacity:.45;cursor:not-allowed}
+/* timeline */
+.tl{display:flex;flex-direction:column;gap:8px;max-height:270px;
+  overflow-y:auto;padding-right:4px}
+.ev{display:flex;gap:10px;font-size:13px;line-height:1.45}
+.ev .ph{flex:0 0 86px;color:var(--dim);font-size:11px;padding-top:2px;
+  text-transform:uppercase;letter-spacing:.5px}
+.ev .tx{flex:1}
+.ev .tx .th{display:flex;gap:8px;align-items:center}
+.pill{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;
+  background:var(--chip);color:var(--dim)}
+.pill.running{color:var(--acc)}
+.pill.review{color:var(--warn)}
+.pill.final-ok{color:var(--ok)}
+.pill.final-lim{color:var(--warn)}
+.pill.error{color:var(--err)}
+.thumbs{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.thumbs img{height:86px;border-radius:6px;border:1px solid var(--line);
+  cursor:pointer}
+/* results */
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px}
+.res{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  overflow:hidden}
+.res img{width:100%;display:block;cursor:zoom-in}
+.res .cap{padding:8px 10px;font-size:12px;color:var(--dim)}
+.res .cap b{color:var(--fg)}
+.bars{font-family:Consolas,monospace;font-size:11px;color:var(--dim);
+  white-space:pre-wrap;padding:0 10px 10px}
+/* verdict */
+.verdict{border-left:3px solid var(--acc);padding:10px 12px;background:
+  var(--panel2);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;
+  white-space:pre-wrap}
+.verdict.ok{border-color:var(--ok)}
+.verdict.lim{border-color:var(--warn)}
+.verdict.err{border-color:var(--err)}
+.hidden{display:none}
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;
+  align-items:center;justify-content:center;z-index:50;cursor:zoom-out}
+#lightbox img{max-width:96vw;max-height:96vh}
+.wfdl{margin-top:10px}
+code.mini{background:var(--chip);padding:1px 6px;border-radius:5px;
+  font-size:11px;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>自主工作流构建</h1>
+    <span class="sub">需求 → 检索/组合/执行 → 自动评审 → 反馈修订 → 最终工作流</span>
+  </header>
+
+  <div class="grid">
+    <!-- left: input -->
+    <div>
+      <div class="card">
+        <h2>① 任务需求</h2>
+        <textarea id="req" placeholder="例：把 target 图中人物的脸换成 ref 图中的人，
+要求身份和发型跟参考图，表情和姿势保持被换图的（包括嘟嘴）"></textarea>
+        <div class="row">
+          <label class="slot" id="slot-target">
+            <input type="file" accept="image/*" onchange="pick(this,'target')">
+            <div class="box" id="box-target">上传 target（被换脸图/底图）</div>
+          </label>
+          <label class="slot" id="slot-ref">
+            <input type="file" accept="image/*" onchange="pick(this,'ref')">
+            <div class="box" id="box-ref">上传 ref（人脸参考图，可空）</div>
+          </label>
+        </div>
+        <div class="row">
+          <button onclick="submit()">开始构建</button>
+          <span class="sub" id="hint" style="color:var(--dim);font-size:12px">
+            换脸任务需要两张图；其他任务至少 target</span>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>② 执行过程</h2>
+        <div class="tl" id="tl"><div class="ev"><div class="ph">idle</div>
+          <div class="tx">等待任务提交</div></div></div>
+      </div>
+
+      <div class="card" style="margin-top:14px" id="fbCard">
+        <h2>③ 评价反馈</h2>
+        <div id="fbBody" style="color:var(--dim);font-size:13px">
+          出图后在此评价，AI 将修订工作流</div>
+        <textarea id="fbText" class="hidden"
+          placeholder="例：脸的色彩和脖子不搭；嘟嘴没有保留；换发型跟参考图"></textarea>
+        <div class="row hidden" id="fbBtns">
+          <button class="sec" onclick="sendFeedback(false)">提交反馈，继续修订</button>
+          <button class="ok" onclick="sendFeedback(true)">达标，输出最终工作流</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: results -->
+    <div>
+      <div class="card">
+        <h2>结果 <span id="roundBadge" class="pill"></span></h2>
+        <div id="results" style="color:var(--dim)">尚无结果</div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>结论与工作流</h2>
+        <div id="verdict" style="color:var(--dim);font-size:13px">
+          任务完成后在此显示结论；不可实现时给出技术解释</div>
+        <div class="wfdl hidden" id="wfBox">
+          <a id="wfLink" href="#" download="workflow_manifest.json">
+            <button class="sec">下载最终工作流 (JSON)</button></a>
+          <div style="margin-top:8px"><code class="mini" id="wfSummary"></code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let tid=null, timer=null, state="";
+const imgs={};
+
+function pick(inp, name){
+  const f=inp.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{ imgs[name]=e.target.result;
+    const box=document.getElementById("box-"+name);
+    box.classList.add("has");
+    box.innerHTML=`<img src="${e.target.result}">`;
+  };
+  r.readAsDataURL(f);
+}
+
+async function submit(){
+  const req=document.getElementById("req").value.trim();
+  if(!req){ alert("请描述需求"); return; }
+  const body={requirement:req, images:{}};
+  for(const k in imgs) if(imgs[k]) body.images[k]=imgs[k];
+  document.getElementById("hint").textContent="提交中…";
+  const r=await fetch("/api/task",{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const j=await r.json();
+  if(!j.id){ alert("失败: "+(j.error||"?")); return; }
+  tid=j.id; state="";
+  document.getElementById("hint").textContent="任务 "+tid;
+  timer=setInterval(poll, 2000); poll();
+}
+
+const PHASE_CN={planning:"规划",build:"构建",running:"执行",eval:"评审",
+  feedback:"反馈",error:"错误"};
+
+async function poll(){
+  if(!tid) return;
+  const r=await fetch("/api/task/"+tid);
+  const t=await r.json();
+  render(t);
+  if(t.state==="final"){ clearInterval(timer); timer=null; }
+}
+
+function render(t){
+  // timeline
+  const tl=document.getElementById("tl");
+  tl.innerHTML=(t.timeline||[]).map(e=>{
+    const thumbs=(e.images||[]).map(p=>
+      `<img src="/img?path=${encodeURIComponent(p)}" onclick="lb(this.src)">`).join("");
+    return `<div class="ev"><div class="ph">${PHASE_CN[e.phase]||e.phase}</div>
+      <div class="tx"><div class="th"><span>${esc(e.detail)}</span></div>
+      ${thumbs?`<div class="thumbs">${thumbs}</div>`:""}</div></div>`;
+  }).join("")||"<div class='ev'><div class='ph'>…</div></div>";
+  tl.scrollTop=tl.scrollHeight;
+
+  // state badge + feedback panel
+  const badge=document.getElementById("roundBadge");
+  badge.textContent=`第 ${t.current_round}/${t.max_rounds} 轮 · ${stateCN(t)}`;
+  badge.className="pill "+badgeClass(t);
+  const fbText=document.getElementById("fbText"),
+        fbBtns=document.getElementById("fbBtns"),
+        fbBody=document.getElementById("fbBody");
+  if(t.state==="review"){
+    fbBody.classList.add("hidden"); fbText.classList.remove("hidden");
+    fbBtns.classList.remove("hidden");
+  } else {
+    fbBody.classList.remove("hidden"); fbText.classList.add("hidden");
+    fbBtns.classList.add("hidden");
+    fbBody.textContent= t.state==="final"?
+      "任务已结束" : "等待系统出图后评价…（当前: "+stateCN(t)+"）";
+  }
+
+  // results (latest iteration)
+  const res=document.getElementById("results");
+  const last=t.iterations&&t.iterations[t.iterations.length-1];
+  if(last){
+    res.innerHTML=`<div class="results">`+ (last.results||[]).map((p,i)=>{
+      const ev=(last.eval||{})[p]||{};
+      const bars=ev.bars?fmtBars(ev.bars):"";
+      return `<div class="res"><img src="/img?path=${encodeURIComponent(p)}"
+        onclick="lb(this.src)">
+        <div class="cap"><b>第${last.round}轮 · 结果${i+1}</b>
+        ${ev.fired&&ev.fired.length?
+          `<br>触发: ${ev.fired.slice(0,3).map(esc).join("；")}`:"<br>✓ 全部达标"}</div>
+        <div class="bars">${bars}</div></div>`;
+    }).join("")+`</div>`;
+  } else if(t.state!=="final"){
+    res.innerHTML="<span style='color:var(--dim)'>构建中…</span>";
+  }
+
+  // verdict + workflow
+  if(t.state==="final"){
+    const v=document.getElementById("verdict");
+    const cls=t.outcome==="satisfied"?"ok":(t.outcome==="error"?"err":"lim");
+    v.className="verdict "+cls;
+    v.textContent=`【${t.outcome==="satisfied"?"目标达成":
+      t.outcome==="error"?"执行错误":"现有条件下无法完全满足"}】\n`+
+      (t.explanation||"");
+    if(t.final_workflow_ready){
+      document.getElementById("wfBox").classList.remove("hidden");
+      const link=document.getElementById("wfLink");
+      link.href=`/api/task/${t.id}/workflow`;
+      document.getElementById("wfSummary").textContent=
+        wfSummary(t.final_workflow);
+    }
+  }
+}
+
+function wfSummary(wf){
+  if(wf.presets) return "链路: "+wf.presets.join(" → ");
+  if(wf.title) return "工作流: "+wf.title+" ("+wf.workflow_id+")";
+  return JSON.stringify(wf).slice(0,120);
+}
+function fmtBars(b){
+  return Object.entries(b).filter(([k])=>!k.startsWith("vl_")||true)
+    .map(([k,v])=>`${k}=${v}`).join("  ").slice(0,300);
+}
+function stateCN(t){
+  return {planning:"规划中",building:"构建工作流",running:"云端执行",
+    evaluating:"自动评审",review:"等待你的评价",final:"结束"}[t.state]||t.state;
+}
+function badgeClass(t){
+  return {review:"review",final:t.outcome==="satisfied"?"final-ok":
+    t.outcome==="error"?"error":"final-lim",
+    running:"running",building:"running",evaluating:"running"}[t.state]||"";
+}
+async function sendFeedback(accept){
+  const text=document.getElementById("fbText").value.trim();
+  if(!accept && !text){ alert("写点反馈再提交"); return; }
+  const r=await fetch(`/api/task/${tid}/feedback`,{method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({text,accept})});
+  const j=await r.json();
+  if(!j.ok){ alert("当前状态不接受反馈: "+j.state); return; }
+  if(!timer){ timer=setInterval(poll,2000); }
+}
+function lb(src){
+  const d=document.createElement("div"); d.id="lightbox";
+  d.innerHTML=`<img src="${src}">`;
+  d.onclick=()=>d.remove(); document.body.appendChild(d);
+}
+function esc(s){ return String(s??"").replace(/[&<>"]/g,
+  c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+</script>
+</body>
+</html>

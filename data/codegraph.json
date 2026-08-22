@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-22 13:11:09",
+ "generated_at": "2026-08-22 13:27:50",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -63,7 +63,7 @@
   },
   "analyzer.auto_explore": {
    "file": "analyzer\\auto_explore.py",
-   "lines": 25,
+   "lines": 26,
    "doc": "auto_explore.py — closed-loop result diagnosis (mechanism v1).",
    "entry": true,
    "imports": [
@@ -87,7 +87,8 @@
     "VLClient": "vl"
    },
    "imported_by": [
-    "swap_face"
+    "swap_face",
+    "webapp.orchestrator"
    ]
   },
   "analyzer.codegraph": {
@@ -132,7 +133,9 @@
     "np": "numpy",
     "FaceComparator": "experiments.metrics"
    },
-   "imported_by": []
+   "imported_by": [
+    "webapp.orchestrator"
+   ]
   },
   "analyzer.composer": {
    "file": "analyzer\\composer.py",
@@ -633,7 +636,8 @@
     "analyzer.composer",
     "experiments.runner",
     "parser.graph_ops",
-    "swap_face"
+    "swap_face",
+    "webapp.orchestrator"
    ]
   },
   "experiments.runner": {
@@ -1126,7 +1130,8 @@
    },
    "imported_by": [
     "_tmp_qwait",
-    "analyzer.auto_explore"
+    "analyzer.auto_explore",
+    "webapp.orchestrator"
    ]
   },
   "test_tag_filter": {
@@ -1217,6 +1222,74 @@
     "rh": "rh_client"
    },
    "imported_by": []
+  },
+  "webapp.app": {
+   "file": "webapp\\app.py",
+   "lines": 18,
+   "doc": "app.py — web frontend server for the autonomous workflow builder.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sys",
+    "urllib.parse",
+    "http.server",
+    "http.server",
+    "pathlib",
+    "orchestrator"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "BaseHTTPRequestHandler": "http.server",
+    "ThreadingHTTPServer": "http.server",
+    "Path": "pathlib",
+    "orc": "orchestrator"
+   },
+   "imported_by": []
+  },
+  "webapp.orchestrator": {
+   "file": "webapp\\orchestrator.py",
+   "lines": 34,
+   "doc": "orchestrator.py — autonomous task loop behind the web frontend.",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "re",
+    "sqlite3",
+    "threading",
+    "time",
+    "uuid",
+    "dataclasses",
+    "dataclasses",
+    "pathlib",
+    "sys",
+    "base64",
+    "cv2",
+    "vl",
+    "swap_face",
+    "analyzer.auto_explore",
+    "experiments.rh_task",
+    "analyzer.auto_explore",
+    "analyzer.auto_explore",
+    "vl",
+    "analyzer.color_match"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "dataclass": "dataclasses",
+    "field": "dataclasses",
+    "Path": "pathlib",
+    "VLClient": "vl",
+    "sf": "swap_face",
+    "extract_result_image": "analyzer.auto_explore",
+    "rh_task": "experiments.rh_task",
+    "evaluate": "analyzer.auto_explore",
+    "diagnose": "analyzer.auto_explore",
+    "color_match": "analyzer.color_match"
+   },
+   "imported_by": []
   }
  },
  "defs": [
@@ -1275,6 +1348,20 @@
    "doc": ""
   },
   {
+   "id": "analyzer.auto_explore.extract_result_image",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "extract_result_image",
+   "args": [
+    "image",
+    "target",
+    "ref",
+    "out_path"
+   ],
+   "line": 163,
+   "doc": "Return the actual swap-result image, cropping composite panels."
+  },
+  {
    "id": "analyzer.auto_explore.diagnose",
    "kind": "function",
    "module": "analyzer.auto_explore",
@@ -1282,7 +1369,7 @@
    "args": [
     "ev"
    ],
-   "line": 163,
+   "line": 199,
    "doc": "Fire matching diagnosis_rules + threshold breaches."
   },
   {
@@ -1296,7 +1383,7 @@
     "target",
     "ref"
    ],
-   "line": 199,
+   "line": 235,
    "doc": ""
   },
   {
@@ -1305,7 +1392,7 @@
    "module": "analyzer.auto_explore",
    "name": "main",
    "args": [],
-   "line": 212,
+   "line": 248,
    "doc": ""
   },
   {
@@ -3718,6 +3805,296 @@
    ],
    "line": 15,
    "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler",
+   "kind": "class",
+   "module": "webapp.app",
+   "name": "Handler",
+   "args": [
+    "BaseHTTPRequestHandler"
+   ],
+   "line": 33,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler._send",
+   "kind": "method",
+   "module": "webapp.app",
+   "name": "_send",
+   "args": [
+    "self",
+    "code",
+    "body",
+    "ctype"
+   ],
+   "line": 34,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler._json",
+   "kind": "method",
+   "module": "webapp.app",
+   "name": "_json",
+   "args": [
+    "self",
+    "obj",
+    "code"
+   ],
+   "line": 42,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler.log_message",
+   "kind": "method",
+   "module": "webapp.app",
+   "name": "log_message",
+   "args": [
+    "self",
+    "fmt"
+   ],
+   "line": 46,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler.do_GET",
+   "kind": "method",
+   "module": "webapp.app",
+   "name": "do_GET",
+   "args": [
+    "self"
+   ],
+   "line": 50,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.Handler.do_POST",
+   "kind": "method",
+   "module": "webapp.app",
+   "name": "do_POST",
+   "args": [
+    "self"
+   ],
+   "line": 97,
+   "doc": ""
+  },
+  {
+   "id": "webapp.app.main",
+   "kind": "function",
+   "module": "webapp.app",
+   "name": "main",
+   "args": [],
+   "line": 129,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.Task",
+   "kind": "class",
+   "module": "webapp.orchestrator",
+   "name": "Task",
+   "args": [],
+   "line": 80,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.Task.dir",
+   "kind": "method",
+   "module": "webapp.orchestrator",
+   "name": "dir",
+   "args": [
+    "self"
+   ],
+   "line": 100,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.Task.log",
+   "kind": "method",
+   "module": "webapp.orchestrator",
+   "name": "log",
+   "args": [
+    "self",
+    "phase",
+    "detail",
+    "images"
+   ],
+   "line": 105,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.Task.snapshot",
+   "kind": "method",
+   "module": "webapp.orchestrator",
+   "name": "snapshot",
+   "args": [
+    "self"
+   ],
+   "line": 112,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.Task.persist",
+   "kind": "method",
+   "module": "webapp.orchestrator",
+   "name": "persist",
+   "args": [
+    "self"
+   ],
+   "line": 127,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.get_task",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "get_task",
+   "args": [
+    "tid"
+   ],
+   "line": 140,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.create_task",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "create_task",
+   "args": [
+    "requirement",
+    "images_b64"
+   ],
+   "line": 144,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._llm_json",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_llm_json",
+   "args": [
+    "prompt",
+    "model"
+   ],
+   "line": 169,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.plan_task",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "plan_task",
+   "args": [
+    "task"
+   ],
+   "line": 176,
+   "doc": "Requirement -> family + route + notes (LLM + keyword floor)."
+  },
+  {
+   "id": "webapp.orchestrator.classify_feedback",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "classify_feedback",
+   "args": [
+    "task",
+    "text"
+   ],
+   "line": 210,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.route_for_feedback",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "route_for_feedback",
+   "args": [
+    "fb",
+    "task"
+   ],
+   "line": 235,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.kb_search_workflow",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "kb_search_workflow",
+   "args": [
+    "query"
+   ],
+   "line": 250,
+   "doc": "Find a runnable webapp workflow matching the query (single-image)."
+  },
+  {
+   "id": "webapp.orchestrator._exec_face_swap",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_exec_face_swap",
+   "args": [
+    "task",
+    "route"
+   ],
+   "line": 284,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._exec_kb_generic",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_exec_kb_generic",
+   "args": [
+    "task",
+    "route"
+   ],
+   "line": 332,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.evaluate_round",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "evaluate_round",
+   "args": [
+    "task",
+    "results"
+   ],
+   "line": 366,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.write_explanation",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "write_explanation",
+   "args": [
+    "task",
+    "limited"
+   ],
+   "line": 406,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._run_task",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_run_task",
+   "args": [
+    "task"
+   ],
+   "line": 431,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.submit_feedback",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "submit_feedback",
+   "args": [
+    "task",
+    "text",
+    "accept"
+   ],
+   "line": 527,
+   "doc": ""
   }
  ],
  "calls": [
@@ -4207,69 +4584,106 @@
    "line": 146
   },
   {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "FaceComparator",
+   "line": 172
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "cv2.imread",
+   "line": 173
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "fc.embed",
+   "line": 176
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "fc.embed",
+   "line": 177
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "classify_faces",
+   "line": 178,
+   "to": "analyzer.auto_explore.classify_faces",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "max",
+   "line": 187
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "cv2.imwrite",
+   "line": 192
+  },
+  {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "sqlite3.connect",
-   "line": 165
+   "line": 201
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "BARS.items",
-   "line": 181
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "argparse.ArgumentParser",
-   "line": 213
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "ap.add_argument",
-   "line": 214
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "ap.add_argument",
-   "line": 215
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "ap.add_argument",
-   "line": 216
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "ap.add_argument",
    "line": 217
   },
   {
    "from": "analyzer.auto_explore.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 249
+  },
+  {
+   "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 219
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "ap.parse_args",
-   "line": 220
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "out.mkdir",
-   "line": 248
-  },
-  {
-   "from": "analyzer.auto_explore.main",
-   "raw": "f.write_text",
    "line": 250
   },
   {
    "from": "analyzer.auto_explore.main",
-   "raw": "print",
+   "raw": "ap.add_argument",
+   "line": 251
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
    "line": 252
   },
   {
    "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 253
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.add_argument",
+   "line": 255
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "ap.parse_args",
+   "line": 256
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "out.mkdir",
+   "line": 284
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "f.write_text",
+   "line": 286
+  },
+  {
+   "from": "analyzer.auto_explore.main",
+   "raw": "print",
+   "line": 288
+  },
+  {
+   "from": "analyzer.auto_explore.main",
    "raw": "sys.exit",
-   "line": 257
+   "line": 293
   },
   {
    "from": "analyzer.auto_explore.classify_faces",
@@ -4374,73 +4788,115 @@
    "line": 121
   },
   {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "str",
+   "line": 173
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "ValueError",
+   "line": 175
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "fc.largest_face",
+   "line": 176
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "fc.largest_face",
+   "line": 177
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "_face_tables",
+   "line": 178,
+   "to": "analyzer.auto_explore._face_tables",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "len",
+   "line": 180
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "image.with_name",
+   "line": 190
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "str",
+   "line": 192
+  },
+  {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "all",
-   "line": 172
+   "line": 208
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "ev.get",
-   "line": 182
+   "line": 218
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 221
+   "line": 257
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 221
+   "line": 257
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 224
+   "line": 260
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "evaluate",
-   "line": 229,
+   "line": 265,
    "to": "analyzer.auto_explore.evaluate",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "diagnose",
-   "line": 230,
+   "line": 266,
    "to": "analyzer.auto_explore.diagnose",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "report.append",
-   "line": 235
+   "line": 271
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 236
+   "line": 272
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 237
+   "line": 273
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "dict.fromkeys",
-   "line": 244
+   "line": 280
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "json.dumps",
-   "line": 250
+   "line": 286
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "main",
-   "line": 257,
+   "line": 293,
    "to": "analyzer.auto_explore.main",
    "resolved": true
   },
@@ -4528,56 +4984,76 @@
    "line": 138
   },
   {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "cv2.imread",
+   "line": 176
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "cv2.imread",
+   "line": 177
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "len",
+   "line": 182
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "cv2.imwrite",
+   "line": 185
+  },
+  {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "conn.execute",
-   "line": 167
+   "line": 203
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "fired.append",
-   "line": 177
+   "line": 213
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "isinstance",
-   "line": 183
+   "line": 219
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "fired.append",
-   "line": 184
+   "line": 220
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "pp.is_dir",
-   "line": 225
+   "line": 261
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "sorted",
-   "line": 225
+   "line": 261
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "commands_for",
-   "line": 233,
+   "line": 269,
    "to": "analyzer.auto_explore.commands_for",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "json.dumps",
-   "line": 237
+   "line": 273
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 241
+   "line": 277
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 245
+   "line": 281
   },
   {
    "from": "analyzer.auto_explore",
@@ -4632,46 +5108,61 @@
    "line": 153
   },
   {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "str",
+   "line": 176
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "str",
+   "line": 177
+  },
+  {
+   "from": "analyzer.auto_explore.extract_result_image",
+   "raw": "str",
+   "line": 185
+  },
+  {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "re.split",
-   "line": 171
+   "line": 207
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "_cond_ok",
-   "line": 172,
+   "line": 208,
    "to": "analyzer.auto_explore._cond_ok",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "json.loads",
-   "line": 174
+   "line": 210
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "key.lower",
-   "line": 203
+   "line": 239
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "op.lower",
-   "line": 203
+   "line": 239
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "pp.glob",
-   "line": 225
+   "line": 261
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 243
+   "line": 279
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "int",
-   "line": 249
+   "line": 285
   },
   {
    "from": "analyzer.auto_explore.classify_faces",
@@ -4716,17 +5207,17 @@
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "str",
-   "line": 206
+   "line": 242
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "out.append",
-   "line": 208
+   "line": 244
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ev.items",
-   "line": 230
+   "line": 266
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
@@ -4736,7 +5227,7 @@
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ev.items",
-   "line": 237
+   "line": 273
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
@@ -4746,12 +5237,12 @@
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "str",
-   "line": 205
+   "line": 241
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "__import__",
-   "line": 249
+   "line": 285
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
@@ -4761,7 +5252,7 @@
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "tmpl.replace",
-   "line": 204
+   "line": 240
   },
   {
    "from": "analyzer.codegraph.module_name",
@@ -21561,6 +22052,1406 @@
    "from": "try_webapp_detail",
    "raw": "json.dumps",
    "line": 18
+  },
+  {
+   "from": "webapp.app",
+   "raw": "sys.path.insert",
+   "line": 23
+  },
+  {
+   "from": "webapp.app",
+   "raw": "sys.path.insert",
+   "line": 24
+  },
+  {
+   "from": "webapp.app",
+   "raw": "sys.path.insert",
+   "line": 25
+  },
+  {
+   "from": "webapp.app",
+   "raw": "str",
+   "line": 23
+  },
+  {
+   "from": "webapp.app",
+   "raw": "str",
+   "line": 24
+  },
+  {
+   "from": "webapp.app",
+   "raw": "str",
+   "line": 25
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 130
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "ap.add_argument",
+   "line": 131
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "ap.add_argument",
+   "line": 132
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "ap.parse_args",
+   "line": 133
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "ThreadingHTTPServer",
+   "line": 134
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "print",
+   "line": 135
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "srv.serve_forever",
+   "line": 136
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "sys.exit",
+   "line": 141
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.send_response",
+   "line": 35
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.send_header",
+   "line": 36
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.send_header",
+   "line": 37
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.send_header",
+   "line": 38
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.end_headers",
+   "line": 39
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "self.wfile.write",
+   "line": 40
+  },
+  {
+   "from": "webapp.app.Handler._json",
+   "raw": "self._send",
+   "line": 43
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "urllib.parse.urlparse",
+   "line": 51
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "path.startswith",
+   "line": 73
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 94
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "urllib.parse.urlparse",
+   "line": 98
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "int",
+   "line": 100
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._send",
+   "line": 126
+  },
+  {
+   "from": "webapp.app.main",
+   "raw": "main",
+   "line": 141,
+   "to": "webapp.app.main",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "str",
+   "line": 37
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 55
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "urllib.parse.parse_qs",
+   "line": 58
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "any",
+   "line": 64
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 71
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "orc.get_task",
+   "line": 75
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "path.endswith",
+   "line": 79
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
+   "line": 89
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
+   "line": 92
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self.rfile.read",
+   "line": 101
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "json.loads",
+   "line": 103
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 115
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 115
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.get_task",
+   "line": 117
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.submit_feedback",
+   "line": 121
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 123
+  },
+  {
+   "from": "webapp.app",
+   "raw": "Path",
+   "line": 22
+  },
+  {
+   "from": "webapp.app",
+   "raw": "Path",
+   "line": 29
+  },
+  {
+   "from": "webapp.app.Handler._send",
+   "raw": "len",
+   "line": 37
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 62
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 66
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "p.read_bytes",
+   "line": 71
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
+   "line": 77
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._send",
+   "line": 87
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "task.snapshot",
+   "line": 89
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self.headers.get",
+   "line": 100
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "raw.decode",
+   "line": 103
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 105
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.create_task",
+   "line": 109
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 111
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 116
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 119
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 121
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "bool",
+   "line": 122
+  },
+  {
+   "from": "webapp.app.Handler._json",
+   "raw": "json.dumps",
+   "line": 43
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "q.get",
+   "line": 59
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "p.is_file",
+   "line": 61
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "path.count",
+   "line": 74
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "path.split",
+   "line": 74
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "len",
+   "line": 92
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 109
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 113
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 122
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "str",
+   "line": 61
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "str",
+   "line": 64
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "json.dumps",
+   "line": 80
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 110
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "str",
+   "line": 61
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "str",
+   "line": 64
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 113
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "sys.path.insert",
+   "line": 31
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "sys.path.insert",
+   "line": 32
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "threading.Lock",
+   "line": 137
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "str",
+   "line": 31
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "str",
+   "line": 32
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 86
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 87
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 88
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 89
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 94
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 95
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 96
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 97
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 98
+  },
+  {
+   "from": "webapp.orchestrator.get_task",
+   "raw": "TASKS.get",
+   "line": 141
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "Task",
+   "line": 145,
+   "to": "webapp.orchestrator.Task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "images_b64.items",
+   "line": 149
+  },
+  {
+   "from": "webapp.orchestrator._llm_json",
+   "raw": "VLClient",
+   "line": 171
+  },
+  {
+   "from": "webapp.orchestrator._llm_json",
+   "raw": "vl.json",
+   "line": 172
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "fb.setdefault",
+   "line": 231
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "sqlite3.connect",
+   "line": 252
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "scored.sort",
+   "line": 264
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "enumerate",
+   "line": 292
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.log",
+   "line": 320
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "task.plan.get",
+   "line": 334
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.load_api_key",
+   "line": 337,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "task.log",
+   "line": 340
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.run_webapp",
+   "line": 349,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.wait_task",
+   "line": 350,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.collect_file_urls",
+   "line": 351,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "enumerate",
+   "line": 353
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "task.iterations.append",
+   "line": 394
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "sqlite3.connect",
+   "line": 407
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "sorted",
+   "line": 411
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "task.feedback_wait.set",
+   "line": 537
+  },
+  {
+   "from": "webapp.orchestrator.Task.dir",
+   "raw": "d.mkdir",
+   "line": 102
+  },
+  {
+   "from": "webapp.orchestrator.Task.log",
+   "raw": "self.persist",
+   "line": 110
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "base64.b64decode",
+   "line": 150
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "p.write_bytes",
+   "line": 155
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "cv2.imread",
+   "line": 156
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "str",
+   "line": 160
+  },
+  {
+   "from": "webapp.orchestrator._llm_json",
+   "raw": "isinstance",
+   "line": 173
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "_llm_json",
+   "line": 190,
+   "to": "webapp.orchestrator._llm_json",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "plan.get",
+   "line": 195
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "_llm_json",
+   "line": 217,
+   "to": "webapp.orchestrator._llm_json",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "fb.get",
+   "line": 221
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "any",
+   "line": 231
+  },
+  {
+   "from": "webapp.orchestrator.route_for_feedback",
+   "raw": "task.plan.get",
+   "line": 244
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "sum",
+   "line": 261
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "next",
+   "line": 267
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "json.loads",
+   "line": 273
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.images.get",
+   "line": 288
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.images.get",
+   "line": 289
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "str",
+   "line": 329
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "RuntimeError",
+   "line": 336
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "task.images.get",
+   "line": 338
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.upload_file",
+   "line": 345,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "node_info.append",
+   "line": 346
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "files.append",
+   "line": 355
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "dict",
+   "line": 409
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 434
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "plan_task",
+   "line": 435,
+   "to": "webapp.orchestrator.plan_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 436
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 437
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 517,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 519
+  },
+  {
+   "from": "webapp.orchestrator.Task.log",
+   "raw": "self.timeline.append",
+   "line": 107
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "task.dir",
+   "line": 154
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "str",
+   "line": 156
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "ValueError",
+   "line": 158
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "p.relative_to",
+   "line": 160
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "threading.Thread",
+   "line": 163
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "list",
+   "line": 182
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "re.search",
+   "line": 196
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "re.search",
+   "line": 203
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "conn.execute",
+   "line": 255
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "scored.append",
+   "line": 263
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "wfid.split",
+   "line": 266
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "ai_p.exists",
+   "line": 271
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "ai_p.read_text",
+   "line": 273
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "ai.get",
+   "line": 274
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.log",
+   "line": 295
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "sf.run_swap",
+   "line": 296,
+   "to": "swap_face.run_swap",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 299
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "steps_meta.append",
+   "line": 300
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "str",
+   "line": 320
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "str",
+   "line": 324
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "cur.relative_to",
+   "line": 329
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "str",
+   "line": 355
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "diagnose",
+   "line": 385
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "task.plan.get",
+   "line": 396
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "next",
+   "line": 398
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "sorted",
+   "line": 399
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "conn.execute",
+   "line": 410
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "json.dumps",
+   "line": 418
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 450
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 454
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "kb_search_workflow",
+   "line": 455,
+   "to": "webapp.orchestrator.kb_search_workflow",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 463
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 467
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 469
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "evaluate_round",
+   "line": 486,
+   "to": "webapp.orchestrator.evaluate_round",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 488
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 498
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.feedback_wait.clear",
+   "line": 499
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.feedback_wait.wait",
+   "line": 500
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 502
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "route_for_feedback",
+   "line": 514,
+   "to": "webapp.orchestrator.route_for_feedback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 524
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "fb.update",
+   "line": 533
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "Path",
+   "line": 30
+  },
+  {
+   "from": "webapp.orchestrator.Task.snapshot",
+   "raw": "bool",
+   "line": 124
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "json.dumps",
+   "line": 130
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "time.strftime",
+   "line": 145
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "b64.split",
+   "line": 150
+  },
+  {
+   "from": "webapp.orchestrator._llm_json",
+   "raw": "str",
+   "line": 173
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "json.dumps",
+   "line": 212
+  },
+  {
+   "from": "webapp.orchestrator.classify_feedback",
+   "raw": "intents.append",
+   "line": 229
+  },
+  {
+   "from": "webapp.orchestrator.route_for_feedback",
+   "raw": "fb.get",
+   "line": 237
+  },
+  {
+   "from": "webapp.orchestrator.route_for_feedback",
+   "raw": "task.plan.get",
+   "line": 239
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "re.split",
+   "line": 254
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "text.count",
+   "line": 261
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "ai.get",
+   "line": 278
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "step.get",
+   "line": 304
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.log",
+   "line": 305
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "sf.run_swap",
+   "line": 306,
+   "to": "swap_face.run_swap",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "extract_result_image",
+   "line": 310
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "steps_meta.append",
+   "line": 313
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "cur.relative_to",
+   "line": 320
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "s.get",
+   "line": 323
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "enumerate",
+   "line": 326
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "u.lower",
+   "line": 354
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "ROUTE_CHAINS.get",
+   "line": 374
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "next",
+   "line": 375
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "evaluate",
+   "line": 380
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "it.get",
+   "line": 411
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "VLClient",
+   "line": 424
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "need.get",
+   "line": 442
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 443
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 445,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 458,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 460
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 492,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 494
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 506
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 506
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 508,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 510
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "classify_feedback",
+   "line": 533,
+   "to": "webapp.orchestrator.classify_feedback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.Task.log",
+   "raw": "round",
+   "line": 107
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "self.snapshot",
+   "line": 130
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "str",
+   "line": 192
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "len",
+   "line": 254
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 309
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 309
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "color_match",
+   "line": 317
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "steps_meta.append",
+   "line": 319
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "task.plan.get",
+   "line": 374
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "r.startswith",
+   "line": 403
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "json.dumps",
+   "line": 414
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 438
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_exec_face_swap",
+   "line": 471,
+   "to": "webapp.orchestrator._exec_face_swap",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_exec_kb_generic",
+   "line": 473,
+   "to": "webapp.orchestrator._exec_kb_generic",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 475
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "route_for_feedback",
+   "line": 482,
+   "to": "webapp.orchestrator.route_for_feedback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.Task.log",
+   "raw": "time.time",
+   "line": 107
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "self.dir",
+   "line": 129
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "uuid.uuid4",
+   "line": 145
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.dir",
+   "line": 311
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "task.dir",
+   "line": 316
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "rh_task.download",
+   "line": 355,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "ev.items",
+   "line": 386
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "isinstance",
+   "line": 387
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "ev.get",
+   "line": 389
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "best_ev.get",
+   "line": 390
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "str",
+   "line": 393
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "ev_all.values",
+   "line": 398
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "ev_all.values",
+   "line": 399
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "v.get",
+   "line": 400
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "fams.items",
+   "line": 418
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "str",
+   "line": 478
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 480
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 505
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "type",
+   "line": 523
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 298
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "n.get",
+   "line": 342
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "chain.get",
+   "line": 375
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 503
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 308
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "len",
+   "line": 309
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "task.dir",
+   "line": 356
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 504
   }
  ]
 }
