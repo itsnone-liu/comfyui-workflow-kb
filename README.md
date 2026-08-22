@@ -157,6 +157,20 @@ ssh -R 80:localhost:8820 nokey@localhost.run        # 公网 https://<random>.lh
 零依赖（纯 stdlib）；实验在后台跑时页面自动长出新结果。隧道域名每次随机，
 免费层够临时演示用。
 
+## 换脸工具（swap_face.py）
+
+```powershell
+$env:PYTHONPATH=''
+& "...\python.exe" swap_face.py --target 被换脸图.jpg --ref 参考图.jpg [--wf instantid]
+```
+
+- 语义：**ref 出身份（脸+发型倾向），target 出表情/姿势/场景**；输出落
+  `data/swap/<tag>/` 自动进画廊
+- 自动指标：`identity_vs_ref`（≥0.363 为同身份）+ `residual_vs_target`（旧身份残
+  留，越低换得越净）
+- 预设：`instantid`（默认，residual 0.104 最干净）、`maskflux`（identity 0.471 更像
+  参考人但残留 0.403）、`instantid_pulid`（平台坏流，已标记禁投）
+
 ### MCP 工具（`mcp/server.py`，已注册到 DSH web profile，名为 `comfyui_kb`）
 
 | 工具 | 作用 |

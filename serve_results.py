@@ -31,7 +31,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 MEDIA = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".webm", ".avi", ".mov"}
-DEFAULT_ROOTS = ["data/composed", "data/experiments"]
+DEFAULT_ROOTS = ["data/composed", "data/experiments", "data/swap"]
 MAX_ITEMS = 300
 
 mimetypes.add_type("video/mp4", ".mp4")
