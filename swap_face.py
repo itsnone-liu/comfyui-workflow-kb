@@ -139,6 +139,14 @@ WORKFLOWS: dict[str, dict] = {
                 "(保留姿势/表情/场景), image2(13链)=参考(供脸+发型) — 唯一可能同时"
                 "满足'发型跟参考+表情跟被换图'的形态",
     },
+    "icfg_klein": {
+        "workflow_id": "2067471152095776769",
+        "webapp_id": "",
+        "ref": "48.image", "target": "15.image",
+        "note": "Klein 色彩锚定二阶精修: 15=换脸输出(待修), 48=被换脸原图(色彩/光影"
+                "基准) — Flux2KleinColorAnchor x2 + RefLatentController, 治换脸后"
+                "脸部色彩与场景不匹配",
+    },
 }
 
 
@@ -166,11 +174,11 @@ def run_swap(wf_key: str, target: Path, ref: Path, tag: str = "",
         {"nodeId": cfg["target"].split(".")[0], "fieldName": "image", "fieldValue": t_url},
         {"nodeId": cfg["ref"].split(".")[0], "fieldName": "image", "fieldValue": r_url},
     ]
-    if cfg.get("api_mods"):
+    if cfg.get("api_mods") or not cfg.get("webapp_id"):
         # self-built variant: patch widget values in the API json, run as workflow
         from parser import graph_ops as go
         api = go.load_api_format(cfg["workflow_id"], fetch=True)
-        for nid, mods in cfg["api_mods"].items():
+        for nid, mods in cfg.get("api_mods", {}).items():
             api[str(nid)]["inputs"].update(mods)
         tid = rh_task.run_workflow_json(key, api, node_info_list=node_info)
     else:

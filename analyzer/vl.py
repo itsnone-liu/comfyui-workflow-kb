@@ -33,7 +33,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-DEFAULT_MODEL = "qwen-vl-max-latest"
+DEFAULT_MODEL = "qwen-vl-max"
 
 
 def _read_dot(name: str) -> str:
