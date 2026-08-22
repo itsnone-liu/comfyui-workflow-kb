@@ -140,8 +140,22 @@ $env:PYTHONPATH=''
 & "...\python.exe" analyzer\codegraph.py dot       # 模块导入图 (graphviz)
 ```
 
-索引产物：`data/codegraph.json`（50 模块 / 173 defs / 2816 调用点，别名感知解析
+索引产物：`data/codegraph.json`（50 模块 / 178 defs / 2901 调用点，别名感知解析
 `go.graft_api → parser.graph_ops.graft_api`）+ `data/codegraph_modules.dot`。
+
+## 运行结果临时画廊（serve_results.py + 公网隧道）
+
+自建/实验工作流跑完后的下载产物（`data/composed/*/`、`data/experiments/*/`）
+自动出现在一个自刷新网页里（4 秒轮询，图片+视频混排，按目录分组）：
+
+```powershell
+$env:PYTHONPATH=''
+& "...\python.exe" serve_results.py                 # 本地 http://localhost:8820
+ssh -R 80:localhost:8820 nokey@localhost.run        # 公网 https://<random>.lhr.life
+```
+
+零依赖（纯 stdlib）；实验在后台跑时页面自动长出新结果。隧道域名每次随机，
+免费层够临时演示用。
 
 ### MCP 工具（`mcp/server.py`，已注册到 DSH web profile，名为 `comfyui_kb`）
 
