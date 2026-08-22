@@ -1,0 +1,232 @@
+{
+ "11": {
+  "class_type": "VHS_LoadVideo",
+  "inputs": {
+   "custom_height": 0,
+   "force_rate": 0,
+   "custom_width": 0,
+   "select_every_nth": [
+    "13",
+    1
+   ],
+   "frame_load_cap": 0,
+   "format": "AnimateDiff",
+   "video": "fd002cd921f6b72e3d67b1c76940b3a91fac06fa1c373577499fe7fcf15e603c.mp4",
+   "skip_first_frames": 0,
+   "force_size": "Disabled"
+  },
+  "_meta": {
+   "title": "加载视频"
+  }
+ },
+ "22": {
+  "class_type": "SimpleMath+",
+  "inputs": {
+   "a": [
+    "19",
+    0
+   ],
+   "b": [
+    "13",
+    1
+   ],
+   "value": "a/b"
+  },
+  "_meta": {
+   "title": "简易运算"
+  }
+ },
+ "12": {
+  "class_type": "CR Text",
+  "inputs": {
+   "text": "2"
+  },
+  "_meta": {
+   "title": "文本"
+  }
+ },
+ "13": {
+  "class_type": "CR Value",
+  "inputs": {
+   "value": [
+    "12",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "值"
+  }
+ },
+ "15": {
+  "class_type": "ReActorFaceSwap",
+  "inputs": {
+   "face_restore_visibility": 0.4,
+   "detect_gender_input": "no",
+   "detect_gender_source": "no",
+   "enabled": true,
+   "input_faces_index": "0",
+   "source_faces_index": "0",
+   "swap_model": "inswapper_128.onnx",
+   "console_log_level": 1,
+   "source_image": [
+    "10",
+    0
+   ],
+   "face_restore_model": "GFPGANv1.4.pth",
+   "input_image": [
+    "11",
+    0
+   ],
+   "codeformer_weight": 0,
+   "facedetection": "retinaface_resnet50"
+  },
+  "_meta": {
+   "title": "ReActor换脸"
+  }
+ },
+ "26": {
+  "class_type": "RIFE VFI",
+  "inputs": {
+   "fast_mode": true,
+   "frames": [
+    "15",
+    0
+   ],
+   "multiplier": [
+    "13",
+    1
+   ],
+   "clear_cache_after_n_frames": 60,
+   "ensemble": true,
+   "rife_name": "rife47.pth",
+   "scale_factor": 1
+  },
+  "_meta": {
+   "title": "RIFE VFI"
+  }
+ },
+ "27": {
+  "class_type": "easy showAnything",
+  "inputs": {
+   "text": "457",
+   "anything": [
+    "19",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "展示任何"
+  }
+ },
+ "28": {
+  "class_type": "PreviewImage",
+  "inputs": {
+   "images": [
+    "15",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "预览图像"
+  }
+ },
+ "18": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "images": [
+    "26",
+    0
+   ],
+   "pix_fmt": "yuv420p",
+   "format": "video/h264-mp4",
+   "frame_rate": [
+    "22",
+    1
+   ],
+   "pingpong": false,
+   "save_output": true,
+   "filename_prefix": "AnimateDiff",
+   "loop_count": 0,
+   "save_metadata": true,
+   "crf": 19,
+   "trim_to_audio": false,
+   "no_preview": false,
+   "audio": [
+    "11",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "合并为视频"
+  }
+ },
+ "19": {
+  "class_type": "VHS_VideoInfo",
+  "inputs": {
+   "video_info": [
+    "11",
+    3
+   ]
+  },
+  "_meta": {
+   "title": "视频信息"
+  }
+ },
+ "20": {
+  "class_type": "ImageConcanate",
+  "inputs": {
+   "match_image_size": true,
+   "image1": [
+    "15",
+    0
+   ],
+   "image2": [
+    "11",
+    0
+   ],
+   "direction": "right"
+  },
+  "_meta": {
+   "title": "图像联结"
+  }
+ },
+ "10": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "6de41acad99eba645a9c8b471c9166a61d4ffd0039e2b2e895063a2afd4bac0d.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "21": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "images": [
+    "20",
+    0
+   ],
+   "pix_fmt": "yuv420p",
+   "format": "video/h264-mp4",
+   "frame_rate": [
+    "22",
+    1
+   ],
+   "pingpong": false,
+   "save_output": true,
+   "filename_prefix": "AnimateDiff",
+   "loop_count": 0,
+   "save_metadata": true,
+   "crf": 19,
+   "trim_to_audio": false,
+   "no_preview": false,
+   "audio": [
+    "11",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "合并为视频"
+  }
+ }
+}

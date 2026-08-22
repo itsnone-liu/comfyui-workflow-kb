@@ -1,0 +1,51 @@
+{
+ "1": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "PLACEHOLDER_TARGET"
+  }
+ },
+ "2": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "PLACEHOLDER_REF"
+  }
+ },
+ "15": {
+  "class_type": "ReActorFaceSwap",
+  "inputs": {
+   "face_restore_visibility": 0.4,
+   "detect_gender_input": "no",
+   "detect_gender_source": "no",
+   "enabled": true,
+   "input_faces_index": "0",
+   "source_faces_index": "0",
+   "swap_model": "inswapper_128.onnx",
+   "console_log_level": 1,
+   "source_image": [
+    "2",
+    0
+   ],
+   "face_restore_model": "GFPGANv1.4.pth",
+   "input_image": [
+    "1",
+    0
+   ],
+   "codeformer_weight": 0,
+   "facedetection": "retinaface_resnet50"
+  },
+  "_meta": {
+   "title": "ReActor换脸"
+  }
+ },
+ "99": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "reactor_swap",
+   "images": [
+    "15",
+    0
+   ]
+  }
+ }
+}
