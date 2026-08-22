@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-22 01:26:11",
+ "generated_at": "2026-08-22 12:05:47",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -17,6 +17,47 @@
     "Path": "pathlib",
     "analyze_one": "analyzer.llm_card",
     "store": "kb.store"
+   },
+   "imported_by": []
+  },
+  "_tmp_chk": {
+   "file": "_tmp_chk.py",
+   "lines": 7,
+   "doc": "Direct status check of Qwen task.",
+   "entry": false,
+   "imports": [
+    "json",
+    "experiments.rh_task"
+   ],
+   "aliases": {
+    "rh_task": "experiments.rh_task"
+   },
+   "imported_by": []
+  },
+  "_tmp_qwait": {
+   "file": "_tmp_qwait.py",
+   "lines": 24,
+   "doc": "Resume waiting for the slow Qwen task; download + score when done.",
+   "entry": false,
+   "imports": [
+    "pathlib",
+    "experiments.rh_task",
+    "cv2",
+    "sys",
+    "experiments.metrics",
+    "swap_face",
+    "swap_face",
+    "swap_face",
+    "swap_face"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "rh_task": "experiments.rh_task",
+    "FaceComparator": "experiments.metrics",
+    "_expr_distance": "swap_face",
+    "_expr_geometry": "swap_face",
+    "_hair_hist": "swap_face",
+    "_hist_intersection": "swap_face"
    },
    "imported_by": []
   },
@@ -39,6 +80,28 @@
     "annotations": "__future__",
     "defaultdict": "collections",
     "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "analyzer.color_match": {
+   "file": "analyzer\\color_match.py",
+   "lines": 15,
+   "doc": "color_match.py — deterministic face-region color/lighting harmonizer.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "sys",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "experiments.metrics"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "np": "numpy",
+    "FaceComparator": "experiments.metrics"
    },
    "imported_by": []
   },
@@ -124,6 +187,48 @@
     "defaultdict": "collections",
     "Path": "pathlib",
     "store": "kb.store"
+   },
+   "imported_by": []
+  },
+  "analyzer.vl": {
+   "file": "analyzer\\vl.py",
+   "lines": 23,
+   "doc": "vl.py — Qwen VL client (OpenAI-compatible) for semantic image judging.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "base64",
+    "json",
+    "os",
+    "re",
+    "sys",
+    "time",
+    "urllib.request",
+    "urllib.error",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "analyzer.vl_judge": {
+   "file": "analyzer\\vl_judge.py",
+   "lines": 14,
+   "doc": "Semantic judge for face-swap outputs using Qwen VL.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "json",
+    "sys",
+    "pathlib",
+    "vl"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "VLClient": "vl"
    },
    "imported_by": []
   },
@@ -451,7 +556,10 @@
     "np": "numpy"
    },
    "imported_by": [
-    "experiments.runner"
+    "_tmp_qwait",
+    "analyzer.color_match",
+    "experiments.runner",
+    "swap_face"
    ]
   },
   "experiments.rh_task": {
@@ -479,9 +587,12 @@
     "rh": "rh_client"
    },
    "imported_by": [
+    "_tmp_chk",
+    "_tmp_qwait",
     "analyzer.composer",
     "experiments.runner",
-    "parser.graph_ops"
+    "parser.graph_ops",
+    "swap_face"
    ]
   },
   "experiments.runner": {
@@ -658,7 +769,8 @@
     "rh_task": "experiments.rh_task"
    },
    "imported_by": [
-    "analyzer.composer"
+    "analyzer.composer",
+    "swap_face"
    ]
   },
   "parser.normalizer": {
@@ -910,6 +1022,64 @@
     "sync_playwright": "playwright.sync_api"
    },
    "imported_by": []
+  },
+  "serve_results": {
+   "file": "serve_results.py",
+   "lines": 22,
+   "doc": "serve_results.py — temporary web gallery for workflow run outputs.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "html",
+    "json",
+    "mimetypes",
+    "sys",
+    "time",
+    "http.server",
+    "http.server",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "BaseHTTPRequestHandler": "http.server",
+    "ThreadingHTTPServer": "http.server",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "swap_face": {
+   "file": "swap_face.py",
+   "lines": 20,
+   "doc": "swap_face.py — face-swap runner (identity from REF, expression/pose from TARGET).",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sys",
+    "time",
+    "pathlib",
+    "numpy",
+    "experiments.rh_task",
+    "cv2",
+    "cv2",
+    "re",
+    "parser.graph_ops",
+    "cv2",
+    "experiments.metrics"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "np": "numpy",
+    "rh_task": "experiments.rh_task",
+    "go": "parser.graph_ops",
+    "FaceComparator": "experiments.metrics"
+   },
+   "imported_by": [
+    "_tmp_qwait"
+   ]
   },
   "test_tag_filter": {
    "file": "test_tag_filter.py",
@@ -1215,6 +1385,68 @@
    "name": "main",
    "args": [],
    "line": 292,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.color_match._face_bbox",
+   "kind": "function",
+   "module": "analyzer.color_match",
+   "name": "_face_bbox",
+   "args": [
+    "fc",
+    "img"
+   ],
+   "line": 31,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.color_match._region_stats",
+   "kind": "function",
+   "module": "analyzer.color_match",
+   "name": "_region_stats",
+   "args": [
+    "lab",
+    "bbox",
+    "margin"
+   ],
+   "line": 42,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.color_match._feather_mask",
+   "kind": "function",
+   "module": "analyzer.color_match",
+   "name": "_feather_mask",
+   "args": [
+    "shape",
+    "bbox",
+    "margin"
+   ],
+   "line": 51,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.color_match.color_match",
+   "kind": "function",
+   "module": "analyzer.color_match",
+   "name": "color_match",
+   "args": [
+    "swapped_path",
+    "host_path",
+    "out_path",
+    "margin",
+    "strength"
+   ],
+   "line": 64,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.color_match.main",
+   "kind": "function",
+   "module": "analyzer.color_match",
+   "name": "main",
+   "args": [],
+   "line": 99,
    "doc": ""
   },
   {
@@ -1540,6 +1772,150 @@
    "name": "main",
    "args": [],
    "line": 398,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl._read_dot",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "_read_dot",
+   "args": [
+    "name"
+   ],
+   "line": 39,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.load_key",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "load_key",
+   "args": [],
+   "line": 44,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.load_base",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "load_base",
+   "args": [],
+   "line": 49,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.load_model",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "load_model",
+   "args": [],
+   "line": 54,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl._data_url",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "_data_url",
+   "args": [
+    "path"
+   ],
+   "line": 59,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.VLClient",
+   "kind": "class",
+   "module": "analyzer.vl",
+   "name": "VLClient",
+   "args": [],
+   "line": 68,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.VLClient.__init__",
+   "kind": "method",
+   "module": "analyzer.vl",
+   "name": "__init__",
+   "args": [
+    "self",
+    "key",
+    "base",
+    "model",
+    "timeout"
+   ],
+   "line": 69,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.VLClient.chat",
+   "kind": "method",
+   "module": "analyzer.vl",
+   "name": "chat",
+   "args": [
+    "self",
+    "prompt",
+    "images",
+    "model",
+    "max_retries"
+   ],
+   "line": 81,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.VLClient.json",
+   "kind": "method",
+   "module": "analyzer.vl",
+   "name": "json",
+   "args": [
+    "self",
+    "prompt",
+    "images",
+    "model"
+   ],
+   "line": 114,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl._cmd_test",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "_cmd_test",
+   "args": [
+    "argv"
+   ],
+   "line": 125,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl.main",
+   "kind": "function",
+   "module": "analyzer.vl",
+   "name": "main",
+   "args": [],
+   "line": 140,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl_judge.judge",
+   "kind": "function",
+   "module": "analyzer.vl_judge",
+   "name": "judge",
+   "args": [
+    "path",
+    "target",
+    "ref"
+   ],
+   "line": 38,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl_judge.main",
+   "kind": "function",
+   "module": "analyzer.vl_judge",
+   "name": "main",
+   "args": [],
+   "line": 45,
    "doc": ""
   },
   {
@@ -3021,6 +3397,168 @@
    "doc": ""
   },
   {
+   "id": "serve_results.scan",
+   "kind": "function",
+   "module": "serve_results",
+   "name": "scan",
+   "args": [
+    "roots"
+   ],
+   "line": 84,
+   "doc": ""
+  },
+  {
+   "id": "serve_results._ago",
+   "kind": "function",
+   "module": "serve_results",
+   "name": "_ago",
+   "args": [
+    "ts"
+   ],
+   "line": 109,
+   "doc": ""
+  },
+  {
+   "id": "serve_results.Handler",
+   "kind": "class",
+   "module": "serve_results",
+   "name": "Handler",
+   "args": [
+    "BaseHTTPRequestHandler"
+   ],
+   "line": 117,
+   "doc": ""
+  },
+  {
+   "id": "serve_results.Handler.log_message",
+   "kind": "method",
+   "module": "serve_results",
+   "name": "log_message",
+   "args": [
+    "self",
+    "fmt"
+   ],
+   "line": 120,
+   "doc": ""
+  },
+  {
+   "id": "serve_results.Handler._send",
+   "kind": "method",
+   "module": "serve_results",
+   "name": "_send",
+   "args": [
+    "self",
+    "code",
+    "body",
+    "ctype"
+   ],
+   "line": 123,
+   "doc": ""
+  },
+  {
+   "id": "serve_results.Handler.do_GET",
+   "kind": "method",
+   "module": "serve_results",
+   "name": "do_GET",
+   "args": [
+    "self"
+   ],
+   "line": 131,
+   "doc": ""
+  },
+  {
+   "id": "serve_results.main",
+   "kind": "function",
+   "module": "serve_results",
+   "name": "main",
+   "args": [],
+   "line": 152,
+   "doc": ""
+  },
+  {
+   "id": "swap_face.run_swap",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "run_swap",
+   "args": [
+    "wf_key",
+    "target",
+    "ref",
+    "tag",
+    "max_wait"
+   ],
+   "line": 153,
+   "doc": ""
+  },
+  {
+   "id": "swap_face._expr_geometry",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "_expr_geometry",
+   "args": [
+    "fc",
+    "img_path"
+   ],
+   "line": 239,
+   "doc": "Normalized 5-landmark geometry of the largest face (expression/pose proxy)."
+  },
+  {
+   "id": "swap_face._expr_distance",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "_expr_distance",
+   "args": [
+    "g1",
+    "g2"
+   ],
+   "line": 276,
+   "doc": "Mean normalized landmark distance (0=identical geometry, ~1+ = very different)."
+  },
+  {
+   "id": "swap_face._hair_hist",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "_hair_hist",
+   "args": [
+    "fc",
+    "img_path"
+   ],
+   "line": 282,
+   "doc": "HSV hue-sat histogram of the hair band (strip above the face bbox)."
+  },
+  {
+   "id": "swap_face._hist_intersection",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "_hist_intersection",
+   "args": [
+    "h1",
+    "h2"
+   ],
+   "line": 312,
+   "doc": ""
+  },
+  {
+   "id": "swap_face._url_ext",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "_url_ext",
+   "args": [
+    "url"
+   ],
+   "line": 316,
+   "doc": ""
+  },
+  {
+   "id": "swap_face.main",
+   "kind": "function",
+   "module": "swap_face",
+   "name": "main",
+   "args": [],
+   "line": 322,
+   "doc": ""
+  },
+  {
    "id": "test_tag_filter.post",
    "kind": "function",
    "module": "test_tag_filter",
@@ -3116,6 +3654,292 @@
    "from": "_h3_worker",
    "raw": "str",
    "line": 30
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "rh_task.load_api_key",
+   "line": 7,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "print",
+   "line": 9
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "rh_task.task_status",
+   "line": 9,
+   "to": "experiments.rh_task.task_status",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "rh_task.task_outputs",
+   "line": 11,
+   "to": "experiments.rh_task.task_outputs",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "rh_task.collect_file_urls",
+   "line": 12,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "print",
+   "line": 13
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "len",
+   "line": 13
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "print",
+   "line": 15
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "print",
+   "line": 17
+  },
+  {
+   "from": "_tmp_chk",
+   "raw": "type",
+   "line": 17
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "rh_task.load_api_key",
+   "line": 7,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "rh_task.wait_task",
+   "line": 8,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "rh_task.collect_file_urls",
+   "line": 10,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "print",
+   "line": 11
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 12
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "out_dir.mkdir",
+   "line": 13
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "sys.path.insert",
+   "line": 23
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "FaceComparator",
+   "line": 27
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 28
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 29
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.embed",
+   "line": 30
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.embed",
+   "line": 31
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "len",
+   "line": 11
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "str",
+   "line": 14
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "print",
+   "line": 19
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.largest_face",
+   "line": 30
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.largest_face",
+   "line": 31
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_expr_geometry",
+   "line": 32
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_expr_geometry",
+   "line": 32
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_hair_hist",
+   "line": 33
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_hair_hist",
+   "line": 33
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.embed",
+   "line": 35
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_expr_geometry",
+   "line": 36
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_hair_hist",
+   "line": 37
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "print",
+   "line": 41
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "rh_task.download",
+   "line": 14,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "enumerate",
+   "line": 17
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "cv2.imread",
+   "line": 30
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "cv2.imread",
+   "line": 31
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.largest_face",
+   "line": 35
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 36
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 37
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "print",
+   "line": 39
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "print",
+   "line": 9
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "str",
+   "line": 30
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "str",
+   "line": 31
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "cv2.imread",
+   "line": 35
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.cosine",
+   "line": 41
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "fc.cosine",
+   "line": 42
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_expr_distance",
+   "line": 43
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_hist_intersection",
+   "line": 44
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "_hist_intersection",
+   "line": 45
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "Path",
+   "line": 41
+  },
+  {
+   "from": "_tmp_qwait",
+   "raw": "u.lower",
+   "line": 15
   },
   {
    "from": "analyzer.codegraph.module_name",
@@ -3898,6 +4722,350 @@
    "from": "analyzer.codegraph.Indexer._resolve_from",
    "raw": "len",
    "line": 96
+  },
+  {
+   "from": "analyzer.color_match",
+   "raw": "sys.path.insert",
+   "line": 27
+  },
+  {
+   "from": "analyzer.color_match",
+   "raw": "str",
+   "line": 27
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "fc.det.setInputSize",
+   "line": 33
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "fc.det.detect",
+   "line": 34
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "min",
+   "line": 45
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "min",
+   "line": 46
+  },
+  {
+   "from": "analyzer.color_match._feather_mask",
+   "raw": "np.zeros",
+   "line": 54
+  },
+  {
+   "from": "analyzer.color_match._feather_mask",
+   "raw": "cv2.GaussianBlur",
+   "line": 61
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "FaceComparator",
+   "line": 66
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.imread",
+   "line": 67
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.imread",
+   "line": 68
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "_face_bbox",
+   "line": 71,
+   "to": "analyzer.color_match._face_bbox",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "_face_bbox",
+   "line": 72,
+   "to": "analyzer.color_match._face_bbox",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "_region_stats",
+   "line": 78,
+   "to": "analyzer.color_match._region_stats",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "_region_stats",
+   "line": 79,
+   "to": "analyzer.color_match._region_stats",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "np.clip",
+   "line": 85
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.cvtColor",
+   "line": 89
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "out_path.parent.mkdir",
+   "line": 91
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.imwrite",
+   "line": 92
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 100
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.add_argument",
+   "line": 101
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.add_argument",
+   "line": 102
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.add_argument",
+   "line": 103
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.add_argument",
+   "line": 104
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.add_argument",
+   "line": 105
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "ap.parse_args",
+   "line": 106
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "color_match",
+   "line": 109,
+   "to": "analyzer.color_match.color_match",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "print",
+   "line": 110
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "print",
+   "line": 111
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "sys.exit",
+   "line": 117
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "int",
+   "line": 38
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "int",
+   "line": 39
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "int",
+   "line": 39
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "int",
+   "line": 39
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "int",
+   "line": 39
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "max",
+   "line": 44
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "max",
+   "line": 44
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "int",
+   "line": 45
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "int",
+   "line": 46
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "region.mean",
+   "line": 48
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "str",
+   "line": 67
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "str",
+   "line": 68
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "SystemExit",
+   "line": 70
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "SystemExit",
+   "line": 74
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "_feather_mask",
+   "line": 87,
+   "to": "analyzer.color_match._feather_mask",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "str",
+   "line": 92
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "str",
+   "line": 93
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "Path",
+   "line": 107
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "Path",
+   "line": 107
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "Path",
+   "line": 108
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "sw.with_name",
+   "line": 108
+  },
+  {
+   "from": "analyzer.color_match.main",
+   "raw": "main",
+   "line": 117,
+   "to": "analyzer.color_match.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "len",
+   "line": 35
+  },
+  {
+   "from": "analyzer.color_match._face_bbox",
+   "raw": "np.argmax",
+   "line": 38
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "int",
+   "line": 44
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "int",
+   "line": 44
+  },
+  {
+   "from": "analyzer.color_match._region_stats",
+   "raw": "region.std",
+   "line": 48
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.cvtColor",
+   "line": 76
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "cv2.cvtColor",
+   "line": 77
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "round",
+   "line": 94
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "round",
+   "line": 95
+  },
+  {
+   "from": "analyzer.color_match._feather_mask",
+   "raw": "max",
+   "line": 61
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "np.clip",
+   "line": 89
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "float",
+   "line": 94
+  },
+  {
+   "from": "analyzer.color_match.color_match",
+   "raw": "float",
+   "line": 95
+  },
+  {
+   "from": "analyzer.color_match",
+   "raw": "Path",
+   "line": 27
   },
   {
    "from": "analyzer.composer",
@@ -6292,6 +7460,405 @@
    "from": "analyzer.pattern_miner.build_report",
    "raw": "map",
    "line": 328
+  },
+  {
+   "from": "analyzer.vl._data_url",
+   "raw": "Path",
+   "line": 60
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "VLClient",
+   "line": 129,
+   "to": "analyzer.vl.VLClient",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "print",
+   "line": 130
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "time.time",
+   "line": 131
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "vl.json",
+   "line": 132
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "print",
+   "line": 135
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "print",
+   "line": 136
+  },
+  {
+   "from": "analyzer.vl.main",
+   "raw": "print",
+   "line": 143
+  },
+  {
+   "from": "analyzer.vl.main",
+   "raw": "sys.exit",
+   "line": 148
+  },
+  {
+   "from": "analyzer.vl._read_dot",
+   "raw": "p.exists",
+   "line": 41
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "content.append",
+   "line": 87
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "range",
+   "line": 95
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "RuntimeError",
+   "line": 112
+  },
+  {
+   "from": "analyzer.vl.VLClient.json",
+   "raw": "self.chat",
+   "line": 116
+  },
+  {
+   "from": "analyzer.vl.VLClient.json",
+   "raw": "re.search",
+   "line": 117
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "print",
+   "line": 127
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "json.dumps",
+   "line": 135
+  },
+  {
+   "from": "analyzer.vl.main",
+   "raw": "_cmd_test",
+   "line": 142,
+   "to": "analyzer.vl._cmd_test",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.main",
+   "raw": "main",
+   "line": 148,
+   "to": "analyzer.vl.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl._data_url",
+   "raw": "base64.b64encode",
+   "line": 64
+  },
+  {
+   "from": "analyzer.vl.VLClient.__init__",
+   "raw": "load_model",
+   "line": 73,
+   "to": "analyzer.vl.load_model",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.VLClient.__init__",
+   "raw": "RuntimeError",
+   "line": 76
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "content.append",
+   "line": 85
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "urllib.request.Request",
+   "line": 96
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "time.sleep",
+   "line": 111
+  },
+  {
+   "from": "analyzer.vl.VLClient.json",
+   "raw": "m.group",
+   "line": 118
+  },
+  {
+   "from": "analyzer.vl.VLClient.json",
+   "raw": "raw.strip",
+   "line": 118
+  },
+  {
+   "from": "analyzer.vl.VLClient.json",
+   "raw": "json.loads",
+   "line": 120
+  },
+  {
+   "from": "analyzer.vl.main",
+   "raw": "len",
+   "line": 141
+  },
+  {
+   "from": "analyzer.vl",
+   "raw": "Path",
+   "line": 34
+  },
+  {
+   "from": "analyzer.vl._read_dot",
+   "raw": "p.read_text",
+   "line": 41
+  },
+  {
+   "from": "analyzer.vl.load_key",
+   "raw": "os.environ.get",
+   "line": 45
+  },
+  {
+   "from": "analyzer.vl.load_key",
+   "raw": "_read_dot",
+   "line": 46,
+   "to": "analyzer.vl._read_dot",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.load_base",
+   "raw": "os.environ.get",
+   "line": 50
+  },
+  {
+   "from": "analyzer.vl.load_base",
+   "raw": "_read_dot",
+   "line": 51,
+   "to": "analyzer.vl._read_dot",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.load_model",
+   "raw": "os.environ.get",
+   "line": 55
+  },
+  {
+   "from": "analyzer.vl.load_model",
+   "raw": "_read_dot",
+   "line": 56,
+   "to": "analyzer.vl._read_dot",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl._data_url",
+   "raw": "p.suffix.lower",
+   "line": 63
+  },
+  {
+   "from": "analyzer.vl._data_url",
+   "raw": "p.read_bytes",
+   "line": 64
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "json.dumps",
+   "line": 88
+  },
+  {
+   "from": "analyzer.vl.VLClient.__init__",
+   "raw": "load_key",
+   "line": 71,
+   "to": "analyzer.vl.load_key",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.VLClient.__init__",
+   "raw": "load_base",
+   "line": 72,
+   "to": "analyzer.vl.load_base",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "urllib.request.urlopen",
+   "line": 101
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "json.loads",
+   "line": 102
+  },
+  {
+   "from": "analyzer.vl._cmd_test",
+   "raw": "time.time",
+   "line": 136
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "_data_url",
+   "line": 86,
+   "to": "analyzer.vl._data_url",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "r.read",
+   "line": 102
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "e.read",
+   "line": 105
+  },
+  {
+   "from": "analyzer.vl.VLClient.chat",
+   "raw": "type",
+   "line": 110
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "sys.path.insert",
+   "line": 18
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "sys.path.insert",
+   "line": 19
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "Path",
+   "line": 22
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "Path",
+   "line": 23
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "str",
+   "line": 18
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "str",
+   "line": 19
+  },
+  {
+   "from": "analyzer.vl_judge.judge",
+   "raw": "VLClient",
+   "line": 39
+  },
+  {
+   "from": "analyzer.vl_judge.judge",
+   "raw": "vl.json",
+   "line": 40
+  },
+  {
+   "from": "analyzer.vl_judge.judge",
+   "raw": "str",
+   "line": 41
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "Path",
+   "line": 53
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "existing.extend",
+   "line": 56
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "out_path.write_text",
+   "line": 57
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "print",
+   "line": 59
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "sys.exit",
+   "line": 64
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "Path",
+   "line": 46
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "print",
+   "line": 48
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "judge",
+   "line": 50,
+   "to": "analyzer.vl_judge.judge",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "out_path.exists",
+   "line": 55
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "json.loads",
+   "line": 54
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "json.dumps",
+   "line": 58
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "main",
+   "line": 64,
+   "to": "analyzer.vl_judge.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "json.dumps",
+   "line": 52
+  },
+  {
+   "from": "analyzer.vl_judge.main",
+   "raw": "out_path.read_text",
+   "line": 54
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "Path",
+   "line": 18
+  },
+  {
+   "from": "analyzer.vl_judge",
+   "raw": "Path",
+   "line": 19
   },
   {
    "from": "call_detail",
@@ -17481,6 +19048,998 @@
    "from": "rh_login.main",
    "raw": "page.evaluate",
    "line": 35
+  },
+  {
+   "from": "serve_results",
+   "raw": "mimetypes.add_type",
+   "line": 37
+  },
+  {
+   "from": "serve_results",
+   "raw": "mimetypes.add_type",
+   "line": 38
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "items.sort",
+   "line": 105
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 153
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "ap.add_argument",
+   "line": 154
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "ap.add_argument",
+   "line": 155
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "ap.add_argument",
+   "line": 156
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "ap.parse_args",
+   "line": 158
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "ThreadingHTTPServer",
+   "line": 160
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "print",
+   "line": 161
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "print",
+   "line": 162
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "srv.serve_forever",
+   "line": 163
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "sys.exit",
+   "line": 168
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "base.rglob",
+   "line": 90
+  },
+  {
+   "from": "serve_results._ago",
+   "raw": "time.time",
+   "line": 110
+  },
+  {
+   "from": "serve_results.Handler.log_message",
+   "raw": "sys.stderr.write",
+   "line": 121
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.send_response",
+   "line": 124
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.send_header",
+   "line": 125
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.send_header",
+   "line": 126
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.send_header",
+   "line": 127
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.end_headers",
+   "line": 128
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "self.wfile.write",
+   "line": 129
+  },
+  {
+   "from": "serve_results.main",
+   "raw": "main",
+   "line": 168,
+   "to": "serve_results.main",
+   "resolved": true
+  },
+  {
+   "from": "serve_results",
+   "raw": "Path",
+   "line": 32
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "base.exists",
+   "line": 88
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "items.append",
+   "line": 98
+  },
+  {
+   "from": "serve_results._ago",
+   "raw": "int",
+   "line": 114
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "str",
+   "line": 126
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 133
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "p.stat",
+   "line": 94
+  },
+  {
+   "from": "serve_results.Handler._send",
+   "raw": "len",
+   "line": 126
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "PAGE.encode",
+   "line": 133
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 136
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self.path.startswith",
+   "line": 137
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "p.is_file",
+   "line": 91
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "p.suffix.lower",
+   "line": 91
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "p.relative_to",
+   "line": 97
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "round",
+   "line": 101
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "_ago",
+   "line": 103,
+   "to": "serve_results._ago",
+   "resolved": true
+  },
+  {
+   "from": "serve_results._ago",
+   "raw": "int",
+   "line": 113
+  },
+  {
+   "from": "serve_results.Handler.log_message",
+   "raw": "time.strftime",
+   "line": 121
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "f.read_bytes",
+   "line": 146
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 147
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 149
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "json.dumps",
+   "line": 135
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "f.relative_to",
+   "line": 141
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "f.is_file",
+   "line": 144
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 145
+  },
+  {
+   "from": "serve_results.scan",
+   "raw": "rel.split",
+   "line": 100
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "self._send",
+   "line": 143
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "scan",
+   "line": 135,
+   "to": "serve_results.scan",
+   "resolved": true
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "mimetypes.guess_type",
+   "line": 147
+  },
+  {
+   "from": "serve_results.Handler.do_GET",
+   "raw": "str",
+   "line": 147
+  },
+  {
+   "from": "swap_face",
+   "raw": "sys.path.insert",
+   "line": 36
+  },
+  {
+   "from": "swap_face",
+   "raw": "str",
+   "line": 36
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cfg.get",
+   "line": 156
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.load_api_key",
+   "line": 158,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "out_dir.mkdir",
+   "line": 160
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 162
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 163
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 164
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 166
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.upload_file",
+   "line": 167,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 168
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 169
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.upload_file",
+   "line": 170,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 171
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 186
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.wait_task",
+   "line": 187,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.collect_file_urls",
+   "line": 189,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 192
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 234
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "cv2.imread",
+   "line": 247
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "fc.det.setInputSize",
+   "line": 251
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "fc.det.detect",
+   "line": 252
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.array",
+   "line": 264
+  },
+  {
+   "from": "swap_face._expr_distance",
+   "raw": "float",
+   "line": 279
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "cv2.imread",
+   "line": 289
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "fc.det.setInputSize",
+   "line": 293
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "fc.det.detect",
+   "line": 294
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "cv2.cvtColor",
+   "line": 306
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "cv2.calcHist",
+   "line": 307
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "cv2.normalize",
+   "line": 308
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "float",
+   "line": 313
+  },
+  {
+   "from": "swap_face._url_ext",
+   "raw": "re.search",
+   "line": 318
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 323
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.add_argument",
+   "line": 325
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.add_argument",
+   "line": 326
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.add_argument",
+   "line": 327
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.add_argument",
+   "line": 330
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.add_argument",
+   "line": 331
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "ap.parse_args",
+   "line": 332
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "run_swap",
+   "line": 333,
+   "to": "swap_face.run_swap",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "sys.exit",
+   "line": 339
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "SystemExit",
+   "line": 157
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cfg.get",
+   "line": 177
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "go.load_api_format",
+   "line": 180,
+   "to": "parser.graph_ops.load_api_format",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.run_workflow_json",
+   "line": 183,
+   "to": "experiments.rh_task.run_workflow_json",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.run_webapp",
+   "line": 185,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 190
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "FaceComparator",
+   "line": 199
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.embed",
+   "line": 200
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.embed",
+   "line": 201
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_geometry",
+   "line": 202,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_geometry",
+   "line": 203,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "json.dumps",
+   "line": 234
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 236
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "str",
+   "line": 247
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "int",
+   "line": 256
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.linalg.norm",
+   "line": 259
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.linalg.norm",
+   "line": 263
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "coords",
+   "line": 270
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "coords",
+   "line": 271
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "str",
+   "line": 289
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 298
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 299
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 299
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 299
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 299
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "max",
+   "line": 301
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "min",
+   "line": 301
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "max",
+   "line": 302
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "min",
+   "line": 302
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "Path",
+   "line": 333
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "Path",
+   "line": 333
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "main",
+   "line": 339,
+   "to": "swap_face.main",
+   "resolved": true
+  },
+  {
+   "from": "swap_face",
+   "raw": "Path",
+   "line": 35
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cfg.get",
+   "line": 177
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "rh_task.download",
+   "line": 190,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "enumerate",
+   "line": 191
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.largest_face",
+   "line": 200
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.largest_face",
+   "line": 201
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.embed",
+   "line": 205
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_geometry",
+   "line": 214,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_hair_hist",
+   "line": 223,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_hair_hist",
+   "line": 224,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_hair_hist",
+   "line": 225,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "len",
+   "line": 253
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.argmax",
+   "line": 256
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.array",
+   "line": 257
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 267
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 267
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "float",
+   "line": 269
+  },
+  {
+   "from": "swap_face._expr_distance",
+   "raw": "np.linalg.norm",
+   "line": 278
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "len",
+   "line": 295
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "np.argmax",
+   "line": 298
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 301
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 301
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 302
+  },
+  {
+   "from": "swap_face._hair_hist",
+   "raw": "int",
+   "line": 302
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "max",
+   "line": 313
+  },
+  {
+   "from": "swap_face.main",
+   "raw": "sorted",
+   "line": 327
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cfg.get",
+   "line": 181
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "print",
+   "line": 188
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "len",
+   "line": 192
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cv2.imread",
+   "line": 200
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cv2.imread",
+   "line": 201
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.largest_face",
+   "line": 205
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 210
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 211
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 214
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_distance",
+   "line": 216,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 217
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 225
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 227
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 228
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 233
+  },
+  {
+   "from": "swap_face._expr_geometry",
+   "raw": "np.linalg.norm",
+   "line": 269
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "h1.sum",
+   "line": 313
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "int",
+   "line": 159
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 200
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 201
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "cv2.imread",
+   "line": 205
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
+   "line": 210
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
+   "line": 211
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "fc.cosine",
+   "line": 212
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "round",
+   "line": 219
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_hist_intersection",
+   "line": 227,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_hist_intersection",
+   "line": 228,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 231
+  },
+  {
+   "from": "swap_face._hist_intersection",
+   "raw": "np.minimum",
+   "line": 313
+  },
+  {
+   "from": "swap_face._url_ext",
+   "raw": "m.group",
+   "line": 319
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "time.time",
+   "line": 159
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "Path",
+   "line": 207
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_distance",
+   "line": 220,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "str",
+   "line": 182
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_url_ext",
+   "line": 190,
+   "to": "swap_face._url_ext",
+   "resolved": true
+  },
+  {
+   "from": "swap_face.run_swap",
+   "raw": "_expr_distance",
+   "line": 222,
+   "to": "swap_face._expr_distance",
+   "resolved": true
   },
   {
    "from": "test_tag_filter",
