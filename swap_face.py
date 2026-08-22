@@ -121,6 +121,13 @@ WORKFLOWS: dict[str, dict] = {
         "note": "Qwen-Image-Edit 指令路线: 底图(11)=被换脸图, 贴图(12)=参考(抠图上画布), "
                 "指令即控制面 — 可显式要求发型跟随",
     },
+    "pulid_flux": {
+        "workflow_id": "1983869528738332673",
+        "webapp_id": "1983873404732407809",
+        "ref": "54.image", "target": "67.image",
+        "note": "PuLID-Flux: FLUX.1-dev 原生底模(无 lightning 身份天花板), "
+                "身份自 54 提取, 67=底图 — 高上限路线",
+    },
 }
 
 
