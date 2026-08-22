@@ -153,10 +153,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="temporary gallery for run outputs")
     ap.add_argument("roots", nargs="*", default=DEFAULT_ROOTS)
     ap.add_argument("--port", type=int, default=8820)
+    ap.add_argument("--host", default="0.0.0.0",
+                    help="bind address, e.g. tailscale 100.x IP")
     args = ap.parse_args()
     Handler.roots = args.roots or DEFAULT_ROOTS
-    srv = ThreadingHTTPServer(("0.0.0.0", args.port), Handler)
-    print(f"[gallery] serving {Handler.roots} on http://localhost:{args.port}")
+    srv = ThreadingHTTPServer((args.host, args.port), Handler)
+    print(f"[gallery] serving {Handler.roots} on http://{args.host}:{args.port}")
     print(f"[gallery] public: ssh -R 80:localhost:{args.port} nokey@localhost.run")
     srv.serve_forever()
     return 0
