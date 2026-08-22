@@ -112,6 +112,15 @@ WORKFLOWS: dict[str, dict] = {
         "note": "完整档: cfg 档参数 + PersonMask hair=True (重绘区含头发, "
                 "参考发型有机会迁移; 原作 hair=False 沿用目标发型)",
     },
+    "qwen_edit": {
+        "workflow_id": "2009804367066566658",
+        "webapp_id": "2009820732771012610",
+        "ref": "12.image", "target": "11.image",
+        "api_mods": {"17": {"prompt": "把底图上人物的脸替换成贴图中人物的脸，"
+                                      "保持底图人物的姿势、表情和背景完全不变"}},
+        "note": "Qwen-Image-Edit 指令路线: 底图(11)=被换脸图, 贴图(12)=参考(抠图上画布), "
+                "指令即控制面 — 可显式要求发型跟随",
+    },
 }
 
 
@@ -185,6 +194,14 @@ def run_swap(wf_key: str, target: Path, ref: Path, tag: str = "",
                         _expr_distance(g_out, g_ref), 3)
                 entry["expr_follows_target"] = expr_follow <= (
                     _expr_distance(g_tgt, g_ref) * 0.6) if g_ref else None
+            h_ref = _hair_hist(fc, ref)
+            h_tgt = _hair_hist(fc, target)
+            h_out = _hair_hist(fc, Path(f))
+            if h_out is not None and h_ref is not None and h_tgt is not None:
+                entry["hair_vs_ref"] = round(_hist_intersection(h_out, h_ref), 3)
+                entry["hair_vs_target"] = round(_hist_intersection(h_out, h_tgt), 3)
+                entry["hair_follows_ref"] = entry["hair_vs_ref"] > \
+                    entry["hair_vs_target"]
             metrics[Path(f).name] = entry
     except Exception as e:  # metrics optional
         metrics = {"error": str(e)}
@@ -234,6 +251,40 @@ def _expr_distance(g1: dict, g2: dict) -> float:
     """Mean normalized landmark distance (0=identical geometry, ~1+ = very different)."""
     d = np.linalg.norm(g1["rel"] - g2["rel"], axis=1).mean()
     return float(d)
+
+
+def _hair_hist(fc, img_path: Path) -> np.ndarray | None:
+    """HSV hue-sat histogram of the hair band (strip above the face bbox).
+
+    Rough hairstyle proxy: catches length/color/presence changes even without
+    a hair segmentation model (color+texture of the head region above face).
+    """
+    import cv2
+    img = cv2.imread(str(img_path))
+    if img is None:
+        return None
+    h, w = img.shape[:2]
+    fc.det.setInputSize((w, h))
+    _, faces = fc.det.detect(img)
+    if faces is None or len(faces) == 0:
+        return None
+    areas = faces[:, 2] * faces[:, 3]
+    f = faces[int(np.argmax(areas))]
+    x, y, fw, fh = int(f[0]), int(f[1]), int(f[2]), int(f[3])
+    # band: from 1.1*fh above face top to 0.15*fh below it, width 1.5*fw
+    x0, x1 = max(0, int(x - 0.25 * fw)), min(w, int(x + 1.25 * fw))
+    y0, y1 = max(0, int(y - 1.1 * fh)), min(h, int(y + 0.15 * fh))
+    if x1 - x0 < 10 or y1 - y0 < 10:
+        return None
+    band = img[y0:y1, x0:x1]
+    hsv = cv2.cvtColor(band, cv2.COLOR_BGR2HSV)
+    hist = cv2.calcHist([hsv], [0, 1], None, [18, 8], [0, 180, 0, 256])
+    cv2.normalize(hist, hist)
+    return hist
+
+
+def _hist_intersection(h1: np.ndarray, h2: np.ndarray) -> float:
+    return float(np.minimum(h1, h2).sum() / max(h1.sum(), 1e-9))
 
 
 def _url_ext(url: str) -> str:

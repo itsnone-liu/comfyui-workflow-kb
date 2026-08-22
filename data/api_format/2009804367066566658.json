@@ -1,0 +1,242 @@
+{
+ "11": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "pasted/6c0c434ba5e65ec0d5c72c36a0c3c7d56018a50b0e9cffcb66291cb114f91634.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "12": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "pasted/f84316b292d40739c9664cc0378dce438d7d1c26faa78e5aea2fd33f5d6e40ec.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "23": {
+  "class_type": "FastCanvas",
+  "inputs": {
+   "canvas": "",
+   "seed": "1768012906194_48417",
+   "fc_data": [
+    "4",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "🎈FastCanvas"
+  }
+ },
+ "14": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "lora_name": "qwen2511_融合矫正透视v1.safetensors",
+   "strength_model": 1.0000000000000002,
+   "model": [
+    "7",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "LoRA加载器(仅模型)"
+  }
+ },
+ "25": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "4d311a087fe87232c1311385a16942a450c4f8b5dc87db18030e98cc35940f6c.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "17": {
+  "class_type": "TextEncodeQwenImageEditPlus_lrzjason",
+  "inputs": {
+   "instruction": "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate.",
+   "skip_first_image_resize": false,
+   "enable_vl_resize": false,
+   "vae": [
+    "7",
+    2
+   ],
+   "upscale_method": "lanczos",
+   "image1": [
+    "23",
+    0
+   ],
+   "prompt": "en，调整视角，保持主体位置不变，改变拍摄角度，调整背景以使环境和主体完美融合，并调整主体的光影使其自然融入背景，柔和的光线照射在主体上",
+   "enable_resize": true,
+   "crop": "disabled",
+   "clip": [
+    "7",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "TextEncodeQwenImageEditPlus lrzjason"
+  }
+ },
+ "19": {
+  "class_type": "easy imageRemBg",
+  "inputs": {
+   "rem_mode": "RMBG-1.4",
+   "save_prefix": "ComfyUI",
+   "images": [
+    "12",
+    0
+   ],
+   "image_output": "Preview",
+   "refine_foreground": false,
+   "torchscript_jit": false,
+   "add_background": "white"
+  },
+  "_meta": {
+   "title": "图像背景移除"
+  }
+ },
+ "1": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "7",
+    2
+   ],
+   "samples": [
+    "6",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "3": {
+  "class_type": "Image Comparer (rgthree)",
+  "inputs": {
+   "rgthree_comparer": {
+    "images": [
+     {
+      "name": "A",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_targv_00003_unvmm_1768010032.jpg&type=temp&subfolder=&rand=0.18498145588748738&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzI1N2M4ODVjMWFhYTlkZGRmY2MzMmFjMDRjNmJhMSIsInNpZ25FeHBpcmUiOjE3Njg2MTQ3NDAyMzUsInRzIjoxNzY4MDA5OTQwMjM1LCJzaWduIjoiNjJhNjAwNGVlY2MxOTk1OGQ2Yjc2MWM5N2EyYTM2YWUifQ==&Rh-Identify=f3257c885c1aaa9dddfcc32ac04c6ba1"
+     },
+     {
+      "name": "B",
+      "selected": true,
+      "url": "/view?filename=rgthree.compare._temp_targv_00004_lzzet_1768010033.jpg&type=temp&subfolder=&rand=0.29933895005559585&Rh-Comfy-Auth=eyJ1c2VySWQiOiJmMzI1N2M4ODVjMWFhYTlkZGRmY2MzMmFjMDRjNmJhMSIsInNpZ25FeHBpcmUiOjE3Njg2MTQ3NDAyMzUsInRzIjoxNzY4MDA5OTQwMjM1LCJzaWduIjoiNjJhNjAwNGVlY2MxOTk1OGQ2Yjc2MWM5N2EyYTM2YWUifQ==&Rh-Identify=f3257c885c1aaa9dddfcc32ac04c6ba1"
+     }
+    ]
+   },
+   "image_a": [
+    "1",
+    0
+   ],
+   "image_b": [
+    "11",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像对比"
+  }
+ },
+ "4": {
+  "class_type": "FastCanvasTool",
+  "inputs": {
+   "bg_img": [
+    "11",
+    0
+   ],
+   "max_size_mb": 2,
+   "img_1": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "🎈FastCanvasTool"
+  }
+ },
+ "6": {
+  "class_type": "KSampler",
+  "inputs": {
+   "scheduler": "normal",
+   "negative": [
+    "9",
+    0
+   ],
+   "denoise": 1,
+   "latent_image": [
+    "17",
+    6
+   ],
+   "seed": 857187797148298,
+   "cfg": 1,
+   "sampler_name": "euler",
+   "model": [
+    "14",
+    0
+   ],
+   "positive": [
+    "17",
+    0
+   ],
+   "steps": 4
+  },
+  "_meta": {
+   "title": "K采样器"
+  }
+ },
+ "7": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "Qwen-Rapid-AIO-SFW-v18.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "8": {
+  "class_type": "ImageCropper",
+  "inputs": {
+   "image": [
+    "19",
+    0
+   ],
+   "seed": 4199022728271217
+  },
+  "_meta": {
+   "title": "图像裁剪"
+  }
+ },
+ "9": {
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "17",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "条件零化"
+  }
+ },
+ "20": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "1",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ }
+}
