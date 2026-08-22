@@ -1,0 +1,638 @@
+{
+ "45": {
+  "class_type": "PulidFluxModelLoader",
+  "inputs": {
+   "pulid_file": "pulid_flux_v0.9.0.safetensors"
+  },
+  "_meta": {
+   "title": "Load PuLID Flux Model"
+  }
+ },
+ "67": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "5c3aa3e15593b88ea823309b3cfdb19fb45c847e145df27b0aefe31c446ae0e4.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "89": {
+  "class_type": "SamplerCustomAdvanced",
+  "inputs": {
+   "guider": [
+    "47",
+    0
+   ],
+   "latent_image": [
+    "93",
+    0
+   ],
+   "noise": [
+    "90",
+    0
+   ],
+   "sigmas": [
+    "75",
+    1
+   ],
+   "sampler": [
+    "16",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "自定义采样器(高级)"
+  }
+ },
+ "25": {
+  "class_type": "RandomNoise",
+  "inputs": {
+   "noise_seed": 530810059801398
+  },
+  "_meta": {
+   "title": "随机噪波"
+  }
+ },
+ "47": {
+  "class_type": "BasicGuider",
+  "inputs": {
+   "conditioning": [
+    "26",
+    0
+   ],
+   "model": [
+    "62",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "基础引导"
+  }
+ },
+ "26": {
+  "class_type": "FluxGuidance",
+  "inputs": {
+   "guidance": 3.5,
+   "conditioning": [
+    "6",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Flux引导"
+  }
+ },
+ "48": {
+  "class_type": "SamplerCustomAdvanced",
+  "inputs": {
+   "guider": [
+    "47",
+    0
+   ],
+   "latent_image": [
+    "239",
+    0
+   ],
+   "noise": [
+    "25",
+    0
+   ],
+   "sigmas": [
+    "75",
+    0
+   ],
+   "sampler": [
+    "16",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "自定义采样器(高级)"
+  }
+ },
+ "270": {
+  "class_type": "SUPIR_decode",
+  "inputs": {
+   "decoder_tile_size": [
+    "280",
+    0
+   ],
+   "use_tiled_vae": true,
+   "SUPIR_VAE": [
+    "278",
+    1
+   ],
+   "latents": [
+    "268",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR解码"
+  }
+ },
+ "271": {
+  "class_type": "SUPIR_encode",
+  "inputs": {
+   "image": [
+    "267",
+    1
+   ],
+   "encoder_tile_size": [
+    "280",
+    0
+   ],
+   "encoder_dtype": "auto",
+   "use_tiled_vae": true,
+   "SUPIR_VAE": [
+    "267",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR编码"
+  }
+ },
+ "273": {
+  "class_type": "ColorMatch",
+  "inputs": {
+   "image_ref": [
+    "91",
+    0
+   ],
+   "method": "mkl",
+   "strength": 1,
+   "multithread": true,
+   "image_target": [
+    "270",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "图像调色"
+  }
+ },
+ "278": {
+  "class_type": "SUPIR_model_loader_v2",
+  "inputs": {
+   "high_vram": false,
+   "diffusion_dtype": "auto",
+   "model": [
+    "279",
+    0
+   ],
+   "fp8_unet": false,
+   "vae": [
+    "279",
+    2
+   ],
+   "supir_model": "SUPIR-v0F_fp16.safetensors",
+   "clip": [
+    "279",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR模型加载器_V2"
+  }
+ },
+ "279": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "XLL dreamshaperXL_lightningDPMSDE.safetensors"
+  },
+  "_meta": {
+   "title": "Checkpoint加载器(简易)"
+  }
+ },
+ "90": {
+  "class_type": "DisableNoise",
+  "inputs": {},
+  "_meta": {
+   "title": "禁用噪波"
+  }
+ },
+ "91": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "vae": [
+    "10",
+    0
+   ],
+   "samples": [
+    "89",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "VAE解码"
+  }
+ },
+ "239": {
+  "class_type": "EmptyLatentImage",
+  "inputs": {
+   "batch_size": 1,
+   "width": 896,
+   "height": 1152
+  },
+  "_meta": {
+   "title": "空Latent"
+  }
+ },
+ "71": {
+  "class_type": "LayerUtility: CropByMask V2",
+  "inputs": {
+   "invert_mask": false,
+   "left_reserve": 20,
+   "image": [
+    "54",
+    0
+   ],
+   "detect": "mask_area",
+   "round_to_multiple": "8",
+   "right_reserve": 20,
+   "bottom_reserve": 20,
+   "top_reserve": 20,
+   "mask": [
+    "266",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "遮罩裁剪_V2"
+  }
+ },
+ "93": {
+  "class_type": "InjectLatentNoise+",
+  "inputs": {
+   "latent": [
+    "48",
+    0
+   ],
+   "normalize": "true",
+   "noise_seed": 460950966008163,
+   "noise_strength": 0.3
+  },
+  "_meta": {
+   "title": "插入噪波Latent"
+  }
+ },
+ "94": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "weight_dtype": "fp8_e4m3fn",
+   "unet_name": "flux1-dev-fp8.safetensors"
+  },
+  "_meta": {
+   "title": "UNET加载器"
+  }
+ },
+ "51": {
+  "class_type": "PulidFluxEvaClipLoader",
+  "inputs": {},
+  "_meta": {
+   "title": "Load Eva Clip (PuLID Flux)"
+  }
+ },
+ "95": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "91",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "53": {
+  "class_type": "PulidFluxInsightFaceLoader",
+  "inputs": {
+   "provider": "CPU"
+  },
+  "_meta": {
+   "title": "Load InsightFace (PuLID Flux)"
+  }
+ },
+ "75": {
+  "class_type": "SplitSigmasDenoise",
+  "inputs": {
+   "denoise": 0.6,
+   "sigmas": [
+    "17",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "分离Sigmas降噪"
+  }
+ },
+ "10": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ae.sft"
+  },
+  "_meta": {
+   "title": "VAE加载器"
+  }
+ },
+ "54": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "5638a7c53e81259e90fe7c8f1a45bc1c95d2e0bb3a2362427f71f23600330839.png"
+  },
+  "_meta": {
+   "title": "加载图像"
+  }
+ },
+ "16": {
+  "class_type": "KSamplerSelect",
+  "inputs": {
+   "sampler_name": "euler"
+  },
+  "_meta": {
+   "title": "K采样器选择"
+  }
+ },
+ "17": {
+  "class_type": "BasicScheduler",
+  "inputs": {
+   "scheduler": "ddim_uniform",
+   "denoise": 1,
+   "model": [
+    "94",
+    0
+   ],
+   "steps": 30
+  },
+  "_meta": {
+   "title": "基础调度器"
+  }
+ },
+ "280": {
+  "class_type": "ImpactInt",
+  "inputs": {
+   "value": 1024
+  },
+  "_meta": {
+   "title": "整数"
+  }
+ },
+ "281": {
+  "class_type": "ImpactInt",
+  "inputs": {
+   "value": 512
+  },
+  "_meta": {
+   "title": "整数"
+  }
+ },
+ "282": {
+  "class_type": "Seed_",
+  "inputs": {
+   "seed": 293310264378650
+  },
+  "_meta": {
+   "title": "随机种"
+  }
+ },
+ "283": {
+  "class_type": "ImageResize+",
+  "inputs": {
+   "multiple_of": 0,
+   "image": [
+    "91",
+    0
+   ],
+   "interpolation": "nearest",
+   "condition": "always",
+   "method": "keep proportion",
+   "width": 2000,
+   "height": 2000
+  },
+  "_meta": {
+   "title": "图像缩放"
+  }
+ },
+ "163": {
+  "class_type": "DualCLIPLoader",
+  "inputs": {
+   "clip_name1": "clip_l.safetensors",
+   "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+   "type": "flux",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "双CLIP加载器"
+  }
+ },
+ "284": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "ComfyUI",
+   "images": [
+    "273",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "保存图像"
+  }
+ },
+ "263": {
+  "class_type": "Joy_caption_two",
+  "inputs": {
+   "caption_type": "Descriptive",
+   "caption_length": "long",
+   "image": [
+    "67",
+    0
+   ],
+   "low_vram": false,
+   "joy_two_pipeline": [
+    "264",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Joy Caption Two"
+  }
+ },
+ "264": {
+  "class_type": "Joy_caption_two_load",
+  "inputs": {
+   "model": "unsloth/Meta-Llama-3.1-8B-bnb-4bit"
+  },
+  "_meta": {
+   "title": "Joy Caption Two Load"
+  }
+ },
+ "266": {
+  "class_type": "LayerMask: PersonMaskUltra V2",
+  "inputs": {
+   "detail_dilate": 6,
+   "images": [
+    "54",
+    0
+   ],
+   "detail_erode": 6,
+   "accessories": false,
+   "confidence": 0.4,
+   "max_megapixels": 2,
+   "body": false,
+   "clothes": false,
+   "detail_method": "VITMatte",
+   "black_point": 0.01,
+   "process_detail": true,
+   "face": true,
+   "hair": true,
+   "white_point": 0.99,
+   "background": false,
+   "device": "cuda"
+  },
+  "_meta": {
+   "title": "人像遮罩 Ultra V2"
+  }
+ },
+ "267": {
+  "class_type": "SUPIR_first_stage",
+  "inputs": {
+   "image": [
+    "283",
+    0
+   ],
+   "encoder_tile_size": [
+    "280",
+    0
+   ],
+   "decoder_tile_size": [
+    "280",
+    0
+   ],
+   "encoder_dtype": "auto",
+   "use_tiled_vae": true,
+   "SUPIR_VAE": [
+    "278",
+    1
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR阶段一"
+  }
+ },
+ "268": {
+  "class_type": "SUPIR_sample",
+  "inputs": {
+   "seed": [
+    "282",
+    0
+   ],
+   "cfg_scale_end": 1.5,
+   "s_noise": 1.002,
+   "positive": [
+    "269",
+    0
+   ],
+   "steps": 10,
+   "control_scale_end": 0.9,
+   "sampler": "RestoreDPMPP2MSampler",
+   "keep_model_loaded": false,
+   "control_scale_start": 1,
+   "SUPIR_model": [
+    "278",
+    0
+   ],
+   "negative": [
+    "269",
+    1
+   ],
+   "sampler_tile_stride": [
+    "281",
+    0
+   ],
+   "EDM_s_churn": 5,
+   "DPMPP_eta": 1,
+   "cfg_scale_start": 2,
+   "restore_cfg": 1,
+   "sampler_tile_size": [
+    "280",
+    0
+   ],
+   "latents": [
+    "271",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR采样"
+  }
+ },
+ "269": {
+  "class_type": "SUPIR_conditioner",
+  "inputs": {
+   "SUPIR_model": [
+    "278",
+    0
+   ],
+   "negative_prompt": "bad quality, blurry, messy",
+   "positive_prompt": "high quality, detailed, photograph",
+   "latents": [
+    "267",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "SUPIR条件"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": [
+    "263",
+    0
+   ],
+   "clip": [
+    "163",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "CLIP文本编码器"
+  }
+ },
+ "62": {
+  "class_type": "ApplyPulidFlux",
+  "inputs": {
+   "end_at": 0.98,
+   "image": [
+    "71",
+    0
+   ],
+   "pulid_flux": [
+    "45",
+    0
+   ],
+   "weight": 1,
+   "model": [
+    "94",
+    0
+   ],
+   "eva_clip": [
+    "51",
+    0
+   ],
+   "face_analysis": [
+    "53",
+    0
+   ],
+   "start_at": 0
+  },
+  "_meta": {
+   "title": "Apply PuLID Flux"
+  }
+ }
+}

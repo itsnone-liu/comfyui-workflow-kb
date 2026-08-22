@@ -166,10 +166,15 @@ $env:PYTHONPATH=''
 
 - 语义：**ref 出身份（脸+发型倾向），target 出表情/姿势/场景**；输出落
   `data/swap/<tag>/` 自动进画廊
-- 自动指标：`identity_vs_ref`（≥0.363 为同身份）+ `residual_vs_target`（旧身份残
-  留，越低换得越净）
-- 预设：`instantid`（默认，residual 0.104 最干净）、`maskflux`（identity 0.471 更像
-  参考人但残留 0.403）、`instantid_pulid`（平台坏流，已标记禁投）
+- 自动指标：`identity_vs_ref`（同身份倾向）+ `residual_vs_target`（旧身份残
+  留，≈0.21 跨人基线即已清除）+ `expr_follow_target`（5 关键点归一化距离，
+  表情/姿势跟随度，<0.1 为精确）
+- 调参实证（跨人测试对，全部入库）：身份杠杆=cfg（1.5→3.5: 0.267→0.314，
+  weight/denoise 单独无效）；lightning 底模身份上限 ~0.31；表情跟随精确
+  （0.024-0.067）；`hair=True` 遮罩把重绘扩到头发（发型迁移档，残差最佳 0.179）
+- 预设：`swap_full`（默认，发型重绘）、`instantid_cfg`（身份略高、发型沿用目标）、
+  `instantid`/`maskflux`（身份 0.42-0.47 但表情跟参考图）、`instantid_pulid`
+  （平台坏流，禁投）、其余为调参中间档
 
 ### MCP 工具（`mcp/server.py`，已注册到 DSH web profile，名为 `comfyui_kb`）
 
