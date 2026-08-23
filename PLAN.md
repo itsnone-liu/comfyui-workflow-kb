@@ -155,6 +155,7 @@ workflow.json
 | **M8** | 端到端任务实战：换脸管线 | 用户图对→最优结果+全链路机制沉淀 | ✅ **完成**（6 路线 19 预设全实测；最终混合管线 final_v3：ReActor 0.741/0.032 → Klein 单锚 → LAB；两耦合定律+锚定权衡+表情机制入库；`swap_face.py` 一键工具） |
 | **M9** | 自主探索机制 v1 | 结果反馈→自动诊断→候选修复（闭环 A） | ✅ **完成**（`auto_explore.py` 接入 run_swap 默认路径；`diagnosis_rules` 6 条+`tech_families` 7 族入库；回放验证自动复现专家诊断路径；VL 语义评审上线） |
 | **M10** | Web 前端 + 自主编排后端 | 需求→AI 建流→出图→反馈修订→最终工作流/不可行解释 | ✅ **完成 v1**（`webapp/`：`orchestrator.py` 任务循环[规划LLM→路线选择→RH执行→自动评审→等反馈→修订→终局]，`app.py` REST+图服务 :8830，`static/index.html` 零依赖前端；真实任务端到端验证通过，limited 路径带机制解释） |
+| **M15** | 专家方案层 + 知识缺口（总方案《专家方案沉淀与动态知识生长》） | 检索复用闭环 + 失败知识化 + 晋升机制 | ✅ **完成**（`expert_solutions/knowledge_gaps/research_sessions` 三表 + M8 七路线种子；`kb/solutions.py` 检索/回写/晋升/缺口；orchestrator `_pick_solution` 前置[命中零规划硬币]+`_chain_for` route_json 回放+`_writeback` 三终态回写；MCP `search_solutions` 11 工具；`test_m15_wiring.py` 23 checks + MCP 自测全过。活例：hybrid_final 差 2 个真实任务晋升 expert） |
 
 M1-M3 完成即达成构想的核心命题：**机器可理解、按能力检索的知识库**。M5/M6 是增强。
 M8/M9 把库变成了**能干活的系统**：前者证明"检索→组合→修改→验证"全链路可走通（自拼
@@ -177,11 +178,10 @@ ReActor 4 节点流即证据），后者把"人当裁判"升级为"系统自判"
 | 里程碑 | 内容 | 依赖 |
 |---|---|---|
 | **M10b** | 闭环 B：宽泛提示解析器（比较型断言→tech_families 机制差→改进假设→节点检索） | tech_families 已就位 |
-| **M11** | 外部研究通道（三源）：GitHub（operator 实现）+ ComfyUI Registry（节点包元数据）+ HuggingFace（模型/模型卡/license 层，定位与边界见 `docs/M15_design.md` §5）→ research_sessions 漏斗（候选20→初筛5→深读1-2）→ external_fact；B站/C站后续按用户定渠道后扩 | M15 接线完成后启动 |
+| **M11** | 外部研究通道（三源）：GitHub（operator 实现）+ ComfyUI Registry（节点包元数据）+ HuggingFace（模型/模型卡/license 层，定位与边界见 `docs/M15_design.md` §5）→ research_sessions 漏斗（候选20→初筛5→深读1-2）→ external_fact；B站/C站后续按用户定渠道后扩 | **M15 已完成，可启动** |
 | **M12** | ComfyUI 官方 registry 元数据采集器（零硬币补节点清单） | 无 |
 | **M13** | 边界羽化算子（Rope 式 poisson/blend）补 inswapper 边缘伪影 | diagnosis_rules 已有对应症状条目 |
 | **M14** | webapp 任务族扩展：kb_generic 视频任务、多图输入、反馈修订的参数级微调（锚次数/GFPGAN 权重） | M10 架构 |
-| **M15** | 专家方案层 + 知识缺口：expert_solutions / knowledge_gaps / research_sessions 三表、orchestrator 方案检索与终态回写、M8 七路线种子迁移、negative_result/external_fact kind 扩展 | 设计 `docs/M15_design.md`；迁移 `kb/migrate_m15.py`（`kb/schema_m15.sql`，幂等可重跑） |
 
 ## 9. 风险与对策
 

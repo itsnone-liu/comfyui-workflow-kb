@@ -38,6 +38,11 @@ reqs = [
         "name": "list_patterns", "arguments": {"category": "technique", "min_df": 4}}},
     {"jsonrpc": "2.0", "id": 12, "method": "tools/call", "params": {
         "name": "get_pattern", "arguments": {"pattern_id": 272}}},
+    {"jsonrpc": "2.0", "id": 13, "method": "tools/call", "params": {
+        "name": "search_solutions", "arguments": {"keyword": "换脸", "limit": 3}}},
+    {"jsonrpc": "2.0", "id": 14, "method": "tools/call", "params": {
+        "name": "search_solutions", "arguments": {
+            "capability": "hair_transfer", "status": "validated"}}},
 ]
 
 proc = subprocess.Popen([PY, SERVER], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -76,5 +81,9 @@ print("\n== list_patterns (technique, df>=4):")
 print(results.get(11, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:900])
 print("\n== get_pattern 272:")
 print(results.get(12, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:700])
+print("\n== search_solutions 换脸:")
+print(results.get(13, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:900])
+print("\n== search_solutions hair_transfer+validated:")
+print(results.get(14, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:400])
 if err:
     print("\n[stderr]", err[:300])

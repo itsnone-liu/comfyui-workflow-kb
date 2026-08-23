@@ -72,6 +72,17 @@ else:
   `data/webtasks/*/task.json` 可回填历史。
 - MCP 后续加 `search_solutions` 工具(10→11),协议自测沿用 `mcp/test_server.py`。
 
+**实现落点(2026-08-23,已完成)**:
+- `kb/solutions.py`:检索(`search_solutions`/`hit_solution`,capabilities 位置加权
+  词法评分,可解释 matched_caps)+ `record_reuse` / `record_success`(输入指纹去重 +
+  晋升检查)+ `open_gap`(同题去重,追加 known_failures)。纯 stdlib。
+- `webapp/orchestrator.py`:`_pick_solution` 前置(命中→零规划硬币,时间线留痕);
+  `_chain_for` 回放 `route_json`(方案可不进 ROUTE_CHAINS 直接执行);`_writeback`
+  挂三终态(satisfied→成功记账+晋升;limited 且有能力迭代/kb_no_hit→open_gap;
+  缺输入 limited 与 error 不写)。
+- `mcp/server.py`:`search_solutions` 工具(11 工具,`mcp/test_server.py` 自测通过)。
+- LLM 复排只在词法弱信号(top<2)或并列时触发,失败回退词法序——离线可用。
+
 ## 4. 种子数据(migrate_m15.py,幂等)
 
 | name | status | 依据 |
@@ -118,15 +129,20 @@ B站/C站仍按 STATUS 原计划"等用户定渠道后扩",不阻塞主线。
 
 ## 6. 验收标准
 
-**M15**:
-1. 7 条种子方案可 SQL/CLI 检索,route_json 可被 orchestrator 回放;
-2. 一个新换脸任务命中方案直接复用(零规划硬币,时间线留痕);
-3. 一个故意造的缺口任务正确产出 knowledge_gaps 记录(known_failures 带指标);
-4. instantid_pulid 勿投币、跨家族爆点可通过 negative_result 检索到。
+**M15**(2026-08-23 验收,`test_m15_wiring.py` 23 checks 全过,MCP 自测 11 工具):
+1. ✅ 7 条种子方案 SQL/CLI/MCP 可检索;route_json 被 `_chain_for` 原样回放(test2);
+2. ✅ 换脸任务命中方案直接复用——零规划硬币、时间线留痕、reuse/success 记账
+   (离线打桩 e2e;**真实硬币活例待下个真实任务**:hybrid_final 差 2 个真实任务晋升
+   expert,正好是晋升机制的活例);
+3. ✅ 缺口任务(发型+表情双需求)正确产出 knowledge_gaps(known_failures 带
+   路线+指标);缺输入的 limited 不误开 gap(test3);
+4. ✅ instantid_pulid 勿投币、跨家族爆点 negative_result 均可检索(test4);
+   晋升:candidate→validated(≥2 输入)/ validated→expert(≥3 任务+边界+参数)
+   均按规则触发(test5)。
 
 **M11(三源)**:一个 open gap → research_session(gap_id 链)→ GitHub/Registry/HF
 三源查询留痕 → 发现 operator/机制 → 实验 → gap.status=resolved + solution 回写,
-全链一次。
+全链一次。(未启动;M15 已就绪不阻塞)
 
 ## 7. 部署与运行
 
@@ -135,6 +151,8 @@ cd D:\qjcNetDiskDownload\deepseek-harness\project\820
 $env:PYTHONPATH=''
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" kb\migrate_m15.py   # 幂等,可重复跑
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" kb\migrate_m15.py --no-seed   # 只建表
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" test_m15_wiring.py # 接线验收(临时库,不动 kb.db)
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" mcp\test_server.py  # MCP 11 工具自测
 ```
 
 文件:`kb/schema_m15.sql`(DDL)、`kb/migrate_m15.py`(迁移+种子,纯 stdlib)、

@@ -31,7 +31,10 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analyzer"))
 
+from kb import solutions  # M15 expert-solution layer
+
 TASKS_DIR = ROOT / "data/webtasks"
+SOLUTIONS_DB = None  # tests override; None -> kb/solutions.DB_PATH (data/kb.db)
 
 # ---------------------------------------------------------------- routes
 
@@ -279,12 +282,106 @@ def kb_search_workflow(query: str) -> dict | None:
     return None
 
 
+# ---------------------------------------------------------------- M15 solutions
+
+def _pick_solution(task: Task) -> dict | None:
+    """Expert Solution Retrieval(设计 §3):命中则零规划硬币直接回放 route_json。
+
+    词法评分为主;信号弱或并列时用规划 LLM 在 top-k 里复排(失败回退词法序)。
+    """
+    try:
+        if not solutions.FACE_SWAP_RE.search(task.requirement or ""):
+            return None  # 非换脸族:走规划 LLM(方案库暂只覆盖 face_swap)
+        cands = solutions.search_solutions(task.requirement, db_path=SOLUTIONS_DB)
+    except Exception:
+        return None
+    if not cands:
+        return None
+    top = cands[0]
+    tied = [c for c in cands if abs(c["score"] - top["score"]) < 0.01]
+    if len(tied) >= 2 or top["score"] < 2.0:
+        knowledge = ("综合最优=hybrid_final; 色彩极端重要=klein_double; "
+                     "表情极端重要=reactor_pure; 发型跟参考=pulid_flux/qwen_swap; "
+                     "结构/姿态保留=instantid_cfg")
+        prompt = f"""用户需求：\"\"\"{task.requirement}\"\"\"
+候选专家方案：
+{chr(10).join(f"- {c['name']} [{c['status']}]: {c['requirements']} 限制:{solutions.get(c['id'], db_path=SOLUTIONS_DB)['limitations'][:80] if c['id'] else ''}" for c in cands)}
+路线知识：{knowledge}
+JSON 选择最合适的一个：{{"choice": "方案name", "why": "一句话"}}"""
+        try:
+            pick = _llm_json(prompt)
+            name = pick.get("choice", "")
+            for c in cands:
+                if c["name"] == name:
+                    c["llm_pick"] = True
+                    return c
+        except Exception:
+            pass
+    return top
+
+
+def _chain_for(task: Task, route: str) -> dict:
+    """执行链解析:优先回放 reused_solution 的 route_json(零翻译),退回 ROUTE_CHAINS。
+
+    也允许只存在于 expert_solutions 的新路线(不硬编码进 ROUTE_CHAINS 也能跑)。
+    """
+    sid = task.plan.get("reused_solution")
+    if sid:
+        sol = solutions.get(sid, db_path=SOLUTIONS_DB)
+        if sol and sol["route"]:
+            return {"label": f"{sol['name']}({sol['status']}): {sol['requirements'][:40]}",
+                    "steps": sol["route"]}
+    if route in ROUTE_CHAINS:
+        return ROUTE_CHAINS[route]
+    sol = solutions.get_by_name(route, db_path=SOLUTIONS_DB)
+    if sol and sol["route"]:
+        return {"label": f"{sol['name']}: {sol['requirements'][:40]}",
+                "steps": sol["route"]}
+    raise KeyError(f"unknown route {route}")
+
+
+def _writeback(task: Task) -> None:
+    """终态回写(设计 §3),任何异常不影响任务循环:
+    satisfied -> 方案成功记账+晋升检查;limited(能力不可达) -> open_gap。"""
+    try:
+        if task.outcome == "satisfied":
+            fp = solutions.input_fingerprint(task.images, ROOT)
+            info = solutions.record_success(
+                route=task.plan.get("route", ""), task_id=task.id,
+                fingerprint=fp,
+                bars=task.iterations[-1]["bars"] if task.iterations else {},
+                db_path=SOLUTIONS_DB)
+            if info:
+                task.log("kb", f"方案回写：{info['name']} "
+                                f"success#{info.get('distinct_inputs', '?')} 输入"
+                                + (f" → 晋升 {info['status_after']} ✅"
+                                   if info["promoted"] else ""))
+        elif task.outcome == "limited":
+            reason = task.plan.get("_limited_reason", "")
+            capability_gap = bool(task.iterations) or reason == "kb_no_hit"
+            if capability_gap:
+                g = solutions.open_gap(
+                    requirement=task.requirement, task_id=task.id,
+                    iterations=task.iterations,
+                    trigger_note=("kb_generic 无可执行工作流命中"
+                                  if reason == "kb_no_hit" else "多轮修订后仍不可达"),
+                    db_path=SOLUTIONS_DB)
+                task.log("kb", f"知识缺口登记：#{g['gap_id']} "
+                                f"{'新建' if g['created'] else '追加失败证据'} "
+                                f"「{g['title'][:40]}」")
+    except Exception as e:
+        try:
+            task.log("kb", f"回写失败(不影响任务):{type(e).__name__}: {e}")
+        except Exception:
+            pass
+
+
 # ---------------------------------------------------------------- execution
 
 def _exec_face_swap(task: Task, route: str) -> list[str]:
     import swap_face as sf
     from analyzer.auto_explore import extract_result_image
-    chain = ROUTE_CHAINS[route]
+    chain = _chain_for(task, route)
     tgt = ROOT / task.images.get("target")
     ref = ROOT / task.images.get("ref")
     cur = tgt
@@ -432,10 +529,24 @@ def _run_task(task: Task):
     try:
         task.state = "planning"
         task.log("planning", "解析需求…")
-        task.plan = plan_task(task)
-        task.family = task.plan.get("family", "kb_generic")
-        task.log("planning",
-                 f"任务族={task.family} 初始路线={task.plan.get('route')}")
+        # M15: Expert Solution Retrieval 前置(命中则零规划硬币)
+        sol = _pick_solution(task)
+        if sol:
+            task.plan = {
+                "family": sol["family"], "route": sol["name"],
+                "feasible": True, "reused_solution": sol["id"],
+                "solution_score": sol["score"],
+                "planning": (f"复用专家方案 {sol['name']}({sol['status']}) "
+                             f"匹配={sol['matched_caps']}——零规划硬币"),
+                "notes": sol["requirements"]}
+            task.family = sol["family"]
+            solutions.record_reuse(sol["id"], db_path=SOLUTIONS_DB)
+            task.log("planning", task.plan["planning"])
+        else:
+            task.plan = plan_task(task)
+            task.family = task.plan.get("family", "kb_generic")
+            task.log("planning",
+                     f"任务族={task.family} 初始路线={task.plan.get('route')}")
 
         # feasibility: inputs present?
         need = {"face_swap": ("target", "ref"), "kb_generic": ("target",)}
@@ -447,6 +558,7 @@ def _run_task(task: Task):
                     f"缺少必需输入：{missing}。请上传 "
                     + "（face_swap 需要 target=被换脸图 与 ref=人脸参考图）")
             task.state = "final"
+            _writeback(task)
             task.persist()
             return
 
@@ -455,8 +567,10 @@ def _run_task(task: Task):
             hit = kb_search_workflow(task.requirement)
             if not hit:
                 task.outcome = "limited"
+                task.plan["_limited_reason"] = "kb_no_hit"
                 task.explanation = write_explanation(task, limited=True)
                 task.state = "final"
+                _writeback(task)
                 task.persist()
                 return
             task.plan["kb_hit"] = hit
@@ -491,6 +605,7 @@ def _run_task(task: Task):
                 task.outcome = "satisfied"
                 task.explanation = write_explanation(task, limited=False)
                 task.state = "final"
+                _writeback(task)
                 task.persist()
                 return
             # await user feedback
@@ -507,6 +622,7 @@ def _run_task(task: Task):
                 task.outcome = "satisfied"
                 task.explanation = write_explanation(task, limited=False)
                 task.state = "final"
+                _writeback(task)
                 task.persist()
                 return
             if task.current_round >= task.max_rounds:
@@ -516,6 +632,7 @@ def _run_task(task: Task):
         task.outcome = "limited"
         task.explanation = write_explanation(task, limited=True)
         task.state = "final"
+        _writeback(task)
         task.persist()
     except Exception as e:
         task.state = "final"

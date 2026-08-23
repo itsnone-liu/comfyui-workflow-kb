@@ -5,7 +5,38 @@
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + **M10 Web 前端** ✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + **M15 专家方案层** ✅
+
+### M15：专家方案层 + 知识缺口（2026-08-23）✅
+
+**对齐总方案**《ComfyUI_Workflow_KB_专家方案与动态知识生长.md》（D 盘根目录）；
+设计 `docs/M15_design.md`。原则：只加 L3（Expert Solution）与驱动对象，不动已有层。
+
+**数据**（`kb/schema_m15.sql` + `kb/migrate_m15.py`，幂等）：
+- `expert_solutions` **7 条种子**（M8 七路线）：hybrid_final / reactor_pure =
+  validated，其余 5 条 candidate；`route_json` 与 ROUTE_CHAINS 同形状可直接回放
+- `knowledge_gaps` 1 条 open（发型跟参考+表情跟底图，非指令路线）；
+  `research_sessions` 空（M11 填）；`negative_result` ×2（探针勿投币 / 跨家族爆点）
+
+**接线**（本次新增代码）：
+- `kb/solutions.py`：检索（capabilities 位置加权词法评分，matched_caps 可解释）/
+  `record_reuse` / `record_success`（**输入指纹去重** + 晋升检查）/
+  `open_gap`（同题去重追加 known_failures）
+- `webapp/orchestrator.py`：`_pick_solution` 前置——face_swap 任务先查方案，
+  **命中零规划硬币**直接回放（弱信号/并列才用 LLM 复排，失败回退词法）；
+  `_chain_for` 回放 route_json（方案可不进 ROUTE_CHAINS）；`_writeback` 三终态：
+  satisfied→success_count+指纹+晋升，limited（能力不可达/kb_no_hit）→open_gap，
+  缺输入 limited 与 error 不写
+- `mcp/server.py`：`search_solutions` 工具（10→11，自测通过）
+
+**晋升规则**（方差感知，写死在代码）：candidate→validated 需 ≥2 不同输入成功；
+validated→expert 需 ≥3 真实任务 + limitations/key_params 已表征。
+指标跨输入不可直接比（exp015 极差 0.063），故按成功次数不按指标数值。
+
+**验证**：`test_m15_wiring.py` **23 checks 全过**（临时库副本，不动 kb.db）——
+检索命中/零硬币复用留痕/route_json 回放/gap 登记（缺输入不误开）/negative 检索/
+晋升双向触发。MCP `test_server.py` 11 工具通过。
+**活例待跑**：首个真实换脸任务走复用路径；hybrid_final 差 2 个真实任务晋升 expert。
 
 ### M10：Web 前端 + 自主编排后端（v1）✅
 
@@ -240,14 +271,16 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 ### 下一步
 
-- **M15 专家方案层**（设计/schema/种子已就位，`docs/M15_design.md`）：orchestrator 接线（plan 前置方案检索 + 终态回写 satisfied→solution / limited→gap）、MCP `search_solutions` 工具、晋升规则（方差感知）与复用率指标从第一天记；M11 改三源（GitHub+Registry+HuggingFace 模型层）
-
+- **M15 活例**：首个真实换脸任务走方案复用路径（零规划硬币）——hybrid_final 差
+  2 个真实任务晋升 expert，是晋升机制的第一个活例
+- **M11 外部研究通道**（M15 已就绪可启动）：GitHub+Registry+HuggingFace 三源 →
+  research_sessions 漏斗；从 open gap「发型跟参考+表情跟底图」开跑全链
 - **M10b 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
 - **M14 webapp 扩展**：反馈参数级微调（锚次数/GFPGAN）、kb_generic 视频任务、任务持久化恢复
-- **M11 外部研究通道**：web+Qwen 文本消化 → external_fact；**B站/C站知识源方案等用户定**
+- **B站/C站知识源方案等用户定**；web_search 工具待配 DEEPSEEK_API_KEY
 - 夸张表情压力测试（用户待办；`swap_face.py --wf reactor` 自动诊断已就位）
 - M13 边界羽化算子（Rope 式）——若夸张表情测试放大边缘伪影则提前
-- H3 细分实验（`data/h3_report.md` §5）；MCP 10 工具已注册 DSH
+- H3 细分实验（`data/h3_report.md` §5）；MCP 11 工具已注册 DSH（+`search_solutions`，重启 DSH 生效）
 - git remote 仍未配置——用户给地址后 `git remote add + push`
 
 **关键命令**（cwd=820）：
@@ -256,7 +289,8 @@ $env:PYTHONPATH=''
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" experiments\runner.py inputs <wf_id>
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" experiments\runner.py run <wf_id> --var <node.field> --arms a,b --image "<node.field>=<path>"
 & "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" analyzer\composer.py compose upscale --base <wf_id> --run --metric
-& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" mcp\test_server.py   # MCP 自测
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" mcp\test_server.py   # MCP 11 工具自测
+& "D:\AI-Teaching-Assistant\OpenTutor\apps\api\.venv\Scripts\python.exe" test_m15_wiring.py  # M15 验收(临时库)
 ```
 
 **Token/key**：`.rh_token` 网页 token（采集用，~2026-09 中过期）；`.rh_apikey` 官方 Task API key

@@ -6,6 +6,7 @@ Tools:
   get_workflow        raw/normalized graph JSON path or content
   visualize_workflow  Mermaid flowchart grouped by category
   kb_stats            library statistics
+  search_solutions    M15 expert-solution retrieval (validated reusable routes)
 
 Run:  python mcp/server.py      (DSH/any MCP client connects via stdio)
 """
@@ -318,6 +319,46 @@ def tool_get_pattern(args: dict) -> str:
             + f"\nsignature: {sig[:800]}")
 
 
+def tool_search_solutions(args: dict) -> str:
+    """M15: search expert_solutions (validated/candidate reusable solutions)."""
+    conn = _conn()
+    sql = "SELECT * FROM expert_solutions WHERE status NOT IN ('superseded','retired')"
+    params: list = []
+    if args.get("status"):
+        sql += " AND status LIKE ?"
+        params.append(f"%{args['status']}%")
+    if args.get("family"):
+        sql += " AND family LIKE ?"
+        params.append(f"%{args['family']}%")
+    if args.get("capability"):
+        sql += " AND capabilities_json LIKE ?"
+        params.append(f"%{args['capability']}%")
+    if args.get("keyword"):
+        sql += " AND (requirements LIKE ? OR name LIKE ?)"
+        params += [f"%{args['keyword']}%"] * 2
+    sql += " ORDER BY CASE status WHEN 'expert' THEN 3 WHEN 'validated' THEN 2 ELSE 1 END DESC, id LIMIT ?"
+    params.append(int(args.get("limit", 5)))
+    rows = [dict(r) for r in conn.execute(sql, params)]
+    conn.close()
+    if not rows:
+        return "(无匹配专家方案。库内族: face_swap;状态: candidate/validated/expert)"
+    out = []
+    for i, r in enumerate(rows, 1):
+        caps = json.loads(r["capabilities_json"] or "[]")
+        route = json.loads(r["route_json"] or "[]")
+        metrics = json.loads(r["metrics_json"] or "{}")
+        out.append(
+            f"{i}. [{r['status']}] {r['name']} v{r['version']} ({r['family']})  "
+            f"复用{r['reuse_count']}次/成功{r['success_count']}次\n"
+            f"   需求: {r['requirements']}\n"
+            f"   能力: {', '.join(caps)}\n"
+            f"   路线: {' → '.join(s.get('wf') or s['kind'] for s in route)}\n"
+            f"   指标: {json.dumps({k: v for k, v in metrics.items() if k != 'input'}, ensure_ascii=False)}\n"
+            f"   边界: {(r['limitations'] or '-')[:120]}\n"
+            f"   证据: {(r['evidence_note'] or '-')[:120]}")
+    return "\n\n".join(out)
+
+
 TOOLS = [
     {
         "name": "search_workflows",
@@ -443,6 +484,24 @@ TOOLS = [
             "required": ["pattern_id"],
         },
     },
+    {
+        "name": "search_solutions",
+        "description": "M15 专家方案检索：经过真实任务验证的复合解决方案"
+                       "（candidate/validated/expert），含路线步骤、实测指标、"
+                       "适用边界与失败案例。新任务优先复用方案而不是从零规划。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "keyword": {"type": "string", "description": "需求关键词，如 换脸/色彩/发型"},
+                "capability": {"type": "string",
+                               "description": "能力标签: identity_transfer/expression_preserve/"
+                                              "color_harmonization/hair_transfer/structure_preserve"},
+                "status": {"type": "string", "description": "candidate|validated|expert"},
+                "family": {"type": "string", "description": "任务族，默认 face_swap"},
+                "limit": {"type": "integer", "description": "返回条数，默认 5"},
+            },
+        },
+    },
 ]
 
 HANDLERS = {
@@ -456,6 +515,7 @@ HANDLERS = {
     "get_experiment": tool_get_experiment,
     "list_patterns": tool_list_patterns,
     "get_pattern": tool_get_pattern,
+    "search_solutions": tool_search_solutions,
 }
 
 
