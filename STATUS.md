@@ -7,6 +7,26 @@
 
 ## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + **M15 专家方案层** ✅
 
+### M11：外部研究通道三源 v1（2026-08-23）✅ session#1 已跑
+
+**模块**（`research/`，纯 stdlib 零 key）：`external.py`（GitHub/ComfyUI Registry
+`api.comfy.org/nodes/search`/HF 三源适配器 + 候选评分 + 机制句抽取）、
+`session.py`（漏斗 collected→shortlisted→deep_read→mechanism→closed 全程落
+research_sessions + external_fact 写卡 + RH webapp 零硬币核查）、`run.py`
+（CLI：`python -m research.run --gap 1 --rh-check`，GAP_PLANS 策展查询计划）。
+
+**session#1（gap#1 发型+表情）实跑**：21 候选 → 5 初筛 → qwen 深读摘要 →
+**operator_found**：GitHub StyleGAN 族发型迁移 ×5（Azmarie/Hairstyle-Transfer
+InterfaceGAN 语义编辑 / patowari Face-Swiper Head mode 全头迁移 / HairPort
+3D 感知 / Style-Your-Hair 潜码优化——全部「发型跟参考+表情保底图」机制契合）；
+external_fact ×6 入库（qwen_swap 卡，带源链）；gap open→researching。
+
+**关键负证据（零硬币实证）**：RH 发型 webapp 3 候选核查——唯一可下载流
+（发型迁移-假发模特，44 节点）为 prompt/img2img 形态（空提示词+8 图槽=假发
+模板库），另 2 个 workflow 未公开；Registry 仅 ethnicity_hairstyle_clip_encoder。
+**结论：机制在野但 RH/Registry 无原生发型迁移 operator**——gap 闭合需本地
+operator 或 RH 上架（external_fact 已记，confidence 0.85）。
+
 ### M15：专家方案层 + 知识缺口（2026-08-23）✅
 
 **对齐总方案**《ComfyUI_Workflow_KB_专家方案与动态知识生长.md》（D 盘根目录）；
@@ -273,8 +293,11 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 - **M15 活例**：首个真实换脸任务走方案复用路径（零规划硬币）——hybrid_final 差
   2 个真实任务晋升 expert，是晋升机制的第一个活例
-- **M11 外部研究通道**（M15 已就绪可启动）：GitHub+Registry+HuggingFace 三源 →
-  research_sessions 漏斗；从 open gap「发型跟参考+表情跟底图」开跑全链
+- **M11 收尾（gap#1 已到 mechanism_found，实验待拍板）**：三选一——①花 coins
+  探针「发型迁移-假发模特」webapp 2075052610570244098（8 图槽疑假发模板库，
+  图 JSON 已存 m11_20750483）；②本地装 HairFast/HairPort 独立 repo
+  （D:\ComfyUI_windows_portable 在，但项目决策走云端）；③挂起等 RH 上架
+  （session#1 external_fact 已记 RH/Registry 无原生 operator）
 - **M10b 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
 - **M14 webapp 扩展**：反馈参数级微调（锚次数/GFPGAN）、kb_generic 视频任务、任务持久化恢复
 - **B站/C站知识源方案等用户定**；web_search 工具待配 DEEPSEEK_API_KEY

@@ -142,7 +142,17 @@ B站/C站仍按 STATUS 原计划"等用户定渠道后扩",不阻塞主线。
 
 **M11(三源)**:一个 open gap → research_session(gap_id 链)→ GitHub/Registry/HF
 三源查询留痕 → 发现 operator/机制 → 实验 → gap.status=resolved + solution 回写,
-全链一次。(未启动;M15 已就绪不阻塞)
+全链一次。
+
+**实施进度(2026-08-23,v1 上线并首跑)**:`research/`(external.py 三源适配器 +
+session.py 漏斗 + run.py 驱动,纯 stdlib)。**session#1 已在 gap#1 上跑通**:
+21 候选(GitHub/Registry/HF)→ 初筛 5 → qwen 深读摘要 → outcome=operator_found
+(StyleGAN 族发型迁移机制 ×5,如 Azmarie/Hairstyle-Transfer、HairPort、
+Style-Your-Hair);external_fact ×6 入库(qwen_swap 卡);gap open→researching;
+**零硬币 RH 可执行性核查**:RH 发型 webapp 均为 img2img/模板形态(唯一可下载流
+44 节点实证),Registry 无 transfer operator → **机制在野但 RH 无原生 operator**,
+gap 闭合需本地 operator 路线(D:\ComfyUI_windows_portable 存在,项目决策走云端)
+或 RH 上架后重跑。实验(花硬币/装环境)待用户拍板。
 
 ## 7. 部署与运行
 
