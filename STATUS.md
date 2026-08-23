@@ -304,7 +304,7 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 - 夸张表情压力测试（用户待办；`swap_face.py --wf reactor` 自动诊断已就位）
 - M13 边界羽化算子（Rope 式）——若夸张表情测试放大边缘伪影则提前
 - H3 细分实验（`data/h3_report.md` §5）；MCP 11 工具已注册 DSH（+`search_solutions`，重启 DSH 生效）
-- git remote 仍未配置——用户给地址后 `git remote add + push`
+- ~~git remote 仍未配置~~ → **已配置并首推**（`github.com/itsnone-liu/comfyui-workflow-kb`，`c2b9d92`，2026-08-23）
 
 **关键命令**（cwd=820）：
 ```powershell
