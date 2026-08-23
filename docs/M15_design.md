@@ -142,17 +142,25 @@ B站/C站仍按 STATUS 原计划"等用户定渠道后扩",不阻塞主线。
 
 **M11(三源)**:一个 open gap → research_session(gap_id 链)→ GitHub/Registry/HF
 三源查询留痕 → 发现 operator/机制 → 实验 → gap.status=resolved + solution 回写,
-全链一次。
+全链一次。**✅ 2026-08-23 session#1 达成**:gap#1(发型+表情)→ session#1(21 候选
+→5 初筛→深读)→ operator(FLUX.2 Klein webapp)→ 探针实验(2 任务,M8 图对)→
+gap resolved + flux2_klein_hair(candidate)回写。
 
-**实施进度(2026-08-23,v1 上线并首跑)**:`research/`(external.py 三源适配器 +
-session.py 漏斗 + run.py 驱动,纯 stdlib)。**session#1 已在 gap#1 上跑通**:
-21 候选(GitHub/Registry/HF)→ 初筛 5 → qwen 深读摘要 → outcome=operator_found
-(StyleGAN 族发型迁移机制 ×5,如 Azmarie/Hairstyle-Transfer、HairPort、
-Style-Your-Hair);external_fact ×6 入库(qwen_swap 卡);gap open→researching;
-**零硬币 RH 可执行性核查**:RH 发型 webapp 均为 img2img/模板形态(唯一可下载流
-44 节点实证),Registry 无 transfer operator → **机制在野但 RH 无原生 operator**,
-gap 闭合需本地 operator 路线(D:\ComfyUI_windows_portable 存在,项目决策走云端)
-或 RH 上架后重跑。实验(花硬币/装环境)待用户拍板。
+**实施进度(2026-08-23,v1 上线并首跑,全链闭环 ✅)**:`research/`(external.py 三源适配器 +
+session.py 漏斗 + run.py 驱动 + probe_webapp.py 通用探针,纯 stdlib)。
+**session#1 在 gap#1 上完成设计 §6 M11 全链**:21 候选(GitHub/Registry/HF)→ 初筛 5 →
+qwen 深读摘要 → operator_found(StyleGAN 族 ×5)→ **花硬币探针验证** →
+gap#1 resolved + 方案回写。
+
+**探针实证(用户批准方案 1,2 任务)**:RH「发型迁移-假发模特」webapp
+2075052610570244098 实为 **FLUX.2 Klein 9B 指令式双图编辑**(qwen3-8b 文本编码 +
+双图 VAEEncode;此前节点清单误判为 img2img 模板库——教训:机制分类必须看暴露
+inputNodes+UNET,不能只看节点类型)。M8 图对实测:**发型颜色/纹理/长度全跟 ref,
+表情(嘟嘴)/身份(0.629>0.363)/场景全保 target**(VL 三图裁决;发色直方图对
+dark-on-dark 无区分度,记入 metrics 注记),仅发丝/手指轻微伪影。
+**gap#1 resolved** → `expert_solutions.flux2_klein_hair`(candidate,family=
+hair_transfer,route_json 为 webapp step 形态待 M14 接线回放);晋升 validated
+需 ≥2 不同输入。external_fact ×6 + verified_result ×1 入库。
 
 ## 7. 部署与运行
 

@@ -5,27 +5,28 @@
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + **M15 专家方案层** ✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + **M11 研究通道（gap#1 已闭合）** ✅
 
-### M11：外部研究通道三源 v1（2026-08-23）✅ session#1 已跑
+### M11：外部研究通道三源 v1（2026-08-23）✅ session#1 全链闭环（gap#1 resolved）
 
 **模块**（`research/`，纯 stdlib 零 key）：`external.py`（GitHub/ComfyUI Registry
 `api.comfy.org/nodes/search`/HF 三源适配器 + 候选评分 + 机制句抽取）、
 `session.py`（漏斗 collected→shortlisted→deep_read→mechanism→closed 全程落
 research_sessions + external_fact 写卡 + RH webapp 零硬币核查）、`run.py`
-（CLI：`python -m research.run --gap 1 --rh-check`，GAP_PLANS 策展查询计划）。
+（CLI：`python -m research.run --gap 1 --rh-check`）、`probe_webapp.py`
+（通用 webapp 探针：上传双图+指令→跑→几何+VL 正确语义评审）。
 
-**session#1（gap#1 发型+表情）实跑**：21 候选 → 5 初筛 → qwen 深读摘要 →
-**operator_found**：GitHub StyleGAN 族发型迁移 ×5（Azmarie/Hairstyle-Transfer
-InterfaceGAN 语义编辑 / patowari Face-Swiper Head mode 全头迁移 / HairPort
-3D 感知 / Style-Your-Hair 潜码优化——全部「发型跟参考+表情保底图」机制契合）；
-external_fact ×6 入库（qwen_swap 卡，带源链）；gap open→researching。
-
-**关键负证据（零硬币实证）**：RH 发型 webapp 3 候选核查——唯一可下载流
-（发型迁移-假发模特，44 节点）为 prompt/img2img 形态（空提示词+8 图槽=假发
-模板库），另 2 个 workflow 未公开；Registry 仅 ethnicity_hairstyle_clip_encoder。
-**结论：机制在野但 RH/Registry 无原生发型迁移 operator**——gap 闭合需本地
-operator 或 RH 上架（external_fact 已记，confidence 0.85）。
+**session#1 全链（gap#1 发型+表情 → resolved）**：21 候选 → 5 初筛 → qwen 深读
+（GitHub StyleGAN 族 ×5 机制契合）→ **花硬币探针**（2 任务，M8 图对）→
+gap resolved + 方案回写。**operator：FLUX.2 Klein 9B 指令双图编辑**
+（webapp 2075052610570244098；零硬币阶段曾误判 img2img 模板库——**教训：
+机制分类必须看暴露 inputNodes + UNET loader，不能只看节点类型清单**）。
+实测：发型颜色/纹理/长度全跟 ref + 表情(嘟嘴)/身份(0.629)/场景全保 target
+（VL 三图裁决；发色直方图 dark-on-dark 无区分度已记入 metrics 注记），
+仅发丝/手指轻微伪影。**`expert_solutions.flux2_klein_hair`**（candidate，
+family=hair_transfer，route_json=webapp step 形态待 M14 接线回放）；
+晋升 validated 需 ≥2 不同输入。external_fact ×6 + verified_result ×1 入库
+（verified_result 总数 23→24）。
 
 ### M15：专家方案层 + 知识缺口（2026-08-23）✅
 
@@ -293,11 +294,10 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 - **M15 活例**：首个真实换脸任务走方案复用路径（零规划硬币）——hybrid_final 差
   2 个真实任务晋升 expert，是晋升机制的第一个活例
-- **M11 收尾（gap#1 已到 mechanism_found，实验待拍板）**：三选一——①花 coins
-  探针「发型迁移-假发模特」webapp 2075052610570244098（8 图槽疑假发模板库，
-  图 JSON 已存 m11_20750483）；②本地装 HairFast/HairPort 独立 repo
-  （D:\ComfyUI_windows_portable 在，但项目决策走云端）；③挂起等 RH 上架
-  （session#1 external_fact 已记 RH/Registry 无原生 operator）
+- **flux2_klein_hair 晋升验证**：第 2 个不同输入跑 `research/probe_webapp.py`
+  （candidate→validated 需 ≥2 输入）；M14 给 orchestrator 接 webapp step 回放
+- **组合管线机会**：reactor（换脸）+ flux2_klein（发型）串联——M8 完整需求
+  （身份+发型+表情）可能一次达标，值得设计成一个 expert 方案
 - **M10b 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
 - **M14 webapp 扩展**：反馈参数级微调（锚次数/GFPGAN）、kb_generic 视频任务、任务持久化恢复
 - **B站/C站知识源方案等用户定**；web_search 工具待配 DEEPSEEK_API_KEY
