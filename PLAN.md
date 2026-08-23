@@ -177,10 +177,11 @@ ReActor 4 节点流即证据），后者把"人当裁判"升级为"系统自判"
 | 里程碑 | 内容 | 依赖 |
 |---|---|---|
 | **M10b** | 闭环 B：宽泛提示解析器（比较型断言→tech_families 机制差→改进假设→节点检索） | tech_families 已就位 |
-| **M11** | 外部研究通道：web 检索 + Qwen 文本消化 → external_fact 条目；B站/C站知识源方案（用户定渠道后细化） | 用户待办：知识源检索方式 |
+| **M11** | 外部研究通道（三源）：GitHub（operator 实现）+ ComfyUI Registry（节点包元数据）+ HuggingFace（模型/模型卡/license 层，定位与边界见 `docs/M15_design.md` §5）→ research_sessions 漏斗（候选20→初筛5→深读1-2）→ external_fact；B站/C站后续按用户定渠道后扩 | M15 接线完成后启动 |
 | **M12** | ComfyUI 官方 registry 元数据采集器（零硬币补节点清单） | 无 |
 | **M13** | 边界羽化算子（Rope 式 poisson/blend）补 inswapper 边缘伪影 | diagnosis_rules 已有对应症状条目 |
 | **M14** | webapp 任务族扩展：kb_generic 视频任务、多图输入、反馈修订的参数级微调（锚次数/GFPGAN 权重） | M10 架构 |
+| **M15** | 专家方案层 + 知识缺口：expert_solutions / knowledge_gaps / research_sessions 三表、orchestrator 方案检索与终态回写、M8 七路线种子迁移、negative_result/external_fact kind 扩展 | 设计 `docs/M15_design.md`；迁移 `kb/migrate_m15.py`（`kb/schema_m15.sql`，幂等可重跑） |
 
 ## 9. 风险与对策
 

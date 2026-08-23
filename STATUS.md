@@ -240,6 +240,8 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 ### 下一步
 
+- **M15 专家方案层**（设计/schema/种子已就位，`docs/M15_design.md`）：orchestrator 接线（plan 前置方案检索 + 终态回写 satisfied→solution / limited→gap）、MCP `search_solutions` 工具、晋升规则（方差感知）与复用率指标从第一天记；M11 改三源（GitHub+Registry+HuggingFace 模型层）
+
 - **M10b 闭环 B**：宽泛提示解析器（"视频换脸比生图好"→ tech_families 机制差→改进假设）
 - **M14 webapp 扩展**：反馈参数级微调（锚次数/GFPGAN）、kb_generic 视频任务、任务持久化恢复
 - **M11 外部研究通道**：web+Qwen 文本消化 → external_fact；**B站/C站知识源方案等用户定**
