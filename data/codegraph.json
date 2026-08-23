@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-22 13:34:43",
+ "generated_at": "2026-08-23 19:37:18",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -17,6 +17,80 @@
     "Path": "pathlib",
     "analyze_one": "analyzer.llm_card",
     "store": "kb.store"
+   },
+   "imported_by": []
+  },
+  "_m11_eval": {
+   "file": "_m11_eval.py",
+   "lines": 40,
+   "doc": "_m11_eval.py — 发型迁移正确指标计算(绕过换脸语义的 result-face 门)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sys",
+    "pathlib",
+    "cv2",
+    "metrics",
+    "swap_face"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "FaceComparator": "metrics",
+    "sf": "swap_face"
+   },
+   "imported_by": []
+  },
+  "_m11_finalize": {
+   "file": "_m11_finalize.py",
+   "lines": 33,
+   "doc": "_m11_finalize.py — gap#1 闭合落库:candidate 方案 + gap resolved + verified_result。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "sys",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_m11_probe": {
+   "file": "_m11_probe.py",
+   "lines": 13,
+   "doc": "_m11_probe.py — FLUX.2 Klein 发型 webapp 探针(花硬币,用户已批准方案1)。",
+   "entry": true,
+   "imports": [
+    "json",
+    "sys",
+    "pathlib",
+    "experiments.rh_task",
+    "analyzer.auto_explore",
+    "analyzer.auto_explore"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "rh_task": "experiments.rh_task",
+    "evaluate": "analyzer.auto_explore",
+    "diagnose": "analyzer.auto_explore"
+   },
+   "imported_by": []
+  },
+  "_research_probe": {
+   "file": "_research_probe.py",
+   "lines": 11,
+   "doc": "_research_probe.py — 下载 RH 发型 webapp 工作流并分析机制(零硬币)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sys",
+    "pathlib",
+    "rh_client"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "rh": "rh_client"
    },
    "imported_by": []
   },
@@ -87,6 +161,7 @@
     "VLClient": "vl"
    },
    "imported_by": [
+    "_m11_probe",
     "swap_face",
     "webapp.orchestrator"
    ]
@@ -631,11 +706,13 @@
     "rh": "rh_client"
    },
    "imported_by": [
+    "_m11_probe",
     "_tmp_chk",
     "_tmp_qwait",
     "analyzer.composer",
     "experiments.runner",
     "parser.graph_ops",
+    "research.probe_webapp",
     "swap_face",
     "webapp.orchestrator"
    ]
@@ -696,6 +773,25 @@
    "aliases": {},
    "imported_by": []
   },
+  "kb.migrate_m15": {
+   "file": "kb\\migrate_m15.py",
+   "lines": 22,
+   "doc": "M15 migration: expert_solutions / knowledge_gaps / research_sessions.",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sqlite3",
+    "sys",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
   "kb.query": {
    "file": "kb\\query.py",
    "lines": 12,
@@ -714,6 +810,28 @@
     "Path": "pathlib"
    },
    "imported_by": []
+  },
+  "kb.solutions": {
+   "file": "kb\\solutions.py",
+   "lines": 26,
+   "doc": "solutions.py — M15 Expert Solution layer (pure stdlib sqlite3).",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "hashlib",
+    "json",
+    "re",
+    "sqlite3",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib"
+   },
+   "imported_by": [
+    "test_m15_wiring",
+    "webapp.orchestrator"
+   ]
   },
   "kb.status": {
    "file": "kb\\status.py",
@@ -763,7 +881,7 @@
   },
   "mcp.server": {
    "file": "mcp\\server.py",
-   "lines": 30,
+   "lines": 31,
    "doc": "Minimal MCP server (stdio, JSON-RPC 2.0) exposing the workflow KB.",
    "entry": true,
    "imports": [
@@ -783,7 +901,7 @@
   },
   "mcp.test_server": {
    "file": "mcp\\test_server.py",
-   "lines": 35,
+   "lines": 39,
    "doc": "Protocol-level test of the MCP server over stdio (no client needed).",
    "entry": false,
    "imports": [
@@ -1011,6 +1129,105 @@
    "aliases": {},
    "imported_by": []
   },
+  "research.external": {
+   "file": "research\\external.py",
+   "lines": 21,
+   "doc": "external.py — M11 三源外部研究适配器(GitHub / ComfyUI Registry / HuggingFace)。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "gzip",
+    "json",
+    "math",
+    "re",
+    "time",
+    "urllib.parse",
+    "urllib.request"
+   ],
+   "aliases": {
+    "annotations": "__future__"
+   },
+   "imported_by": [
+    "research.session"
+   ]
+  },
+  "research.probe_webapp": {
+   "file": "research\\probe_webapp.py",
+   "lines": 16,
+   "doc": "probe_webapp.py — M11 通用 webapp 探针:研究发现 → 花硬币验证 → 正确语义评审。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sys",
+    "pathlib",
+    "cv2",
+    "experiments.rh_task",
+    "metrics",
+    "swap_face",
+    "vl"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "rh_task": "experiments.rh_task",
+    "FaceComparator": "metrics",
+    "sf": "swap_face",
+    "VLClient": "vl"
+   },
+   "imported_by": []
+  },
+  "research.run": {
+   "file": "research\\run.py",
+   "lines": 12,
+   "doc": "run.py — M11 研究通道驱动器:open gap -> 三源漏斗 -> external_fact。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sys",
+    "pathlib",
+    "research.session",
+    "research.session",
+    "sqlite3"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "ResearchSession": "research.session",
+    "rh_webapp_hits": "research.session"
+   },
+   "imported_by": []
+  },
+  "research.session": {
+   "file": "research\\session.py",
+   "lines": 14,
+   "doc": "session.py — M11 research funnel: knowledge_gaps -> 三源 -> research_sessions。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "sqlite3",
+    "sys",
+    "pathlib",
+    "research.external",
+    "time",
+    "rh_client",
+    "vl"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "ext": "research.external",
+    "rh": "rh_client",
+    "VLClient": "vl"
+   },
+   "imported_by": [
+    "research.run"
+   ]
+  },
   "rh_client": {
    "file": "rh_client.py",
    "lines": 23,
@@ -1029,6 +1246,7 @@
     "Path": "pathlib"
    },
    "imported_by": [
+    "_research_probe",
     "collector.backfill_api_inputs",
     "collector.batch_deep",
     "collector.batch_domain",
@@ -1040,6 +1258,7 @@
     "download_workflow",
     "dump_tagtree",
     "experiments.rh_task",
+    "research.session",
     "rh_login",
     "test_tag_filter",
     "test_tag_single",
@@ -1129,10 +1348,39 @@
     "commands_for": "analyzer.auto_explore"
    },
    "imported_by": [
+    "_m11_eval",
     "_tmp_qwait",
     "analyzer.auto_explore",
+    "research.probe_webapp",
     "webapp.orchestrator"
    ]
+  },
+  "test_m15_wiring": {
+   "file": "test_m15_wiring.py",
+   "lines": 83,
+   "doc": "M15 接线验收测试(离线,不花硬币;打桩执行/评审/LLM)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "shutil",
+    "sqlite3",
+    "sys",
+    "tempfile",
+    "threading",
+    "time",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "kb.solutions",
+    "webapp.orchestrator"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy",
+    "solutions": "kb.solutions",
+    "orch": "webapp.orchestrator"
+   },
+   "imported_by": []
   },
   "test_tag_filter": {
    "file": "test_tag_filter.py",
@@ -1250,7 +1498,7 @@
   },
   "webapp.orchestrator": {
    "file": "webapp\\orchestrator.py",
-   "lines": 34,
+   "lines": 39,
    "doc": "orchestrator.py — autonomous task loop behind the web frontend.",
    "entry": false,
    "imports": [
@@ -1265,6 +1513,7 @@
     "dataclasses",
     "pathlib",
     "sys",
+    "kb.solutions",
     "base64",
     "cv2",
     "vl",
@@ -1281,6 +1530,7 @@
     "dataclass": "dataclasses",
     "field": "dataclasses",
     "Path": "pathlib",
+    "solutions": "kb.solutions",
     "VLClient": "vl",
     "sf": "swap_face",
     "extract_result_image": "analyzer.auto_explore",
@@ -1289,10 +1539,24 @@
     "diagnose": "analyzer.auto_explore",
     "color_match": "analyzer.color_match"
    },
-   "imported_by": []
+   "imported_by": [
+    "test_m15_wiring"
+   ]
   }
  },
  "defs": [
+  {
+   "id": "_m11_probe.run",
+   "kind": "function",
+   "module": "_m11_probe",
+   "name": "run",
+   "args": [
+    "label",
+    "node_info"
+   ],
+   "line": 29,
+   "doc": ""
+  },
   {
    "id": "analyzer.auto_explore._face_tables",
    "kind": "function",
@@ -2883,6 +3147,70 @@
    "doc": ""
   },
   {
+   "id": "kb.migrate_m15.ensure_schema",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "ensure_schema",
+   "args": [
+    "conn"
+   ],
+   "line": 221,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m15.seed_solutions",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "seed_solutions",
+   "args": [
+    "conn"
+   ],
+   "line": 226,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m15.seed_negatives",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "seed_negatives",
+   "args": [
+    "conn"
+   ],
+   "line": 250,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m15.seed_gaps",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "seed_gaps",
+   "args": [
+    "conn"
+   ],
+   "line": 267,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m15.summary",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "summary",
+   "args": [
+    "conn"
+   ],
+   "line": 283,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m15.main",
+   "kind": "function",
+   "module": "kb.migrate_m15",
+   "name": "main",
+   "args": [],
+   "line": 305,
+   "doc": ""
+  },
+  {
    "id": "kb.query.query",
    "kind": "function",
    "module": "kb.query",
@@ -2902,6 +3230,152 @@
    "args": [],
    "line": 44,
    "doc": ""
+  },
+  {
+   "id": "kb.solutions.connect",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "connect",
+   "args": [
+    "db_path"
+   ],
+   "line": 39,
+   "doc": ""
+  },
+  {
+   "id": "kb.solutions.required_caps",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "required_caps",
+   "args": [
+    "requirement"
+   ],
+   "line": 47,
+   "doc": "需求文本 -> 命中的 capability 标签(保序:先提及者优先)."
+  },
+  {
+   "id": "kb.solutions._caps_score",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "_caps_score",
+   "args": [
+    "sol_caps",
+    "req_caps"
+   ],
+   "line": 56,
+   "doc": "位置加权:先提及的能力权重高(3,2,1,...),未提及任何能力时按身份兜底."
+  },
+  {
+   "id": "kb.solutions._text_overlap",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "_text_overlap",
+   "args": [
+    "a",
+    "b"
+   ],
+   "line": 67,
+   "doc": "中文 2-gram 重叠度(弱信号,只做同分微调)."
+  },
+  {
+   "id": "kb.solutions.search_solutions",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "search_solutions",
+   "args": [
+    "requirement"
+   ],
+   "line": 74,
+   "doc": "需求 -> 按分排序的候选方案列表(可解释:matched_caps 留痕)."
+  },
+  {
+   "id": "kb.solutions.hit_solution",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "hit_solution",
+   "args": [
+    "requirement"
+   ],
+   "line": 103,
+   "doc": "编排入口:face_swap 族任务先查专家方案;未检出换脸意图返回 None(走规划)."
+  },
+  {
+   "id": "kb.solutions.get",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "get",
+   "args": [
+    "solution_id",
+    "db_path"
+   ],
+   "line": 112,
+   "doc": ""
+  },
+  {
+   "id": "kb.solutions.get_by_name",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "get_by_name",
+   "args": [
+    "name",
+    "db_path"
+   ],
+   "line": 125,
+   "doc": ""
+  },
+  {
+   "id": "kb.solutions.input_fingerprint",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "input_fingerprint",
+   "args": [
+    "images",
+    "root"
+   ],
+   "line": 141,
+   "doc": "任务输入指纹(字节级):同图对重复任务不重复计入 distinct_inputs."
+  },
+  {
+   "id": "kb.solutions.record_reuse",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "record_reuse",
+   "args": [
+    "solution_id",
+    "db_path"
+   ],
+   "line": 155,
+   "doc": ""
+  },
+  {
+   "id": "kb.solutions.check_promotion",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "check_promotion",
+   "args": [
+    "sol",
+    "distinct_inputs"
+   ],
+   "line": 163,
+   "doc": "返回晋升目标状态或 None(规则见模块 docstring;不降级)."
+  },
+  {
+   "id": "kb.solutions.record_success",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "record_success",
+   "args": [],
+   "line": 175,
+   "doc": "satisfied 终态回写:成功记账 + 输入指纹去重 + 晋升检查.幂等安全(同 task 只调一次)."
+  },
+  {
+   "id": "kb.solutions.open_gap",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "open_gap",
+   "args": [],
+   "line": 213,
+   "doc": "limited(能力不可达)终态 -> knowledge_gaps;同题去重(追加 known_failures)."
   },
   {
    "id": "kb.store.connect",
@@ -2971,7 +3445,7 @@
    "module": "mcp.server",
    "name": "_conn",
    "args": [],
-   "line": 29,
+   "line": 30,
    "doc": ""
   },
   {
@@ -2982,7 +3456,7 @@
    "args": [
     "args"
    ],
-   "line": 35,
+   "line": 36,
    "doc": ""
   },
   {
@@ -2993,7 +3467,7 @@
    "args": [
     "args"
    ],
-   "line": 71,
+   "line": 72,
    "doc": ""
   },
   {
@@ -3004,7 +3478,7 @@
    "args": [
     "args"
    ],
-   "line": 118,
+   "line": 119,
    "doc": ""
   },
   {
@@ -3015,7 +3489,7 @@
    "args": [
     "graph"
    ],
-   "line": 143,
+   "line": 144,
    "doc": "Render normalized graph as Mermaid flowchart grouped by category."
   },
   {
@@ -3026,7 +3500,7 @@
    "args": [
     "args"
    ],
-   "line": 174,
+   "line": 175,
    "doc": ""
   },
   {
@@ -3037,7 +3511,7 @@
    "args": [
     "args"
    ],
-   "line": 190,
+   "line": 191,
    "doc": ""
   },
   {
@@ -3048,7 +3522,7 @@
    "args": [
     "raw"
    ],
-   "line": 209,
+   "line": 210,
    "doc": ""
   },
   {
@@ -3059,7 +3533,7 @@
    "args": [
     "args"
    ],
-   "line": 213,
+   "line": 214,
    "doc": "List a workflow's exposed webapp inputs (the knobs an experiment can turn)."
   },
   {
@@ -3070,7 +3544,7 @@
    "args": [
     "args"
    ],
-   "line": 238,
+   "line": 239,
    "doc": "Dry-run (default) or really submit an A/B cloud experiment."
   },
   {
@@ -3081,7 +3555,7 @@
    "args": [
     "args"
    ],
-   "line": 265,
+   "line": 266,
    "doc": ""
   },
   {
@@ -3092,7 +3566,7 @@
    "args": [
     "args"
    ],
-   "line": 275,
+   "line": 276,
    "doc": "List mined patterns (chains/technique signatures/boundary mounts)."
   },
   {
@@ -3103,8 +3577,19 @@
    "args": [
     "args"
    ],
-   "line": 306,
+   "line": 307,
    "doc": ""
+  },
+  {
+   "id": "mcp.server.tool_search_solutions",
+   "kind": "function",
+   "module": "mcp.server",
+   "name": "tool_search_solutions",
+   "args": [
+    "args"
+   ],
+   "line": 322,
+   "doc": "M15: search expert_solutions (validated/candidate reusable solutions)."
   },
   {
    "id": "mcp.server.send",
@@ -3114,7 +3599,7 @@
    "args": [
     "msg"
    ],
-   "line": 464,
+   "line": 524,
    "doc": ""
   },
   {
@@ -3125,7 +3610,7 @@
    "args": [
     "req"
    ],
-   "line": 469,
+   "line": 529,
    "doc": ""
   },
   {
@@ -3134,7 +3619,7 @@
    "module": "mcp.server",
    "name": "main",
    "args": [],
-   "line": 504,
+   "line": 564,
    "doc": ""
   },
   {
@@ -3463,6 +3948,317 @@
    "doc": ""
   },
   {
+   "id": "research.external._get",
+   "kind": "function",
+   "module": "research.external",
+   "name": "_get",
+   "args": [
+    "url",
+    "timeout"
+   ],
+   "line": 24,
+   "doc": ""
+  },
+  {
+   "id": "research.external._get_json",
+   "kind": "function",
+   "module": "research.external",
+   "name": "_get_json",
+   "args": [
+    "url",
+    "timeout"
+   ],
+   "line": 33,
+   "doc": ""
+  },
+  {
+   "id": "research.external.gh_search",
+   "kind": "function",
+   "module": "research.external",
+   "name": "gh_search",
+   "args": [
+    "query",
+    "limit"
+   ],
+   "line": 39,
+   "doc": "repo 搜索(未认证 10 req/min,调用方自行节流)。"
+  },
+  {
+   "id": "research.external.gh_readme",
+   "kind": "function",
+   "module": "research.external",
+   "name": "gh_readme",
+   "args": [
+    "repo",
+    "branch",
+    "max_bytes"
+   ],
+   "line": 59,
+   "doc": ""
+  },
+  {
+   "id": "research.external.registry_search",
+   "kind": "function",
+   "module": "research.external",
+   "name": "registry_search",
+   "args": [
+    "query",
+    "limit"
+   ],
+   "line": 72,
+   "doc": "ComfyUI 官方 registry 节点包搜索(api.comfy.org,无 key)。"
+  },
+  {
+   "id": "research.external.hf_search",
+   "kind": "function",
+   "module": "research.external",
+   "name": "hf_search",
+   "args": [
+    "query",
+    "limit"
+   ],
+   "line": 99,
+   "doc": ""
+  },
+  {
+   "id": "research.external.hf_model_card",
+   "kind": "function",
+   "module": "research.external",
+   "name": "hf_model_card",
+   "args": [
+    "model_id",
+    "max_bytes"
+   ],
+   "line": 122,
+   "doc": ""
+  },
+  {
+   "id": "research.external.authority",
+   "kind": "function",
+   "module": "research.external",
+   "name": "authority",
+   "args": [
+    "cand"
+   ],
+   "line": 132,
+   "doc": "粗粒度可信度(HF 作者/GitHub 星数为信号;官方 org 名单后续 M12 扩)。"
+  },
+  {
+   "id": "research.external.score_candidate",
+   "kind": "function",
+   "module": "research.external",
+   "name": "score_candidate",
+   "args": [
+    "cand",
+    "keywords"
+   ],
+   "line": 139,
+   "doc": "相关性为主、信号为辅(可解释):关键词命中*2 + log10 信号分。"
+  },
+  {
+   "id": "research.external.extract_mechanism_quotes",
+   "kind": "function",
+   "module": "research.external",
+   "name": "extract_mechanism_quotes",
+   "args": [
+    "text",
+    "keywords",
+    "max_quotes"
+   ],
+   "line": 153,
+   "doc": "深读文本 -> 含关键词的句子(机制证据,可引用)。"
+  },
+  {
+   "id": "research.probe_webapp.geometric",
+   "kind": "function",
+   "module": "research.probe_webapp",
+   "name": "geometric",
+   "args": [
+    "out_img",
+    "tgt",
+    "ref"
+   ],
+   "line": 37,
+   "doc": "几何指标(身份/表情/发色直方图;hair 对 dark-on-dark 无区分度时以 VL 裁决)。"
+  },
+  {
+   "id": "research.probe_webapp.main",
+   "kind": "function",
+   "module": "research.probe_webapp",
+   "name": "main",
+   "args": [],
+   "line": 71,
+   "doc": ""
+  },
+  {
+   "id": "research.run.main",
+   "kind": "function",
+   "module": "research.run",
+   "name": "main",
+   "args": [],
+   "line": 40,
+   "doc": ""
+  },
+  {
+   "id": "research.session._conn",
+   "kind": "function",
+   "module": "research.session",
+   "name": "_conn",
+   "args": [
+    "db_path"
+   ],
+   "line": 28,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession",
+   "kind": "class",
+   "module": "research.session",
+   "name": "ResearchSession",
+   "args": [],
+   "line": 34,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.__init__",
+   "kind": "method",
+   "module": "research.session",
+   "name": "__init__",
+   "args": [
+    "self",
+    "gap_id",
+    "objective",
+    "queries",
+    "sources",
+    "db_path"
+   ],
+   "line": 35,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession._save",
+   "kind": "method",
+   "module": "research.session",
+   "name": "_save",
+   "args": [
+    "self"
+   ],
+   "line": 50,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.load",
+   "kind": "method",
+   "module": "research.session",
+   "name": "load",
+   "args": [
+    "self",
+    "session_id"
+   ],
+   "line": 67,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.set_gap_status",
+   "kind": "method",
+   "module": "research.session",
+   "name": "set_gap_status",
+   "args": [
+    "self",
+    "status"
+   ],
+   "line": 80,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.collect",
+   "kind": "method",
+   "module": "research.session",
+   "name": "collect",
+   "args": [
+    "self",
+    "limit_per_query"
+   ],
+   "line": 90,
+   "doc": "三源搜索 -> candidates(~20);每源节流 2s(GH 未认证限速)。"
+  },
+  {
+   "id": "research.session.ResearchSession.make_shortlist",
+   "kind": "method",
+   "module": "research.session",
+   "name": "make_shortlist",
+   "args": [
+    "self",
+    "top_k"
+   ],
+   "line": 119,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.deep_read",
+   "kind": "method",
+   "module": "research.session",
+   "name": "deep_read",
+   "args": [
+    "self",
+    "llm_digest"
+   ],
+   "line": 125,
+   "doc": "短名单逐个深读(GitHub README / HF 模型卡 / Registry 描述) -> findings。"
+  },
+  {
+   "id": "research.session.ResearchSession._llm_digest",
+   "kind": "method",
+   "module": "research.session",
+   "name": "_llm_digest",
+   "args": [
+    "self",
+    "cand",
+    "quotes"
+   ],
+   "line": 153,
+   "doc": "qwen-plus 单条深读摘要(失败静默——离线也能跑)。"
+  },
+  {
+   "id": "research.session.ResearchSession.conclude",
+   "kind": "method",
+   "module": "research.session",
+   "name": "conclude",
+   "args": [
+    "self",
+    "outcome",
+    "operator_ref",
+    "stage"
+   ],
+   "line": 167,
+   "doc": ""
+  },
+  {
+   "id": "research.session.ResearchSession.write_external_facts",
+   "kind": "method",
+   "module": "research.session",
+   "name": "write_external_facts",
+   "args": [
+    "self",
+    "anchor_wf_id",
+    "notes"
+   ],
+   "line": 176,
+   "doc": "findings -> knowledge_items(kind=external_fact) 挂 anchor 工作流卡。"
+  },
+  {
+   "id": "research.session.rh_webapp_hits",
+   "kind": "function",
+   "module": "research.session",
+   "name": "rh_webapp_hits",
+   "args": [
+    "keywords",
+    "per_kw"
+   ],
+   "line": 212,
+   "doc": "零硬币可执行性核查:RunningHub webapp 搜索(需 .rh_token)。"
+  },
+  {
    "id": "rh_client.RhError",
    "kind": "class",
    "module": "rh_client",
@@ -3782,6 +4578,117 @@
    "doc": ""
   },
   {
+   "id": "test_m15_wiring.FakeTask",
+   "kind": "class",
+   "module": "test_m15_wiring",
+   "name": "FakeTask",
+   "args": [],
+   "line": 38,
+   "doc": "只带 requirement 的检索探测对象。"
+  },
+  {
+   "id": "test_m15_wiring.FakeTask.__init__",
+   "kind": "method",
+   "module": "test_m15_wiring",
+   "name": "__init__",
+   "args": [
+    "self",
+    "requirement"
+   ],
+   "line": 41,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring.make_img",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "make_img",
+   "args": [
+    "name"
+   ],
+   "line": 45,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring.db",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "db",
+   "args": [],
+   "line": 52,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring.ok",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "ok",
+   "args": [
+    "cond",
+    "label"
+   ],
+   "line": 61,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring._no_llm",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "_no_llm",
+   "args": [
+    "prompt",
+    "model"
+   ],
+   "line": 69,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring._stub_exec",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "_stub_exec",
+   "args": [
+    "task",
+    "route"
+   ],
+   "line": 73,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring._mk_eval",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "_mk_eval",
+   "args": [
+    "critical"
+   ],
+   "line": 83,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring._stub_expl",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "_stub_expl",
+   "args": [
+    "task",
+    "limited"
+   ],
+   "line": 94,
+   "doc": ""
+  },
+  {
+   "id": "test_m15_wiring._feedback_thread",
+   "kind": "function",
+   "module": "test_m15_wiring",
+   "name": "_feedback_thread",
+   "args": [
+    "t"
+   ],
+   "line": 98,
+   "doc": "等任务进入 review 再反馈;30s 兜底强设(防挂起)。"
+  },
+  {
    "id": "test_tag_filter.post",
    "kind": "function",
    "module": "test_tag_filter",
@@ -3893,7 +4800,7 @@
    "module": "webapp.orchestrator",
    "name": "Task",
    "args": [],
-   "line": 80,
+   "line": 83,
    "doc": ""
   },
   {
@@ -3904,7 +4811,7 @@
    "args": [
     "self"
    ],
-   "line": 100,
+   "line": 103,
    "doc": ""
   },
   {
@@ -3918,7 +4825,7 @@
     "detail",
     "images"
    ],
-   "line": 105,
+   "line": 108,
    "doc": ""
   },
   {
@@ -3929,7 +4836,7 @@
    "args": [
     "self"
    ],
-   "line": 112,
+   "line": 115,
    "doc": ""
   },
   {
@@ -3940,7 +4847,7 @@
    "args": [
     "self"
    ],
-   "line": 127,
+   "line": 130,
    "doc": ""
   },
   {
@@ -3951,7 +4858,7 @@
    "args": [
     "tid"
    ],
-   "line": 140,
+   "line": 143,
    "doc": ""
   },
   {
@@ -3963,7 +4870,7 @@
     "requirement",
     "images_b64"
    ],
-   "line": 144,
+   "line": 147,
    "doc": ""
   },
   {
@@ -3975,7 +4882,7 @@
     "prompt",
     "model"
    ],
-   "line": 169,
+   "line": 172,
    "doc": ""
   },
   {
@@ -3986,7 +4893,7 @@
    "args": [
     "task"
    ],
-   "line": 176,
+   "line": 179,
    "doc": "Requirement -> family + route + notes (LLM + keyword floor)."
   },
   {
@@ -3998,7 +4905,7 @@
     "task",
     "text"
    ],
-   "line": 210,
+   "line": 213,
    "doc": ""
   },
   {
@@ -4010,7 +4917,7 @@
     "fb",
     "task"
    ],
-   "line": 235,
+   "line": 238,
    "doc": ""
   },
   {
@@ -4021,8 +4928,42 @@
    "args": [
     "query"
    ],
-   "line": 250,
+   "line": 253,
    "doc": "Find a runnable webapp workflow matching the query (single-image)."
+  },
+  {
+   "id": "webapp.orchestrator._pick_solution",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_pick_solution",
+   "args": [
+    "task"
+   ],
+   "line": 287,
+   "doc": "Expert Solution Retrieval(设计 §3):命中则零规划硬币直接回放 route_json。"
+  },
+  {
+   "id": "webapp.orchestrator._chain_for",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_chain_for",
+   "args": [
+    "task",
+    "route"
+   ],
+   "line": 323,
+   "doc": "执行链解析:优先回放 reused_solution 的 route_json(零翻译),退回 ROUTE_CHAINS。"
+  },
+  {
+   "id": "webapp.orchestrator._writeback",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_writeback",
+   "args": [
+    "task"
+   ],
+   "line": 343,
+   "doc": "终态回写(设计 §3),任何异常不影响任务循环:"
   },
   {
    "id": "webapp.orchestrator._exec_face_swap",
@@ -4033,7 +4974,7 @@
     "task",
     "route"
    ],
-   "line": 284,
+   "line": 381,
    "doc": ""
   },
   {
@@ -4045,7 +4986,7 @@
     "task",
     "route"
    ],
-   "line": 332,
+   "line": 429,
    "doc": ""
   },
   {
@@ -4057,7 +4998,7 @@
     "task",
     "results"
    ],
-   "line": 366,
+   "line": 463,
    "doc": ""
   },
   {
@@ -4069,7 +5010,7 @@
     "task",
     "limited"
    ],
-   "line": 406,
+   "line": 503,
    "doc": ""
   },
   {
@@ -4080,7 +5021,7 @@
    "args": [
     "task"
    ],
-   "line": 431,
+   "line": 528,
    "doc": ""
   },
   {
@@ -4093,7 +5034,7 @@
     "text",
     "accept"
    ],
-   "line": 527,
+   "line": 644,
    "doc": ""
   }
  ],
@@ -4167,6 +5108,804 @@
    "from": "_h3_worker",
    "raw": "str",
    "line": 30
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sys.path.insert",
+   "line": 13
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sys.path.insert",
+   "line": 14
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sys.path.insert",
+   "line": 15
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "FaceComparator",
+   "line": 24
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "cv2.imread",
+   "line": 25
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "min",
+   "line": 26
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.embed",
+   "line": 29
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.embed",
+   "line": 30
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.det.setInputSize",
+   "line": 31
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.det.detect",
+   "line": 32
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "faces.sort",
+   "line": 34
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.embed",
+   "line": 38
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "tmp.parent.mkdir",
+   "line": 40
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "cv2.imwrite",
+   "line": 41
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "all",
+   "line": 52
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "tmp.unlink",
+   "line": 56
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "print",
+   "line": 57
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "print",
+   "line": 60
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "print",
+   "line": 61
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 13
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 14
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 15
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 25
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "cv2.resize",
+   "line": 28
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.largest_face",
+   "line": 29
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.largest_face",
+   "line": 30
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "list",
+   "line": 33
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "int",
+   "line": 36
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.largest_face",
+   "line": 38
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 41
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 44
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 45
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._expr_geometry",
+   "line": 47,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 49
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 50
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._hair_hist",
+   "line": 51,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 53
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "round",
+   "line": 54
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "json.dumps",
+   "line": 57
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "max",
+   "line": 26
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "cv2.imread",
+   "line": 29
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "cv2.imread",
+   "line": 30
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "float",
+   "line": 44
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "float",
+   "line": 45
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._expr_distance",
+   "line": 49,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._expr_distance",
+   "line": 50,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._hist_intersection",
+   "line": 53,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "sf._hist_intersection",
+   "line": 54,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "Path",
+   "line": 12
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 29
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "str",
+   "line": 30
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "max",
+   "line": 37
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "max",
+   "line": 37
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.cosine",
+   "line": 44
+  },
+  {
+   "from": "_m11_eval",
+   "raw": "fc.cosine",
+   "line": 45
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "sqlite3.connect",
+   "line": 42
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 79
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.loads",
+   "line": 84
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "findings.append",
+   "line": 85
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 93
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 105
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.commit",
+   "line": 111
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 113
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 115
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 117
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 119
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 47
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 67
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "print",
+   "line": 69
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "dict",
+   "line": 113
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "dict",
+   "line": 115
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 71
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 83
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 97
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 99
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "Path",
+   "line": 7
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 45
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 56
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 58
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 61
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 63
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 64
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "json.dumps",
+   "line": 65
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 113
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 115
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 117
+  },
+  {
+   "from": "_m11_finalize",
+   "raw": "db.execute",
+   "line": 119
+  },
+  {
+   "from": "_m11_probe",
+   "raw": "sys.path.insert",
+   "line": 17
+  },
+  {
+   "from": "_m11_probe",
+   "raw": "OUT.mkdir",
+   "line": 23
+  },
+  {
+   "from": "_m11_probe",
+   "raw": "str",
+   "line": 17
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 30
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.load_api_key",
+   "line": 31,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.run_webapp",
+   "line": 32,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 33
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.wait_task",
+   "line": 34,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.collect_file_urls",
+   "line": 35,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 36
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "enumerate",
+   "line": 39
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.download",
+   "line": 40,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "files.append",
+   "line": 41
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "evaluate",
+   "line": 47
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "diagnose",
+   "line": 48
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 49
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "run",
+   "line": 58,
+   "to": "_m11_probe.run",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.load_api_key",
+   "line": 60,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.upload_file",
+   "line": 61,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "rh_task.upload_file",
+   "line": 62,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "run",
+   "line": 63,
+   "to": "_m11_probe.run",
+   "resolved": true
+  },
+  {
+   "from": "_m11_probe",
+   "raw": "Path",
+   "line": 16
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "str",
+   "line": 41
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "Path",
+   "line": 47
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "json.dumps",
+   "line": 49
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "len",
+   "line": 56
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "len",
+   "line": 36
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "out.get",
+   "line": 37
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "p.stat",
+   "line": 42
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "ev.items",
+   "line": 50
+  },
+  {
+   "from": "_m11_probe.run",
+   "raw": "isinstance",
+   "line": 50
+  },
+  {
+   "from": "_research_probe",
+   "raw": "sys.path.insert",
+   "line": 11
+  },
+  {
+   "from": "_research_probe",
+   "raw": "sys.path.insert",
+   "line": 12
+  },
+  {
+   "from": "_research_probe",
+   "raw": "str",
+   "line": 11
+  },
+  {
+   "from": "_research_probe",
+   "raw": "str",
+   "line": 12
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 35
+  },
+  {
+   "from": "_research_probe",
+   "raw": "rh.webapp_simple",
+   "line": 37,
+   "to": "rh_client.webapp_simple",
+   "resolved": true
+  },
+  {
+   "from": "_research_probe",
+   "raw": "str",
+   "line": 38
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 39
+  },
+  {
+   "from": "_research_probe",
+   "raw": "rh.workflow_meta",
+   "line": 42,
+   "to": "rh_client.workflow_meta",
+   "resolved": true
+  },
+  {
+   "from": "_research_probe",
+   "raw": "rh.workflow_copy",
+   "line": 44,
+   "to": "rh_client.workflow_copy",
+   "resolved": true
+  },
+  {
+   "from": "_research_probe",
+   "raw": "copied.get",
+   "line": 46
+  },
+  {
+   "from": "_research_probe",
+   "raw": "isinstance",
+   "line": 47
+  },
+  {
+   "from": "_research_probe",
+   "raw": "content.get",
+   "line": 49
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 53
+  },
+  {
+   "from": "_research_probe",
+   "raw": "MECH_MARKERS.items",
+   "line": 55
+  },
+  {
+   "from": "_research_probe",
+   "raw": "hits.items",
+   "line": 59
+  },
+  {
+   "from": "_research_probe",
+   "raw": "out.mkdir",
+   "line": 62
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 69
+  },
+  {
+   "from": "_research_probe",
+   "raw": "Path",
+   "line": 10
+  },
+  {
+   "from": "_research_probe",
+   "raw": "meta.get",
+   "line": 43
+  },
+  {
+   "from": "_research_probe",
+   "raw": "json.loads",
+   "line": 48
+  },
+  {
+   "from": "_research_probe",
+   "raw": "sorted",
+   "line": 56
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 60
+  },
+  {
+   "from": "_research_probe",
+   "raw": "json.dumps",
+   "line": 64
+  },
+  {
+   "from": "_research_probe",
+   "raw": "json.dumps",
+   "line": 65
+  },
+  {
+   "from": "_research_probe",
+   "raw": "print",
+   "line": 71
+  },
+  {
+   "from": "_research_probe",
+   "raw": "simp.get",
+   "line": 38
+  },
+  {
+   "from": "_research_probe",
+   "raw": "types.get",
+   "line": 52
+  },
+  {
+   "from": "_research_probe",
+   "raw": "len",
+   "line": 53
+  },
+  {
+   "from": "_research_probe",
+   "raw": "any",
+   "line": 56
+  },
+  {
+   "from": "_research_probe",
+   "raw": "type",
+   "line": 71
+  },
+  {
+   "from": "_research_probe",
+   "raw": "str",
+   "line": 71
   },
   {
    "from": "_tmp_chk",
@@ -15431,6 +17170,248 @@
    "line": 20
   },
   {
+   "from": "kb.migrate_m15.ensure_schema",
+   "raw": "conn.executescript",
+   "line": 222
+  },
+  {
+   "from": "kb.migrate_m15.ensure_schema",
+   "raw": "conn.commit",
+   "line": 223
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "conn.commit",
+   "line": 247
+  },
+  {
+   "from": "kb.migrate_m15.seed_negatives",
+   "raw": "conn.commit",
+   "line": 264
+  },
+  {
+   "from": "kb.migrate_m15.seed_gaps",
+   "raw": "conn.commit",
+   "line": 280
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "print",
+   "line": 284
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "print",
+   "line": 298
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "conn.execute",
+   "line": 299
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 306
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "ap.add_argument",
+   "line": 307
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "ap.add_argument",
+   "line": 308
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "ap.parse_args",
+   "line": 309
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "sqlite3.connect",
+   "line": 311
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "print",
+   "line": 312
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "ensure_schema",
+   "line": 313,
+   "to": "kb.migrate_m15.ensure_schema",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "summary",
+   "line": 318,
+   "to": "kb.migrate_m15.summary",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "conn.close",
+   "line": 319
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "sys.exit",
+   "line": 324
+  },
+  {
+   "from": "kb.migrate_m15.ensure_schema",
+   "raw": "SCHEMA.read_text",
+   "line": 222
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "conn.execute",
+   "line": 228
+  },
+  {
+   "from": "kb.migrate_m15.seed_negatives",
+   "raw": "conn.execute",
+   "line": 260
+  },
+  {
+   "from": "kb.migrate_m15.seed_gaps",
+   "raw": "conn.execute",
+   "line": 272
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "print",
+   "line": 295
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "conn.execute",
+   "line": 296
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "print",
+   "line": 302
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "seed_solutions",
+   "line": 315,
+   "to": "kb.migrate_m15.seed_solutions",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "seed_negatives",
+   "line": 316,
+   "to": "kb.migrate_m15.seed_negatives",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "seed_gaps",
+   "line": 317,
+   "to": "kb.migrate_m15.seed_gaps",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "main",
+   "line": 324,
+   "to": "kb.migrate_m15.main",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m15",
+   "raw": "Path",
+   "line": 17
+  },
+  {
+   "from": "kb.migrate_m15.seed_negatives",
+   "raw": "print",
+   "line": 258
+  },
+  {
+   "from": "kb.migrate_m15.summary",
+   "raw": "print",
+   "line": 297
+  },
+  {
+   "from": "kb.migrate_m15.main",
+   "raw": "str",
+   "line": 307
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 237
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 238
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 240
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 241
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 242
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 243
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 244
+  },
+  {
+   "from": "kb.migrate_m15.seed_solutions",
+   "raw": "json.dumps",
+   "line": 245
+  },
+  {
+   "from": "kb.migrate_m15.seed_negatives",
+   "raw": "conn.execute",
+   "line": 252
+  },
+  {
+   "from": "kb.migrate_m15.seed_negatives",
+   "raw": "conn.execute",
+   "line": 255
+  },
+  {
+   "from": "kb.migrate_m15.seed_gaps",
+   "raw": "conn.execute",
+   "line": 269
+  },
+  {
+   "from": "kb.migrate_m15.seed_gaps",
+   "raw": "json.dumps",
+   "line": 277
+  },
+  {
+   "from": "kb.migrate_m15.seed_gaps",
+   "raw": "json.dumps",
+   "line": 278
+  },
+  {
    "from": "kb.query.query",
    "raw": "params.append",
    "line": 40
@@ -15647,6 +17628,490 @@
   {
    "from": "kb.query.main",
    "raw": "stats.get",
+   "line": 81
+  },
+  {
+   "from": "kb.solutions",
+   "raw": "re.compile",
+   "line": 36
+  },
+  {
+   "from": "kb.solutions.connect",
+   "raw": "sqlite3.connect",
+   "line": 40
+  },
+  {
+   "from": "kb.solutions._caps_score",
+   "raw": "enumerate",
+   "line": 61
+  },
+  {
+   "from": "kb.solutions._text_overlap",
+   "raw": "sum",
+   "line": 70
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "connect",
+   "line": 78,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "conn.close",
+   "line": 83
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "required_caps",
+   "line": 84,
+   "to": "kb.solutions.required_caps",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "scored.sort",
+   "line": 99
+  },
+  {
+   "from": "kb.solutions.hit_solution",
+   "raw": "search_solutions",
+   "line": 108,
+   "to": "kb.solutions.search_solutions",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "connect",
+   "line": 113,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "conn.close",
+   "line": 116
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "dict",
+   "line": 119
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "connect",
+   "line": 126,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "conn.close",
+   "line": 130
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "dict",
+   "line": 133
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "hashlib.sha1",
+   "line": 143
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "sorted",
+   "line": 144
+  },
+  {
+   "from": "kb.solutions.record_reuse",
+   "raw": "connect",
+   "line": 156,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.record_reuse",
+   "raw": "conn.execute",
+   "line": 157
+  },
+  {
+   "from": "kb.solutions.record_reuse",
+   "raw": "conn.commit",
+   "line": 159
+  },
+  {
+   "from": "kb.solutions.record_reuse",
+   "raw": "conn.close",
+   "line": 160
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "connect",
+   "line": 179,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "dict",
+   "line": 185
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "json.loads",
+   "line": 186
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.execute",
+   "line": 190
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "check_promotion",
+   "line": 194,
+   "to": "kb.solutions.check_promotion",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "json.loads",
+   "line": 199
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "cases.append",
+   "line": 200
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.execute",
+   "line": 202
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.commit",
+   "line": 204
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.close",
+   "line": 205
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "connect",
+   "line": 226,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.close",
+   "line": 252
+  },
+  {
+   "from": "kb.solutions._text_overlap",
+   "raw": "min",
+   "line": 71
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "json.loads",
+   "line": 87
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "json.loads",
+   "line": 88
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "_caps_score",
+   "line": 89,
+   "to": "kb.solutions._caps_score",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "scored.append",
+   "line": 92
+  },
+  {
+   "from": "kb.solutions.hit_solution",
+   "raw": "FACE_SWAP_RE.search",
+   "line": 106
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "json.loads",
+   "line": 121
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "json.loads",
+   "line": 135
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "Path",
+   "line": 145
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.update",
+   "line": 148
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.update",
+   "line": 149
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.update",
+   "line": 150
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.update",
+   "line": 151
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.hexdigest",
+   "line": 152
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.close",
+   "line": 183
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "inputs.append",
+   "line": 189
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.execute",
+   "line": 196
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "bool",
+   "line": 209
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "len",
+   "line": 210
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.loads",
+   "line": 231
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.execute",
+   "line": 233
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.commit",
+   "line": 237
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "required_caps",
+   "line": 241,
+   "to": "kb.solutions.required_caps",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.execute",
+   "line": 242
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.commit",
+   "line": 249
+  },
+  {
+   "from": "kb.solutions.required_caps",
+   "raw": "re.search",
+   "line": 51
+  },
+  {
+   "from": "kb.solutions.required_caps",
+   "raw": "out.append",
+   "line": 52
+  },
+  {
+   "from": "kb.solutions._caps_score",
+   "raw": "max",
+   "line": 63
+  },
+  {
+   "from": "kb.solutions._text_overlap",
+   "raw": "range",
+   "line": 69
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "conn.execute",
+   "line": 79
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "conn.execute",
+   "line": 114
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "conn.execute",
+   "line": 127
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "p.is_absolute",
+   "line": 146
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "slot.encode",
+   "line": 148
+  },
+  {
+   "from": "kb.solutions.check_promotion",
+   "raw": "len",
+   "line": 166
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "conn.execute",
+   "line": 180
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "json.dumps",
+   "line": 193
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "json.dumps",
+   "line": 203
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "conn.execute",
+   "line": 227
+  },
+  {
+   "from": "kb.solutions",
+   "raw": "Path",
+   "line": 21
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "_text_overlap",
+   "line": 90,
+   "to": "kb.solutions._text_overlap",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "STATUS_RANK.get",
+   "line": 91
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "round",
+   "line": 97
+  },
+  {
+   "from": "kb.solutions.get",
+   "raw": "d.pop",
+   "line": 121
+  },
+  {
+   "from": "kb.solutions.get_by_name",
+   "raw": "d.pop",
+   "line": 135
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "p.exists",
+   "line": 150
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "p.read_bytes",
+   "line": 150
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.dumps",
+   "line": 236
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.dumps",
+   "line": 247
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.dumps",
+   "line": 248
+  },
+  {
+   "from": "kb.solutions._text_overlap",
+   "raw": "len",
+   "line": 69
+  },
+  {
+   "from": "kb.solutions.record_success",
+   "raw": "json.dumps",
+   "line": 201
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 222
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.dumps",
+   "line": 224
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 221
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 221
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 224
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 222
+  },
+  {
+   "from": "kb.solutions.search_solutions",
+   "raw": "len",
    "line": 81
   },
   {
@@ -16036,440 +18501,477 @@
   {
    "from": "mcp.server",
    "raw": "sys.path.insert",
-   "line": 20
+   "line": 21
   },
   {
    "from": "mcp.server",
    "raw": "str",
-   "line": 20
+   "line": 21
   },
   {
    "from": "mcp.server._conn",
    "raw": "sqlite3.connect",
-   "line": 30
+   "line": 31
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "_conn",
-   "line": 36,
+   "line": 37,
    "to": "mcp.server._conn",
    "resolved": true
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "args.get",
-   "line": 42
+   "line": 43
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "args.get",
-   "line": 45
+   "line": 46
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "args.get",
-   "line": 48
+   "line": 49
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "args.get",
-   "line": 51
+   "line": 52
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "params.append",
-   "line": 55
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "conn.close",
-   "line": 57
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "enumerate",
-   "line": 59
-  },
-  {
-   "from": "mcp.server.tool_card",
-   "raw": "_conn",
-   "line": 72,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_card",
-   "raw": "str",
-   "line": 73
-  },
-  {
-   "from": "mcp.server.tool_card",
-   "raw": "conn.close",
-   "line": 85
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "_conn",
-   "line": 119,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "str",
-   "line": 120
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "conn.close",
-   "line": 124
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "args.get",
-   "line": 127
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "Path",
-   "line": 128
-  },
-  {
-   "from": "mcp.server.tool_workflow",
-   "raw": "args.get",
-   "line": 137
-  },
-  {
-   "from": "mcp.server._mermaid",
-   "raw": "sorted",
-   "line": 155
-  },
-  {
-   "from": "mcp.server.tool_visualize",
-   "raw": "_conn",
-   "line": 175,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_visualize",
-   "raw": "str",
-   "line": 176
-  },
-  {
-   "from": "mcp.server.tool_visualize",
-   "raw": "conn.close",
-   "line": 180
-  },
-  {
-   "from": "mcp.server.tool_visualize",
-   "raw": "json.loads",
-   "line": 183
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "_conn",
-   "line": 191,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "dict",
-   "line": 194
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "conn.execute",
-   "line": 196
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "conn.close",
-   "line": 199
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "json.dumps",
-   "line": 200
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "_conn",
-   "line": 215,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "conn.close",
-   "line": 218
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "json.loads",
-   "line": 224
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "lines.append",
-   "line": 234
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "sys.path.insert",
-   "line": 240
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "bool",
-   "line": 243
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "ExperimentRunner",
-   "line": 244
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "runner.run",
-   "line": 245
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "result.get",
-   "line": 255
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "json.dumps",
-   "line": 262
-  },
-  {
-   "from": "mcp.server.tool_get_experiment",
-   "raw": "_conn",
-   "line": 266,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_get_experiment",
-   "raw": "conn.close",
-   "line": 269
-  },
-  {
-   "from": "mcp.server.tool_get_experiment",
-   "raw": "json.dumps",
-   "line": 272
-  },
-  {
-   "from": "mcp.server.tool_list_patterns",
-   "raw": "_conn",
-   "line": 277,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_list_patterns",
-   "raw": "int",
-   "line": 279
-  },
-  {
-   "from": "mcp.server.tool_list_patterns",
-   "raw": "conn.close",
-   "line": 287
-  },
-  {
-   "from": "mcp.server.tool_get_pattern",
-   "raw": "_conn",
-   "line": 307,
-   "to": "mcp.server._conn",
-   "resolved": true
-  },
-  {
-   "from": "mcp.server.tool_get_pattern",
-   "raw": "conn.close",
-   "line": 310
-  },
-  {
-   "from": "mcp.server.tool_get_pattern",
-   "raw": "dict",
-   "line": 313
-  },
-  {
-   "from": "mcp.server.tool_get_pattern",
-   "raw": "json.loads",
-   "line": 314
-  },
-  {
-   "from": "mcp.server.send",
-   "raw": "sys.stdout.write",
-   "line": 465
-  },
-  {
-   "from": "mcp.server.send",
-   "raw": "sys.stdout.flush",
-   "line": 466
-  },
-  {
-   "from": "mcp.server.handle",
-   "raw": "req.get",
-   "line": 470
-  },
-  {
-   "from": "mcp.server.handle",
-   "raw": "req.get",
-   "line": 471
-  },
-  {
-   "from": "mcp.server.main",
-   "raw": "sys.exit",
-   "line": 520
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "params.append",
-   "line": 53
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "int",
-   "line": 55
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "dict",
    "line": 56
   },
   {
    "from": "mcp.server.tool_search",
-   "raw": "json.loads",
-   "line": 62
+   "raw": "conn.close",
+   "line": 58
   },
   {
    "from": "mcp.server.tool_search",
-   "raw": "out.append",
-   "line": 63
+   "raw": "enumerate",
+   "line": 60
   },
   {
    "from": "mcp.server.tool_card",
-   "raw": "args.get",
-   "line": 73
+   "raw": "_conn",
+   "line": 73,
+   "to": "mcp.server._conn",
+   "resolved": true
   },
   {
    "from": "mcp.server.tool_card",
-   "raw": "wf_id.startswith",
+   "raw": "str",
    "line": 74
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "conn.close",
-   "line": 80
-  },
-  {
-   "from": "mcp.server.tool_card",
-   "raw": "dict",
-   "line": 82
+   "line": 86
   },
   {
    "from": "mcp.server.tool_workflow",
-   "raw": "args.get",
-   "line": 120
+   "raw": "_conn",
+   "line": 120,
+   "to": "mcp.server._conn",
+   "resolved": true
   },
   {
    "from": "mcp.server.tool_workflow",
-   "raw": "wf_id.startswith",
+   "raw": "str",
    "line": 121
   },
   {
    "from": "mcp.server.tool_workflow",
-   "raw": "path.is_file",
-   "line": 135
+   "raw": "conn.close",
+   "line": 125
   },
   {
    "from": "mcp.server.tool_workflow",
-   "raw": "path.read_text",
+   "raw": "args.get",
+   "line": 128
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "Path",
+   "line": 129
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "args.get",
    "line": 138
   },
   {
    "from": "mcp.server._mermaid",
-   "raw": "cat_to_subgraph.items",
-   "line": 155
-  },
-  {
-   "from": "mcp.server._mermaid",
-   "raw": "lines.append",
+   "raw": "sorted",
    "line": 156
   },
   {
-   "from": "mcp.server._mermaid",
-   "raw": "lines.append",
-   "line": 166
+   "from": "mcp.server.tool_visualize",
+   "raw": "_conn",
+   "line": 176,
+   "to": "mcp.server._conn",
+   "resolved": true
   },
   {
    "from": "mcp.server.tool_visualize",
-   "raw": "args.get",
-   "line": 176
-  },
-  {
-   "from": "mcp.server.tool_visualize",
-   "raw": "wf_id.startswith",
+   "raw": "str",
    "line": 177
   },
   {
    "from": "mcp.server.tool_visualize",
-   "raw": "args.get",
+   "raw": "conn.close",
+   "line": 181
+  },
+  {
+   "from": "mcp.server.tool_visualize",
+   "raw": "json.loads",
    "line": 184
   },
   {
    "from": "mcp.server.tool_stats",
-   "raw": "json.loads",
+   "raw": "_conn",
+   "line": 192,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_stats",
+   "raw": "dict",
+   "line": 195
+  },
+  {
+   "from": "mcp.server.tool_stats",
+   "raw": "conn.execute",
    "line": 197
   },
   {
-   "from": "mcp.server._norm_wf_id",
-   "raw": "raw.startswith",
-   "line": 210
+   "from": "mcp.server.tool_stats",
+   "raw": "conn.close",
+   "line": 200
+  },
+  {
+   "from": "mcp.server.tool_stats",
+   "raw": "json.dumps",
+   "line": 201
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
-   "raw": "Path",
-   "line": 221
+   "raw": "_conn",
+   "line": 216,
+   "to": "mcp.server._conn",
+   "resolved": true
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
-   "raw": "p.is_file",
-   "line": 222
+   "raw": "conn.close",
+   "line": 219
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
-   "raw": "p.read_text",
-   "line": 224
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "data.get",
+   "raw": "json.loads",
    "line": 225
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "lines.append",
-   "line": 231
+   "line": 235
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "sys.path.insert",
+   "line": 241
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "bool",
+   "line": 244
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "ExperimentRunner",
+   "line": 245
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "runner.run",
+   "line": 246
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "result.get",
+   "line": 256
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "json.dumps",
+   "line": 263
+  },
+  {
+   "from": "mcp.server.tool_get_experiment",
+   "raw": "_conn",
+   "line": 267,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_get_experiment",
+   "raw": "conn.close",
+   "line": 270
+  },
+  {
+   "from": "mcp.server.tool_get_experiment",
+   "raw": "json.dumps",
+   "line": 273
+  },
+  {
+   "from": "mcp.server.tool_list_patterns",
+   "raw": "_conn",
+   "line": 278,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_list_patterns",
+   "raw": "int",
+   "line": 280
+  },
+  {
+   "from": "mcp.server.tool_list_patterns",
+   "raw": "conn.close",
+   "line": 288
+  },
+  {
+   "from": "mcp.server.tool_get_pattern",
+   "raw": "_conn",
+   "line": 308,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_get_pattern",
+   "raw": "conn.close",
+   "line": 311
+  },
+  {
+   "from": "mcp.server.tool_get_pattern",
+   "raw": "dict",
+   "line": 314
+  },
+  {
+   "from": "mcp.server.tool_get_pattern",
+   "raw": "json.loads",
+   "line": 315
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "_conn",
+   "line": 324,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "args.get",
+   "line": 327
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "args.get",
+   "line": 330
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "args.get",
+   "line": 333
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "args.get",
+   "line": 336
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "params.append",
+   "line": 340
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "conn.close",
+   "line": 342
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "enumerate",
+   "line": 346
+  },
+  {
+   "from": "mcp.server.send",
+   "raw": "sys.stdout.write",
+   "line": 525
+  },
+  {
+   "from": "mcp.server.send",
+   "raw": "sys.stdout.flush",
+   "line": 526
+  },
+  {
+   "from": "mcp.server.handle",
+   "raw": "req.get",
+   "line": 530
+  },
+  {
+   "from": "mcp.server.handle",
+   "raw": "req.get",
+   "line": 531
+  },
+  {
+   "from": "mcp.server.main",
+   "raw": "sys.exit",
+   "line": 580
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "params.append",
+   "line": 54
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "int",
+   "line": 56
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "dict",
+   "line": 57
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "json.loads",
+   "line": 63
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "out.append",
+   "line": 64
+  },
+  {
+   "from": "mcp.server.tool_card",
+   "raw": "args.get",
+   "line": 74
+  },
+  {
+   "from": "mcp.server.tool_card",
+   "raw": "wf_id.startswith",
+   "line": 75
+  },
+  {
+   "from": "mcp.server.tool_card",
+   "raw": "conn.close",
+   "line": 81
+  },
+  {
+   "from": "mcp.server.tool_card",
+   "raw": "dict",
+   "line": 83
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "args.get",
+   "line": 121
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "wf_id.startswith",
+   "line": 122
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "path.is_file",
+   "line": 136
+  },
+  {
+   "from": "mcp.server.tool_workflow",
+   "raw": "path.read_text",
+   "line": 139
+  },
+  {
+   "from": "mcp.server._mermaid",
+   "raw": "cat_to_subgraph.items",
+   "line": 156
+  },
+  {
+   "from": "mcp.server._mermaid",
+   "raw": "lines.append",
+   "line": 157
+  },
+  {
+   "from": "mcp.server._mermaid",
+   "raw": "lines.append",
+   "line": 167
+  },
+  {
+   "from": "mcp.server.tool_visualize",
+   "raw": "args.get",
+   "line": 177
+  },
+  {
+   "from": "mcp.server.tool_visualize",
+   "raw": "wf_id.startswith",
+   "line": 178
+  },
+  {
+   "from": "mcp.server.tool_visualize",
+   "raw": "args.get",
+   "line": 185
+  },
+  {
+   "from": "mcp.server.tool_stats",
+   "raw": "json.loads",
+   "line": 198
+  },
+  {
+   "from": "mcp.server._norm_wf_id",
+   "raw": "raw.startswith",
+   "line": 211
+  },
+  {
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "Path",
+   "line": 222
+  },
+  {
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "p.is_file",
+   "line": 223
+  },
+  {
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "p.read_text",
+   "line": 225
+  },
+  {
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "data.get",
+   "line": 226
+  },
+  {
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "lines.append",
+   "line": 232
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "str",
-   "line": 240
+   "line": 241
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "args.get",
-   "line": 243
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "str",
-   "line": 246
+   "line": 244
   },
   {
    "from": "mcp.server.tool_submit_experiment",
@@ -16478,8 +18980,8 @@
   },
   {
    "from": "mcp.server.tool_submit_experiment",
-   "raw": "list",
-   "line": 249
+   "raw": "str",
+   "line": 248
   },
   {
    "from": "mcp.server.tool_submit_experiment",
@@ -16488,7 +18990,7 @@
   },
   {
    "from": "mcp.server.tool_submit_experiment",
-   "raw": "str",
+   "raw": "list",
    "line": 251
   },
   {
@@ -16497,145 +18999,190 @@
    "line": 252
   },
   {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "str",
+   "line": 253
+  },
+  {
    "from": "mcp.server.tool_get_experiment",
    "raw": "dict",
-   "line": 272
+   "line": 273
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "args.get",
-   "line": 279
+   "line": 280
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "params.append",
-   "line": 284
+   "line": 285
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "dict",
-   "line": 286
+   "line": 287
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "len",
-   "line": 297
+   "line": 298
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "out.append",
-   "line": 298
+   "line": 299
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "r.pop",
-   "line": 315
+   "line": 316
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "params.append",
+   "line": 329
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "params.append",
+   "line": 332
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "params.append",
+   "line": 335
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "int",
+   "line": 340
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "dict",
+   "line": 341
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "json.loads",
+   "line": 347
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "json.loads",
+   "line": 348
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "json.loads",
+   "line": 349
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "out.append",
+   "line": 350
   },
   {
    "from": "mcp.server.handle",
    "raw": "HANDLERS.get",
-   "line": 487
+   "line": 547
   },
   {
    "from": "mcp.server.main",
    "raw": "line.strip",
-   "line": 506
+   "line": 566
   },
   {
    "from": "mcp.server.main",
    "raw": "handle",
-   "line": 513,
+   "line": 573,
    "to": "mcp.server.handle",
    "resolved": true
   },
   {
    "from": "mcp.server.main",
    "raw": "main",
-   "line": 520,
+   "line": 580,
    "to": "mcp.server.main",
    "resolved": true
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "int",
-   "line": 53
+   "line": 54
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "args.get",
-   "line": 55
+   "line": 56
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "conn.execute",
-   "line": 56
+   "line": 57
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "conn.execute",
-   "line": 76
+   "line": 77
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "conn.execute",
-   "line": 78
+   "line": 79
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "conn.execute",
-   "line": 82
+   "line": 83
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "json.loads",
-   "line": 89
+   "line": 90
   },
   {
    "from": "mcp.server.tool_workflow",
    "raw": "conn.execute",
-   "line": 123
+   "line": 124
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "n.get",
-   "line": 160
+   "line": 161
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "lines.append",
-   "line": 170
+   "line": 171
   },
   {
    "from": "mcp.server.tool_visualize",
    "raw": "conn.execute",
-   "line": 179
+   "line": 180
   },
   {
    "from": "mcp.server.tool_visualize",
    "raw": "int",
-   "line": 184
+   "line": 185
   },
   {
    "from": "mcp.server.tool_visualize",
    "raw": "_mermaid",
-   "line": 187,
+   "line": 188,
    "to": "mcp.server._mermaid",
    "resolved": true
   },
   {
    "from": "mcp.server.tool_stats",
    "raw": "dict",
-   "line": 203
+   "line": 204
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "conn.execute",
-   "line": 216
-  },
-  {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "args.get",
-   "line": 246
+   "line": 217
   },
   {
    "from": "mcp.server.tool_submit_experiment",
@@ -16645,7 +19192,7 @@
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "args.get",
-   "line": 251
+   "line": 248
   },
   {
    "from": "mcp.server.tool_submit_experiment",
@@ -16653,106 +19200,116 @@
    "line": 252
   },
   {
+   "from": "mcp.server.tool_submit_experiment",
+   "raw": "args.get",
+   "line": 253
+  },
+  {
    "from": "mcp.server.tool_get_experiment",
    "raw": "conn.execute",
-   "line": 267
+   "line": 268
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "str",
-   "line": 278
+   "line": 279
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "conn.execute",
-   "line": 286
+   "line": 287
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "int",
-   "line": 292
+   "line": 293
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "json.loads",
-   "line": 297
+   "line": 298
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "out.append",
-   "line": 301
+   "line": 302
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "conn.execute",
-   "line": 308
+   "line": 309
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "r.pop",
-   "line": 314
+   "line": 315
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "json.dumps",
-   "line": 316
+   "line": 317
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "args.get",
+   "line": 340
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "conn.execute",
+   "line": 341
   },
   {
    "from": "mcp.server.send",
    "raw": "json.dumps",
-   "line": 465
+   "line": 525
   },
   {
    "from": "mcp.server.handle",
    "raw": "handler",
-   "line": 492
+   "line": 552
   },
   {
    "from": "mcp.server.main",
    "raw": "json.loads",
-   "line": 510
+   "line": 570
   },
   {
    "from": "mcp.server.main",
    "raw": "send",
-   "line": 515,
+   "line": 575,
    "to": "mcp.server.send",
    "resolved": true
   },
   {
    "from": "mcp.server",
    "raw": "Path",
-   "line": 19
+   "line": 20
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "isinstance",
-   "line": 92
+   "line": 93
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "c.get",
-   "line": 92
+   "line": 93
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "cat_to_subgraph.setdefault",
-   "line": 151
+   "line": 152
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "lines.append",
-   "line": 161
+   "line": 162
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "n.get",
-   "line": 162
-  },
-  {
-   "from": "mcp.server.tool_stats",
-   "raw": "conn.execute",
-   "line": 192
+   "line": 163
   },
   {
    "from": "mcp.server.tool_stats",
@@ -16766,18 +19323,18 @@
   },
   {
    "from": "mcp.server.tool_stats",
+   "raw": "conn.execute",
+   "line": 195
+  },
+  {
+   "from": "mcp.server.tool_stats",
    "raw": "techs.get",
-   "line": 198
+   "line": 199
   },
   {
    "from": "mcp.server.tool_stats",
    "raw": "sorted",
-   "line": 203
-  },
-  {
-   "from": "mcp.server.tool_workflow_inputs",
-   "raw": "data.get",
-   "line": 227
+   "line": 204
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
@@ -16785,9 +19342,9 @@
    "line": 228
   },
   {
-   "from": "mcp.server.tool_submit_experiment",
-   "raw": "args.get",
-   "line": 249
+   "from": "mcp.server.tool_workflow_inputs",
+   "raw": "data.get",
+   "line": 229
   },
   {
    "from": "mcp.server.tool_submit_experiment",
@@ -16796,225 +19353,220 @@
   },
   {
    "from": "mcp.server.tool_submit_experiment",
+   "raw": "args.get",
+   "line": 251
+  },
+  {
+   "from": "mcp.server.tool_submit_experiment",
    "raw": "json.dumps",
-   "line": 261
+   "line": 262
   },
   {
    "from": "mcp.server.tool_get_experiment",
    "raw": "args.get",
-   "line": 271
+   "line": 272
   },
   {
    "from": "mcp.server.tool_list_patterns",
    "raw": "args.get",
-   "line": 278
+   "line": 279
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "args.get",
-   "line": 312
+   "line": 313
   },
   {
    "from": "mcp.server.tool_search",
    "raw": "isinstance",
-   "line": 60
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "c.get",
-   "line": 60
-  },
-  {
-   "from": "mcp.server.tool_search",
-   "raw": "json.loads",
    "line": 61
   },
   {
    "from": "mcp.server.tool_search",
+   "raw": "c.get",
+   "line": 61
+  },
+  {
+   "from": "mcp.server.tool_search",
+   "raw": "json.loads",
+   "line": 62
+  },
+  {
+   "from": "mcp.server.tool_search",
    "raw": "stats.get",
-   "line": 65
+   "line": 66
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "caps",
-   "line": 101
+   "line": 102
   },
   {
    "from": "mcp.server.tool_card",
    "raw": "caps",
-   "line": 104
+   "line": 105
   },
   {
    "from": "mcp.server.tool_workflow",
    "raw": "len",
-   "line": 139
+   "line": 140
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "cat.replace",
-   "line": 156
+   "line": 157
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "lines.append",
-   "line": 163
+   "line": 164
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "lines.append",
-   "line": 165
+   "line": 166
   },
   {
    "from": "mcp.server.tool_stats",
    "raw": "techs.items",
-   "line": 203
+   "line": 204
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "_norm_wf_id",
-   "line": 217,
+   "line": 218,
    "to": "mcp.server._norm_wf_id",
    "resolved": true
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "n.get",
-   "line": 232
+   "line": 233
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "n.get",
-   "line": 233
+   "line": 234
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "str",
-   "line": 248
+   "line": 249
   },
   {
    "from": "mcp.server.tool_get_experiment",
    "raw": "int",
-   "line": 268
+   "line": 269
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "int",
-   "line": 309
+   "line": 310
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "len",
-   "line": 317
+   "line": 318
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "json.dumps",
+   "line": 356
   },
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 485
+   "line": 545
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "str",
-   "line": 158
+   "line": 159
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "str",
-   "line": 217
+   "line": 218
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "str",
-   "line": 233
+   "line": 234
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "str",
-   "line": 248
+   "line": 249
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "str",
-   "line": 248
+   "line": 249
   },
   {
    "from": "mcp.server.tool_get_experiment",
    "raw": "args.get",
-   "line": 268
+   "line": 269
   },
   {
    "from": "mcp.server.tool_get_pattern",
    "raw": "args.get",
-   "line": 309
+   "line": 310
   },
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 486
+   "line": 546
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "str",
-   "line": 170
+   "line": 171
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "args.get",
-   "line": 217
+   "line": 218
   },
   {
    "from": "mcp.server.tool_workflow_inputs",
    "raw": "n.get",
-   "line": 233
+   "line": 234
   },
   {
    "from": "mcp.server.tool_submit_experiment",
    "raw": "args.get",
-   "line": 248
+   "line": 249
   },
   {
    "from": "mcp.server._mermaid",
    "raw": "e.get",
-   "line": 170
+   "line": 171
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "s.get",
+   "line": 355
+  },
+  {
+   "from": "mcp.server.tool_search_solutions",
+   "raw": "metrics.items",
+   "line": 356
   },
   {
    "from": "mcp.test_server",
    "raw": "subprocess.Popen",
-   "line": 43
+   "line": 48
   },
   {
    "from": "mcp.test_server",
    "raw": "proc.communicate",
-   "line": 46
+   "line": 51
   },
   {
    "from": "mcp.test_server",
    "raw": "out.splitlines",
-   "line": 49
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 57
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 58
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 59
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 60
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 61
+   "line": 54
   },
   {
    "from": "mcp.test_server",
@@ -17104,27 +19656,62 @@
   {
    "from": "mcp.test_server",
    "raw": "print",
+   "line": 79
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
    "line": 80
   },
   {
    "from": "mcp.test_server",
+   "raw": "print",
+   "line": 81
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 82
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 83
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 84
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 85
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 86
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 87
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 89
+  },
+  {
+   "from": "mcp.test_server",
    "raw": "json.loads",
-   "line": 51
+   "line": 56
   },
   {
    "from": "mcp.test_server",
    "raw": "json.dumps",
-   "line": 45
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "results.get",
-   "line": 57
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "results.get",
-   "line": 58
+   "line": 50
   },
   {
    "from": "mcp.test_server",
@@ -17134,42 +19721,62 @@
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 64
+   "line": 63
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 66
+   "line": 67
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 68
+   "line": 69
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 70
+   "line": 71
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 72
+   "line": 73
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 74
+   "line": 75
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 76
+   "line": 77
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 78
+   "line": 79
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 81
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 83
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 85
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 87
   },
   {
    "from": "parser.graph_ops.load_api_format",
@@ -20033,6 +22640,1479 @@
    "line": 24
   },
   {
+   "from": "research.external._get",
+   "raw": "urllib.request.Request",
+   "line": 25
+  },
+  {
+   "from": "research.external._get_json",
+   "raw": "json.loads",
+   "line": 34
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "urllib.parse.quote",
+   "line": 41
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "_get_json",
+   "line": 42,
+   "to": "research.external._get_json",
+   "resolved": true
+  },
+  {
+   "from": "research.external.gh_readme",
+   "raw": "dict.fromkeys",
+   "line": 60
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "urllib.parse.quote",
+   "line": 74
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "urllib.parse.quote",
+   "line": 100
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "_get_json",
+   "line": 101,
+   "to": "research.external._get_json",
+   "resolved": true
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "sum",
+   "line": 142
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "cand.get",
+   "line": 144
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "cand.get",
+   "line": 146
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "round",
+   "line": 150
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "re.split",
+   "line": 158
+  },
+  {
+   "from": "research.external._get",
+   "raw": "urllib.request.urlopen",
+   "line": 26
+  },
+  {
+   "from": "research.external._get",
+   "raw": "r.read",
+   "line": 27
+  },
+  {
+   "from": "research.external._get",
+   "raw": "b.decode",
+   "line": 30
+  },
+  {
+   "from": "research.external._get_json",
+   "raw": "_get",
+   "line": 34,
+   "to": "research.external._get",
+   "resolved": true
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "data.get",
+   "line": 46
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "out.append",
+   "line": 47
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "_get_json",
+   "line": 76,
+   "to": "research.external._get_json",
+   "resolved": true
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "data.get",
+   "line": 82
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "out.append",
+   "line": 83
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "out.append",
+   "line": 106
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "min",
+   "line": 145
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "min",
+   "line": 147
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "authority",
+   "line": 148,
+   "to": "research.external.authority",
+   "resolved": true
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "set",
+   "line": 159
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "s.strip",
+   "line": 161
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "any",
+   "line": 164
+  },
+  {
+   "from": "research.external._get",
+   "raw": "r.headers.get",
+   "line": 28
+  },
+  {
+   "from": "research.external._get",
+   "raw": "gzip.decompress",
+   "line": 29
+  },
+  {
+   "from": "research.external.hf_model_card",
+   "raw": "_get",
+   "line": 124,
+   "to": "research.external._get",
+   "resolved": true
+  },
+  {
+   "from": "research.external.authority",
+   "raw": "cand.get",
+   "line": 134
+  },
+  {
+   "from": "research.external.authority",
+   "raw": "cand.get",
+   "line": 134
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "it.get",
+   "line": 51
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "it.get",
+   "line": 53
+  },
+  {
+   "from": "research.external.gh_readme",
+   "raw": "_get",
+   "line": 62,
+   "to": "research.external._get",
+   "resolved": true
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 110
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 111
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "next",
+   "line": 114
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "math.log10",
+   "line": 145
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "math.log10",
+   "line": 147
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "len",
+   "line": 162
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "seen.add",
+   "line": 167
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "hits.append",
+   "line": 168
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "len",
+   "line": 169
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "it.get",
+   "line": 54
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 89
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 89
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 90
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 91
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 91
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 92
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "k.lower",
+   "line": 164
+  },
+  {
+   "from": "research.external.extract_mechanism_quotes",
+   "raw": "s.lower",
+   "line": 164
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "it.get",
+   "line": 50
+  },
+  {
+   "from": "research.external.gh_search",
+   "raw": "it.get",
+   "line": 52
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 86
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 87
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 109
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 113
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 116
+  },
+  {
+   "from": "research.external.score_candidate",
+   "raw": "k.lower",
+   "line": 142
+  },
+  {
+   "from": "research.external.gh_readme",
+   "raw": "int",
+   "line": 64
+  },
+  {
+   "from": "research.external.registry_search",
+   "raw": "n.get",
+   "line": 85
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "t.startswith",
+   "line": 115
+  },
+  {
+   "from": "research.external.gh_readme",
+   "raw": "time.time",
+   "line": 64
+  },
+  {
+   "from": "research.external.hf_search",
+   "raw": "m.get",
+   "line": 114
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "sys.path.insert",
+   "line": 21
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "sys.path.insert",
+   "line": 22
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "sys.path.insert",
+   "line": 23
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "str",
+   "line": 21
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "str",
+   "line": 22
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "str",
+   "line": 23
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "FaceComparator",
+   "line": 41
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "min",
+   "line": 42
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.embed",
+   "line": 44
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.embed",
+   "line": 45
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.det.setInputSize",
+   "line": 46
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.det.detect",
+   "line": 47
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "faces.sort",
+   "line": 51
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.embed",
+   "line": 54
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "tmp.parent.mkdir",
+   "line": 56
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "cv2.imwrite",
+   "line": 57
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "all",
+   "line": 64
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "tmp.unlink",
+   "line": 67
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 72
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 73
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 74
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 75
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 76
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 77
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 78
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 79
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.add_argument",
+   "line": 80
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "ap.parse_args",
+   "line": 81
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "out_dir.mkdir",
+   "line": 84
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.load_api_key",
+   "line": 85,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.upload_file",
+   "line": 86,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.upload_file",
+   "line": 87,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.run_webapp",
+   "line": 93,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "print",
+   "line": 94
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.wait_task",
+   "line": 95,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.collect_file_urls",
+   "line": 96,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "enumerate",
+   "line": 98
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "print",
+   "line": 111
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "sys.exit",
+   "line": 116
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "cv2.resize",
+   "line": 43
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.largest_face",
+   "line": 44
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.largest_face",
+   "line": 45
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "list",
+   "line": 48
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "int",
+   "line": 52
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.largest_face",
+   "line": 54
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "str",
+   "line": 57
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "round",
+   "line": 58
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "round",
+   "line": 59
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._expr_geometry",
+   "line": 60,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._expr_geometry",
+   "line": 60,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "round",
+   "line": 62
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._hair_hist",
+   "line": 63,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "round",
+   "line": 65
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "round",
+   "line": 66
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "rh_task.download",
+   "line": 99,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "print",
+   "line": 101
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "cv2.imread",
+   "line": 103
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "geometric",
+   "line": 104,
+   "to": "research.probe_webapp.geometric",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "json.dumps",
+   "line": 111
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "main",
+   "line": 116,
+   "to": "research.probe_webapp.main",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "max",
+   "line": 42
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "cv2.imread",
+   "line": 44
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "cv2.imread",
+   "line": 45
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "float",
+   "line": 58
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "float",
+   "line": 59
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._expr_distance",
+   "line": 62,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._hist_intersection",
+   "line": 65,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "sf._hist_intersection",
+   "line": 66,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "str",
+   "line": 100
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "str",
+   "line": 103
+  },
+  {
+   "from": "research.probe_webapp",
+   "raw": "Path",
+   "line": 20
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "str",
+   "line": 44
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "str",
+   "line": 45
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "max",
+   "line": 53
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "max",
+   "line": 53
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.cosine",
+   "line": 58
+  },
+  {
+   "from": "research.probe_webapp.geometric",
+   "raw": "fc.cosine",
+   "line": 59
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "p.relative_to",
+   "line": 100
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "VLClient",
+   "line": 107
+  },
+  {
+   "from": "research.probe_webapp.main",
+   "raw": "type",
+   "line": 110
+  },
+  {
+   "from": "research.run",
+   "raw": "sys.path.insert",
+   "line": 16
+  },
+  {
+   "from": "research.run",
+   "raw": "str",
+   "line": 16
+  },
+  {
+   "from": "research.run.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 41
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.add_argument",
+   "line": 42
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.add_argument",
+   "line": 43
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.add_argument",
+   "line": 44
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.add_argument",
+   "line": 45
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.add_argument",
+   "line": 46
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ap.parse_args",
+   "line": 48
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sqlite3.connect",
+   "line": 51
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.close",
+   "line": 55
+  },
+  {
+   "from": "research.run.main",
+   "raw": "next",
+   "line": 60
+  },
+  {
+   "from": "research.run.main",
+   "raw": "ResearchSession",
+   "line": 66
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 71
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 72
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.collect",
+   "line": 73
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 74
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.make_shortlist",
+   "line": 78
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 79
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.deep_read",
+   "line": 82
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 83
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sorted",
+   "line": 91
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.conclude",
+   "line": 100
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 101
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 125
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sys.exit",
+   "line": 130
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 57
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 62
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 76
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 81
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 85
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 86
+  },
+  {
+   "from": "research.run.main",
+   "raw": "rh_webapp_hits",
+   "line": 104
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 105
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.write_external_facts",
+   "line": 122
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 123
+  },
+  {
+   "from": "research.run.main",
+   "raw": "main",
+   "line": 130,
+   "to": "research.run.main",
+   "resolved": true
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 53
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 88
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 107
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sqlite3.connect",
+   "line": 109
+  },
+  {
+   "from": "research.run.main",
+   "raw": "json.loads",
+   "line": 112
+  },
+  {
+   "from": "research.run.main",
+   "raw": "isinstance",
+   "line": 113
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 115
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.commit",
+   "line": 118
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.close",
+   "line": 119
+  },
+  {
+   "from": "research.run",
+   "raw": "Path",
+   "line": 15
+  },
+  {
+   "from": "research.run.main",
+   "raw": "GAP_PLANS.items",
+   "line": 60
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 74
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 79
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 83
+  },
+  {
+   "from": "research.run.main",
+   "raw": "findings.append",
+   "line": 114
+  },
+  {
+   "from": "research.run.main",
+   "raw": "c.get",
+   "line": 77
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 86
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 93
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 105
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 110
+  },
+  {
+   "from": "research.run.main",
+   "raw": "json.dumps",
+   "line": 117
+  },
+  {
+   "from": "research.session",
+   "raw": "sys.path.insert",
+   "line": 18
+  },
+  {
+   "from": "research.session",
+   "raw": "str",
+   "line": 18
+  },
+  {
+   "from": "research.session._conn",
+   "raw": "sqlite3.connect",
+   "line": 29
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "sys.path.insert",
+   "line": 214
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "_conn",
+   "line": 51,
+   "to": "research.session._conn",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "conn.execute",
+   "line": 61
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "conn.commit",
+   "line": 64
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "conn.close",
+   "line": 65
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "_conn",
+   "line": 68,
+   "to": "research.session._conn",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "conn.close",
+   "line": 71
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "json.loads",
+   "line": 73
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "json.loads",
+   "line": 74
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "json.loads",
+   "line": 75
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "json.loads",
+   "line": 76
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "json.loads",
+   "line": 77
+  },
+  {
+   "from": "research.session.ResearchSession.set_gap_status",
+   "raw": "_conn",
+   "line": 83,
+   "to": "research.session._conn",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.set_gap_status",
+   "raw": "conn.execute",
+   "line": 84
+  },
+  {
+   "from": "research.session.ResearchSession.set_gap_status",
+   "raw": "conn.commit",
+   "line": 86
+  },
+  {
+   "from": "research.session.ResearchSession.set_gap_status",
+   "raw": "conn.close",
+   "line": 87
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "self._save",
+   "line": 116
+  },
+  {
+   "from": "research.session.ResearchSession.make_shortlist",
+   "raw": "self._save",
+   "line": 121
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "self._save",
+   "line": 149
+  },
+  {
+   "from": "research.session.ResearchSession.conclude",
+   "raw": "self._save",
+   "line": 170
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "_conn",
+   "line": 183,
+   "to": "research.session._conn",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.commit",
+   "line": 207
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.close",
+   "line": 208
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "str",
+   "line": 214
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "conn.execute",
+   "line": 53
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "self.queries.get",
+   "line": 97
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "sorted",
+   "line": 115
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "ext.extract_mechanism_quotes",
+   "line": 137,
+   "to": "research.external.extract_mechanism_quotes",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "ext.authority",
+   "line": 141,
+   "to": "research.external.authority",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "self.findings.append",
+   "line": 142
+  },
+  {
+   "from": "research.session.ResearchSession._llm_digest",
+   "raw": "sys.path.insert",
+   "line": 156
+  },
+  {
+   "from": "research.session.ResearchSession.conclude",
+   "raw": "self.set_gap_status",
+   "line": 173
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.close",
+   "line": 187
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "ValueError",
+   "line": 188
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.execute",
+   "line": 201
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "rh._post",
+   "line": 222,
+   "to": "rh_client._post",
+   "resolved": true
+  },
+  {
+   "from": "research.session",
+   "raw": "Path",
+   "line": 17
+  },
+  {
+   "from": "research.session.ResearchSession.load",
+   "raw": "conn.execute",
+   "line": 69
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "best.values",
+   "line": 115
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "json.dumps",
+   "line": 116
+  },
+  {
+   "from": "research.session.ResearchSession.make_shortlist",
+   "raw": "json.dumps",
+   "line": 121
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "ext.gh_readme",
+   "line": 130,
+   "to": "research.external.gh_readme",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "self._llm_digest",
+   "line": 140
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "json.dumps",
+   "line": 149
+  },
+  {
+   "from": "research.session.ResearchSession._llm_digest",
+   "raw": "str",
+   "line": 156
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.execute",
+   "line": 184
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "hits.append",
+   "line": 225
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "print",
+   "line": 228
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "json.dumps",
+   "line": 57
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "json.dumps",
+   "line": 58
+  },
+  {
+   "from": "research.session.ResearchSession._save",
+   "raw": "fields.values",
+   "line": 63
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "fn",
+   "line": 99
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "ext.score_candidate",
+   "line": 105,
+   "to": "research.external.score_candidate",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "time.sleep",
+   "line": 108
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "c.get",
+   "line": 130
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "ext.hf_model_card",
+   "line": 132,
+   "to": "research.external.hf_model_card",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "len",
+   "line": 148
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "conn.execute",
+   "line": 196
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "data.get",
+   "line": 224
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "print",
+   "line": 101
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "c.get",
+   "line": 145
+  },
+  {
+   "from": "research.session.ResearchSession._llm_digest",
+   "raw": "VLClient",
+   "line": 163
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "str",
+   "line": 225
+  },
+  {
+   "from": "research.session.ResearchSession._llm_digest",
+   "raw": "type",
+   "line": 165
+  },
+  {
+   "from": "research.session.ResearchSession.write_external_facts",
+   "raw": "f.get",
+   "line": 191
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "rec.get",
+   "line": 225
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "rec.get",
+   "line": 226
+  },
+  {
+   "from": "research.session.rh_webapp_hits",
+   "raw": "str",
+   "line": 228
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "ext.gh_readme",
+   "line": 134,
+   "to": "research.external.gh_readme",
+   "resolved": true
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "type",
+   "line": 101
+  },
+  {
+   "from": "research.session.ResearchSession.collect",
+   "raw": "str",
+   "line": 101
+  },
+  {
+   "from": "research.session.ResearchSession.deep_read",
+   "raw": "c.get",
+   "line": 136
+  },
+  {
    "from": "rh_client._post",
    "raw": "urllib.request.Request",
    "line": 41
@@ -21480,6 +25560,585 @@
    "line": 280
   },
   {
+   "from": "test_m15_wiring",
+   "raw": "sys.path.insert",
+   "line": 26
+  },
+  {
+   "from": "test_m15_wiring",
+   "raw": "Path",
+   "line": 31
+  },
+  {
+   "from": "test_m15_wiring",
+   "raw": "shutil.copyfile",
+   "line": 33
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 110
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 120,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 124
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch.Task",
+   "line": 129,
+   "to": "webapp.orchestrator.Task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._run_task",
+   "line": 131,
+   "to": "webapp.orchestrator._run_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 132,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 133,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 134,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 136,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 141,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 142,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 143,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 146
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "_mk_eval",
+   "line": 148,
+   "to": "test_m15_wiring._mk_eval",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch.Task",
+   "line": 149,
+   "to": "webapp.orchestrator.Task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._run_task",
+   "line": 153,
+   "to": "webapp.orchestrator._run_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 154,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 156,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 158,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "json.loads",
+   "line": 159
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 160,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 162,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch.Task",
+   "line": 165,
+   "to": "webapp.orchestrator.Task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._run_task",
+   "line": 166,
+   "to": "webapp.orchestrator._run_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 167,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 172
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 175,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 178,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 181
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "solutions.record_success",
+   "line": 182,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 184,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "solutions.record_success",
+   "line": 185,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 187,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "solutions.record_success",
+   "line": 190,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 192,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "solutions.record_success",
+   "line": 195,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 197,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 201
+  },
+  {
+   "from": "test_m15_wiring",
+   "raw": "str",
+   "line": 26
+  },
+  {
+   "from": "test_m15_wiring",
+   "raw": "tempfile.mkdtemp",
+   "line": 31
+  },
+  {
+   "from": "test_m15_wiring.make_img",
+   "raw": "cv2.imwrite",
+   "line": 48
+  },
+  {
+   "from": "test_m15_wiring.make_img",
+   "raw": "str",
+   "line": 49
+  },
+  {
+   "from": "test_m15_wiring.db",
+   "raw": "sqlite3.connect",
+   "line": 53
+  },
+  {
+   "from": "test_m15_wiring.ok",
+   "raw": "print",
+   "line": 65
+  },
+  {
+   "from": "test_m15_wiring._no_llm",
+   "raw": "RuntimeError",
+   "line": 70
+  },
+  {
+   "from": "test_m15_wiring._stub_exec",
+   "raw": "orch._chain_for",
+   "line": 74,
+   "to": "webapp.orchestrator._chain_for",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._stub_exec",
+   "raw": "shutil.copyfile",
+   "line": 76
+  },
+  {
+   "from": "test_m15_wiring._stub_exec",
+   "raw": "task.log",
+   "line": 79
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "range",
+   "line": 100
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "t.feedback_wait.set",
+   "line": 106
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._pick_solution",
+   "line": 117,
+   "to": "webapp.orchestrator._pick_solution",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 119,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "_mk_eval",
+   "line": 128,
+   "to": "test_m15_wiring._mk_eval",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "make_img",
+   "line": 130,
+   "to": "test_m15_wiring.make_img",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "make_img",
+   "line": 130,
+   "to": "test_m15_wiring.make_img",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "any",
+   "line": 134
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "make_img",
+   "line": 150,
+   "to": "test_m15_wiring.make_img",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "make_img",
+   "line": 150,
+   "to": "test_m15_wiring.make_img",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "any",
+   "line": 162
+  },
+  {
+   "from": "test_m15_wiring.make_img",
+   "raw": "str",
+   "line": 48
+  },
+  {
+   "from": "test_m15_wiring._stub_exec",
+   "raw": "str",
+   "line": 80
+  },
+  {
+   "from": "test_m15_wiring._mk_eval",
+   "raw": "task.iterations.append",
+   "line": 86
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "time.sleep",
+   "line": 103
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "FakeTask",
+   "line": 117,
+   "to": "test_m15_wiring.FakeTask",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._pick_solution",
+   "line": 120,
+   "to": "webapp.orchestrator._pick_solution",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "t2.plan.get",
+   "line": 133
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "json.loads",
+   "line": 136
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "len",
+   "line": 143
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "threading.Thread",
+   "line": 152
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "len",
+   "line": 156
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "bool",
+   "line": 160
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "len",
+   "line": 192
+  },
+  {
+   "from": "test_m15_wiring",
+   "raw": "Path",
+   "line": 25
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch.submit_feedback",
+   "line": 101,
+   "to": "webapp.orchestrator.submit_feedback",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "FakeTask",
+   "line": 120,
+   "to": "test_m15_wiring.FakeTask",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "json.loads",
+   "line": 143
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "len",
+   "line": 156
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "set",
+   "line": 192
+  },
+  {
+   "from": "test_m15_wiring._mk_eval",
+   "raw": "task.plan.get",
+   "line": 87
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 125,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 139,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 155,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "json.loads",
+   "line": 192
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "e.get",
+   "line": 134
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 147,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "e.get",
+   "line": 162
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 173,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 176,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring.make_img",
+   "raw": "np.arange",
+   "line": 47
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 137,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 167,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "db",
+   "line": 192,
+   "to": "test_m15_wiring.db",
+   "resolved": true
+  },
+  {
    "from": "test_tag_filter",
    "raw": "sys.path.insert",
    "line": 9
@@ -22458,7 +27117,7 @@
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "threading.Lock",
-   "line": 137
+   "line": 140
   },
   {
    "from": "webapp.orchestrator",
@@ -22473,37 +27132,22 @@
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 86
-  },
-  {
-   "from": "webapp.orchestrator",
-   "raw": "field",
-   "line": 87
-  },
-  {
-   "from": "webapp.orchestrator",
-   "raw": "field",
-   "line": 88
-  },
-  {
-   "from": "webapp.orchestrator",
-   "raw": "field",
    "line": 89
   },
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 94
+   "line": 90
   },
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 95
+   "line": 91
   },
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 96
+   "line": 92
   },
   {
    "from": "webapp.orchestrator",
@@ -22516,512 +27160,634 @@
    "line": 98
   },
   {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 99
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 100
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 101
+  },
+  {
    "from": "webapp.orchestrator.get_task",
    "raw": "TASKS.get",
-   "line": 141
+   "line": 144
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "Task",
-   "line": 145,
+   "line": 148,
    "to": "webapp.orchestrator.Task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "images_b64.items",
-   "line": 149
+   "line": 152
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "VLClient",
-   "line": 171
+   "line": 174
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "vl.json",
-   "line": 172
+   "line": 175
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.setdefault",
-   "line": 231
+   "line": 234
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "sqlite3.connect",
-   "line": 252
+   "line": 255
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.sort",
-   "line": 264
+   "line": 267
+  },
+  {
+   "from": "webapp.orchestrator._chain_for",
+   "raw": "task.plan.get",
+   "line": 328
+  },
+  {
+   "from": "webapp.orchestrator._chain_for",
+   "raw": "solutions.get_by_name",
+   "line": 336,
+   "to": "kb.solutions.get_by_name",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._chain_for",
+   "raw": "KeyError",
+   "line": 340
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "_chain_for",
+   "line": 384,
+   "to": "webapp.orchestrator._chain_for",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 292
+   "line": 389
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 320
+   "line": 417
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.plan.get",
-   "line": 334
+   "line": 431
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.load_api_key",
-   "line": 337,
+   "line": 434,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.log",
-   "line": 340
+   "line": 437
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.run_webapp",
-   "line": 349,
+   "line": 446,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.wait_task",
-   "line": 350,
+   "line": 447,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.collect_file_urls",
-   "line": 351,
+   "line": 448,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "enumerate",
-   "line": 353
+   "line": 450
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.iterations.append",
-   "line": 394
+   "line": 491
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sqlite3.connect",
-   "line": 407
+   "line": 504
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sorted",
-   "line": 411
+   "line": 508
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "task.feedback_wait.set",
-   "line": 537
+   "line": 654
   },
   {
    "from": "webapp.orchestrator.Task.dir",
    "raw": "d.mkdir",
-   "line": 102
+   "line": 105
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.persist",
-   "line": 110
+   "line": 113
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "base64.b64decode",
-   "line": 150
+   "line": 153
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.write_bytes",
-   "line": 155
+   "line": 158
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "cv2.imread",
-   "line": 156
+   "line": 159
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "str",
-   "line": 160
+   "line": 163
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "isinstance",
-   "line": 173
+   "line": 176
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "_llm_json",
-   "line": 190,
+   "line": 193,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "plan.get",
-   "line": 195
+   "line": 198
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "_llm_json",
-   "line": 217,
+   "line": 220,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.get",
-   "line": 221
+   "line": 224
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "any",
-   "line": 231
+   "line": 234
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 244
+   "line": 247
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "sum",
-   "line": 261
+   "line": 264
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "next",
-   "line": 267
+   "line": 270
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "json.loads",
-   "line": 273
+   "line": 276
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "solutions.search_solutions",
+   "line": 295,
+   "to": "kb.solutions.search_solutions",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._chain_for",
+   "raw": "solutions.get",
+   "line": 330,
+   "to": "kb.solutions.get",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 288
+   "line": 385
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 289
+   "line": 386
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 329
+   "line": 426
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "RuntimeError",
-   "line": 336
+   "line": 433
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.images.get",
-   "line": 338
+   "line": 435
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.upload_file",
-   "line": 345,
+   "line": 442,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "node_info.append",
-   "line": 346
+   "line": 443
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "files.append",
-   "line": 355
+   "line": 452
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "dict",
-   "line": 409
+   "line": 506
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 434
+   "line": 531
   },
   {
    "from": "webapp.orchestrator._run_task",
-   "raw": "plan_task",
-   "line": 435,
-   "to": "webapp.orchestrator.plan_task",
+   "raw": "_pick_solution",
+   "line": 533,
+   "to": "webapp.orchestrator._pick_solution",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
-   "raw": "task.plan.get",
-   "line": 436
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.log",
-   "line": 437
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 517,
+   "line": 633,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 635,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 519
+   "line": 636
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.timeline.append",
-   "line": 107
+   "line": 110
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "task.dir",
-   "line": 154
+   "line": 157
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "str",
-   "line": 156
+   "line": 159
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "ValueError",
-   "line": 158
+   "line": 161
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.relative_to",
-   "line": 160
+   "line": 163
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "threading.Thread",
-   "line": 163
+   "line": 166
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "list",
-   "line": 182
+   "line": 185
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 196
+   "line": 199
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 203
+   "line": 206
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "conn.execute",
-   "line": 255
+   "line": 258
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.append",
-   "line": 263
-  },
-  {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "wfid.split",
    "line": 266
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "wfid.split",
+   "line": 269
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai_p.exists",
-   "line": 271
+   "line": 274
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai_p.read_text",
-   "line": 273
+   "line": 276
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai.get",
-   "line": 274
+   "line": 277
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "solutions.FACE_SWAP_RE.search",
+   "line": 293
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "len",
+   "line": 302
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "_llm_json",
+   "line": 312,
+   "to": "webapp.orchestrator._llm_json",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "pick.get",
+   "line": 313
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "solutions.input_fingerprint",
+   "line": 348,
+   "to": "kb.solutions.input_fingerprint",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "solutions.record_success",
+   "line": 349,
+   "to": "kb.solutions.record_success",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 295
+   "line": 392
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 296,
+   "line": 393,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 299
+   "line": 396
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 300
+   "line": 397
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 320
+   "line": 417
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 324
+   "line": 421
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 329
+   "line": 426
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "str",
-   "line": 355
+   "line": 452
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "diagnose",
-   "line": 385
+   "line": 482
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 396
+   "line": 493
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 398
+   "line": 495
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "sorted",
-   "line": 399
+   "line": 496
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "conn.execute",
-   "line": 410
+   "line": 507
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 418
+   "line": 515
   },
   {
    "from": "webapp.orchestrator._run_task",
-   "raw": "task.persist",
-   "line": 450
+   "raw": "solutions.record_reuse",
+   "line": 543,
+   "to": "kb.solutions.record_reuse",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 454
+   "line": 544
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "plan_task",
+   "line": 546,
+   "to": "webapp.orchestrator.plan_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 547
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 548
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 561,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 562
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 566
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "kb_search_workflow",
-   "line": 455,
+   "line": 567,
    "to": "webapp.orchestrator.kb_search_workflow",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 463
+   "line": 577
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 467
+   "line": 581
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 469
+   "line": 583
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "evaluate_round",
-   "line": 486,
+   "line": 600,
    "to": "webapp.orchestrator.evaluate_round",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 488
+   "line": 602
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 498
+   "line": 613
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.clear",
-   "line": 499
+   "line": 614
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.wait",
-   "line": 500
+   "line": 615
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 502
+   "line": 617
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 514,
+   "line": 630,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 524
+   "line": 641
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "fb.update",
-   "line": 533
+   "line": 650
   },
   {
    "from": "webapp.orchestrator",
@@ -23031,427 +27797,512 @@
   {
    "from": "webapp.orchestrator.Task.snapshot",
    "raw": "bool",
-   "line": 124
+   "line": 127
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "json.dumps",
-   "line": 130
+   "line": 133
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "time.strftime",
-   "line": 145
+   "line": 148
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "b64.split",
-   "line": 150
+   "line": 153
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "str",
-   "line": 173
+   "line": 176
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "json.dumps",
-   "line": 212
+   "line": 215
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "intents.append",
-   "line": 229
+   "line": 232
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "fb.get",
-   "line": 237
+   "line": 240
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 239
+   "line": 242
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "re.split",
-   "line": 254
+   "line": 257
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "text.count",
-   "line": 261
+   "line": 264
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai.get",
-   "line": 278
+   "line": 281
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "abs",
+   "line": 301
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.log",
+   "line": 355
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.plan.get",
+   "line": 360
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.log",
+   "line": 374
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "step.get",
-   "line": 304
+   "line": 401
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 305
+   "line": 402
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 306,
+   "line": 403,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "extract_result_image",
-   "line": 310
+   "line": 407
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 313
+   "line": 410
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 320
+   "line": 417
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "s.get",
-   "line": 323
+   "line": 420
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 326
+   "line": 423
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "u.lower",
-   "line": 354
+   "line": 451
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ROUTE_CHAINS.get",
-   "line": 374
+   "line": 471
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 375
+   "line": 472
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "evaluate",
-   "line": 380
+   "line": 477
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "it.get",
-   "line": 411
+   "line": 508
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "VLClient",
-   "line": 424
+   "line": 521
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "need.get",
-   "line": 442
+   "line": 553
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 443
+   "line": 554
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 445,
+   "line": 556,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 458,
+   "line": 571,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
-   "raw": "task.persist",
-   "line": 460
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "write_explanation",
-   "line": 492,
-   "to": "webapp.orchestrator.write_explanation",
+   "raw": "_writeback",
+   "line": 573,
+   "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 494
+   "line": 574
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 606,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 608,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 609
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 506
+   "line": 621
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 506
+   "line": 621
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 508,
+   "line": 623,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 625,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 510
+   "line": 626
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "classify_feedback",
-   "line": 533,
+   "line": 650,
    "to": "webapp.orchestrator.classify_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "round",
-   "line": 107
+   "line": 110
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.snapshot",
-   "line": 130
+   "line": 133
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "str",
-   "line": 192
+   "line": 195
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "len",
-   "line": 254
+   "line": 257
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.plan.get",
+   "line": 350
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "bool",
+   "line": 361
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "solutions.open_gap",
+   "line": 363,
+   "to": "kb.solutions.open_gap",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.log",
+   "line": 369
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 309
+   "line": 406
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 309
+   "line": 406
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "color_match",
-   "line": 317
+   "line": 414
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 319
+   "line": 416
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 374
+   "line": 471
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "r.startswith",
-   "line": 403
+   "line": 500
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 414
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.plan.get",
-   "line": 438
+   "line": 511
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_face_swap",
-   "line": 471,
+   "line": 585,
    "to": "webapp.orchestrator._exec_face_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_kb_generic",
-   "line": 473,
+   "line": 587,
    "to": "webapp.orchestrator._exec_kb_generic",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 475
+   "line": 589
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 482,
+   "line": 596,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "time.time",
-   "line": 107
+   "line": 110
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.dir",
-   "line": 129
+   "line": 132
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "uuid.uuid4",
-   "line": 145
+   "line": 148
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "chr",
+   "line": 308
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 311
+   "line": 408
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 316
+   "line": 413
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.download",
-   "line": 355,
+   "line": 452,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.items",
-   "line": 386
+   "line": 483
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "isinstance",
-   "line": 387
+   "line": 484
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.get",
-   "line": 389
+   "line": 486
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "best_ev.get",
-   "line": 390
+   "line": 487
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "str",
-   "line": 393
+   "line": 490
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 398
+   "line": 495
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 399
+   "line": 496
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "v.get",
-   "line": 400
+   "line": 497
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "fams.items",
-   "line": 418
+   "line": 515
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 549
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "str",
-   "line": 478
+   "line": 592
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 480
+   "line": 594
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 505
+   "line": 620
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "type",
-   "line": 523
+   "line": 640
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 298
+   "line": 395
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "n.get",
-   "line": 342
+   "line": 439
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "chain.get",
-   "line": 375
+   "line": 472
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 503
+   "line": 618
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "info.get",
+   "line": 356
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "type",
+   "line": 374
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 308
+   "line": 405
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "len",
-   "line": 309
+   "line": 406
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.dir",
-   "line": 356
+   "line": 453
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 504
+   "line": 619
+  },
+  {
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "solutions.get",
+   "line": 308,
+   "to": "kb.solutions.get",
+   "resolved": true
   }
  ]
 }
