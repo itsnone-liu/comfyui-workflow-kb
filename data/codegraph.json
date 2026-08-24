@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-23 19:37:18",
+ "generated_at": "2026-08-24 23:44:30",
  "modules": {
   "_h3_worker": {
    "file": "_h3_worker.py",
@@ -94,50 +94,58 @@
    },
    "imported_by": []
   },
-  "_tmp_chk": {
-   "file": "_tmp_chk.py",
-   "lines": 7,
-   "doc": "Direct status check of Qwen task.",
-   "entry": false,
+  "analyzer.au_geometry": {
+   "file": "analyzer\\au_geometry.py",
+   "lines": 17,
+   "doc": "au_geometry.py — AU 级表情几何指标（M16-A1, v2 重写）。",
+   "entry": true,
    "imports": [
+    "__future__",
+    "argparse",
     "json",
-    "experiments.rh_task"
+    "sys",
+    "pathlib",
+    "mediapipe",
+    "mediapipe.tasks",
+    "mediapipe.tasks.python",
+    "cv2",
+    "mediapipe",
+    "statistics"
    ],
    "aliases": {
-    "rh_task": "experiments.rh_task"
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "mp": "mediapipe",
+    "mp_python": "mediapipe.tasks",
+    "vision": "mediapipe.tasks.python",
+    "_mp": "mediapipe",
+    "st": "statistics"
    },
    "imported_by": []
   },
-  "_tmp_qwait": {
-   "file": "_tmp_qwait.py",
-   "lines": 24,
-   "doc": "Resume waiting for the slow Qwen task; download + score when done.",
-   "entry": false,
+  "analyzer.au_regression": {
+   "file": "analyzer\\au_regression.py",
+   "lines": 17,
+   "doc": "au_regression.py — A1 校准回归(常设工具, 原 _tmp_au_regression.py 转正)。",
+   "entry": true,
    "imports": [
-    "pathlib",
-    "experiments.rh_task",
-    "cv2",
+    "__future__",
+    "io",
+    "json",
+    "os",
+    "subprocess",
     "sys",
-    "experiments.metrics",
-    "swap_face",
-    "swap_face",
-    "swap_face",
-    "swap_face"
+    "pathlib"
    ],
    "aliases": {
-    "Path": "pathlib",
-    "rh_task": "experiments.rh_task",
-    "FaceComparator": "experiments.metrics",
-    "_expr_distance": "swap_face",
-    "_expr_geometry": "swap_face",
-    "_hair_hist": "swap_face",
-    "_hist_intersection": "swap_face"
+    "annotations": "__future__",
+    "Path": "pathlib"
    },
    "imported_by": []
   },
   "analyzer.auto_explore": {
    "file": "analyzer\\auto_explore.py",
-   "lines": 26,
+   "lines": 27,
    "doc": "auto_explore.py — closed-loop result diagnosis (mechanism v1).",
    "entry": true,
    "imports": [
@@ -151,6 +159,9 @@
     "cv2",
     "swap_face",
     "experiments.metrics",
+    "json",
+    "os",
+    "subprocess",
     "vl"
    ],
    "aliases": {
@@ -158,6 +169,9 @@
     "Path": "pathlib",
     "sf": "swap_face",
     "FaceComparator": "experiments.metrics",
+    "_json": "json",
+    "_os": "os",
+    "_sp": "subprocess",
     "VLClient": "vl"
    },
    "imported_by": [
@@ -330,6 +344,36 @@
     "Path": "pathlib"
    },
    "imported_by": []
+  },
+  "analyzer.vl_arbiter": {
+   "file": "analyzer\\vl_arbiter.py",
+   "lines": 29,
+   "doc": "vl_arbiter.py — 多模型仲裁协议（M16-A2）。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "sqlite3",
+    "sys",
+    "datetime",
+    "pathlib",
+    "os",
+    "subprocess",
+    "vl",
+    "vl",
+    "re",
+    "re"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "datetime": "datetime",
+    "Path": "pathlib",
+    "VLClient": "vl"
+   },
+   "imported_by": [
+    "kb.feedback"
+   ]
   },
   "analyzer.vl_judge": {
    "file": "analyzer\\vl_judge.py",
@@ -674,7 +718,6 @@
     "np": "numpy"
    },
    "imported_by": [
-    "_tmp_qwait",
     "analyzer.auto_explore",
     "analyzer.color_match",
     "experiments.runner",
@@ -707,8 +750,6 @@
    },
    "imported_by": [
     "_m11_probe",
-    "_tmp_chk",
-    "_tmp_qwait",
     "analyzer.composer",
     "experiments.runner",
     "parser.graph_ops",
@@ -761,6 +802,30 @@
    "aliases": {},
    "imported_by": []
   },
+  "kb.feedback": {
+   "file": "kb\\feedback.py",
+   "lines": 19,
+   "doc": "kb/feedback.py — 用户反馈四分类路由器（M16-B）。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "argparse",
+    "json",
+    "re",
+    "sqlite3",
+    "sys",
+    "pathlib",
+    "analyzer.vl_arbiter"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "record_user_ruling": "analyzer.vl_arbiter"
+   },
+   "imported_by": [
+    "webapp.app"
+   ]
+  },
   "kb.inspect_cards": {
    "file": "kb\\inspect_cards.py",
    "lines": 6,
@@ -781,6 +846,25 @@
    "imports": [
     "__future__",
     "argparse",
+    "json",
+    "sqlite3",
+    "sys",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "kb.migrate_m16": {
+   "file": "kb\\migrate_m16.py",
+   "lines": 13,
+   "doc": "migrate_m16.py — M16 表迁移(幂等) + 存量知识迁入 capability_notes。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "io",
     "json",
     "sqlite3",
     "sys",
@@ -1349,7 +1433,6 @@
    },
    "imported_by": [
     "_m11_eval",
-    "_tmp_qwait",
     "analyzer.auto_explore",
     "research.probe_webapp",
     "webapp.orchestrator"
@@ -1485,14 +1568,16 @@
     "http.server",
     "http.server",
     "pathlib",
-    "orchestrator"
+    "orchestrator",
+    "kb.feedback"
    ],
    "aliases": {
     "annotations": "__future__",
     "BaseHTTPRequestHandler": "http.server",
     "ThreadingHTTPServer": "http.server",
     "Path": "pathlib",
-    "orc": "orchestrator"
+    "orc": "orchestrator",
+    "fb_route": "kb.feedback"
    },
    "imported_by": []
   },
@@ -1558,6 +1643,80 @@
    "doc": ""
   },
   {
+   "id": "analyzer.au_geometry._lander",
+   "kind": "function",
+   "module": "analyzer.au_geometry",
+   "name": "_lander",
+   "args": [],
+   "line": 42,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.au_geometry.au_profile",
+   "kind": "function",
+   "module": "analyzer.au_geometry",
+   "name": "au_profile",
+   "args": [
+    "image"
+   ],
+   "line": 56,
+   "doc": "单图 blendshape 特征(0-1)。失败返回 {\"error\": ...}。"
+  },
+  {
+   "id": "analyzer.au_geometry.au_compare",
+   "kind": "function",
+   "module": "analyzer.au_geometry",
+   "name": "au_compare",
+   "args": [
+    "out_img",
+    "target_img",
+    "ref_img"
+   ],
+   "line": 105,
+   "doc": "输出 vs 目标: 逐 AU |Δ| 与加权跟随分(0-1, 越高越好)。"
+  },
+  {
+   "id": "analyzer.au_geometry.profile_dir",
+   "kind": "function",
+   "module": "analyzer.au_geometry",
+   "name": "profile_dir",
+   "args": [
+    "image_dir",
+    "keys"
+   ],
+   "line": 129,
+   "doc": "目录内全部帧的 AU 分布(median/peak/per-frame)。"
+  },
+  {
+   "id": "analyzer.au_geometry.main",
+   "kind": "function",
+   "module": "analyzer.au_geometry",
+   "name": "main",
+   "args": [],
+   "line": 157,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.au_regression.run",
+   "kind": "function",
+   "module": "analyzer.au_regression",
+   "name": "run",
+   "args": [
+    "args"
+   ],
+   "line": 41,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.au_regression.main",
+   "kind": "function",
+   "module": "analyzer.au_regression",
+   "name": "main",
+   "args": [],
+   "line": 50,
+   "doc": ""
+  },
+  {
    "id": "analyzer.auto_explore._face_tables",
    "kind": "function",
    "module": "analyzer.auto_explore",
@@ -1585,6 +1744,18 @@
    "doc": "Return [(face, kind, ident, resid)] with kind in result/copy/render."
   },
   {
+   "id": "analyzer.auto_explore._au_subprocess",
+   "kind": "function",
+   "module": "analyzer.auto_explore",
+   "name": "_au_subprocess",
+   "args": [
+    "out_img",
+    "target"
+   ],
+   "line": 82,
+   "doc": "AU blendshape compare, 经 .venv-kb 子进程(隔离 mediapipe 依赖)。"
+  },
+  {
    "id": "analyzer.auto_explore.evaluate",
    "kind": "function",
    "module": "analyzer.auto_explore",
@@ -1596,7 +1767,7 @@
     "family",
     "vl"
    ],
-   "line": 82,
+   "line": 100,
    "doc": "Full evaluation of one output image (result-face selected)."
   },
   {
@@ -1608,7 +1779,7 @@
     "cond",
     "ev"
    ],
-   "line": 145,
+   "line": 170,
    "doc": ""
   },
   {
@@ -1622,7 +1793,7 @@
     "ref",
     "out_path"
    ],
-   "line": 163,
+   "line": 188,
    "doc": "Return the actual swap-result image, cropping composite panels."
   },
   {
@@ -1633,7 +1804,7 @@
    "args": [
     "ev"
    ],
-   "line": 199,
+   "line": 224,
    "doc": "Fire matching diagnosis_rules + threshold breaches."
   },
   {
@@ -1647,7 +1818,7 @@
     "target",
     "ref"
    ],
-   "line": 235,
+   "line": 260,
    "doc": ""
   },
   {
@@ -1656,7 +1827,7 @@
    "module": "analyzer.auto_explore",
    "name": "main",
    "args": [],
-   "line": 248,
+   "line": 273,
    "doc": ""
   },
   {
@@ -1667,7 +1838,7 @@
    "args": [
     "rel"
    ],
-   "line": 30,
+   "line": 31,
    "doc": ""
   },
   {
@@ -1676,7 +1847,7 @@
    "module": "analyzer.codegraph",
    "name": "collect_files",
    "args": [],
-   "line": 37,
+   "line": 38,
    "doc": ""
   },
   {
@@ -1685,7 +1856,7 @@
    "module": "analyzer.codegraph",
    "name": "Indexer",
    "args": [],
-   "line": 47,
+   "line": 48,
    "doc": ""
   },
   {
@@ -1697,7 +1868,7 @@
     "self",
     "mods"
    ],
-   "line": 48,
+   "line": 49,
    "doc": ""
   },
   {
@@ -1708,7 +1879,7 @@
    "args": [
     "self"
    ],
-   "line": 57,
+   "line": 58,
    "doc": ""
   },
   {
@@ -1723,7 +1894,7 @@
     "level",
     "name"
    ],
-   "line": 93,
+   "line": 94,
    "doc": ""
   },
   {
@@ -1737,7 +1908,7 @@
     "node",
     "parents"
    ],
-   "line": 109,
+   "line": 110,
    "doc": ""
   },
   {
@@ -1755,7 +1926,7 @@
     "args",
     "doc"
    ],
-   "line": 126,
+   "line": 127,
    "doc": ""
   },
   {
@@ -1766,7 +1937,7 @@
    "args": [
     "self"
    ],
-   "line": 134,
+   "line": 135,
    "doc": ""
   },
   {
@@ -1778,7 +1949,7 @@
     "self",
     "func"
    ],
-   "line": 162,
+   "line": 163,
    "doc": ""
   },
   {
@@ -1792,7 +1963,7 @@
     "raw",
     "aliases"
    ],
-   "line": 172,
+   "line": 173,
    "doc": ""
   },
   {
@@ -1803,7 +1974,7 @@
    "args": [
     "self"
    ],
-   "line": 198,
+   "line": 199,
    "doc": ""
   },
   {
@@ -1812,7 +1983,7 @@
    "module": "analyzer.codegraph",
    "name": "load",
    "args": [],
-   "line": 205,
+   "line": 206,
    "doc": ""
   },
   {
@@ -1821,7 +1992,7 @@
    "module": "analyzer.codegraph",
    "name": "cmd_index",
    "args": [],
-   "line": 213,
+   "line": 214,
    "doc": ""
   },
   {
@@ -1830,7 +2001,7 @@
    "module": "analyzer.codegraph",
    "name": "cmd_stats",
    "args": [],
-   "line": 222,
+   "line": 223,
    "doc": ""
   },
   {
@@ -1842,7 +2013,7 @@
     "name",
     "depth"
    ],
-   "line": 243,
+   "line": 244,
    "doc": ""
   },
   {
@@ -1853,7 +2024,7 @@
    "args": [
     "kind"
    ],
-   "line": 261,
+   "line": 262,
    "doc": ""
   },
   {
@@ -1862,7 +2033,7 @@
    "module": "analyzer.codegraph",
    "name": "cmd_tree",
    "args": [],
-   "line": 281,
+   "line": 282,
    "doc": ""
   },
   {
@@ -1871,7 +2042,7 @@
    "module": "analyzer.codegraph",
    "name": "main",
    "args": [],
-   "line": 292,
+   "line": 293,
    "doc": ""
   },
   {
@@ -2381,6 +2552,108 @@
    "name": "main",
    "args": [],
    "line": 140,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl_arbiter.au_channel",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "au_channel",
+   "args": [
+    "target",
+    "out_a",
+    "out_b"
+   ],
+   "line": 44,
+   "doc": "通道2: blendshape 几何(子进程 .venv-kb, 隔离 mediapipe 依赖)。"
+  },
+  {
+   "id": "analyzer.vl_arbiter.channel_compare_protocol",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "channel_compare_protocol",
+   "args": [
+    "target",
+    "out_a",
+    "out_b",
+    "name_a",
+    "name_b"
+   ],
+   "line": 96,
+   "doc": "通道1: 四图对比协议(qwen-vl-max)。返回 {a: score, b: score, rationale}。"
+  },
+  {
+   "id": "analyzer.vl_arbiter.channel_checklist",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "channel_checklist",
+   "args": [
+    "image",
+    "target"
+   ],
+   "line": 114,
+   "doc": "通道2: 单图逐项清单(qwen-vl-max 不同 prompt 形态, 降低同源锚定偏差)。"
+  },
+  {
+   "id": "analyzer.vl_arbiter._parse_two_scores",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "_parse_two_scores",
+   "args": [
+    "raw"
+   ],
+   "line": 134,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl_arbiter._parse_items",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "_parse_items",
+   "args": [
+    "raw"
+   ],
+   "line": 143,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.vl_arbiter.arbitrate",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "arbitrate",
+   "args": [
+    "target",
+    "out_a",
+    "out_b"
+   ],
+   "line": 153,
+   "doc": "双通道仲裁: VL 语义(可选) + AU 几何 + 分维度信任表。"
+  },
+  {
+   "id": "analyzer.vl_arbiter.record_user_ruling",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "record_user_ruling",
+   "args": [],
+   "line": 211,
+   "doc": "用户裁决入库(金标准标注对)——vl 校准环数据源。"
+  },
+  {
+   "id": "analyzer.vl_arbiter.regression",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "regression",
+   "args": [],
+   "line": 233,
+   "doc": "v1/v2 回归: 通道1 vs 金标准(用户裁决)。"
+  },
+  {
+   "id": "analyzer.vl_arbiter.main",
+   "kind": "function",
+   "module": "analyzer.vl_arbiter",
+   "name": "main",
+   "args": [],
+   "line": 256,
    "doc": ""
   },
   {
@@ -3147,6 +3420,85 @@
    "doc": ""
   },
   {
+   "id": "kb.feedback.classify",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "classify",
+   "args": [
+    "text"
+   ],
+   "line": 58,
+   "doc": ""
+  },
+  {
+   "id": "kb.feedback._conn",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "_conn",
+   "args": [
+    "db_path"
+   ],
+   "line": 67,
+   "doc": ""
+  },
+  {
+   "id": "kb.feedback.route_verdict",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "route_verdict",
+   "args": [
+    "text",
+    "task_id"
+   ],
+   "line": 73,
+   "doc": "裁决: 提示需要结构化参数(winner/keep), 记 user_rulings + 择优备注。"
+  },
+  {
+   "id": "kb.feedback.route_operator_lead",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "route_operator_lead",
+   "args": [
+    "text",
+    "task_id"
+   ],
+   "line": 89,
+   "doc": "工具线索: external_fact 挂锚卡 + 建议研究查询计划。"
+  },
+  {
+   "id": "kb.feedback.route_meta_capability",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "route_meta_capability",
+   "args": [
+    "text",
+    "task_id"
+   ],
+   "line": 118,
+   "doc": "能力评价: 识别域(verification/generation/orchestration)并开/并 gap。"
+  },
+  {
+   "id": "kb.feedback.route",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "route",
+   "args": [
+    "text",
+    "task_id"
+   ],
+   "line": 154,
+   "doc": ""
+  },
+  {
+   "id": "kb.feedback.main",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "main",
+   "args": [],
+   "line": 163,
+   "doc": ""
+  },
+  {
    "id": "kb.migrate_m15.ensure_schema",
    "kind": "function",
    "module": "kb.migrate_m15",
@@ -3208,6 +3560,15 @@
    "name": "main",
    "args": [],
    "line": 305,
+   "doc": ""
+  },
+  {
+   "id": "kb.migrate_m16.main",
+   "kind": "function",
+   "module": "kb.migrate_m16",
+   "name": "main",
+   "args": [],
+   "line": 17,
    "doc": ""
   },
   {
@@ -4096,7 +4457,7 @@
    "module": "research.run",
    "name": "main",
    "args": [],
-   "line": 40,
+   "line": 57,
    "doc": ""
   },
   {
@@ -4791,7 +5152,7 @@
    "module": "webapp.app",
    "name": "main",
    "args": [],
-   "line": 129,
+   "line": 137,
    "doc": ""
   },
   {
@@ -5908,290 +6269,588 @@
    "line": 71
   },
   {
-   "from": "_tmp_chk",
-   "raw": "rh_task.load_api_key",
-   "line": 7,
-   "to": "experiments.rh_task.load_api_key",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "print",
-   "line": 9
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "rh_task.task_status",
-   "line": 9,
-   "to": "experiments.rh_task.task_status",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "rh_task.task_outputs",
-   "line": 11,
-   "to": "experiments.rh_task.task_outputs",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "rh_task.collect_file_urls",
-   "line": 12,
-   "to": "experiments.rh_task.collect_file_urls",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "print",
-   "line": 13
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "len",
-   "line": 13
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "print",
-   "line": 15
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "print",
-   "line": 17
-  },
-  {
-   "from": "_tmp_chk",
-   "raw": "type",
-   "line": 17
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "rh_task.load_api_key",
-   "line": 7,
-   "to": "experiments.rh_task.load_api_key",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "rh_task.wait_task",
-   "line": 8,
-   "to": "experiments.rh_task.wait_task",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "rh_task.collect_file_urls",
-   "line": 10,
-   "to": "experiments.rh_task.collect_file_urls",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "print",
-   "line": 11
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "Path",
-   "line": 12
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "out_dir.mkdir",
-   "line": 13
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "sys.path.insert",
-   "line": 23
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "FaceComparator",
-   "line": 27
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "Path",
-   "line": 28
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "Path",
-   "line": 29
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.embed",
-   "line": 30
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.embed",
-   "line": 31
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "len",
-   "line": 11
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "str",
-   "line": 14
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "print",
-   "line": 19
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.largest_face",
-   "line": 30
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.largest_face",
-   "line": 31
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_expr_geometry",
-   "line": 32
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_expr_geometry",
-   "line": 32
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_hair_hist",
-   "line": 33
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_hair_hist",
-   "line": 33
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.embed",
-   "line": 35
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_expr_geometry",
-   "line": 36
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "_hair_hist",
-   "line": 37
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "print",
-   "line": 41
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "rh_task.download",
-   "line": 14,
-   "to": "experiments.rh_task.download",
-   "resolved": true
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "enumerate",
-   "line": 17
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "cv2.imread",
-   "line": 30
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "cv2.imread",
-   "line": 31
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "fc.largest_face",
-   "line": 35
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "Path",
-   "line": 36
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "Path",
-   "line": 37
-  },
-  {
-   "from": "_tmp_qwait",
-   "raw": "print",
+   "from": "analyzer.au_geometry",
+   "raw": "sum",
    "line": 39
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "print",
-   "line": 9
+   "from": "analyzer.au_geometry",
+   "raw": "AU_KEY.values",
+   "line": 39
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "str",
-   "line": 30
+   "from": "analyzer.au_geometry._lander",
+   "raw": "vision.FaceLandmarkerOptions",
+   "line": 46
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "str",
-   "line": 31
+   "from": "analyzer.au_geometry._lander",
+   "raw": "vision.FaceLandmarker.create_from_options",
+   "line": 50
   },
   {
-   "from": "_tmp_qwait",
+   "from": "analyzer.au_geometry.au_profile",
    "raw": "cv2.imread",
-   "line": 35
+   "line": 60
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "fc.cosine",
-   "line": 41
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "_mp.Image",
+   "line": 66
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "fc.cosine",
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "_LANDER.detect",
+   "line": 68
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "profs.items",
+   "line": 147
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 158
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "ap.add_subparsers",
+   "line": 159
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "sub.add_parser",
+   "line": 160
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "p1.add_argument",
+   "line": 161
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "sub.add_parser",
+   "line": 162
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "p2.add_argument",
+   "line": 163
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "p2.add_argument",
+   "line": 163
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "p2.add_argument",
+   "line": 164
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "sub.add_parser",
+   "line": 165
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "p3.add_argument",
+   "line": 166
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "ap.parse_args",
+   "line": 167
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "print",
+   "line": 175
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "sys.exit",
+   "line": 180
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "str",
+   "line": 60
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "_lander",
+   "line": 64,
+   "to": "analyzer.au_geometry._lander",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "isinstance",
+   "line": 72
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 73
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "len",
+   "line": 74
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 78
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 79
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 80
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 81
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 82
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 86
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 87
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 88
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 89
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "au_profile",
+   "line": 108,
+   "to": "analyzer.au_geometry.au_profile",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "au_profile",
+   "line": 108,
+   "to": "analyzer.au_geometry.au_profile",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "au_profile",
+   "line": 109,
+   "to": "analyzer.au_geometry.au_profile",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "round",
+   "line": 113
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "round",
+   "line": 115
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "abs",
+   "line": 116
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "round",
+   "line": 124
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "sorted",
+   "line": 137
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "sorted",
+   "line": 138
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "au_profile",
+   "line": 141,
+   "to": "analyzer.au_geometry.au_profile",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "len",
+   "line": 146
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "round",
+   "line": 150
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "max",
+   "line": 152
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "au_profile",
+   "line": 170,
+   "to": "analyzer.au_geometry.au_profile",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "json.dumps",
+   "line": 175
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "main",
+   "line": 180,
+   "to": "analyzer.au_geometry.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry._lander",
+   "raw": "mp_python.BaseOptions",
+   "line": 47
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "cv2.cvtColor",
+   "line": 67
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 74
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 79
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 86
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 88
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "abs",
+   "line": 95
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "abs",
+   "line": 97
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 99
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "round",
+   "line": 99
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "abs",
+   "line": 113
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "sum",
+   "line": 114
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "abs",
+   "line": 115
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "round",
+   "line": 123
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "max",
+   "line": 124
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "st.median",
+   "line": 150
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "profile_dir",
+   "line": 172,
+   "to": "analyzer.au_geometry.profile_dir",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry.main",
+   "raw": "au_compare",
+   "line": 174,
+   "to": "analyzer.au_geometry.au_compare",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_geometry",
+   "raw": "Path",
+   "line": 24
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "max",
+   "line": 96
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "min",
+   "line": 124
+  },
+  {
+   "from": "analyzer.au_geometry._lander",
+   "raw": "str",
+   "line": 47
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 78
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 78
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 80
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 80
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 81
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 81
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 87
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 87
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 89
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 89
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "abs",
+   "line": 96
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "Path",
+   "line": 137
+  },
+  {
+   "from": "analyzer.au_geometry.profile_dir",
+   "raw": "Path",
+   "line": 138
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 84
+  },
+  {
+   "from": "analyzer.au_geometry.au_compare",
+   "raw": "AU_KEY.items",
+   "line": 114
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 83
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 83
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 85
+  },
+  {
+   "from": "analyzer.au_geometry.au_profile",
+   "raw": "bs.get",
+   "line": 85
+  },
+  {
+   "from": "analyzer.au_regression",
+   "raw": "io.TextIOWrapper",
+   "line": 19
+  },
+  {
+   "from": "analyzer.au_regression.run",
+   "raw": "subprocess.run",
    "line": 42
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "_expr_distance",
-   "line": 43
+   "from": "analyzer.au_regression.run",
+   "raw": "json.loads",
+   "line": 47
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "_hist_intersection",
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 51
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 57
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 70
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "sys.exit",
+   "line": 75
+  },
+  {
+   "from": "analyzer.au_regression",
+   "raw": "os.environ.items",
+   "line": 22
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 55
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "run",
+   "line": 61,
+   "to": "analyzer.au_regression.run",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 66
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "json.dumps",
+   "line": 70
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "main",
+   "line": 75,
+   "to": "analyzer.au_regression.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.au_regression.run",
+   "raw": "str",
+   "line": 42
+  },
+  {
+   "from": "analyzer.au_regression.run",
+   "raw": "str",
    "line": 44
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "_hist_intersection",
-   "line": 45
+   "from": "analyzer.au_regression.main",
+   "raw": "case.endswith",
+   "line": 53
   },
   {
-   "from": "_tmp_qwait",
+   "from": "analyzer.au_regression.main",
+   "raw": "json.dumps",
+   "line": 55
+  },
+  {
+   "from": "analyzer.au_regression.main",
+   "raw": "print",
+   "line": 63
+  },
+  {
+   "from": "analyzer.au_regression",
    "raw": "Path",
-   "line": 41
+   "line": 20
   },
   {
-   "from": "_tmp_qwait",
-   "raw": "u.lower",
-   "line": 15
+   "from": "analyzer.au_regression.main",
+   "raw": "run",
+   "line": 55,
+   "to": "analyzer.au_regression.run",
+   "resolved": true
   },
   {
    "from": "analyzer.auto_explore",
@@ -6224,205 +6883,215 @@
    "line": 55
   },
   {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "_sp.run",
+   "line": 91
+  },
+  {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "_json.loads",
+   "line": 95
+  },
+  {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "FaceComparator",
-   "line": 85
+   "line": 103
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "cv2.imread",
-   "line": 86
+   "line": 104
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "fc.embed",
-   "line": 89
+   "line": 107
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "fc.embed",
-   "line": 90
+   "line": 108
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "classify_faces",
-   "line": 91,
+   "line": 109,
    "to": "analyzer.auto_explore.classify_faces",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "max",
-   "line": 96
+   "line": 114
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "tmp.parent.mkdir",
-   "line": 99
+   "line": 117
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "cv2.imwrite",
-   "line": 100
+   "line": 118
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_geometry",
-   "line": 101,
+   "line": 119,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_geometry",
-   "line": 102,
+   "line": 120,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_geometry",
-   "line": 103,
+   "line": 121,
    "to": "swap_face._expr_geometry",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._hair_hist",
-   "line": 116,
+   "line": 134,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._hair_hist",
-   "line": 117,
+   "line": 135,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._hair_hist",
-   "line": 118,
+   "line": 136,
    "to": "swap_face._hair_hist",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "all",
-   "line": 119
+   "line": 137
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "tmp.unlink",
-   "line": 123
+   "line": 148
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "cond.strip",
-   "line": 146
+   "line": 171
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "FaceComparator",
-   "line": 172
+   "line": 197
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "cv2.imread",
-   "line": 173
+   "line": 198
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "fc.embed",
-   "line": 176
+   "line": 201
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "fc.embed",
-   "line": 177
+   "line": 202
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "classify_faces",
-   "line": 178,
+   "line": 203,
    "to": "analyzer.auto_explore.classify_faces",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "max",
-   "line": 187
+   "line": 212
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "cv2.imwrite",
-   "line": 192
+   "line": 217
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "sqlite3.connect",
-   "line": 201
+   "line": 226
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "BARS.items",
-   "line": 217
+   "line": 242
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "argparse.ArgumentParser",
-   "line": 249
+   "line": 274
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 250
+   "line": 275
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 251
+   "line": 276
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 252
+   "line": 277
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 253
+   "line": 278
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.add_argument",
-   "line": 255
+   "line": 280
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ap.parse_args",
-   "line": 256
+   "line": 281
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "out.mkdir",
-   "line": 284
+   "line": 309
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "f.write_text",
-   "line": 286
+   "line": 311
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 288
+   "line": 313
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "sys.exit",
-   "line": 293
+   "line": 318
   },
   {
    "from": "analyzer.auto_explore.classify_faces",
@@ -6445,197 +7114,214 @@
    "line": 76
   },
   {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "kb_py.exists",
+   "line": 88
+  },
+  {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "j.get",
+   "line": 96
+  },
+  {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 86
+   "line": 104
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "fc.largest_face",
-   "line": 89
+   "line": 107
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "fc.largest_face",
-   "line": 90
+   "line": 108
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "_face_tables",
-   "line": 91,
+   "line": 109,
    "to": "analyzer.auto_explore._face_tables",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 100
+   "line": 118
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "Path",
-   "line": 101
+   "line": 119
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "Path",
-   "line": 102
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "str",
-   "line": 105
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "len",
-   "line": 106
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "len",
-   "line": 106
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "round",
-   "line": 112
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "round",
-   "line": 113
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "Path",
-   "line": 116
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "Path",
-   "line": 117
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "round",
    "line": 120
   },
   {
    "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 123
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "len",
+   "line": 124
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "len",
+   "line": 124
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
    "raw": "round",
-   "line": 121
+   "line": 130
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 131
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 134
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "Path",
+   "line": 135
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 138
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "round",
+   "line": 139
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "_au_subprocess",
+   "line": 145,
+   "to": "analyzer.auto_explore._au_subprocess",
+   "resolved": true
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "str",
-   "line": 173
+   "line": 198
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "ValueError",
-   "line": 175
+   "line": 200
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "fc.largest_face",
-   "line": 176
+   "line": 201
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "fc.largest_face",
-   "line": 177
+   "line": 202
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "_face_tables",
-   "line": 178,
+   "line": 203,
    "to": "analyzer.auto_explore._face_tables",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "len",
-   "line": 180
+   "line": 205
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "image.with_name",
-   "line": 190
+   "line": 215
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "str",
-   "line": 192
+   "line": 217
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "all",
-   "line": 208
+   "line": 233
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "ev.get",
-   "line": 218
+   "line": 243
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 257
+   "line": 282
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 257
+   "line": 282
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "Path",
-   "line": 260
+   "line": 285
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "evaluate",
-   "line": 265,
+   "line": 290,
    "to": "analyzer.auto_explore.evaluate",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "diagnose",
-   "line": 266,
+   "line": 291,
    "to": "analyzer.auto_explore.diagnose",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "report.append",
-   "line": 271
+   "line": 296
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 272
+   "line": 297
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 273
+   "line": 298
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "dict.fromkeys",
-   "line": 280
+   "line": 305
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "json.dumps",
-   "line": 286
+   "line": 311
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "main",
-   "line": 293,
+   "line": 318,
    "to": "analyzer.auto_explore.main",
    "resolved": true
   },
@@ -6660,139 +7346,169 @@
    "line": 69
   },
   {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "str",
-   "line": 88
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "cv2.imread",
-   "line": 89
-  },
-  {
-   "from": "analyzer.auto_explore.evaluate",
-   "raw": "cv2.imread",
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "_os.environ.items",
    "line": 90
   },
   {
-   "from": "analyzer.auto_explore.evaluate",
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "str",
+   "line": 91
+  },
+  {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "str",
+   "line": 92
+  },
+  {
+   "from": "analyzer.auto_explore._au_subprocess",
+   "raw": "str",
+   "line": 92
+  },
+  {
+   "from": "analyzer.auto_explore._au_subprocess",
    "raw": "str",
    "line": 94
   },
   {
    "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 106
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imread",
+   "line": 107
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "cv2.imread",
+   "line": 108
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 112
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_distance",
-   "line": 112,
+   "line": 130,
    "to": "swap_face._expr_distance",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_distance",
-   "line": 113,
+   "line": 131,
    "to": "swap_face._expr_distance",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._hist_intersection",
-   "line": 120,
+   "line": 138,
    "to": "swap_face._hist_intersection",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._hist_intersection",
-   "line": 121,
+   "line": 139,
    "to": "swap_face._hist_intersection",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
-   "raw": "str",
-   "line": 134
+   "raw": "Path",
+   "line": 145
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 135
+   "line": 159
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "str",
+   "line": 160
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "bool",
-   "line": 138
+   "line": 163
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "cv2.imread",
-   "line": 176
+   "line": 201
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "cv2.imread",
-   "line": 177
+   "line": 202
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "len",
-   "line": 182
+   "line": 207
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "cv2.imwrite",
-   "line": 185
+   "line": 210
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "conn.execute",
-   "line": 203
+   "line": 228
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "fired.append",
-   "line": 213
+   "line": 238
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "isinstance",
-   "line": 219
+   "line": 244
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "fired.append",
-   "line": 220
+   "line": 245
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "pp.is_dir",
-   "line": 261
+   "line": 286
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "sorted",
-   "line": 261
+   "line": 286
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "commands_for",
-   "line": 269,
+   "line": 294,
    "to": "analyzer.auto_explore.commands_for",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "json.dumps",
-   "line": 273
+   "line": 298
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 277
+   "line": 302
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 281
+   "line": 306
   },
   {
    "from": "analyzer.auto_explore",
@@ -6812,96 +7528,101 @@
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 89
+   "line": 107
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 90
+   "line": 108
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "sf._expr_distance",
-   "line": 115,
+   "line": 133,
    "to": "swap_face._expr_distance",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.evaluate",
-   "raw": "v.get",
-   "line": 134
+   "raw": "str",
+   "line": 147
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "v.get",
-   "line": 135
+   "line": 159
+  },
+  {
+   "from": "analyzer.auto_explore.evaluate",
+   "raw": "v.get",
+   "line": 160
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "s.strip",
-   "line": 149
+   "line": 174
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "isinstance",
-   "line": 153
+   "line": 178
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "str",
-   "line": 176
+   "line": 201
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "str",
-   "line": 177
+   "line": 202
   },
   {
    "from": "analyzer.auto_explore.extract_result_image",
    "raw": "str",
-   "line": 185
+   "line": 210
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "re.split",
-   "line": 207
+   "line": 232
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "_cond_ok",
-   "line": 208,
+   "line": 233,
    "to": "analyzer.auto_explore._cond_ok",
    "resolved": true
   },
   {
    "from": "analyzer.auto_explore.diagnose",
    "raw": "json.loads",
-   "line": 210
+   "line": 235
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "key.lower",
-   "line": 239
+   "line": 264
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "op.lower",
-   "line": 239
+   "line": 264
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "pp.glob",
-   "line": 261
+   "line": 286
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "print",
-   "line": 279
+   "line": 304
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "int",
-   "line": 285
+   "line": 310
   },
   {
    "from": "analyzer.auto_explore.classify_faces",
@@ -6916,146 +7637,141 @@
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "VLClient",
-   "line": 128
+   "line": 153
   },
   {
    "from": "analyzer.auto_explore.evaluate",
    "raw": "str",
-   "line": 141
+   "line": 166
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "cond.split",
-   "line": 149
+   "line": 174
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "val.lower",
-   "line": 154
+   "line": 179
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "float",
-   "line": 156
+   "line": 181
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "float",
-   "line": 156
+   "line": 181
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "str",
-   "line": 242
+   "line": 267
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "out.append",
-   "line": 244
+   "line": 269
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ev.items",
-   "line": 266
+   "line": 291
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "val.lower",
-   "line": 158
+   "line": 183
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "ev.items",
-   "line": 273
+   "line": 298
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "str",
-   "line": 154
+   "line": 179
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "str",
-   "line": 241
+   "line": 266
   },
   {
    "from": "analyzer.auto_explore.main",
    "raw": "__import__",
-   "line": 285
+   "line": 310
   },
   {
    "from": "analyzer.auto_explore._cond_ok",
    "raw": "str",
-   "line": 158
+   "line": 183
   },
   {
    "from": "analyzer.auto_explore.commands_for",
    "raw": "tmpl.replace",
-   "line": 240
+   "line": 265
   },
   {
    "from": "analyzer.codegraph.module_name",
    "raw": "list",
-   "line": 31
+   "line": 32
   },
   {
    "from": "analyzer.codegraph.collect_files",
    "raw": "sorted",
-   "line": 39
+   "line": 40
   },
   {
    "from": "analyzer.codegraph.load",
    "raw": "json.loads",
-   "line": 208
+   "line": 209
   },
   {
    "from": "analyzer.codegraph.cmd_index",
    "raw": "Indexer",
-   "line": 214,
+   "line": 215,
    "to": "analyzer.codegraph.Indexer",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_index",
    "raw": "idx.build",
-   "line": 215
-  },
-  {
-   "from": "analyzer.codegraph.cmd_index",
-   "raw": "OUT.write_text",
    "line": 216
   },
   {
    "from": "analyzer.codegraph.cmd_index",
-   "raw": "sum",
+   "raw": "OUT.write_text",
    "line": 217
   },
   {
    "from": "analyzer.codegraph.cmd_index",
-   "raw": "print",
+   "raw": "sum",
    "line": 218
+  },
+  {
+   "from": "analyzer.codegraph.cmd_index",
+   "raw": "print",
+   "line": 219
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "load",
-   "line": 223,
+   "line": 224,
    "to": "analyzer.codegraph.load",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "defaultdict",
-   "line": 225
+   "line": 226
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "print",
-   "line": 228
-  },
-  {
-   "from": "analyzer.codegraph.cmd_stats",
-   "raw": "print",
-   "line": 232
+   "line": 229
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
@@ -7065,29 +7781,29 @@
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "print",
-   "line": 238
+   "line": 234
+  },
+  {
+   "from": "analyzer.codegraph.cmd_stats",
+   "raw": "print",
+   "line": 239
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "load",
-   "line": 244,
+   "line": 245,
    "to": "analyzer.codegraph.load",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "sorted",
-   "line": 253
+   "line": 254
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "sorted",
-   "line": 255
-  },
-  {
-   "from": "analyzer.codegraph.cmd_query",
-   "raw": "print",
-   "line": 257
+   "line": 256
   },
   {
    "from": "analyzer.codegraph.cmd_query",
@@ -7095,42 +7811,42 @@
    "line": 258
   },
   {
+   "from": "analyzer.codegraph.cmd_query",
+   "raw": "print",
+   "line": 259
+  },
+  {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "load",
-   "line": 262,
+   "line": 263,
    "to": "analyzer.codegraph.load",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "print",
-   "line": 278
+   "line": 279
   },
   {
    "from": "analyzer.codegraph.cmd_tree",
    "raw": "load",
-   "line": 282,
+   "line": 283,
    "to": "analyzer.codegraph.load",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_tree",
    "raw": "sorted",
-   "line": 283
+   "line": 284
   },
   {
    "from": "analyzer.codegraph.main",
    "raw": "argparse.ArgumentParser",
-   "line": 293
-  },
-  {
-   "from": "analyzer.codegraph.main",
-   "raw": "ap.add_subparsers",
    "line": 294
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "sub.add_parser",
+   "raw": "ap.add_subparsers",
    "line": 295
   },
   {
@@ -7145,7 +7861,7 @@
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "q.add_argument",
+   "raw": "sub.add_parser",
    "line": 298
   },
   {
@@ -7155,299 +7871,304 @@
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "sub.add_parser",
+   "raw": "q.add_argument",
    "line": 300
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "d.add_argument",
+   "raw": "sub.add_parser",
    "line": 301
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "sub.add_parser",
+   "raw": "d.add_argument",
    "line": 302
   },
   {
    "from": "analyzer.codegraph.main",
-   "raw": "ap.parse_args",
+   "raw": "sub.add_parser",
    "line": 303
   },
   {
    "from": "analyzer.codegraph.main",
+   "raw": "ap.parse_args",
+   "line": 304
+  },
+  {
+   "from": "analyzer.codegraph.main",
    "raw": "sys.exit",
-   "line": 311
+   "line": 312
   },
   {
    "from": "analyzer.codegraph.collect_files",
    "raw": "ROOT.rglob",
-   "line": 39
-  },
-  {
-   "from": "analyzer.codegraph.collect_files",
-   "raw": "p.relative_to",
    "line": 40
   },
   {
    "from": "analyzer.codegraph.collect_files",
-   "raw": "any",
+   "raw": "p.relative_to",
    "line": 41
+  },
+  {
+   "from": "analyzer.codegraph.collect_files",
+   "raw": "any",
+   "line": 42
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "self.mods.items",
-   "line": 58
+   "line": 59
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "self.modules.items",
-   "line": 88
+   "line": 89
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "isinstance",
-   "line": 110
+   "line": 111
   },
   {
    "from": "analyzer.codegraph.Indexer._add_def",
    "raw": "self.defs.append",
-   "line": 128
+   "line": 129
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "self.mods.items",
-   "line": 135
+   "line": 136
   },
   {
    "from": "analyzer.codegraph.Indexer._dotted",
    "raw": "isinstance",
-   "line": 164
+   "line": 165
   },
   {
    "from": "analyzer.codegraph.Indexer._dotted",
    "raw": "isinstance",
-   "line": 167
+   "line": 168
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "raw.partition",
-   "line": 173
+   "line": 174
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "raw.split",
-   "line": 190
+   "line": 191
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "range",
-   "line": 191
+   "line": 192
   },
   {
    "from": "analyzer.codegraph.Indexer.build",
    "raw": "self.scan_defs",
-   "line": 199
+   "line": 200
   },
   {
    "from": "analyzer.codegraph.Indexer.build",
    "raw": "self.scan_calls",
-   "line": 200
+   "line": 201
   },
   {
    "from": "analyzer.codegraph.load",
    "raw": "OUT.exists",
-   "line": 206
-  },
-  {
-   "from": "analyzer.codegraph.load",
-   "raw": "SystemExit",
    "line": 207
   },
   {
    "from": "analyzer.codegraph.load",
-   "raw": "OUT.read_text",
+   "raw": "SystemExit",
    "line": 208
+  },
+  {
+   "from": "analyzer.codegraph.load",
+   "raw": "OUT.read_text",
+   "line": 209
   },
   {
    "from": "analyzer.codegraph.cmd_index",
    "raw": "collect_files",
-   "line": 214,
+   "line": 215,
    "to": "analyzer.codegraph.collect_files",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.cmd_index",
    "raw": "json.dumps",
-   "line": 216
+   "line": 217
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "sorted",
-   "line": 234
+   "line": 235
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "sorted",
-   "line": 239
-  },
-  {
-   "from": "analyzer.codegraph.cmd_stats",
-   "raw": "print",
    "line": 240
   },
   {
-   "from": "analyzer.codegraph.cmd_query",
+   "from": "analyzer.codegraph.cmd_stats",
    "raw": "print",
-   "line": 247
+   "line": 241
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "print",
-   "line": 250
+   "line": 248
+  },
+  {
+   "from": "analyzer.codegraph.cmd_query",
+   "raw": "print",
+   "line": 251
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "path.open",
-   "line": 264
-  },
-  {
-   "from": "analyzer.codegraph.cmd_dot",
-   "raw": "f.write",
    "line": 265
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "f.write",
-   "line": 277
+   "line": 266
+  },
+  {
+   "from": "analyzer.codegraph.cmd_dot",
+   "raw": "f.write",
+   "line": 278
   },
   {
    "from": "analyzer.codegraph.cmd_tree",
    "raw": "print",
-   "line": 286
+   "line": 287
   },
   {
    "from": "analyzer.codegraph.main",
    "raw": "main",
-   "line": 311,
+   "line": 312,
    "to": "analyzer.codegraph.main",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.module_name",
    "raw": "rel.with_suffix",
-   "line": 31
+   "line": 32
   },
   {
    "from": "analyzer.codegraph.collect_files",
    "raw": "module_name",
-   "line": 43,
+   "line": 44,
    "to": "analyzer.codegraph.module_name",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "ast.parse",
-   "line": 59
+   "line": 60
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "any",
-   "line": 62
+   "line": 63
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "ast.walk",
-   "line": 72
+   "line": 73
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "sorted",
-   "line": 89
+   "line": 90
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_from",
    "raw": "mod.split",
-   "line": 95
+   "line": 96
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "self._add_def",
-   "line": 113
+   "line": 114
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "isinstance",
-   "line": 115
+   "line": 116
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "ast.parse",
-   "line": 136
+   "line": 137
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "sorted",
-   "line": 140
+   "line": 141
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "ast.walk",
-   "line": 149
+   "line": 150
   },
   {
    "from": "analyzer.codegraph.Indexer._dotted",
    "raw": "parts.append",
-   "line": 165
+   "line": 166
   },
   {
    "from": "analyzer.codegraph.Indexer._dotted",
    "raw": "parts.append",
-   "line": 168
+   "line": 169
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "self.symbols.get",
-   "line": 185
+   "line": 186
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "self.symbols.get",
-   "line": 188
+   "line": 189
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "self.symbols.get",
-   "line": 193
+   "line": 194
   },
   {
    "from": "analyzer.codegraph.Indexer.build",
    "raw": "time.strftime",
-   "line": 201
+   "line": 202
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "c.get",
-   "line": 224
+   "line": 225
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "print",
-   "line": 237
+   "line": 238
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "fan_in.items",
-   "line": 239
+   "line": 240
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "print",
-   "line": 252
+   "line": 253
   },
   {
    "from": "analyzer.codegraph.cmd_tree",
    "raw": "print",
-   "line": 289
+   "line": 290
   },
   {
    "from": "analyzer.codegraph",
@@ -7457,86 +8178,76 @@
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "path.read_text",
-   "line": 59
+   "line": 60
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "ast.get_docstring",
-   "line": 61
+   "line": 62
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "str",
-   "line": 68
+   "line": 69
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "len",
-   "line": 68
+   "line": 69
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "isinstance",
-   "line": 73
+   "line": 74
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "self._scan_def",
-   "line": 86
+   "line": 87
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "self._add_def",
-   "line": 117
+   "line": 118
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "isinstance",
-   "line": 122
+   "line": 123
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "path.read_text",
-   "line": 136
+   "line": 137
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "self._dotted",
-   "line": 152
+   "line": 153
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "self._resolve_call",
-   "line": 157
+   "line": 158
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_calls",
    "raw": "self.calls.append",
-   "line": 160
+   "line": 161
   },
   {
    "from": "analyzer.codegraph.Indexer._dotted",
    "raw": "reversed",
-   "line": 169
+   "line": 170
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_call",
    "raw": "len",
-   "line": 191
+   "line": 192
   },
   {
    "from": "analyzer.codegraph.cmd_index",
    "raw": "c.get",
-   "line": 217
-  },
-  {
-   "from": "analyzer.codegraph.cmd_index",
-   "raw": "len",
-   "line": 218
-  },
-  {
-   "from": "analyzer.codegraph.cmd_index",
-   "raw": "len",
    "line": 218
   },
   {
@@ -7545,18 +8256,23 @@
    "line": 219
   },
   {
-   "from": "analyzer.codegraph.cmd_stats",
+   "from": "analyzer.codegraph.cmd_index",
    "raw": "len",
-   "line": 228
+   "line": 219
+  },
+  {
+   "from": "analyzer.codegraph.cmd_index",
+   "raw": "len",
+   "line": 220
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "len",
-   "line": 228
+   "line": 229
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
-   "raw": "sum",
+   "raw": "len",
    "line": 229
   },
   {
@@ -7571,23 +8287,23 @@
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
-   "raw": "len",
+   "raw": "sum",
    "line": 232
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "len",
-   "line": 232
+   "line": 233
+  },
+  {
+   "from": "analyzer.codegraph.cmd_stats",
+   "raw": "len",
+   "line": 233
   },
   {
    "from": "analyzer.codegraph.cmd_query",
    "raw": "name.lower",
-   "line": 245
-  },
-  {
-   "from": "analyzer.codegraph.cmd_query",
-   "raw": "len",
-   "line": 257
+   "line": 246
   },
   {
    "from": "analyzer.codegraph.cmd_query",
@@ -7595,120 +8311,115 @@
    "line": 258
   },
   {
+   "from": "analyzer.codegraph.cmd_query",
+   "raw": "len",
+   "line": 259
+  },
+  {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "f.write",
-   "line": 268
+   "line": 269
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "sorted",
-   "line": 270
+   "line": 271
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "c.get",
-   "line": 275
-  },
-  {
-   "from": "analyzer.codegraph.main",
-   "raw": "__doc__.split",
-   "line": 293
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_defs",
-   "raw": "str",
-   "line": 60
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_defs",
-   "raw": "path.relative_to",
-   "line": 68
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_defs",
-   "raw": "isinstance",
-   "line": 78
-  },
-  {
-   "from": "analyzer.codegraph.Indexer._resolve_from",
-   "raw": "len",
-   "line": 96
-  },
-  {
-   "from": "analyzer.codegraph.Indexer._scan_def",
-   "raw": "ast.get_docstring",
-   "line": 114
-  },
-  {
-   "from": "analyzer.codegraph.Indexer._scan_def",
-   "raw": "self._scan_def",
-   "line": 121
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_calls",
-   "raw": "isinstance",
-   "line": 150
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_calls",
-   "raw": "innermost",
-   "line": 155
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_calls",
-   "raw": "entry.update",
-   "line": 159
-  },
-  {
-   "from": "analyzer.codegraph.cmd_query",
-   "raw": "c.get",
-   "line": 254
-  },
-  {
-   "from": "analyzer.codegraph.cmd_query",
-   "raw": "c.get",
-   "line": 256
-  },
-  {
-   "from": "analyzer.codegraph.cmd_dot",
-   "raw": "set",
-   "line": 270
-  },
-  {
-   "from": "analyzer.codegraph.cmd_dot",
-   "raw": "f.write",
    "line": 276
   },
   {
    "from": "analyzer.codegraph.main",
+   "raw": "__doc__.split",
+   "line": 294
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_defs",
+   "raw": "str",
+   "line": 61
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_defs",
+   "raw": "path.relative_to",
+   "line": 69
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_defs",
+   "raw": "isinstance",
+   "line": 79
+  },
+  {
+   "from": "analyzer.codegraph.Indexer._resolve_from",
+   "raw": "len",
+   "line": 97
+  },
+  {
+   "from": "analyzer.codegraph.Indexer._scan_def",
+   "raw": "ast.get_docstring",
+   "line": 115
+  },
+  {
+   "from": "analyzer.codegraph.Indexer._scan_def",
+   "raw": "self._scan_def",
+   "line": 122
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_calls",
+   "raw": "isinstance",
+   "line": 151
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_calls",
+   "raw": "innermost",
+   "line": 156
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_calls",
+   "raw": "entry.update",
+   "line": 160
+  },
+  {
+   "from": "analyzer.codegraph.cmd_query",
+   "raw": "c.get",
+   "line": 255
+  },
+  {
+   "from": "analyzer.codegraph.cmd_query",
+   "raw": "c.get",
+   "line": 257
+  },
+  {
+   "from": "analyzer.codegraph.cmd_dot",
+   "raw": "set",
+   "line": 271
+  },
+  {
+   "from": "analyzer.codegraph.cmd_dot",
+   "raw": "f.write",
+   "line": 277
+  },
+  {
+   "from": "analyzer.codegraph.main",
    "raw": "cmd_index",
-   "line": 304,
+   "line": 305,
    "to": "analyzer.codegraph.cmd_index",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.main",
    "raw": "cmd_query",
-   "line": 305,
+   "line": 306,
    "to": "analyzer.codegraph.cmd_query",
    "resolved": true
   },
   {
    "from": "analyzer.codegraph.main",
    "raw": "cmd_dot",
-   "line": 306,
+   "line": 307,
    "to": "analyzer.codegraph.cmd_dot",
    "resolved": true
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_defs",
-   "raw": "isinstance",
-   "line": 63
-  },
-  {
-   "from": "analyzer.codegraph.Indexer.scan_defs",
-   "raw": "isinstance",
-   "line": 63
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
@@ -7717,63 +8428,73 @@
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
+   "raw": "isinstance",
+   "line": 64
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_defs",
+   "raw": "isinstance",
+   "line": 65
+  },
+  {
+   "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "doc.split",
-   "line": 69
+   "line": 70
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "self.modules.items",
-   "line": 90
+   "line": 91
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "getattr",
-   "line": 118
-  },
-  {
-   "from": "analyzer.codegraph.Indexer._scan_def",
-   "raw": "ast.get_docstring",
    "line": 119
   },
   {
    "from": "analyzer.codegraph.Indexer._scan_def",
+   "raw": "ast.get_docstring",
+   "line": 120
+  },
+  {
+   "from": "analyzer.codegraph.Indexer._scan_def",
    "raw": "self._scan_def",
-   "line": 124
+   "line": 125
   },
   {
    "from": "analyzer.codegraph.Indexer._add_def",
    "raw": "doc.split",
-   "line": 129
+   "line": 130
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "len",
-   "line": 235
+   "line": 236
   },
   {
    "from": "analyzer.codegraph.cmd_stats",
    "raw": "len",
-   "line": 237
+   "line": 238
   },
   {
    "from": "analyzer.codegraph.cmd_dot",
    "raw": "f.write",
-   "line": 272
+   "line": 273
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "self._resolve_from",
-   "line": 81
+   "line": 82
   },
   {
    "from": "analyzer.codegraph.Indexer.scan_defs",
    "raw": "any",
-   "line": 91
+   "line": 92
   },
   {
    "from": "analyzer.codegraph.Indexer._resolve_from",
    "raw": "len",
-   "line": 96
+   "line": 97
   },
   {
    "from": "analyzer.color_match",
@@ -10822,6 +11543,407 @@
    "from": "analyzer.vl.VLClient.chat",
    "raw": "type",
    "line": 110
+  },
+  {
+   "from": "analyzer.vl_arbiter",
+   "raw": "sys.path.insert",
+   "line": 26
+  },
+  {
+   "from": "analyzer.vl_arbiter",
+   "raw": "str",
+   "line": 26
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_compare_protocol",
+   "raw": "sys.path.insert",
+   "line": 99
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_checklist",
+   "raw": "sys.path.insert",
+   "line": 120
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_two_scores",
+   "raw": "re.finditer",
+   "line": 137
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "au_channel",
+   "line": 164,
+   "to": "analyzer.vl_arbiter.au_channel",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "au.get",
+   "line": 179
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "au.get",
+   "line": 191
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "sqlite3.connect",
+   "line": 215
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "conn.execute",
+   "line": 216
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "conn.execute",
+   "line": 222
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "conn.commit",
+   "line": 227
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "conn.close",
+   "line": 229
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "json.loads",
+   "line": 237
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "sum",
+   "line": 251
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 257
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "ap.add_subparsers",
+   "line": 258
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "sub.add_parser",
+   "line": 259
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "p.add_argument",
+   "line": 260
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "p.add_argument",
+   "line": 260
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "p.add_argument",
+   "line": 260
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "p.add_argument",
+   "line": 261
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "p.add_argument",
+   "line": 261
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "sub.add_parser",
+   "line": 262
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "ap.parse_args",
+   "line": 263
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "print",
+   "line": 270
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "sys.exit",
+   "line": 275
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "subprocess.run",
+   "line": 55
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "sum",
+   "line": 87
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "sum",
+   "line": 88
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_compare_protocol",
+   "raw": "str",
+   "line": 99
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_compare_protocol",
+   "raw": "_parse_two_scores",
+   "line": 111,
+   "to": "analyzer.vl_arbiter._parse_two_scores",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_checklist",
+   "raw": "str",
+   "line": 120
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_checklist",
+   "raw": "_parse_items",
+   "line": 131,
+   "to": "analyzer.vl_arbiter._parse_items",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_two_scores",
+   "raw": "float",
+   "line": 139
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_items",
+   "raw": "re.search",
+   "line": 147
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "channel_compare_protocol",
+   "line": 169,
+   "to": "analyzer.vl_arbiter.channel_compare_protocol",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "vl.get",
+   "line": 170
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "notes.append",
+   "line": 181
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "notes.append",
+   "line": 192
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "REGRESSION_PATH.exists",
+   "line": 235
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "REGRESSION_PATH.read_text",
+   "line": 237
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "arbitrate",
+   "line": 240,
+   "to": "analyzer.vl_arbiter.arbitrate",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "r.get",
+   "line": 242
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "out.append",
+   "line": 247
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "arbitrate",
+   "line": 266,
+   "to": "analyzer.vl_arbiter.arbitrate",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "regression",
+   "line": 269,
+   "to": "analyzer.vl_arbiter.regression",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "json.dumps",
+   "line": 270
+  },
+  {
+   "from": "analyzer.vl_arbiter.main",
+   "raw": "main",
+   "line": 275,
+   "to": "analyzer.vl_arbiter.main",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "os.environ.items",
+   "line": 51
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "json.loads",
+   "line": 60
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "j.get",
+   "line": 63
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "j.get",
+   "line": 64
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "j.get",
+   "line": 65
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "sorted",
+   "line": 73
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_compare_protocol",
+   "raw": "VLClient",
+   "line": 108
+  },
+  {
+   "from": "analyzer.vl_arbiter.channel_checklist",
+   "raw": "VLClient",
+   "line": 130
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_two_scores",
+   "raw": "m.group",
+   "line": 139
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_items",
+   "raw": "m.group",
+   "line": 149
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "s.get",
+   "line": 171
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "s.get",
+   "line": 171
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "notes.append",
+   "line": 176
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "notes.append",
+   "line": 189
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "au.get",
+   "line": 203
+  },
+  {
+   "from": "analyzer.vl_arbiter.record_user_ruling",
+   "raw": "datetime.now",
+   "line": 221
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "round",
+   "line": 252
+  },
+  {
+   "from": "analyzer.vl_arbiter",
+   "raw": "Path",
+   "line": 25
+  },
+  {
+   "from": "analyzer.vl_arbiter",
+   "raw": "Path",
+   "line": 31
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "str",
+   "line": 56
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "str",
+   "line": 57
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "any",
+   "line": 78
+  },
+  {
+   "from": "analyzer.vl_arbiter._parse_two_scores",
+   "raw": "len",
+   "line": 138
+  },
+  {
+   "from": "analyzer.vl_arbiter.arbitrate",
+   "raw": "str",
+   "line": 199
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "r.get",
+   "line": 249
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "r.get",
+   "line": 250
+  },
+  {
+   "from": "analyzer.vl_arbiter.regression",
+   "raw": "len",
+   "line": 252
+  },
+  {
+   "from": "analyzer.vl_arbiter.au_channel",
+   "raw": "target_agg.get",
+   "line": 79
   },
   {
    "from": "analyzer.vl_judge",
@@ -17105,6 +18227,221 @@
    "line": 33
   },
   {
+   "from": "kb.feedback",
+   "raw": "sys.path.insert",
+   "line": 30
+  },
+  {
+   "from": "kb.feedback",
+   "raw": "str",
+   "line": 30
+  },
+  {
+   "from": "kb.feedback.classify",
+   "raw": "text.strip",
+   "line": 59
+  },
+  {
+   "from": "kb.feedback._conn",
+   "raw": "sqlite3.connect",
+   "line": 68
+  },
+  {
+   "from": "kb.feedback.route_verdict",
+   "raw": "bool",
+   "line": 79
+  },
+  {
+   "from": "kb.feedback.route_verdict",
+   "raw": "record_user_ruling",
+   "line": 80
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "re.findall",
+   "line": 93
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "_conn",
+   "line": 101,
+   "to": "kb.feedback._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "conn.close",
+   "line": 113
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "_conn",
+   "line": 124,
+   "to": "kb.feedback._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.close",
+   "line": 149
+  },
+  {
+   "from": "kb.feedback.route",
+   "raw": "classify",
+   "line": 155,
+   "to": "kb.feedback.classify",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "argparse.ArgumentParser",
+   "line": 164
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "ap.add_argument",
+   "line": 165
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "ap.add_argument",
+   "line": 166
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "ap.parse_args",
+   "line": 167
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "print",
+   "line": 168
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "sys.exit",
+   "line": 173
+  },
+  {
+   "from": "kb.feedback.route_verdict",
+   "raw": "re.search",
+   "line": 79
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "conn.execute",
+   "line": 106
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "conn.commit",
+   "line": 112
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "re.search",
+   "line": 121
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.execute",
+   "line": 130
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.execute",
+   "line": 139
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.commit",
+   "line": 148
+  },
+  {
+   "from": "kb.feedback.route",
+   "raw": "fn",
+   "line": 158
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "json.dumps",
+   "line": 168
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "main",
+   "line": 173,
+   "to": "kb.feedback.main",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.classify",
+   "raw": "re.search",
+   "line": 62
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "n.lower",
+   "line": 97
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "re.findall",
+   "line": 98
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "conn.execute",
+   "line": 102
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "re.search",
+   "line": 122
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "text.strip",
+   "line": 125
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.execute",
+   "line": 126
+  },
+  {
+   "from": "kb.feedback.main",
+   "raw": "route",
+   "line": 168,
+   "to": "kb.feedback.route",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback",
+   "raw": "Path",
+   "line": 29
+  },
+  {
+   "from": "kb.feedback.route_operator_lead",
+   "raw": "g.lower",
+   "line": 99
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "json.dumps",
+   "line": 134
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "json.dumps",
+   "line": 144
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "json.dumps",
+   "line": 147
+  },
+  {
    "from": "kb.inspect_cards",
    "raw": "sqlite3.connect",
    "line": 6
@@ -17410,6 +18747,88 @@
    "from": "kb.migrate_m15.seed_gaps",
    "raw": "json.dumps",
    "line": 278
+  },
+  {
+   "from": "kb.migrate_m16",
+   "raw": "io.TextIOWrapper",
+   "line": 11
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "sqlite3.connect",
+   "line": 18
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.executescript",
+   "line": 19
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.commit",
+   "line": 20
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "print",
+   "line": 21
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.commit",
+   "line": 38
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "print",
+   "line": 39
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.close",
+   "line": 43
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "sys.exit",
+   "line": 48
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "SCHEMA.read_text",
+   "line": 19
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.execute",
+   "line": 33
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "main",
+   "line": 48,
+   "to": "kb.migrate_m16.main",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.execute",
+   "line": 25
+  },
+  {
+   "from": "kb.migrate_m16",
+   "raw": "Path",
+   "line": 12
+  },
+  {
+   "from": "kb.migrate_m16.main",
+   "raw": "conn.execute",
+   "line": 41
   },
   {
    "from": "kb.query.query",
@@ -23436,184 +24855,57 @@
   {
    "from": "research.run.main",
    "raw": "argparse.ArgumentParser",
-   "line": 41
+   "line": 58
   },
   {
    "from": "research.run.main",
    "raw": "ap.add_argument",
-   "line": 42
+   "line": 59
   },
   {
    "from": "research.run.main",
    "raw": "ap.add_argument",
-   "line": 43
-  },
-  {
-   "from": "research.run.main",
-   "raw": "ap.add_argument",
-   "line": 44
-  },
-  {
-   "from": "research.run.main",
-   "raw": "ap.add_argument",
-   "line": 45
-  },
-  {
-   "from": "research.run.main",
-   "raw": "ap.add_argument",
-   "line": 46
-  },
-  {
-   "from": "research.run.main",
-   "raw": "ap.parse_args",
-   "line": 48
-  },
-  {
-   "from": "research.run.main",
-   "raw": "sqlite3.connect",
-   "line": 51
-  },
-  {
-   "from": "research.run.main",
-   "raw": "conn.close",
-   "line": 55
-  },
-  {
-   "from": "research.run.main",
-   "raw": "next",
    "line": 60
   },
   {
    "from": "research.run.main",
-   "raw": "ResearchSession",
-   "line": 66
+   "raw": "ap.add_argument",
+   "line": 61
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 71
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 72
-  },
-  {
-   "from": "research.run.main",
-   "raw": "s.collect",
-   "line": 73
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 74
-  },
-  {
-   "from": "research.run.main",
-   "raw": "s.make_shortlist",
-   "line": 78
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 79
-  },
-  {
-   "from": "research.run.main",
-   "raw": "s.deep_read",
-   "line": 82
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 83
-  },
-  {
-   "from": "research.run.main",
-   "raw": "sorted",
-   "line": 91
-  },
-  {
-   "from": "research.run.main",
-   "raw": "s.conclude",
-   "line": 100
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 101
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 125
-  },
-  {
-   "from": "research.run.main",
-   "raw": "sys.exit",
-   "line": 130
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 57
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
+   "raw": "ap.add_argument",
    "line": 62
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 76
+   "raw": "ap.add_argument",
+   "line": 63
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 81
+   "raw": "ap.parse_args",
+   "line": 65
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 85
+   "raw": "sqlite3.connect",
+   "line": 68
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 86
+   "raw": "conn.close",
+   "line": 72
   },
   {
    "from": "research.run.main",
-   "raw": "rh_webapp_hits",
-   "line": 104
+   "raw": "next",
+   "line": 77
   },
   {
    "from": "research.run.main",
-   "raw": "print",
-   "line": 105
-  },
-  {
-   "from": "research.run.main",
-   "raw": "s.write_external_facts",
-   "line": 122
-  },
-  {
-   "from": "research.run.main",
-   "raw": "print",
-   "line": 123
-  },
-  {
-   "from": "research.run.main",
-   "raw": "main",
-   "line": 130,
-   "to": "research.run.main",
-   "resolved": true
-  },
-  {
-   "from": "research.run.main",
-   "raw": "conn.execute",
-   "line": 53
+   "raw": "ResearchSession",
+   "line": 83
   },
   {
    "from": "research.run.main",
@@ -23623,37 +24915,164 @@
   {
    "from": "research.run.main",
    "raw": "print",
-   "line": 107
+   "line": 89
   },
   {
    "from": "research.run.main",
-   "raw": "sqlite3.connect",
-   "line": 109
+   "raw": "s.collect",
+   "line": 90
   },
   {
    "from": "research.run.main",
-   "raw": "json.loads",
-   "line": 112
+   "raw": "print",
+   "line": 91
   },
   {
    "from": "research.run.main",
-   "raw": "isinstance",
-   "line": 113
+   "raw": "s.make_shortlist",
+   "line": 95
   },
   {
    "from": "research.run.main",
-   "raw": "conn.execute",
-   "line": 115
+   "raw": "print",
+   "line": 96
   },
   {
    "from": "research.run.main",
-   "raw": "conn.commit",
+   "raw": "s.deep_read",
+   "line": 99
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 100
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sorted",
+   "line": 108
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.conclude",
+   "line": 117
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
    "line": 118
   },
   {
    "from": "research.run.main",
+   "raw": "print",
+   "line": 142
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sys.exit",
+   "line": 147
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 74
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 79
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 98
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 103
+  },
+  {
+   "from": "research.run.main",
+   "raw": "rh_webapp_hits",
+   "line": 121
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 122
+  },
+  {
+   "from": "research.run.main",
+   "raw": "s.write_external_facts",
+   "line": 139
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 140
+  },
+  {
+   "from": "research.run.main",
+   "raw": "main",
+   "line": 147,
+   "to": "research.run.main",
+   "resolved": true
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 70
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 105
+  },
+  {
+   "from": "research.run.main",
+   "raw": "print",
+   "line": 124
+  },
+  {
+   "from": "research.run.main",
+   "raw": "sqlite3.connect",
+   "line": 126
+  },
+  {
+   "from": "research.run.main",
+   "raw": "json.loads",
+   "line": 129
+  },
+  {
+   "from": "research.run.main",
+   "raw": "isinstance",
+   "line": 130
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 132
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.commit",
+   "line": 135
+  },
+  {
+   "from": "research.run.main",
    "raw": "conn.close",
-   "line": 119
+   "line": 136
   },
   {
    "from": "research.run",
@@ -23663,57 +25082,57 @@
   {
    "from": "research.run.main",
    "raw": "GAP_PLANS.items",
-   "line": 60
-  },
-  {
-   "from": "research.run.main",
-   "raw": "len",
-   "line": 74
-  },
-  {
-   "from": "research.run.main",
-   "raw": "len",
-   "line": 79
-  },
-  {
-   "from": "research.run.main",
-   "raw": "len",
-   "line": 83
-  },
-  {
-   "from": "research.run.main",
-   "raw": "findings.append",
-   "line": 114
-  },
-  {
-   "from": "research.run.main",
-   "raw": "c.get",
    "line": 77
   },
   {
    "from": "research.run.main",
    "raw": "len",
-   "line": 86
+   "line": 91
   },
   {
    "from": "research.run.main",
    "raw": "len",
-   "line": 93
+   "line": 96
   },
   {
    "from": "research.run.main",
    "raw": "len",
-   "line": 105
+   "line": 100
   },
   {
    "from": "research.run.main",
-   "raw": "conn.execute",
+   "raw": "findings.append",
+   "line": 131
+  },
+  {
+   "from": "research.run.main",
+   "raw": "c.get",
+   "line": 94
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
+   "line": 103
+  },
+  {
+   "from": "research.run.main",
+   "raw": "len",
    "line": 110
   },
   {
    "from": "research.run.main",
+   "raw": "len",
+   "line": 122
+  },
+  {
+   "from": "research.run.main",
+   "raw": "conn.execute",
+   "line": 127
+  },
+  {
+   "from": "research.run.main",
    "raw": "json.dumps",
-   "line": 117
+   "line": 134
   },
   {
    "from": "research.session",
@@ -26745,42 +28164,42 @@
   {
    "from": "webapp.app.main",
    "raw": "argparse.ArgumentParser",
-   "line": 130
+   "line": 138
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 131
+   "line": 139
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 132
+   "line": 140
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.parse_args",
-   "line": 133
+   "line": 141
   },
   {
    "from": "webapp.app.main",
    "raw": "ThreadingHTTPServer",
-   "line": 134
+   "line": 142
   },
   {
    "from": "webapp.app.main",
    "raw": "print",
-   "line": 135
+   "line": 143
   },
   {
    "from": "webapp.app.main",
    "raw": "srv.serve_forever",
-   "line": 136
+   "line": 144
   },
   {
    "from": "webapp.app.main",
    "raw": "sys.exit",
-   "line": 141
+   "line": 149
   },
   {
    "from": "webapp.app.Handler._send",
@@ -26845,12 +28264,12 @@
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._send",
-   "line": 126
+   "line": 134
   },
   {
    "from": "webapp.app.main",
    "raw": "main",
-   "line": 141,
+   "line": 149,
    "to": "webapp.app.main",
    "resolved": true
   },
@@ -26926,13 +28345,23 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "orc.submit_feedback",
+   "raw": "payload.get",
    "line": 121
   },
   {
    "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.submit_feedback",
+   "line": 122
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "text.strip",
+   "line": 125
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
-   "line": 123
+   "line": 131
   },
   {
    "from": "webapp.app",
@@ -27016,13 +28445,8 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "payload.get",
-   "line": 121
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
    "raw": "bool",
-   "line": 122
+   "line": 123
   },
   {
    "from": "webapp.app.Handler._json",
@@ -27067,7 +28491,12 @@
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 122
+   "line": 123
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "fb_route",
+   "line": 128
   },
   {
    "from": "webapp.app.Handler.do_GET",

@@ -24,7 +24,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "codegraph.json"
-SKIP_DIRS = {"__pycache__", ".git", ".rh_profile", "probe_out", "downloads", ".venv"}
+SKIP_DIRS = {"__pycache__", ".git", ".rh_profile", "probe_out", "downloads",
+             ".venv", ".venv-kb"}   # .venv-kb: M16 mediapipe 隔离环境
 
 
 def module_name(rel: Path) -> str:
