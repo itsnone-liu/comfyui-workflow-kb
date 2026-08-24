@@ -5,7 +5,29 @@
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 ✅
+
+## 明日计划（用户 2026-08-24 收工时定）
+
+1. **新方向实验**：换一个比换脸简单的方向（用户判断依据：表情+一致性是生图难点，
+   换方向可降低验证复杂度、考验系统泛化）。候选由用户明日定；KB 知识体系
+   （研究通道/专家方案/验证层）应直接复用。
+2. **Deep Live Cam 试点**：`hacksider/Deep-Live-Cam`（external_fact 已入库）——
+   本地推理路线与 RH 云端互补；重点验证：单图实时换脸的视频输出质量、
+   能否作为视频换脸 family 的本地算子接入（M15 expert_solutions 结构）。
+3. **可交付化**：前端（webapp 8830）+ 流程细节打磨——capability_notes 只读视图、
+   仲裁升级的用户交互面、任务/反馈闭环 UI；目标是"可交付水平"。
+
+## 收工状态（2026-08-24 夜）
+
+- git：`4061171`（M16 + codegraph 重索引）已推远端；工作树干净
+- 服务：OpenTutor web/api/lab 正常；820 webapp 8830（含反馈路由端点）；
+  画廊 8824（仅挂 v2 三目录，按"本次运行"政策）
+- 环境：`.venv-kb`（mediapipe 0.10.35 + face_landmarker.task）已就绪并被
+  au_geometry/vl_arbiter/auto_explore 子进程桥接使用；hermes PYTHONPATH 污染
+  需 `$env:PYTHONPATH=''`（见 课件lab服务注意事项.md）
+- KB 增量：gap#3 开（眉维几何盲区待补）；scail2 链 validated；LP 链 candidate；
+  capability_notes ×10；user_rulings ×2；Deep-Live-Cam 线索 external_fact
 
 ### 2026-08-24 晚 M16 全量落地（用户: "系统优化是最重要的事情"）✅
 
