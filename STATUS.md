@@ -5,7 +5,70 @@
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + **M11 研究通道（gap#1 已闭合）** ✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）✅
+
+### 2026-08-24 晚 M16 全量落地（用户: "系统优化是最重要的事情"）✅
+
+**A1 验证层 AU 通道**：`analyzer/au_geometry.py`（MediaPipe Tasks FaceLandmarker
+blendshape 52 AU，独立 `.venv-kb` 环境子进程桥接）。回归（v1+v2 全输出，金标准=
+用户裁决）：**眼/嘴/嘟嘴三维与用户裁决三次吻合**（LP表情更强=pucker过冲2.4×；
+双链眼微睁=欠闭0.35；scail2嘟嘴保真）；**眉维 contested**——VL+几何双机器通道
+一致偏 LP 而用户裁 scail2（人感"皱眉"≈browDown+纹理，browInnerUp 读作悲伤）。
+多帧分布稳定，单帧比较可用。
+
+**A2 仲裁器**：`analyzer/vl_arbiter.py` 双通道+分维度信任表+升级规则（争议维
+主导→必用户仲裁，即使双通道一致；TIE_MARGIN=0.05）。在线回归 v2 案 auto=
+prefer_a 与金标准一致。回归集 `data/arbiter_regression.json`。
+
+**B 反馈路由**：`kb/feedback.py` 四分类（verdict/operator_lead/meta_capability/
+new_requirement），webapp feedback 端点接线+冒烟通过；三类真实反馈分类全对。
+
+**C 验证域知识宿主**：capability_notes（10 条：AU 通道验证/眉维争议/信任表/
+双链 AU 签名/vl 偏差）+ user_rulings（2 条金标准）。
+
+auto_explore 接入 au_channel 一级指标；`analyzer/au_regression.py` 常设校准工具；
+_tmp 全清；webapp 已重启（pwsh-24）。详见 docs/M16_design.md §6。
+
+### 2026-08-24 v2 实验 + 系统评价（用户）+ M16 设计 ✅
+
+**v2 极端表情（痛苦：皱眉+闭眼+O嘴+头后仰）双链对比**，用户裁决：**scail2 更胜一筹**
+（皱眉比 LP 好），双链眼微睁/嘴张开细节都好，**双链保留**。触发 M15 晋升机制首个活例：
+`scail2_expression_chain` candidate → **validated**（2 不同输入）；`lp_expression_chain`
+注册 candidate #17（v1 校准"表情强/一致性弱"+v2"头姿迁移成功"）。
+VL 失准三次实证入库（v1 glm 单图 / v2 qwen 对比 / v2 glm 单图，用户裁决均相反）。
+
+**用户系统评价**：①生成链（外寻知识→验证→沉淀）已达设计目标；②图片细节识别
+（表情 AU 级）不足是主要短板；③用户反馈应强化为系统调整的一等输入（工具线索、
+能力评价都要能驱动知识库——不只生成环节，还有验证环节）。
+
+**落账**：gap#3 验证层缺口开启（au_geometry/multi_model_arbitration/user_calibration_loop）；
+Deep-Live-Cam 用户线索 → external_fact（★96k 视频换脸候选，research 下目标）；
+**M16 设计定稿** `docs/M16_design.md`（A 验证层增强：AU 密集几何/多模型仲裁/用户校准环；
+B 反馈四分类路由器；C 验证域知识宿主）。
+
+### 2026-08-24 会话：gap#2 表情 AU 迁移（用户反馈驱动，全链第二次闭环）✅
+
+**触发**：换脸任务 reactor 输出身份/嘴形达标但"委屈表情"（AU1+4 皱眉 + AU15 撇嘴）丢失，
+用户目测发现——**指标盲区实证**：几何 5 关键点不含眉毛、VL 嘴形分类粒度不足，双指标均未报警。
+
+**闭环路径**（gap#2：open → research 通道 → 5 探针 → resolved）：
+1. VL FACS 取证：被换图 = AU1+4+AU15 复合委屈；reactor 输出 = 中性抿嘴（6.5/10）
+2. M11 三源研究：operator_found（FSRT/LivePortrait AU 级重演族）+ RH 零硬币核查 15 webapp 候选
+3. 探针淘汰赛（5 负 1 正，全部入库 negative_result ×5）：
+   - LivePortrait 静态驱动 → 零相对运动=保留源表情（身份 0.750 但表情不变）
+   - LivePortrait 相对运动驱动（首帧中性+后段委屈）→ 跨人增量被运动归一化压制
+   - qwen_swap 显式 AU 指令 → 身份坍塌（-0.17/0.03）：指令路线身份与表情约束互相挤占
+   - qwen_edit 解耦编辑 → webapp 不稳（两次超时/FAILED，同 exp016 模式）
+   - **平台负发现：remix 副本(workflow/copy)处于未保存态，create/getJsonApiFormat 均 810**
+   - **✅ scail2 表情复刻 webapp 2072661793658462210：绝对表情模仿机制，驱动帧表情直接迁移**
+4. **最终链 reactor→scail2：委屈还原 8/10（四图对比协议），身份 0.726，表情跟随 0.073**
+
+**新方案 #16 `scail2_expression_chain`**（candidate，1/2 晋升输入）：两阶段 webapp 链 +
+ffmpeg 静态驱动视频制备，route_json 已入库可回放。gap#2 → resolved。
+
+**方法论沉淀**：**四图对比 VL 裁决协议**（目标/阶段1/探针A/探针B 同框打分）比单图评审灵敏
+（单图判 lp2 中性，对比协议判 7.0）——AU 级表情评审应走对比协议。gallery :
+8824（Tailscale 100.84.28.40:8824）。
 
 ### M11：外部研究通道三源 v1（2026-08-23）✅ session#1 全链闭环（gap#1 resolved）
 

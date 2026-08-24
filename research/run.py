@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 
 from research.session import ResearchSession, rh_webapp_hits  # noqa: E402
 
-# 缺口 -> 查询计划(v1 手工策展;后续由 gap.required_effects 自动派生)
+# 缺口 -> 查询计划(v1 手工策展;后续由 gap.required effects 自动派生)
 GAP_PLANS: dict[str, dict] = {
     "发型": {
         "objective": "非指令路线:发型跟参考图 + 表情跟被换图(hairstyle transfer "
@@ -33,6 +33,23 @@ GAP_PLANS: dict[str, dict] = {
         },
         "anchor_wf": "runninghub:2067266054715432961",  # qwen_swap 卡(指令路线兜底)
         "rh_kws": ["hair", "发型", "hairfast"],
+    },
+    "皱眉": {
+        "objective": "换脸后表情/神态跟被换图:上脸动作单元(AU1+4 皱眉)+嘴角下垂"
+                     "(AU15 委屈)迁移,身份仍跟参考图(expression/emotion "
+                     "retargeting to target while identity from reference)",
+        "keywords": ["expression", "reenactment", "LivePortrait", "emotion",
+                     "AU", "face", "表情", "transfer", "swap"],
+        "queries": {
+            "github": ["LivePortrait expression transfer",
+                       "face reenactment expression",
+                       "expression editing ComfyUI"],
+            "registry": ["LivePortrait", "expression"],
+            "huggingface": ["LivePortrait", "expression transfer"],
+        },
+        # 库内 FLUX Redux 表情复刻卡(88n use=12)为锚
+        "anchor_wf": "runninghub:2072566174403092481",
+        "rh_kws": ["表情", "LivePortrait", "expression"],
     },
 }
 

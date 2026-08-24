@@ -79,6 +79,24 @@ def classify_faces(fc, img, faces, e_ref, e_tgt):
     return out
 
 
+def _au_subprocess(out_img: Path, target: Path) -> dict:
+    """AU blendshape compare, 经 .venv-kb 子进程(隔离 mediapipe 依赖)。"""
+    import json as _json
+    import os as _os
+    import subprocess as _sp
+    kb_py = ROOT / ".venv-kb" / "Scripts" / "python.exe"
+    if not kb_py.exists():
+        return {"error": ".venv-kb missing (see docs/M16_design.md)"}
+    env = {k: v for k, v in _os.environ.items() if k != "PYTHONPATH"}
+    r = _sp.run([str(kb_py), "analyzer/au_geometry.py", "compare",
+                 str(out_img), str(target)],
+                capture_output=True, text=True, encoding="utf-8",
+                cwd=str(ROOT), env=env, timeout=120)
+    j = _json.loads(r.stdout)
+    return {k: j.get(k) for k in
+            ("expr_follow_au", "agg_deltas", "error")}
+
+
 def evaluate(image: Path, target: Path, ref: Path, family: str,
              vl: bool = True) -> dict:
     """Full evaluation of one output image (result-face selected)."""
@@ -120,6 +138,13 @@ def evaluate(image: Path, target: Path, ref: Path, family: str,
         ev["hair_vs_ref"] = round(sf._hist_intersection(h_out, h_ref), 3)
         ev["hair_vs_target"] = round(sf._hist_intersection(h_out, h_tgt), 3)
         ev["hair_follows_ref"] = ev["hair_vs_ref"] > ev["hair_vs_target"]
+
+    # M16-A1: AU blendshape 通道(mediapipe 在 .venv-kb, 子进程桥接)。
+    # 分维度信任: eye/mouth/pucker trusted; brow contested(见 capability_notes)
+    try:
+        ev["au_channel"] = _au_subprocess(tmp, Path(target))
+    except Exception as e_:                              # noqa: E831
+        ev["au_error"] = str(e_)[:120]
     tmp.unlink(missing_ok=True)
 
     if vl:

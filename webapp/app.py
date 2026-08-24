@@ -118,9 +118,17 @@ class Handler(BaseHTTPRequestHandler):
             if not task:
                 self._json({"error": "no such task"}, 404)
                 return
-            ok = orc.submit_feedback(task, payload.get("text", ""),
+            text = payload.get("text", "")
+            ok = orc.submit_feedback(task, text,
                                      bool(payload.get("accept")))
-            self._json({"ok": ok, "state": task.state},
+            routed = {}
+            if text.strip():
+                try:  # M16-B: 反馈四分类路由(失败不阻塞任务流)
+                    from kb.feedback import route as fb_route
+                    routed = fb_route(text, task_id=tid)
+                except Exception as e:
+                    routed = {"error": f"router: {e}"}
+            self._json({"ok": ok, "state": task.state, "feedback_route": routed},
                        200 if ok else 409)
             return
         self._send(404, b"not found", "text/plain")
