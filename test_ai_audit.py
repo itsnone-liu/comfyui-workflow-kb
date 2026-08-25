@@ -50,13 +50,26 @@ def cleanup():
 
 try:
     # ------------------------------------------------------------ [1]
-    print("[1] system AI channel: qwen-plus text chat")
-    from vl import VLClient
-    vl = VLClient(model="qwen-plus")
+    print("[1] system AI channels: DeepSeek(text) + qwen-vl(images)")
+    from analyzer.text_llm import TextLLM, load_env
+    base, _key, model = load_env()
+    check("deepseek configured from OpenTutor .env",
+          "maas.aliyuncs" in base and "deepseek" in model,
+          f"{base} / {model}")
+    tx = TextLLM()
+    check("no silent fallback", not tx.fallback, "falling back to qwen-plus")
     t0 = time.time()
-    r = vl.chat("回答一个词：天空通常是什么颜色？", [])
-    check("qwen-plus reachable", isinstance(r, str) and len(r) > 0,
+    r = tx.chat("回答一个词：天空通常是什么颜色？")
+    check("deepseek text reachable", isinstance(r, str) and len(r) > 0,
           str(r)[:80])
+    from vl import VLClient
+    from analyzer.text_llm import client as _tclient
+    check("runtime singleton is deepseek",
+          not _tclient().fallback and "deepseek" in _tclient().model,
+          _tclient().model)
+    # 识图通道保持 qwen-vl(配置存在即可, 不真调以省配额)
+    _VL = VLClient(model="qwen-vl-max")
+    check("image channel stays qwen-vl", "vl" in _VL.model.lower())
     print(f"      ({time.time()-t0:.1f}s)")
 
     # ------------------------------------------------------------ [2]

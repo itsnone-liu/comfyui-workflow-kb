@@ -213,10 +213,10 @@ def create_task(requirement: str, images_b64: dict[str, str],
 
 # ---------------------------------------------------------------- LLM helpers
 
-def _llm_json(prompt: str, model: str = "qwen-plus") -> dict:
-    from vl import VLClient
-    vl = VLClient(model=model)
-    out = vl.json(prompt + "\n只输出JSON。", [])
+def _llm_json(prompt: str) -> dict:
+    """运行时文本 LLM(DeepSeek via analyzer/text_llm; 识图仍走 vl.VLClient)。"""
+    from analyzer.text_llm import client
+    out = client().json(prompt + "\n只输出JSON。")
     return out if isinstance(out, dict) else {"_unparsed": str(out)[:500]}
 
 
@@ -566,9 +566,9 @@ def write_explanation(task: Task, limited: bool) -> str:
 {'该需求在现有知识/技术条件下无法完全满足' if limited else '目标已达成'}。
 用中文写一段面向用户的解释：说明已做到什么、瓶颈的机制原因（引用具体技术族/规则）、
 如果受限给出最接近现状的方案与残余差距。不超过300字。直接输出正文。"""
-    from vl import VLClient
+    from analyzer.text_llm import client
     try:
-        text = VLClient(model="qwen-plus").chat(prompt, [])
+        text = client().chat(prompt)
     except Exception as e:
         text = f"（解释生成失败：{e}）已尝试路线：{ev_lines}"
     # M18-P2 §4.3: 方差置信标注 + 证据链接 + 为什么不是X

@@ -157,8 +157,8 @@ def digest(key: str, max_events: int = 40, db_path: Path | None = None) -> str:
 # ---------------------------------------------------------------- close
 
 def _llm(prompt: str) -> str:
-    from vl import VLClient
-    return VLClient(model="qwen-plus").chat(prompt, [])
+    from analyzer.text_llm import client
+    return client().chat(prompt)
 
 
 def _extract_json(raw: str) -> dict | None:

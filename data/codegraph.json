@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-25 18:55:30",
+ "generated_at": "2026-08-25 20:47:06",
  "modules": {
   "_civitai_probe": {
    "file": "_civitai_probe.py",
@@ -659,6 +659,7 @@
    "imported_by": [
     "_m11_probe",
     "swap_face",
+    "test_m18_p1p2",
     "webapp.orchestrator"
    ]
   },
@@ -804,6 +805,33 @@
    "aliases": {},
    "imported_by": []
   },
+  "analyzer.text_llm": {
+   "file": "analyzer\\text_llm.py",
+   "lines": 14,
+   "doc": "text_llm.py — 运行时文本 LLM 客户端(DeepSeek via 阿里云百炼, M18 收口日切换)。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "re",
+    "time",
+    "urllib.request",
+    "urllib.error",
+    "pathlib",
+    "vl"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "VLClient": "vl"
+   },
+   "imported_by": [
+    "kb.threads",
+    "test_ai_audit",
+    "test_m18_p1p2",
+    "webapp.orchestrator"
+   ]
+  },
   "analyzer.vl": {
    "file": "analyzer\\vl.py",
    "lines": 23,
@@ -854,7 +882,9 @@
     "VLClient": "vl"
    },
    "imported_by": [
-    "kb.feedback"
+    "kb.feedback",
+    "test_m18_p1p2",
+    "webapp.orchestrator"
    ]
   },
   "analyzer.vl_judge": {
@@ -1241,6 +1271,8 @@
     "research.probe_webapp",
     "swap_face",
     "test_m18_e2e",
+    "test_m18_p1p2",
+    "webapp.hyp_runner",
     "webapp.orchestrator"
    ]
   },
@@ -1305,14 +1337,15 @@
     "Path": "pathlib"
    },
    "imported_by": [
+    "test_ai_audit",
     "test_m18_p0",
     "webapp.orchestrator"
    ]
   },
   "kb.feedback": {
    "file": "kb\\feedback.py",
-   "lines": 19,
-   "doc": "kb/feedback.py — 用户反馈四分类路由器（M16-B）。",
+   "lines": 20,
+   "doc": "kb/feedback.py — 用户反馈五分类路由器（M16-B 四类 + M18-P2 hypothesis）。",
    "entry": true,
    "imports": [
     "__future__",
@@ -1322,14 +1355,48 @@
     "sqlite3",
     "sys",
     "pathlib",
-    "analyzer.vl_arbiter"
+    "analyzer.vl_arbiter",
+    "kb.hypotheses"
    ],
    "aliases": {
     "annotations": "__future__",
     "Path": "pathlib",
-    "record_user_ruling": "analyzer.vl_arbiter"
+    "record_user_ruling": "analyzer.vl_arbiter",
+    "hypotheses": "kb.hypotheses"
    },
    "imported_by": [
+    "test_ai_audit",
+    "test_m18_p1p2",
+    "webapp.app"
+   ]
+  },
+  "kb.hypotheses": {
+   "file": "kb\\hypotheses.py",
+   "lines": 19,
+   "doc": "kb/hypotheses.py — M18-P2 用户假设一等化验证管线。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "re",
+    "sqlite3",
+    "pathlib",
+    "kb.threads",
+    "kb.threads",
+    "kb.threads",
+    "webapp.hyp_runner",
+    "kb.threads",
+    "kb.threads"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "threads": "kb.threads",
+    "default_runner": "webapp.hyp_runner"
+   },
+   "imported_by": [
+    "kb.feedback",
+    "kb.replay_h3_thread",
     "webapp.app"
    ]
   },
@@ -1405,6 +1472,23 @@
     "test_m18_p0"
    ]
   },
+  "kb.migrate_m18_p1": {
+   "file": "kb\\migrate_m18_p1.py",
+   "lines": 11,
+   "doc": "migrate_m18_p1.py — M18-P1/P2 迁移(task_threads/user_hypotheses/thread_summaries)。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "sqlite3",
+    "sys",
+    "pathlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
   "kb.query": {
    "file": "kb\\query.py",
    "lines": 12,
@@ -1421,6 +1505,28 @@
    "aliases": {
     "annotations": "__future__",
     "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "kb.replay_h3_thread": {
+   "file": "kb\\replay_h3_thread.py",
+   "lines": 16,
+   "doc": "kb/replay_h3_thread.py — M18-P1 验收#1: 把 H3 五臂弧回放为线程。",
+   "entry": true,
+   "imports": [
+    "__future__",
+    "json",
+    "sys",
+    "time",
+    "pathlib",
+    "kb.threads",
+    "kb.hypotheses"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "threads": "kb.threads",
+    "hypotheses": "kb.hypotheses"
    },
    "imported_by": []
   },
@@ -1492,9 +1598,37 @@
     "parser.parse_all"
    ]
   },
+  "kb.threads": {
+   "file": "kb\\threads.py",
+   "lines": 26,
+   "doc": "kb/threads.py — M18-P1 任务线程一等对象。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "re",
+    "sqlite3",
+    "time",
+    "pathlib",
+    "analyzer.text_llm",
+    "hashlib"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "client": "analyzer.text_llm"
+   },
+   "imported_by": [
+    "kb.hypotheses",
+    "kb.replay_h3_thread",
+    "test_ai_audit",
+    "webapp.app",
+    "webapp.orchestrator"
+   ]
+  },
   "mcp.server": {
    "file": "mcp\\server.py",
-   "lines": 31,
+   "lines": 32,
    "doc": "Minimal MCP server (stdio, JSON-RPC 2.0) exposing the workflow KB.",
    "entry": true,
    "imports": [
@@ -1514,7 +1648,7 @@
   },
   "mcp.test_server": {
    "file": "mcp\\test_server.py",
-   "lines": 39,
+   "lines": 43,
    "doc": "Protocol-level test of the MCP server over stdio (no client needed).",
    "entry": false,
    "imports": [
@@ -1966,8 +2100,43 @@
     "analyzer.auto_explore",
     "research.probe_webapp",
     "test_m18_e2e",
+    "test_m18_p1p2",
     "webapp.orchestrator"
    ]
+  },
+  "test_ai_audit": {
+   "file": "test_ai_audit.py",
+   "lines": 20,
+   "doc": "test_ai_audit.py — 系统AI完备性审计(真实 qwen-plus, 零硬币)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "shutil",
+    "sqlite3",
+    "sys",
+    "time",
+    "pathlib",
+    "analyzer.text_llm",
+    "analyzer.text_llm",
+    "vl",
+    "analyzer.text_llm",
+    "orchestrator",
+    "kb.threads",
+    "kb.feedback",
+    "kb.boundaries"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "TextLLM": "analyzer.text_llm",
+    "load_env": "analyzer.text_llm",
+    "VLClient": "vl",
+    "_tclient": "analyzer.text_llm",
+    "orc": "orchestrator",
+    "T": "kb.threads",
+    "FB": "kb.feedback",
+    "boundaries": "kb.boundaries"
+   },
+   "imported_by": []
   },
   "test_m15_wiring": {
    "file": "test_m15_wiring.py",
@@ -1998,7 +2167,7 @@
   },
   "test_m18_e2e": {
    "file": "test_m18_e2e.py",
-   "lines": 125,
+   "lines": 131,
    "doc": "test_m18_e2e.py — M18-P0 端到端验收(全 mock 云端, 零硬币)。",
    "entry": false,
    "imports": [
@@ -2017,7 +2186,9 @@
     "orchestrator",
     "experiments.rh_task",
     "swap_face",
-    "app"
+    "app",
+    "sqlite3",
+    "time"
    ],
    "aliases": {
     "ThreadingHTTPServer": "http.server",
@@ -2025,7 +2196,8 @@
     "np": "numpy",
     "orc": "orchestrator",
     "rh_task": "experiments.rh_task",
-    "webapp_mod": "app"
+    "webapp_mod": "app",
+    "_time": "time"
    },
    "imported_by": []
   },
@@ -2049,6 +2221,50 @@
     "Path": "pathlib",
     "boundaries": "kb.boundaries",
     "migrate_m18": "kb.migrate_m18"
+   },
+   "imported_by": []
+  },
+  "test_m18_p1p2": {
+   "file": "test_m18_p1p2.py",
+   "lines": 154,
+   "doc": "test_m18_p1p2.py — M18-P1/P2 验收(全 mock 云端与 LLM, 零硬币)。",
+   "entry": false,
+   "imports": [
+    "base64",
+    "json",
+    "shutil",
+    "sys",
+    "tempfile",
+    "threading",
+    "time",
+    "urllib.error",
+    "urllib.request",
+    "http.server",
+    "pathlib",
+    "numpy",
+    "cv2",
+    "orchestrator",
+    "experiments.rh_task",
+    "swap_face",
+    "analyzer.text_llm",
+    "analyzer.vl_arbiter",
+    "analyzer.auto_explore",
+    "app",
+    "kb.feedback",
+    "sqlite3",
+    "sqlite3"
+   ],
+   "aliases": {
+    "ThreadingHTTPServer": "http.server",
+    "Path": "pathlib",
+    "np": "numpy",
+    "orc": "orchestrator",
+    "rh_task": "experiments.rh_task",
+    "_tl": "analyzer.text_llm",
+    "_va": "analyzer.vl_arbiter",
+    "_ae": "analyzer.auto_explore",
+    "wm": "app",
+    "fbmod": "kb.feedback"
    },
    "imported_by": []
   },
@@ -2156,6 +2372,14 @@
     "http.server",
     "pathlib",
     "orchestrator",
+    "kb.threads",
+    "kb.threads",
+    "kb.threads",
+    "kb.threads",
+    "kb.hypotheses",
+    "kb.hypotheses",
+    "kb.hypotheses",
+    "sqlite3",
     "kb.feedback"
    ],
    "aliases": {
@@ -2164,13 +2388,40 @@
     "ThreadingHTTPServer": "http.server",
     "Path": "pathlib",
     "orc": "orchestrator",
+    "_t": "kb.threads",
+    "_h": "kb.hypotheses",
     "fb_route": "kb.feedback"
    },
    "imported_by": []
   },
+  "webapp.hyp_runner": {
+   "file": "webapp\\hyp_runner.py",
+   "lines": 11,
+   "doc": "webapp/hyp_runner.py — M18-P2 假设探针生产执行器。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "pathlib",
+    "sys",
+    "cv2",
+    "numpy",
+    "statistics",
+    "experiments.rh_task"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "np": "numpy",
+    "rh_task": "experiments.rh_task"
+   },
+   "imported_by": [
+    "kb.hypotheses"
+   ]
+  },
   "webapp.orchestrator": {
    "file": "webapp\\orchestrator.py",
-   "lines": 47,
+   "lines": 48,
    "doc": "orchestrator.py — autonomous task loop behind the web frontend.",
    "entry": false,
    "imports": [
@@ -2189,21 +2440,25 @@
     "kb.boundaries",
     "base64",
     "cv2",
-    "vl",
+    "kb.threads",
+    "analyzer.text_llm",
     "swap_face",
     "analyzer.auto_explore",
     "experiments.rh_task",
     "analyzer.auto_explore",
     "analyzer.auto_explore",
-    "vl",
+    "analyzer.text_llm",
     "cv2",
     "cv2",
     "numpy",
     "tempfile",
     "subprocess",
     "experiments.rh_task",
+    "kb.threads",
     "shutil",
     "shutil",
+    "analyzer.vl_arbiter",
+    "kb.threads",
     "analyzer.color_match"
    ],
    "aliases": {
@@ -2213,13 +2468,16 @@
     "Path": "pathlib",
     "solutions": "kb.solutions",
     "boundaries": "kb.boundaries",
-    "VLClient": "vl",
+    "_threads": "kb.threads",
+    "client": "analyzer.text_llm",
     "sf": "swap_face",
     "extract_result_image": "analyzer.auto_explore",
     "rh_task": "experiments.rh_task",
     "evaluate": "analyzer.auto_explore",
     "diagnose": "analyzer.auto_explore",
     "np": "numpy",
+    "_t": "kb.threads",
+    "record_user_ruling": "analyzer.vl_arbiter",
     "color_match": "analyzer.color_match"
    },
    "imported_by": [
@@ -3543,6 +3801,75 @@
    "doc": ""
   },
   {
+   "id": "analyzer.text_llm.load_env",
+   "kind": "function",
+   "module": "analyzer.text_llm",
+   "name": "load_env",
+   "args": [],
+   "line": 29,
+   "doc": "(base_url, api_key, model) — OpenTutor .env; 缺项返回空串。"
+  },
+  {
+   "id": "analyzer.text_llm.TextLLM",
+   "kind": "class",
+   "module": "analyzer.text_llm",
+   "name": "TextLLM",
+   "args": [],
+   "line": 45,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.text_llm.TextLLM.__init__",
+   "kind": "method",
+   "module": "analyzer.text_llm",
+   "name": "__init__",
+   "args": [
+    "self",
+    "base",
+    "key",
+    "model",
+    "timeout"
+   ],
+   "line": 46,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.text_llm.TextLLM.chat",
+   "kind": "method",
+   "module": "analyzer.text_llm",
+   "name": "chat",
+   "args": [
+    "self",
+    "prompt",
+    "_images",
+    "max_retries"
+   ],
+   "line": 60,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.text_llm.TextLLM.json",
+   "kind": "method",
+   "module": "analyzer.text_llm",
+   "name": "json",
+   "args": [
+    "self",
+    "prompt",
+    "_images"
+   ],
+   "line": 89,
+   "doc": ""
+  },
+  {
+   "id": "analyzer.text_llm.client",
+   "kind": "function",
+   "module": "analyzer.text_llm",
+   "name": "client",
+   "args": [],
+   "line": 103,
+   "doc": "进程级单例(避免每调用重读 .env)。"
+  },
+  {
    "id": "analyzer.vl._read_dot",
    "kind": "function",
    "module": "analyzer.vl",
@@ -4598,7 +4925,7 @@
    "args": [
     "text"
    ],
-   "line": 58,
+   "line": 67,
    "doc": ""
   },
   {
@@ -4609,7 +4936,7 @@
    "args": [
     "db_path"
    ],
-   "line": 67,
+   "line": 76,
    "doc": ""
   },
   {
@@ -4621,7 +4948,7 @@
     "text",
     "task_id"
    ],
-   "line": 73,
+   "line": 82,
    "doc": "裁决: 提示需要结构化参数(winner/keep), 记 user_rulings + 择优备注。"
   },
   {
@@ -4633,7 +4960,7 @@
     "text",
     "task_id"
    ],
-   "line": 89,
+   "line": 98,
    "doc": "工具线索: external_fact 挂锚卡 + 建议研究查询计划。"
   },
   {
@@ -4645,8 +4972,20 @@
     "text",
     "task_id"
    ],
-   "line": 118,
+   "line": 127,
    "doc": "能力评价: 识别域(verification/generation/orchestration)并开/并 gap。"
+  },
+  {
+   "id": "kb.feedback.route_hypothesis",
+   "kind": "function",
+   "module": "kb.feedback",
+   "name": "route_hypothesis",
+   "args": [
+    "text",
+    "task_id"
+   ],
+   "line": 163,
+   "doc": "假设/技术方向 -> user_hypotheses + 零硬币预检(不花币)。"
   },
   {
    "id": "kb.feedback.route",
@@ -4657,7 +4996,7 @@
     "text",
     "task_id"
    ],
-   "line": 154,
+   "line": 203,
    "doc": ""
   },
   {
@@ -4666,8 +5005,128 @@
    "module": "kb.feedback",
    "name": "main",
    "args": [],
-   "line": 163,
+   "line": 218,
    "doc": ""
+  },
+  {
+   "id": "kb.hypotheses._conn",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "_conn",
+   "args": [
+    "db_path"
+   ],
+   "line": 22,
+   "doc": ""
+  },
+  {
+   "id": "kb.hypotheses.looks_like_hypothesis",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "looks_like_hypothesis",
+   "args": [
+    "text"
+   ],
+   "line": 35,
+   "doc": ""
+  },
+  {
+   "id": "kb.hypotheses.propose",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "propose",
+   "args": [
+    "statement"
+   ],
+   "line": 39,
+   "doc": "记录假设(status=proposed)。返回完整行。"
+  },
+  {
+   "id": "kb.hypotheses._match_negatives",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "_match_negatives",
+   "args": [
+    "text",
+    "db"
+   ],
+   "line": 63,
+   "doc": "knowledge_items 里 negative_result 与假设语义相交者(词法)。"
+  },
+  {
+   "id": "kb.hypotheses._plan",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "_plan",
+   "args": [
+    "statement"
+   ],
+   "line": 78,
+   "doc": "验证计划草拟(零硬币; P2 版: 视频族探针已实测可跑, 其余走检索建议)。"
+  },
+  {
+   "id": "kb.hypotheses.precheck",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "precheck",
+   "args": [
+    "hyp_id",
+    "db_path"
+   ],
+   "line": 90,
+   "doc": "零硬币预检: 定律/规则/负结果匹配 + 验证计划 + 软提示结论。"
+  },
+  {
+   "id": "kb.hypotheses.run_probe",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "run_probe",
+   "args": [
+    "hyp_id",
+    "runner",
+    "ctx",
+    "db_path"
+   ],
+   "line": 160,
+   "doc": "花币执行探针(需用户已确认)。runner 注入便于测试; 生产用 webapp 执行器。"
+  },
+  {
+   "id": "kb.hypotheses._settle",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "_settle",
+   "args": [
+    "hyp_id",
+    "res",
+    "db_path"
+   ],
+   "line": 196,
+   "doc": "探针结果落账: verified -> 起草规则; rejected -> 记负结果。"
+  },
+  {
+   "id": "kb.hypotheses.get",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "get",
+   "args": [
+    "hyp_id",
+    "db_path"
+   ],
+   "line": 250,
+   "doc": ""
+  },
+  {
+   "id": "kb.hypotheses.reject",
+   "kind": "function",
+   "module": "kb.hypotheses",
+   "name": "reject",
+   "args": [
+    "hyp_id",
+    "note",
+    "db_path"
+   ],
+   "line": 258,
+   "doc": "用户不花币直接否掉假设(或预检后放弃)。"
   },
   {
    "id": "kb.migrate_m15.ensure_schema",
@@ -4766,6 +5225,15 @@
    "doc": ""
   },
   {
+   "id": "kb.migrate_m18_p1.main",
+   "kind": "function",
+   "module": "kb.migrate_m18_p1",
+   "name": "main",
+   "args": [],
+   "line": 20,
+   "doc": ""
+  },
+  {
    "id": "kb.query.query",
    "kind": "function",
    "module": "kb.query",
@@ -4784,6 +5252,37 @@
    "name": "main",
    "args": [],
    "line": 44,
+   "doc": ""
+  },
+  {
+   "id": "kb.replay_h3_thread._t",
+   "kind": "function",
+   "module": "kb.replay_h3_thread",
+   "name": "_t",
+   "args": [
+    "hours"
+   ],
+   "line": 26,
+   "doc": ""
+  },
+  {
+   "id": "kb.replay_h3_thread.curves",
+   "kind": "function",
+   "module": "kb.replay_h3_thread",
+   "name": "curves",
+   "args": [
+    "name"
+   ],
+   "line": 30,
+   "doc": ""
+  },
+  {
+   "id": "kb.replay_h3_thread.main",
+   "kind": "function",
+   "module": "kb.replay_h3_thread",
+   "name": "main",
+   "args": [],
+   "line": 34,
    "doc": ""
   },
   {
@@ -4995,6 +5494,172 @@
    "doc": "Structured search over cards + facts."
   },
   {
+   "id": "kb.threads._slug",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "_slug",
+   "args": [
+    "text",
+    "fallback"
+   ],
+   "line": 27,
+   "doc": "中文为主的表述正则清洗后常为空——退化为内容哈希前缀,"
+  },
+  {
+   "id": "kb.threads._conn",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "_conn",
+   "args": [
+    "db_path"
+   ],
+   "line": 38,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads._events_path",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "_events_path",
+   "args": [
+    "key"
+   ],
+   "line": 44,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads.ensure_thread",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "ensure_thread",
+   "args": [
+    "key",
+    "goal"
+   ],
+   "line": 51,
+   "doc": "创建/取回线程(幂等 by key)。返回 {id, key, goal, ...}。"
+  },
+  {
+   "id": "kb.threads.add_event",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "add_event",
+   "args": [
+    "key",
+    "kind",
+    "payload"
+   ],
+   "line": 71,
+   "doc": "追加事件(时间线一格)。kind: task|ruling|hypothesis|law|card_choice|"
+  },
+  {
+   "id": "kb.threads.events",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "events",
+   "args": [
+    "key"
+   ],
+   "line": 92,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads.get_thread",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "get_thread",
+   "args": [
+    "key",
+    "db_path"
+   ],
+   "line": 100,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads.list_threads",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "list_threads",
+   "args": [
+    "db_path"
+   ],
+   "line": 108,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads.full",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "full",
+   "args": [
+    "key",
+    "db_path"
+   ],
+   "line": 118,
+   "doc": "线程完整视图(前端时间线用): 行 + 事件 + 假设 + 总结。"
+  },
+  {
+   "id": "kb.threads.digest",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "digest",
+   "args": [
+    "key",
+    "max_events",
+    "db_path"
+   ],
+   "line": 138,
+   "doc": "拼入规划 LLM 的 thread_digest: 事件近者优先; 定律/规则引用全保留。"
+  },
+  {
+   "id": "kb.threads._llm",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "_llm",
+   "args": [
+    "prompt"
+   ],
+   "line": 159,
+   "doc": ""
+  },
+  {
+   "id": "kb.threads._extract_json",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "_extract_json",
+   "args": [
+    "raw"
+   ],
+   "line": 164,
+   "doc": "LLM 返回里挖 JSON 对象(容忍围栏/前后缀废话; 取第一个平衡的 {...})。"
+  },
+  {
+   "id": "kb.threads.close_draft",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "close_draft",
+   "args": [
+    "key",
+    "db_path"
+   ],
+   "line": 206,
+   "doc": "收口第一步: LLM 草拟四栏总结(status=draft), 返回草稿。"
+  },
+  {
+   "id": "kb.threads.close_confirm",
+   "kind": "function",
+   "module": "kb.threads",
+   "name": "close_confirm",
+   "args": [
+    "key",
+    "cols",
+    "summary_id",
+    "db_path"
+   ],
+   "line": 250,
+   "doc": "收口第二步: 用户(可编辑后)确认 -> confirmed + knowledge_items 回写。"
+  },
+  {
    "id": "mcp.server._conn",
    "kind": "function",
    "module": "mcp.server",
@@ -5147,6 +5812,17 @@
    "doc": "M15: search expert_solutions (validated/candidate reusable solutions)."
   },
   {
+   "id": "mcp.server.tool_search_boundary_laws",
+   "kind": "function",
+   "module": "mcp.server",
+   "name": "tool_search_boundary_laws",
+   "args": [
+    "args"
+   ],
+   "line": 362,
+   "doc": "M18: search boundary_laws + decision_rules (feasibility pre-check)."
+  },
+  {
    "id": "mcp.server.send",
    "kind": "function",
    "module": "mcp.server",
@@ -5154,7 +5830,7 @@
    "args": [
     "msg"
    ],
-   "line": 524,
+   "line": 582,
    "doc": ""
   },
   {
@@ -5165,7 +5841,7 @@
    "args": [
     "req"
    ],
-   "line": 529,
+   "line": 587,
    "doc": ""
   },
   {
@@ -5174,7 +5850,7 @@
    "module": "mcp.server",
    "name": "main",
    "args": [],
-   "line": 564,
+   "line": 622,
    "doc": ""
   },
   {
@@ -6133,6 +6809,40 @@
    "doc": ""
   },
   {
+   "id": "test_ai_audit.check",
+   "kind": "function",
+   "module": "test_ai_audit",
+   "name": "check",
+   "args": [
+    "name",
+    "cond",
+    "detail"
+   ],
+   "line": 25,
+   "doc": ""
+  },
+  {
+   "id": "test_ai_audit.cleanup",
+   "kind": "function",
+   "module": "test_ai_audit",
+   "name": "cleanup",
+   "args": [],
+   "line": 34,
+   "doc": ""
+  },
+  {
+   "id": "test_ai_audit.fake_task",
+   "kind": "function",
+   "module": "test_ai_audit",
+   "name": "fake_task",
+   "args": [
+    "req",
+    "images"
+   ],
+   "line": 78,
+   "doc": ""
+  },
+  {
    "id": "test_m15_wiring.FakeTask",
    "kind": "class",
    "module": "test_m15_wiring",
@@ -6366,7 +7076,7 @@
     "req_text",
     "two_imgs"
    ],
-   "line": 118,
+   "line": 120,
    "doc": ""
   },
   {
@@ -6379,7 +7089,7 @@
     "states",
     "timeout"
    ],
-   "line": 124,
+   "line": 128,
    "doc": ""
   },
   {
@@ -6390,7 +7100,7 @@
    "args": [
     "tid"
    ],
-   "line": 134,
+   "line": 138,
    "doc": ""
   },
   {
@@ -6401,7 +7111,7 @@
    "args": [
     "p"
    ],
-   "line": 162,
+   "line": 166,
    "doc": ""
   },
   {
@@ -6415,6 +7125,187 @@
     "detail"
    ],
    "line": 23,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.check",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "check",
+   "args": [
+    "name",
+    "cond",
+    "detail"
+   ],
+   "line": 35,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.make_smooth_mp4",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "make_smooth_mp4",
+   "args": [
+    "path",
+    "n"
+   ],
+   "line": 42,
+   "doc": "匀变色视频(无快切带): 探针判定 continuous=True。"
+  },
+  {
+   "id": "test_m18_p1p2._fake_upload",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "_fake_upload",
+   "args": [
+    "api_key",
+    "file_path",
+    "base"
+   ],
+   "line": 61,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._fake_run",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "_fake_run",
+   "args": [
+    "api_key",
+    "webapp_id",
+    "node_info_list"
+   ],
+   "line": 64,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._fake_wait",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "_fake_wait",
+   "args": [
+    "api_key",
+    "task_id",
+    "poll",
+    "max_wait"
+   ],
+   "line": 67,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._fake_download",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "_fake_download",
+   "args": [
+    "url",
+    "dest",
+    "timeout"
+   ],
+   "line": 69,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._StubText",
+   "kind": "class",
+   "module": "test_m18_p1p2",
+   "name": "_StubText",
+   "args": [],
+   "line": 90,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._StubText.chat",
+   "kind": "method",
+   "module": "test_m18_p1p2",
+   "name": "chat",
+   "args": [
+    "self",
+    "prompt",
+    "_images",
+    "max_retries"
+   ],
+   "line": 93,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2._StubText.json",
+   "kind": "method",
+   "module": "test_m18_p1p2",
+   "name": "json",
+   "args": [
+    "self",
+    "prompt",
+    "_images"
+   ],
+   "line": 101,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.post",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "post",
+   "args": [
+    "path",
+    "obj"
+   ],
+   "line": 129,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.get",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "get",
+   "args": [
+    "path"
+   ],
+   "line": 139,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.png_b64",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "png_b64",
+   "args": [
+    "color"
+   ],
+   "line": 143,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.new_task",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "new_task",
+   "args": [
+    "req_text"
+   ],
+   "line": 148,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.wait_state",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "wait_state",
+   "args": [
+    "tid",
+    "states",
+    "timeout"
+   ],
+   "line": 154,
+   "doc": ""
+  },
+  {
+   "id": "test_m18_p1p2.cleanup_db",
+   "kind": "function",
+   "module": "test_m18_p1p2",
+   "name": "cleanup_db",
+   "args": [],
+   "line": 164,
    "doc": ""
   },
   {
@@ -6511,7 +7402,7 @@
    "args": [
     "self"
    ],
-   "line": 98,
+   "line": 111,
    "doc": ""
   },
   {
@@ -6520,7 +7411,31 @@
    "module": "webapp.app",
    "name": "main",
    "args": [],
-   "line": 149,
+   "line": 247,
+   "doc": ""
+  },
+  {
+   "id": "webapp.hyp_runner.frame_diff_stats",
+   "kind": "function",
+   "module": "webapp.hyp_runner",
+   "name": "frame_diff_stats",
+   "args": [
+    "mp4"
+   ],
+   "line": 20,
+   "doc": ""
+  },
+  {
+   "id": "webapp.hyp_runner.default_runner",
+   "kind": "function",
+   "module": "webapp.hyp_runner",
+   "name": "default_runner",
+   "args": [
+    "statement",
+    "plan",
+    "ctx"
+   ],
+   "line": 47,
    "doc": ""
   },
   {
@@ -6540,7 +7455,7 @@
    "args": [
     "self"
    ],
-   "line": 109,
+   "line": 114,
    "doc": ""
   },
   {
@@ -6554,7 +7469,7 @@
     "detail",
     "images"
    ],
-   "line": 114,
+   "line": 119,
    "doc": ""
   },
   {
@@ -6565,7 +7480,7 @@
    "args": [
     "self"
    ],
-   "line": 121,
+   "line": 126,
    "doc": ""
   },
   {
@@ -6576,7 +7491,7 @@
    "args": [
     "self"
    ],
-   "line": 138,
+   "line": 144,
    "doc": ""
   },
   {
@@ -6587,7 +7502,7 @@
    "args": [
     "tid"
    ],
-   "line": 151,
+   "line": 177,
    "doc": ""
   },
   {
@@ -6597,9 +7512,10 @@
    "name": "create_task",
    "args": [
     "requirement",
-    "images_b64"
+    "images_b64",
+    "thread_key"
    ],
-   "line": 155,
+   "line": 181,
    "doc": ""
   },
   {
@@ -6608,11 +7524,10 @@
    "module": "webapp.orchestrator",
    "name": "_llm_json",
    "args": [
-    "prompt",
-    "model"
+    "prompt"
    ],
-   "line": 180,
-   "doc": ""
+   "line": 216,
+   "doc": "运行时文本 LLM(DeepSeek via analyzer/text_llm; 识图仍走 vl.VLClient)。"
   },
   {
    "id": "webapp.orchestrator.plan_task",
@@ -6622,7 +7537,7 @@
    "args": [
     "task"
    ],
-   "line": 187,
+   "line": 223,
    "doc": "Requirement -> family + route + notes (LLM + keyword floor)."
   },
   {
@@ -6634,7 +7549,7 @@
     "task",
     "text"
    ],
-   "line": 221,
+   "line": 263,
    "doc": ""
   },
   {
@@ -6646,7 +7561,7 @@
     "fb",
     "task"
    ],
-   "line": 246,
+   "line": 288,
    "doc": ""
   },
   {
@@ -6657,7 +7572,7 @@
    "args": [
     "query"
    ],
-   "line": 261,
+   "line": 303,
    "doc": "Find a runnable webapp workflow matching the query (single-image)."
   },
   {
@@ -6668,7 +7583,7 @@
    "args": [
     "task"
    ],
-   "line": 295,
+   "line": 337,
    "doc": "Expert Solution Retrieval(设计 §3):命中则零规划硬币直接回放 route_json。"
   },
   {
@@ -6680,7 +7595,7 @@
     "task",
     "route"
    ],
-   "line": 331,
+   "line": 373,
    "doc": "执行链解析:优先回放 reused_solution 的 route_json(零翻译),退回 ROUTE_CHAINS。"
   },
   {
@@ -6691,7 +7606,7 @@
    "args": [
     "task"
    ],
-   "line": 351,
+   "line": 393,
    "doc": "终态回写(设计 §3),任何异常不影响任务循环:"
   },
   {
@@ -6703,7 +7618,7 @@
     "task",
     "route"
    ],
-   "line": 389,
+   "line": 431,
    "doc": ""
   },
   {
@@ -6715,7 +7630,7 @@
     "task",
     "route"
    ],
-   "line": 437,
+   "line": 479,
    "doc": ""
   },
   {
@@ -6727,7 +7642,7 @@
     "task",
     "results"
    ],
-   "line": 471,
+   "line": 513,
    "doc": ""
   },
   {
@@ -6739,8 +7654,21 @@
     "task",
     "limited"
    ],
-   "line": 511,
+   "line": 553,
    "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._thread_ev",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_thread_ev",
+   "args": [
+    "task",
+    "kind",
+    "payload"
+   ],
+   "line": 604,
+   "doc": "线程事件写入(无线程归属则静默跳过; 失败不阻塞任务流)。"
   },
   {
    "id": "webapp.orchestrator.choose_card",
@@ -6751,7 +7679,7 @@
     "task",
     "ix"
    ],
-   "line": 541,
+   "line": 622,
    "doc": "negotiating 态下用户点选路径卡; 任务线程在 8s 窗内收到。"
   },
   {
@@ -6765,7 +7693,7 @@
     "w",
     "h"
    ],
-   "line": 550,
+   "line": 631,
    "doc": "条件帧 16:9 画布归一(BL-005: 输出画幅跟随条件帧, 链式必须同画布)。"
   },
   {
@@ -6778,7 +7706,7 @@
     "dst",
     "fps"
    ],
-   "line": 565,
+   "line": 646,
    "doc": "快切带检测 + 运动补偿插值拉伸 2.5x(方案#19 V2 语义: 保持段不动)。"
   },
   {
@@ -6790,7 +7718,7 @@
     "task",
     "route"
    ],
-   "line": 638,
+   "line": 719,
    "doc": "M18-P0 视频路线执行: i2v 动作脚本 / fl2v 直连 / fl2v+retiming。"
   },
   {
@@ -6801,7 +7729,7 @@
    "args": [
     "task"
    ],
-   "line": 705,
+   "line": 786,
    "doc": ""
   },
   {
@@ -6812,9 +7740,10 @@
    "args": [
     "task",
     "text",
-    "accept"
+    "accept",
+    "dims"
    ],
-   "line": 864,
+   "line": 949,
    "doc": ""
   }
  ],
@@ -20950,6 +21879,170 @@
    "line": 124
   },
   {
+   "from": "analyzer.text_llm",
+   "raw": "Path",
+   "line": 26
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "env.get",
+   "line": 40
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "env.get",
+   "line": 41
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.__init__",
+   "raw": "load_env",
+   "line": 48,
+   "to": "analyzer.text_llm.load_env",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "range",
+   "line": 70
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "RuntimeError",
+   "line": 87
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "self.chat",
+   "line": 90
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "re.search",
+   "line": 91
+  },
+  {
+   "from": "analyzer.text_llm.client",
+   "raw": "TextLLM",
+   "line": 107,
+   "to": "analyzer.text_llm.TextLLM",
+   "resolved": true
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "line.strip",
+   "line": 34
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "env.get",
+   "line": 42
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "env.get",
+   "line": 42
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.__init__",
+   "raw": "VLClient",
+   "line": 57
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "self._fb.chat",
+   "line": 62
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "urllib.request.Request",
+   "line": 71
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "time.sleep",
+   "line": 86
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "m.group",
+   "line": 92
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "raw.strip",
+   "line": 92
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "json.loads",
+   "line": 94
+  },
+  {
+   "from": "analyzer.text_llm",
+   "raw": "Path",
+   "line": 25
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "ENV_PATH.read_text",
+   "line": 33
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "line.split",
+   "line": 36
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "v.strip",
+   "line": 37
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "json.dumps",
+   "line": 63
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.json",
+   "raw": "isinstance",
+   "line": 95
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "line.startswith",
+   "line": 35
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "urllib.request.urlopen",
+   "line": 76
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "json.loads",
+   "line": 77
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "r.read",
+   "line": 77
+  },
+  {
+   "from": "analyzer.text_llm.load_env",
+   "raw": "k.strip",
+   "line": 37
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "e.read",
+   "line": 80
+  },
+  {
+   "from": "analyzer.text_llm.TextLLM.chat",
+   "raw": "type",
+   "line": 85
+  },
+  {
    "from": "analyzer.vl._data_url",
    "raw": "Path",
    "line": 60
@@ -28145,122 +29238,143 @@
   {
    "from": "kb.feedback",
    "raw": "sys.path.insert",
-   "line": 30
+   "line": 33
   },
   {
    "from": "kb.feedback",
    "raw": "str",
-   "line": 30
+   "line": 33
   },
   {
    "from": "kb.feedback.classify",
    "raw": "text.strip",
-   "line": 59
+   "line": 68
   },
   {
    "from": "kb.feedback._conn",
    "raw": "sqlite3.connect",
-   "line": 68
+   "line": 77
   },
   {
    "from": "kb.feedback.route_verdict",
    "raw": "bool",
-   "line": 79
+   "line": 88
   },
   {
    "from": "kb.feedback.route_verdict",
    "raw": "record_user_ruling",
-   "line": 80
+   "line": 89
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "re.findall",
-   "line": 93
+   "line": 102
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "_conn",
-   "line": 101,
+   "line": 110,
    "to": "kb.feedback._conn",
    "resolved": true
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "conn.close",
-   "line": 113
+   "line": 122
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "_conn",
-   "line": 124,
+   "line": 133,
    "to": "kb.feedback._conn",
    "resolved": true
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "conn.close",
-   "line": 149
+   "line": 158
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "_conn",
+   "line": 184,
+   "to": "kb.feedback._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "conn.close",
+   "line": 189
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "hypotheses.propose",
+   "line": 195,
+   "to": "kb.hypotheses.propose",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "hypotheses.precheck",
+   "line": 197,
+   "to": "kb.hypotheses.precheck",
+   "resolved": true
   },
   {
    "from": "kb.feedback.route",
    "raw": "classify",
-   "line": 155,
+   "line": 205,
    "to": "kb.feedback.classify",
    "resolved": true
   },
   {
    "from": "kb.feedback.main",
    "raw": "argparse.ArgumentParser",
-   "line": 164
+   "line": 219
   },
   {
    "from": "kb.feedback.main",
    "raw": "ap.add_argument",
-   "line": 165
+   "line": 220
   },
   {
    "from": "kb.feedback.main",
    "raw": "ap.add_argument",
-   "line": 166
+   "line": 221
   },
   {
    "from": "kb.feedback.main",
    "raw": "ap.parse_args",
-   "line": 167
+   "line": 222
   },
   {
    "from": "kb.feedback.main",
    "raw": "print",
-   "line": 168
+   "line": 223
   },
   {
    "from": "kb.feedback.main",
    "raw": "sys.exit",
-   "line": 173
+   "line": 228
   },
   {
    "from": "kb.feedback.route_verdict",
    "raw": "re.search",
-   "line": 79
+   "line": 88
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "conn.execute",
-   "line": 106
+   "line": 115
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "conn.commit",
-   "line": 112
-  },
-  {
-   "from": "kb.feedback.route_meta_capability",
-   "raw": "re.search",
    "line": 121
   },
   {
    "from": "kb.feedback.route_meta_capability",
-   "raw": "conn.execute",
+   "raw": "re.search",
    "line": 130
   },
   {
@@ -28270,92 +29384,641 @@
   },
   {
    "from": "kb.feedback.route_meta_capability",
-   "raw": "conn.commit",
+   "raw": "conn.execute",
    "line": 148
+  },
+  {
+   "from": "kb.feedback.route_meta_capability",
+   "raw": "conn.commit",
+   "line": 157
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "hypotheses.precheck",
+   "line": 191,
+   "to": "kb.hypotheses.precheck",
+   "resolved": true
   },
   {
    "from": "kb.feedback.route",
    "raw": "fn",
-   "line": 158
+   "line": 210
   },
   {
    "from": "kb.feedback.main",
    "raw": "json.dumps",
-   "line": 168
+   "line": 223
   },
   {
    "from": "kb.feedback.main",
    "raw": "main",
-   "line": 173,
+   "line": 228,
    "to": "kb.feedback.main",
    "resolved": true
   },
   {
    "from": "kb.feedback.classify",
    "raw": "re.search",
-   "line": 62
+   "line": 71
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "n.lower",
-   "line": 97
+   "line": 106
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "re.findall",
-   "line": 98
+   "line": 107
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "conn.execute",
-   "line": 102
+   "line": 111
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "re.search",
-   "line": 122
+   "line": 131
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "text.strip",
-   "line": 125
+   "line": 134
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "conn.execute",
-   "line": 126
+   "line": 135
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "_conn",
+   "line": 176,
+   "to": "kb.feedback._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "conn.close",
+   "line": 179
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "conn.execute",
+   "line": 185
+  },
+  {
+   "from": "kb.feedback.route",
+   "raw": "fn",
+   "line": 212
   },
   {
    "from": "kb.feedback.main",
    "raw": "route",
-   "line": 168,
+   "line": 223,
    "to": "kb.feedback.route",
    "resolved": true
   },
   {
    "from": "kb.feedback",
    "raw": "Path",
-   "line": 29
+   "line": 32
   },
   {
    "from": "kb.feedback.route_operator_lead",
    "raw": "g.lower",
-   "line": 99
+   "line": 108
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "json.dumps",
-   "line": 134
+   "line": 143
   },
   {
    "from": "kb.feedback.route_meta_capability",
    "raw": "json.dumps",
-   "line": 144
+   "line": 153
   },
   {
    "from": "kb.feedback.route_meta_capability",
+   "raw": "json.dumps",
+   "line": 156
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "conn.execute",
+   "line": 177
+  },
+  {
+   "from": "kb.feedback.route_hypothesis",
+   "raw": "text.strip",
+   "line": 188
+  },
+  {
+   "from": "kb.hypotheses._conn",
+   "raw": "re.compile",
+   "line": 30
+  },
+  {
+   "from": "kb.hypotheses._conn",
+   "raw": "sqlite3.connect",
+   "line": 23
+  },
+  {
+   "from": "kb.hypotheses.looks_like_hypothesis",
+   "raw": "bool",
+   "line": 36
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "_conn",
+   "line": 42,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "db.execute",
+   "line": 43
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "db.commit",
+   "line": 49
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "db.close",
+   "line": 52
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "dict",
+   "line": 58
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "db.execute",
+   "line": 67
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "out.sort",
+   "line": 74
+  },
+  {
+   "from": "kb.hypotheses._plan",
+   "raw": "re.search",
+   "line": 80
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "_conn",
+   "line": 96,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.execute",
+   "line": 104
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.execute",
+   "line": 111
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "laws.sort",
+   "line": 118
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "rules.sort",
+   "line": 119
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "_match_negatives",
+   "line": 120,
+   "to": "kb.hypotheses._match_negatives",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "_plan",
+   "line": 121,
+   "to": "kb.hypotheses._plan",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.execute",
+   "line": 143
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.commit",
+   "line": 148
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.close",
+   "line": 149
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "_conn",
+   "line": 168,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.execute",
+   "line": 177
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.commit",
+   "line": 179
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.close",
+   "line": 180
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "runner",
+   "line": 190
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "_settle",
+   "line": 193,
+   "to": "kb.hypotheses._settle",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "_conn",
+   "line": 198,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "bool",
+   "line": 201
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.execute",
+   "line": 232
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.commit",
+   "line": 238
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.close",
+   "line": 239
+  },
+  {
+   "from": "kb.hypotheses.get",
+   "raw": "_conn",
+   "line": 251,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.get",
+   "raw": "db.close",
+   "line": 254
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "_conn",
+   "line": 260,
+   "to": "kb.hypotheses._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "db.execute",
+   "line": 263
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "db.commit",
+   "line": 266
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "db.close",
+   "line": 267
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "get",
+   "line": 273,
+   "to": "kb.hypotheses.get",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.looks_like_hypothesis",
+   "raw": "_HYP_PAT.search",
+   "line": 36
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "threads.add_event",
+   "line": 55,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "sum",
+   "line": 70
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.close",
+   "line": 100
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "KeyError",
+   "line": 101
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "sum",
+   "line": 106
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "sum",
+   "line": 113
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "threads.add_event",
+   "line": 152,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.close",
+   "line": 172
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "KeyError",
+   "line": 173
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.close",
+   "line": 175
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "ValueError",
+   "line": 176
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "threads.add_event",
+   "line": 183,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "json.loads",
+   "line": 191
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 201
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.execute",
+   "line": 206
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.execute",
+   "line": 226
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "threads.add_event",
+   "line": 242,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.get",
+   "raw": "dict",
+   "line": 255
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "threads.add_event",
+   "line": 270,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "db.execute",
+   "line": 50
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "out.append",
+   "line": 72
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "db.execute",
+   "line": 97
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "laws.append",
+   "line": 109
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "rules.append",
+   "line": 116
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "any",
+   "line": 129
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "re.search",
+   "line": 130
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "json.dumps",
+   "line": 146
+  },
+  {
+   "from": "kb.hypotheses.precheck",
    "raw": "json.dumps",
    "line": 147
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "db.execute",
+   "line": 169
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "db.execute",
+   "line": 199
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "json.dumps",
+   "line": 237
+  },
+  {
+   "from": "kb.hypotheses.get",
+   "raw": "db.execute",
+   "line": 252
+  },
+  {
+   "from": "kb.hypotheses.reject",
+   "raw": "db.execute",
+   "line": 261
+  },
+  {
+   "from": "kb.hypotheses",
+   "raw": "Path",
+   "line": 18
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "statement.strip",
+   "line": 46
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "re.split",
+   "line": 65
+  },
+  {
+   "from": "kb.hypotheses.run_probe",
+   "raw": "json.loads",
+   "line": 184
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "json.dumps",
+   "line": 214
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 216
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 236
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "statement.strip",
+   "line": 56
+  },
+  {
+   "from": "kb.hypotheses._match_negatives",
+   "raw": "len",
+   "line": 65
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "re.split",
+   "line": 106
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "re.split",
+   "line": 113
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 217
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 219
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 220
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 224
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 237
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 245
+  },
+  {
+   "from": "kb.hypotheses.propose",
+   "raw": "statement.strip",
+   "line": 47
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 231
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "len",
+   "line": 107
+  },
+  {
+   "from": "kb.hypotheses.precheck",
+   "raw": "len",
+   "line": 114
+  },
+  {
+   "from": "kb.hypotheses._settle",
+   "raw": "res.get",
+   "line": 230
   },
   {
    "from": "kb.inspect_cards",
@@ -28963,6 +30626,68 @@
    "line": 196
   },
   {
+   "from": "kb.migrate_m18_p1",
+   "raw": "sys.path.insert",
+   "line": 14
+  },
+  {
+   "from": "kb.migrate_m18_p1",
+   "raw": "str",
+   "line": 14
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "sqlite3.connect",
+   "line": 21
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "db.executescript",
+   "line": 22
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "print",
+   "line": 23
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "db.close",
+   "line": 27
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "main",
+   "line": 31,
+   "to": "kb.migrate_m18_p1.main",
+   "resolved": true
+  },
+  {
+   "from": "kb.migrate_m18_p1",
+   "raw": "Path",
+   "line": 17
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "SCHEMA.read_text",
+   "line": 22
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "print",
+   "line": 26
+  },
+  {
+   "from": "kb.migrate_m18_p1",
+   "raw": "Path",
+   "line": 13
+  },
+  {
+   "from": "kb.migrate_m18_p1.main",
+   "raw": "db.execute",
+   "line": 25
+  },
+  {
    "from": "kb.query.query",
    "raw": "params.append",
    "line": 40
@@ -29180,6 +30905,348 @@
    "from": "kb.query.main",
    "raw": "stats.get",
    "line": 81
+  },
+  {
+   "from": "kb.replay_h3_thread",
+   "raw": "sys.path.insert",
+   "line": 15
+  },
+  {
+   "from": "kb.replay_h3_thread",
+   "raw": "str",
+   "line": 15
+  },
+  {
+   "from": "kb.replay_h3_thread._t",
+   "raw": "round",
+   "line": 27
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "p.exists",
+   "line": 37
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.ensure_thread",
+   "line": 40,
+   "to": "kb.threads.ensure_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 43,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "curves",
+   "line": 49,
+   "to": "kb.replay_h3_thread.curves",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 50,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 61,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "json.loads",
+   "line": 72
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 73,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 83,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "json.loads",
+   "line": 94
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 95,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 107,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "hypotheses.propose",
+   "line": 130,
+   "to": "kb.hypotheses.propose",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 134,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "json.loads",
+   "line": 141
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 142,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 153,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.full",
+   "line": 158,
+   "to": "kb.threads.full",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "print",
+   "line": 160
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "print",
+   "line": 161
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "print",
+   "line": 162
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "kinds.count",
+   "line": 164
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "print",
+   "line": 167
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "sys.exit",
+   "line": 172
+  },
+  {
+   "from": "kb.replay_h3_thread.curves",
+   "raw": "json.loads",
+   "line": 31
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "p.unlink",
+   "line": 38
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "curves",
+   "line": 60,
+   "to": "kb.replay_h3_thread.curves",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "curves",
+   "line": 60,
+   "to": "kb.replay_h3_thread.curves",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "threads.add_event",
+   "line": 125,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "main",
+   "line": 172,
+   "to": "kb.replay_h3_thread.main",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 45,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 46,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 57,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 69,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 80,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 91,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 104,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 115,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 140,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 150,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 156,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 156,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "kinds.count",
+   "line": 166
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "kinds.count",
+   "line": 166
+  },
+  {
+   "from": "kb.replay_h3_thread",
+   "raw": "Path",
+   "line": 14
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "c.get",
+   "line": 78
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "_t",
+   "line": 127,
+   "to": "kb.replay_h3_thread._t",
+   "resolved": true
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "e.get",
+   "line": 147
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "e.get",
+   "line": 148
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "len",
+   "line": 160
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "len",
+   "line": 162
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "kinds.count",
+   "line": 161
+  },
+  {
+   "from": "kb.replay_h3_thread.main",
+   "raw": "set",
+   "line": 161
   },
   {
    "from": "kb.solutions",
@@ -30050,6 +32117,735 @@
    "line": 140
   },
   {
+   "from": "kb.threads",
+   "raw": "re.compile",
+   "line": 24
+  },
+  {
+   "from": "kb.threads._conn",
+   "raw": "sqlite3.connect",
+   "line": 39
+  },
+  {
+   "from": "kb.threads._events_path",
+   "raw": "THREADS_DIR.mkdir",
+   "line": 45
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "_slug",
+   "line": 55,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "_conn",
+   "line": 56,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "db.close",
+   "line": 67
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "dict",
+   "line": 68
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "ensure_thread",
+   "line": 75,
+   "to": "kb.threads.ensure_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "_events_path",
+   "line": 78,
+   "to": "kb.threads._events_path",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "events.append",
+   "line": 80
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "p.write_text",
+   "line": 81
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "_conn",
+   "line": 83,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "db.execute",
+   "line": 84
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "db.commit",
+   "line": 87
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "db.close",
+   "line": 88
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "_events_path",
+   "line": 93,
+   "to": "kb.threads._events_path",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "json.loads",
+   "line": 96
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "sorted",
+   "line": 97
+  },
+  {
+   "from": "kb.threads.get_thread",
+   "raw": "_conn",
+   "line": 101,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.get_thread",
+   "raw": "db.close",
+   "line": 104
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "_conn",
+   "line": 109,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "db.close",
+   "line": 112
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "get_thread",
+   "line": 120,
+   "to": "kb.threads.get_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "_conn",
+   "line": 123,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "db.close",
+   "line": 130
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "get_thread",
+   "line": 140,
+   "to": "kb.threads.get_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "events",
+   "line": 143,
+   "to": "kb.threads.events",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "sorted",
+   "line": 147
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "re.search",
+   "line": 168
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "enumerate",
+   "line": 176
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "get_thread",
+   "line": 208,
+   "to": "kb.threads.get_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "events",
+   "line": 211,
+   "to": "kb.threads.events",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "_conn",
+   "line": 229,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "db.execute",
+   "line": 230
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "db.execute",
+   "line": 239
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "db.commit",
+   "line": 241
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "db.close",
+   "line": 242
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "add_event",
+   "line": 243,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "get_thread",
+   "line": 253,
+   "to": "kb.threads.get_thread",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "_conn",
+   "line": 256,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 273
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 275
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 285
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 291
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.commit",
+   "line": 293
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.close",
+   "line": 294
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "add_event",
+   "line": 295,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads._slug",
+   "raw": "len",
+   "line": 31
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "db.execute",
+   "line": 59
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "db.commit",
+   "line": 64
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "payload.get",
+   "line": 75
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "round",
+   "line": 76
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "_slug",
+   "line": 78,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "p.exists",
+   "line": 79
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "json.loads",
+   "line": 79
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "json.dumps",
+   "line": 81
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "_slug",
+   "line": 93,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "p.exists",
+   "line": 94
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "p.read_text",
+   "line": 96
+  },
+  {
+   "from": "kb.threads.get_thread",
+   "raw": "dict",
+   "line": 105
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "dict",
+   "line": 110
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "len",
+   "line": 114
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "dict",
+   "line": 124
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "dict",
+   "line": 127
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "events",
+   "line": 131,
+   "to": "kb.threads.events",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "lines.append",
+   "line": 152
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "KeyError",
+   "line": 210
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "_llm",
+   "line": 217,
+   "to": "kb.threads._llm",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "KeyError",
+   "line": 255
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.close",
+   "line": 262
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "KeyError",
+   "line": 263
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 265
+  },
+  {
+   "from": "kb.threads._slug",
+   "raw": "s.replace",
+   "line": 31
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "db.execute",
+   "line": 57
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "p.read_text",
+   "line": 79
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "_slug",
+   "line": 86,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.get_thread",
+   "raw": "db.execute",
+   "line": 102
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "db.execute",
+   "line": 110
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "events",
+   "line": 114,
+   "to": "kb.threads.events",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "db.execute",
+   "line": 124
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "db.execute",
+   "line": 127
+  },
+  {
+   "from": "kb.threads._llm",
+   "raw": "client",
+   "line": 161
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "json.loads",
+   "line": 171
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "_SUMMARY_PROMPT.format",
+   "line": 217
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "_extract_json",
+   "line": 218,
+   "to": "kb.threads._extract_json",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "json.dumps",
+   "line": 234
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "json.dumps",
+   "line": 235
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "json.dumps",
+   "line": 236
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "json.dumps",
+   "line": 237
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 257
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "db.execute",
+   "line": 278
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.dumps",
+   "line": 292
+  },
+  {
+   "from": "kb.threads",
+   "raw": "Path",
+   "line": 20
+  },
+  {
+   "from": "kb.threads._slug",
+   "raw": "_KEY_RE.sub",
+   "line": 30
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "json.dumps",
+   "line": 63
+  },
+  {
+   "from": "kb.threads.ensure_thread",
+   "raw": "db.execute",
+   "line": 65
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "time.time",
+   "line": 76
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "payload.items",
+   "line": 77
+  },
+  {
+   "from": "kb.threads.events",
+   "raw": "e.get",
+   "line": 97
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "e.get",
+   "line": 147
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "e.items",
+   "line": 151
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "m.group",
+   "line": 171
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.get",
+   "line": 226
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.get",
+   "line": 234
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.get",
+   "line": 235
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.get",
+   "line": 236
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.get",
+   "line": 237
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "len",
+   "line": 245
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.dumps",
+   "line": 268
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.dumps",
+   "line": 269
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.dumps",
+   "line": 270
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.dumps",
+   "line": 271
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 281
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 282
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 283
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 284
+  },
+  {
+   "from": "kb.threads._slug",
+   "raw": "hashlib.md5",
+   "line": 33
+  },
+  {
+   "from": "kb.threads.get_thread",
+   "raw": "_slug",
+   "line": 103,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.digest",
+   "raw": "json.dumps",
+   "line": 153
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.setdefault",
+   "line": 224
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.setdefault",
+   "line": 227
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "cols.items",
+   "line": 245
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "cols.get",
+   "line": 268
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "cols.get",
+   "line": 269
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "cols.get",
+   "line": 270
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "cols.get",
+   "line": 271
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "json.dumps",
+   "line": 213
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.get",
+   "line": 225
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.get",
+   "line": 225
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.get",
+   "line": 225
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.get",
+   "line": 228
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "json.loads",
+   "line": 186
+  },
+  {
+   "from": "kb.threads._extract_json",
+   "raw": "isinstance",
+   "line": 187
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "type",
+   "line": 220
+  },
+  {
+   "from": "kb.threads.close_draft",
+   "raw": "e.items",
+   "line": 213
+  },
+  {
    "from": "mcp.server",
    "raw": "sys.path.insert",
    "line": 21
@@ -30360,29 +33156,51 @@
    "line": 346
   },
   {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "_conn",
+   "line": 364,
+   "to": "mcp.server._conn",
+   "resolved": true
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "enumerate",
+   "line": 376
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "enumerate",
+   "line": 387
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "conn.close",
+   "line": 397
+  },
+  {
    "from": "mcp.server.send",
    "raw": "sys.stdout.write",
-   "line": 525
+   "line": 583
   },
   {
    "from": "mcp.server.send",
    "raw": "sys.stdout.flush",
-   "line": 526
+   "line": 584
   },
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 530
+   "line": 588
   },
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 531
+   "line": 589
   },
   {
    "from": "mcp.server.main",
    "raw": "sys.exit",
-   "line": 580
+   "line": 638
   },
   {
    "from": "mcp.server.tool_search",
@@ -30635,26 +33453,56 @@
    "line": 350
   },
   {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "dict",
+   "line": 375
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "json.loads",
+   "line": 377
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "out.append",
+   "line": 378
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "dict",
+   "line": 383
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "json.loads",
+   "line": 388
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "out.append",
+   "line": 389
+  },
+  {
    "from": "mcp.server.handle",
    "raw": "HANDLERS.get",
-   "line": 547
+   "line": 605
   },
   {
    "from": "mcp.server.main",
    "raw": "line.strip",
-   "line": 566
+   "line": 624
   },
   {
    "from": "mcp.server.main",
    "raw": "handle",
-   "line": 573,
+   "line": 631,
    "to": "mcp.server.handle",
    "resolved": true
   },
   {
    "from": "mcp.server.main",
    "raw": "main",
-   "line": 580,
+   "line": 638,
    "to": "mcp.server.main",
    "resolved": true
   },
@@ -30811,24 +33659,34 @@
    "line": 341
   },
   {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "conn.execute",
+   "line": 375
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "conn.execute",
+   "line": 383
+  },
+  {
    "from": "mcp.server.send",
    "raw": "json.dumps",
-   "line": 525
+   "line": 583
   },
   {
    "from": "mcp.server.handle",
    "raw": "handler",
-   "line": 552
+   "line": 610
   },
   {
    "from": "mcp.server.main",
    "raw": "json.loads",
-   "line": 570
+   "line": 628
   },
   {
    "from": "mcp.server.main",
    "raw": "send",
-   "line": 575,
+   "line": 633,
    "to": "mcp.server.send",
    "resolved": true
   },
@@ -30926,6 +33784,11 @@
    "from": "mcp.server.tool_get_pattern",
    "raw": "args.get",
    "line": 313
+  },
+  {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "args.get",
+   "line": 365
   },
   {
    "from": "mcp.server.tool_search",
@@ -31027,7 +33890,7 @@
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 545
+   "line": 603
   },
   {
    "from": "mcp.server._mermaid",
@@ -31067,7 +33930,7 @@
   {
    "from": "mcp.server.handle",
    "raw": "req.get",
-   "line": 546
+   "line": 604
   },
   {
    "from": "mcp.server._mermaid",
@@ -31105,39 +33968,24 @@
    "line": 356
   },
   {
+   "from": "mcp.server.tool_search_boundary_laws",
+   "raw": "a.get",
+   "line": 382
+  },
+  {
    "from": "mcp.test_server",
    "raw": "subprocess.Popen",
-   "line": 48
+   "line": 52
   },
   {
    "from": "mcp.test_server",
    "raw": "proc.communicate",
-   "line": 51
+   "line": 55
   },
   {
    "from": "mcp.test_server",
    "raw": "out.splitlines",
-   "line": 54
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 62
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 63
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 64
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "print",
-   "line": 65
+   "line": 58
   },
   {
    "from": "mcp.test_server",
@@ -31252,37 +34100,67 @@
   {
    "from": "mcp.test_server",
    "raw": "print",
+   "line": 88
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
    "line": 89
   },
   {
    "from": "mcp.test_server",
+   "raw": "print",
+   "line": 90
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 91
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 92
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 94
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 95
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "print",
+   "line": 97
+  },
+  {
+   "from": "mcp.test_server",
    "raw": "json.loads",
-   "line": 56
+   "line": 60
   },
   {
    "from": "mcp.test_server",
    "raw": "json.dumps",
-   "line": 50
+   "line": 54
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
-   "line": 62
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "results.get",
-   "line": 63
+   "line": 66
   },
   {
    "from": "mcp.test_server",
    "raw": "results.get",
    "line": 67
-  },
-  {
-   "from": "mcp.test_server",
-   "raw": "results.get",
-   "line": 69
   },
   {
    "from": "mcp.test_server",
@@ -31328,6 +34206,26 @@
    "from": "mcp.test_server",
    "raw": "results.get",
    "line": 87
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 89
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 91
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 93
+  },
+  {
+   "from": "mcp.test_server",
+   "raw": "results.get",
+   "line": 95
   },
   {
    "from": "parser.graph_ops.load_api_format",
@@ -37111,6 +40009,705 @@
    "line": 280
   },
   {
+   "from": "test_ai_audit",
+   "raw": "sys.path.insert",
+   "line": 20
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "sys.path.insert",
+   "line": 21
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "sys.path.insert",
+   "line": 22
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 217
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 221
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "str",
+   "line": 20
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "str",
+   "line": 21
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "str",
+   "line": 22
+  },
+  {
+   "from": "test_ai_audit.check",
+   "raw": "print",
+   "line": 26
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "sqlite3.connect",
+   "line": 35
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.execute",
+   "line": 36
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.execute",
+   "line": 43
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.commit",
+   "line": 45
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.close",
+   "line": 45
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "p.exists",
+   "line": 47
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "print",
+   "line": 53
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "load_env",
+   "line": 55
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "check",
+   "line": 56,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "TextLLM",
+   "line": 59
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "check",
+   "line": 60,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "time.time",
+   "line": 61
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "tx.chat",
+   "line": 62
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "check",
+   "line": 63,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "check",
+   "line": 67,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "VLClient",
+   "line": 71
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "check",
+   "line": 72,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "print",
+   "line": 73
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "print",
+   "line": 76
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 96
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fake_task",
+   "line": 97,
+   "to": "test_ai_audit.fake_task",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 111
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fake_task",
+   "line": 112,
+   "to": "test_ai_audit.fake_task",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 125
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "orc.write_explanation",
+   "line": 126
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 127,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 129,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 130,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 131,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 132
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 135
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "T.ensure_thread",
+   "line": 146,
+   "to": "kb.threads.ensure_thread",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 159
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "T.close_draft",
+   "line": 160,
+   "to": "kb.threads.close_draft",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 163,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 167,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 170
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "sqlite3.connect",
+   "line": 172
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.execute",
+   "line": 173
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.commit",
+   "line": 175
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.close",
+   "line": 175
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 178
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "T.ensure_thread",
+   "line": 180,
+   "to": "kb.threads.ensure_thread",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "FB.route",
+   "line": 181,
+   "to": "kb.feedback.route",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "h1.get",
+   "line": 183
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 185,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 187,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "FB.route",
+   "line": 191,
+   "to": "kb.feedback.route",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 193,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 196,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "sqlite3.connect",
+   "line": 201
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.execute",
+   "line": 202
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.commit",
+   "line": 203
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "db.close",
+   "line": 203
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 207
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 210,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 211,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "cleanup",
+   "line": 215,
+   "to": "test_ai_audit.cleanup",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 219
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "sys.exit",
+   "line": 220
+  },
+  {
+   "from": "test_ai_audit.check",
+   "raw": "FAILS.append",
+   "line": 29
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.executemany",
+   "line": 38
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "db.executemany",
+   "line": 41
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "p.unlink",
+   "line": 48
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "orc.Task",
+   "line": 79
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 87
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "orc.plan_task",
+   "line": 88
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 91,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "orc.classify_feedback",
+   "line": 103
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 104,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "T._extract_json",
+   "line": 143,
+   "to": "kb.threads._extract_json",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "check",
+   "line": 144,
+   "to": "test_ai_audit.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "T.add_event",
+   "line": 158,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "draft.get",
+   "line": 162
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "all",
+   "line": 164
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "any",
+   "line": 168
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "str",
+   "line": 169
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "str",
+   "line": 195
+  },
+  {
+   "from": "test_ai_audit",
+   "raw": "Path",
+   "line": 19
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "isinstance",
+   "line": 63
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "str",
+   "line": 64
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "_tclient",
+   "line": 69
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "_VL.model.lower",
+   "line": 72
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fake_task",
+   "line": 88,
+   "to": "test_ai_audit.fake_task",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "json.dumps",
+   "line": 166
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "cols.get",
+   "line": 169
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "str",
+   "line": 186
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "h2.get",
+   "line": 195
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "src.split",
+   "line": 210
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "len",
+   "line": 63
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "plan.get",
+   "line": 89
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "json.dumps",
+   "line": 92
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "isinstance",
+   "line": 107
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "json.dumps",
+   "line": 108
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "len",
+   "line": 127
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "str",
+   "line": 144
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "h1.get",
+   "line": 185
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "h2.get",
+   "line": 194
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "h2.get",
+   "line": 195
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "len",
+   "line": 219
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "_tclient",
+   "line": 68
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "_tclient",
+   "line": 68
+  },
+  {
+   "from": "test_ai_audit.cleanup",
+   "raw": "time.time",
+   "line": 73
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "plan.get",
+   "line": 91
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "plan.get",
+   "line": 92
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fb.get",
+   "line": 104
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fb.get",
+   "line": 105
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fb.get",
+   "line": 106
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "fb.get",
+   "line": 107
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 132
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "cols.get",
+   "line": 168
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 170
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "boundaries.check",
+   "line": 212,
+   "to": "kb.boundaries.check",
+   "resolved": true
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "time.time",
+   "line": 93
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "len",
+   "line": 164
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "sqlite3.connect",
+   "line": 188
+  },
+  {
+   "from": "test_ai_audit.fake_task",
+   "raw": "sqlite3.connect",
+   "line": 197
+  },
+  {
    "from": "test_m15_wiring",
    "raw": "sys.path.insert",
    "line": 26
@@ -37757,55 +41354,34 @@
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "print",
-   "line": 138
+   "line": 142
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "new_task",
-   "line": 139,
+   "line": 143,
    "to": "test_m18_e2e.new_task",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "cleanup",
-   "line": 140,
+   "line": 144,
    "to": "test_m18_e2e.cleanup",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "wait_state",
-   "line": 141,
+   "line": 145,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "check",
-   "line": 142,
+   "line": 146,
    "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.cleanup",
-   "raw": "check",
-   "line": 144,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.cleanup",
-   "raw": "check",
-   "line": 145,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.cleanup",
-   "raw": "post",
-   "line": 147,
-   "to": "test_m18_e2e.post",
    "resolved": true
   },
   {
@@ -37817,22 +41393,36 @@
   },
   {
    "from": "test_m18_e2e.cleanup",
-   "raw": "wait_state",
+   "raw": "check",
    "line": 149,
+   "to": "test_m18_e2e.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.cleanup",
+   "raw": "post",
+   "line": 151,
+   "to": "test_m18_e2e.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.cleanup",
+   "raw": "check",
+   "line": 152,
+   "to": "test_m18_e2e.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.cleanup",
+   "raw": "wait_state",
+   "line": 153,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "check",
-   "line": 150,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.cleanup",
-   "raw": "check",
-   "line": 151,
+   "line": 154,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
@@ -37846,172 +41436,167 @@
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "check",
-   "line": 157,
+   "line": 159,
+   "to": "test_m18_e2e.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.cleanup",
+   "raw": "check",
+   "line": 161,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "next",
-   "line": 159
+   "line": 163
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "next",
-   "line": 160
+   "line": 164
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "post",
-   "line": 168,
+   "line": 172,
    "to": "test_m18_e2e.post",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 169,
+   "line": 173,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 170,
+   "line": 174,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 171,
+   "line": 175,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "print",
-   "line": 175
+   "line": 179
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "new_task",
-   "line": 177,
+   "line": 181,
    "to": "test_m18_e2e.new_task",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "cleanup",
-   "line": 178,
+   "line": 182,
    "to": "test_m18_e2e.cleanup",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 179,
+   "line": 183,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 180,
+   "line": 184,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "post",
-   "line": 184,
+   "line": 188,
    "to": "test_m18_e2e.post",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 185,
+   "line": 189,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 186,
+   "line": 190,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 187,
+   "line": 191,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 189,
+   "line": 193,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "print",
-   "line": 193
+   "line": 197
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "time.time",
-   "line": 194
+   "line": 198
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "new_task",
-   "line": 195,
+   "line": 199,
    "to": "test_m18_e2e.new_task",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "cleanup",
-   "line": 196,
+   "line": 200,
    "to": "test_m18_e2e.cleanup",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 197,
+   "line": 201,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 198,
+   "line": 202,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 200,
+   "line": 204,
    "to": "test_m18_e2e.check",
    "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "check",
-   "line": 201,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "CALLS.get",
-   "line": 204
   },
   {
    "from": "test_m18_e2e.dur",
@@ -38022,49 +41607,47 @@
   },
   {
    "from": "test_m18_e2e.dur",
+   "raw": "CALLS.get",
+   "line": 208
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "check",
+   "line": 209,
+   "to": "test_m18_e2e.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.dur",
    "raw": "print",
-   "line": 211
+   "line": 215
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "new_task",
-   "line": 214,
+   "line": 218,
    "to": "test_m18_e2e.new_task",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "cleanup",
-   "line": 215,
+   "line": 219,
    "to": "test_m18_e2e.cleanup",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "wait_state",
-   "line": 216,
+   "line": 220,
    "to": "test_m18_e2e.wait_state",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 217,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "check",
-   "line": 218,
-   "to": "test_m18_e2e.check",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "wait_state",
    "line": 221,
-   "to": "test_m18_e2e.wait_state",
+   "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
@@ -38076,23 +41659,47 @@
   },
   {
    "from": "test_m18_e2e.dur",
+   "raw": "wait_state",
+   "line": 225,
+   "to": "test_m18_e2e.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "check",
+   "line": 226,
+   "to": "test_m18_e2e.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.dur",
    "raw": "srv.shutdown",
-   "line": 224
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "shutil.rmtree",
-   "line": 227
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "print",
    "line": 228
   },
   {
    "from": "test_m18_e2e.dur",
+   "raw": "shutil.rmtree",
+   "line": 231
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "_time.sleep",
+   "line": 235
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "range",
+   "line": 236
+  },
+  {
+   "from": "test_m18_e2e.dur",
    "raw": "print",
-   "line": 232
+   "line": 250
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "print",
+   "line": 254
   },
   {
    "from": "test_m18_e2e",
@@ -38175,88 +41782,105 @@
    "line": 115
   },
   {
+   "from": "test_m18_e2e.new_task",
+   "raw": "post",
+   "line": 124,
+   "to": "test_m18_e2e.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.new_task",
+   "raw": "THREAD_KEYS.append",
+   "line": 125
+  },
+  {
    "from": "test_m18_e2e.wait_state",
    "raw": "time.time",
-   "line": 125
+   "line": 129
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "TASK_DIRS.append",
-   "line": 135
+   "line": 139
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "t.get",
-   "line": 143
+   "line": 147
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "str",
-   "line": 144
+   "line": 148
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "str",
-   "line": 153
+   "line": 157
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "any",
-   "line": 156
+   "line": 160
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "str",
-   "line": 156
+   "line": 160
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "any",
-   "line": 158
+   "line": 162
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "check",
-   "line": 166,
+   "line": 170,
    "to": "test_m18_e2e.check",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "time.time",
-   "line": 199
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "str",
    "line": 203
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "str",
-   "line": 208
+   "line": 207
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "str",
+   "line": 212
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "post",
-   "line": 220,
+   "line": 224,
    "to": "test_m18_e2e.post",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "shutil.rmtree",
-   "line": 226
-  },
-  {
-   "from": "test_m18_e2e.dur",
-   "raw": "print",
    "line": 230
   },
   {
    "from": "test_m18_e2e.dur",
+   "raw": "p.exists",
+   "line": 248
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "print",
+   "line": 252
+  },
+  {
+   "from": "test_m18_e2e.dur",
    "raw": "sys.exit",
-   "line": 231
+   "line": 253
   },
   {
    "from": "test_m18_e2e.check",
@@ -38296,65 +41920,83 @@
   {
    "from": "test_m18_e2e.new_task",
    "raw": "png_b64",
-   "line": 119,
-   "to": "test_m18_e2e.png_b64",
-   "resolved": true
-  },
-  {
-   "from": "test_m18_e2e.new_task",
-   "raw": "png_b64",
    "line": 121,
    "to": "test_m18_e2e.png_b64",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.new_task",
-   "raw": "post",
-   "line": 122,
-   "to": "test_m18_e2e.post",
+   "raw": "png_b64",
+   "line": 123,
+   "to": "test_m18_e2e.png_b64",
    "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.new_task",
+   "raw": "j.get",
+   "line": 125
   },
   {
    "from": "test_m18_e2e.wait_state",
    "raw": "get",
-   "line": 127,
+   "line": 131,
    "to": "test_m18_e2e.get",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.wait_state",
    "raw": "time.sleep",
-   "line": 130
+   "line": 134
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "len",
-   "line": 144
+   "line": 148
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "len",
-   "line": 144
+   "line": 148
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "cv2.VideoCapture",
-   "line": 163
+   "line": 167
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "c.get",
-   "line": 163
+   "line": 167
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "c.release",
-   "line": 164
+   "line": 168
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "t.get",
-   "line": 172
+   "line": 176
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "sqlite3.connect",
+   "line": 238
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "db.commit",
+   "line": 242
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "db.close",
+   "line": 242
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "p.unlink",
+   "line": 249
   },
   {
    "from": "test_m18_e2e",
@@ -38379,39 +42021,44 @@
   {
    "from": "test_m18_e2e.wait_state",
    "raw": "time.time",
-   "line": 126
+   "line": 130
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "pc.get",
-   "line": 144
+   "line": 148
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "pc.get",
-   "line": 144
+   "line": 148
   },
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "pc.get",
-   "line": 146
+   "line": 150
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "str",
-   "line": 163
+   "line": 167
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "dur",
-   "line": 167,
+   "line": 171,
    "to": "test_m18_e2e.dur",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "any",
-   "line": 206
+   "line": 210
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "_time.sleep",
+   "line": 245
   },
   {
    "from": "test_m18_e2e.check",
@@ -38431,33 +42078,38 @@
   {
    "from": "test_m18_e2e.cleanup",
    "raw": "CALLS.get",
-   "line": 158
+   "line": 162
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "dur",
-   "line": 167,
+   "line": 171,
    "to": "test_m18_e2e.dur",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "dur",
-   "line": 167,
+   "line": 171,
    "to": "test_m18_e2e.dur",
    "resolved": true
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "dur",
-   "line": 167,
+   "line": 171,
    "to": "test_m18_e2e.dur",
    "resolved": true
+  },
+  {
+   "from": "test_m18_e2e.dur",
+   "raw": "db.execute",
+   "line": 241
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "len",
-   "line": 230
+   "line": 252
   },
   {
    "from": "test_m18_e2e.post",
@@ -38467,12 +42119,12 @@
   {
    "from": "test_m18_e2e.dur",
    "raw": "next",
-   "line": 207
+   "line": 211
   },
   {
    "from": "test_m18_e2e.dur",
    "raw": "t.get",
-   "line": 217
+   "line": 221
   },
   {
    "from": "test_m18_e2e.check",
@@ -38889,6 +42541,1117 @@
    "from": "test_m18_p0.check",
    "raw": "db.execute",
    "line": 41
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "sys.path.insert",
+   "line": 27
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "sys.path.insert",
+   "line": 28
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "sys.path.insert",
+   "line": 29
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "Path",
+   "line": 53
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "make_smooth_mp4",
+   "line": 55,
+   "to": "test_m18_p1p2.make_smooth_mp4",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "_mock_dir.mkdir",
+   "line": 83
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "cv2.imwrite",
+   "line": 85
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "_StubText",
+   "line": 105,
+   "to": "test_m18_p1p2._StubText",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "ThreadingHTTPServer",
+   "line": 124
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "time.sleep",
+   "line": 126
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 188
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "fbmod.classify",
+   "line": 190,
+   "to": "kb.feedback.classify",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 191,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 194
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "new_task",
+   "line": 195,
+   "to": "test_m18_p1p2.new_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 196,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 197,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 199,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 202,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 204,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 207,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 208,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 210,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 212,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 213,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 215,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 216,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 219,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "sqlite3.connect",
+   "line": 221
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 225,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.close",
+   "line": 227
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "get",
+   "line": 229,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 231,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 235
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 236,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 239,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 240,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "time.time",
+   "line": 244
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 250,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 253,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 254,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "get",
+   "line": 255,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 257,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 258,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 261
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "new_task",
+   "line": 262,
+   "to": "test_m18_p1p2.new_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 263,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 264,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 265,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 266,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 268,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 269,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 272,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 275,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 279,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 283
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 284,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 285,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 289,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 292,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 294,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "get",
+   "line": 297,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 298,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 299,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 301,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 305
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "get",
+   "line": 306,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 307,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "check",
+   "line": 309,
+   "to": "test_m18_p1p2.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "srv.shutdown",
+   "line": 314
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "time.sleep",
+   "line": 315
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "range",
+   "line": 316
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "shutil.rmtree",
+   "line": 324
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 325
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 329
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "str",
+   "line": 27
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "str",
+   "line": 28
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "str",
+   "line": 29
+  },
+  {
+   "from": "test_m18_p1p2.check",
+   "raw": "print",
+   "line": 36
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "np.array",
+   "line": 44
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "np.array",
+   "line": 45
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "cv2.VideoWriter",
+   "line": 46
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "range",
+   "line": 48
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "vw.release",
+   "line": 51
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "tempfile.mkdtemp",
+   "line": 53
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "Path",
+   "line": 70
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "shutil.copy",
+   "line": 71
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "str",
+   "line": 85
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "np.full",
+   "line": 85
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "urllib.request.Request",
+   "line": 130
+  },
+  {
+   "from": "test_m18_p1p2.png_b64",
+   "raw": "cv2.imencode",
+   "line": 144
+  },
+  {
+   "from": "test_m18_p1p2.new_task",
+   "raw": "post",
+   "line": 150,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.wait_state",
+   "raw": "time.time",
+   "line": 155
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "sqlite3.connect",
+   "line": 166
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.commit",
+   "line": 184
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.close",
+   "line": 185
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 191
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "bool",
+   "line": 199
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 209
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 210
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 217
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "res.get",
+   "line": 218
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 226
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 232
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "fb.get",
+   "line": 239
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "get",
+   "line": 246,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "time.sleep",
+   "line": 249
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 252,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "any",
+   "line": 257
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 258
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "t6.get",
+   "line": 267
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "post",
+   "line": 277,
+   "to": "test_m18_p1p2.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "wait_state",
+   "line": 278,
+   "to": "test_m18_p1p2.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cl.get",
+   "line": 288
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "all",
+   "line": 289
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 290
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cols.get",
+   "line": 291
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cf.get",
+   "line": 296
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "any",
+   "line": 302
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 311
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "shutil.rmtree",
+   "line": 323
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "print",
+   "line": 327
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "sys.exit",
+   "line": 328
+  },
+  {
+   "from": "test_m18_p1p2.check",
+   "raw": "FAILS.append",
+   "line": 39
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "str",
+   "line": 46
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "cv2.VideoWriter_fourcc",
+   "line": 46
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "vw.write",
+   "line": 50
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "threading.Thread",
+   "line": 125
+  },
+  {
+   "from": "test_m18_p1p2.get",
+   "raw": "urllib.request.urlopen",
+   "line": 140
+  },
+  {
+   "from": "test_m18_p1p2.get",
+   "raw": "json.loads",
+   "line": 141
+  },
+  {
+   "from": "test_m18_p1p2.png_b64",
+   "raw": "np.full",
+   "line": 144
+  },
+  {
+   "from": "test_m18_p1p2.new_task",
+   "raw": "png_b64",
+   "line": 149,
+   "to": "test_m18_p1p2.png_b64",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.new_task",
+   "raw": "png_b64",
+   "line": 149,
+   "to": "test_m18_p1p2.png_b64",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.wait_state",
+   "raw": "get",
+   "line": 158,
+   "to": "test_m18_p1p2.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.wait_state",
+   "raw": "time.sleep",
+   "line": 161
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.execute",
+   "line": 168
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "p.exists",
+   "line": 170
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.executemany",
+   "line": 173
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.executemany",
+   "line": 176
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.executemany",
+   "line": 179
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.executemany",
+   "line": 182
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 205
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 209
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 210
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 210
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "res.get",
+   "line": 215
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 215
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "res.get",
+   "line": 217
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "db.execute",
+   "line": 223
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 239
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 241
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "time.time",
+   "line": 245
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 286
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "list",
+   "line": 290
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "str",
+   "line": 295
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "th7.get",
+   "line": 307
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "th7.get",
+   "line": 308
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cleanup_db",
+   "line": 318,
+   "to": "test_m18_p1p2.cleanup_db",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2",
+   "raw": "Path",
+   "line": 26
+  },
+  {
+   "from": "test_m18_p1p2.make_smooth_mp4",
+   "raw": "np.tile",
+   "line": 50
+  },
+  {
+   "from": "test_m18_p1p2._fake_download",
+   "raw": "str",
+   "line": 87
+  },
+  {
+   "from": "test_m18_p1p2._StubText.chat",
+   "raw": "json.dumps",
+   "line": 95
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "RULINGS.append",
+   "line": 114
+  },
+  {
+   "from": "test_m18_p1p2._StubText.json",
+   "raw": "len",
+   "line": 114
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "urllib.request.urlopen",
+   "line": 134
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "json.loads",
+   "line": 135
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "json.loads",
+   "line": 137
+  },
+  {
+   "from": "test_m18_p1p2.get",
+   "raw": "r.read",
+   "line": 141
+  },
+  {
+   "from": "test_m18_p1p2.wait_state",
+   "raw": "time.time",
+   "line": 157
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "p.unlink",
+   "line": 171
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 204
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 205
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "res.get",
+   "line": 216
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "len",
+   "line": 240
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "png_b64",
+   "line": 273,
+   "to": "test_m18_p1p2.png_b64",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "png_b64",
+   "line": 273,
+   "to": "test_m18_p1p2.png_b64",
+   "resolved": true
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "t6b.get",
+   "line": 279
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "t6b.get",
+   "line": 280
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cl.get",
+   "line": 285
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cl.get",
+   "line": 286
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cf.get",
+   "line": 294
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "cf.get",
+   "line": 295
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "k7.count",
+   "line": 310
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "k7.count",
+   "line": 310
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "k7.count",
+   "line": 311
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "k7.count",
+   "line": 311
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "time.sleep",
+   "line": 321
+  },
+  {
+   "from": "test_m18_p1p2._fake_upload",
+   "raw": "Path",
+   "line": 63
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "r.read",
+   "line": 135
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "e.read",
+   "line": 137
+  },
+  {
+   "from": "test_m18_p1p2.png_b64",
+   "raw": "base64.b64encode",
+   "line": 145
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "json.loads",
+   "line": 302
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "set",
+   "line": 311
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "len",
+   "line": 327
+  },
+  {
+   "from": "test_m18_p1p2.post",
+   "raw": "json.dumps",
+   "line": 131
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "h.get",
+   "line": 209
+  },
+  {
+   "from": "test_m18_p1p2.cleanup_db",
+   "raw": "th.get",
+   "line": 299
   },
   {
    "from": "test_tag_filter",
@@ -39497,42 +44260,42 @@
   {
    "from": "webapp.app.main",
    "raw": "argparse.ArgumentParser",
-   "line": 150
+   "line": 248
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 151
+   "line": 249
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 152
+   "line": 250
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.parse_args",
-   "line": 153
+   "line": 251
   },
   {
    "from": "webapp.app.main",
    "raw": "ThreadingHTTPServer",
-   "line": 154
+   "line": 252
   },
   {
    "from": "webapp.app.main",
    "raw": "print",
-   "line": 155
+   "line": 253
   },
   {
    "from": "webapp.app.main",
    "raw": "srv.serve_forever",
-   "line": 156
+   "line": 254
   },
   {
    "from": "webapp.app.main",
    "raw": "sys.exit",
-   "line": 161
+   "line": 259
   },
   {
    "from": "webapp.app.Handler._send",
@@ -39581,28 +44344,33 @@
   },
   {
    "from": "webapp.app.Handler.do_GET",
+   "raw": "path.startswith",
+   "line": 96
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
    "raw": "self._send",
-   "line": 95
+   "line": 108
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "urllib.parse.urlparse",
-   "line": 99
+   "line": 112
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "int",
-   "line": 101
+   "line": 114
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._send",
-   "line": 146
+   "line": 244
   },
   {
    "from": "webapp.app.main",
    "raw": "main",
-   "line": 161,
+   "line": 259,
    "to": "webapp.app.main",
    "resolved": true
   },
@@ -39649,77 +44417,195 @@
   {
    "from": "webapp.app.Handler.do_GET",
    "raw": "self._json",
-   "line": 93
+   "line": 94
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "_t.full",
+   "line": 99,
+   "to": "kb.threads.full",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
+   "line": 103
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
+   "line": 106
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self.rfile.read",
-   "line": 102
+   "line": 115
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "json.loads",
-   "line": 104
+   "line": 117
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "path.startswith",
-   "line": 116
+   "line": 130
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "path.endswith",
-   "line": 116
+   "line": 130
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 139
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 139
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 149
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 149
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "orc.get_task",
-   "line": 118
+   "line": 151
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_h.propose",
+   "line": 160,
+   "to": "kb.hypotheses.propose",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_h.precheck",
+   "line": 162,
+   "to": "kb.hypotheses.precheck",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 180
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 182
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 182
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "int",
+   "line": 183
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_h.get",
+   "line": 185,
+   "to": "kb.hypotheses.get",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "json.loads",
+   "line": 190
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 206
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 206
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "int",
+   "line": 207
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 209
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 211
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 211
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.get_task",
+   "line": 213
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "orc.choose_card",
-   "line": 122
+   "line": 217
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
-   "line": 123
+   "line": 218
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "path.startswith",
-   "line": 127
+   "line": 222
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "path.endswith",
-   "line": 127
+   "line": 222
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "orc.get_task",
-   "line": 129
+   "line": 224
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 133
+   "line": 228
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "orc.submit_feedback",
-   "line": 134
+   "line": 229
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "text.strip",
-   "line": 137
+   "line": 233
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
-   "line": 143
+   "line": 241
   },
   {
    "from": "webapp.app",
@@ -39767,59 +44653,170 @@
    "line": 90
   },
   {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "self.headers.get",
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "path.split",
+   "line": 97
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
+   "raw": "self._json",
    "line": 101
   },
   {
    "from": "webapp.app.Handler.do_POST",
+   "raw": "self.headers.get",
+   "line": 114
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
    "raw": "raw.decode",
-   "line": 104
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "self._json",
-   "line": 106
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "orc.create_task",
-   "line": 110
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "self._json",
-   "line": 112
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "path.split",
    "line": 117
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
-   "line": 120
+   "line": 119
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "int",
-   "line": 122
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "path.split",
-   "line": 128
+   "raw": "orc.create_task",
+   "line": 123
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
+   "line": 126
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
    "line": 131
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "bool",
+   "raw": "_t.close_draft",
+   "line": 134,
+   "to": "kb.threads.close_draft",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
    "line": 135
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 140
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_t.close_confirm",
+   "line": 143,
+   "to": "kb.threads.close_confirm",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 145
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 150
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 153
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 158
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "sqlite3.connect",
+   "line": 166
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "db.execute",
+   "line": 173
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "db.commit",
+   "line": 176
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "db.close",
+   "line": 177
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 187
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "plan.get",
+   "line": 191
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "ctx.get",
+   "line": 192
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.get_task",
+   "line": 193
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_h.run_probe",
+   "line": 201,
+   "to": "kb.hypotheses.run_probe",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 202
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 212
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 215
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "int",
+   "line": 217
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 223
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 226
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "bool",
+   "line": 230
   },
   {
    "from": "webapp.app.Handler._json",
@@ -39848,33 +44845,87 @@
   },
   {
    "from": "webapp.app.Handler.do_GET",
+   "raw": "_t.list_threads",
+   "line": 94,
+   "to": "kb.threads.list_threads",
+   "resolved": true
+  },
+  {
+   "from": "webapp.app.Handler.do_GET",
    "raw": "len",
-   "line": 93
+   "line": 106
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 110
+   "line": 123
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
-   "line": 114
+   "line": 128
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 137
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 147
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "json.loads",
+   "line": 170
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 172
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 183
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "hyp.get",
+   "line": 190
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 204
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 207
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "_h.reject",
+   "line": 209,
+   "to": "kb.hypotheses.reject",
+   "resolved": true
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 122
+   "line": 217
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 135
+   "line": 230
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "fb_route",
-   "line": 140
+   "line": 237
   },
   {
    "from": "webapp.app.Handler.do_GET",
@@ -39894,7 +44945,57 @@
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 111
+   "line": 124
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 125
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 144
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 156
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "db.execute",
+   "line": 167
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "task.dir",
+   "line": 172
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "json.dumps",
+   "line": 175
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "hyp.get",
+   "line": 193
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 199
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 209
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 231
   },
   {
    "from": "webapp.app.Handler.do_GET",
@@ -39908,8 +45009,314 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 143
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.TASKS.values",
+   "line": 195
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "src.dir",
+   "line": 199
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
    "raw": "str",
-   "line": 114
+   "line": 128
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 137
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 147
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "str",
+   "line": 204
+  },
+  {
+   "from": "webapp.hyp_runner",
+   "raw": "sys.path.insert",
+   "line": 14
+  },
+  {
+   "from": "webapp.hyp_runner",
+   "raw": "sys.path.insert",
+   "line": 15
+  },
+  {
+   "from": "webapp.hyp_runner",
+   "raw": "str",
+   "line": 14
+  },
+  {
+   "from": "webapp.hyp_runner",
+   "raw": "str",
+   "line": 15
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "cv2.VideoCapture",
+   "line": 23
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "cap.release",
+   "line": 35
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "statistics.median",
+   "line": 39
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "Path",
+   "line": 51
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "out_dir.mkdir",
+   "line": 52
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.load_api_key",
+   "line": 57,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.upload_file",
+   "line": 58,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "bool",
+   "line": 59
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.run_webapp",
+   "line": 73,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.wait_task",
+   "line": 74,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.download",
+   "line": 80,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "frame_diff_stats",
+   "line": 81,
+   "to": "webapp.hyp_runner.frame_diff_stats",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "str",
+   "line": 23
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "cap.read",
+   "line": 28
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "len",
+   "line": 36
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "len",
+   "line": 41
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "round",
+   "line": 41
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "round",
+   "line": 42
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "round",
+   "line": 44
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "ctx.get",
+   "line": 49
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "images.get",
+   "line": 50
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "images.get",
+   "line": 50
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "node_info.insert",
+   "line": 70
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "diffs.append",
+   "line": 33
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "len",
+   "line": 37
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "max",
+   "line": 42
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "round",
+   "line": 43
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "ctx.get",
+   "line": 51
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "images.get",
+   "line": 59
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.collect_file_urls",
+   "line": 75,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 82
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 84
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 85
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 85
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 86
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 86
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "str",
+   "line": 93
+  },
+  {
+   "from": "webapp.hyp_runner",
+   "raw": "Path",
+   "line": 12
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "float",
+   "line": 33
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "len",
+   "line": 44
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "len",
+   "line": 44
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "rh_task.upload_file",
+   "line": 71,
+   "to": "experiments.rh_task.upload_file",
+   "resolved": true
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "stats.get",
+   "line": 91
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "mp4.relative_to",
+   "line": 93
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "cv2.resize",
+   "line": 31
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "max",
+   "line": 43
+  },
+  {
+   "from": "webapp.hyp_runner.frame_diff_stats",
+   "raw": "np.abs",
+   "line": 33
+  },
+  {
+   "from": "webapp.hyp_runner.default_runner",
+   "raw": "x.lower",
+   "line": 76
   },
   {
    "from": "webapp.orchestrator",
@@ -39924,7 +45331,7 @@
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "threading.Lock",
-   "line": 148
+   "line": 174
   },
   {
    "from": "webapp.orchestrator",
@@ -39994,1084 +45401,1149 @@
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 107
+   "line": 110
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 111
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 112
   },
   {
    "from": "webapp.orchestrator.get_task",
    "raw": "TASKS.get",
-   "line": 152
+   "line": 178
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "Task",
-   "line": 156,
+   "line": 183,
    "to": "webapp.orchestrator.Task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "images_b64.items",
-   "line": 160
-  },
-  {
-   "from": "webapp.orchestrator._llm_json",
-   "raw": "VLClient",
-   "line": 182
-  },
-  {
-   "from": "webapp.orchestrator._llm_json",
-   "raw": "vl.json",
-   "line": 183
+   "line": 187
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.setdefault",
-   "line": 242
+   "line": 284
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "sqlite3.connect",
-   "line": 263
+   "line": 305
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.sort",
-   "line": 275
+   "line": 317
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "task.plan.get",
-   "line": 336
+   "line": 378
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "solutions.get_by_name",
-   "line": 344,
+   "line": 386,
    "to": "kb.solutions.get_by_name",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "KeyError",
-   "line": 348
+   "line": 390
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "_chain_for",
-   "line": 392,
+   "line": 434,
    "to": "webapp.orchestrator._chain_for",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 397
+   "line": 439
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 425
+   "line": 467
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.plan.get",
-   "line": 439
+   "line": 481
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.load_api_key",
-   "line": 442,
+   "line": 484,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.log",
-   "line": 445
+   "line": 487
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.run_webapp",
-   "line": 454,
+   "line": 496,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.wait_task",
-   "line": 455,
+   "line": 497,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.collect_file_urls",
-   "line": 456,
+   "line": 498,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "enumerate",
-   "line": 458
+   "line": 500
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.iterations.append",
-   "line": 499
+   "line": 541
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sqlite3.connect",
-   "line": 512
+   "line": 554
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sorted",
-   "line": 516
+   "line": 558
   },
   {
    "from": "webapp.orchestrator.choose_card",
    "raw": "task.card_wait.set",
-   "line": 546
+   "line": 627
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.imread",
-   "line": 553
+   "line": 634
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 556
+   "line": 637
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.resize",
-   "line": 558
+   "line": 639
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.imwrite",
-   "line": 561
+   "line": 642
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoCapture",
-   "line": 573
+   "line": 654
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.release",
-   "line": 580
+   "line": 661
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.array",
-   "line": 587
+   "line": 668
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "float",
-   "line": 589
+   "line": 670
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "Path",
-   "line": 598
+   "line": 679
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter",
-   "line": 600
+   "line": 681
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 602
+   "line": 683
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.release",
-   "line": 604
+   "line": 685
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "subprocess.run",
-   "line": 607
+   "line": 688
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoCapture",
-   "line": 612
+   "line": 693
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.release",
-   "line": 619
+   "line": 700
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 621
+   "line": 702
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter",
-   "line": 626
+   "line": 707
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.release",
-   "line": 630
+   "line": 711
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "subprocess.run",
-   "line": 631
+   "line": 712
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.load_api_key",
-   "line": 647,
+   "line": 728,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.log",
-   "line": 680
+   "line": 761
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.run_webapp",
-   "line": 681,
+   "line": 762,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.wait_task",
-   "line": 682,
+   "line": 763,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "enumerate",
-   "line": 688
+   "line": 769
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "task.feedback_wait.set",
-   "line": 874
+   "line": 976
   },
   {
    "from": "webapp.orchestrator.Task.dir",
    "raw": "d.mkdir",
-   "line": 111
+   "line": 116
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.persist",
-   "line": 119
+   "line": 124
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "base64.b64decode",
-   "line": 161
+   "line": 188
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.write_bytes",
-   "line": 166
+   "line": 193
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "cv2.imread",
-   "line": 167
+   "line": 194
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "str",
-   "line": 171
+   "line": 198
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "_threads._slug",
+   "line": 202,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
+   "raw": "_threads.ensure_thread",
+   "line": 204,
+   "to": "kb.threads.ensure_thread",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "isinstance",
-   "line": 184
+   "line": 220
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "_llm_json",
-   "line": 201,
+   "line": 237,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "plan.get",
-   "line": 206
+   "line": 242
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "_llm_json",
-   "line": 228,
+   "line": 270,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.get",
-   "line": 232
+   "line": 274
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "any",
-   "line": 242
+   "line": 284
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 255
+   "line": 297
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "sum",
-   "line": 272
+   "line": 314
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "next",
-   "line": 278
+   "line": 320
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "json.loads",
-   "line": 284
+   "line": 326
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.search_solutions",
-   "line": 303,
+   "line": 345,
    "to": "kb.solutions.search_solutions",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "solutions.get",
-   "line": 338,
+   "line": 380,
    "to": "kb.solutions.get",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 393
+   "line": 435
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 394
+   "line": 436
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 434
+   "line": 476
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "RuntimeError",
-   "line": 441
+   "line": 483
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.images.get",
-   "line": 443
+   "line": 485
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.upload_file",
-   "line": 450,
+   "line": 492,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "node_info.append",
-   "line": 451
+   "line": 493
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "files.append",
-   "line": 460
+   "line": 502
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "dict",
-   "line": 514
+   "line": 556
+  },
+  {
+   "from": "webapp.orchestrator._thread_ev",
+   "raw": "_t.add_event",
+   "line": 610,
+   "to": "kb.threads.add_event",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "str",
-   "line": 553
+   "line": 634
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "RuntimeError",
-   "line": 555
+   "line": 636
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "int",
-   "line": 557
+   "line": 638
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "int",
-   "line": 557
+   "line": 638
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 559
+   "line": 640
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 559
+   "line": 640
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "str",
-   "line": 561
+   "line": 642
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 573
+   "line": 654
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.read",
-   "line": 576
+   "line": 657
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "frames.append",
-   "line": 579
+   "line": 660
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 581
+   "line": 662
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "shutil.copy",
-   "line": 583
+   "line": 664
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.median",
-   "line": 589
+   "line": 670
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.where",
-   "line": 590
+   "line": 671
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 591
+   "line": 672
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "shutil.copy",
-   "line": 593
+   "line": 674
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "max",
-   "line": 595
+   "line": 676
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "min",
-   "line": 595
+   "line": 676
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "tempfile.mkdtemp",
-   "line": 598
+   "line": 679
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 600
+   "line": 681
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter_fourcc",
-   "line": 600
+   "line": 681
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.write",
-   "line": 603
+   "line": 684
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 612
+   "line": 693
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.read",
-   "line": 615
+   "line": 696
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "interp.append",
-   "line": 618
+   "line": 699
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "round",
-   "line": 621
+   "line": 702
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "min",
-   "line": 622
+   "line": 703
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 626
+   "line": 707
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter_fourcc",
-   "line": 626
+   "line": 707
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.write",
-   "line": 629
+   "line": 710
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.images.get",
-   "line": 648
+   "line": 729
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "first.exists",
-   "line": 649
+   "line": 730
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 650
+   "line": 731
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_to_169",
-   "line": 656,
+   "line": 737,
    "to": "webapp.orchestrator._to_169",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_to_169",
-   "line": 657,
+   "line": 738,
    "to": "webapp.orchestrator._to_169",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 659,
+   "line": 740,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 660,
+   "line": 741,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 664,
+   "line": 745,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "node_info.append",
-   "line": 671
+   "line": 752
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 686
+   "line": 767
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.download",
-   "line": 689,
+   "line": 770,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "files.append",
-   "line": 690
+   "line": 771
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.log",
-   "line": 692
+   "line": 773
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_retiming",
-   "line": 694,
+   "line": 775,
    "to": "webapp.orchestrator._retiming",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "files.insert",
-   "line": 695
+   "line": 776
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 708
+   "line": 789
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 715
+   "line": 796
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 853,
+   "line": 938,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 855,
+   "line": 940,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 856
+   "line": 941
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.timeline.append",
-   "line": 116
+   "line": 121
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "task.dir",
-   "line": 165
+   "line": 192
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "str",
-   "line": 167
+   "line": 194
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "ValueError",
-   "line": 169
+   "line": 196
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.relative_to",
-   "line": 171
+   "line": 198
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "threading.Thread",
-   "line": 174
+   "line": 210
+  },
+  {
+   "from": "webapp.orchestrator._llm_json",
+   "raw": "client",
+   "line": 219
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "list",
-   "line": 193
+   "line": 229
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 207
+   "line": 243
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 214
+   "line": 252
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "re.search",
+   "line": 256
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "conn.execute",
-   "line": 266
+   "line": 308
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.append",
-   "line": 274
+   "line": 316
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "wfid.split",
-   "line": 277
+   "line": 319
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai_p.exists",
-   "line": 282
+   "line": 324
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai_p.read_text",
-   "line": 284
+   "line": 326
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai.get",
-   "line": 285
+   "line": 327
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.FACE_SWAP_RE.search",
-   "line": 301
+   "line": 343
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "len",
-   "line": 310
+   "line": 352
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "_llm_json",
-   "line": 320,
+   "line": 362,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "pick.get",
-   "line": 321
+   "line": 363
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.input_fingerprint",
-   "line": 356,
+   "line": 398,
    "to": "kb.solutions.input_fingerprint",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.record_success",
-   "line": 357,
+   "line": 399,
    "to": "kb.solutions.record_success",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 400
+   "line": 442
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 401,
+   "line": 443,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 404
+   "line": 446
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 405
+   "line": 447
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 425
+   "line": 467
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 429
+   "line": 471
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 434
+   "line": 476
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "str",
-   "line": 460
+   "line": 502
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "diagnose",
-   "line": 490
+   "line": 532
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 501
+   "line": 543
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 503
+   "line": 545
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "sorted",
-   "line": 504
+   "line": 546
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "conn.execute",
-   "line": 515
+   "line": 557
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 523
+   "line": 565
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "suffix.append",
+   "line": 581
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "suffix.append",
+   "line": 587
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "suffix.append",
+   "line": 593
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "round",
-   "line": 557
+   "line": 638
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "round",
-   "line": 557
+   "line": 638
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "float",
-   "line": 587
+   "line": 668
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 595
+   "line": 676
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 608
+   "line": 689
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 611
+   "line": 692
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 622
+   "line": 703
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 623
+   "line": 704
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 632
+   "line": 713
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 633
+   "line": 714
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 655
+   "line": 736
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.collect_file_urls",
-   "line": 683,
+   "line": 764,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "str",
-   "line": 690
+   "line": 771
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 693
+   "line": 774
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "str",
-   "line": 695
+   "line": 776
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "boundaries.check",
-   "line": 711,
+   "line": 792,
    "to": "kb.boundaries.check",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "boundaries.cards_for_api",
-   "line": 716,
+   "line": 797,
    "to": "kb.boundaries.cards_for_api",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 718
+   "line": 799
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 722
+   "line": 803
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.card_wait.wait",
-   "line": 723
+   "line": 804
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "max",
-   "line": 727
+   "line": 808
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 730
+   "line": 811
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_thread_ev",
+   "line": 814,
+   "to": "webapp.orchestrator._thread_ev",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pick_solution",
-   "line": 750,
+   "line": 835,
    "to": "webapp.orchestrator._pick_solution",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 779,
+   "line": 864,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 780
+   "line": 865
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 784
+   "line": 869
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "kb_search_workflow",
-   "line": 785,
+   "line": 870,
    "to": "webapp.orchestrator.kb_search_workflow",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 795
+   "line": 880
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 799
+   "line": 884
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 801
+   "line": 886
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "evaluate_round",
-   "line": 820,
+   "line": 905,
    "to": "webapp.orchestrator.evaluate_round",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 822
+   "line": 907
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 833
+   "line": 918
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.clear",
-   "line": 834
+   "line": 919
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.wait",
-   "line": 835
+   "line": 920
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 837
+   "line": 922
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 850,
+   "line": 935,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 861
+   "line": 946
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "fb.update",
-   "line": 870
+   "line": 956
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "record_user_ruling",
+   "line": 965
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "_thread_ev",
+   "line": 971,
+   "to": "webapp.orchestrator._thread_ev",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator",
@@ -41081,678 +46553,765 @@
   {
    "from": "webapp.orchestrator.Task.snapshot",
    "raw": "bool",
-   "line": 133
+   "line": 138
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "json.dumps",
-   "line": 141
+   "line": 147
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "_t.add_event",
+   "line": 157,
+   "to": "kb.threads.add_event",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "time.strftime",
-   "line": 156
+   "line": 183
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "b64.split",
-   "line": 161
+   "line": 188
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "str",
-   "line": 184
+   "line": 220
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "json.dumps",
-   "line": 223
+   "line": 265
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "intents.append",
-   "line": 240
+   "line": 282
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "fb.get",
-   "line": 248
+   "line": 290
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 250
+   "line": 292
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "re.split",
-   "line": 265
+   "line": 307
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "text.count",
-   "line": 272
+   "line": 314
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "ai.get",
-   "line": 289
+   "line": 331
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "abs",
-   "line": 309
+   "line": 351
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 363
+   "line": 405
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.plan.get",
-   "line": 368
+   "line": 410
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 382
+   "line": 424
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "step.get",
-   "line": 409
+   "line": 451
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 410
+   "line": 452
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 411,
+   "line": 453,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "extract_result_image",
-   "line": 415
+   "line": 457
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 418
+   "line": 460
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 425
+   "line": 467
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "s.get",
-   "line": 428
+   "line": 470
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 431
+   "line": 473
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "u.lower",
-   "line": 459
+   "line": 501
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ROUTE_CHAINS.get",
-   "line": 479
+   "line": 521
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 480
+   "line": 522
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "evaluate",
-   "line": 485
+   "line": 527
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "it.get",
-   "line": 516
+   "line": 558
   },
   {
    "from": "webapp.orchestrator.write_explanation",
-   "raw": "VLClient",
-   "line": 529
+   "raw": "client",
+   "line": 571
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "bars.items",
+   "line": 578
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "enumerate",
+   "line": 589
   },
   {
    "from": "webapp.orchestrator.choose_card",
    "raw": "len",
-   "line": 543
+   "line": 624
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.resize",
-   "line": 586
+   "line": 667
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 588
+   "line": 669
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 595
+   "line": 676
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 595
+   "line": 676
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 622
+   "line": 703
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "round",
-   "line": 622
+   "line": 703
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.plan.get",
-   "line": 646
+   "line": 727
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 656
+   "line": 737
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 658
+   "line": 739
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 689
+   "line": 770
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "p.relative_to",
-   "line": 690
+   "line": 771
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "dst.relative_to",
-   "line": 695
+   "line": 776
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "list",
-   "line": 711
+   "line": 792
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 726
+   "line": 807
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "min",
-   "line": 727
+   "line": 808
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 741,
+   "line": 826,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 742
+   "line": 827
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "solutions.record_reuse",
-   "line": 760,
+   "line": 845,
    "to": "kb.solutions.record_reuse",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 761
+   "line": 846
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "plan_task",
-   "line": 763,
+   "line": 848,
    "to": "webapp.orchestrator.plan_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 764
+   "line": 849
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 765
+   "line": 850
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "need.get",
-   "line": 771
+   "line": 856
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 772
+   "line": 857
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 774,
+   "line": 859,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 789,
-   "to": "webapp.orchestrator.write_explanation",
-   "resolved": true
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "_writeback",
-   "line": 791,
-   "to": "webapp.orchestrator._writeback",
-   "resolved": true
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.persist",
-   "line": 792
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "write_explanation",
-   "line": 826,
+   "line": 874,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 828,
+   "line": 876,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 829
+   "line": 877
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 911,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 913,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 914
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 841
+   "line": 926
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 841
+   "line": 926
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 843,
+   "line": 928,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 845,
+   "line": 930,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 846
+   "line": 931
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "classify_feedback",
-   "line": 870,
+   "line": 956,
    "to": "webapp.orchestrator.classify_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "round",
-   "line": 116
+   "line": 121
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.snapshot",
-   "line": 141
+   "line": 147
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "str",
-   "line": 203
+   "line": 239
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "len",
-   "line": 265
+   "line": 307
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.plan.get",
-   "line": 358
+   "line": 400
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "bool",
-   "line": 369
+   "line": 411
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.open_gap",
-   "line": 371,
+   "line": 413,
    "to": "kb.solutions.open_gap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 377
+   "line": 419
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 414
+   "line": 456
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 414
+   "line": 456
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "color_match",
-   "line": 422
+   "line": 464
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 424
+   "line": 466
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 479
+   "line": 521
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "r.startswith",
-   "line": 508
+   "line": 550
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 519
+   "line": 561
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "isinstance",
+   "line": 579
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "bool",
+   "line": 817
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_face_swap",
-   "line": 803,
+   "line": 888,
    "to": "webapp.orchestrator._exec_face_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 809
+   "line": 894
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 816,
+   "line": 901,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "task.plan.get",
+   "line": 968
+  },
+  {
    "from": "webapp.orchestrator.Task.log",
    "raw": "time.time",
-   "line": 116
+   "line": 121
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.dir",
-   "line": 140
+   "line": 146
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "self.plan.get",
+   "line": 161
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "uuid.uuid4",
-   "line": 156
+   "line": 183
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "chr",
-   "line": 316
+   "line": 358
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 416
+   "line": 458
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 421
+   "line": 463
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.download",
-   "line": 460,
+   "line": 502,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.items",
-   "line": 491
+   "line": 533
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "isinstance",
-   "line": 492
+   "line": 534
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.get",
-   "line": 494
+   "line": 536
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "best_ev.get",
-   "line": 495
+   "line": 537
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "str",
-   "line": 498
+   "line": 540
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 503
+   "line": 545
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 504
+   "line": 546
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "v.get",
-   "line": 505
+   "line": 547
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "fams.items",
-   "line": 523
+   "line": 565
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "abs",
+   "line": 579
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "c.get",
+   "line": 590
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 588
+   "line": 669
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 719
+   "line": 800
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 725
+   "line": 806
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 727
+   "line": 808
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 738
+   "line": 823
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_video_transition",
-   "line": 805,
+   "line": 890,
    "to": "webapp.orchestrator._exec_video_transition",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_kb_generic",
-   "line": 807,
+   "line": 892,
    "to": "webapp.orchestrator._exec_kb_generic",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "str",
-   "line": 812
+   "line": 897
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 814
+   "line": 899
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 840
+   "line": 925
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "type",
-   "line": 860
+   "line": 945
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "json.dumps",
+   "line": 969
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "last.get",
+   "line": 160
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "self.plan.get",
+   "line": 160
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "round",
+   "line": 165
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 403
+   "line": 445
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "n.get",
-   "line": 447
+   "line": 489
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "chain.get",
-   "line": 480
+   "line": 522
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.abs",
-   "line": 587
+   "line": 668
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 766
+   "line": 851
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 838
+   "line": 923
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "last.get",
+   "line": 164
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "isinstance",
+   "line": 167
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "info.get",
-   "line": 364
+   "line": 406
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "type",
-   "line": 382
+   "line": 424
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 413
+   "line": 455
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "len",
-   "line": 414
+   "line": 456
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.dir",
-   "line": 461
+   "line": 503
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "u.lower",
-   "line": 684
+   "line": 765
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 739
+   "line": 824
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 839
+   "line": 924
+  },
+  {
+   "from": "webapp.orchestrator.write_explanation",
+   "raw": "c.get",
+   "line": 596
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "last.get",
+   "line": 166
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.get",
-   "line": 316,
+   "line": 358,
    "to": "kb.solutions.get",
    "resolved": true
   }

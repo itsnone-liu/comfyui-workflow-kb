@@ -190,6 +190,24 @@ AI 搜索验证**。② 默认**软提示**不拦截（默认 8s 走推荐路径
   features_override 已留未接，属安全缺口）。
 - 全套回归（P0 19 + P0 e2e 21 + P1/P2 31）修复后仍全绿；8830 重启加载。
 
+**系统 AI 分工切换：文本→DeepSeek（用户指示 2026-08-25）** ✅
+- 背景：审计发现运行时文本 AI 实为 qwen-plus（历史惯性），用户澄清分工应为
+  识图 Qwen / 其他 DeepSeek。切换后：识图= qwen-vl-max(vl.py) 不动；
+  运行时文本（plan_task 规划/反馈分类/解释生成/收口四栏总结）=
+  **deepseek-v4-flash-0731**（阿里云百炼 OpenAI 兼容端点）。
+- 新增 `analyzer/text_llm.py`：TextLLM 客户端（配置直读 OpenTutor .env，
+  与离线知识卡 llm_card 同源；chat/json/重试与 VLClient 对齐；.env 缺失时
+  兜底 qwen-plus 并带 _fallback 标记——系统不因配置缺失瘫痪）；进程级单例。
+- 调用点切换：orchestrator._llm_json / write_explanation / threads._llm 三处
+  全走 `text_llm.client()`；测试 stub 从 patch vl.VLClient 改为换
+  `text_llm._default` 单例。
+- 真实审计重跑（现在全部打到 DeepSeek）25/25：规划×3（face_swap/kb_generic
+  含 route 兜底）、分类、解释三件套、_extract_json×4、四栏草拟（实测数字进
+  事实栏）、假设挂线程+去重。**延迟观察**：deepseek-flash 比 qwen-plus 慢
+  （face_swap 大上下文规划 ~80s vs 2.6s；kb_generic ~8s；四栏 ~51s）——
+  均在重试上限内成功，前端已有轮询兜底，暂不处理；若体验不佳可再议。
+- mock 回归（19+21+31）全绿；8830 重启加载；codegraph 重索引（116 模块）。
+
 **当日末批前端/其他优化** ✅：negotiating 态 700ms 自适应快轮询（稳态回 2s）、
 轮询容错（连接中断不丢前端状态，重试提示）、提交按钮防抖、路径卡片区自动
 滚入视野、灯箱支持视频播放、negotiating 态反馈区文案改"选择路径"引导；

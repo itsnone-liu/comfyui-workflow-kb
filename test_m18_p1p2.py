@@ -86,10 +86,11 @@ cv2.imwrite(str(_face_png), np.full((180, 320, 3), (90, 90, 90), np.uint8))
 swap_face.run_swap = lambda wf, cur, ref, tag="": {
     "files": [str(_face_png)], "task_id": "T", "metrics": {}}
 
-# LLM stub: write_explanation 正文 / threads._llm 四栏 / 分类
-class _StubVL:
-    def __init__(self, model=""): pass
-    def chat(self, prompt, imgs):
+# LLM stub: 运行时文本 LLM 已切 DeepSeek(analyzer/text_llm 单例)——直接换桩
+class _StubText:
+    fallback = False
+    model = "stub-text"
+    def chat(self, prompt, _images=None, max_retries=2):
         if "四栏" in prompt or "facts" in prompt:
             return json.dumps({
                 "facts": ["A臂 spike 9.44x", "E臂全程连续 2.74x"],
@@ -97,11 +98,11 @@ class _StubVL:
                 "rules": ["跨空间图对->i2v(回放)"],
                 "open_questions": ["遮挡转场未验证"]}, ensure_ascii=False)
         return "（测试解释正文）"
-    def json(self, prompt, imgs=None):
+    def json(self, prompt, _images=None):
         return {"family": "kb_generic", "route": "kb_search",
                 "feasible": True}
-import vl  # noqa: E402
-vl.VLClient = _StubVL
+import analyzer.text_llm as _tl  # noqa: E402
+_tl._default = _StubText()
 orc._writeback = lambda task: None
 orc._pick_solution = lambda task: None
 orc.plan_task = lambda task: {"family": "face_swap", "route": "reactor_pure",
