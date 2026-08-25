@@ -148,22 +148,26 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
     <div>
       <div class="card">
         <h2>① 任务需求</h2>
-        <textarea id="req" placeholder="例：把 target 图中人物的脸换成 ref 图中的人，
-要求身份和发型跟参考图，表情和姿势保持被换图的（包括嘟嘴）"></textarea>
+        <textarea id="req" placeholder="例：把素材1人物的脸换成素材2的人，身份发型跟素材2，表情姿势保持素材1的；
+也可以纯文字任务（如文生视频），一个素材都不传"></textarea>
         <div class="row">
-          <label class="slot" id="slot-target">
-            <input type="file" accept="image/*" onchange="pick(this,'target')">
-            <div class="box" id="box-target">上传 target（被换脸图/底图）</div>
+          <label class="slot" id="slot-s1">
+            <input type="file" accept="image/*,video/*" onchange="pick(this,'s1')">
+            <div class="box" id="box-s1">素材1（图片/视频，可空）</div>
           </label>
-          <label class="slot" id="slot-ref">
-            <input type="file" accept="image/*" onchange="pick(this,'ref')">
-            <div class="box" id="box-ref">上传 ref（人脸参考图，可空）</div>
+          <label class="slot" id="slot-s2">
+            <input type="file" accept="image/*,video/*" onchange="pick(this,'s2')">
+            <div class="box" id="box-s2">素材2（图片/视频，可空）</div>
+          </label>
+          <label class="slot" id="slot-s3">
+            <input type="file" accept="image/*,video/*" onchange="pick(this,'s3')">
+            <div class="box" id="box-s3">素材3（图片/视频，可空）</div>
           </label>
         </div>
         <div class="row">
           <button id="goBtn" onclick="submit()">开始构建</button>
           <span class="sub" id="hint" style="color:var(--dim);font-size:12px">
-            换脸任务需要两张图；其他任务至少 target</span>
+            素材用途在任务里说明；系统默认素材1=底图/首帧、素材2=参考图/尾帧。纯文字任务可不传素材</span>
         </div>
       </div>
 
@@ -246,11 +250,21 @@ const imgs={};
 
 function pick(inp, name){
   const f=inp.files[0]; if(!f) return;
+  const isVideo=/^video\//.test(f.type);
+  if(f.size>80*1024*1024){alert("素材过大(>80MB)，请压缩后再传");inp.value="";return;}
   const r=new FileReader();
-  r.onload=e=>{ imgs[name]=e.target.result;
+  r.onload=e=>{
     const box=document.getElementById("box-"+name);
     box.classList.add("has");
-    box.innerHTML=`<img src="${e.target.result}">`;
+    if(isVideo){
+      imgs[name]={d:e.target.result, video:true, fname:f.name};
+      box.innerHTML=`<video src="${e.target.result}" muted
+        style="max-width:100%;max-height:64px"></video>
+        <div style="font-size:10px">🎬 ${f.name.slice(0,18)}</div>`;
+    }else{
+      imgs[name]={d:e.target.result, video:false, fname:f.name};
+      box.innerHTML=`<img src="${e.target.result}">`;
+    }
   };
   r.readAsDataURL(f);
 }
@@ -258,8 +272,9 @@ function pick(inp, name){
 async function submit(){
   const req=document.getElementById("req").value.trim();
   if(!req){ alert("请描述需求"); return; }
-  const body={requirement:req, images:{}};
-  for(const k in imgs) if(imgs[k]) body.images[k]=imgs[k];
+  const images={};
+  for(const k in imgs) if(imgs[k]) images[k]=imgs[k].d||imgs[k];
+  const body={requirement:req, images};
   document.getElementById("hint").textContent="提交中…";
   const btn=document.getElementById("goBtn"); btn.disabled=true;
   try{
@@ -563,7 +578,7 @@ function renderHyp(h){
 「${esc(h.statement||"")}」
 结论：${esc(h.reason||"")}
 ${laws?`相关定律：${esc(laws)}`:""}
-计划：${esc(h.plan&&h.plan.note||"")}（约 ${esc(String(h.plan&&h.plan.cost_coins??"0"))} 币）
+计划：${esc(h.plan&&h.plan.note||"")}（约 ${esc(String((h.plan&&h.plan.cost_coins)??"0"))} 币）
 <div class="tbtns">
   <button class="ok" onclick="confirmHyp(${h.hypothesis_id})">花币验证</button>
   <button class="sec" onclick="rejectHyp(${h.hypothesis_id})">放弃</button>

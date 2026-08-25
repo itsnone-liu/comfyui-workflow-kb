@@ -186,14 +186,27 @@ def create_task(requirement: str, images_b64: dict[str, str],
     import cv2
     for name, b64 in images_b64.items():
         raw = base64.b64decode(b64.split(",")[-1])
-        ext = ".jpg"
-        if b64[:30].startswith("data:image/png"):
+        # 素材可以是图片或视频(素材区重构 2026-08-25: 视频跳过 cv2 校验)
+        head = b64[:40]
+        if head.startswith("data:image/png"):
             ext = ".png"
+        elif head.startswith("data:image/webp"):
+            ext = ".webp"
+        elif head.startswith("data:video/mp4"):
+            ext = ".mp4"
+        elif head.startswith("data:video/webm"):
+            ext = ".webm"
+        else:
+            ext = ".jpg"
         p = task.dir() / f"{name}{ext}"
         p.write_bytes(raw)
-        img = cv2.imread(str(p))
-        if img is None:  # re-encode anything cv2 can't read straight away
-            raise ValueError(f"uploaded {name} unreadable")
+        if ext in (".mp4", ".webm"):
+            if not raw:  # 空文件才拒; 视频内容由执行器/探针自行校验
+                raise ValueError(f"uploaded {name} empty")
+        else:
+            img = cv2.imread(str(p))
+            if img is None:
+                raise ValueError(f"uploaded {name} unreadable")
         # normalize slot names
         task.images[name] = str(p.relative_to(ROOT))
     # M18-P1: 线程归属(不传则按需求 slug 新建——每个任务至少挂一个线程,
@@ -222,11 +235,16 @@ def _llm_json(prompt: str) -> dict:
 
 def plan_task(task: Task) -> dict:
     """Requirement -> family + route + notes (LLM + keyword floor)."""
+    mats = ", ".join(
+        f"{k}={'视频' if Path(v).suffix in ('.mp4', '.webm') else '图片'}"
+        for k, v in sorted(task.images.items())) or "无(纯文字任务)"
     prompt = f"""用户对图像/视频任务的需求：
 \"\"\"{task.requirement}\"\"\"
-可用系统能力：face_swap(换脸: 需要 target 被换图 + ref 人脸参考图, 可要求发型跟ref/表情跟target)、
+可用系统能力：face_swap(换脸: 需要 target 被换脸图 + ref 人脸参考图, 可要求发型跟ref/表情跟target)、
 kb_generic(库内其他图像任务: 放大/修复/抠图/姿态/风格转换等, 需要 target 图)。
-已上传图片: {list(task.images)}。
+已上传素材: {mats}。
+素材说明: 用户以 素材1/素材2/素材3 顺序上传(图片或视频), 用途在需求文字里说明;
+系统自动把第一个素材作为 target(底图/首帧)、第二个作为 ref(参考图/尾帧)。
 路线知识: hybrid_final=综合最优默认(身份0.72/表情0.05/色彩9); 发型跟参考优先 pulid_flux 或
 qwen_swap; 色彩极端重要用 klein_double; 表情极端重要用 reactor_pure。
 判断任务族并选初始路线。JSON:
@@ -257,6 +275,20 @@ qwen_swap; 色彩极端重要用 klein_double; 表情极端重要用 reactor_pur
             r"发型|hair", task.requirement) and plan["route"] in (
             "reactor_pure", "maskflux", "instantid_cfg"):
         plan["route"] = "hybrid_final"
+    # 素材槽语义映射(素材区重构): 素材1->target 底图/首帧, 素材2->ref 参考图/尾帧
+    # (仅当旧语义键缺失时补别名; 原槽名保留供解释/线程引用)
+    seq = sorted(k for k in task.images if re.fullmatch(r"s[0-9]+", k))
+    if seq:
+        alias = {}
+        if "target" not in task.images:
+            alias["target"] = seq[0]
+        if "ref" not in task.images and len(seq) > 1:
+            alias["ref"] = seq[1]
+        for dst, src in alias.items():
+            task.images[dst] = task.images[src]
+        if alias:
+            plan["materials_map"] = {
+                dst: f"素材{src[1:]}" for dst, src in alias.items()}
     return plan
 
 
