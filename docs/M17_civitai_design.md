@@ -11,7 +11,8 @@
 （Workflows 资源 zip 匿名公开、与 RH 图同构可直接入库，.com/.red 双域名同后端
 可互为备份）和 M11 研究通道的第四源（desc 正文是机制句富矿）；NSFW 域它近乎
 独占。不走 CLI，stdlib 直连。应用侧注意：Civitai 图的模型引用是作者本地文件名，
-与 RH 云端模型宇宙基本不交叠——结构移植为主、完整重放须过资产映射 gate。**
+与 RH 文件名不一致——但 RH 模型广场（公开 API，6 万资源）实测覆盖 Civitai
+主流模型（名称略异），三级解析（预置/广场/家族）+ resolution gate 解决。**
 
 ## 1. 探测实证（2026-08-25，无 key 匿名）
 
@@ -30,7 +31,8 @@
 | 11 | `metadata.totalItems` 不返回（cursor 分页）——量级只能抽样估计 | probe2 |
 | 12 | 官方 **civitai-gen-skill**（Node CLI，MIT）：orchestration 生成 API（submit→poll→download；图/视频/TTS/音乐，Buzz 计费）+ 官方 MCP（`mcp.civitai.com`，search_models/AIR URN/写操作） | probe4 README 实读 |
 | 13 | **双域名 = 同一 API 后端的两个镜像**（用户线索证实）：`.com` 与 `.red` 的 models/workflows 查询**逐条相同**（同 ID 同 nsfwLevel），zip 下载两端都通；差异仅在 images feed 过滤松紧（`.com` nsfw=true 会混入 SFW 项，`.red` 纯 NSFW）。网页端 NSFW 主要在 `.red`，API 层则无墙 | probe5 逐条比对 |
-| 14 | **模型名宇宙与 RH 基本不交叠**（用户预警证实）：Civitai 图引用社区文件名（实测 `cyberrealistic_v80Inpainting.safetensors`/`vae-ft-mse-840000-ema-pruned.safetensors`，SD1.5/SDXL/Pony/Illustrious 族）；RH 云端 208 流资产盘点为平台预置模型（flux1-dev/klein/z_image/wan/minimax_h3/qwen_edit 等，154 checkpoint+162 LoRA 种）。Civitai 的 API `baseModel` 字段（'SDXL 1.0'/'Illustrious'/'Krea 2'…）是结构化的家族信号 | probe5b zip 抽检 + kb.db assets_json 盘点 |
+| 14 | **Civitai 图的 loader 引用是作者本地文件名，与 RH 云端文件名不一致**（实测 zip：`cyberrealistic_v80Inpainting.safetensors`/`vae-ft-mse-840000-ema-pruned.safetensors`）——直接提交必然找不到模型。但"不交叠"是样本偏差：kb.db 208 流只引用了平台预置模型；真实覆盖面见事实 15 | probe5b zip 抽检 |
+| 15 | **RH 模型广场公开 API：`POST /api/portal/model/list {search, current, size}`**（匿名可用），**6.05 万资源**（LORA 为主 + CHECKPOINT/UNET/GGUF，社区转存上传）。Civitai 主流模型大面积在库（实测 `search=`）：`realistic vision`→28 条含 **"Realistic Vision V6.0 B1" 原名**；`detail tweaker`→10 条含 **"Detail Tweaker XL_v1.0" 原名**；`dreamshaper`→18；`cyberrealistic`→44 含 v110 换版 + **Z-Image Turbo 跨家族移植版**；`juggernaut`→25；`noobai`→171；NSFW LoRA 明确在库（"CyberRealistic ... Catalyst NSFW"、"NSFW LoRA | Krea2, FLUX"）。**"有价值模型 RH 基本都有，名称略异"（用户判断）成立**——机制：社区把 Civitai 热门模型转传 RH 广场，命名习惯=原名±版本号±中文注记±家族后缀 | probe7/8，清单 `data/explorations/rh_model_library.json` |
 
 ## 2. 四源关系定位（用户第 3 问）
 
@@ -116,32 +118,46 @@ kb/store.py                   source='civitai' 入库（source 列自由文本�
 - 建卡走既有 `analyzer/llm_card.py`，desc.md 一并喂给 LLM（作者亲述的设计
   意图，比纯结构猜强——顺带提升卡质量）
 
-### P2b：跨平台资产映射层（事实 14 的直接对策，应用侧安全网）
+### P2b：跨平台资产解析层（事实 14/15 的对策，应用侧安全网）
 
-Civitai 图的 loader 引用是**作者本地文件名**，不是 RH 云端可执行引用——
-直接提交 RH 沙箱必然运行时爆（教训同 SD1.5 CN 接 FLUX：提交校验不拦，
-采样时爆）。应用时分两档：
-
-1. **结构移植（默认档）**：取段/链/参数技巧，模型引用由映射层换家族等价物
-   ——KB 的主用途（技巧结构 > 完整重放）
-2. **完整重放（受限档）**：仅当映射全覆盖才允许 `--run`
+Civitai 图的 loader 引用是**作者本地文件名**，直接提交 RH 必然找不到模型。
+但事实 15 表明这不是墙而是**解析问题**——RH 模型广场（6 万资源）实测覆盖
+Civitai 主流模型，名称略异有规律（±版本号 / 中文注记 / 家族后缀 / 量化后缀）。
+据此把映射层设计为**实时解析服务**而非人工映射表：
 
 ```
-kb/asset_map.py             civitai_asset_map 查询/维护：
-                              key   = (civitai filename, baseModel 家族)
-                              value = RH 资产名（来自 208 流 assets_json 事实盘点）
-                                      + 变换注记（sampler/cfg/分辨率随家族迁移）
-composer.py                 asset resolution gate：段移植 source=civitai 时
-                            checkpoint/vae/lora 名必须命中映射或显式 --allow-unresolved，
-                            否则只组装不提交（强制 dry-run）
-experiments/rh_task.py      run_workflow_json 提交前同 gate 校验（防线二）
+kb/asset_resolve.py           resolve(civitai_filename, baseModel) -> {
+                                match_kind: exact|renamed|version_differs|
+                                            family_port|none,
+                                rh_name, rh_type, source, confidence }
+                              三级解析:
+                                ① 预置层: kb.db assets_json ∪ 平台常见名
+                                   (flux1-dev-fp8 等, 归一化精确/模糊匹配)
+                                ② 广场层: portal/model/list {search: 归一化核心词}
+                                   (匿名实时查, 60k 库; 命中即带 resourceType)
+                                ③ 家族层: civitai baseModel 字段 + desc 交叉验证
+                              归一化: 去量化后缀(fp8/e4m3fn/bf16/pruned/ema/scaled)
+                              + 去 .safetensors + 小写 + 去分隔符
+composer.py                   resolution gate: source=civitai 段移植时 loader 引用
+                              逐个过 resolve; exact/renamed 自动替换,
+                              version_differs/family_port 标注警告(默认仍可组装,
+                              --strict 才拦), none 未解析→强制 dry-run
+experiments/rh_task.py        提交前同 gate(防线二)
+(可选) rh 广场转存: 完整重放若引用广场资源, 需登录态转存到 workspace 再引用
+      ——.rh_token 已有; 转/引用 API 待 P2b 实施期逆向一次
 ```
 
-映射数据三源：① kb.db assets_json（RH 侧事实清单，154 ckpt + 162 lora）；
-② civitai `baseModel` 结构化字段（家族归类零成本）；③ 人工确认对
-（映射不确定时进 capability_notes 而不是硬映射）。
-注意：Civitai 社区 LoRA（Pony/Illustrious 角色包等）在 RH 无对应物且
-Task API 只支持传图——此类标记 `unmappable`，技巧可借鉴、重放不可能。
+**match_kind 语义**（对应实测样本）：
+- `exact`：原名直接命中（"Realistic Vision V6.0 B1"、"Detail Tweaker XL_v1.0"）
+- `renamed`：归一化后命中（"DreamShaper XL v2.1 Turbo 闪电"=原名+中文注记）
+- `version_differs`：同族不同版（civitai v80 → rh v110）——权重/参数可能要重调
+- `family_port`：跨家族移植（CyberRealistic → Z-Image Turbo）——语义等价但
+  sampler/cfg/分辨率随家族变，**不是 drop-in**，重放需按家族规则变换参数
+- `none`：广场确实没有 → unmappable，技巧可借鉴、重放不可能
+
+映射数据全部可自动获得：kb.db assets_json（预置层）+ 广场实时搜索（主力）+
+civitai baseModel（家族信号）。人工只处理 version_differs/family_port 的
+参数变换规则，进 capability_notes 而不是硬编码。
 
 ### P3：NSFW 域定向建库（P2 之上的一次实战）
 
@@ -166,7 +182,7 @@ P3 的真实价值锚点：**给 gap 研究供弹**——例如换脸域 NSFW �
 |---|---|
 | P1 | 一个真实 gap 走 `--source civitai` 漏斗，产出 ≥1 条带 desc 引用的 external_fact |
 | P2 | 20 条样本全链路：zip → UI JSON → 标准化图 → 卡入库 → MCP 可检索（含 --nsfw 过滤）；unknown 节点分类占比 <10% |
-| P2b | 映射层上线：20 条样本 loader 引用全量进 civitai_asset_map（mapped / unmappable 分类清楚）；gate 生效——unresolved 图提交被拦、映射后段移植 `--run` 成功 ≥1 例 |
+| P2b | 解析层上线：20 条样本 loader 引用全量过 `resolve()`，match_kind 分布清楚（exact/renamed 应占多数）；gate 生效——none 未解析图提交被拦、解析后段移植 `--run` 成功 ≥1 例 |
 | P3 | NSFW 域 ≥30 资源入库，技巧条目（参数区间/链式解法）≥20 条，且至少 1 条被后续 gap 研究引用 |
 
 ## 7. 边界与合规

@@ -179,7 +179,7 @@ ReActor 4 节点流即证据），后者把"人当裁判"升级为"系统自判"
 |---|---|---|
 | **M10b** | 闭环 B：宽泛提示解析器（比较型断言→tech_families 机制差→改进假设→节点检索） | tech_families 已就位 |
 | **M11** | 外部研究通道（三源）：GitHub（operator 实现）+ ComfyUI Registry（节点包元数据）+ HuggingFace（模型/模型卡/license 层，定位与边界见 `docs/M15_design.md` §5）→ research_sessions 漏斗（候选20→初筛5→深读1-2）→ external_fact；B站/C站后续按用户定渠道后扩 | ✅ **v1 全链闭环**（`research/`：external/session/run/probe_webapp；session#1：gap#1 发型+表情 → 21 候选 → FLUX.2 Klein 9B operator 探针实证 → gap resolved + flux2_klein_hair(candidate) 回写） |
-| **M17** | Civitai（C 站）第四知识源：**用法与技巧层**（个人自研 LoRA/workflow + 教程 desc；NSFW 域近独占）。双重身份：第二工作流采集源（Workflows zip 匿名公开、UI 图与 RH 同构直接入库）+ 研究通道第四源。设计定稿 `docs/M17_civitai_design.md`（六轮零硬币探测实证：desc 技巧富矿 5.5 万字符/条、NSFW API 无登录墙、`.com`/`.red` 双域名同后端互为备份、**模型名宇宙与 RH 不交叠→P2b 资产映射层+resolution gate**、images.meta 空/CLI 错位等负发现） | 📐 设计完成（P1/P2/P2b 待实施） |
+| **M17** | Civitai（C 站）第四知识源：**用法与技巧层**（个人自研 LoRA/workflow + 教程 desc；NSFW 域近独占）。双重身份：第二工作流采集源（Workflows zip 匿名公开、UI 图与 RH 同构直接入库）+ 研究通道第四源。设计定稿 `docs/M17_civitai_design.md`（八轮零硬币探测实证：desc 技巧富矿 5.5 万字符/条、NSFW API 无登录墙、`.com`/`.red` 双域名同后端互为备份、**模型引用经解析而非墙——RH 模型广场公开 API `portal/model/list{search}` 6 万资源，Civitai 主流模型同名/近名大面积在库（Realistic Vision V6.0 B1/Detail Tweaker XL 原名、cyberrealistic 换版+Z-Image 跨家族移植），P2b 三级解析(exact/renamed/version_differs/family_port/none)+resolution gate**、images.meta 空/CLI 错位等负发现） | 📐 设计完成（P1/P2/P2b 待实施） |
 | **M12** | ComfyUI 官方 registry 元数据采集器（零硬币补节点清单） | 无 |
 | **M13** | 边界羽化算子（Rope 式 poisson/blend）补 inswapper 边缘伪影 | diagnosis_rules 已有对应症状条目 |
 | **M14** | webapp 任务族扩展：kb_generic 视频任务、多图输入、反馈修订的参数级微调（锚次数/GFPGAN 权重） | M10 架构 |
