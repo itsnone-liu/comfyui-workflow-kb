@@ -129,7 +129,7 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
           </label>
         </div>
         <div class="row">
-          <button onclick="submit()">开始构建</button>
+          <button id="goBtn" onclick="submit()">开始构建</button>
           <span class="sub" id="hint" style="color:var(--dim);font-size:12px">
             换脸任务需要两张图；其他任务至少 target</span>
         </div>
@@ -180,7 +180,7 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
 </div>
 
 <script>
-let tid=null, timer=null, state="";
+let tid=null, timer=null, state="", curPollMs=2000;
 const imgs={};
 
 function pick(inp, name){
@@ -200,19 +200,31 @@ async function submit(){
   const body={requirement:req, images:{}};
   for(const k in imgs) if(imgs[k]) body.images[k]=imgs[k];
   document.getElementById("hint").textContent="提交中…";
-  const r=await fetch("/api/task",{method:"POST",
-    headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-  const j=await r.json();
-  if(!j.id){ alert("失败: "+(j.error||"?")); return; }
-  tid=j.id; state="";
-  document.getElementById("hint").textContent="任务 "+tid;
-  timer=setInterval(poll, 2000); poll();
+  const btn=document.getElementById("goBtn"); btn.disabled=true;
+  try{
+    const r=await fetch("/api/task",{method:"POST",
+      headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const j=await r.json();
+    if(!j.id){ alert("失败: "+(j.error||"?")); return; }
+    tid=j.id; state=""; pollFails=0; cardsScrolled=false;
+    document.getElementById("hint").textContent="任务 "+tid;
+    if(timer) clearInterval(timer);
+    timer=setInterval(poll,2000); poll();
+  } finally { btn.disabled=false; }
 }
 
 const PHASE_CN={planning:"规划",build:"构建",running:"执行",eval:"评审",
   feedback:"反馈",error:"错误",negotiating:"选路"};
 
-let cardTimer=null, cardDeadline=0;
+let cardTimer=null, cardDeadline=0, cardsScrolled=false;
+
+function scrollCards(){
+  if(cardsScrolled) return;
+  const el=document.getElementById("cardsCard");
+  if(el&&!el.classList.contains("hidden")){
+    el.scrollIntoView({behavior:"smooth",block:"nearest"}); cardsScrolled=true;
+  }
+}
 
 async function pickCard(ix){
   if(!tid) return;
@@ -235,6 +247,7 @@ function renderCards(t){
   const pc=t.precheck;
   if(t.state==="negotiating" && pc && (pc.cards||[]).length){
     box.classList.remove("hidden");
+    scrollCards();
     const rec=pc.recommended_ix ?? -1;
     wrap.innerHTML=(pc.cards||[]).map((c,i)=>{
       const tone=c.tone==="recommended"?"reco":(c.tone==="dead"?"dead":
@@ -280,12 +293,30 @@ function renderCards(t){
   }
 }
 
+let pollFails=0, lastState="";
 async function poll(){
   if(!tid) return;
-  const r=await fetch("/api/task/"+tid);
-  const t=await r.json();
+  let t;
+  try{
+    const r=await fetch("/api/task/"+tid);
+    t=await r.json();
+    pollFails=0;
+  }catch(e){
+    pollFails++;
+    if(pollFails%5===1) document.getElementById("hint").textContent=
+      `任务 ${tid} · 连接中断，重试中(${pollFails})…`;
+    return;                       // 容错: 服务重启/网络抖动不丢前端状态
+  }
+  // 自适应轮询: negotiating(8s 选择窗)期间加速, 稳态 2s
+  const wantMs=(t.state==="negotiating")?700:2000;
+  if(timer && wantMs!==curPollMs){
+    clearInterval(timer); curPollMs=wantMs;
+    timer=setInterval(poll,curPollMs);
+  }
   render(t);
-  if(t.state==="final"){ clearInterval(timer); timer=null; }
+  if(t.state==="final"){ clearInterval(timer); timer=null;
+    document.getElementById("hint").textContent="任务 "+tid+" · 已结束"; }
+  lastState=t.state;
 }
 
 function render(t){
@@ -315,7 +346,9 @@ function render(t){
     fbBody.classList.remove("hidden"); fbText.classList.add("hidden");
     fbBtns.classList.add("hidden");
     fbBody.textContent= t.state==="final"?
-      "任务已结束" : "等待系统出图后评价…（当前: "+stateCN(t)+"）";
+      "任务已结束" : t.state==="negotiating"?
+      "系统发现此需求存在已验证的边界——请在上方选择路径（倒计时结束自动按推荐执行）":
+      "等待系统出图后评价…（当前: "+stateCN(t)+"）";
   }
 
   // results (latest iteration)
@@ -388,7 +421,8 @@ async function sendFeedback(accept){
 }
 function lb(src){
   const d=document.createElement("div"); d.id="lightbox";
-  d.innerHTML=`<img src="${src}">`;
+  d.innerHTML=/\.(mp4|webm)(\?|$)/i.test(src)?
+    `<video src="${src}" controls autoplay></video>`:`<img src="${src}">`;
   d.onclick=()=>d.remove(); document.body.appendChild(d);
 }
 function esc(s){ return String(s??"").replace(/[&<>"]/g,
