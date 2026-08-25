@@ -1,4 +1,4 @@
-# 进度快照 —— 2026-08-22（M0–M10 完成；git + codegraph 已更新 ✅）
+# 进度快照 —— 2026-08-25（M0-M11 + M15-M18设计 + DLC/H3 全日弧；git+codegraph 已推远端 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
@@ -111,6 +111,33 @@ AI 搜索验证**。② 默认**软提示**不拦截（默认 8s 走推荐路径
 验收标准用户已确认（H3 弧回放/新不可达目标软提示/假设入库/收口总结/
 卡片文案非技术用户可读，共 5 条）。分期：P0 boundary 表+前置检查+卡片
 （当日所学立即值班）→ P1 线程+裁决 UI → P2 假设管线+自动总结。
+
+**收口状态（M18-P0 开工前）**：实验产物按政策入库（`0cf2f45`：输入图+
+指标 json+探针条；视频/视图目录 gitignore 画廊本地服务；local/DLC 克隆
+移出）；codegraph 重索引 104 模块/371 符号（`b4c929b`）；远端已推
+（ba5fcfe..b4c929b）。
+
+**M18-P0 完成（当日）** ✅：
+- `kb/schema_m18.sql` + `kb/migrate_m18.py`（幂等 UPSERT）→ boundary_laws×7
+  （渲染一致/视差连续/遮挡豁免hypothesis/二态切换/画幅跟随/GFPGAN U 型/方差规则）
+  + decision_rules×4（DR-001 i2v 推荐/DR-002 retimed 备选/DR-003 AI中间帧死路/
+  DR-004 同渲染直连），来源署名含"用户假设→E 臂验证"。
+- `kb/boundaries.py` 前置检查：词法特征抽取（修复"不**同房间**"误匹配同渲染——
+  负向后行断言）→ 全条件 AND 匹配 → 四行卡片（做什么/效果与代价/已知风险+
+  定律码/什么时候选）+ Why 折叠；显式点名死路 → 死卡置顶强警示 requested。
+- orchestrator 接线：`_run_task` 前置 `_pre` → negotiating 态 + 8s 软门
+  （`CARD_GATE_SECONDS`，用户不点自动走推荐）→ 三条视频路线执行器
+  `_exec_video_transition`（i2v 单帧 159=false；fl2v 双帧+`_to_169` 画布归一
+  BL-005；retimed 后处理 `_retiming` 移植自 _tail_fix.py：spike>3x 中位检测+
+  mci 插值 2.5x 局部拉伸）→ 死卡选择零云端调用直接 limited+证伪解释；
+  反馈轮换 i2v↔retimed。face_swap/kb_generic 路径不动（回归通过）。
+- 前端：`webapp/static/index.html` ①b 路径卡片区（推荐绿/警示黄/死路红边框、
+  8s 倒计时、点选即 POST /card、Why 折叠、视频结果内联播放器）；
+  `app.py` 新增 `POST /api/task/{id}/card` + `/img` 支持 mp4。
+- 验收：`test_m18_p0.py` 19/19（迁移幂等/匹配/文案四行/无误报/refuted 排除）
+  + `test_m18_e2e.py` 21/21 全 mock 零硬币（A 全流程含 retiming 实跑/B 死卡
+  零云端/C 8s 门自动 i2v/D 换脸不受影响）。**8830 已重启上线**。
+- 待办：P1 线程化+裁决 UI、P2 假设管线+收口自动总结；前端优化（用户指定最后）。
 
 ### M17 Civitai 第四知识源：设计定稿（用户三轮修正后实测坐实）✅
 

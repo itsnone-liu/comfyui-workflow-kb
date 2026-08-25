@@ -67,6 +67,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             ctype = ("image/png" if p.suffix == ".png"
                      else "image/jpeg" if p.suffix in (".jpg", ".jpeg")
+                     else "video/mp4" if p.suffix == ".mp4"
                      else "application/octet-stream")
             self._send(200, p.read_bytes(), ctype)
             return
@@ -111,6 +112,17 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({"id": task.id}, 201)
             except Exception as e:
                 self._json({"error": str(e)[:300]}, 400)
+            return
+        if path.startswith("/api/task/") and path.endswith("/card"):
+            tid = path.split("/")[3]
+            task = orc.get_task(tid)
+            if not task:
+                self._json({"error": "no such task"}, 404)
+                return
+            ok = orc.choose_card(task, int(payload.get("ix", -1)))
+            self._json({"ok": ok, "state": task.state,
+                        "card_choice": task.card_choice},
+                       200 if ok else 409)
             return
         if path.startswith("/api/task/") and path.endswith("/feedback"):
             tid = path.split("/")[3]

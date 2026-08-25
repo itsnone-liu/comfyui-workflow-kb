@@ -83,6 +83,25 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .wfdl{margin-top:10px}
 code.mini{background:var(--chip);padding:1px 6px;border-radius:5px;
   font-size:11px;color:var(--dim)}
+/* M18 路径卡片 */
+#cardsCard{border-color:var(--warn)}
+#cardsCard h2{color:var(--warn)}
+.pcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;margin-top:8px;cursor:pointer;position:relative}
+.pcard:hover{border-color:var(--acc)}
+.pcard.sel{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.pcard.reco{border-color:var(--ok)}
+.pcard.reco .plabel{color:var(--ok)}
+.pcard.dead{border-color:var(--err);background:rgba(239,107,107,.06)}
+.pcard.dead .plabel{color:var(--err)}
+.pcard.caut{border-color:var(--warn)}
+.plabel{font-size:13px;font-weight:600}
+.pmeta{font-size:11px;color:var(--dim);margin-left:6px;font-weight:400}
+.plines{margin:6px 0 0;font-size:12px;line-height:1.55;color:var(--fg)}
+.plines b{color:var(--dim);font-weight:600}
+.pwhy{margin-top:6px;font-size:11px;color:var(--dim)}
+#cardCount{font-size:12px;color:var(--warn);font-weight:600}
+video.resv{width:100%;border-radius:8px;background:#000;display:block}
 </style>
 </head>
 <body>
@@ -114,6 +133,11 @@ code.mini{background:var(--chip);padding:1px 6px;border-radius:5px;
           <span class="sub" id="hint" style="color:var(--dim);font-size:12px">
             换脸任务需要两张图；其他任务至少 target</span>
         </div>
+      </div>
+
+      <div class="card hidden" id="cardsCard" style="margin-top:14px">
+        <h2>①b 选择路径 <span id="cardCount"></span></h2>
+        <div id="cards" style="color:var(--dim);font-size:12px"></div>
       </div>
 
       <div class="card" style="margin-top:14px">
@@ -186,7 +210,75 @@ async function submit(){
 }
 
 const PHASE_CN={planning:"规划",build:"构建",running:"执行",eval:"评审",
-  feedback:"反馈",error:"错误"};
+  feedback:"反馈",error:"错误",negotiating:"选路"};
+
+let cardTimer=null, cardDeadline=0;
+
+async function pickCard(ix){
+  if(!tid) return;
+  const r=await fetch(`/api/task/${tid}/card`,{method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ix})});
+  const j=await r.json();
+  if(j.ok){
+    if(cardTimer){clearInterval(cardTimer);cardTimer=null;}
+    document.getElementById("cardCount").textContent="已选 #"+ix;
+    document.querySelectorAll(".pcard").forEach(el=>{
+      el.classList.toggle("sel", +el.dataset.ix===ix);});
+  }
+}
+
+function renderCards(t){
+  const box=document.getElementById("cardsCard"),
+        wrap=document.getElementById("cards"),
+        cnt=document.getElementById("cardCount");
+  const pc=t.precheck;
+  if(t.state==="negotiating" && pc && (pc.cards||[]).length){
+    box.classList.remove("hidden");
+    const rec=pc.recommended_ix ?? -1;
+    wrap.innerHTML=(pc.cards||[]).map((c,i)=>{
+      const tone=c.tone==="recommended"?"reco":(c.tone==="dead"?"dead":
+        c.tone==="caution"?"caut":"");
+      const tag=c.tone==="recommended"?"✓ 推荐":
+        c.tone==="dead"?"🔴 已验证失败":c.tone==="caution"?"⚠ 备选":"可选";
+      const req=c.requested?" · 你提到了这条路":"";
+      return `<div class="pcard ${tone}" data-ix="${i}"
+        onclick="pickCard(${i})">
+        <span class="plabel">${esc(c.route_label)}</span>
+        <span class="pmeta">${tag} · 约${esc(c.coins)} 币${req}</span>
+        <div class="plines">
+          <b>做什么：</b>${esc(c.what)}<br>
+          <b>效果与代价：</b>${esc(c.effect_cost)}<br>
+          <b>已知风险：</b>${esc(c.risk)}<br>
+          <b>什么时候选：</b>${esc(c.when_choose)}
+        </div>
+        <div class="pwhy">依据 ${esc(c.code)}${c.laws&&c.laws.length?
+          " · 定律 "+c.laws.map(esc).join("/"):""} · ${esc(c.attribution)}
+          <a href="javascript:void(0)" onclick="event.stopPropagation();
+            const d=this.nextElementSibling;
+            d.style.display=d.style.display==='none'?'block':'none';
+            return false;">为什么？</a>
+          <div style="display:none;margin-top:4px;white-space:pre-wrap">
+            ${esc(c.law_explanations||"")}</div>
+        </div></div>`;}).join("");
+    if(cardTimer){clearInterval(cardTimer);cardTimer=null;}
+    cardDeadline=Date.now()+8000;
+    const tick=()=>{
+      const left=Math.max(0,Math.ceil((cardDeadline-Date.now())/1000));
+      if(t.card_choice>=0){cnt.textContent="已选 #"+t.card_choice;
+        clearInterval(cardTimer);cardTimer=null;return;}
+      cnt.textContent=left>0?`${left}s 后自动按推荐执行`: "按推荐执行…";
+      if(left<=0){clearInterval(cardTimer);cardTimer=null;}
+    };
+    tick(); cardTimer=setInterval(tick,250);
+  } else if(box && t.state!=="negotiating" && t.card_choice>=0){
+    cnt.textContent="已选 #"+t.card_choice;
+    document.querySelectorAll(".pcard").forEach(el=>
+      el.classList.toggle("sel",+el.dataset.ix===t.card_choice));
+  } else if(!pc || !(pc.cards||[]).length){
+    box.classList.add("hidden");
+  }
+}
 
 async function poll(){
   if(!tid) return;
@@ -197,6 +289,7 @@ async function poll(){
 }
 
 function render(t){
+  renderCards(t);
   // timeline
   const tl=document.getElementById("tl");
   tl.innerHTML=(t.timeline||[]).map(e=>{
@@ -232,8 +325,11 @@ function render(t){
     res.innerHTML=`<div class="results">`+ (last.results||[]).map((p,i)=>{
       const ev=(last.eval||{})[p]||{};
       const bars=ev.bars?fmtBars(ev.bars):"";
-      return `<div class="res"><img src="/img?path=${encodeURIComponent(p)}"
-        onclick="lb(this.src)">
+      const media=/\.(mp4|webm)$/i.test(p)?
+        `<video class="resv" src="/img?path=${encodeURIComponent(p)}"
+           controls preload="metadata"></video>`:
+        `<img src="/img?path=${encodeURIComponent(p)}" onclick="lb(this.src)">`;
+      return `<div class="res">${media}
         <div class="cap"><b>第${last.round}轮 · 结果${i+1}</b>
         ${ev.fired&&ev.fired.length?
           `<br>触发: ${ev.fired.slice(0,3).map(esc).join("；")}`:"<br>✓ 全部达标"}</div>
@@ -271,7 +367,8 @@ function fmtBars(b){
     .map(([k,v])=>`${k}=${v}`).join("  ").slice(0,300);
 }
 function stateCN(t){
-  return {planning:"规划中",building:"构建工作流",running:"云端执行",
+  return {planning:"规划中",negotiating:"选择路径（软提示）",building:"构建工作流",
+    running:"云端执行",
     evaluating:"自动评审",review:"等待你的评价",final:"结束"}[t.state]||t.state;
 }
 function badgeClass(t){

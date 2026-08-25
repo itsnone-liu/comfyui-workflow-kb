@@ -32,6 +32,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analyzer"))
 
 from kb import solutions  # M15 expert-solution layer
+from kb import boundaries  # M18-P0 pre-check (soft path cards)
 
 TASKS_DIR = ROOT / "data/webtasks"
 SOLUTIONS_DB = None  # tests override; None -> kb/solutions.DB_PATH (data/kb.db)
@@ -98,6 +99,11 @@ class Task:
     last_result: list = field(default_factory=list)
     feedback_wait: threading.Event = field(default_factory=threading.Event)
     feedback: dict = field(default_factory=dict)
+    # M18-P0: 路径卡片(软提示) + 8s 选择窗
+    precheck: dict = field(default_factory=dict)   # cards_for_api 形状
+    cards: list = field(default_factory=list)
+    card_choice: int = -1
+    card_wait: threading.Event = field(default_factory=threading.Event)
     lock: threading.Lock = field(default_factory=threading.Lock)
 
     def dir(self) -> Path:
@@ -125,6 +131,8 @@ class Task:
                 "images": self.images,
                 "last_result": self.last_result,
                 "final_workflow_ready": bool(self.final_workflow),
+                "precheck": self.precheck,        # M18: 卡片+laws(Why 面板)
+                "card_choice": self.card_choice,
             }
 
     def persist(self):
@@ -523,33 +531,243 @@ def write_explanation(task: Task, limited: bool) -> str:
         return f"（解释生成失败：{e}）已尝试路线：{ev_lines}"
 
 
+# ---------------------------------------------------------------- M18-P0 video
+
+H3_WEBAPP = "2084282198664007682"      # V3 量化加速 fl2v/i2v webapp
+VIDEO_ROUTES = ("h3_i2v_action", "h3_fl2v_direct", "h3_fl2v_retimed")
+CARD_GATE_SECONDS = 8.0                # 用户决策②: 软提示默认 8s 走推荐
+
+
+def choose_card(task: Task, ix: int) -> bool:
+    """negotiating 态下用户点选路径卡; 任务线程在 8s 窗内收到。"""
+    if task.state != "negotiating" or not (0 <= ix < len(task.cards)):
+        return False
+    task.card_choice = ix
+    task.card_wait.set()
+    return True
+
+
+def _to_169(src: Path, dst: Path, w: int = 1344, h: int = 768) -> Path:
+    """条件帧 16:9 画布归一(BL-005: 输出画幅跟随条件帧, 链式必须同画布)。"""
+    import cv2
+    img = cv2.imread(str(src))
+    if img is None:
+        raise RuntimeError(f"cannot read {src}")
+    scale = max(w / img.shape[1], h / img.shape[0])
+    nw, nh = int(round(img.shape[1] * scale)), int(round(img.shape[0] * scale))
+    big = cv2.resize(img, (nw, nh), interpolation=cv2.INTER_LANCZOS4)
+    x0, y0 = max(0, (nw - w) // 2), max(0, (nh - h) // 2)
+    crop = big[y0:y0 + h, x0:x0 + w]
+    cv2.imwrite(str(dst), crop)
+    return dst
+
+
+def _retiming(src: Path, dst: Path, fps: int = 24) -> Path:
+    """快切带检测 + 运动补偿插值拉伸 2.5x(方案#19 V2 语义: 保持段不动)。
+
+    零硬币确定性后处理; 端点帧保真。port 自 _tail_fix.py(E/retiming 验证日)。
+    """
+    import cv2
+    import numpy as np
+    small = (432, 240)
+    cap = cv2.VideoCapture(str(src))
+    frames = []
+    while True:
+        ret, f = cap.read()
+        if not ret:
+            break
+        frames.append(f)
+    cap.release()
+    if len(frames) < 24:
+        import shutil
+        shutil.copy(src, dst)
+        return dst
+    h, w = frames[0].shape[:2]
+    fr = [cv2.resize(f, small).astype(np.float32) for f in frames]
+    curve = np.array([float(np.abs(fr[i + 1] - fr[i]).mean() / 255)
+                      for i in range(len(fr) - 1)])
+    med = float(np.median(curve))
+    spike = np.where(curve > 3.0 * med)[0]
+    if not len(spike):                      # 已平滑: 原样返回
+        import shutil
+        shutil.copy(src, dst)
+        return dst
+    w0, w1 = max(1, int(spike[0])), min(len(frames) - 2, int(spike[-1]) + 2)
+    # 快切带 120fps 运动补偿插值
+    import tempfile
+    tmp = Path(tempfile.mkdtemp(prefix="retime_"))
+    src_seg = tmp / "seg.mp4"
+    vw = cv2.VideoWriter(str(src_seg), cv2.VideoWriter_fourcc(*"mp4v"),
+                         fps, (w, h))
+    for i in range(w0, w1 + 1):
+        vw.write(frames[i])
+    vw.release()
+    import subprocess
+    hi = tmp / "seg120.mp4"
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", str(src_seg), "-vf",
+         "minterpolate=fps=120:mi_mode=mci:mc_mode=aobmc:vsbmc=1",
+         "-c:v", "libx264", "-crf", "12", "-pix_fmt", "yuv420p", "-an",
+         str(hi)], check=True, capture_output=True)
+    cap = cv2.VideoCapture(str(hi))
+    interp = []
+    while True:
+        ret, f = cap.read()
+        if not ret:
+            break
+        interp.append(f)
+    cap.release()
+    factor = 2.5
+    m = int(round((w1 - w0 + 1) * factor))
+    idx = [min(len(interp) - 1, int(round(j * 120.0 / (fps * factor))))
+           for j in range(m)]
+    seq = frames[:w0] + [interp[i] for i in idx] + frames[w1 + 1:]
+    raw = tmp / "out.mp4"
+    vw = cv2.VideoWriter(str(raw), cv2.VideoWriter_fourcc(*"mp4v"),
+                         fps, (w, h))
+    for f in seq:
+        vw.write(f)
+    vw.release()
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", str(raw), "-c:v", "libx264", "-crf", "18",
+         "-pix_fmt", "yuv420p", "-an", str(dst)], check=True,
+        capture_output=True)
+    return dst
+
+
+def _exec_video_transition(task: Task, route: str) -> list[str]:
+    """M18-P0 视频路线执行: i2v 动作脚本 / fl2v 直连 / fl2v+retiming。
+
+    输入: target=首帧图; ref=尾帧图(fl2v 路线必需, i2v 忽略)。
+    """
+    from experiments import rh_task
+    if route not in VIDEO_ROUTES:   # 反馈轮换: i2v <-> fl2v_retimed
+        route = ("h3_fl2v_retimed"
+                 if task.plan.get("route") == "h3_i2v_action" else "h3_i2v_action")
+    key = rh_task.load_api_key()
+    first = ROOT / task.images.get("target", "")
+    if not first.exists():
+        raise RuntimeError("缺首帧图(target)")
+    task.state = "running"
+    use_last = route != "h3_i2v_action"
+    if use_last:
+        if "ref" not in task.images:
+            raise RuntimeError("首尾帧路线需要 ref=尾帧图")
+        c_first = _to_169(first, task.dir() / "cond_first_169.png")
+        c_last = _to_169(ROOT / task.images["ref"],
+                         task.dir() / "cond_last_169.png")
+        u_first = rh_task.upload_file(key, c_first)
+        u_last = rh_task.upload_file(key, c_last)
+        prompt = ("以上传的两张图片为首帧和尾帧，生成一段单一连续镜头的视频，"
+                  "画面平滑演变，无转场、无切换。要求：" + task.requirement)
+    else:
+        u_first = rh_task.upload_file(key, first)
+        u_last = ""
+        prompt = ("以上传的图片为首帧，生成一段单一连续镜头的视频。"
+                  "动作要求：" + task.requirement + " 全程一个连续镜头，"
+                  "无转场、无切换、无闪切。")
+    node_info = [{"nodeId": "137", "fieldName": "image", "fieldValue": u_first}]
+    if use_last:
+        node_info.append({"nodeId": "143", "fieldName": "image",
+                          "fieldValue": u_last})
+    node_info += [
+        {"nodeId": "159", "fieldName": "value",
+         "fieldValue": "true" if use_last else "false"},
+        {"nodeId": "135", "fieldName": "value", "fieldValue": "5"},
+        {"nodeId": "136", "fieldName": "prompt", "fieldValue": prompt},
+        {"nodeId": "175", "fieldName": "strength_model", "fieldValue": "0"},
+    ]
+    task.log("running", f"执行视频路线 {route}（{'首尾帧' if use_last else '图生'}）")
+    tid = rh_task.run_webapp(key, H3_WEBAPP, node_info)
+    out = rh_task.wait_task(key, tid, poll=10, max_wait=1200)
+    urls = [u for u in rh_task.collect_file_urls(out)
+            if u.lower().split("?")[0].endswith((".mp4", ".webm"))]
+    if not urls:
+        raise RuntimeError("no video output")
+    files = []
+    for i, u in enumerate(urls[:2]):
+        p = rh_task.download(u, task.dir() / f"out_r{task.current_round}_{i}.mp4")
+        files.append(str(p.relative_to(ROOT)))
+    if route == "h3_fl2v_retimed":
+        task.log("running", "retiming 后处理（快切带检测+插值拉伸 2.5x）")
+        dst = task.dir() / f"out_r{task.current_round}_retimed.mp4"
+        _retiming(ROOT / files[0], dst)
+        files.insert(0, str(dst.relative_to(ROOT)))
+    task.final_workflow = {
+        "route": route, "family": "video_transition",
+        "webapp_id": H3_WEBAPP, "task_id": tid,
+        "prompt": prompt[:300]}
+    return files
+
+
 # ---------------------------------------------------------------- main loop
 
 def _run_task(task: Task):
     try:
         task.state = "planning"
         task.log("planning", "解析需求…")
-        # M15: Expert Solution Retrieval 前置(命中则零规划硬币)
-        sol = _pick_solution(task)
-        if sol:
-            task.plan = {
-                "family": sol["family"], "route": sol["name"],
-                "feasible": True, "reused_solution": sol["id"],
-                "solution_score": sol["score"],
-                "planning": (f"复用专家方案 {sol['name']}({sol['status']}) "
-                             f"匹配={sol['matched_caps']}——零规划硬币"),
-                "notes": sol["requirements"]}
-            task.family = sol["family"]
-            solutions.record_reuse(sol["id"], db_path=SOLUTIONS_DB)
-            task.log("planning", task.plan["planning"])
+        # M18-P0: 前置可行性检查(软提示; 命中即弹路径卡片, 8s 窗后走推荐)
+        try:
+            _pre = boundaries.check(task.requirement, list(task.images),
+                                    db_path=SOLUTIONS_DB)
+        except Exception:
+            _pre = {"matched": False, "cards": [], "recommended_ix": -1}
+        if _pre.get("matched"):
+            task.precheck = boundaries.cards_for_api(_pre)
+            task.cards = _pre["cards"]
+            task.log("negotiating",
+                     f"路径卡片 ×{len(task.cards)}（软提示，"
+                     f"{CARD_GATE_SECONDS:.0f}s 后按推荐执行，可点选切换）")
+            task.state = "negotiating"
+            task.persist()
+            got = task.card_wait.wait(timeout=CARD_GATE_SECONDS)
+            ix = (task.card_choice
+                  if got and 0 <= task.card_choice < len(task.cards)
+                  else _pre.get("recommended_ix", 0))
+            ix = max(0, min(ix, len(task.cards) - 1))
+            card = task.cards[ix]
+            task.card_choice = ix
+            task.log("negotiating",
+                     f"按卡片#{ix} {card['code']} → 路线 {card['route']}"
+                     f"（{'用户选择' if got else '默认推荐'}）")
+            if card["route"] not in VIDEO_ROUTES:   # dead 卡: 不执行, 只解释
+                task.outcome = "limited"
+                task.explanation = (
+                    f"所选路线「{card['route_label']}」已被实验证伪，不再执行"
+                    f"（{card['dead_ref']}）。机制：{card['law_explanations']}。"
+                    f"建议改选卡片#{_pre.get('recommended_ix', 0)} "
+                    f"{task.cards[_pre.get('recommended_ix', 0)]['route_label']}。")
+                task.state = "final"
+                _writeback(task)
+                task.persist()
+                return
+            task.plan = {"family": "video_transition", "route": card["route"],
+                         "feasible": True, "card": card["code"],
+                         "planning": f"M18 路径卡片 {card['code']}"}
+            task.family = "video_transition"
         else:
-            task.plan = plan_task(task)
-            task.family = task.plan.get("family", "kb_generic")
-            task.log("planning",
-                     f"任务族={task.family} 初始路线={task.plan.get('route')}")
+            # M15: Expert Solution Retrieval 前置(命中则零规划硬币)
+            sol = _pick_solution(task)
+            if sol:
+                task.plan = {
+                    "family": sol["family"], "route": sol["name"],
+                    "feasible": True, "reused_solution": sol["id"],
+                    "solution_score": sol["score"],
+                    "planning": (f"复用专家方案 {sol['name']}({sol['status']}) "
+                                 f"匹配={sol['matched_caps']}——零规划硬币"),
+                    "notes": sol["requirements"]}
+                task.family = sol["family"]
+                solutions.record_reuse(sol["id"], db_path=SOLUTIONS_DB)
+                task.log("planning", task.plan["planning"])
+            else:
+                task.plan = plan_task(task)
+                task.family = task.plan.get("family", "kb_generic")
+                task.log("planning",
+                         f"任务族={task.family} 初始路线={task.plan.get('route')}")
 
         # feasibility: inputs present?
-        need = {"face_swap": ("target", "ref"), "kb_generic": ("target",)}
+        need = {"face_swap": ("target", "ref"), "kb_generic": ("target",),
+                "video_transition": ("target",)}
         missing = [s for s in need.get(task.family, ()) if s not in task.images]
         if task.plan.get("feasible") is False or missing:
             task.outcome = "limited"
@@ -584,6 +802,8 @@ def _run_task(task: Task):
             try:
                 results = (_exec_face_swap(task, route)
                            if task.family == "face_swap"
+                           else _exec_video_transition(task, route)
+                           if task.family == "video_transition"
                            else _exec_kb_generic(task, route))
             except Exception as e:
                 task.log("error", f"执行失败：{e}")
