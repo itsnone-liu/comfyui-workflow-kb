@@ -1,6 +1,287 @@
 {
- "generated_at": "2026-08-24 23:44:30",
+ "generated_at": "2026-08-25 18:34:56",
  "modules": {
+  "_civitai_probe": {
+   "file": "_civitai_probe.py",
+   "lines": 41,
+   "doc": "_civitai_probe.py — Civitai(C站) 作为第四知识源的可行性探测(零硬币,纯 GET)。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "re",
+    "sys",
+    "urllib.parse",
+    "urllib.request"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe2": {
+   "file": "_civitai_probe2.py",
+   "lines": 17,
+   "doc": "_civitai_probe2.py — 第二轮:NSFW 可见性/量级 + zip 下载策略 + images.meta 富矿。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "urllib.parse",
+    "urllib.request",
+    "re",
+    "re"
+   ],
+   "aliases": {
+    "_re": "re"
+   },
+   "imported_by": []
+  },
+  "_civitai_probe3": {
+   "file": "_civitai_probe3.py",
+   "lines": 23,
+   "doc": "_civitai_probe3.py — 第三轮:真下载 workflow zip 验证可解析性 + images.meta 复测。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "io",
+    "json",
+    "re",
+    "urllib.request",
+    "zipfile",
+    "urllib.parse"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe4": {
+   "file": "_civitai_probe4.py",
+   "lines": 19,
+   "doc": "_civitai_probe4.py — 第四轮:LoRA desc 技巧密度 + 官方 gen-skill 定位。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "re",
+    "urllib.request"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe5": {
+   "file": "_civitai_probe5.py",
+   "lines": 11,
+   "doc": "_civitai_probe5.py — 第五轮:双域名(.com vs .red)NSFW 可见性对比。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "urllib.request",
+    "io",
+    "zipfile"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe6": {
+   "file": "_civitai_probe6.py",
+   "lines": 29,
+   "doc": "_civitai_probe6.py — 第六轮:验证'RH 有同名模型只是名称略异'(用户修正)。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "re",
+    "sqlite3",
+    "urllib.request",
+    "difflib"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe7": {
+   "file": "_civitai_probe7.py",
+   "lines": 27,
+   "doc": "_civitai_probe7.py — 第七轮:翻全 RH 模型库,对撞 Civitai 代表名(用户判断终验)。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "re",
+    "time",
+    "urllib.request",
+    "difflib"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_civitai_probe8": {
+   "file": "_civitai_probe8.py",
+   "lines": 14,
+   "doc": "_civitai_probe8.py — 第八轮:RH 模型库搜索参数 + Civitai 名终验。",
+   "entry": false,
+   "imports": [
+    "gzip",
+    "json",
+    "time",
+    "urllib.request"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_dlc_ab": {
+   "file": "_dlc_ab.py",
+   "lines": 22,
+   "doc": "_dlc_ab.py — Deep-Live-Cam 机制等价 A/B(RH 云端,零本地推理)。",
+   "entry": true,
+   "imports": [
+    "json",
+    "shutil",
+    "sys",
+    "time",
+    "pathlib",
+    "cv2",
+    "rh_task",
+    "experiments.metrics",
+    "swap_face"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "FaceComparator": "experiments.metrics",
+    "sf": "swap_face"
+   },
+   "imported_by": []
+  },
+  "_dlc_kb_check": {
+   "file": "_dlc_kb_check.py",
+   "lines": 18,
+   "doc": "_dlc_kb_check.py — 查 KB 中 Deep-Live-Cam 线索/本地算子族/被换脸2 基线。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_dlc_writeback": {
+   "file": "_dlc_writeback.py",
+   "lines": 23,
+   "doc": "_dlc_writeback.py — DLC 机制验证结论回写 KB(幂等: 按标题去重)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_gap_law_writeback": {
+   "file": "_gap_law_writeback.py",
+   "lines": 6,
+   "doc": "_gap_law_writeback.py — 差距->切换强度单调律 入库。",
+   "entry": false,
+   "imports": [
+    "sqlite3"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_h3_fl2v": {
+   "file": "_h3_fl2v.py",
+   "lines": 27,
+   "doc": "_h3_fl2v.py — H3 首尾帧无缝衔接验证(5s+加速, ref→825)。",
+   "entry": true,
+   "imports": [
+    "json",
+    "subprocess",
+    "sys",
+    "time",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "rh_task",
+    "experiments.metrics"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy",
+    "FaceComparator": "experiments.metrics"
+   },
+   "imported_by": []
+  },
+  "_h3_fl2v_c": {
+   "file": "_h3_fl2v_c.py",
+   "lines": 26,
+   "doc": "_h3_fl2v_c.py — 臂C: 16:9 归一化中间帧链(修画幅断点) + 边界连续性直测。",
+   "entry": true,
+   "imports": [
+    "json",
+    "subprocess",
+    "sys",
+    "time",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "rh_task",
+    "experiments.metrics"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy",
+    "FaceComparator": "experiments.metrics"
+   },
+   "imported_by": []
+  },
+  "_h3_fl2v_inspect": {
+   "file": "_h3_fl2v_inspect.py",
+   "lines": 18,
+   "doc": "_h3_fl2v_inspect.py — V3 首尾帧流结构诊断:单遍还是拼接?时长公式?",
+   "entry": false,
+   "imports": [
+    "collections",
+    "json",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_h3_fl2v_metric": {
+   "file": "_h3_fl2v_metric.py",
+   "lines": 18,
+   "doc": "_h3_fl2v_metric.py — 拼接修复(统一 864x480 画布) + 帧差曲线尖峰分析。",
+   "entry": false,
+   "imports": [
+    "json",
+    "subprocess",
+    "pathlib",
+    "cv2",
+    "numpy"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy"
+   },
+   "imported_by": []
+  },
+  "_h3_fl2v_writeback": {
+   "file": "_h3_fl2v_writeback.py",
+   "lines": 24,
+   "doc": "_h3_fl2v_writeback.py — H3 首尾帧无缝衔接验证回写 KB(幂等)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
   "_h3_worker": {
    "file": "_h3_worker.py",
    "lines": 16,
@@ -18,6 +299,69 @@
     "analyze_one": "analyzer.llm_card",
     "store": "kb.store"
    },
+   "imported_by": []
+  },
+  "_i2v_test": {
+   "file": "_i2v_test.py",
+   "lines": 20,
+   "doc": "_i2v_test.py — i2v 模式验证(用户判断: 跨空间图对应弃尾帧锚)。",
+   "entry": true,
+   "imports": [
+    "json",
+    "sys",
+    "time",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "rh_task",
+    "metrics"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy",
+    "FaceComparator": "metrics"
+   },
+   "imported_by": []
+  },
+  "_i2v_writeback": {
+   "file": "_i2v_writeback.py",
+   "lines": 10,
+   "doc": "_i2v_writeback.py — i2v 正结果落账(用户判断验证)。",
+   "entry": false,
+   "imports": [
+    "sqlite3",
+    "datetime"
+   ],
+   "aliases": {
+    "datetime": "datetime"
+   },
+   "imported_by": []
+  },
+  "_kb_fl2v_query": {
+   "file": "_kb_fl2v_query.py",
+   "lines": 14,
+   "doc": "_kb_fl2v_query.py — 查 KB 里首尾帧 webapp 的输入面(找多关键帧/强度参数)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_kb_fl2v_query2": {
+   "file": "_kb_fl2v_query2.py",
+   "lines": 10,
+   "doc": "_kb_fl2v_query2.py — fl2v webapp 卡片输入面 + 参数知识 dump。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3"
+   ],
+   "aliases": {},
    "imported_by": []
   },
   "_m11_eval": {
@@ -77,6 +421,75 @@
    },
    "imported_by": []
   },
+  "_peek_sol": {
+   "file": "_peek_sol.py",
+   "lines": 8,
+   "doc": "_peek_sol.py — 看 expert_solutions 现有行的字段习惯。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3"
+   ],
+   "aliases": {},
+   "imported_by": []
+  },
+  "_plan_a_analyze": {
+   "file": "_plan_a_analyze.py",
+   "lines": 34,
+   "doc": "_plan_a_analyze.py — A方案(D: klein中间帧链)失败分析 + 修复拼接。",
+   "entry": false,
+   "imports": [
+    "json",
+    "subprocess",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "sys",
+    "metrics"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy",
+    "FaceComparator": "metrics"
+   },
+   "imported_by": []
+  },
+  "_plan_a_klein_midframe": {
+   "file": "_plan_a_klein_midframe.py",
+   "lines": 26,
+   "doc": "_plan_a_klein_midframe.py — A方案: Klein 生成真实中间态 -> H3 三段链。",
+   "entry": true,
+   "imports": [
+    "json",
+    "subprocess",
+    "sys",
+    "time",
+    "pathlib",
+    "cv2",
+    "numpy",
+    "rh_task"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy"
+   },
+   "imported_by": []
+  },
+  "_plan_a_writeback": {
+   "file": "_plan_a_writeback.py",
+   "lines": 12,
+   "doc": "_plan_a_writeback.py — A方案(Klein真实中间态)实验结果落账。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "datetime"
+   ],
+   "aliases": {
+    "datetime": "datetime"
+   },
+   "imported_by": []
+  },
   "_research_probe": {
    "file": "_research_probe.py",
    "lines": 11,
@@ -91,6 +504,75 @@
    "aliases": {
     "Path": "pathlib",
     "rh": "rh_client"
+   },
+   "imported_by": []
+  },
+  "_static_gallery": {
+   "file": "_static_gallery.py",
+   "lines": 19,
+   "doc": "_static_gallery.py — 8826 静态快照版: 一次性渲染, 无轮询不刷新。",
+   "entry": true,
+   "imports": [
+    "http.server",
+    "json",
+    "socketserver",
+    "sys",
+    "time",
+    "urllib.parse",
+    "pathlib"
+   ],
+   "aliases": {
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_tail_analysis": {
+   "file": "_tail_analysis.py",
+   "lines": 41,
+   "doc": "_tail_analysis.py — A 臂尾帧突兀诊断(零硬币)。",
+   "entry": false,
+   "imports": [
+    "cv2",
+    "numpy",
+    "pathlib"
+   ],
+   "aliases": {
+    "np": "numpy",
+    "Path": "pathlib"
+   },
+   "imported_by": []
+  },
+  "_tail_fix": {
+   "file": "_tail_fix.py",
+   "lines": 68,
+   "doc": "_tail_fix.py — A 臂尾帧到达突兀的零硬币修复: 时间重分配(retiming)。",
+   "entry": false,
+   "imports": [
+    "json",
+    "subprocess",
+    "tempfile",
+    "pathlib",
+    "cv2",
+    "numpy"
+   ],
+   "aliases": {
+    "Path": "pathlib",
+    "np": "numpy"
+   },
+   "imported_by": []
+  },
+  "_tail_writeback": {
+   "file": "_tail_writeback.py",
+   "lines": 16,
+   "doc": "_tail_writeback.py — 尾帧突兀诊断+retiming 修复落账 KB。",
+   "entry": false,
+   "imports": [
+    "json",
+    "sqlite3",
+    "datetime"
+   ],
+   "aliases": {
+    "datetime": "datetime"
    },
    "imported_by": []
   },
@@ -718,6 +1200,9 @@
     "np": "numpy"
    },
    "imported_by": [
+    "_dlc_ab",
+    "_h3_fl2v",
+    "_h3_fl2v_c",
     "analyzer.auto_explore",
     "analyzer.color_match",
     "experiments.runner",
@@ -1432,6 +1917,7 @@
     "commands_for": "analyzer.auto_explore"
    },
    "imported_by": [
+    "_dlc_ab",
     "_m11_eval",
     "analyzer.auto_explore",
     "research.probe_webapp",
@@ -1631,6 +2117,322 @@
  },
  "defs": [
   {
+   "id": "_civitai_probe.get",
+   "kind": "function",
+   "module": "_civitai_probe",
+   "name": "get",
+   "args": [
+    "url",
+    "timeout"
+   ],
+   "line": 20,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe.probe",
+   "kind": "function",
+   "module": "_civitai_probe",
+   "name": "probe",
+   "args": [
+    "name",
+    "url"
+   ],
+   "line": 33,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe2.get",
+   "kind": "function",
+   "module": "_civitai_probe2",
+   "name": "get",
+   "args": [
+    "url",
+    "timeout",
+    "rng"
+   ],
+   "line": 11,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe3.getj",
+   "kind": "function",
+   "module": "_civitai_probe3",
+   "name": "getj",
+   "args": [
+    "url"
+   ],
+   "line": 12,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe4.getj",
+   "kind": "function",
+   "module": "_civitai_probe4",
+   "name": "getj",
+   "args": [
+    "url"
+   ],
+   "line": 10,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe5.getj",
+   "kind": "function",
+   "module": "_civitai_probe5",
+   "name": "getj",
+   "args": [
+    "url",
+    "timeout"
+   ],
+   "line": 8,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe6.post",
+   "kind": "function",
+   "module": "_civitai_probe6",
+   "name": "post",
+   "args": [
+    "url",
+    "body",
+    "timeout"
+   ],
+   "line": 17,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe6.norm",
+   "kind": "function",
+   "module": "_civitai_probe6",
+   "name": "norm",
+   "args": [
+    "n"
+   ],
+   "line": 73,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe7.post",
+   "kind": "function",
+   "module": "_civitai_probe7",
+   "name": "post",
+   "args": [
+    "url",
+    "body",
+    "timeout"
+   ],
+   "line": 12,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe7.norm",
+   "kind": "function",
+   "module": "_civitai_probe7",
+   "name": "norm",
+   "args": [
+    "n"
+   ],
+   "line": 52,
+   "doc": ""
+  },
+  {
+   "id": "_civitai_probe8.post",
+   "kind": "function",
+   "module": "_civitai_probe8",
+   "name": "post",
+   "args": [
+    "url",
+    "body",
+    "timeout"
+   ],
+   "line": 11,
+   "doc": ""
+  },
+  {
+   "id": "_dlc_ab.metric_one",
+   "kind": "function",
+   "module": "_dlc_ab",
+   "name": "metric_one",
+   "args": [
+    "fc",
+    "out_path",
+    "e_ref",
+    "e_tgt",
+    "g_tgt",
+    "g_ref",
+    "h_ref",
+    "h_tgt"
+   ],
+   "line": 48,
+   "doc": ""
+  },
+  {
+   "id": "_dlc_ab.main",
+   "kind": "function",
+   "module": "_dlc_ab",
+   "name": "main",
+   "args": [],
+   "line": 68,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v.build_mid",
+   "kind": "function",
+   "module": "_h3_fl2v",
+   "name": "build_mid",
+   "args": [
+    "ref",
+    "last",
+    "out",
+    "zoom"
+   ],
+   "line": 46,
+   "doc": "中间帧 = 825 以人脸为中心裁到中间尺度(人占画面 60% 处于 ref 特写与全景之间)"
+  },
+  {
+   "id": "_h3_fl2v.run_pass",
+   "kind": "function",
+   "module": "_h3_fl2v",
+   "name": "run_pass",
+   "args": [
+    "key",
+    "tag",
+    "first_url",
+    "last_url",
+    "dur",
+    "prompt"
+   ],
+   "line": 85,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v.frame_diff_curve",
+   "kind": "function",
+   "module": "_h3_fl2v",
+   "name": "frame_diff_curve",
+   "args": [
+    "video",
+    "fps"
+   ],
+   "line": 108,
+   "doc": "逐帧平均绝对差(0-1). 拼接硬切 -> 中段巨大尖峰; 平滑过渡 -> 连续小值。"
+  },
+  {
+   "id": "_h3_fl2v.spike_stats",
+   "kind": "function",
+   "module": "_h3_fl2v",
+   "name": "spike_stats",
+   "args": [
+    "curve"
+   ],
+   "line": 125,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v.main",
+   "kind": "function",
+   "module": "_h3_fl2v",
+   "name": "main",
+   "args": [],
+   "line": 140,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_c.to_16x9_face_centered",
+   "kind": "function",
+   "module": "_h3_fl2v_c",
+   "name": "to_16x9_face_centered",
+   "args": [
+    "src",
+    "dst",
+    "face_frac"
+   ],
+   "line": 38,
+   "doc": "以最大人脸为中心裁 16:9; face_frac 给定则按'人脸宽/画面高'缩放到该占比。"
+  },
+  {
+   "id": "_h3_fl2v_c.run_pass",
+   "kind": "function",
+   "module": "_h3_fl2v_c",
+   "name": "run_pass",
+   "args": [
+    "key",
+    "tag",
+    "first_url",
+    "last_url",
+    "dur",
+    "prompt"
+   ],
+   "line": 71,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_c.grab",
+   "kind": "function",
+   "module": "_h3_fl2v_c",
+   "name": "grab",
+   "args": [
+    "video",
+    "idx",
+    "end"
+   ],
+   "line": 94,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_c.mad",
+   "kind": "function",
+   "module": "_h3_fl2v_c",
+   "name": "mad",
+   "args": [
+    "a",
+    "b"
+   ],
+   "line": 103,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_c.main",
+   "kind": "function",
+   "module": "_h3_fl2v_c",
+   "name": "main",
+   "args": [],
+   "line": 107,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_metric.curve",
+   "kind": "function",
+   "module": "_h3_fl2v_metric",
+   "name": "curve",
+   "args": [
+    "video",
+    "size"
+   ],
+   "line": 25,
+   "doc": ""
+  },
+  {
+   "id": "_h3_fl2v_metric.stats",
+   "kind": "function",
+   "module": "_h3_fl2v_metric",
+   "name": "stats",
+   "args": [
+    "ys"
+   ],
+   "line": 40,
+   "doc": ""
+  },
+  {
+   "id": "_i2v_test.main",
+   "kind": "function",
+   "module": "_i2v_test",
+   "name": "main",
+   "args": [],
+   "line": 37,
+   "doc": ""
+  },
+  {
    "id": "_m11_probe.run",
    "kind": "function",
    "module": "_m11_probe",
@@ -1640,6 +2442,202 @@
     "node_info"
    ],
    "line": 29,
+   "doc": ""
+  },
+  {
+   "id": "_plan_a_analyze.frames_of",
+   "kind": "function",
+   "module": "_plan_a_analyze",
+   "name": "frames_of",
+   "args": [
+    "v"
+   ],
+   "line": 13,
+   "doc": ""
+  },
+  {
+   "id": "_plan_a_analyze.dist",
+   "kind": "function",
+   "module": "_plan_a_analyze",
+   "name": "dist",
+   "args": [
+    "a",
+    "b"
+   ],
+   "line": 25,
+   "doc": ""
+  },
+  {
+   "id": "_plan_a_klein_midframe.klein_midframe",
+   "kind": "function",
+   "module": "_plan_a_klein_midframe",
+   "name": "klein_midframe",
+   "args": [
+    "key"
+   ],
+   "line": 50,
+   "doc": ""
+  },
+  {
+   "id": "_plan_a_klein_midframe.to_169",
+   "kind": "function",
+   "module": "_plan_a_klein_midframe",
+   "name": "to_169",
+   "args": [
+    "img_path",
+    "out_path"
+   ],
+   "line": 70,
+   "doc": "归一到 16:9 1344x768 画布: 短边填充(保持全帧)而非裁剪。"
+  },
+  {
+   "id": "_plan_a_klein_midframe.h3_pass",
+   "kind": "function",
+   "module": "_plan_a_klein_midframe",
+   "name": "h3_pass",
+   "args": [
+    "key",
+    "tag",
+    "first",
+    "last",
+    "dur",
+    "prompt"
+   ],
+   "line": 89,
+   "doc": ""
+  },
+  {
+   "id": "_plan_a_klein_midframe.main",
+   "kind": "function",
+   "module": "_plan_a_klein_midframe",
+   "name": "main",
+   "args": [],
+   "line": 122,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.scan",
+   "kind": "function",
+   "module": "_static_gallery",
+   "name": "scan",
+   "args": [
+    "rel_dir"
+   ],
+   "line": 24,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.build_html",
+   "kind": "function",
+   "module": "_static_gallery",
+   "name": "build_html",
+   "args": [],
+   "line": 57,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.Handler",
+   "kind": "class",
+   "module": "_static_gallery",
+   "name": "Handler",
+   "args": [
+    ""
+   ],
+   "line": 120,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.Handler.do_GET",
+   "kind": "method",
+   "module": "_static_gallery",
+   "name": "do_GET",
+   "args": [
+    "self"
+   ],
+   "line": 121,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.Handler.log_message",
+   "kind": "method",
+   "module": "_static_gallery",
+   "name": "log_message",
+   "args": [
+    "self"
+   ],
+   "line": 151,
+   "doc": ""
+  },
+  {
+   "id": "_static_gallery.Server",
+   "kind": "class",
+   "module": "_static_gallery",
+   "name": "Server",
+   "args": [
+    "",
+    ""
+   ],
+   "line": 155,
+   "doc": ""
+  },
+  {
+   "id": "_tail_fix.sample_window",
+   "kind": "function",
+   "module": "_tail_fix",
+   "name": "sample_window",
+   "args": [
+    "factor"
+   ],
+   "line": 87,
+   "doc": "切换窗口按 factor 拉长: 输出帧 j 对应源时刻 j/(fps*factor) -> 120fps 位置"
+  },
+  {
+   "id": "_tail_fix.decimate",
+   "kind": "function",
+   "module": "_tail_fix",
+   "name": "decimate",
+   "args": [
+    "seg",
+    "m"
+   ],
+   "line": 95,
+   "doc": "保持段抽帧到 m 帧(端点保留)"
+  },
+  {
+   "id": "_tail_fix.build",
+   "kind": "function",
+   "module": "_tail_fix",
+   "name": "build",
+   "args": [
+    "v_factor",
+    "keep_holds",
+    "total"
+   ],
+   "line": 104,
+   "doc": ""
+  },
+  {
+   "id": "_tail_fix.save",
+   "kind": "function",
+   "module": "_tail_fix",
+   "name": "save",
+   "args": [
+    "seq",
+    "path"
+   ],
+   "line": 118,
+   "doc": ""
+  },
+  {
+   "id": "_tail_fix.metrics",
+   "kind": "function",
+   "module": "_tail_fix",
+   "name": "metrics",
+   "args": [
+    "seq",
+    "name"
+   ],
+   "line": 132,
    "doc": ""
   },
   {
@@ -5401,6 +6399,5007 @@
  ],
  "calls": [
   {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 46,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 56,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 57
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 66,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 67,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 70,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 80,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 81
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 85,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 86
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 97,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 99
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 119,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 120,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 123,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 124
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 130,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 131
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 134,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 136
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 142
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "probe",
+   "line": 144,
+   "to": "_civitai_probe.probe",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 145
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 151
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 152
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 157
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "urllib.request.Request",
+   "line": 21
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 83
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 87
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 88
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 101
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 127
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 128
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 133
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "open",
+   "line": 155
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "json.dump",
+   "line": 156
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "urllib.request.urlopen",
+   "line": 22
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "r.read",
+   "line": 23
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "r.headers.get",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "b.decode",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "get",
+   "line": 36,
+   "to": "_civitai_probe.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 58
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "v0.get",
+   "line": 60
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 62
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 72
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 74
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 78
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 76
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "set",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "set",
+   "line": 87
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 89
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "any",
+   "line": 91
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "json.dumps",
+   "line": 108
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 109
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 111
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 112
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "len",
+   "line": 113
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 115
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 137
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 138
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 146
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 148
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "json.dumps",
+   "line": 152
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "r.headers.get",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "gzip.decompress",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "print",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "f.get",
+   "line": 61
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 73
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 90
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 102
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "any",
+   "line": 103
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 126
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "OUT.get",
+   "line": 142
+  },
+  {
+   "from": "_civitai_probe.get",
+   "raw": "json.loads",
+   "line": 29
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 51
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 59
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "i.get",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "i.get",
+   "line": 87
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 125
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 132
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "json.dumps",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 62
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 62
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "len",
+   "line": 63
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 74
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 74
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "set",
+   "line": 77
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 87
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "im.get",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "json.dumps",
+   "line": 104
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "wf_sample.get",
+   "line": 109
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "len",
+   "line": 110
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 111
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 127
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "str",
+   "line": 128
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "list",
+   "line": 129
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 133
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "f.get",
+   "line": 148
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "f.get",
+   "line": 149
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "OUT.items",
+   "line": 154
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "ct.split",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "v0.get",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sorted",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "sum",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "max",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "f.get",
+   "line": 148
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "type",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "type",
+   "line": 42
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "m.get",
+   "line": 63
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "meta.keys",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 77
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "meta.keys",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "len",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "it.get",
+   "line": 139
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "isinstance",
+   "line": 152
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "v.items",
+   "line": 153
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "len",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 128
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "i.get",
+   "line": 77
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "d.get",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "v.get",
+   "line": 129
+  },
+  {
+   "from": "_civitai_probe.probe",
+   "raw": "i.get",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 130
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "dict",
+   "line": 12
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "urllib.request.Request",
+   "line": 15
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 44,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 80,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 81
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 95
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 97
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 106,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 107
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 114,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 116
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 117,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "_re.sub",
+   "line": 120
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 121
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "open",
+   "line": 128
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "json.dump",
+   "line": 129
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "urllib.request.urlopen",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "r.read",
+   "line": 17
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 34,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "md.get",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "_re.sub",
+   "line": 51
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 62
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "get",
+   "line": 67,
+   "to": "_civitai_probe2.get",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 69
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "json.dumps",
+   "line": 89
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 110
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 115
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d2.get",
+   "line": 118
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d2.get",
+   "line": 123
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 124
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 126
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "r.headers.get",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "gzip.decompress",
+   "line": 19
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "isinstance",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 40
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 72
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "print",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "im.get",
+   "line": 86
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "t.get",
+   "line": 108
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "t.get",
+   "line": 108
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 108
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "text.strip",
+   "line": 124
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "json.loads",
+   "line": 20
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "OUT.setdefault",
+   "line": 56
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 57
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 57
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "stats.get",
+   "line": 58
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 73
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "str",
+   "line": 76
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "keyset.get",
+   "line": 88
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 95
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "t.get",
+   "line": 107
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "t.get",
+   "line": 107
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d.get",
+   "line": 107
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "d2.get",
+   "line": 121
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 121
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 122
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "r.headers.get",
+   "line": 21
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "b.decode",
+   "line": 20
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "md.get",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "md.get",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "stats.get",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "stats.get",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 54
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 59
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "text.strip",
+   "line": 60
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 69
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "im.get",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "len",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "sorted",
+   "line": 94
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "sorted",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "m.get",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 70
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "hd.get",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "meta.keys",
+   "line": 94
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "keyset.items",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe2.get",
+   "raw": "type",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "urllib.request.Request",
+   "line": 22
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "zipfile.ZipFile",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "zf.namelist",
+   "line": 30
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 88
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "urllib.request.Request",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "r.read",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "io.BytesIO",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "zf.read",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "list",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 39
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "open",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "json.dump",
+   "line": 54
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "r.read",
+   "line": 15
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "json.loads",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "json.loads",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "j.keys",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "getj",
+   "line": 65,
+   "to": "_civitai_probe3.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "d.get",
+   "line": 66
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 68
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "getj",
+   "line": 80,
+   "to": "_civitai_probe3.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 83
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "r.headers.get",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "gzip.decompress",
+   "line": 17
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "b.decode",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "zf.namelist",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "data.decode",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 50
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "zf.namelist",
+   "line": 54
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "json.dumps",
+   "line": 72
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 73
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "print",
+   "line": 85
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "nd.get",
+   "line": 44
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "types.get",
+   "line": 44
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "isinstance",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "i.get",
+   "line": 67
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "m.get",
+   "line": 81
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "m.get",
+   "line": 81
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "d.get",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "nd.get",
+   "line": 44
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "dict",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "str",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "summary.items",
+   "line": 56
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 68
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 68
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "urllib.parse.quote",
+   "line": 80
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "m.get",
+   "line": 81
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "dict",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "len",
+   "line": 73
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "sorted",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "v.items",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "sorted",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "type",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "types.items",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "sorted",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "m.keys",
+   "line": 71
+  },
+  {
+   "from": "_civitai_probe3.getj",
+   "raw": "v.get",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "getj",
+   "line": 19,
+   "to": "_civitai_probe4.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "getj",
+   "line": 32,
+   "to": "_civitai_probe4.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 33
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "getj",
+   "line": 57,
+   "to": "_civitai_probe4.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 61
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "urllib.request.Request",
+   "line": 11
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d.get",
+   "line": 20
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v0.get",
+   "line": 22
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m.get",
+   "line": 23
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "re.sub",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d.get",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "urllib.request.Request",
+   "line": 43
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 51
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d3.get",
+   "line": 58
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 59
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 12
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "r.read",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "json.loads",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "r.read",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "b.decode",
+   "line": 50
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "print",
+   "line": 54
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "r.headers.get",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "gzip.decompress",
+   "line": 15
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "b.decode",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m.get",
+   "line": 21
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m.get",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m0.get",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 33
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 33
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "r.headers.get",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "gzip.decompress",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m.get",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "stats.get",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v0.get",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "len",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "d2.get",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v.get",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v.get",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v.get",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "len",
+   "line": 51
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "readme.splitlines",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "c.get",
+   "line": 59
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "c.get",
+   "line": 59
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "m.get",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "desc.strip",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v.get",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "f.get",
+   "line": 39
+  },
+  {
+   "from": "_civitai_probe4.getj",
+   "raw": "v.get",
+   "line": 39
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 56
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "urllib.request.Request",
+   "line": 9
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "results.items",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 10
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "r.read",
+   "line": 11
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "json.loads",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "urllib.request.Request",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "r.headers.get",
+   "line": 12
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "gzip.decompress",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "b.decode",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "getj",
+   "line": 27,
+   "to": "_civitai_probe5.getj",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "d.get",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 40
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "urllib.request.urlopen",
+   "line": 50
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "r.read",
+   "line": 51
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "print",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "len",
+   "line": 30
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "r.headers.get",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "it.get",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "it.get",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "it.get",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "type",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "it.get",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe5.getj",
+   "raw": "type",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "sqlite3.connect",
+   "line": 30
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "con.cursor",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "cur.execute",
+   "line": 32
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "set",
+   "line": 33
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "cur.fetchall",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "hits.items",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "print",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "urllib.request.Request",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "any",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 49
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 70
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "n.lower",
+   "line": 74
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "re.sub",
+   "line": 75
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "re.sub",
+   "line": 76
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "re.sub",
+   "line": 78
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "norm",
+   "line": 93,
+   "to": "_civitai_probe6.norm",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "norm",
+   "line": 95,
+   "to": "_civitai_probe6.norm",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "difflib.get_close_matches",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "json.loads",
+   "line": 36
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "hits.values",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "post",
+   "line": 61,
+   "to": "_civitai_probe6.post",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "list",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "next",
+   "line": 98
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "print",
+   "line": 100
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "print",
+   "line": 105
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "urllib.request.urlopen",
+   "line": 21
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "r.read",
+   "line": 22
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "len",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 63
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "found.append",
+   "line": 64
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "norms.values",
+   "line": 96
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "sorted",
+   "line": 103
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "r.headers.get",
+   "line": 23
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "gzip.decompress",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "isinstance",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "a.get",
+   "line": 37
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "names.add",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "n.lower",
+   "line": 44
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "print",
+   "line": 67
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "difflib.SequenceMatcher",
+   "line": 99
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "json.dumps",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "b.decode",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "norms.items",
+   "line": 98
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "norms.items",
+   "line": 104
+  },
+  {
+   "from": "_civitai_probe6.post",
+   "raw": "type",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe6.norm",
+   "raw": "difflib.SequenceMatcher",
+   "line": 103
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "print",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "print",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "print",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 72
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "CIVI.items",
+   "line": 74
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 89
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "urllib.request.Request",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "post",
+   "line": 23,
+   "to": "_civitai_probe7.post",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "recs.extend",
+   "line": 29
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "time.sleep",
+   "line": 33
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.get",
+   "line": 39
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.get",
+   "line": 43
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "open",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "json.dump",
+   "line": 46
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "n.lower",
+   "line": 53
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "re.sub",
+   "line": 54
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "re.sub",
+   "line": 55
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "re.sub",
+   "line": 57
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "norm",
+   "line": 73,
+   "to": "_civitai_probe7.norm",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "norm",
+   "line": 75,
+   "to": "_civitai_probe7.norm",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "urllib.request.urlopen",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.read",
+   "line": 15
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "json.loads",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "d.get",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "data.get",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "int",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.get",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "types.get",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "json.dumps",
+   "line": 42
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "sorted",
+   "line": 79
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 82
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.headers.get",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "gzip.decompress",
+   "line": 17
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "b.decode",
+   "line": 18
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "len",
+   "line": 30
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "len",
+   "line": 35
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "r.get",
+   "line": 38
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 84
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "print",
+   "line": 86
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "data.get",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "len",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "n.lower",
+   "line": 77
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "len",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe7.post",
+   "raw": "json.dumps",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "norm_map.items",
+   "line": 80
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "n.lower",
+   "line": 92
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "c.lower",
+   "line": 77
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "difflib.SequenceMatcher",
+   "line": 79
+  },
+  {
+   "from": "_civitai_probe7.norm",
+   "raw": "n.lower",
+   "line": 93
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 20
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 34
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "urllib.request.Request",
+   "line": 12
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "time.sleep",
+   "line": 31
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "time.sleep",
+   "line": 48
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "urllib.request.urlopen",
+   "line": 13
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "r.read",
+   "line": 14
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "json.loads",
+   "line": 17
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "post",
+   "line": 23,
+   "to": "_civitai_probe8.post",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "data.get",
+   "line": 26
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "post",
+   "line": 40,
+   "to": "_civitai_probe8.post",
+   "resolved": true
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 43
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "r.headers.get",
+   "line": 15
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "gzip.decompress",
+   "line": 16
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "b.decode",
+   "line": 17
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "d.get",
+   "line": 24
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "data.get",
+   "line": 25
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 30
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "d.get",
+   "line": 41
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "data.get",
+   "line": 42
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "print",
+   "line": 47
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "r.get",
+   "line": 27
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "json.dumps",
+   "line": 12
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "len",
+   "line": 28
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "data.get",
+   "line": 43
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "r.get",
+   "line": 45
+  },
+  {
+   "from": "_civitai_probe8.post",
+   "raw": "r.get",
+   "line": 45
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "sys.path.insert",
+   "line": 21
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "sys.path.insert",
+   "line": 22
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "json.loads",
+   "line": 44
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "str",
+   "line": 21
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "str",
+   "line": 22
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "cv2.imread",
+   "line": 49
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "fc.embed",
+   "line": 50
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "sf._expr_geometry",
+   "line": 58,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "sf._hair_hist",
+   "line": 61,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.load_api_key",
+   "line": 69
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 70
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.upload_file",
+   "line": 71
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.upload_file",
+   "line": 72
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 73
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "ARMS.items",
+   "line": 81
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 107
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "FaceComparator",
+   "line": 108
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "fc.embed",
+   "line": 109
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "fc.embed",
+   "line": 110
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sf._expr_geometry",
+   "line": 111,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sf._expr_geometry",
+   "line": 112,
+   "to": "swap_face._expr_geometry",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sf._hair_hist",
+   "line": 113,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sf._hair_hist",
+   "line": 114,
+   "to": "swap_face._hair_hist",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 115
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "out_json.write_text",
+   "line": 143
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 147
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 155
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 162
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "main",
+   "line": 166,
+   "to": "_dlc_ab.main",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "str",
+   "line": 49
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "fc.largest_face",
+   "line": 50
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "round",
+   "line": 54
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "round",
+   "line": 55
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "round",
+   "line": 60
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "round",
+   "line": 63
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "round",
+   "line": 64
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "d.mkdir",
+   "line": 83
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "json.loads",
+   "line": 91
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "time.time",
+   "line": 94
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.run_workflow_json",
+   "line": 95
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 96
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.wait_task",
+   "line": 97
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.collect_file_urls",
+   "line": 99
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "fc.largest_face",
+   "line": 109
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "fc.largest_face",
+   "line": 110
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "json.dumps",
+   "line": 143
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "entries.items",
+   "line": 153
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 157
+  },
+  {
+   "from": "_dlc_ab",
+   "raw": "Path",
+   "line": 20
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "fc.cosine",
+   "line": 54
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "fc.cosine",
+   "line": 55
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "fc.cosine",
+   "line": 56
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "sf._expr_distance",
+   "line": 60,
+   "to": "swap_face._expr_distance",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "sf._hist_intersection",
+   "line": 63,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.metric_one",
+   "raw": "sf._hist_intersection",
+   "line": 64,
+   "to": "swap_face._hist_intersection",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 80
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 80
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sorted",
+   "line": 84
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sorted",
+   "line": 84
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 86
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "json.dumps",
+   "line": 91
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rh_task.download",
+   "line": 100
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "round",
+   "line": 104
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "cv2.imread",
+   "line": 109
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "cv2.imread",
+   "line": 110
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "Path",
+   "line": 120
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "metric_one",
+   "line": 121,
+   "to": "_dlc_ab.metric_one",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "src.exists",
+   "line": 132
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "p.exists",
+   "line": 137
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rows.append",
+   "line": 151
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "rows.append",
+   "line": 154
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "d.glob",
+   "line": 84
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "d.glob",
+   "line": 84
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "enumerate",
+   "line": 101
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 103
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 109
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 110
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "fc.cosine",
+   "line": 116
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "metric_one",
+   "line": 138,
+   "to": "_dlc_ab.metric_one",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 88
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "print",
+   "line": 98
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "time.time",
+   "line": 104
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "Path",
+   "line": 121
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "bdir.split",
+   "line": 131
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 158
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 159
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 160
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "str",
+   "line": 161
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "len",
+   "line": 86
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "m.get",
+   "line": 158
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "m.get",
+   "line": 159
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "m.get",
+   "line": 160
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "m.get",
+   "line": 161
+  },
+  {
+   "from": "_dlc_ab.main",
+   "raw": "sf._url_ext",
+   "line": 100,
+   "to": "swap_face._url_ext",
+   "resolved": true
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "sqlite3.connect",
+   "line": 5
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "con.cursor",
+   "line": 6
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 8
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.execute",
+   "line": 9
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.fetchall",
+   "line": 12
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 15
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.execute",
+   "line": 16
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.fetchall",
+   "line": 17
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 20
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.execute",
+   "line": 21
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.fetchall",
+   "line": 22
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 25
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.execute",
+   "line": 26
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "cur.fetchall",
+   "line": 28
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 13
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 18
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 23
+  },
+  {
+   "from": "_dlc_kb_check",
+   "raw": "print",
+   "line": 29
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "sqlite3.connect",
+   "line": 7
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "con.cursor",
+   "line": 8
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "json.loads",
+   "line": 10
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 53
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 73
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.fetchone",
+   "line": 75
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 91
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "con.commit",
+   "line": 100
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 101
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "con.close",
+   "line": 104
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.fetchone",
+   "line": 54
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 55
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 80
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.fetchone",
+   "line": 82
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.execute",
+   "line": 84
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "Path",
+   "line": 6
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "json.dumps",
+   "line": 61
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "json.dumps",
+   "line": 66
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "cur.fetchone",
+   "line": 103
+  },
+  {
+   "from": "_dlc_writeback",
+   "raw": "i.get",
+   "line": 64
+  },
+  {
+   "from": "_gap_law_writeback",
+   "raw": "sqlite3.connect",
+   "line": 4
+  },
+  {
+   "from": "_gap_law_writeback",
+   "raw": "db.execute",
+   "line": 5
+  },
+  {
+   "from": "_gap_law_writeback",
+   "raw": "db.commit",
+   "line": 20
+  },
+  {
+   "from": "_gap_law_writeback",
+   "raw": "print",
+   "line": 21
+  },
+  {
+   "from": "_gap_law_writeback",
+   "raw": "db.execute",
+   "line": 21
+  },
+  {
+   "from": "_h3_fl2v",
+   "raw": "sys.path.insert",
+   "line": 18
+  },
+  {
+   "from": "_h3_fl2v",
+   "raw": "sys.path.insert",
+   "line": 19
+  },
+  {
+   "from": "_h3_fl2v",
+   "raw": "str",
+   "line": 18
+  },
+  {
+   "from": "_h3_fl2v",
+   "raw": "str",
+   "line": 19
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "FaceComparator",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.imread",
+   "line": 50
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "fc.det.setInputSize",
+   "line": 53
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "fc.det.detect",
+   "line": 54
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 61
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "min",
+   "line": 62
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 67
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 67
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 68
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 69
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.resize",
+   "line": 71
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.imread",
+   "line": 73
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.resize",
+   "line": 74
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "out.parent.mkdir",
+   "line": 79
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.imwrite",
+   "line": 80
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "print",
+   "line": 81
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "time.time",
+   "line": 94
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "rh_task.run_webapp",
+   "line": 95
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "print",
+   "line": 96
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "rh_task.wait_task",
+   "line": 97
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "rh_task.collect_file_urls",
+   "line": 99
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "d.mkdir",
+   "line": 102
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "print",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cv2.VideoCapture",
+   "line": 110
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cap.read",
+   "line": 111
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cap.release",
+   "line": 121
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "float",
+   "line": 128
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "float",
+   "line": 129
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "int",
+   "line": 130
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "rh_task.load_api_key",
+   "line": 141
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "OUT.mkdir",
+   "line": 142
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "build_mid",
+   "line": 143,
+   "to": "_h3_fl2v.build_mid",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "print",
+   "line": 145
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "rh_task.upload_file",
+   "line": 146
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "rh_task.upload_file",
+   "line": 147
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "rh_task.upload_file",
+   "line": 148
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "run_pass",
+   "line": 152,
+   "to": "_h3_fl2v.run_pass",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "run_pass",
+   "line": 156,
+   "to": "_h3_fl2v.run_pass",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "run_pass",
+   "line": 157,
+   "to": "_h3_fl2v.run_pass",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "print",
+   "line": 169
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "results.items",
+   "line": 170
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "print",
+   "line": 182
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "main",
+   "line": 186,
+   "to": "_h3_fl2v.main",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "str",
+   "line": 50
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "max",
+   "line": 62
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "cv2.resize",
+   "line": 64
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "min",
+   "line": 67
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "min",
+   "line": 67
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "np.clip",
+   "line": 68
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "np.clip",
+   "line": 69
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "str",
+   "line": 73
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "str",
+   "line": 80
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "rh_task.download",
+   "line": 103
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "str",
+   "line": 105
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cap.read",
+   "line": 115
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "curve.append",
+   "line": 119
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "np.median",
+   "line": 128
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "np.max",
+   "line": 129
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "np.argmax",
+   "line": 130
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 131
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 131
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 132
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 133
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "subprocess.run",
+   "line": 160
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "json.dumps",
+   "line": 181
+  },
+  {
+   "from": "_h3_fl2v",
+   "raw": "Path",
+   "line": 17
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "len",
+   "line": 55
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "int",
+   "line": 58
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "str",
+   "line": 90
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "enumerate",
+   "line": 103
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cv2.resize",
+   "line": 112
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "float",
+   "line": 119
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "len",
+   "line": 134
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "sorted",
+   "line": 135
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "spike_stats",
+   "line": 173,
+   "to": "_h3_fl2v.spike_stats",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "print",
+   "line": 175
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "print",
+   "line": 178
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "np.argmax",
+   "line": 58
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "np.clip",
+   "line": 77
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "print",
+   "line": 98
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "len",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "cv2.resize",
+   "line": 118
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "len",
+   "line": 133
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "str",
+   "line": 164
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "str",
+   "line": 166
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "frame_diff_curve",
+   "line": 173,
+   "to": "_h3_fl2v.frame_diff_curve",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "time.time",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "Path",
+   "line": 174
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 136
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "round",
+   "line": 136
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "enumerate",
+   "line": 137
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 175
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 176
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 176
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 177
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 177
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "cs.get",
+   "line": 178
+  },
+  {
+   "from": "_h3_fl2v.frame_diff_curve",
+   "raw": "np.abs",
+   "line": 119
+  },
+  {
+   "from": "_h3_fl2v.main",
+   "raw": "Path",
+   "line": 175
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "t.std",
+   "line": 77
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "s.mean",
+   "line": 78
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "t.mean",
+   "line": 78
+  },
+  {
+   "from": "_h3_fl2v.run_pass",
+   "raw": "u.lower",
+   "line": 100
+  },
+  {
+   "from": "_h3_fl2v.spike_stats",
+   "raw": "len",
+   "line": 136
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "s.mean",
+   "line": 77
+  },
+  {
+   "from": "_h3_fl2v.build_mid",
+   "raw": "s.std",
+   "line": 77
+  },
+  {
+   "from": "_h3_fl2v_c",
+   "raw": "sys.path.insert",
+   "line": 16
+  },
+  {
+   "from": "_h3_fl2v_c",
+   "raw": "sys.path.insert",
+   "line": 17
+  },
+  {
+   "from": "_h3_fl2v_c",
+   "raw": "str",
+   "line": 16
+  },
+  {
+   "from": "_h3_fl2v_c",
+   "raw": "str",
+   "line": 17
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "FaceComparator",
+   "line": 40
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "cv2.imread",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "fc.det.setInputSize",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "fc.det.detect",
+   "line": 44
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 62
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 63
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "cv2.resize",
+   "line": 65
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "cv2.imwrite",
+   "line": 66
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "print",
+   "line": 67
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "time.time",
+   "line": 80
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "rh_task.run_webapp",
+   "line": 81
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "print",
+   "line": 82
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "rh_task.wait_task",
+   "line": 83
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "rh_task.collect_file_urls",
+   "line": 85
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "d.mkdir",
+   "line": 88
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "print",
+   "line": 90
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cv2.VideoCapture",
+   "line": 95
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "int",
+   "line": 96
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cap.set",
+   "line": 97
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cap.read",
+   "line": 98
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cap.release",
+   "line": 99
+  },
+  {
+   "from": "_h3_fl2v_c.mad",
+   "raw": "round",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "rh_task.load_api_key",
+   "line": 108
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "to_16x9_face_centered",
+   "line": 109,
+   "to": "_h3_fl2v_c.to_16x9_face_centered",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "to_16x9_face_centered",
+   "line": 110,
+   "to": "_h3_fl2v_c.to_16x9_face_centered",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "rh_task.upload_file",
+   "line": 113
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "rh_task.upload_file",
+   "line": 114
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "rh_task.upload_file",
+   "line": 115
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "run_pass",
+   "line": 117,
+   "to": "_h3_fl2v_c.run_pass",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "run_pass",
+   "line": 118,
+   "to": "_h3_fl2v_c.run_pass",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "subprocess.run",
+   "line": 122
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "print",
+   "line": 127
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "grab",
+   "line": 130,
+   "to": "_h3_fl2v_c.grab",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "grab",
+   "line": 131,
+   "to": "_h3_fl2v_c.grab",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "print",
+   "line": 138
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "print",
+   "line": 169
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "main",
+   "line": 173,
+   "to": "_h3_fl2v_c.main",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "str",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 51
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "min",
+   "line": 52
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "np.clip",
+   "line": 62
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "np.clip",
+   "line": 63
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "str",
+   "line": 66
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "str",
+   "line": 89
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cap.get",
+   "line": 96
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "max",
+   "line": 97
+  },
+  {
+   "from": "_h3_fl2v_c.mad",
+   "raw": "float",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "mad",
+   "line": 134,
+   "to": "_h3_fl2v_c.mad",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "mad",
+   "line": 135,
+   "to": "_h3_fl2v_c.mad",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "mad",
+   "line": 136,
+   "to": "_h3_fl2v_c.mad",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cv2.VideoCapture",
+   "line": 141
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cap.read",
+   "line": 142
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cap.release",
+   "line": 152
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "curve",
+   "line": 157
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "print",
+   "line": 164
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "json.dumps",
+   "line": 167
+  },
+  {
+   "from": "_h3_fl2v_c",
+   "raw": "Path",
+   "line": 15
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "len",
+   "line": 45
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 48
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "cv2.resize",
+   "line": 54
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 61
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "str",
+   "line": 76
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "rh_task.download",
+   "line": 89
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "enumerate",
+   "line": 89
+  },
+  {
+   "from": "_h3_fl2v_c.grab",
+   "raw": "cv2.resize",
+   "line": 100
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "str",
+   "line": 125
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cv2.resize",
+   "line": 132
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "str",
+   "line": 141
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cap.read",
+   "line": 146
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "ys.append",
+   "line": 150
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "float",
+   "line": 158
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "float",
+   "line": 158
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "round",
+   "line": 159
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "round",
+   "line": 160
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "round",
+   "line": 161
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "round",
+   "line": 162
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "round",
+   "line": 163
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "min",
+   "line": 46
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "np.argmax",
+   "line": 48
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 56
+  },
+  {
+   "from": "_h3_fl2v_c.to_16x9_face_centered",
+   "raw": "int",
+   "line": 56
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "print",
+   "line": 84
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cv2.imread",
+   "line": 132
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "json.dumps",
+   "line": 138
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cv2.resize",
+   "line": 143
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "float",
+   "line": 150
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "str",
+   "line": 156
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "np.median",
+   "line": 158
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "np.max",
+   "line": 158
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "len",
+   "line": 159
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "time.time",
+   "line": 90
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "str",
+   "line": 132
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "cv2.resize",
+   "line": 149
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "int",
+   "line": 162
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "len",
+   "line": 162
+  },
+  {
+   "from": "_h3_fl2v_c.mad",
+   "raw": "np.abs",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "np.argmax",
+   "line": 162
+  },
+  {
+   "from": "_h3_fl2v_c.run_pass",
+   "raw": "u.lower",
+   "line": 86
+  },
+  {
+   "from": "_h3_fl2v_c.main",
+   "raw": "np.abs",
+   "line": 150
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "Path",
+   "line": 6
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "json.loads",
+   "line": 7
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 9
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "collections.Counter",
+   "line": 10
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 11
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "tc.most_common",
+   "line": 12
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 15
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 27
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 35
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "len",
+   "line": 9
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "len",
+   "line": 9
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 13
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "any",
+   "line": 18
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 23
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "nid.get",
+   "line": 31
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 32
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "print",
+   "line": 38
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "str",
+   "line": 22
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "n.get",
+   "line": 22
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "tgt.get",
+   "line": 32
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "str",
+   "line": 38
+  },
+  {
+   "from": "_h3_fl2v_inspect",
+   "raw": "n.get",
+   "line": 38
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "Path",
+   "line": 9
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "subprocess.run",
+   "line": 15
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "print",
+   "line": 22
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "print",
+   "line": 66
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cv2.VideoCapture",
+   "line": 26
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cap.read",
+   "line": 27
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cap.release",
+   "line": 37
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "int",
+   "line": 42
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.diff",
+   "line": 46
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "float",
+   "line": 47
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "curve",
+   "line": 56,
+   "to": "_h3_fl2v_metric.curve",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "stats",
+   "line": 57,
+   "to": "_h3_fl2v_metric.stats",
+   "resolved": true
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "print",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "print",
+   "line": 62
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "json.dumps",
+   "line": 65
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "str",
+   "line": 26
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cap.read",
+   "line": 31
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "ys.append",
+   "line": 35
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "float",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "float",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.argmax",
+   "line": 42
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "sorted",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.max",
+   "line": 47
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 48
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 48
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 50
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 51
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "str",
+   "line": 16
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "str",
+   "line": 16
+  },
+  {
+   "from": "_h3_fl2v_metric",
+   "raw": "str",
+   "line": 21
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cv2.resize",
+   "line": 28
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "float",
+   "line": 35
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.median",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.max",
+   "line": 41
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "np.abs",
+   "line": 47
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "len",
+   "line": 48
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "cv2.resize",
+   "line": 34
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "len",
+   "line": 50
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "round",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "enumerate",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_metric.curve",
+   "raw": "np.abs",
+   "line": 35
+  },
+  {
+   "from": "_h3_fl2v_metric.stats",
+   "raw": "len",
+   "line": 43
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "sqlite3.connect",
+   "line": 7
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "con.cursor",
+   "line": 8
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 44
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 59
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 103
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "con.commit",
+   "line": 141
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 142
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "print",
+   "line": 143
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "con.close",
+   "line": 145
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 49
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.fetchone",
+   "line": 51
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 53
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.fetchone",
+   "line": 60
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 61
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.fetchone",
+   "line": 104
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.execute",
+   "line": 105
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.fetchone",
+   "line": 45
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "Path",
+   "line": 6
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 65
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 74
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 113
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 115
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 121
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 123
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 130
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 132
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 134
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "json.dumps",
+   "line": 139
+  },
+  {
+   "from": "_h3_fl2v_writeback",
+   "raw": "cur.fetchone",
+   "line": 144
+  },
+  {
    "from": "_h3_worker",
    "raw": "sys.path.insert",
    "line": 11
@@ -5469,6 +11468,748 @@
    "from": "_h3_worker",
    "raw": "str",
    "line": 30
+  },
+  {
+   "from": "_i2v_test",
+   "raw": "sys.path.insert",
+   "line": 19
+  },
+  {
+   "from": "_i2v_test",
+   "raw": "sys.path.insert",
+   "line": 20
+  },
+  {
+   "from": "_i2v_test",
+   "raw": "str",
+   "line": 19
+  },
+  {
+   "from": "_i2v_test",
+   "raw": "str",
+   "line": 20
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.load_api_key",
+   "line": 38
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.upload_file",
+   "line": 39
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "time.time",
+   "line": 48
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.run_webapp",
+   "line": 49
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 50
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.wait_task",
+   "line": 51
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.collect_file_urls",
+   "line": 54
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "d.mkdir",
+   "line": 57
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 59
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.VideoCapture",
+   "line": 66
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cap.release",
+   "line": 73
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 74
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.array",
+   "line": 76
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 78
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.array",
+   "line": 81
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 85
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 87
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 89
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 90
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 93
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "FaceComparator",
+   "line": 97
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.embed",
+   "line": 98
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 112
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "enumerate",
+   "line": 128
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.imwrite",
+   "line": 132
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 133
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "main",
+   "line": 137,
+   "to": "_i2v_test.main",
+   "resolved": true
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "rh_task.download",
+   "line": 58
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 61
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "str",
+   "line": 66
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cap.read",
+   "line": 69
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "frames.append",
+   "line": 72
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.median",
+   "line": 78
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.where",
+   "line": 79
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.largest_face",
+   "line": 98
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.det.setInputSize",
+   "line": 102
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.det.detect",
+   "line": 103
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.embed",
+   "line": 110
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "idents.append",
+   "line": 111
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 114
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 114
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 115
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 118
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "json.dumps",
+   "line": 121
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.resize",
+   "line": 125
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.hstack",
+   "line": 126
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.putText",
+   "line": 129
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "str",
+   "line": 132
+  },
+  {
+   "from": "_i2v_test",
+   "raw": "Path",
+   "line": 18
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "enumerate",
+   "line": 58
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 76
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.resize",
+   "line": 80
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 81
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.imread",
+   "line": 98
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "idents.append",
+   "line": 105
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "int",
+   "line": 107
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "int",
+   "line": 108
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.largest_face",
+   "line": 110
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 111
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 114
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 116
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "round",
+   "line": 117
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 118
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "range",
+   "line": 126
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.vstack",
+   "line": 127
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 59
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.resize",
+   "line": 75
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "range",
+   "line": 77
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cv2.imread",
+   "line": 80
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cur.max",
+   "line": 85
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "drop.max",
+   "line": 90
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "str",
+   "line": 98
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 104
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.argmax",
+   "line": 107
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 111
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cur.max",
+   "line": 114
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 115
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "float",
+   "line": 117
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "time.time",
+   "line": 59
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "str",
+   "line": 80
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cur.max",
+   "line": 86
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 87
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "int",
+   "line": 90
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "max",
+   "line": 109
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "max",
+   "line": 109
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "fc.cosine",
+   "line": 111
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "cur.max",
+   "line": 115
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.linspace",
+   "line": 124
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.argmax",
+   "line": 90
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.abs",
+   "line": 76
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "np.abs",
+   "line": 81
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "len",
+   "line": 87
+  },
+  {
+   "from": "_i2v_test.main",
+   "raw": "u.lower",
+   "line": 55
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "sqlite3.connect",
+   "line": 6
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "db.execute",
+   "line": 9
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "db.execute",
+   "line": 26
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "db.commit",
+   "line": 41
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "datetime.now",
+   "line": 5
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "json.dumps",
+   "line": 35
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "json.dumps",
+   "line": 31
+  },
+  {
+   "from": "_i2v_writeback",
+   "raw": "__import__",
+   "line": 34
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "sqlite3.connect",
+   "line": 6
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 10
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 22
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "Path",
+   "line": 52
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 53
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "af.exists",
+   "line": 54
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "json.loads",
+   "line": 55
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 56
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 58
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 8
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 18
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "af.read_text",
+   "line": 55
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 60
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 14
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "any",
+   "line": 15
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 24
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 42
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 43
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "json.dumps",
+   "line": 56
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "Path",
+   "line": 59
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "textcols.append",
+   "line": 32
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "dict",
+   "line": 45
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "print",
+   "line": 49
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 28
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "c.lower",
+   "line": 15
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "db.execute",
+   "line": 37
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "d.items",
+   "line": 46
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "len",
+   "line": 18
+  },
+  {
+   "from": "_kb_fl2v_query",
+   "raw": "str",
+   "line": 46
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "sqlite3.connect",
+   "line": 5
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 23
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 24
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "db.execute",
+   "line": 25
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "dict",
+   "line": 13
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 14
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 15
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 29
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "d.get",
+   "line": 19
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "db.execute",
+   "line": 10
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "print",
+   "line": 21
+  },
+  {
+   "from": "_kb_fl2v_query2",
+   "raw": "str",
+   "line": 21
   },
   {
    "from": "_m11_eval",
@@ -6103,6 +12844,1223 @@
    "line": 50
   },
   {
+   "from": "_peek_sol",
+   "raw": "sqlite3.connect",
+   "line": 5
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "con.cursor",
+   "line": 6
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "cur.execute",
+   "line": 7
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "cur.fetchall",
+   "line": 8
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "print",
+   "line": 12
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "dict",
+   "line": 9
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "print",
+   "line": 11
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "isinstance",
+   "line": 10
+  },
+  {
+   "from": "_peek_sol",
+   "raw": "str",
+   "line": 11
+  },
+  {
+   "from": "_plan_a_analyze",
+   "raw": "Path",
+   "line": 9
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "subprocess.run",
+   "line": 32
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 37
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 40
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 41
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 42
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 43
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 44
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 45
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 46
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 47
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 48
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 49
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "sys.path.insert",
+   "line": 53
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "FaceComparator",
+   "line": 55
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "_plan_a_analyze.frames_of",
+   "raw": "cv2.VideoCapture",
+   "line": 14
+  },
+  {
+   "from": "_plan_a_analyze.frames_of",
+   "raw": "cap.release",
+   "line": 21
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "float",
+   "line": 26
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imread",
+   "line": 40
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imread",
+   "line": 41
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imread",
+   "line": 42
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imread",
+   "line": 43
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imread",
+   "line": 59
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.det.setInputSize",
+   "line": 60
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.det.detect",
+   "line": 61
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.embed",
+   "line": 68
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 69
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 70
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 71
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 72
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 73
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.array",
+   "line": 79
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.array",
+   "line": 80
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "int",
+   "line": 81
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "float",
+   "line": 83
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 85
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 90
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "frames_of",
+   "line": 94,
+   "to": "_plan_a_analyze.frames_of",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "enumerate",
+   "line": 98
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.imwrite",
+   "line": 101
+  },
+  {
+   "from": "_plan_a_analyze.frames_of",
+   "raw": "str",
+   "line": 14
+  },
+  {
+   "from": "_plan_a_analyze.frames_of",
+   "raw": "cap.read",
+   "line": 17
+  },
+  {
+   "from": "_plan_a_analyze.frames_of",
+   "raw": "fr.append",
+   "line": 20
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 33
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 33
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 36
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 42
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 43
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 58
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 59
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "print",
+   "line": 63
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "int",
+   "line": 65
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "int",
+   "line": 66
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.largest_face",
+   "line": 68
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.argmax",
+   "line": 81
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.median",
+   "line": 83
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.where",
+   "line": 84
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 96
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.putText",
+   "line": 99
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "str",
+   "line": 101
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 45,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 46,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 47,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 48,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 49,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 62
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.argmax",
+   "line": 65
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "frames_of",
+   "line": 78,
+   "to": "_plan_a_analyze.frames_of",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 79,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "dist",
+   "line": 80,
+   "to": "_plan_a_analyze.dist",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 87
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 89
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 89
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 89
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.hstack",
+   "line": 97
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "max",
+   "line": 67
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "max",
+   "line": 67
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.cosine",
+   "line": 71
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.cosine",
+   "line": 72
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "fc.cosine",
+   "line": 73
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cv2.resize",
+   "line": 77
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "tgt.astype",
+   "line": 79
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "range",
+   "line": 80
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 89
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.abs",
+   "line": 26
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 85
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cur.max",
+   "line": 85
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 86
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 87
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 88
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "cur.max",
+   "line": 88
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "np.linspace",
+   "line": 95
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 80
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 86
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "a.astype",
+   "line": 26
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "b.astype",
+   "line": 26
+  },
+  {
+   "from": "_plan_a_analyze.dist",
+   "raw": "len",
+   "line": 95
+  },
+  {
+   "from": "_plan_a_klein_midframe",
+   "raw": "sys.path.insert",
+   "line": 29
+  },
+  {
+   "from": "_plan_a_klein_midframe",
+   "raw": "sys.path.insert",
+   "line": 30
+  },
+  {
+   "from": "_plan_a_klein_midframe",
+   "raw": "str",
+   "line": 29
+  },
+  {
+   "from": "_plan_a_klein_midframe",
+   "raw": "str",
+   "line": 30
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.upload_file",
+   "line": 51
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.upload_file",
+   "line": 52
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "time.time",
+   "line": 58
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.run_webapp",
+   "line": 59
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "print",
+   "line": 60
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.wait_task",
+   "line": 61
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.collect_file_urls",
+   "line": 62
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "d.mkdir",
+   "line": 64
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "print",
+   "line": 66
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "cv2.imread",
+   "line": 72
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "max",
+   "line": 75
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "cv2.resize",
+   "line": 77
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "max",
+   "line": 78
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "max",
+   "line": 79
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "cv2.imwrite",
+   "line": 85
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "time.time",
+   "line": 98
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "rh_task.run_webapp",
+   "line": 99
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "print",
+   "line": 100
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "rh_task.wait_task",
+   "line": 101
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "rh_task.collect_file_urls",
+   "line": 104
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "d.mkdir",
+   "line": 107
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "print",
+   "line": 109
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "rh_task.load_api_key",
+   "line": 123
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 130
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "to_169",
+   "line": 133,
+   "to": "_plan_a_klein_midframe.to_169",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "to_169",
+   "line": 134,
+   "to": "_plan_a_klein_midframe.to_169",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "to_169",
+   "line": 135,
+   "to": "_plan_a_klein_midframe.to_169",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 136
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "rh_task.upload_file",
+   "line": 139
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "rh_task.upload_file",
+   "line": 140
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "rh_task.upload_file",
+   "line": 141
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "h3_pass",
+   "line": 142,
+   "to": "_plan_a_klein_midframe.h3_pass",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "h3_pass",
+   "line": 143,
+   "to": "_plan_a_klein_midframe.h3_pass",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 198
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "curve",
+   "line": 201
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.vstack",
+   "line": 205
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "enumerate",
+   "line": 206
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.imwrite",
+   "line": 210
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 211
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "main",
+   "line": 215,
+   "to": "_plan_a_klein_midframe.main",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "rh_task.download",
+   "line": 65
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "str",
+   "line": 72
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "int",
+   "line": 76
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "int",
+   "line": 76
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "cv2.copyMakeBorder",
+   "line": 82
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "str",
+   "line": 85
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "rh_task.download",
+   "line": 108
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "str",
+   "line": 110
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "mid.exists",
+   "line": 127
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "klein_midframe",
+   "line": 128,
+   "to": "_plan_a_klein_midframe.klein_midframe",
+   "resolved": true
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "subprocess.run",
+   "line": 148
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 154
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.VideoCapture",
+   "line": 160
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cap.release",
+   "line": 167
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "curve",
+   "line": 177
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.array",
+   "line": 178
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 180
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.array",
+   "line": 187
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "print",
+   "line": 194
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "json.dumps",
+   "line": 197
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.resize",
+   "line": 203
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.hstack",
+   "line": 204
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.putText",
+   "line": 207
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "str",
+   "line": 210
+  },
+  {
+   "from": "_plan_a_klein_midframe",
+   "raw": "Path",
+   "line": 28
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "enumerate",
+   "line": 65
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "round",
+   "line": 76
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "round",
+   "line": 76
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "max",
+   "line": 83
+  },
+  {
+   "from": "_plan_a_klein_midframe.to_169",
+   "raw": "max",
+   "line": 83
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "str",
+   "line": 94
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "enumerate",
+   "line": 108
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "str",
+   "line": 160
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cap.read",
+   "line": 163
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "fr.append",
+   "line": 166
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.resize",
+   "line": 171
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.median",
+   "line": 180
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "curve",
+   "line": 184
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 188
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 188
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 189
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 190
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 192
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 193
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "range",
+   "line": 204
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "len",
+   "line": 66
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "len",
+   "line": 109
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "str",
+   "line": 152
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.imread",
+   "line": 171
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 178
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 185
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 187
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 189
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "round",
+   "line": 191
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 192
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 193
+  },
+  {
+   "from": "_plan_a_klein_midframe.klein_midframe",
+   "raw": "time.time",
+   "line": 66
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "time.time",
+   "line": 109
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "str",
+   "line": 171
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "chain.exists",
+   "line": 174
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "range",
+   "line": 179
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 186
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 186
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cur.max",
+   "line": 189
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "float",
+   "line": 190
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.linspace",
+   "line": 202
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cv2.resize",
+   "line": 166
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "cur.max",
+   "line": 190
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 179
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 202
+  },
+  {
+   "from": "_plan_a_klein_midframe.h3_pass",
+   "raw": "u.lower",
+   "line": 105
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.abs",
+   "line": 178
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.abs",
+   "line": 185
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "np.abs",
+   "line": 187
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 185
+  },
+  {
+   "from": "_plan_a_klein_midframe.main",
+   "raw": "len",
+   "line": 185
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "sqlite3.connect",
+   "line": 7
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "db.execute",
+   "line": 11
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "db.execute",
+   "line": 27
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "db.execute",
+   "line": 42
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "db.commit",
+   "line": 68
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "print",
+   "line": 69
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "datetime.now",
+   "line": 6
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "json.dumps",
+   "line": 48
+  },
+  {
+   "from": "_plan_a_writeback",
+   "raw": "json.dumps",
+   "line": 53
+  },
+  {
    "from": "_research_probe",
    "raw": "sys.path.insert",
    "line": 11
@@ -6267,6 +14225,1297 @@
    "from": "_research_probe",
    "raw": "str",
    "line": 71
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "base.exists",
+   "line": 27
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 61
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 62
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 71
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 76
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 77
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 88
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 111
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "sorted",
+   "line": 28
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "HTML_HEAD.replace",
+   "line": 58
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "build_html",
+   "line": 117,
+   "to": "_static_gallery.build_html",
+   "resolved": true
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "urllib.parse.urlparse",
+   "line": 122
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "parsed.path.startswith",
+   "line": 131
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_error",
+   "line": 149
+  },
+  {
+   "from": "_static_gallery.Handler.log_message",
+   "raw": "int",
+   "line": 160
+  },
+  {
+   "from": "_static_gallery.Handler.log_message",
+   "raw": "Server",
+   "line": 161,
+   "to": "_static_gallery.Server",
+   "resolved": true
+  },
+  {
+   "from": "_static_gallery.Handler.log_message",
+   "raw": "print",
+   "line": 162
+  },
+  {
+   "from": "_static_gallery.Handler.log_message",
+   "raw": "httpd.serve_forever",
+   "line": 164
+  },
+  {
+   "from": "_static_gallery",
+   "raw": "Path",
+   "line": 14
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "base.iterdir",
+   "line": 28
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "time.strftime",
+   "line": 58
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "scan",
+   "line": 94,
+   "to": "_static_gallery.scan",
+   "resolved": true
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 97
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 109
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_response",
+   "line": 124
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_header",
+   "line": 125
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_header",
+   "line": 126
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_header",
+   "line": 127
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.end_headers",
+   "line": 128
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.wfile.write",
+   "line": 129
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "urllib.parse.unquote",
+   "line": 132
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "f.is_file",
+   "line": 139
+  },
+  {
+   "from": "_static_gallery.Handler.log_message",
+   "raw": "len",
+   "line": 160
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "p.is_file",
+   "line": 29
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "items.append",
+   "line": 30
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "parts.append",
+   "line": 106
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "time.strftime",
+   "line": 111
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "str",
+   "line": 126
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "f.relative_to",
+   "line": 135
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "f.read_bytes",
+   "line": 140
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_response",
+   "line": 143
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_header",
+   "line": 144
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_header",
+   "line": 145
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.end_headers",
+   "line": 146
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.wfile.write",
+   "line": 147
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "p.suffix.lower",
+   "line": 29
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "len",
+   "line": 126
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "self.send_error",
+   "line": 137
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "str",
+   "line": 145
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "round",
+   "line": 31
+  },
+  {
+   "from": "_static_gallery.build_html",
+   "raw": "len",
+   "line": 97
+  },
+  {
+   "from": "_static_gallery.Handler.do_GET",
+   "raw": "len",
+   "line": 145
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "p.relative_to",
+   "line": 30
+  },
+  {
+   "from": "_static_gallery.scan",
+   "raw": "p.stat",
+   "line": 31
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "Path",
+   "line": 12
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "Path",
+   "line": 14
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "Path",
+   "line": 15
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.VideoCapture",
+   "line": 18
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cap.release",
+   "line": 25
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "len",
+   "line": 26
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 28
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "float",
+   "line": 32
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 33
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 35
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 36
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.array",
+   "line": 43
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.array",
+   "line": 44
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 45
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 58
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "list",
+   "line": 63
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.vstack",
+   "line": 66
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "enumerate",
+   "line": 68
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.imwrite",
+   "line": 73
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 74
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 78
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "str",
+   "line": 18
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cap.read",
+   "line": 21
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "frames.append",
+   "line": 24
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "float",
+   "line": 31
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.median",
+   "line": 32
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 38
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "list",
+   "line": 46
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "print",
+   "line": 52
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 63
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.resize",
+   "line": 64
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.hstack",
+   "line": 65
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.putText",
+   "line": 71
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "str",
+   "line": 73
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "sorted",
+   "line": 77
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 31
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "int",
+   "line": 37
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.resize",
+   "line": 41
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.resize",
+   "line": 42
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "float",
+   "line": 43
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "float",
+   "line": 44
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 46
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 65
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "range",
+   "line": 77
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.resize",
+   "line": 27
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "max",
+   "line": 33
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.imread",
+   "line": 41
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "cv2.imread",
+   "line": 42
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "max",
+   "line": 34
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "int",
+   "line": 34
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "str",
+   "line": 41
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "str",
+   "line": 42
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "sorted",
+   "line": 79
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.abs",
+   "line": 31
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.argmax",
+   "line": 34
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.abs",
+   "line": 43
+  },
+  {
+   "from": "_tail_analysis",
+   "raw": "np.abs",
+   "line": 44
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "Path",
+   "line": 20
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "Path",
+   "line": 22
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "Path",
+   "line": 23
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "Path",
+   "line": 24
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.VideoCapture",
+   "line": 27
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cap.release",
+   "line": 34
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "len",
+   "line": 35
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "print",
+   "line": 38
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "subprocess.run",
+   "line": 41
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "print",
+   "line": 45
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.array",
+   "line": 50
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.array",
+   "line": 53
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "float",
+   "line": 55
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "print",
+   "line": 59
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.VideoWriter",
+   "line": 65
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "range",
+   "line": 67
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "vw.release",
+   "line": 69
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "subprocess.run",
+   "line": 71
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.VideoCapture",
+   "line": 76
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cap.release",
+   "line": 83
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "print",
+   "line": 84
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "print",
+   "line": 151
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "build",
+   "line": 154,
+   "to": "_tail_fix.build",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "save",
+   "line": 155,
+   "to": "_tail_fix.save",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "metrics",
+   "line": 156,
+   "to": "_tail_fix.metrics",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "print",
+   "line": 157
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "build",
+   "line": 160,
+   "to": "_tail_fix.build",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "save",
+   "line": 161,
+   "to": "_tail_fix.save",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "metrics",
+   "line": 162,
+   "to": "_tail_fix.metrics",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "print",
+   "line": 163
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.vstack",
+   "line": 173
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "enumerate",
+   "line": 174
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "cv2.imwrite",
+   "line": 178
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "print",
+   "line": 179
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "tempfile.mkdtemp",
+   "line": 24
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 27
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cap.read",
+   "line": 30
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "frames.append",
+   "line": 33
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.median",
+   "line": 55
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.where",
+   "line": 56
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "int",
+   "line": 57
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "max",
+   "line": 58
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "min",
+   "line": 58
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "int",
+   "line": 61
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 65
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.VideoWriter_fourcc",
+   "line": 65
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "vw.write",
+   "line": 68
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 76
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cap.read",
+   "line": 79
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "interp.append",
+   "line": 82
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "int",
+   "line": 89
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "max",
+   "line": 97
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "sample_window",
+   "line": 106,
+   "to": "_tail_fix.sample_window",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "cv2.VideoWriter",
+   "line": 120
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "vw.release",
+   "line": 124
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "subprocess.run",
+   "line": 125
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 135
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 136
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.array",
+   "line": 137
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.linspace",
+   "line": 139
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 143
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "metrics",
+   "line": 150,
+   "to": "_tail_fix.metrics",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "json.dumps",
+   "line": 166
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "cv2.resize",
+   "line": 171
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.hstack",
+   "line": 172
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "cv2.putText",
+   "line": 175
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "str",
+   "line": 178
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 42
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.resize",
+   "line": 49
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "float",
+   "line": 50
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "float",
+   "line": 53
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "int",
+   "line": 57
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 72
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 75
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "round",
+   "line": 89
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "min",
+   "line": 90
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "int",
+   "line": 97
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "len",
+   "line": 98
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "list",
+   "line": 99
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "max",
+   "line": 112
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "str",
+   "line": 120
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "cv2.VideoWriter_fourcc",
+   "line": 120
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "vw.write",
+   "line": 123
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 134
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.median",
+   "line": 135
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.max",
+   "line": 136
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "len",
+   "line": 139
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 141
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.mean",
+   "line": 143
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "len",
+   "line": 144
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "round",
+   "line": 144
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "round",
+   "line": 144
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "round",
+   "line": 145
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "round",
+   "line": 146
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "round",
+   "line": 146
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "range",
+   "line": 172
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.resize",
+   "line": 48
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "cv2.imread",
+   "line": 49
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "range",
+   "line": 54
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "len",
+   "line": 84
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "int",
+   "line": 91
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "range",
+   "line": 91
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "len",
+   "line": 110
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "int",
+   "line": 112
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "decimate",
+   "line": 114,
+   "to": "_tail_fix.decimate",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "str",
+   "line": 126
+  },
+  {
+   "from": "_tail_fix.save",
+   "raw": "str",
+   "line": 127
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "range",
+   "line": 134
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "float",
+   "line": 137
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "k.sum",
+   "line": 141
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "str",
+   "line": 49
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "len",
+   "line": 90
+  },
+  {
+   "from": "_tail_fix.sample_window",
+   "raw": "round",
+   "line": 91
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "decimate",
+   "line": 114,
+   "to": "_tail_fix.decimate",
+   "resolved": true
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "cv2.resize",
+   "line": 133
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.array",
+   "line": 143
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.linspace",
+   "line": 170
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "np.linspace",
+   "line": 100
+  },
+  {
+   "from": "_tail_fix.build",
+   "raw": "len",
+   "line": 112
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "len",
+   "line": 134
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.corrcoef",
+   "line": 141
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.abs",
+   "line": 50
+  },
+  {
+   "from": "_tail_fix",
+   "raw": "np.abs",
+   "line": 53
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.abs",
+   "line": 134
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "len",
+   "line": 170
+  },
+  {
+   "from": "_tail_fix.decimate",
+   "raw": "len",
+   "line": 100
+  },
+  {
+   "from": "_tail_fix.metrics",
+   "raw": "np.abs",
+   "line": 137
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "sqlite3.connect",
+   "line": 7
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.execute",
+   "line": 10
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.execute",
+   "line": 60
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.execute",
+   "line": 80
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.commit",
+   "line": 98
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "print",
+   "line": 99
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.execute",
+   "line": 100
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "db.execute",
+   "line": 54
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "len",
+   "line": 99
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "print",
+   "line": 102
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "datetime.now",
+   "line": 6
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "json.dumps",
+   "line": 18
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "json.dumps",
+   "line": 87
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "json.dumps",
+   "line": 90
+  },
+  {
+   "from": "_tail_writeback",
+   "raw": "json.dumps",
+   "line": 93
   },
   {
    "from": "analyzer.au_geometry",
