@@ -5,16 +5,55 @@
 > gitignore，知识库本体 kb.db+graph+cards 入库；**无远端 remote**，推送需用户给地址）。
 > 代码结构查询：`analyzer/codegraph.py`（59 模块 / 217 符号）。
 
-## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 ✅
+## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 + M17 设计 + DLC 验证 ✅
+
+## 2026-08-25 会话进展
+
+### M17 Civitai 第四知识源：设计定稿（用户三轮修正后实测坐实）✅
+
+`docs/M17_civitai_design.md`（八轮零硬币探测 `_civitai_probe*.py`）。要点：
+- Workflows zip 匿名公开可下，内部=标准 ComfyUI UI 图（与 RH 同构，parser 直接吃）
+- desc 正文是技巧富矿（单条 5.5 万字符教程级；LoRA 参数区间/触发词要读 desc 非字段）
+- `.com`/`.red` 同 API 后端镜像互备（API 层 NSFW 无墙）
+- **RH 模型广场公开 API `portal/model/list {search}`（6 万资源）**——Civitai 主流模型
+  同名/近名大面积在库（"名称略异"=版本号/中文注记/家族后缀），P2b=三级实时解析
+  （exact/renamed/version_differs/family_port/none）+ composer/rh_task 双道 gate
+- 负发现：images.meta 匿名为空；CLI（civitai-gen/社区下载器）与检索需求错位，不用
+- P1（研究通道第四源）→ P2（采集源）→ P2b（资产解析）→ P3（NSFW 定向建库）待实施
+
+### Deep-Live-Cam 作用验证（明日计划#2，RH 云端完成）✅
+
+用户定向：不用本地算力，全部 RH。DLC 内核=inswapper_128+GFPGANv1.4 → RH 等价物
+=自拼 ReActorFaceSwap 流（`_dlc_ab.py`，4 臂，图对=脸部参考图+被换脸2，跨人
+cos=-0.179 硬对）：
+
+| 臂 | identity↑ | residual↓ | expr↓ |
+|---|---|---|---|
+| A restore=none（纯 inswapper） | 0.6252 | 0.1137 | 0.142 |
+| **B GFPGAN blend 0.4（甜点）** | **0.6644** | **0.0726** | 0.144 |
+| C GFPGAN blend 1.0 | 0.6036 | 0.1331 | 0.145 |
+| D = A 重复（确定性） | 0.6252 | 0.1137 | 0.142 |
+| 基线 v2_reactor（同 B，昨会话） | 0.6625 | 0.0704 | 0.144 |
+| 基线 v2_scail2 表情链 | 0.585-0.601 | ~0.11 | 0.136-0.170 |
+| 基线 v2_lp 表情链 | 0.586-0.592 | ~0.13 | **0.112** |
+
+**结论（#1898-#1905 入库，experiments 行，tech_families 更新）**：
+1. **GFPGAN U 型律**：0.4 混合=免费增益（+0.039 身份/−0.041 残差）；1.0 全强度
+   反噬（先验拉向均值脸，身份跌破无增强档）——"塑料感"首次定量
+2. **前向链确定性**：D≡A 完全一致 + B 跨会话复现差 ≤0.002 → inswapper 族单次
+   A/B 有效（对照扩散族 exp015 极差 0.063 需 ≥3 采样）——A/B 方差规则按族区分
+3. **M15 接入结论**：DLC 单图换脸上限已被 RH reactor 等价覆盖（本 A/B 即证明，
+   无需本地部署）；不可替代性仅实时场景（live 摄像头）。可借机制：GFPGAN 甜点参数、
+   mouth mask（可作确定性后处理算子，无需 DLC 本体）
 
 ## 明日计划（用户 2026-08-24 收工时定）
 
 1. **新方向实验**：换一个比换脸简单的方向（用户判断依据：表情+一致性是生图难点，
    换方向可降低验证复杂度、考验系统泛化）。候选由用户明日定；KB 知识体系
    （研究通道/专家方案/验证层）应直接复用。
-2. **Deep Live Cam 试点**：`hacksider/Deep-Live-Cam`（external_fact 已入库）——
-   本地推理路线与 RH 云端互补；重点验证：单图实时换脸的视频输出质量、
-   能否作为视频换脸 family 的本地算子接入（M15 expert_solutions 结构）。
+2. ~~**Deep Live Cam 试点**~~ → **✅ 已完成（2026-08-25，RH 云端验证）**：
+   机制等价 A/B 证明单图价值已被 reactor 覆盖，定位=实时场景专用算子；
+   GFPGAN U 型律+前向链确定性入库（见上）。本地部署路线关闭。
 3. **可交付化**：前端（webapp 8830）+ 流程细节打磨——capability_notes 只读视图、
    仲裁升级的用户交互面、任务/反馈闭环 UI；目标是"可交付水平"。
 
