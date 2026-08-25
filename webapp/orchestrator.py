@@ -440,13 +440,17 @@ def _writeback(task: Task) -> None:
                                    if info["promoted"] else ""))
         elif task.outcome == "limited":
             reason = task.plan.get("_limited_reason", "")
-            capability_gap = bool(task.iterations) or reason == "kb_no_hit"
+            capability_gap = (bool(task.iterations) or reason in
+                              ("kb_no_hit", "plan_infeasible"))
             if capability_gap:
                 g = solutions.open_gap(
                     requirement=task.requirement, task_id=task.id,
                     iterations=task.iterations,
                     trigger_note=("kb_generic 无可执行工作流命中"
-                                  if reason == "kb_no_hit" else "多轮修订后仍不可达"),
+                                  if reason == "kb_no_hit" else
+                                  "规划判定系统能力不可达(如纯文生视频)"
+                                  if reason == "plan_infeasible"
+                                  else "多轮修订后仍不可达"),
                     db_path=SOLUTIONS_DB)
                 task.log("kb", f"知识缺口登记：#{g['gap_id']} "
                                 f"{'新建' if g['created'] else '追加失败证据'} "
@@ -883,15 +887,30 @@ def _run_task(task: Task):
                          f"任务族={task.family} 初始路线={task.plan.get('route')}")
 
         # feasibility: inputs present?
-        need = {"face_swap": ("target", "ref"), "kb_generic": ("target",),
+        # (素材区重构 2026-08-25: 零上传纯文字任务是合法输入——不再一刀切
+        #  要求 target; 仅当"传了素材但该任务族仍缺必需槽"时才拦截, 文案
+        #  按任务族生成, 不再硬编码换脸提示。AI 审计当晚用户实测抓到。)
+        need = {"face_swap": ("target", "ref"), "kb_generic": (),
                 "video_transition": ("target",)}
-        missing = [s for s in need.get(task.family, ()) if s not in task.images]
+        missing = [s for s in need.get(task.family, ())
+                   if s not in task.images] if task.images else []
         if task.plan.get("feasible") is False or missing:
             task.outcome = "limited"
-            task.explanation = write_explanation(task, limited=True) \
-                if task.iterations else (
-                    f"缺少必需输入：{missing}。请上传 "
-                    + "（face_swap 需要 target=被换脸图 与 ref=人脸参考图）")
+            task.plan["_limited_reason"] = (
+                "missing_inputs" if missing else "plan_infeasible")
+            if missing:
+                cn = {"target": "底图/首帧(target=素材1)",
+                      "ref": "参考图/尾帧(ref=素材2)"}
+                fam_cn = {"face_swap": "换脸", "kb_generic": "图像任务",
+                          "video_transition": "视频转场"}.get(task.family,
+                                                            task.family)
+                task.explanation = (
+                    f"{fam_cn}任务还缺素材："
+                    + "、".join(f"{s}（{cn.get(s, s)}）" for s in missing)
+                    + "。请在任务文字里说明各素材用途，系统默认素材1=底图/首帧、"
+                      "素材2=参考图/尾帧。")
+            else:
+                task.explanation = write_explanation(task, limited=True)
             task.state = "final"
             _writeback(task)
             task.persist()
