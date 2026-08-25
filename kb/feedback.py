@@ -161,22 +161,37 @@ def route_meta_capability(text: str, task_id: str = "",
 
 
 def route_hypothesis(text: str, task_id: str = "",
-                     *, db_path: Path | None = None) -> dict:
+                     *, thread_key: str = "",
+                     db_path: Path | None = None) -> dict:
     """假设/技术方向 -> user_hypotheses + 零硬币预检(不花币)。
 
+    thread_key 由调用方(app.py 反馈端点)传该任务的线程; 缺省回退最近线程。
+    同一表述的未决假设(proposed/awaiting_coin/testing)去重复用, 不重复建行。
     返回 hypothesis_id + precheck(定律/规则/负结果命中 + 验证计划 + 软结论)。
     花币探针需用户显式确认(设计 §4.4: 软提示同样适用)。
     """
-    from kb import hypotheses, threads
-    thread_key = ""
-    try:
-        conn = _conn(db_path)
-        row = conn.execute("SELECT thread_key FROM task_threads "
-                           "ORDER BY updated_at DESC LIMIT 1").fetchone()
-        conn.close()
-        thread_key = (row["thread_key"] if row else "") or ""
-    except Exception:
-        pass
+    from kb import hypotheses
+    if not thread_key:
+        try:
+            conn = _conn(db_path)
+            row = conn.execute("SELECT thread_key FROM task_threads "
+                               "ORDER BY updated_at DESC LIMIT 1").fetchone()
+            conn.close()
+            thread_key = (row["thread_key"] if row else "") or ""
+        except Exception:
+            pass
+    # 去重: 同表述未决假设直接复用
+    conn = _conn(db_path)
+    dup = conn.execute(
+        "SELECT id FROM user_hypotheses WHERE statement=? AND status IN "
+        "('proposed','awaiting_coin','testing') ORDER BY id LIMIT 1",
+        (text.strip()[:500],)).fetchone()
+    conn.close()
+    if dup:
+        pre = hypotheses.precheck(dup["id"], db_path=db_path)
+        return {"action": "hypothesis_reused", "hypothesis_id": dup["id"],
+                "statement": text[:200], **pre,
+                "next": "用户确认花币 -> /api/hypothesis/{id}/confirm"}
     hyp = hypotheses.propose(text, thread_key=thread_key, source="feedback",
                              source_ref=task_id, db_path=db_path)
     pre = hypotheses.precheck(hyp["id"], db_path=db_path)
@@ -185,13 +200,18 @@ def route_hypothesis(text: str, task_id: str = "",
             "next": "用户确认花币 -> /api/hypothesis/{id}/confirm"}
 
 
-def route(text: str, task_id: str = "", *, db_path: Path | None = None) -> dict:
+def route(text: str, task_id: str = "", *, thread_key: str = "",
+          db_path: Path | None = None) -> dict:
     label, conf = classify(text)
     fn = {"verdict": route_verdict, "hypothesis": route_hypothesis,
           "operator_lead": route_operator_lead,
           "meta_capability": route_meta_capability}.get(label)
-    result = fn(text, task_id, db_path=db_path) if fn else {
-        "action": "planning_hint", "next": "编排层接管(新任务/新实验)"}
+    if label == "hypothesis":
+        result = fn(text, task_id, thread_key=thread_key, db_path=db_path)
+    elif fn:
+        result = fn(text, task_id, db_path=db_path)
+    else:
+        result = {"action": "planning_hint", "next": "编排层接管(新任务/新实验)"}
     return {"feedback": text, "label": label, "confidence": conf, **result}
 
 

@@ -160,6 +160,23 @@ class Handler(BaseHTTPRequestHandler):
             hyp = _h.propose(text, thread_key=task.thread_key,
                              source="feedback", source_ref=tid)
             pre = _h.precheck(hyp["id"])
+            # 持久化探针上下文(图片/目录)到假设行——重启后 confirm 仍可执行
+            try:
+                import sqlite3
+                db = sqlite3.connect(ROOT / "data/kb.db")
+                row = db.execute(
+                    "SELECT verify_plan_json FROM user_hypotheses WHERE id=?",
+                    (hyp["id"],)).fetchone()
+                plan = json.loads(row[0] or "{}") if row else {}
+                plan["ctx"] = {"images": task.images,
+                               "task_dir": str(task.dir())}
+                db.execute(
+                    "UPDATE user_hypotheses SET verify_plan_json=? WHERE id=?",
+                    (json.dumps(plan, ensure_ascii=False), hyp["id"]))
+                db.commit()
+                db.close()
+            except Exception:
+                pass
             self._json({"hypothesis_id": hyp["id"], **pre}, 201)
             return
         if path.startswith("/api/hypothesis/") and path.endswith("/confirm"):
@@ -169,14 +186,17 @@ class Handler(BaseHTTPRequestHandler):
             if not hyp:
                 self._json({"error": "no such hypothesis"}, 404)
                 return
-            # ctx: 来自提出假设的任务(图片/目录); 找不到就用最新视频任务
-            src = orc.get_task(hyp.get("source_ref") or "")
-            if not src:
-                vids = [t for t in orc.TASKS.values()
-                        if t.family == "video_transition" and t.images]
-                src = vids[-1] if vids else None
-            ctx = {"images": (src.images if src else {}),
-                   "task_dir": (src.dir() if src else None)}
+            # ctx 优先级: 假设行里持久化的 ctx > 提出假设的任务 > 最新视频任务
+            plan = json.loads(hyp.get("verify_plan_json") or "{}")
+            ctx = plan.get("ctx") or {}
+            if not ctx.get("images"):
+                src = orc.get_task(hyp.get("source_ref") or "")
+                if not src:
+                    vids = [t for t in orc.TASKS.values()
+                            if t.family == "video_transition" and t.images]
+                    src = vids[-1] if vids else None
+                ctx = {"images": (src.images if src else {}),
+                       "task_dir": (str(src.dir()) if src else None)}
             try:
                 out = _h.run_probe(hid, ctx=ctx)
                 self._json(out)
@@ -211,9 +231,11 @@ class Handler(BaseHTTPRequestHandler):
                                      dims=payload.get("dims") or None)
             routed = {}
             if text.strip():
-                try:  # M16-B: 反馈四分类路由(失败不阻塞任务流)
+                try:  # M16-B: 反馈五分类路由(失败不阻塞任务流); M18-P2:
+                      # thread_key 让假设挂到本任务线程而非"最近线程"
                     from kb.feedback import route as fb_route
-                    routed = fb_route(text, task_id=tid)
+                    routed = fb_route(text, task_id=tid,
+                                      thread_key=task.thread_key)
                 except Exception as e:
                     routed = {"error": f"router: {e}"}
             self._json({"ok": ok, "state": task.state, "feedback_route": routed},

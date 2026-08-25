@@ -170,6 +170,26 @@ AI 搜索验证**。② 默认**软提示**不拦截（默认 8s 走推荐路径
   竞态：陈旧 review 上 accept 被 round-2 clear 吞、中文 slug 线程碰撞）。
 - 8830 已重启加载全部 M18 代码。
 
+**系统 AI 完备性审计（用户关键提问：全部测试此前由 harness AI+mock 跑，切到
+系统 AI 是否完备）** ✅ `test_ai_audit.py` 真实 qwen-plus 零硬币 25/25：
+- 六个真实 AI 调用点逐一验证：①VLClient(qwen-plus) 文本通道可达 ②plan_task
+  真实规划×3（face_swap/kb_generic JSON 形状+route 合法）③classify_feedback
+  真实分类（不 satisfied/satisfied 判对）④write_explanation 真实生成+三件套
+  后缀（置信/证据/为什么不是X 全挂上）⑤close_draft 真实 LLM 四栏草拟（数字
+  进事实栏）⑥feedback.route 真实路径（假设挂对线程+同表述去重）。
+- **审计发现并修复 5 个真实问题**：A) close_draft JSON 提取脆（qwen-plus 常在
+  正文里包 JSON）→ `_extract_json` 平衡括号提取（围栏/正文包裹/嵌套/垃圾四种
+  输入实测）；B) route_hypothesis 假设挂"最近线程"而非本任务线程 → route()
+  加 thread_key 由反馈端点传入；C) 假设探针图片上下文存内存，webapp 重启后
+  confirm 找不到图 → propose 时持久化 ctx 进 verify_plan_json，confirm 优先读；
+  D) 同一假设反复提交重复建行 → 未决假设去重复用；E) plan_task 真实 LLM 给
+  kb_generic 任务（放大/修复）返回换脸路线 hybrid_final → family 兜底纠正为
+  kb_search（AI 审计实测抓到）。
+- 非 LLM 路径确认确定性：negotiating 前置检查纯词法零 LLM（boundaries.py 无
+  vl 导入）——无卡片永不阻塞，误报面=漏弹卡片（设计 §4.1 的 LLM 分类钩子
+  features_override 已留未接，属安全缺口）。
+- 全套回归（P0 19 + P0 e2e 21 + P1/P2 31）修复后仍全绿；8830 重启加载。
+
 **当日末批前端/其他优化** ✅：negotiating 态 700ms 自适应快轮询（稳态回 2s）、
 轮询容错（连接中断不丢前端状态，重试提示）、提交按钮防抖、路径卡片区自动
 滚入视野、灯箱支持视频播放、negotiating 态反馈区文案改"选择路径"引导；

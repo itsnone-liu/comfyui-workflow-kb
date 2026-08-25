@@ -161,6 +161,36 @@ def _llm(prompt: str) -> str:
     return VLClient(model="qwen-plus").chat(prompt, [])
 
 
+def _extract_json(raw: str) -> dict | None:
+    """LLM 返回里挖 JSON 对象(容忍围栏/前后缀废话; 取第一个平衡的 {...})。"""
+    if not raw:
+        return None
+    m = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", raw, re.S)
+    if m:
+        try:
+            return json.loads(m.group(1))
+        except json.JSONDecodeError:
+            pass
+    # 无围栏: 找第一个 { 到与之平衡的 }
+    depth, start = 0, -1
+    for i, ch in enumerate(raw):
+        if ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}":
+            if depth > 0:
+                depth -= 1
+                if depth == 0 and start >= 0:
+                    try:
+                        obj = json.loads(raw[start:i + 1])
+                        if isinstance(obj, dict):
+                            return obj
+                    except json.JSONDecodeError:
+                        start = -1
+    return None
+
+
 _SUMMARY_PROMPT = """你是知识工程助手。把下面的任务线程事件流总结为四栏(每栏 2-5 条,
 每条一句话, 直接给 JSON, 无 markdown 代码块):
 {{"facts": ["实测事实(带数字)"], "laws": ["可沉淀的定律/规律"],
@@ -185,10 +215,7 @@ def close_draft(key: str, db_path: Path | None = None) -> dict:
     cols = {"facts": [], "laws": [], "rules": [], "open_questions": []}
     try:
         raw = _llm(_SUMMARY_PROMPT.format(goal=th["goal"], events=ev_text))
-        raw = raw.strip()
-        if raw.startswith("```"):
-            raw = raw.strip("`").lstrip("json").strip()
-        cols = json.loads(raw)
+        cols = _extract_json(raw) or cols
     except Exception as e:   # LLM 失败: 降级为规则抽取(定律/规则事件直接回收)
         cols = {"facts": [f"(LLM 草拟失败 {type(e).__name__}; 以下为事件直回收)"],
                 "laws": [], "rules": [], "open_questions": []}

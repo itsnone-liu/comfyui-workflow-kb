@@ -245,6 +245,12 @@ qwen_swap; 色彩极端重要用 klein_double; 表情极端重要用 reactor_pur
     if "route" not in plan:
         plan["route"] = ("hybrid_final" if plan["family"] == "face_swap"
                          else "kb_search")
+    # AI 审计发现(2026-08-25): kb_generic 任务的 LLM 偶发返回换脸路线
+    # (hybrid_final 等)——执行无害但反馈轮换会进无意义路线, 兜底纠正
+    if (plan["family"] == "kb_generic"
+            and plan["route"] not in ("kb_search",)
+            and not re.search(r"换脸|换头|脸换成|face\s*swap", txt)):
+        plan["route"] = "kb_search"
     # constraint floor: default to the best-known hybrid unless the plan says
     # otherwise with a hair/color-only rationale
     if plan["family"] == "face_swap" and not re.search(
