@@ -1,4 +1,4 @@
-# 进度快照 —— 2026-08-25（M0-M11 + M15-M18设计 + DLC/H3 全日弧；git+codegraph 已推远端 ✅）
+# 进度快照 —— 2026-08-25（M0-M11 + M15-M18设计 + DLC/H3 全日弧 + M19 四条意见修复；git+codegraph 已推远端 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
@@ -8,6 +8,44 @@
 ## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 + M17 设计 + DLC 验证 ✅
 
 ## 2026-08-25 会话进展
+
+### M19 用户四条意见修复（会话中断后恢复，用户书面意见驱动）✅
+
+用户四条意见（金标准）+ 根因 + 修复（test_m19.py 31 项验收全绿）：
+
+1. **收口没看到拆 3~4 段建议、只有"缺少target"** → 双重根因：①线程任务事件
+   explanation 截 200 字把尾部建议切掉；②收口草稿只基于首个任务（bug 文案），
+   后续任务不刷新。修复：事件截断放宽 800；**草稿过期机制**——线程有新事件即
+   把 draft 标 stale、closed 线程拉回 running；收口提示词明确"以最新任务结局
+   为准，早期已修复的失败只作过程记录，建议方案保留进 rules"。
+2. **目的是构建工作流而非完成任务，"内容自拟"应被理解** → 规划提示词重写：
+   产出物=可复用生成工作流；宽泛需求=AI 拟 content_plan（正常输入，不是缺信息）；
+   能力族清单补 text_to_video/video_transition；t2v 误判不可达时地板纠正。
+   新执行器 `_exec_t2v`：KB 命中 H3 文生卡 → AI 起草专业分镜 → 分段生成
+   （段数=总秒/6）→ ffmpeg 本地零币拼接；成功自动注册 expert_solution
+   （h3_t2v_segmented），下一个同类任务零规划硬币回放（方案级复用扩展到
+   face_swap 之外）。**新发现并修复**：旧 kb_search_workflow ①按空格分词
+   ——中文整句必 miss（"文生视频"从未被检索到，这就是 t2v 判不可达的真正
+   根因）②SELECT knowledge_cards.title 潜伏 SQL bug。v2：中文 2-gram+ASCII
+   词覆盖率打分，join workflows 取标题，prefer_text 保证命中的流有文本槽。
+3. **前端缺少互动机制** → 任务内对话通道全链路：后端 messages/asking 字段 +
+   say/_ask/chat 原语（milestone/ask/conclusion 三类 AI 消息，软门超时自动
+   继续）；t2v 开工前 20s 内容方案软确认；出结果主动汇报请求评价；用户随时
+   插话四路由（answering 交付答案 / review=反馈 / final=自动开续期任务同
+   线程 / 其他=LLM 知情回应+意见入 plan.user_notes）；前端新增③对话面板
+   （Enter 发送、asking 高亮、状态提示、续期任务无缝切换）。POST /api/task/
+   {id}/chat。
+4. **KB 没有文生视频沉淀却没启动外部搜索=系统失败** → `webapp/auto_research.py`：
+   缺口登记（kb_no_hit/plan_infeasible）立即后台启动**零硬币**三源研究
+   （GitHub/Registry/HF 搜索+深读，LLM 起草查询词、失败退词表），RH 应用
+   广场可执行性核查，结果回帖到任务对话+线程事件；缺口置 researching；同
+   缺口去重；花币动作永不自动跑。gap#5 类场景不会再"只登记不研究"。
+
+附带修复：换脸等必需槽族零上传冲进执行器 KeyError 变 error（ad70305 遗留
+回归）→ 恢复族专属缺素材 limited 文案（文生视频零上传不受影响，M15 回归抓到）。
+
+**回归**：m15_wiring 23 + m18_p0 + m18_p1p2 + m18_e2e + m19 31 全绿。
+**中断损失**：8830/8827 服务随会话死掉（已重启）；其余无损失（工作树本就干净）。
 
 ### H3 首尾帧无缝衔接验证（用户任务：ref→825 5s 加速）✅
 
@@ -655,6 +693,9 @@ $env:PYTHONPATH=''    # 必须！harness 全局 PYTHONPATH 污染 OpenTutor venv
 
 ### 下一步
 
+- **用户实测 M19**（浏览器 Ctrl+F5 强刷 8830）：重发"内容自拟"文生视频任务走
+  完（软确认窗 20s / 对话插话 / 收口重开应含拆段建议）；真实 t2v 会花币——
+  首跑前用户在场确认
 - **M15 活例**：首个真实换脸任务走方案复用路径（零规划硬币）——hybrid_final 差
   2 个真实任务晋升 expert，是晋升机制的第一个活例
 - **flux2_klein_hair 晋升验证**：第 2 个不同输入跑 `research/probe_webapp.py`

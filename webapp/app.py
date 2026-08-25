@@ -219,6 +219,19 @@ class Handler(BaseHTTPRequestHandler):
                         "card_choice": task.card_choice},
                        200 if ok else 409)
             return
+        if path.startswith("/api/task/") and path.endswith("/chat"):
+            tid = path.split("/")[3]
+            task = orc.get_task(tid)
+            if not task:
+                self._json({"error": "no such task"}, 404)
+                return
+            text = (payload.get("text") or "").strip()
+            if not text:
+                self._json({"error": "empty chat"}, 400)
+                return
+            out = orc.chat(task, text)
+            self._json(out, 200 if out.get("ok") else 409)
+            return
         if path.startswith("/api/task/") and path.endswith("/feedback"):
             tid = path.split("/")[3]
             task = orc.get_task(tid)

@@ -21,13 +21,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "data" / "kb.db"
 
-# 需求关键词 -> L2 capability(词表与 migrate_m15.py 种子一致)
+# 需求关键词 -> L2 capability(词表与 migrate_m15.py 种子一致; M19 +t2v)
 CAP_KEYWORDS: list[tuple[str, str]] = [
     (r"发型|头发|hair", "hair_transfer"),
     (r"色彩|颜色|光照|色偏|肤色|color", "color_harmonization"),
     (r"表情|嘟嘴|嘴形|expression", "expression_preserve"),
     (r"姿态|姿势|结构|构图|pose", "structure_preserve"),
     (r"身份|长得像|相似|identity", "identity_transfer"),
+    (r"文生视频|文字生成视频|文字生视频|t2v|text.to.video", "text_to_video"),
 ]
 
 STATUS_RANK = {"expert": 3, "validated": 2, "candidate": 1}
@@ -251,3 +252,52 @@ def open_gap(*, requirement: str, task_id: str,
         created = True
     conn.close()
     return {"gap_id": gap_id, "created": created, "title": title}
+
+
+def register_solution(*, name: str, family: str, requirements: str = "",
+                      capabilities: list[str] | None = None,
+                      route: list[dict] | None = None,
+                      workflow_ref: str = "", limitations: str = "",
+                      key_params: dict | None = None, metrics: dict | None = None,
+                      evidence_note: str = "", status: str = "candidate",
+                      db_path: Path | str | None = None) -> dict:
+    """任务成功后自动注册候选方案(M19: 任意族, 不再只靠手写种子)。
+
+    幂等: 同名方案更新最新版本内容(不重复插行)。下一同族任务即可零规划硬币
+    复用(检索按 family+capabilities 命中)。
+    """
+    conn = connect(db_path)
+    row = conn.execute(
+        "SELECT id FROM expert_solutions WHERE name=? ORDER BY version DESC "
+        "LIMIT 1", (name,)).fetchone()
+    if row:
+        sid, created = row["id"], False
+        conn.execute(
+            "UPDATE expert_solutions SET family=?, requirements=?, "
+            "capabilities_json=?, route_json=?, workflow_ref=?, limitations=?, "
+            "key_params_json=?, metrics_json=?, evidence_note=CASE WHEN ?!='' "
+            "THEN ? ELSE evidence_note END, status=CASE WHEN status='retired' "
+            "THEN 'candidate' ELSE status END, updated_at=datetime('now') "
+            "WHERE id=?",
+            (family, requirements,
+             json.dumps(capabilities or [], ensure_ascii=False),
+             json.dumps(route or [], ensure_ascii=False), workflow_ref,
+             limitations, json.dumps(key_params or {}, ensure_ascii=False),
+             json.dumps(metrics or {}, ensure_ascii=False),
+             evidence_note, evidence_note, sid))
+    else:
+        cur = conn.execute(
+            """INSERT INTO expert_solutions
+               (name, family, status, requirements, capabilities_json,
+                route_json, workflow_ref, limitations, key_params_json,
+                metrics_json, evidence_note, source)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?, 'agent_composed')""",
+            (name, family, status, requirements,
+             json.dumps(capabilities or [], ensure_ascii=False),
+             json.dumps(route or [], ensure_ascii=False), workflow_ref,
+             limitations, json.dumps(key_params or {}, ensure_ascii=False),
+             json.dumps(metrics or {}, ensure_ascii=False), evidence_note))
+        sid, created = cur.lastrowid, True
+    conn.commit()
+    conn.close()
+    return {"solution_id": sid, "name": name, "created": created}

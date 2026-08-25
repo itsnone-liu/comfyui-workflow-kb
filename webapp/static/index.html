@@ -134,6 +134,22 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
   letter-spacing:.5px}
 .sum4 .col textarea{min-height:80px;font-size:12px}
 .tbtns{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+/* M19: 任务内对话 */
+#chatLog{display:flex;flex-direction:column;gap:8px;max-height:300px;
+  overflow-y:auto;padding-right:4px}
+.msg{max-width:92%;border-radius:10px;padding:8px 11px;font-size:13px;
+  line-height:1.55;white-space:pre-wrap}
+.msg.ai{align-self:flex-start;background:var(--panel2);
+  border:1px solid var(--line);border-left:3px solid var(--acc)}
+.msg.ai.ask{border-left-color:var(--warn)}
+.msg.ai.conclusion{border-left-color:var(--ok)}
+.msg.user{align-self:flex-end;background:var(--chip);
+  border:1px solid var(--line)}
+.msg .mk{display:block;font-size:10px;color:var(--dim);margin-bottom:3px;
+  letter-spacing:.4px}
+#chatText{min-height:44px;font-size:13px}
+#chatCard.asking #chatText{border-color:var(--warn)}
+#chatHint{font-size:11px;color:var(--dim)}
 </style>
 </head>
 <body>
@@ -182,8 +198,24 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
           <div class="tx">等待任务提交</div></div></div>
       </div>
 
+      <div class="card" style="margin-top:14px" id="chatCard">
+        <h2>③ 对话（随时可插话）</h2>
+        <div id="chatLog"><div class="msg ai"><span class="mk">AI</span>
+          提交任务后我在这里同步进展、结论和问题；你随时可以插话——
+          运行中我会回应并吸收，出结果后直接在这里评价，任务结束后
+          提改进意见我会自动开续期任务。</div></div>
+        <div class="row" style="margin-top:8px">
+          <textarea id="chatText" style="min-height:44px;flex:1"
+            placeholder="例如：内容改成太空歌剧风格 / 第二段镜头太跳 / 节奏慢一点"></textarea>
+        </div>
+        <div class="row">
+          <button class="sec" onclick="sendChat()">发送（Enter）</button>
+          <span id="chatHint">随时可插话</span>
+        </div>
+      </div>
+
       <div class="card" style="margin-top:14px" id="fbCard">
-        <h2>③ 评价反馈</h2>
+        <h2>④ 评价反馈</h2>
         <div id="fbBody" style="color:var(--dim);font-size:13px">
           出图后在此评价，AI 将修订工作流</div>
         <textarea id="fbText" class="hidden"
@@ -282,7 +314,8 @@ async function submit(){
       headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
     const j=await r.json();
     if(!j.id){ alert("失败: "+(j.error||"?")); return; }
-    tid=j.id; state=""; pollFails=0; cardsScrolled=false;
+    tid=j.id; state=""; pollFails=0; cardsScrolled=false; msgCount=0;
+    document.getElementById("chatLog").innerHTML="";
     document.getElementById("hint").textContent="任务 "+tid;
     if(j.thread){loadThreads(j.thread);}
     if(timer) clearInterval(timer);
@@ -474,6 +507,7 @@ function render(t){
     }
   }
   renderDims(t);                       // M18-P1 维度裁决
+  renderMessages(t);                   // M19: 任务内对话
   const hypT=document.getElementById("hypText"),
         hypB=document.getElementById("hypBtns");
   if(tid&&(t.state==="review"||t.state==="final")){
@@ -484,9 +518,78 @@ function render(t){
 
 function wfSummary(wf){
   if(wf.presets) return "链路: "+wf.presets.join(" → ");
+  if(wf.prompts) return "文生视频: "+(wf.title||"")+" × "+wf.prompts.length+" 段"
+    +(wf.concat?" 已拼接":" 分段输出");
   if(wf.title) return "工作流: "+wf.title+" ("+wf.workflow_id+")";
   return JSON.stringify(wf).slice(0,120);
 }
+/* ---------------- M19: 任务内对话 ---------------- */
+let msgCount=0;
+const MSG_KIND={milestone:"AI · 进展",ask:"AI · 提问",conclusion:"AI · 结论",
+  note:"AI",chat:"你",reply:"你 · 回复",feedback:"你 · 评价"};
+function renderMessages(t){
+  const log=document.getElementById("chatLog");
+  const card=document.getElementById("chatCard");
+  const hint=document.getElementById("chatHint");
+  const ms=t.messages||[];
+  if(ms.length<msgCount){         // 续期任务切换: 重建
+    log.innerHTML=""; msgCount=0;
+  }
+  for(let i=msgCount;i<ms.length;i++){
+    const m=ms[i];
+    const d=document.createElement("div");
+    d.className="msg "+(m.who==="ai"?("ai "+(m.kind||"")):"user");
+    d.innerHTML=`<span class="mk">${esc(MSG_KIND[m.kind]||m.kind||
+      (m.who==="ai"?"AI":"你"))}</span>${esc(m.text)}`;
+    log.appendChild(d);
+  }
+  msgCount=ms.length;
+  log.scrollTop=log.scrollHeight;
+  card.classList.toggle("asking",!!t.asking);
+  hint.textContent=t.asking?
+    "⏳ AI 在等你的回复（超时自动继续，不阻塞）":
+    t.state==="review"?"出结果了——在这里直接评价，或用下方反馈卡":
+    t.state==="final"?"任务已结束：提改进意见，我会自动开续期任务":
+    "随时可插话";
+}
+async function sendChat(){
+  const inp=document.getElementById("chatText");
+  const text=inp.value.trim();
+  if(!text){ return; }
+  if(!tid){ alert("先提交一个任务"); return; }
+  inp.value="";
+  const log=document.getElementById("chatLog");
+  const d=document.createElement("div");
+  d.className="msg user";
+  d.innerHTML=`<span class="mk">你</span>${esc(text)}`;
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+  const r=await fetch(`/api/task/${tid}/chat`,{method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({text})});
+  let j;
+  try{ j=await r.json(); }catch(e){ j={ok:false,mode:"error"}; }
+  if(j.mode==="new_task"&&j.new_task){
+    const d2=document.createElement("div");
+    d2.className="msg ai";
+    d2.innerHTML=`<span class="mk">AI</span>已开续期任务 ${esc(j.new_task)}，切换中…`;
+    log.appendChild(d2);
+    tid=j.new_task; msgCount=0; pollFails=0;
+    if(timer){clearInterval(timer);}
+    timer=setInterval(poll,2000); poll();
+    if(j.thread){loadThreads(j.thread);}
+  }else if(!j.ok&&j.mode!=="empty"){
+    const d2=document.createElement("div");
+    d2.className="msg ai";
+    d2.textContent="（消息暂未送达："+(j.error||j.state||j.mode)+"）";
+    log.appendChild(d2);
+  }
+  // reply/milestone 由轮询渲染
+}
+document.getElementById("chatText").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey&&e.isComposing===false){
+    e.preventDefault(); sendChat();
+  }
+});
 function fmtBars(b){
   return Object.entries(b).filter(([k])=>!k.startsWith("vl_")||true)
     .map(([k,v])=>`${k}=${v}`).join("  ").slice(0,300);
@@ -638,6 +741,8 @@ async function showThread(key){
       <div class="sub">${esc(e.statement||"")}</div>`;
     else if(e.kind==="hypothesis") d=`<b>${esc(e.status)}</b>
       ${esc(e.statement||e.note||"")} ${e.rule_code?`→ <code class="mini">${esc(e.rule_code)}</code>`:""}`;
+    else if(e.kind==="note") d=`<b>${esc(e.who==="ai"?"AI":"系统")}</b>
+      <div class="sub">${esc(e.text||"")}</div>`;
     else d=esc(e.text||JSON.stringify(e)).slice(0,200);
     return `<div class="tev"><div class="k ${e.kind}">${K[e.kind]||e.kind}</div>
       <div class="d">${d}</div></div>`;}).join("");

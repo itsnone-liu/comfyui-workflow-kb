@@ -33,6 +33,11 @@ TMP_DB = TMP / "kb.db"
 shutil.copyfile(ROOT / "data/kb.db", TMP_DB)
 orch.SOLUTIONS_DB = TMP_DB          # orchestrator 全部走临时库
 orch.TASKS_DIR = TMP / "webtasks"   # task.json 不污染 data/webtasks
+# 线程存储也重定向(否则 add_event 写真实 data/threads + task_threads)
+from kb import threads as _threads_mod
+_threads_mod.DB_PATH = TMP_DB
+_threads_mod.THREADS_DIR = TMP / "threads"
+_threads_mod.THREADS_DIR.mkdir(parents=True)
 
 
 class FakeTask:

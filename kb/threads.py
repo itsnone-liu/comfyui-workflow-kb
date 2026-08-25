@@ -84,6 +84,14 @@ def add_event(key: str, kind: str, payload: dict, *, t: float | None = None,
     db.execute("UPDATE task_threads SET status=CASE WHEN status='open' "
                "THEN 'running' ELSE status END, "
                "updated_at=datetime('now') WHERE key=?", (_slug(key),))
+    # M19 草稿过期机制(用户意见#1): 收口草稿生成后线程又有新事件(新任务/
+    # 裁决/结论)时, 旧草稿不再代表线程终态——标记 stale 并把已收口线程拉回
+    # running, 前端不再展示过期内容, 收口按钮重新可用。收口自身事件除外。
+    if kind != "summary":
+        db.execute("UPDATE thread_summaries SET status='stale' "
+                   "WHERE thread_key=? AND status='draft'", (_slug(key),))
+        db.execute("UPDATE task_threads SET status='running' "
+                   "WHERE key=? AND status='closed'", (_slug(key),))
     db.commit()
     db.close()
     return ev
@@ -128,8 +136,10 @@ def full(key: str, db_path: Path | None = None) -> dict:
         "SELECT * FROM thread_summaries WHERE thread_key=? ORDER BY id DESC",
         (th["key"],))]
     db.close()
+    # M19: stale 草稿不代表线程终态, 不再作为当前总结展示
+    live = [s for s in sums if s.get("status") != "stale"]
     return {**th, "events": events(th["key"]), "hypotheses": hyps,
-            "summary": sums[0] if sums else None,
+            "summary": (live or [None])[0],
             "summaries": sums}
 
 
@@ -150,7 +160,7 @@ def digest(key: str, max_events: int = 40, db_path: Path | None = None) -> str:
     for e in merged:
         d = {k: v for k, v in e.items() if k not in ("t", "kind")}
         lines.append(f"- {e['kind']}: "
-                     + json.dumps(d, ensure_ascii=False)[:300])
+                     + json.dumps(d, ensure_ascii=False)[:700])
     return "\n".join(lines)
 
 
@@ -196,6 +206,9 @@ _SUMMARY_PROMPT = """你是知识工程助手。把下面的任务线程事件�
 {{"facts": ["实测事实(带数字)"], "laws": ["可沉淀的定律/规律"],
   "rules": ["决策规则(什么情况选什么)"], "open_questions": ["未解决/待验证"]}}
 事实必须来自事件(指标/裁决/结论), 不要编造。
+注意: 以事件流中**最新**任务的结局和解释为准; 早期失败事件若已被后续事件
+推翻或修复(如 bug 修复后的重跑), 只作为过程记录, 不得作为最终结论;
+任务的 explanation 里给出的建议方案(如分段生成)要保留在 rules 里。
 
 线程目标: {goal}
 事件流:
@@ -210,7 +223,7 @@ def close_draft(key: str, db_path: Path | None = None) -> dict:
         raise KeyError(f"no thread {key}")
     evs = events(key)
     ev_text = "\n".join(
-        f"{json.dumps({k: v for k, v in e.items() if k != 't'}, ensure_ascii=False)[:280]}"
+        f"{json.dumps({k: v for k, v in e.items() if k != 't'}, ensure_ascii=False)[:700]}"
         for e in evs[-60:])
     cols = {"facts": [], "laws": [], "rules": [], "open_questions": []}
     try:
