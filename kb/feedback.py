@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-"""kb/feedback.py — 用户反馈四分类路由器（M16-B）。
+"""kb/feedback.py — 用户反馈五分类路由器（M16-B 四类 + M18-P2 hypothesis）。
 
 用户反馈是一等输入(用户系统评价 2026-08-24), 不只驱动生成域记账, 也驱动
-验证域/编排域的知识生长。四分类:
+验证域/编排域的知识生长。五分类:
 
   verdict          裁决: "scail2 更胜一筹" / "两条都保留"
     -> record_success/failure + 晋升 + 择优规则 + user_rulings(金标准)
+  hypothesis       假设/技术方向(M18-P2 一等化): "我觉得不如用首帧文生视频"
+    -> user_hypotheses + 零硬币预检(定律/规则/负结果匹配) -> 花币确认探针
+       -> verified 起草 decision_rule(带署名) / rejected 记负结果
   operator_lead    工具线索: "DeepLiveCam 有参考价值"
     -> external_fact + research session 具名查询计划(GAP_PLANS)
   meta_capability  能力评价: "细节识别要加强"
@@ -31,6 +34,12 @@ sys.path.insert(0, str(ROOT))
 
 # ---- 分类规则(v1 关键词; 顺序即优先级) ----
 RULES: list[tuple[str, list[str]]] = [
+    # hypothesis(M18-P2): 用户假设/技术方向, 最高优先——当日最大突破(i2v 决策
+    # 规则)来自用户假设而非系统搜索, 必须先于 verdict 的"更好"匹配
+    ("hypothesis", [
+        r"我觉得|我假设|我怀疑|不如(用|试试|改)|或许.{0,8}(更|更好)|应该可以|"
+        r"有没有可能|万一|说不定|试试(用)?.{2,20}|换成.{2,12}(试试|看)",
+    ]),
     # verdict: 比较词 + 链名/方案名, 或验收结论
     ("verdict", [
         r"更胜一筹", r"更好", r"更优", r"赢", r"两条都保留", r"都值得保留",
@@ -151,9 +160,35 @@ def route_meta_capability(text: str, task_id: str = "",
             "gap_id": gid, "domain": domain}
 
 
+def route_hypothesis(text: str, task_id: str = "",
+                     *, db_path: Path | None = None) -> dict:
+    """假设/技术方向 -> user_hypotheses + 零硬币预检(不花币)。
+
+    返回 hypothesis_id + precheck(定律/规则/负结果命中 + 验证计划 + 软结论)。
+    花币探针需用户显式确认(设计 §4.4: 软提示同样适用)。
+    """
+    from kb import hypotheses, threads
+    thread_key = ""
+    try:
+        conn = _conn(db_path)
+        row = conn.execute("SELECT thread_key FROM task_threads "
+                           "ORDER BY updated_at DESC LIMIT 1").fetchone()
+        conn.close()
+        thread_key = (row["thread_key"] if row else "") or ""
+    except Exception:
+        pass
+    hyp = hypotheses.propose(text, thread_key=thread_key, source="feedback",
+                             source_ref=task_id, db_path=db_path)
+    pre = hypotheses.precheck(hyp["id"], db_path=db_path)
+    return {"action": "hypothesis_prechecked", "hypothesis_id": hyp["id"],
+            "statement": hyp["statement"], **pre,
+            "next": "用户确认花币 -> /api/hypothesis/{id}/confirm"}
+
+
 def route(text: str, task_id: str = "", *, db_path: Path | None = None) -> dict:
     label, conf = classify(text)
-    fn = {"verdict": route_verdict, "operator_lead": route_operator_lead,
+    fn = {"verdict": route_verdict, "hypothesis": route_hypothesis,
+          "operator_lead": route_operator_lead,
           "meta_capability": route_meta_capability}.get(label)
     result = fn(text, task_id, db_path=db_path) if fn else {
         "action": "planning_hint", "next": "编排层接管(新任务/新实验)"}

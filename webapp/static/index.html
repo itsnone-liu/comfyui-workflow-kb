@@ -102,6 +102,38 @@ code.mini{background:var(--chip);padding:1px 6px;border-radius:5px;
 .pwhy{margin-top:6px;font-size:11px;color:var(--dim)}
 #cardCount{font-size:12px;color:var(--warn);font-weight:600}
 video.resv{width:100%;border-radius:8px;background:#000;display:block}
+/* M18-P1/P2: 线程视图 + 裁决 UI + 收口总结 */
+#threadCard h2 .tkey{color:var(--dim);font-weight:400;font-size:11px}
+.tev{display:flex;gap:10px;font-size:12px;line-height:1.5;padding:6px 0;
+  border-bottom:1px solid var(--line)}
+.tev:last-child{border-bottom:none}
+.tev .k{flex:0 0 74px;text-transform:uppercase;letter-spacing:.4px;
+  font-size:10px;padding-top:2px}
+.tev .k.task{color:var(--acc)} .tev .k.ruling{color:var(--warn)}
+.tev .k.law{color:var(--ok)} .tev .k.hypothesis{color:#c39cff}
+.tev .k.coin_spend{color:var(--err)} .tev .k.summary{color:var(--ok)}
+.tev .d{flex:1;color:var(--fg)} .tev .d .sub{color:var(--dim);font-size:11px}
+.tlwrap{max-height:300px;overflow-y:auto}
+.dims{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.dims .dim{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:12px}
+.dims .dim .dn{flex:0 0 90px;color:var(--dim)}
+.dims .seg{display:flex;gap:4px}
+.dims .seg button{padding:3px 10px;font-size:11px;border-radius:6px;
+  background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+.dims .seg button.on{border-color:var(--acc);color:var(--acc)}
+.hypbox{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.hypbox textarea{min-height:44px;font-size:12px}
+.hypres{margin-top:8px;font-size:12px;border-left:3px solid var(--acc);
+  padding:6px 10px;background:var(--panel2);border-radius:0 6px 6px 0;
+  white-space:pre-wrap}
+.hypres.dead{border-color:var(--err)} .hypres.ok{border-color:var(--ok)}
+.sum4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.sum4 .col{background:var(--panel2);border:1px solid var(--line);
+  border-radius:8px;padding:8px}
+.sum4 .col h4{margin:0 0 6px;font-size:11px;color:var(--dim);
+  letter-spacing:.5px}
+.sum4 .col textarea{min-height:80px;font-size:12px}
+.tbtns{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -156,6 +188,21 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
           <button class="sec" onclick="sendFeedback(false)">提交反馈，继续修订</button>
           <button class="ok" onclick="sendFeedback(true)">达标，输出最终工作流</button>
         </div>
+        <div class="dims hidden" id="dimsBox">
+          <div style="font-size:12px;color:var(--dim);margin-bottom:2px">
+            逐维度裁决（可选，选了会连同文字一起入库）</div>
+          <div id="dimsRows"></div>
+        </div>
+        <div class="hypbox">
+          <div style="font-size:12px;color:var(--dim)">
+            💡 技术假设（"我觉得不如试试X"→ 先零硬币预检，花币前你确认）</div>
+          <textarea id="hypText" class="hidden"
+            placeholder="例：如果背景空间相差很大，不如只用第一张图做文生视频"></textarea>
+          <div class="row hidden" id="hypBtns">
+            <button class="sec" onclick="submitHypothesis()">提交假设（预检不花币）</button>
+          </div>
+          <div id="hypRes"></div>
+        </div>
       </div>
     </div>
 
@@ -169,10 +216,24 @@ video.resv{width:100%;border-radius:8px;background:#000;display:block}
         <h2>结论与工作流</h2>
         <div id="verdict" style="color:var(--dim);font-size:13px">
           任务完成后在此显示结论；不可实现时给出技术解释</div>
+        <div id="whyBox" class="hidden" style="margin-top:8px;font-size:11px;
+          color:var(--dim);border-left:3px solid var(--ok);padding:6px 10px;
+          background:var(--panel2);border-radius:0 6px 6px 0"></div>
         <div class="wfdl hidden" id="wfBox">
           <a id="wfLink" href="#" download="workflow_manifest.json">
             <button class="sec">下载最终工作流 (JSON)</button></a>
           <div style="margin-top:8px"><code class="mini" id="wfSummary"></code></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px" id="threadCard">
+        <h2>任务线程 <span class="tkey" id="threadKey"></span></h2>
+        <div id="threadList" style="font-size:12px;color:var(--dim)">
+          加载中…</div>
+        <div id="threadView" class="hidden">
+          <div class="tlwrap" id="threadEvents"></div>
+          <div class="tbtns" id="threadBtns"></div>
+          <div id="sumDraft"></div>
         </div>
       </div>
     </div>
@@ -208,6 +269,7 @@ async function submit(){
     if(!j.id){ alert("失败: "+(j.error||"?")); return; }
     tid=j.id; state=""; pollFails=0; cardsScrolled=false;
     document.getElementById("hint").textContent="任务 "+tid;
+    if(j.thread){loadThreads(j.thread);}
     if(timer) clearInterval(timer);
     timer=setInterval(poll,2000); poll();
   } finally { btn.disabled=false; }
@@ -372,7 +434,7 @@ function render(t){
     res.innerHTML="<span style='color:var(--dim)'>构建中…</span>";
   }
 
-  // verdict + workflow
+  // verdict + workflow + Why panel (M18-P2)
   if(t.state==="final"){
     const v=document.getElementById("verdict");
     const cls=t.outcome==="satisfied"?"ok":(t.outcome==="error"?"err":"lim");
@@ -380,6 +442,14 @@ function render(t){
     v.textContent=`【${t.outcome==="satisfied"?"目标达成":
       t.outcome==="error"?"执行错误":"现有条件下无法完全满足"}】\n`+
       (t.explanation||"");
+    const laws=(t.precheck&&t.precheck.laws)||[];
+    const wb=document.getElementById("whyBox");
+    if(laws.length){
+      wb.classList.remove("hidden");
+      wb.innerHTML="<b>Why（引用定律）</b><br>"+laws.map(l=>
+        `<span style="color:var(--fg)">${esc(l.code)} ${esc(l.name)}</span>:
+         ${esc(l.statement)}`).join("<br>");
+    }
     if(t.final_workflow_ready){
       document.getElementById("wfBox").classList.remove("hidden");
       const link=document.getElementById("wfLink");
@@ -388,6 +458,13 @@ function render(t){
         wfSummary(t.final_workflow);
     }
   }
+  renderDims(t);                       // M18-P1 维度裁决
+  const hypT=document.getElementById("hypText"),
+        hypB=document.getElementById("hypBtns");
+  if(tid&&(t.state==="review"||t.state==="final")){
+    hypT.classList.remove("hidden"); hypB.classList.remove("hidden");
+  }else{hypT.classList.add("hidden");hypB.classList.add("hidden");}
+  if(t.thread_key&&t.thread_key!==curThreadKey){loadThreads(t.thread_key);}
 }
 
 function wfSummary(wf){
@@ -404,6 +481,7 @@ function stateCN(t){
     running:"云端执行",
     evaluating:"自动评审",review:"等待你的评价",final:"结束"}[t.state]||t.state;
 }
+loadThreads();   // M18-P1: 页面载入即拉线程列表(H3 弧回放立即可见)
 function badgeClass(t){
   return {review:"review",final:t.outcome==="satisfied"?"final-ok":
     t.outcome==="error"?"error":"final-lim",
@@ -427,6 +505,174 @@ function lb(src){
 }
 function esc(s){ return String(s??"").replace(/[&<>"]/g,
   c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---------------- M18-P1/P2: 裁决 UI + 假设管线 + 线程视图 ---------------- */
+const DIM_SETS={
+  video_transition:["运动连续性","结尾到达","画面质量"],
+  face_swap:["身份像不像","表情保留","色彩统一","边缘痕迹"],
+  default:["整体效果","符合需求"]};
+let dimChoices={};
+
+function renderDims(t){
+  const box=document.getElementById("dimsBox"), rows=document.getElementById("dimsRows");
+  if(t.state!=="review"){box.classList.add("hidden");return;}
+  const dims=DIM_SETS[t.family]||DIM_SETS.default;
+  dimChoices={};
+  rows.innerHTML=dims.map(d=>`<div class="dim"><span class="dn">${d}</span>
+    <span class="seg" data-dim="${d}">
+      ${["好","中","差"].map(v=>`<button onclick="pickDim('${d}','${v}',this)">${v}</button>`).join("")}
+    </span></div>`).join("");
+  box.classList.remove("hidden");
+}
+function pickDim(d,v,btn){
+  dimChoices[d]=v;
+  btn.parentElement.querySelectorAll("button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+}
+async function sendFeedback(accept){
+  const text=document.getElementById("fbText").value.trim();
+  const hasDims=Object.keys(dimChoices).length>0;
+  if(!accept && !text && !hasDims){ alert("写点反馈/选维度再提交"); return; }
+  const body={text,accept};
+  if(hasDims) body.dims=dimChoices;
+  const r=await fetch(`/api/task/${tid}/feedback`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const j=await r.json();
+  if(!j.ok){ alert("当前状态不接受反馈: "+j.state); return; }
+  if(j.feedback_route&&j.feedback_route.label==="hypothesis"){
+    renderHyp(j.feedback_route);
+  }
+  if(!timer){ timer=setInterval(poll,2000); }
+}
+
+async function submitHypothesis(){
+  const text=document.getElementById("hypText").value.trim();
+  if(!text){ alert("写一句你的假设/技术方向"); return; }
+  const res=document.getElementById("hypRes");
+  res.innerHTML="<span style='color:var(--dim)'>零硬币预检中…</span>";
+  const r=await fetch(`/api/task/${tid}/hypothesis`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify({text})});
+  renderHyp(await r.json());
+}
+function renderHyp(h){
+  const res=document.getElementById("hypRes");
+  if(!h||!h.hypothesis_id){res.textContent="";return;}
+  const tone=h.tone==="dead"?"dead":(h.feasible==="unknown"?"":"ok");
+  const laws=(h.related_laws||[]).map(l=>`${l.code} ${l.name}`).join("、");
+  res.innerHTML=`<div class="hypres ${tone}">假设 #${h.hypothesis_id} 预检完成（0 币）
+「${esc(h.statement||"")}」
+结论：${esc(h.reason||"")}
+${laws?`相关定律：${esc(laws)}`:""}
+计划：${esc(h.plan&&h.plan.note||"")}（约 ${esc(String(h.plan&&h.plan.cost_coins??"0"))} 币）
+<div class="tbtns">
+  <button class="ok" onclick="confirmHyp(${h.hypothesis_id})">花币验证</button>
+  <button class="sec" onclick="rejectHyp(${h.hypothesis_id})">放弃</button>
+</div></div>`;
+}
+async function confirmHyp(id){
+  const res=document.getElementById("hypRes");
+  res.innerHTML+="<div style='color:var(--warn);font-size:11px'>探针执行中（约1-3分钟）…</div>";
+  const r=await fetch(`/api/hypothesis/${id}/confirm`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:"{}"});
+  const j=await r.json();
+  const st=j.status==="verified"?"✅ 验证成立":
+    j.status==="rejected"?"❌ 证伪（已记负结果）":"⚠ "+esc(j.status||j.error||"?");
+  res.innerHTML+=`<div class="hypres ${j.ok?"ok":"dead"}">${st}
+${esc(j.note||j.error||"")}
+${j.rule_code?`已起草规则 <code class="mini">${esc(j.rule_code)}</code>（带署名入库）`:""}
+${j.files&&j.files.length?`<a href="/img?path=${encodeURIComponent(j.files[0])}" target="_blank">查看探针视频</a>`:""}</div>`;
+  loadThreads(curThreadKey);
+}
+async function rejectHyp(id){
+  await fetch(`/api/hypothesis/${id}/reject`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:"{}"});
+  document.getElementById("hypRes").innerHTML=
+    "<span style='color:var(--dim);font-size:12px'>已放弃（未花币）</span>";
+}
+
+let curThreadKey="";
+async function loadThreads(sel){
+  try{
+    const r=await fetch("/api/threads"); const j=await r.json();
+    const list=document.getElementById("threadList");
+    const ths=j.threads||[];
+    if(!ths.length){list.textContent="暂无线程（提交任务自动创建；H3 弧已回放为例子）";return;}
+    list.innerHTML=ths.map(t=>`<a href="javascript:void(0)" style="margin-right:10px"
+      onclick="showThread('${esc(t.key)}')">${esc(t.key)}
+      <span style="color:var(--dim)">(${t.n_events}事件/${t.status})</span></a>`).join("");
+    showThread(sel||ths[0].key);
+  }catch(e){document.getElementById("threadList").textContent="线程加载失败";}
+}
+async function showThread(key){
+  curThreadKey=key;
+  document.getElementById("threadKey").textContent=key;
+  const r=await fetch(`/api/thread/${encodeURIComponent(key)}`);
+  const t=await r.json();
+  if(!t.key){return;}
+  document.getElementById("threadList").classList.add("hidden");
+  const v=document.getElementById("threadView"); v.classList.remove("hidden");
+  const K={task:"任务",ruling:"裁决",law:"定律",hypothesis:"假设",
+    note:"备注",coin_spend:"花币",summary:"收口",card_choice:"选路"};
+  document.getElementById("threadEvents").innerHTML=(t.events||[]).map(e=>{
+    let d="";
+    if(e.kind==="task") d=`<b>${esc(e.route||"")}</b> → ${esc(e.outcome||"")}
+      <div class="sub">${esc(e.note||e.requirement||"")}</div>`;
+    else if(e.kind==="ruling") d=`<b>用户裁决</b> ${esc(e.text||"")}
+      <div class="sub">${e.dims?esc(JSON.stringify(e.dims)):""}</div>`;
+    else if(e.kind==="law") d=`<b>${esc(e.code)} ${esc(e.name)}</b>
+      <div class="sub">${esc(e.statement||"")}</div>`;
+    else if(e.kind==="hypothesis") d=`<b>${esc(e.status)}</b>
+      ${esc(e.statement||e.note||"")} ${e.rule_code?`→ <code class="mini">${esc(e.rule_code)}</code>`:""}`;
+    else d=esc(e.text||JSON.stringify(e)).slice(0,200);
+    return `<div class="tev"><div class="k ${e.kind}">${K[e.kind]||e.kind}</div>
+      <div class="d">${d}</div></div>`;}).join("");
+  const btns=document.getElementById("threadBtns");
+  btns.innerHTML=t.status==="closed"?
+    `<button class="sec" onclick="loadThreads()">← 线程列表</button>
+     <span style="color:var(--ok);font-size:12px">已收口</span>`:
+    `<button class="sec" onclick="loadThreads()">← 线程列表</button>
+     <button onclick="closeThread('${esc(key)}')">收口：生成四栏总结草稿</button>`;
+  renderSummary(t);
+}
+async function closeThread(key){
+  const r=await fetch(`/api/thread/${encodeURIComponent(key)}/close`,
+    {method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
+  const j=await r.json();
+  if(j.error){alert("收口失败: "+j.error);return;}
+  await showThread(key);
+}
+function renderSummary(t){
+  const box=document.getElementById("sumDraft");
+  const s=t.summary;
+  if(!s){box.innerHTML="";return;}
+  const cols={facts:"📋 事实",laws:"📐 定律",rules:"🧭 规则",
+    open_questions:"❓ 开放问题"};
+  const colText=k=>{try{
+      return (JSON.parse(s[k+"_json"]||"[]")||[]).join("\n");
+    }catch(e){return "";}};
+  box.innerHTML=`<div style="margin-top:10px;font-size:12px;color:var(--dim)">
+      四栏总结（${s.status==="confirmed"?"已确认入库":"草稿可编辑"}）</div>
+    <div class="sum4">`+Object.keys(cols).map(k=>
+      `<div class="col"><h4>${cols[k]}</h4>
+        <textarea id="sum_${k}" ${s.status==="confirmed"?"disabled":""}>`+
+        esc(colText(k))+`</textarea></div>`).join("")+`</div>`+
+    (s.status==="draft"?`<div class="tbtns">
+      <button class="ok" onclick="confirmSummary('${esc(t.key)}',${s.id})">
+        确认入库（线程关闭）</button></div>`:"");
+}
+async function confirmSummary(key,sid){
+  const cols={};
+  for(const k of ["facts","laws","rules","open_questions"]){
+    const el=document.getElementById("sum_"+k);
+    cols[k]=el?el.value.split("\n").map(s=>s.trim()).filter(Boolean):[];
+  }
+  const r=await fetch(`/api/thread/${encodeURIComponent(key)}/confirm`,
+    {method:"POST",headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({cols,summary_id:sid})});
+  const j=await r.json();
+  if(j.error){alert("确认失败: "+j.error);return;}
+  await showThread(key);
+}
 </script>
 </body>
 </html>

@@ -104,6 +104,11 @@ class Task:
     cards: list = field(default_factory=list)
     card_choice: int = -1
     card_wait: threading.Event = field(default_factory=threading.Event)
+    # M18-P1: 线程归属(长任务弧上下文)
+    thread_key: str = ""
+    # M18-P1: 结构化裁决(维度级 好中差)
+    ruling: dict = field(default_factory=dict)
+    _thread_logged: bool = field(default=False, repr=False)
     lock: threading.Lock = field(default_factory=threading.Lock)
 
     def dir(self) -> Path:
@@ -133,6 +138,7 @@ class Task:
                 "final_workflow_ready": bool(self.final_workflow),
                 "precheck": self.precheck,        # M18: 卡片+laws(Why 面板)
                 "card_choice": self.card_choice,
+                "thread_key": self.thread_key,    # M18-P1: 线程归属
             }
 
     def persist(self):
@@ -142,6 +148,26 @@ class Task:
                 encoding="utf-8")
         except Exception:
             pass
+        # M18-P1: final 态一次性写线程任务事件(路线/结果/指标概要)
+        if self.state == "final" and not self._thread_logged:
+            self._thread_logged = True
+            try:
+                from kb import threads as _t
+                last = self.iterations[-1] if self.iterations else {}
+                _t.add_event(self.thread_key, "task", {
+                    "task_id": self.id, "requirement": self.requirement[:120],
+                    "family": self.family,
+                    "route": (last.get("route") or self.plan.get("route", "")),
+                    "card": self.plan.get("card", ""),
+                    "outcome": self.outcome,
+                    "rounds": self.current_round,
+                    "results": (last.get("results") or [])[:3],
+                    "bars": {k: round(v, 3) for k, v in
+                             (last.get("bars") or {}).items()
+                             if isinstance(v, (int, float))},
+                    "explanation": (self.explanation or "")[:200]})
+            except Exception:
+                pass
 
 
 TASKS: dict[str, Task] = {}
@@ -152,7 +178,8 @@ def get_task(tid: str) -> Task | None:
     return TASKS.get(tid)
 
 
-def create_task(requirement: str, images_b64: dict[str, str]) -> Task:
+def create_task(requirement: str, images_b64: dict[str, str],
+                thread_key: str = "") -> Task:
     task = Task(id=time.strftime("%Y%m%d_%H%M%S_") + uuid.uuid4().hex[:6],
                 requirement=requirement)
     import base64
@@ -169,6 +196,15 @@ def create_task(requirement: str, images_b64: dict[str, str]) -> Task:
             raise ValueError(f"uploaded {name} unreadable")
         # normalize slot names
         task.images[name] = str(p.relative_to(ROOT))
+    # M18-P1: 线程归属(不传则按需求 slug 新建——每个任务至少挂一个线程,
+    # 同表述任务自动汇入同一线程, 时间线/收口总结才有完整弧)
+    from kb import threads as _threads
+    key = thread_key or _threads._slug(requirement[:40], "task")
+    try:
+        _threads.ensure_thread(key, requirement)
+        task.thread_key = key
+    except Exception:
+        pass
     with _TASKS_LOCK:
         TASKS[task.id] = task
     threading.Thread(target=_run_task, args=(task,), daemon=True).start()
@@ -526,9 +562,48 @@ def write_explanation(task: Task, limited: bool) -> str:
 如果受限给出最接近现状的方案与残余差距。不超过300字。直接输出正文。"""
     from vl import VLClient
     try:
-        return VLClient(model="qwen-plus").chat(prompt, [])
+        text = VLClient(model="qwen-plus").chat(prompt, [])
     except Exception as e:
-        return f"（解释生成失败：{e}）已尝试路线：{ev_lines}"
+        text = f"（解释生成失败：{e}）已尝试路线：{ev_lines}"
+    # M18-P2 §4.3: 方差置信标注 + 证据链接 + 为什么不是X
+    suffix = []
+    if task.iterations:
+        bars = task.iterations[-1].get("bars") or {}
+        noisy = [k for k, v in bars.items()
+                 if isinstance(v, (int, float)) and abs(v - 0.5) < 0.05]
+        if bars:
+            suffix.append(
+                "⚠ 置信标注：本轮为单次运行，扩散类模型同输入两次结果差异可达 "
+                "0.06（定律 BL-007），临界维度（接近0.5）需 ≥3 次采样确认："
+                + ("、".join(noisy[:4]) if noisy else "无"))
+        files = task.iterations[-1].get("results") or []
+        if files:
+            suffix.append("证据：" + " | ".join(files[:3]))
+    try:
+        not_chosen = [c for i, c in enumerate(task.cards)
+                      if i != task.card_choice and c.get("tone") in
+                      ("caution", "dead")]
+        if not_chosen:
+            suffix.append("为什么不是其他路径：" + "；".join(
+                f"「{c['route_label']}」"
+                + ("已验证失败" if c["tone"] == "dead" else "备选") + "——"
+                + (c.get("risk") or "")[:60] for c in not_chosen[:2]))
+    except Exception:
+        pass
+    return text + ("\n\n" + "\n".join(suffix) if suffix else "")
+
+
+# ---------------------------------------------------------------- M18-P1 threads
+
+def _thread_ev(task: Task, kind: str, payload: dict) -> None:
+    """线程事件写入(无线程归属则静默跳过; 失败不阻塞任务流)。"""
+    if not task.thread_key:
+        return
+    try:
+        from kb import threads as _t
+        _t.add_event(task.thread_key, kind, payload)
+    except Exception:
+        pass
 
 
 # ---------------------------------------------------------------- M18-P0 video
@@ -730,6 +805,10 @@ def _run_task(task: Task):
             task.log("negotiating",
                      f"按卡片#{ix} {card['code']} → 路线 {card['route']}"
                      f"（{'用户选择' if got else '默认推荐'}）")
+            _thread_ev(task, "card_choice",
+                       {"task_id": task.id, "card": card["code"],
+                        "route": card["route"], "tone": card["tone"],
+                        "user_picked": bool(got)})
             if card["route"] not in VIDEO_ROUTES:   # dead 卡: 不执行, 只解释
                 task.outcome = "limited"
                 task.explanation = (
@@ -861,7 +940,8 @@ def _run_task(task: Task):
         task.persist()
 
 
-def submit_feedback(task: Task, text: str, accept: bool = False) -> bool:
+def submit_feedback(task: Task, text: str, accept: bool = False,
+                    dims: dict | None = None) -> bool:
     if task.state != "review":
         return False
     fb = {"text": text, "accept": accept}
@@ -871,5 +951,21 @@ def submit_feedback(task: Task, text: str, accept: bool = False) -> bool:
         except Exception:
             fb["intents"] = ["other"]
     task.feedback = fb
+    # M18-P1: 结构化裁决(维度级 好中差 + 逐维理由) -> user_rulings + 线程事件
+    if dims:
+        task.ruling = dims
+        try:
+            from analyzer.vl_arbiter import record_user_ruling
+            rid = record_user_ruling(
+                task_id=task.id, target=task.requirement[:80],
+                out_a=(task.last_result or [""])[0], out_b="",
+                name_a=task.plan.get("route", ""), name_b="",
+                ruling=json.dumps(dims, ensure_ascii=False)[:500],
+                auto_verdict="structured_dims")
+            _thread_ev(task, "ruling",
+                       {"ruling_id": rid, "task_id": task.id,
+                        "dims": dims, "text": (text or "")[:150]})
+        except Exception:
+            pass
     task.feedback_wait.set()
     return True

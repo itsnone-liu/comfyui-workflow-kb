@@ -43,6 +43,10 @@ reqs = [
     {"jsonrpc": "2.0", "id": 14, "method": "tools/call", "params": {
         "name": "search_solutions", "arguments": {
             "capability": "hair_transfer", "status": "validated"}}},
+    {"jsonrpc": "2.0", "id": 15, "method": "tools/call", "params": {
+        "name": "search_boundary_laws", "arguments": {"keyword": "转场"}}},
+    {"jsonrpc": "2.0", "id": 16, "method": "tools/call", "params": {
+        "name": "search_boundary_laws", "arguments": {}}},
 ]
 
 proc = subprocess.Popen([PY, SERVER], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -85,5 +89,9 @@ print("\n== search_solutions 换脸:")
 print(results.get(13, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:900])
 print("\n== search_solutions hair_transfer+validated:")
 print(results.get(14, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:400])
+print("\n== search_boundary_laws 转场:")
+print(results.get(15, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:700])
+print("\n== search_boundary_laws (all):")
+print(results.get(16, {}).get("result", {}).get("content", [{}])[0].get("text", "")[:500])
 if err:
     print("\n[stderr]", err[:300])

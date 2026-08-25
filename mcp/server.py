@@ -359,6 +359,48 @@ def tool_search_solutions(args: dict) -> str:
     return "\n\n".join(out)
 
 
+def tool_search_boundary_laws(args: dict) -> str:
+    """M18: search boundary_laws + decision_rules (feasibility pre-check)."""
+    conn = _conn()
+    kw = (args.get("keyword") or "").strip()
+    out = []
+    laws_sql = "SELECT * FROM boundary_laws WHERE status != 'refuted'"
+    rules_sql = ("SELECT * FROM decision_rules WHERE status = 'active'"
+                 " ORDER BY priority")
+    params = []
+    if kw:
+        laws_sql += (" AND (statement LIKE ? OR name LIKE ? OR technical"
+                     " LIKE ? OR evidence LIKE ?)")
+        params = [f"%{kw}%"] * 4
+    rows = [dict(r) for r in conn.execute(laws_sql, params)]
+    for i, r in enumerate(rows[:6], 1):
+        alts = json.loads(r["alternatives_json"] or "[]")
+        out.append(
+            f"{i}. {r['code']} {r['name']} [{r['status']}]\n"
+            f"   定律: {r['statement']}\n"
+            f"   证据: {(r['evidence'] or '-')[:140]}\n"
+            f"   替代: {'; '.join(a.get('way','') for a in alts) or '-'}")
+    rrows = [dict(r) for r in conn.execute(rules_sql)]
+    if kw:
+        rrows = [r for r in rrows if kw in (r["name"] + (r["what"] or "")
+                 + (r["risk"] or "") + (r["when_choose"] or ""))]
+    for i, r in enumerate(rrows[:6], 1):
+        laws = json.loads(r["laws_json"] or "[]")
+        out.append(
+            f"R{i}. {r['code']} {r['route_label'] or r['name']} "
+            f"[{r['tone']}]\n"
+            f"   做什么: {(r['what'] or '-')[:120]}\n"
+            f"   风险: {(r['risk'] or '-')[:120]}\n"
+            f"   何时选: {(r['when_choose'] or '-')[:100]}\n"
+            f"   依据: {', '.join(laws)}; 来源: {r['source_kind']} "
+            f"({(r['attribution'] or '-')[:80]})")
+    conn.close()
+    if not out:
+        return ("(无匹配定律/规则。当前库: 7 定律 + 4 规则——"
+                "视频转场族覆盖最全; 试试关键词: 转场/首尾帧/渲染/画幅/方差)")
+    return "\n\n".join(out)
+
+
 TOOLS = [
     {
         "name": "search_workflows",
@@ -502,6 +544,21 @@ TOOLS = [
             },
         },
     },
+    {
+        "name": "search_boundary_laws",
+        "description": "M18 边界定律与决策规则检索：任务可行性前置检查。"
+                       "boundary_laws(渲染一致律/视差连续律/二态切换等已验证"
+                       "定律) + decision_rules(什么情况选什么路线, 含已证死路"
+                       "标红)。规划图像/视频任务前先查——避免花币踩已知边界。",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "keyword": {"type": "string",
+                            "description": "关键词，如 转场/首尾帧/渲染/画幅/"
+                                           "方差/换脸；空=列全部"},
+            },
+        },
+    },
 ]
 
 HANDLERS = {
@@ -516,6 +573,7 @@ HANDLERS = {
     "list_patterns": tool_list_patterns,
     "get_pattern": tool_get_pattern,
     "search_solutions": tool_search_solutions,
+    "search_boundary_laws": tool_search_boundary_laws,
 }
 
 

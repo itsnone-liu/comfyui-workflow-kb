@@ -115,11 +115,15 @@ def png_b64(color):
     ok, buf = cv2.imencode(".png", img)
     return "data:image/png;base64," + base64.b64encode(buf).decode()
 
+THREAD_KEYS = []
+
 def new_task(req_text, two_imgs=True):
     images = {"target": png_b64((120, 80, 60))}
     if two_imgs:
         images["ref"] = png_b64((60, 120, 200))
-    return post("/api/task", {"requirement": req_text, "images": images})["id"]
+    j = post("/api/task", {"requirement": req_text, "images": images})
+    THREAD_KEYS.append(j.get("thread", ""))
+    return j["id"]
 
 def wait_state(tid, states, timeout=60):
     t0 = time.time()
@@ -225,6 +229,24 @@ srv.shutdown()
 for d in TASK_DIRS:
     shutil.rmtree(d, ignore_errors=True)
 shutil.rmtree(_mock_dir, ignore_errors=True)
+# M18-P1: 任务现在自动挂线程——按本测试创建的 key 精确清理
+import sqlite3  # noqa: E402
+import time as _time  # noqa: E402
+_time.sleep(1.5)
+for attempt in range(5):
+    try:
+        db = sqlite3.connect(ROOT / "data/kb.db")
+        for k in THREAD_KEYS:
+            if k:
+                db.execute("delete from task_threads where key=?", (k,))
+        db.commit(); db.close()
+        break
+    except sqlite3.OperationalError:
+        _time.sleep(1.2)
+for k in THREAD_KEYS:
+    p = ROOT / "data/threads" / f"{k}.json"
+    if p.exists():
+        p.unlink()
 print()
 if FAILS:
     print(f"FAILED: {len(FAILS)} -> {FAILS}")

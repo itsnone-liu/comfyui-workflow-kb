@@ -89,6 +89,19 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self._json(task.snapshot())
             return
+        if path == "/api/threads":
+            from kb import threads as _t
+            self._json({"threads": _t.list_threads()})
+            return
+        if path.startswith("/api/thread/"):
+            key = path.split("/")[3]
+            from kb import threads as _t
+            th = _t.full(key)
+            if not th:
+                self._json({"error": "no such thread"}, 404)
+                return
+            self._json(th)
+            return
         if path == "/api/health":
             self._json({"ok": True, "tasks": len(orc.TASKS)})
             return
@@ -108,10 +121,72 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/task":
             try:
                 task = orc.create_task(payload.get("requirement", ""),
-                                       payload.get("images") or {})
-                self._json({"id": task.id}, 201)
+                                       payload.get("images") or {},
+                                       thread_key=payload.get("thread", ""))
+                self._json({"id": task.id, "thread": task.thread_key}, 201)
             except Exception as e:
                 self._json({"error": str(e)[:300]}, 400)
+            return
+        if path.startswith("/api/thread/") and path.endswith("/close"):
+            key = path.split("/")[3]
+            from kb import threads as _t
+            try:
+                draft = _t.close_draft(key)
+                self._json(draft)
+            except Exception as e:
+                self._json({"error": str(e)[:300]}, 400)
+            return
+        if path.startswith("/api/thread/") and path.endswith("/confirm"):
+            key = path.split("/")[3]
+            from kb import threads as _t
+            try:
+                out = _t.close_confirm(key, cols=payload.get("cols") or None,
+                                       summary_id=payload.get("summary_id"))
+                self._json(out)
+            except Exception as e:
+                self._json({"error": str(e)[:300]}, 400)
+            return
+        if path.startswith("/api/task/") and path.endswith("/hypothesis"):
+            tid = path.split("/")[3]
+            task = orc.get_task(tid)
+            if not task:
+                self._json({"error": "no such task"}, 404)
+                return
+            from kb import hypotheses as _h
+            text = (payload.get("text") or "").strip()
+            if not text:
+                self._json({"error": "empty hypothesis"}, 400)
+                return
+            hyp = _h.propose(text, thread_key=task.thread_key,
+                             source="feedback", source_ref=tid)
+            pre = _h.precheck(hyp["id"])
+            self._json({"hypothesis_id": hyp["id"], **pre}, 201)
+            return
+        if path.startswith("/api/hypothesis/") and path.endswith("/confirm"):
+            hid = int(path.split("/")[3])
+            from kb import hypotheses as _h
+            hyp = _h.get(hid)
+            if not hyp:
+                self._json({"error": "no such hypothesis"}, 404)
+                return
+            # ctx: 来自提出假设的任务(图片/目录); 找不到就用最新视频任务
+            src = orc.get_task(hyp.get("source_ref") or "")
+            if not src:
+                vids = [t for t in orc.TASKS.values()
+                        if t.family == "video_transition" and t.images]
+                src = vids[-1] if vids else None
+            ctx = {"images": (src.images if src else {}),
+                   "task_dir": (src.dir() if src else None)}
+            try:
+                out = _h.run_probe(hid, ctx=ctx)
+                self._json(out)
+            except Exception as e:
+                self._json({"error": str(e)[:300]}, 400)
+            return
+        if path.startswith("/api/hypothesis/") and path.endswith("/reject"):
+            hid = int(path.split("/")[3])
+            from kb import hypotheses as _h
+            self._json(_h.reject(hid, payload.get("note", "")) or {})
             return
         if path.startswith("/api/task/") and path.endswith("/card"):
             tid = path.split("/")[3]
@@ -132,7 +207,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             text = payload.get("text", "")
             ok = orc.submit_feedback(task, text,
-                                     bool(payload.get("accept")))
+                                     bool(payload.get("accept")),
+                                     dims=payload.get("dims") or None)
             routed = {}
             if text.strip():
                 try:  # M16-B: 反馈四分类路由(失败不阻塞任务流)

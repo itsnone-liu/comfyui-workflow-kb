@@ -137,7 +137,38 @@ AI 搜索验证**。② 默认**软提示**不拦截（默认 8s 走推荐路径
 - 验收：`test_m18_p0.py` 19/19（迁移幂等/匹配/文案四行/无误报/refuted 排除）
   + `test_m18_e2e.py` 21/21 全 mock 零硬币（A 全流程含 retiming 实跑/B 死卡
   零云端/C 8s 门自动 i2v/D 换脸不受影响）。**8830 已重启上线**。
-- 待办：P1 线程化+裁决 UI、P2 假设管线+收口自动总结。
+- 待办：P1 线程化+裁决 UI、P2 假设管线+收口自动总结；前端优化（用户指定最后）。
+
+**M18-P1/P2 完成（同日晚）** ✅ 设计 §4.4/§5/§7 全部落地：
+- 表：`kb/schema_m18_p1.sql`+`migrate_m18_p1.py`（task_threads/user_hypotheses/
+  thread_summaries；事件不建表走 `data/threads/*.json`）。
+- `kb/threads.py`：线程管理（ensure/add_event/digest 近者优先+定律规则全保留/
+  full 视图/close_draft LLM 四栏草拟+失败降级事件直回收/close_confirm 确认+
+  knowledge_items 回写）。中文 slug 碰撞修复：ascii 不足退化为内容哈希
+  （同表述→同线程，异表述→异线程）。
+- `kb/hypotheses.py`：假设管线 propose→precheck（零硬币：定律/规则/负结果词法
+  匹配+验证计划草拟+软结论 dead 只标红）→run_probe（花币需确认；生产
+  `webapp/hyp_runner.py` 单臂 H3 探针+本地帧差判定 continuous=峰值比<4x 且
+  快帧占比<5%）→_settle（verified 起草 DR-hyp{id} 带署名 / rejected 记负结果）。
+- 反馈五分类：`kb/feedback.py` +hypothesis（先于 verdict——当日教训：i2v 突破
+  来自用户假设）；"我觉得/不如试试/有没有可能…"→假设管线。
+- orchestrator：Task.thread_key（create_task 自动挂线程）+persist() final 钩子
+  写 task 事件+card_choice/ruling 事件；submit_feedback 收 dims 结构化裁决→
+  user_rulings+线程事件；write_explanation 升级（方差置信标注 BL-007/证据链接/
+  为什么不是其他路径）。
+- 前端：任务线程卡（列表+时间线 task/ruling/law/hypothesis/coin_spend/summary
+  分色+收口按钮）、维度裁决 UI（video/face 各自维度×好中差）、💡技术假设框
+  （零币预检→花币确认/放弃按钮+结果卡）、四栏总结草稿可编辑确认、Why 面板
+  （final 引用定律人话版）。
+- MCP：search_boundary_laws（12 工具，转场/渲染/画幅/方差检索定律+规则）。
+- **验收#1** `kb/replay_h3_thread.py`：H3 五臂弧回放为线程 h3-fl2v-arc（14 事件
+  =6 任务+1 裁决+3 定律+假设链+花币+收口注记，零硬币，幂等重建）——8830 首页
+  线程区已可见。
+- 测试：`test_m18_p1p2.py` 31/31（验收#3 假设全链含预检零币计数/署名断言、
+  验收#4 四栏草稿→用户编辑保留→确认回写 KB、五分类、dims 裁决、解释器三件套、
+  回放完整）；全套回归 P0 单测 19 + P0 e2e 21 + P1/P2 31 全绿（发现并修两处
+  竞态：陈旧 review 上 accept 被 round-2 clear 吞、中文 slug 线程碰撞）。
+- 8830 已重启加载全部 M18 代码。
 
 **当日末批前端/其他优化** ✅：negotiating 态 700ms 自适应快轮询（稳态回 2s）、
 轮询容错（连接中断不丢前端状态，重试提示）、提交按钮防抖、路径卡片区自动

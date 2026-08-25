@@ -1,0 +1,149 @@
+[
+ {
+  "t": 1789000000.0,
+  "kind": "note",
+  "text": "H3 五臂弧回放(A/B/C/D/E + retiming + 两裁决 + 三定律 + 假设验证), 全部来自当日实测产物"
+ },
+ {
+  "t": 1789003600.0,
+  "kind": "task",
+  "task_id": "h3_A",
+  "route": "h3_fl2v_direct",
+  "outcome": "limited",
+  "note": "A 单遍直跑: 中段硬切(快切带 0.53-0.61)",
+  "bars": {
+   "spike_ratio": 9.44,
+   "median": 0.0063
+  },
+  "results": [
+   "data/webtasks/h3_fl2v/A_probe_strip.png"
+  ]
+ },
+ {
+  "t": 1789007200.0,
+  "kind": "task",
+  "task_id": "h3_B",
+  "route": "h3_fl2v_chain",
+  "outcome": "limited",
+  "note": "B 中间帧链(静态裁剪构图): 拼接处 12.8x 跳变(条件帧画幅不一致, BL-005 由此定)",
+  "bars": {
+   "seg1_spike": 2.71,
+   "seg2_spike": 1.38
+  },
+  "results": [
+   "data/webtasks/h3_fl2v/B_chain.mp4"
+  ]
+ },
+ {
+  "t": 1789010800.0,
+  "kind": "task",
+  "task_id": "h3_C",
+  "route": "h3_fl2v_chain_169",
+  "outcome": "limited",
+  "note": "C 同渲染裁剪+画布归一: 边界 MAD 0.0074 全片最优(硬指标无缝)但感知割裂——像素接缝≠感知连续",
+  "bars": {
+   "boundary_mad": 0.0074
+  },
+  "results": [
+   "data/webtasks/h3_fl2v/C_probe_strip.png"
+  ]
+ },
+ {
+  "t": 1789014400.0,
+  "kind": "ruling",
+  "ruling_id": 4,
+  "task_id": "h3_fl2v_final",
+  "text": "A的效果是最好的，BC的两段完全割裂。但是A的尾帧出现的还是有些突兀。",
+  "dims": {
+   "整体": "A 最好",
+   "B/C 连续性": "完全割裂",
+   "A 结尾": "突兀"
+  },
+  "consequence": "指标-感知悖论坐实 -> 视差连续律(BL-002); A 尾帧突兀 -> 二态切换机制(BL-004)定量刻画"
+ },
+ {
+  "t": 1789018000.0,
+  "kind": "task",
+  "task_id": "h3_A_retimed",
+  "route": "h3_fl2v_retimed",
+  "outcome": "limited",
+  "note": "retiming 后处理: V1 严格 5s / V2 弹性 7s, 快切带 9.44x -> 3.63x, 用户复核 V2 '更好一些'",
+  "bars": {
+   "V1_spike": 2.59,
+   "V2_spike": 3.63,
+   "fast_frac": 0.016
+  },
+  "results": [
+   "data/webtasks/h3_fl2v/A_retimed_7s.mp4"
+  ]
+ },
+ {
+  "t": 1789021600.0,
+  "kind": "task",
+  "task_id": "h3_D",
+  "route": "h3_fl2v_ai_midframe",
+  "outcome": "error",
+  "note": "D Klein 生成真实物理中间态(姿态/景别/身份全合格)仍失败: seg1 全程 morph, seg2 尾部 15.76x 硬切 -> 渲染一致律(BL-001)由此定, DR-003 死路",
+  "results": [
+   "data/webtasks/h3_fl2v/D_seg1_probe8.png",
+   "data/webtasks/h3_fl2v/D_seg2_probe8.png"
+  ]
+ },
+ {
+  "t": 1789025200.0,
+  "kind": "law",
+  "code": "BL-001",
+  "name": "渲染一致律",
+  "statement": "两张条件图必须像同一段录像抽出的两帧, 否则中间必然变形溶解或硬切(A/D 证)"
+ },
+ {
+  "t": 1789025200.0,
+  "kind": "law",
+  "code": "BL-002",
+  "name": "视差连续律",
+  "statement": "没有空间连续的背景移动, 画面再平滑也读作两个镜头剪接(C 证: MAD 0.0074 仍被判割裂)"
+ },
+ {
+  "t": 1789025200.0,
+  "kind": "law",
+  "code": "BL-004",
+  "name": "fl2v 二态切换机制",
+  "statement": "端点不可达时模型做 hold->快切带->settle 的时间分配, 提示词改不了(A 证 9.44x)"
+ },
+ {
+  "t": 1787657489.9,
+  "kind": "hypothesis",
+  "hyp_id": 1,
+  "statement": "如果两张图片背景空间相差很大做首尾帧还不如用首帧图片做文生视频",
+  "status": "proposed",
+  "source": "ruling"
+ },
+ {
+  "t": 1789028800.0,
+  "kind": "hypothesis",
+  "hyp_id": 1,
+  "status": "verified",
+  "statement": "如果两张图片背景空间相差很大做首尾帧还不如用首帧图片做文生视频",
+  "note": "E 臂验证: i2v+动作脚本(绕过橱窗->面向镜头->脱衬衫) 全程连续, 峰值比 2.74x 无快切带, d825 平滑上升; 升格 DR-001(带用户署名)"
+ },
+ {
+  "t": 1789032400.0,
+  "kind": "task",
+  "task_id": "h3_E",
+  "route": "h3_i2v_action",
+  "outcome": "satisfied",
+  "note": "E 图生视频+动作脚本: 用户评'效果非常好, 验证了前面的判断'",
+  "bars": {
+   "max_ratio": 2.74,
+   "median": 0.03811
+  },
+  "results": [
+   "data/webtasks/h3_fl2v/e_evolution_strip.png"
+  ]
+ },
+ {
+  "t": 1789036000.0,
+  "kind": "note",
+  "text": "DR-001(跨空间图对->i2v) 入库, attribution=用户假设->E臂验证; DR-002/003/004 同弧定稿; 5 定律+4 规则在 M18-P0 值班"
+ }
+]
