@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-25 21:10:55",
+ "generated_at": "2026-08-25 23:58:51",
  "modules": {
   "_civitai_probe": {
    "file": "_civitai_probe.py",
@@ -829,6 +829,8 @@
     "kb.threads",
     "test_ai_audit",
     "test_m18_p1p2",
+    "test_m19",
+    "webapp.auto_research",
     "webapp.orchestrator"
    ]
   },
@@ -1272,6 +1274,7 @@
     "swap_face",
     "test_m18_e2e",
     "test_m18_p1p2",
+    "test_m19",
     "webapp.hyp_runner",
     "webapp.orchestrator"
    ]
@@ -1532,7 +1535,7 @@
   },
   "kb.solutions": {
    "file": "kb\\solutions.py",
-   "lines": 26,
+   "lines": 27,
    "doc": "solutions.py — M15 Expert Solution layer (pure stdlib sqlite3).",
    "entry": false,
    "imports": [
@@ -1622,7 +1625,10 @@
     "kb.hypotheses",
     "kb.replay_h3_thread",
     "test_ai_audit",
+    "test_m15_wiring",
+    "test_m19",
     "webapp.app",
+    "webapp.auto_research",
     "webapp.orchestrator"
    ]
   },
@@ -1895,7 +1901,8 @@
     "annotations": "__future__"
    },
    "imported_by": [
-    "research.session"
+    "research.session",
+    "test_m19"
    ]
   },
   "research.probe_webapp": {
@@ -1972,7 +1979,9 @@
     "VLClient": "vl"
    },
    "imported_by": [
-    "research.run"
+    "research.run",
+    "test_m19",
+    "webapp.auto_research"
    ]
   },
   "rh_client": {
@@ -2140,7 +2149,7 @@
   },
   "test_m15_wiring": {
    "file": "test_m15_wiring.py",
-   "lines": 83,
+   "lines": 87,
    "doc": "M15 接线验收测试(离线,不花硬币;打桩执行/评审/LLM)。",
    "entry": false,
    "imports": [
@@ -2155,13 +2164,15 @@
     "cv2",
     "numpy",
     "kb.solutions",
-    "webapp.orchestrator"
+    "webapp.orchestrator",
+    "kb.threads"
    ],
    "aliases": {
     "Path": "pathlib",
     "np": "numpy",
     "solutions": "kb.solutions",
-    "orch": "webapp.orchestrator"
+    "orch": "webapp.orchestrator",
+    "_threads_mod": "kb.threads"
    },
    "imported_by": []
   },
@@ -2265,6 +2276,51 @@
     "_ae": "analyzer.auto_explore",
     "wm": "app",
     "fbmod": "kb.feedback"
+   },
+   "imported_by": []
+  },
+  "test_m19": {
+   "file": "test_m19.py",
+   "lines": 192,
+   "doc": "test_m19.py — 用户四条意见修复的验收测试(全 mock 云端/LLM, 零硬币)。",
+   "entry": false,
+   "imports": [
+    "base64",
+    "json",
+    "shutil",
+    "sqlite3",
+    "sys",
+    "tempfile",
+    "threading",
+    "time",
+    "urllib.request",
+    "http.server",
+    "pathlib",
+    "numpy",
+    "cv2",
+    "kb.threads",
+    "experiments.rh_task",
+    "orchestrator",
+    "analyzer.text_llm",
+    "research.external",
+    "research.session",
+    "app",
+    "webapp.auto_research",
+    "webapp.auto_research",
+    "urllib.error"
+   ],
+   "aliases": {
+    "ThreadingHTTPServer": "http.server",
+    "Path": "pathlib",
+    "np": "numpy",
+    "threads_mod": "kb.threads",
+    "rh_task": "experiments.rh_task",
+    "orc": "orchestrator",
+    "text_llm": "analyzer.text_llm",
+    "ext": "research.external",
+    "research_session": "research.session",
+    "webapp_mod": "app",
+    "auto_research": "webapp.auto_research"
    },
    "imported_by": []
   },
@@ -2394,6 +2450,39 @@
    },
    "imported_by": []
   },
+  "webapp.auto_research": {
+   "file": "webapp\\auto_research.py",
+   "lines": 16,
+   "doc": "auto_research.py — 知识缺口自动外部研究触发器(M19, 用户意见#4)。",
+   "entry": false,
+   "imports": [
+    "__future__",
+    "json",
+    "re",
+    "sqlite3",
+    "sys",
+    "threading",
+    "pathlib",
+    "research.session",
+    "research.session",
+    "analyzer.text_llm",
+    "orchestrator",
+    "kb.threads"
+   ],
+   "aliases": {
+    "annotations": "__future__",
+    "Path": "pathlib",
+    "ResearchSession": "research.session",
+    "rh_webapp_hits": "research.session",
+    "client": "analyzer.text_llm",
+    "orc": "orchestrator",
+    "_t": "kb.threads"
+   },
+   "imported_by": [
+    "test_m19",
+    "webapp.orchestrator"
+   ]
+  },
   "webapp.hyp_runner": {
    "file": "webapp\\hyp_runner.py",
    "lines": 11,
@@ -2421,7 +2510,7 @@
   },
   "webapp.orchestrator": {
    "file": "webapp\\orchestrator.py",
-   "lines": 48,
+   "lines": 63,
    "doc": "orchestrator.py — autonomous task loop behind the web frontend.",
    "entry": false,
    "imports": [
@@ -2445,6 +2534,8 @@
     "swap_face",
     "analyzer.auto_explore",
     "experiments.rh_task",
+    "subprocess",
+    "experiments.rh_task",
     "analyzer.auto_explore",
     "analyzer.auto_explore",
     "analyzer.text_llm",
@@ -2454,12 +2545,15 @@
     "tempfile",
     "subprocess",
     "experiments.rh_task",
+    "analyzer.text_llm",
     "kb.threads",
     "shutil",
     "shutil",
+    "kb.threads",
     "analyzer.vl_arbiter",
     "kb.threads",
-    "analyzer.color_match"
+    "analyzer.color_match",
+    "webapp.auto_research"
    ],
    "aliases": {
     "annotations": "__future__",
@@ -2478,7 +2572,8 @@
     "np": "numpy",
     "_t": "kb.threads",
     "record_user_ruling": "analyzer.vl_arbiter",
-    "color_match": "analyzer.color_match"
+    "color_match": "analyzer.color_match",
+    "trigger": "webapp.auto_research"
    },
    "imported_by": [
     "test_m15_wiring"
@@ -5293,7 +5388,7 @@
    "args": [
     "db_path"
    ],
-   "line": 39,
+   "line": 40,
    "doc": ""
   },
   {
@@ -5304,7 +5399,7 @@
    "args": [
     "requirement"
    ],
-   "line": 47,
+   "line": 48,
    "doc": "需求文本 -> 命中的 capability 标签(保序:先提及者优先)."
   },
   {
@@ -5316,7 +5411,7 @@
     "sol_caps",
     "req_caps"
    ],
-   "line": 56,
+   "line": 57,
    "doc": "位置加权:先提及的能力权重高(3,2,1,...),未提及任何能力时按身份兜底."
   },
   {
@@ -5328,7 +5423,7 @@
     "a",
     "b"
    ],
-   "line": 67,
+   "line": 68,
    "doc": "中文 2-gram 重叠度(弱信号,只做同分微调)."
   },
   {
@@ -5339,7 +5434,7 @@
    "args": [
     "requirement"
    ],
-   "line": 74,
+   "line": 75,
    "doc": "需求 -> 按分排序的候选方案列表(可解释:matched_caps 留痕)."
   },
   {
@@ -5350,7 +5445,7 @@
    "args": [
     "requirement"
    ],
-   "line": 103,
+   "line": 104,
    "doc": "编排入口:face_swap 族任务先查专家方案;未检出换脸意图返回 None(走规划)."
   },
   {
@@ -5362,7 +5457,7 @@
     "solution_id",
     "db_path"
    ],
-   "line": 112,
+   "line": 113,
    "doc": ""
   },
   {
@@ -5374,7 +5469,7 @@
     "name",
     "db_path"
    ],
-   "line": 125,
+   "line": 126,
    "doc": ""
   },
   {
@@ -5386,7 +5481,7 @@
     "images",
     "root"
    ],
-   "line": 141,
+   "line": 142,
    "doc": "任务输入指纹(字节级):同图对重复任务不重复计入 distinct_inputs."
   },
   {
@@ -5398,7 +5493,7 @@
     "solution_id",
     "db_path"
    ],
-   "line": 155,
+   "line": 156,
    "doc": ""
   },
   {
@@ -5410,7 +5505,7 @@
     "sol",
     "distinct_inputs"
    ],
-   "line": 163,
+   "line": 164,
    "doc": "返回晋升目标状态或 None(规则见模块 docstring;不降级)."
   },
   {
@@ -5419,7 +5514,7 @@
    "module": "kb.solutions",
    "name": "record_success",
    "args": [],
-   "line": 175,
+   "line": 176,
    "doc": "satisfied 终态回写:成功记账 + 输入指纹去重 + 晋升检查.幂等安全(同 task 只调一次)."
   },
   {
@@ -5428,8 +5523,17 @@
    "module": "kb.solutions",
    "name": "open_gap",
    "args": [],
-   "line": 213,
+   "line": 214,
    "doc": "limited(能力不可达)终态 -> knowledge_gaps;同题去重(追加 known_failures)."
+  },
+  {
+   "id": "kb.solutions.register_solution",
+   "kind": "function",
+   "module": "kb.solutions",
+   "name": "register_solution",
+   "args": [],
+   "line": 257,
+   "doc": "任务成功后自动注册候选方案(M19: 任意族, 不再只靠手写种子)。"
   },
   {
    "id": "kb.store.connect",
@@ -5560,7 +5664,7 @@
    "args": [
     "key"
    ],
-   "line": 92,
+   "line": 100,
    "doc": ""
   },
   {
@@ -5572,7 +5676,7 @@
     "key",
     "db_path"
    ],
-   "line": 100,
+   "line": 108,
    "doc": ""
   },
   {
@@ -5583,7 +5687,7 @@
    "args": [
     "db_path"
    ],
-   "line": 108,
+   "line": 116,
    "doc": ""
   },
   {
@@ -5595,7 +5699,7 @@
     "key",
     "db_path"
    ],
-   "line": 118,
+   "line": 126,
    "doc": "线程完整视图(前端时间线用): 行 + 事件 + 假设 + 总结。"
   },
   {
@@ -5608,7 +5712,7 @@
     "max_events",
     "db_path"
    ],
-   "line": 138,
+   "line": 148,
    "doc": "拼入规划 LLM 的 thread_digest: 事件近者优先; 定律/规则引用全保留。"
   },
   {
@@ -5619,7 +5723,7 @@
    "args": [
     "prompt"
    ],
-   "line": 159,
+   "line": 169,
    "doc": ""
   },
   {
@@ -5630,7 +5734,7 @@
    "args": [
     "raw"
    ],
-   "line": 164,
+   "line": 174,
    "doc": "LLM 返回里挖 JSON 对象(容忍围栏/前后缀废话; 取第一个平衡的 {...})。"
   },
   {
@@ -5642,7 +5746,7 @@
     "key",
     "db_path"
    ],
-   "line": 206,
+   "line": 219,
    "doc": "收口第一步: LLM 草拟四栏总结(status=draft), 返回草稿。"
   },
   {
@@ -5656,7 +5760,7 @@
     "summary_id",
     "db_path"
    ],
-   "line": 250,
+   "line": 263,
    "doc": "收口第二步: 用户(可编辑后)确认 -> confirmed + knowledge_items 回写。"
   },
   {
@@ -6848,7 +6952,7 @@
    "module": "test_m15_wiring",
    "name": "FakeTask",
    "args": [],
-   "line": 38,
+   "line": 43,
    "doc": "只带 requirement 的检索探测对象。"
   },
   {
@@ -6860,7 +6964,7 @@
     "self",
     "requirement"
    ],
-   "line": 41,
+   "line": 46,
    "doc": ""
   },
   {
@@ -6871,7 +6975,7 @@
    "args": [
     "name"
    ],
-   "line": 45,
+   "line": 50,
    "doc": ""
   },
   {
@@ -6880,7 +6984,7 @@
    "module": "test_m15_wiring",
    "name": "db",
    "args": [],
-   "line": 52,
+   "line": 57,
    "doc": ""
   },
   {
@@ -6892,7 +6996,7 @@
     "cond",
     "label"
    ],
-   "line": 61,
+   "line": 66,
    "doc": ""
   },
   {
@@ -6904,7 +7008,7 @@
     "prompt",
     "model"
    ],
-   "line": 69,
+   "line": 74,
    "doc": ""
   },
   {
@@ -6916,7 +7020,7 @@
     "task",
     "route"
    ],
-   "line": 73,
+   "line": 78,
    "doc": ""
   },
   {
@@ -6927,7 +7031,7 @@
    "args": [
     "critical"
    ],
-   "line": 83,
+   "line": 88,
    "doc": ""
   },
   {
@@ -6939,7 +7043,7 @@
     "task",
     "limited"
    ],
-   "line": 94,
+   "line": 99,
    "doc": ""
   },
   {
@@ -6950,7 +7054,7 @@
    "args": [
     "t"
    ],
-   "line": 98,
+   "line": 103,
    "doc": "等任务进入 review 再反馈;30s 兜底强设(防挂起)。"
   },
   {
@@ -7309,6 +7413,224 @@
    "doc": ""
   },
   {
+   "id": "test_m19.check",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "check",
+   "args": [
+    "name",
+    "cond",
+    "detail"
+   ],
+   "line": 33,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_upload",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_upload",
+   "args": [
+    "api_key",
+    "file_path",
+    "base"
+   ],
+   "line": 75,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_run",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_run",
+   "args": [
+    "api_key",
+    "webapp_id",
+    "node_info_list"
+   ],
+   "line": 77,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_wait",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_wait",
+   "args": [
+    "api_key",
+    "task_id",
+    "poll",
+    "max_wait"
+   ],
+   "line": 82,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_download",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_download",
+   "args": [
+    "url",
+    "dest",
+    "timeout"
+   ],
+   "line": 84,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.FakeLLM",
+   "kind": "class",
+   "module": "test_m19",
+   "name": "FakeLLM",
+   "args": [],
+   "line": 101,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.FakeLLM.__init__",
+   "kind": "method",
+   "module": "test_m19",
+   "name": "__init__",
+   "args": [
+    "self"
+   ],
+   "line": 102,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.FakeLLM.chat",
+   "kind": "method",
+   "module": "test_m19",
+   "name": "chat",
+   "args": [
+    "self",
+    "prompt"
+   ],
+   "line": 104,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.FakeLLM.json",
+   "kind": "method",
+   "module": "test_m19",
+   "name": "json",
+   "args": [
+    "self",
+    "prompt"
+   ],
+   "line": 118,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_gh",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_gh",
+   "args": [
+    "q",
+    "limit"
+   ],
+   "line": 150,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_reg",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_reg",
+   "args": [
+    "q",
+    "limit"
+   ],
+   "line": 154,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_hf",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_hf",
+   "args": [
+    "q",
+    "limit"
+   ],
+   "line": 158,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._fake_readme",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_fake_readme",
+   "args": [
+    "t",
+    "b"
+   ],
+   "line": 163,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.post",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "post",
+   "args": [
+    "path",
+    "obj"
+   ],
+   "line": 183,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.get",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "get",
+   "args": [
+    "path"
+   ],
+   "line": 197,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.wait_state",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "wait_state",
+   "args": [
+    "tid",
+    "states",
+    "timeout"
+   ],
+   "line": 201,
+   "doc": ""
+  },
+  {
+   "id": "test_m19.new_task",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "new_task",
+   "args": [
+    "req_text",
+    "images"
+   ],
+   "line": 212,
+   "doc": ""
+  },
+  {
+   "id": "test_m19._wrap_trigger",
+   "kind": "function",
+   "module": "test_m19",
+   "name": "_wrap_trigger",
+   "args": [
+    "gap_id",
+    "requirement"
+   ],
+   "line": 350,
+   "doc": ""
+  },
+  {
    "id": "test_tag_filter.post",
    "kind": "function",
    "module": "test_tag_filter",
@@ -7411,8 +7733,67 @@
    "module": "webapp.app",
    "name": "main",
    "args": [],
-   "line": 247,
+   "line": 260,
    "doc": ""
+  },
+  {
+   "id": "webapp.auto_research._queries",
+   "kind": "function",
+   "module": "webapp.auto_research",
+   "name": "_queries",
+   "args": [
+    "requirement"
+   ],
+   "line": 44,
+   "doc": "需求 -> {github/registry/huggingface 查询} + RH 搜索关键词。"
+  },
+  {
+   "id": "webapp.auto_research._llm_queries",
+   "kind": "function",
+   "module": "webapp.auto_research",
+   "name": "_llm_queries",
+   "args": [
+    "requirement"
+   ],
+   "line": 57,
+   "doc": "LLM 起草更准的查询(失败返回 None, 走词表兜底)。"
+  },
+  {
+   "id": "webapp.auto_research._report",
+   "kind": "function",
+   "module": "webapp.auto_research",
+   "name": "_report",
+   "args": [
+    "task_id",
+    "thread_key",
+    "text"
+   ],
+   "line": 73,
+   "doc": "研究结果回帖: 任务还活着 -> 消息; 否则只落线程事件。"
+  },
+  {
+   "id": "webapp.auto_research.run",
+   "kind": "function",
+   "module": "webapp.auto_research",
+   "name": "run",
+   "args": [
+    "gap_id",
+    "requirement"
+   ],
+   "line": 94,
+   "doc": "后台研究主体(零硬币)。异常全部吞掉——绝不影响任务流。"
+  },
+  {
+   "id": "webapp.auto_research.trigger",
+   "kind": "function",
+   "module": "webapp.auto_research",
+   "name": "trigger",
+   "args": [
+    "gap_id",
+    "requirement"
+   ],
+   "line": 139,
+   "doc": "去重后启动后台研究线程。返回是否启动(已有 session 则 False)。"
   },
   {
    "id": "webapp.hyp_runner.frame_diff_stats",
@@ -7455,7 +7836,7 @@
    "args": [
     "self"
    ],
-   "line": 114,
+   "line": 119,
    "doc": ""
   },
   {
@@ -7469,7 +7850,7 @@
     "detail",
     "images"
    ],
-   "line": 119,
+   "line": 124,
    "doc": ""
   },
   {
@@ -7480,7 +7861,7 @@
    "args": [
     "self"
    ],
-   "line": 126,
+   "line": 131,
    "doc": ""
   },
   {
@@ -7491,7 +7872,7 @@
    "args": [
     "self"
    ],
-   "line": 144,
+   "line": 151,
    "doc": ""
   },
   {
@@ -7502,7 +7883,7 @@
    "args": [
     "tid"
    ],
-   "line": 177,
+   "line": 186,
    "doc": ""
   },
   {
@@ -7515,8 +7896,58 @@
     "images_b64",
     "thread_key"
    ],
-   "line": 181,
+   "line": 190,
    "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator.say",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "say",
+   "args": [
+    "task",
+    "kind",
+    "text"
+   ],
+   "line": 241,
+   "doc": "AI 主动消息(结论/问题/建议)——任务内对话通道(用户意见#3)。"
+  },
+  {
+   "id": "webapp.orchestrator._ask",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_ask",
+   "args": [
+    "task",
+    "text",
+    "timeout"
+   ],
+   "line": 257,
+   "doc": "向用户提问并等待回复(软门: 超时自动继续, 绝不阻塞死)。返回回复或''。"
+  },
+  {
+   "id": "webapp.orchestrator._chat_reply",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_chat_reply",
+   "args": [
+    "task",
+    "text"
+   ],
+   "line": 272,
+   "doc": "运行中插话的知情回应(纯文本 LLM, 不执行动作; 失败降级为确认性回复)。"
+  },
+  {
+   "id": "webapp.orchestrator.chat",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "chat",
+   "args": [
+    "task",
+    "text"
+   ],
+   "line": 290,
+   "doc": "用户随时插话(用户意见#3)。三路由:"
   },
   {
    "id": "webapp.orchestrator._llm_json",
@@ -7526,7 +7957,7 @@
    "args": [
     "prompt"
    ],
-   "line": 229,
+   "line": 330,
    "doc": "运行时文本 LLM(DeepSeek via analyzer/text_llm; 识图仍走 vl.VLClient)。"
   },
   {
@@ -7537,8 +7968,8 @@
    "args": [
     "task"
    ],
-   "line": 236,
-   "doc": "Requirement -> family + route + notes (LLM + keyword floor)."
+   "line": 337,
+   "doc": "Requirement -> family + route + content_plan + notes (LLM + keyword floor)。"
   },
   {
    "id": "webapp.orchestrator.classify_feedback",
@@ -7549,7 +7980,7 @@
     "task",
     "text"
    ],
-   "line": 295,
+   "line": 445,
    "doc": ""
   },
   {
@@ -7561,7 +7992,18 @@
     "fb",
     "task"
    ],
-   "line": 320,
+   "line": 470,
+   "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._kb_conn",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_kb_conn",
+   "args": [
+    "db_path"
+   ],
+   "line": 490,
    "doc": ""
   },
   {
@@ -7572,8 +8014,31 @@
    "args": [
     "query"
    ],
-   "line": 335,
-   "doc": "Find a runnable webapp workflow matching the query (single-image)."
+   "line": 496,
+   "doc": "Find a runnable webapp workflow matching the query."
+  },
+  {
+   "id": "webapp.orchestrator._hit_from_card",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_hit_from_card",
+   "args": [
+    "wfid",
+    "title"
+   ],
+   "line": 540,
+   "doc": "卡片 workflow_id -> 可执行 webapp hit(api_inputs 带 inputNodes)。"
+  },
+  {
+   "id": "webapp.orchestrator._hit_from_workflow",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_hit_from_workflow",
+   "args": [
+    "wf_id"
+   ],
+   "line": 564,
+   "doc": "按 workflow_id 直接重建 hit(方案回放用, 免检索)。"
   },
   {
    "id": "webapp.orchestrator._pick_solution",
@@ -7583,7 +8048,7 @@
    "args": [
     "task"
    ],
-   "line": 369,
+   "line": 578,
    "doc": "Expert Solution Retrieval(设计 §3):命中则零规划硬币直接回放 route_json。"
   },
   {
@@ -7595,7 +8060,7 @@
     "task",
     "route"
    ],
-   "line": 405,
+   "line": 621,
    "doc": "执行链解析:优先回放 reused_solution 的 route_json(零翻译),退回 ROUTE_CHAINS。"
   },
   {
@@ -7606,7 +8071,7 @@
    "args": [
     "task"
    ],
-   "line": 425,
+   "line": 641,
    "doc": "终态回写(设计 §3),任何异常不影响任务循环:"
   },
   {
@@ -7618,7 +8083,7 @@
     "task",
     "route"
    ],
-   "line": 463,
+   "line": 722,
    "doc": ""
   },
   {
@@ -7630,8 +8095,76 @@
     "task",
     "route"
    ],
-   "line": 511,
+   "line": 770,
    "doc": ""
+  },
+  {
+   "id": "webapp.orchestrator._t2v_segments",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_t2v_segments",
+   "args": [
+    "task"
+   ],
+   "line": 804,
+   "doc": "需求总时长 -> 分段数(单段 ~6s, 1..4; 无时长信息默认 20s)。"
+  },
+  {
+   "id": "webapp.orchestrator._t2v_prompt_node",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_t2v_prompt_node",
+   "args": [
+    "hit"
+   ],
+   "line": 811,
+   "doc": "webapp 输入节点里找文本提示词槽(优先 prompt 语义, 其次多行字符串)。"
+  },
+  {
+   "id": "webapp.orchestrator._draft_storyboard",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_draft_storyboard",
+   "args": [
+    "task"
+   ],
+   "line": 823,
+   "doc": "内容方案 -> 分段分镜提示词(专业分镜: 景别/机位运动/画面内容/氛围)。"
+  },
+  {
+   "id": "webapp.orchestrator._concat_videos",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_concat_videos",
+   "args": [
+    "task",
+    "rel_files"
+   ],
+   "line": 844,
+   "doc": "本地 ffmpeg 拼接(零硬币); copy 失败降级重编码。返回相对路径。"
+  },
+  {
+   "id": "webapp.orchestrator._t2v_hit",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_t2v_hit",
+   "args": [
+    "task"
+   ],
+   "line": 864,
+   "doc": "t2v 可执行工作流命中: 优先回放已注册方案的 webapp, 否则 KB 检索。"
+  },
+  {
+   "id": "webapp.orchestrator._exec_t2v",
+   "kind": "function",
+   "module": "webapp.orchestrator",
+   "name": "_exec_t2v",
+   "args": [
+    "task",
+    "route"
+   ],
+   "line": 879,
+   "doc": "text_to_video 执行(用户意见#2/#4): KB 本有 H3 文生视频卡片——检索命中"
   },
   {
    "id": "webapp.orchestrator.evaluate_round",
@@ -7642,7 +8175,7 @@
     "task",
     "results"
    ],
-   "line": 545,
+   "line": 929,
    "doc": ""
   },
   {
@@ -7654,7 +8187,7 @@
     "task",
     "limited"
    ],
-   "line": 585,
+   "line": 969,
    "doc": ""
   },
   {
@@ -7667,7 +8200,7 @@
     "kind",
     "payload"
    ],
-   "line": 636,
+   "line": 1020,
    "doc": "线程事件写入(无线程归属则静默跳过; 失败不阻塞任务流)。"
   },
   {
@@ -7679,7 +8212,7 @@
     "task",
     "ix"
    ],
-   "line": 654,
+   "line": 1038,
    "doc": "negotiating 态下用户点选路径卡; 任务线程在 8s 窗内收到。"
   },
   {
@@ -7693,7 +8226,7 @@
     "w",
     "h"
    ],
-   "line": 663,
+   "line": 1047,
    "doc": "条件帧 16:9 画布归一(BL-005: 输出画幅跟随条件帧, 链式必须同画布)。"
   },
   {
@@ -7706,7 +8239,7 @@
     "dst",
     "fps"
    ],
-   "line": 678,
+   "line": 1062,
    "doc": "快切带检测 + 运动补偿插值拉伸 2.5x(方案#19 V2 语义: 保持段不动)。"
   },
   {
@@ -7718,7 +8251,7 @@
     "task",
     "route"
    ],
-   "line": 751,
+   "line": 1135,
    "doc": "M18-P0 视频路线执行: i2v 动作脚本 / fl2v 直连 / fl2v+retiming。"
   },
   {
@@ -7729,7 +8262,7 @@
    "args": [
     "task"
    ],
-   "line": 818,
+   "line": 1202,
    "doc": ""
   },
   {
@@ -7743,7 +8276,7 @@
     "accept",
     "dims"
    ],
-   "line": 981,
+   "line": 1444,
    "doc": ""
   }
  ],
@@ -31251,195 +31784,207 @@
   {
    "from": "kb.solutions",
    "raw": "re.compile",
-   "line": 36
+   "line": 37
   },
   {
    "from": "kb.solutions.connect",
    "raw": "sqlite3.connect",
-   "line": 40
+   "line": 41
   },
   {
    "from": "kb.solutions._caps_score",
    "raw": "enumerate",
-   "line": 61
+   "line": 62
   },
   {
    "from": "kb.solutions._text_overlap",
    "raw": "sum",
-   "line": 70
+   "line": 71
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "connect",
-   "line": 78,
+   "line": 79,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "conn.close",
-   "line": 83
+   "line": 84
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "required_caps",
-   "line": 84,
+   "line": 85,
    "to": "kb.solutions.required_caps",
    "resolved": true
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "scored.sort",
-   "line": 99
+   "line": 100
   },
   {
    "from": "kb.solutions.hit_solution",
    "raw": "search_solutions",
-   "line": 108,
+   "line": 109,
    "to": "kb.solutions.search_solutions",
    "resolved": true
   },
   {
    "from": "kb.solutions.get",
    "raw": "connect",
-   "line": 113,
+   "line": 114,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.get",
    "raw": "conn.close",
-   "line": 116
+   "line": 117
   },
   {
    "from": "kb.solutions.get",
    "raw": "dict",
-   "line": 119
+   "line": 120
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "connect",
-   "line": 126,
+   "line": 127,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "conn.close",
-   "line": 130
+   "line": 131
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "dict",
-   "line": 133
+   "line": 134
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "hashlib.sha1",
-   "line": 143
+   "line": 144
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "sorted",
-   "line": 144
+   "line": 145
   },
   {
    "from": "kb.solutions.record_reuse",
    "raw": "connect",
-   "line": 156,
+   "line": 157,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.record_reuse",
    "raw": "conn.execute",
-   "line": 157
+   "line": 158
   },
   {
    "from": "kb.solutions.record_reuse",
    "raw": "conn.commit",
-   "line": 159
+   "line": 160
   },
   {
    "from": "kb.solutions.record_reuse",
    "raw": "conn.close",
-   "line": 160
+   "line": 161
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "connect",
-   "line": 179,
+   "line": 180,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "dict",
-   "line": 185
-  },
-  {
-   "from": "kb.solutions.record_success",
-   "raw": "json.loads",
    "line": 186
   },
   {
    "from": "kb.solutions.record_success",
+   "raw": "json.loads",
+   "line": 187
+  },
+  {
+   "from": "kb.solutions.record_success",
    "raw": "conn.execute",
-   "line": 190
+   "line": 191
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "check_promotion",
-   "line": 194,
+   "line": 195,
    "to": "kb.solutions.check_promotion",
    "resolved": true
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "json.loads",
-   "line": 199
-  },
-  {
-   "from": "kb.solutions.record_success",
-   "raw": "cases.append",
    "line": 200
   },
   {
    "from": "kb.solutions.record_success",
+   "raw": "cases.append",
+   "line": 201
+  },
+  {
+   "from": "kb.solutions.record_success",
    "raw": "conn.execute",
-   "line": 202
+   "line": 203
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "conn.commit",
-   "line": 204
+   "line": 205
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "conn.close",
-   "line": 205
+   "line": 206
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "connect",
-   "line": 226,
+   "line": 227,
    "to": "kb.solutions.connect",
    "resolved": true
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.close",
-   "line": 252
+   "line": 253
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "connect",
+   "line": 269,
+   "to": "kb.solutions.connect",
+   "resolved": true
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "conn.commit",
+   "line": 301
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "conn.close",
+   "line": 302
   },
   {
    "from": "kb.solutions._text_overlap",
    "raw": "min",
-   "line": 71
-  },
-  {
-   "from": "kb.solutions.search_solutions",
-   "raw": "json.loads",
-   "line": 87
+   "line": 72
   },
   {
    "from": "kb.solutions.search_solutions",
@@ -31448,40 +31993,40 @@
   },
   {
    "from": "kb.solutions.search_solutions",
+   "raw": "json.loads",
+   "line": 89
+  },
+  {
+   "from": "kb.solutions.search_solutions",
    "raw": "_caps_score",
-   "line": 89,
+   "line": 90,
    "to": "kb.solutions._caps_score",
    "resolved": true
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "scored.append",
-   "line": 92
+   "line": 93
   },
   {
    "from": "kb.solutions.hit_solution",
    "raw": "FACE_SWAP_RE.search",
-   "line": 106
+   "line": 107
   },
   {
    "from": "kb.solutions.get",
    "raw": "json.loads",
-   "line": 121
+   "line": 122
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "json.loads",
-   "line": 135
+   "line": 136
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "Path",
-   "line": 145
-  },
-  {
-   "from": "kb.solutions.input_fingerprint",
-   "raw": "h.update",
-   "line": 148
+   "line": 146
   },
   {
    "from": "kb.solutions.input_fingerprint",
@@ -31500,135 +32045,155 @@
   },
   {
    "from": "kb.solutions.input_fingerprint",
-   "raw": "h.hexdigest",
+   "raw": "h.update",
    "line": 152
+  },
+  {
+   "from": "kb.solutions.input_fingerprint",
+   "raw": "h.hexdigest",
+   "line": 153
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "conn.close",
-   "line": 183
+   "line": 184
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "inputs.append",
-   "line": 189
+   "line": 190
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "conn.execute",
-   "line": 196
+   "line": 197
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "bool",
-   "line": 209
+   "line": 210
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "len",
-   "line": 210
+   "line": 211
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "json.loads",
-   "line": 231
+   "line": 232
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.execute",
-   "line": 233
+   "line": 234
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.commit",
-   "line": 237
+   "line": 238
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "required_caps",
-   "line": 241,
+   "line": 242,
    "to": "kb.solutions.required_caps",
    "resolved": true
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.execute",
-   "line": 242
+   "line": 243
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.commit",
-   "line": 249
+   "line": 250
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "conn.execute",
+   "line": 275
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "conn.execute",
+   "line": 289
   },
   {
    "from": "kb.solutions.required_caps",
    "raw": "re.search",
-   "line": 51
+   "line": 52
   },
   {
    "from": "kb.solutions.required_caps",
    "raw": "out.append",
-   "line": 52
+   "line": 53
   },
   {
    "from": "kb.solutions._caps_score",
    "raw": "max",
-   "line": 63
+   "line": 64
   },
   {
    "from": "kb.solutions._text_overlap",
    "raw": "range",
-   "line": 69
+   "line": 70
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "conn.execute",
-   "line": 79
+   "line": 80
   },
   {
    "from": "kb.solutions.get",
    "raw": "conn.execute",
-   "line": 114
+   "line": 115
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "conn.execute",
-   "line": 127
+   "line": 128
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "p.is_absolute",
-   "line": 146
+   "line": 147
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "slot.encode",
-   "line": 148
+   "line": 149
   },
   {
    "from": "kb.solutions.check_promotion",
    "raw": "len",
-   "line": 166
+   "line": 167
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "conn.execute",
-   "line": 180
+   "line": 181
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "json.dumps",
-   "line": 193
+   "line": 194
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "json.dumps",
-   "line": 203
+   "line": 204
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "conn.execute",
-   "line": 227
+   "line": 228
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "conn.execute",
+   "line": 270
   },
   {
    "from": "kb.solutions",
@@ -31638,49 +32203,44 @@
   {
    "from": "kb.solutions.search_solutions",
    "raw": "_text_overlap",
-   "line": 90,
+   "line": 91,
    "to": "kb.solutions._text_overlap",
    "resolved": true
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "STATUS_RANK.get",
-   "line": 91
+   "line": 92
   },
   {
    "from": "kb.solutions.search_solutions",
    "raw": "round",
-   "line": 97
+   "line": 98
   },
   {
    "from": "kb.solutions.get",
    "raw": "d.pop",
-   "line": 121
+   "line": 122
   },
   {
    "from": "kb.solutions.get_by_name",
    "raw": "d.pop",
-   "line": 135
+   "line": 136
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "p.exists",
-   "line": 150
+   "line": 151
   },
   {
    "from": "kb.solutions.input_fingerprint",
    "raw": "p.read_bytes",
-   "line": 150
+   "line": 151
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "json.dumps",
-   "line": 236
-  },
-  {
-   "from": "kb.solutions.open_gap",
-   "raw": "json.dumps",
-   "line": 247
+   "line": 237
   },
   {
    "from": "kb.solutions.open_gap",
@@ -31688,39 +32248,69 @@
    "line": 248
   },
   {
+   "from": "kb.solutions.open_gap",
+   "raw": "json.dumps",
+   "line": 249
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 283
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 284
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 285
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 286
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 296
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 297
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 298
+  },
+  {
+   "from": "kb.solutions.register_solution",
+   "raw": "json.dumps",
+   "line": 299
+  },
+  {
    "from": "kb.solutions._text_overlap",
    "raw": "len",
-   "line": 69
+   "line": 70
   },
   {
    "from": "kb.solutions.record_success",
    "raw": "json.dumps",
-   "line": 201
+   "line": 202
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "it.get",
-   "line": 222
+   "line": 223
   },
   {
    "from": "kb.solutions.open_gap",
    "raw": "json.dumps",
-   "line": 224
-  },
-  {
-   "from": "kb.solutions.open_gap",
-   "raw": "it.get",
-   "line": 221
-  },
-  {
-   "from": "kb.solutions.open_gap",
-   "raw": "it.get",
-   "line": 221
-  },
-  {
-   "from": "kb.solutions.open_gap",
-   "raw": "it.get",
-   "line": 224
+   "line": 225
   },
   {
    "from": "kb.solutions.open_gap",
@@ -31728,9 +32318,24 @@
    "line": 222
   },
   {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 222
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 225
+  },
+  {
+   "from": "kb.solutions.open_gap",
+   "raw": "it.get",
+   "line": 223
+  },
+  {
    "from": "kb.solutions.search_solutions",
    "raw": "len",
-   "line": 81
+   "line": 82
   },
   {
    "from": "kb.status",
@@ -32194,198 +32799,198 @@
   {
    "from": "kb.threads.add_event",
    "raw": "db.commit",
-   "line": 87
+   "line": 95
   },
   {
    "from": "kb.threads.add_event",
    "raw": "db.close",
-   "line": 88
+   "line": 96
   },
   {
    "from": "kb.threads.events",
    "raw": "_events_path",
-   "line": 93,
+   "line": 101,
    "to": "kb.threads._events_path",
    "resolved": true
   },
   {
    "from": "kb.threads.events",
    "raw": "json.loads",
-   "line": 96
+   "line": 104
   },
   {
    "from": "kb.threads.events",
    "raw": "sorted",
-   "line": 97
+   "line": 105
   },
   {
    "from": "kb.threads.get_thread",
-   "raw": "_conn",
-   "line": 101,
-   "to": "kb.threads._conn",
-   "resolved": true
-  },
-  {
-   "from": "kb.threads.get_thread",
-   "raw": "db.close",
-   "line": 104
-  },
-  {
-   "from": "kb.threads.list_threads",
    "raw": "_conn",
    "line": 109,
    "to": "kb.threads._conn",
    "resolved": true
   },
   {
-   "from": "kb.threads.list_threads",
+   "from": "kb.threads.get_thread",
    "raw": "db.close",
    "line": 112
   },
   {
+   "from": "kb.threads.list_threads",
+   "raw": "_conn",
+   "line": 117,
+   "to": "kb.threads._conn",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.list_threads",
+   "raw": "db.close",
+   "line": 120
+  },
+  {
    "from": "kb.threads.full",
    "raw": "get_thread",
-   "line": 120,
+   "line": 128,
    "to": "kb.threads.get_thread",
    "resolved": true
   },
   {
    "from": "kb.threads.full",
    "raw": "_conn",
-   "line": 123,
+   "line": 131,
    "to": "kb.threads._conn",
    "resolved": true
   },
   {
    "from": "kb.threads.full",
    "raw": "db.close",
-   "line": 130
+   "line": 138
   },
   {
    "from": "kb.threads.digest",
    "raw": "get_thread",
-   "line": 140,
+   "line": 150,
    "to": "kb.threads.get_thread",
    "resolved": true
   },
   {
    "from": "kb.threads.digest",
    "raw": "events",
-   "line": 143,
+   "line": 153,
    "to": "kb.threads.events",
    "resolved": true
   },
   {
    "from": "kb.threads.digest",
    "raw": "sorted",
-   "line": 147
+   "line": 157
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "re.search",
-   "line": 168
+   "line": 178
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "enumerate",
-   "line": 176
+   "line": 186
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "get_thread",
-   "line": 208,
+   "line": 221,
    "to": "kb.threads.get_thread",
    "resolved": true
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "events",
-   "line": 211,
+   "line": 224,
    "to": "kb.threads.events",
    "resolved": true
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "_conn",
-   "line": 229,
+   "line": 242,
    "to": "kb.threads._conn",
    "resolved": true
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "db.execute",
-   "line": 230
+   "line": 243
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "db.execute",
-   "line": 239
+   "line": 252
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "db.commit",
-   "line": 241
+   "line": 254
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "db.close",
-   "line": 242
+   "line": 255
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "add_event",
-   "line": 243,
+   "line": 256,
    "to": "kb.threads.add_event",
    "resolved": true
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "get_thread",
-   "line": 253,
+   "line": 266,
    "to": "kb.threads.get_thread",
    "resolved": true
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "_conn",
-   "line": 256,
+   "line": 269,
    "to": "kb.threads._conn",
    "resolved": true
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 273
+   "line": 286
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 275
+   "line": 288
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 285
+   "line": 298
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 291
+   "line": 304
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.commit",
-   "line": 293
+   "line": 306
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.close",
-   "line": 294
+   "line": 307
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "add_event",
-   "line": 295,
+   "line": 308,
    "to": "kb.threads.add_event",
    "resolved": true
   },
@@ -32437,90 +33042,100 @@
    "line": 81
   },
   {
+   "from": "kb.threads.add_event",
+   "raw": "db.execute",
+   "line": 91
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "db.execute",
+   "line": 93
+  },
+  {
    "from": "kb.threads.events",
    "raw": "_slug",
-   "line": 93,
+   "line": 101,
    "to": "kb.threads._slug",
    "resolved": true
   },
   {
    "from": "kb.threads.events",
    "raw": "p.exists",
-   "line": 94
+   "line": 102
   },
   {
    "from": "kb.threads.events",
    "raw": "p.read_text",
-   "line": 96
+   "line": 104
   },
   {
    "from": "kb.threads.get_thread",
    "raw": "dict",
-   "line": 105
+   "line": 113
   },
   {
    "from": "kb.threads.list_threads",
    "raw": "dict",
-   "line": 110
+   "line": 118
   },
   {
    "from": "kb.threads.list_threads",
    "raw": "len",
-   "line": 114
+   "line": 122
   },
   {
    "from": "kb.threads.full",
    "raw": "dict",
-   "line": 124
+   "line": 132
   },
   {
    "from": "kb.threads.full",
    "raw": "dict",
-   "line": 127
+   "line": 135
   },
   {
    "from": "kb.threads.full",
    "raw": "events",
-   "line": 131,
+   "line": 141,
    "to": "kb.threads.events",
    "resolved": true
   },
   {
    "from": "kb.threads.digest",
    "raw": "lines.append",
-   "line": 152
+   "line": 162
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "KeyError",
-   "line": 210
+   "line": 223
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "_llm",
-   "line": 217,
+   "line": 230,
    "to": "kb.threads._llm",
    "resolved": true
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "KeyError",
-   "line": 255
+   "line": 268
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.close",
-   "line": 262
+   "line": 275
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "KeyError",
-   "line": 263
+   "line": 276
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 265
+   "line": 278
   },
   {
    "from": "kb.threads._slug",
@@ -32547,86 +33162,86 @@
   {
    "from": "kb.threads.get_thread",
    "raw": "db.execute",
-   "line": 102
-  },
-  {
-   "from": "kb.threads.list_threads",
-   "raw": "db.execute",
    "line": 110
   },
   {
    "from": "kb.threads.list_threads",
+   "raw": "db.execute",
+   "line": 118
+  },
+  {
+   "from": "kb.threads.list_threads",
    "raw": "events",
-   "line": 114,
+   "line": 122,
    "to": "kb.threads.events",
    "resolved": true
   },
   {
    "from": "kb.threads.full",
    "raw": "db.execute",
-   "line": 124
+   "line": 132
   },
   {
    "from": "kb.threads.full",
    "raw": "db.execute",
-   "line": 127
+   "line": 135
   },
   {
    "from": "kb.threads._llm",
    "raw": "client",
-   "line": 161
+   "line": 171
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "json.loads",
-   "line": 171
+   "line": 181
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "_SUMMARY_PROMPT.format",
-   "line": 217
+   "line": 230
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "_extract_json",
-   "line": 218,
+   "line": 231,
    "to": "kb.threads._extract_json",
    "resolved": true
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "json.dumps",
-   "line": 234
+   "line": 247
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "json.dumps",
-   "line": 235
+   "line": 248
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "json.dumps",
-   "line": 236
+   "line": 249
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "json.dumps",
-   "line": 237
+   "line": 250
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 257
+   "line": 270
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "db.execute",
-   "line": 278
+   "line": 291
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "json.dumps",
-   "line": 292
+   "line": 305
   },
   {
    "from": "kb.threads",
@@ -32659,94 +33274,113 @@
    "line": 77
   },
   {
+   "from": "kb.threads.add_event",
+   "raw": "_slug",
+   "line": 92,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
+   "from": "kb.threads.add_event",
+   "raw": "_slug",
+   "line": 94,
+   "to": "kb.threads._slug",
+   "resolved": true
+  },
+  {
    "from": "kb.threads.events",
    "raw": "e.get",
-   "line": 97
+   "line": 105
+  },
+  {
+   "from": "kb.threads.full",
+   "raw": "s.get",
+   "line": 140
   },
   {
    "from": "kb.threads.digest",
    "raw": "e.get",
-   "line": 147
+   "line": 157
   },
   {
    "from": "kb.threads.digest",
    "raw": "e.items",
-   "line": 151
+   "line": 161
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "m.group",
-   "line": 171
+   "line": 181
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.get",
-   "line": 226
+   "line": 239
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.get",
-   "line": 234
+   "line": 247
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.get",
-   "line": 235
+   "line": 248
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.get",
-   "line": 236
+   "line": 249
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.get",
-   "line": 237
+   "line": 250
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "len",
-   "line": 245
+   "line": 258
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "json.dumps",
-   "line": 268
-  },
-  {
-   "from": "kb.threads.close_confirm",
-   "raw": "json.dumps",
-   "line": 269
-  },
-  {
-   "from": "kb.threads.close_confirm",
-   "raw": "json.dumps",
-   "line": 270
-  },
-  {
-   "from": "kb.threads.close_confirm",
-   "raw": "json.dumps",
-   "line": 271
-  },
-  {
-   "from": "kb.threads.close_confirm",
-   "raw": "json.loads",
    "line": 281
   },
   {
    "from": "kb.threads.close_confirm",
-   "raw": "json.loads",
+   "raw": "json.dumps",
    "line": 282
   },
   {
    "from": "kb.threads.close_confirm",
-   "raw": "json.loads",
+   "raw": "json.dumps",
    "line": 283
   },
   {
    "from": "kb.threads.close_confirm",
-   "raw": "json.loads",
+   "raw": "json.dumps",
    "line": 284
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 294
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 295
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 296
+  },
+  {
+   "from": "kb.threads.close_confirm",
+   "raw": "json.loads",
+   "line": 297
   },
   {
    "from": "kb.threads._slug",
@@ -32756,94 +33390,94 @@
   {
    "from": "kb.threads.get_thread",
    "raw": "_slug",
-   "line": 103,
+   "line": 111,
    "to": "kb.threads._slug",
    "resolved": true
   },
   {
    "from": "kb.threads.digest",
    "raw": "json.dumps",
-   "line": 153
+   "line": 163
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.setdefault",
-   "line": 224
+   "line": 237
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.setdefault",
-   "line": 227
+   "line": 240
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "cols.items",
-   "line": 245
+   "line": 258
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "cols.get",
-   "line": 268
+   "line": 281
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "cols.get",
-   "line": 269
+   "line": 282
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "cols.get",
-   "line": 270
+   "line": 283
   },
   {
    "from": "kb.threads.close_confirm",
    "raw": "cols.get",
-   "line": 271
+   "line": 284
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "json.dumps",
-   "line": 213
+   "line": 226
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.get",
-   "line": 225
+   "line": 238
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.get",
-   "line": 225
+   "line": 238
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.get",
-   "line": 225
+   "line": 238
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.get",
-   "line": 228
+   "line": 241
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "json.loads",
-   "line": 186
+   "line": 196
   },
   {
    "from": "kb.threads._extract_json",
    "raw": "isinstance",
-   "line": 187
+   "line": 197
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "type",
-   "line": 220
+   "line": 233
   },
   {
    "from": "kb.threads.close_draft",
    "raw": "e.items",
-   "line": 213
+   "line": 226
   },
   {
    "from": "mcp.server",
@@ -40723,61 +41357,59 @@
    "line": 33
   },
   {
+   "from": "test_m15_wiring",
+   "raw": "_threads_mod.THREADS_DIR.mkdir",
+   "line": 40
+  },
+  {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "print",
-   "line": 110
+   "line": 115
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 120,
+   "line": 125,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "print",
-   "line": 124
+   "line": 129
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch.Task",
-   "line": 129,
+   "line": 134,
    "to": "webapp.orchestrator.Task",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch._run_task",
-   "line": 131,
+   "line": 136,
    "to": "webapp.orchestrator._run_task",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 132,
+   "line": 137,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 133,
+   "line": 138,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 134,
-   "to": "test_m15_wiring.ok",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "ok",
-   "line": 136,
+   "line": 139,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
@@ -40791,95 +41423,81 @@
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 142,
+   "line": 146,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 143,
+   "line": 147,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 148,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "print",
-   "line": 146
+   "line": 151
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "_mk_eval",
-   "line": 148,
+   "line": 153,
    "to": "test_m15_wiring._mk_eval",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch.Task",
-   "line": 149,
+   "line": 154,
    "to": "webapp.orchestrator.Task",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch._run_task",
-   "line": 153,
+   "line": 158,
    "to": "webapp.orchestrator._run_task",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 154,
+   "line": 159,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 156,
+   "line": 161,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 158,
+   "line": 163,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "json.loads",
-   "line": 159
+   "line": 164
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 160,
-   "to": "test_m15_wiring.ok",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "ok",
-   "line": 162,
-   "to": "test_m15_wiring.ok",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "orch.Task",
    "line": 165,
-   "to": "webapp.orchestrator.Task",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "orch._run_task",
-   "line": 166,
-   "to": "webapp.orchestrator._run_task",
+   "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
@@ -40891,53 +41509,60 @@
   },
   {
    "from": "test_m15_wiring._feedback_thread",
-   "raw": "print",
-   "line": 172
+   "raw": "orch.Task",
+   "line": 170,
+   "to": "webapp.orchestrator.Task",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "orch._run_task",
+   "line": 171,
+   "to": "webapp.orchestrator._run_task",
+   "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 175,
+   "line": 172,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "print",
+   "line": 177
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 180,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 178,
+   "line": 183,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "print",
-   "line": 181
+   "line": 186
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "solutions.record_success",
-   "line": 182,
-   "to": "kb.solutions.record_success",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "ok",
-   "line": 184,
-   "to": "test_m15_wiring.ok",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "solutions.record_success",
-   "line": 185,
-   "to": "kb.solutions.record_success",
-   "resolved": true
-  },
-  {
-   "from": "test_m15_wiring._feedback_thread",
-   "raw": "ok",
    "line": 187,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 189,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
@@ -40971,8 +41596,22 @@
   },
   {
    "from": "test_m15_wiring._feedback_thread",
+   "raw": "solutions.record_success",
+   "line": 200,
+   "to": "kb.solutions.record_success",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
+   "raw": "ok",
+   "line": 202,
+   "to": "test_m15_wiring.ok",
+   "resolved": true
+  },
+  {
+   "from": "test_m15_wiring._feedback_thread",
    "raw": "print",
-   "line": 201
+   "line": 206
   },
   {
    "from": "test_m15_wiring",
@@ -40987,182 +41626,182 @@
   {
    "from": "test_m15_wiring.make_img",
    "raw": "cv2.imwrite",
-   "line": 48
+   "line": 53
   },
   {
    "from": "test_m15_wiring.make_img",
    "raw": "str",
-   "line": 49
+   "line": 54
   },
   {
    "from": "test_m15_wiring.db",
    "raw": "sqlite3.connect",
-   "line": 53
+   "line": 58
   },
   {
    "from": "test_m15_wiring.ok",
    "raw": "print",
-   "line": 65
+   "line": 70
   },
   {
    "from": "test_m15_wiring._no_llm",
    "raw": "RuntimeError",
-   "line": 70
+   "line": 75
   },
   {
    "from": "test_m15_wiring._stub_exec",
    "raw": "orch._chain_for",
-   "line": 74,
+   "line": 79,
    "to": "webapp.orchestrator._chain_for",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._stub_exec",
    "raw": "shutil.copyfile",
-   "line": 76
+   "line": 81
   },
   {
    "from": "test_m15_wiring._stub_exec",
    "raw": "task.log",
-   "line": 79
+   "line": 84
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "range",
-   "line": 100
+   "line": 105
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "t.feedback_wait.set",
-   "line": 106
+   "line": 111
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch._pick_solution",
-   "line": 117,
+   "line": 122,
    "to": "webapp.orchestrator._pick_solution",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "ok",
-   "line": 119,
+   "line": 124,
    "to": "test_m15_wiring.ok",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "_mk_eval",
-   "line": 128,
+   "line": 133,
    "to": "test_m15_wiring._mk_eval",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "make_img",
-   "line": 130,
+   "line": 135,
    "to": "test_m15_wiring.make_img",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "make_img",
-   "line": 130,
+   "line": 135,
    "to": "test_m15_wiring.make_img",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "any",
-   "line": 134
+   "line": 139
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "make_img",
-   "line": 150,
+   "line": 155,
    "to": "test_m15_wiring.make_img",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "make_img",
-   "line": 150,
+   "line": 155,
    "to": "test_m15_wiring.make_img",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "any",
-   "line": 162
+   "line": 167
   },
   {
    "from": "test_m15_wiring.make_img",
    "raw": "str",
-   "line": 48
+   "line": 53
   },
   {
    "from": "test_m15_wiring._stub_exec",
    "raw": "str",
-   "line": 80
+   "line": 85
   },
   {
    "from": "test_m15_wiring._mk_eval",
    "raw": "task.iterations.append",
-   "line": 86
+   "line": 91
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "time.sleep",
-   "line": 103
+   "line": 108
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "FakeTask",
-   "line": 117,
+   "line": 122,
    "to": "test_m15_wiring.FakeTask",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch._pick_solution",
-   "line": 120,
+   "line": 125,
    "to": "webapp.orchestrator._pick_solution",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "t2.plan.get",
-   "line": 133
+   "line": 138
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "json.loads",
-   "line": 136
+   "line": 141
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "len",
-   "line": 143
+   "line": 148
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "threading.Thread",
-   "line": 152
+   "line": 157
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "len",
-   "line": 156
+   "line": 161
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "bool",
-   "line": 160
+   "line": 165
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "len",
-   "line": 192
+   "line": 197
   },
   {
    "from": "test_m15_wiring",
@@ -41172,117 +41811,117 @@
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "orch.submit_feedback",
-   "line": 101,
+   "line": 106,
    "to": "webapp.orchestrator.submit_feedback",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "FakeTask",
-   "line": 120,
+   "line": 125,
    "to": "test_m15_wiring.FakeTask",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "json.loads",
-   "line": 143
+   "line": 148
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "len",
-   "line": 156
+   "line": 161
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "set",
-   "line": 192
+   "line": 197
   },
   {
    "from": "test_m15_wiring._mk_eval",
    "raw": "task.plan.get",
-   "line": 87
+   "line": 92
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 125,
+   "line": 130,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 139,
+   "line": 144,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 155,
+   "line": 160,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "json.loads",
-   "line": 192
+   "line": 197
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "e.get",
-   "line": 134
+   "line": 139
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 147,
+   "line": 152,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "e.get",
-   "line": 162
+   "line": 167
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 173,
+   "line": 178,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 176,
+   "line": 181,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring.make_img",
    "raw": "np.arange",
-   "line": 47
+   "line": 52
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 137,
+   "line": 142,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 167,
+   "line": 172,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
   {
    "from": "test_m15_wiring._feedback_thread",
    "raw": "db",
-   "line": 192,
+   "line": 197,
    "to": "test_m15_wiring.db",
    "resolved": true
   },
@@ -43654,6 +44293,1265 @@
    "line": 299
   },
   {
+   "from": "test_m19",
+   "raw": "sys.path.insert",
+   "line": 25
+  },
+  {
+   "from": "test_m19",
+   "raw": "sys.path.insert",
+   "line": 26
+  },
+  {
+   "from": "test_m19",
+   "raw": "sys.path.insert",
+   "line": 27
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "Path",
+   "line": 40
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "shutil.copy",
+   "line": 42
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "threads_mod.THREADS_DIR.mkdir",
+   "line": 48
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "RAW.mkdir",
+   "line": 52
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "json.dump",
+   "line": 55
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "cv2.VideoWriter",
+   "line": 67
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "range",
+   "line": 69
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "vw.release",
+   "line": 71
+  },
+  {
+   "from": "test_m19.FakeLLM.json",
+   "raw": "FakeLLM",
+   "line": 141,
+   "to": "test_m19.FakeLLM",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._fake_readme",
+   "raw": "ThreadingHTTPServer",
+   "line": 178
+  },
+  {
+   "from": "test_m19._fake_readme",
+   "raw": "time.sleep",
+   "line": 180
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 221
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "len",
+   "line": 222
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "new_task",
+   "line": 223,
+   "to": "test_m19.new_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.time",
+   "line": 225
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 231,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 232,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 234,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 237,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 238,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 242,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 248,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 251,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 253,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 254,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 255,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 256,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 257,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 258,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 259
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 260,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.time",
+   "line": 263
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 272,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 274,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 278
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "len",
+   "line": 279
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "new_task",
+   "line": 281,
+   "to": "test_m19.new_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 282,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "len",
+   "line": 283
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 284,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 286,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 296
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 298,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 299,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 301,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 302
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "THREAD_KEYS.append",
+   "line": 303
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 304,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 305,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 316
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "threads_mod.events",
+   "line": 318,
+   "to": "kb.threads.events",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 321,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "threads_mod.close_draft",
+   "line": 323,
+   "to": "kb.threads.close_draft",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 324,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "threads_mod.add_event",
+   "line": 328,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "sqlite3.connect",
+   "line": 330
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "db.close",
+   "line": 335
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 336,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 337,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "threads_mod.full",
+   "line": 338,
+   "to": "kb.threads.full",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "check",
+   "line": 339,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 343
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "new_task",
+   "line": 356,
+   "to": "test_m19.new_task",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "wait_state",
+   "line": 357,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 358,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 359,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "time.time",
+   "line": 361
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 371,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "sqlite3.connect",
+   "line": 377
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.close",
+   "line": 382
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 383,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 385,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "auto_research.trigger",
+   "line": 388,
+   "to": "webapp.auto_research.trigger",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 389,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "print",
+   "line": 392
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "orc.kb_search_workflow",
+   "line": 394
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 395,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "orc.kb_search_workflow",
+   "line": 397
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 398,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "srv.shutdown",
+   "line": 401
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "time.sleep",
+   "line": 402
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "sqlite3.connect",
+   "line": 403
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.commit",
+   "line": 407
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.close",
+   "line": 407
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "shutil.rmtree",
+   "line": 414
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "print",
+   "line": 416
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "print",
+   "line": 420
+  },
+  {
+   "from": "test_m19",
+   "raw": "str",
+   "line": 25
+  },
+  {
+   "from": "test_m19",
+   "raw": "str",
+   "line": 26
+  },
+  {
+   "from": "test_m19",
+   "raw": "str",
+   "line": 27
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "print",
+   "line": 34
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "tempfile.mkdtemp",
+   "line": 40
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "open",
+   "line": 62
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "str",
+   "line": 67
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "cv2.VideoWriter_fourcc",
+   "line": 67
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "vw.write",
+   "line": 70
+  },
+  {
+   "from": "test_m19._fake_download",
+   "raw": "Path",
+   "line": 85
+  },
+  {
+   "from": "test_m19._fake_download",
+   "raw": "shutil.copy",
+   "line": 86
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "urllib.request.Request",
+   "line": 185
+  },
+  {
+   "from": "test_m19.wait_state",
+   "raw": "time.time",
+   "line": 202
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 213,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "THREAD_KEYS.append",
+   "line": 214
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "get",
+   "line": 227,
+   "to": "test_m19.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.sleep",
+   "line": 230
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 232
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 233
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 235
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 236
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 237
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 246
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 250
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 251
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 258
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "sqlite3.connect",
+   "line": 265
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "db.close",
+   "line": 268
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.sleep",
+   "line": 271
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 273
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 275
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 289
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 290
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 291
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 292,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 293,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 297
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 300
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 308
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "print",
+   "line": 309
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 311
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "post",
+   "line": 312,
+   "to": "test_m19.post",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "wait_state",
+   "line": 313,
+   "to": "test_m19.wait_state",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "last_task_ev.get",
+   "line": 320
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 324
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 326
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 340
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "_auto_started.append",
+   "line": 351
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "_auto_orig",
+   "line": 353
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "t.get",
+   "line": 358
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "str",
+   "line": 359
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "get",
+   "line": 364,
+   "to": "test_m19.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "next",
+   "line": 365
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "time.sleep",
+   "line": 370
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "bool",
+   "line": 371
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "str",
+   "line": 372
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "check",
+   "line": 374,
+   "to": "test_m19.check",
+   "resolved": true
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "str",
+   "line": 384
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "str",
+   "line": 396
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "p.exists",
+   "line": 410
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "shutil.rmtree",
+   "line": 413
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "print",
+   "line": 418
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "sys.exit",
+   "line": 419
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "FAILS.append",
+   "line": 37
+  },
+  {
+   "from": "test_m19.check",
+   "raw": "np.full",
+   "line": 70
+  },
+  {
+   "from": "test_m19._fake_run",
+   "raw": "list",
+   "line": 79
+  },
+  {
+   "from": "test_m19.FakeLLM.chat",
+   "raw": "self.calls.append",
+   "line": 105
+  },
+  {
+   "from": "test_m19.FakeLLM.json",
+   "raw": "self.calls.append",
+   "line": 119
+  },
+  {
+   "from": "test_m19._fake_readme",
+   "raw": "threading.Thread",
+   "line": 179
+  },
+  {
+   "from": "test_m19.get",
+   "raw": "urllib.request.urlopen",
+   "line": 198
+  },
+  {
+   "from": "test_m19.get",
+   "raw": "json.loads",
+   "line": 199
+  },
+  {
+   "from": "test_m19.wait_state",
+   "raw": "get",
+   "line": 205,
+   "to": "test_m19.get",
+   "resolved": true
+  },
+  {
+   "from": "test_m19.wait_state",
+   "raw": "time.sleep",
+   "line": 208
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "j.get",
+   "line": 214
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.time",
+   "line": 226
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 228
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 232
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 232
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "all",
+   "line": 243
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 245
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "any",
+   "line": 250
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 254
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 258
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "time.time",
+   "line": 264
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 299
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 301
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "fu.get",
+   "line": 339
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "t.get",
+   "line": 358
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "len",
+   "line": 359
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "time.time",
+   "line": 363
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.execute",
+   "line": 378
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.execute",
+   "line": 406
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "p.unlink",
+   "line": 411
+  },
+  {
+   "from": "test_m19",
+   "raw": "Path",
+   "line": 24
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "urllib.request.urlopen",
+   "line": 189
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "json.loads",
+   "line": 190
+  },
+  {
+   "from": "test_m19.get",
+   "raw": "r.read",
+   "line": 199
+  },
+  {
+   "from": "test_m19.wait_state",
+   "raw": "time.time",
+   "line": 204
+  },
+  {
+   "from": "test_m19.wait_state",
+   "raw": "t.get",
+   "line": 206
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 228
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "m.get",
+   "line": 236
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "RUN_CALLS.get",
+   "line": 239
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "len",
+   "line": 249
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 254
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "db.execute",
+   "line": 266
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "RUN_CALLS.get",
+   "line": 287
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 290
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 299
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "r.get",
+   "line": 301
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 305
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 306
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 307
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 307
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "str",
+   "line": 309
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "len",
+   "line": 322
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "db.execute",
+   "line": 331
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "db.execute",
+   "line": 333
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "m.get",
+   "line": 372
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "db.execute",
+   "line": 380
+  },
+  {
+   "from": "test_m19._fake_upload",
+   "raw": "Path",
+   "line": 76
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "r.read",
+   "line": 190
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "json.loads",
+   "line": 193
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "m.get",
+   "line": 237
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "m.get",
+   "line": 275
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 290
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "tC.get",
+   "line": 309
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "len",
+   "line": 418
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "json.dumps",
+   "line": 186
+  },
+  {
+   "from": "test_m19.post",
+   "raw": "e.read",
+   "line": 193
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "m.get",
+   "line": 235
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 247
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "t.get",
+   "line": 275
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "fu.get",
+   "line": 340
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "te.get",
+   "line": 365
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "te.get",
+   "line": 372
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "m.get",
+   "line": 235
+  },
+  {
+   "from": "test_m19.new_task",
+   "raw": "f.endswith",
+   "line": 249
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "m.get",
+   "line": 366
+  },
+  {
+   "from": "test_m19._wrap_trigger",
+   "raw": "m.get",
+   "line": 367
+  },
+  {
    "from": "test_tag_filter",
    "raw": "sys.path.insert",
    "line": 9
@@ -44260,42 +46158,42 @@
   {
    "from": "webapp.app.main",
    "raw": "argparse.ArgumentParser",
-   "line": 248
+   "line": 261
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 249
+   "line": 262
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.add_argument",
-   "line": 250
+   "line": 263
   },
   {
    "from": "webapp.app.main",
    "raw": "ap.parse_args",
-   "line": 251
+   "line": 264
   },
   {
    "from": "webapp.app.main",
    "raw": "ThreadingHTTPServer",
-   "line": 252
+   "line": 265
   },
   {
    "from": "webapp.app.main",
    "raw": "print",
-   "line": 253
+   "line": 266
   },
   {
    "from": "webapp.app.main",
    "raw": "srv.serve_forever",
-   "line": 254
+   "line": 267
   },
   {
    "from": "webapp.app.main",
    "raw": "sys.exit",
-   "line": 259
+   "line": 272
   },
   {
    "from": "webapp.app.Handler._send",
@@ -44365,12 +46263,12 @@
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._send",
-   "line": 244
+   "line": 257
   },
   {
    "from": "webapp.app.main",
    "raw": "main",
-   "line": 259,
+   "line": 272,
    "to": "webapp.app.main",
    "resolved": true
   },
@@ -44589,23 +46487,48 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "payload.get",
-   "line": 228
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "orc.submit_feedback",
-   "line": 229
-  },
-  {
-   "from": "webapp.app.Handler.do_POST",
-   "raw": "text.strip",
-   "line": 233
+   "raw": "orc.chat",
+   "line": 232
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "self._json",
+   "line": 233
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.startswith",
+   "line": 235
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.endswith",
+   "line": 235
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.get_task",
+   "line": 237
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
    "line": 241
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "orc.submit_feedback",
+   "line": 242
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "text.strip",
+   "line": 246
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 254
   },
   {
    "from": "webapp.app",
@@ -44815,8 +46738,23 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
-   "raw": "bool",
+   "raw": "self._json",
    "line": 230
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "path.split",
+   "line": 236
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "self._json",
+   "line": 239
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "bool",
+   "line": 243
   },
   {
    "from": "webapp.app.Handler._json",
@@ -44919,13 +46857,18 @@
   },
   {
    "from": "webapp.app.Handler.do_POST",
+   "raw": "out.get",
+   "line": 233
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 230
+   "line": 243
   },
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "fb_route",
-   "line": 237
+   "line": 250
   },
   {
    "from": "webapp.app.Handler.do_GET",
@@ -44995,7 +46938,12 @@
   {
    "from": "webapp.app.Handler.do_POST",
    "raw": "payload.get",
-   "line": 231
+   "line": 228
+  },
+  {
+   "from": "webapp.app.Handler.do_POST",
+   "raw": "payload.get",
+   "line": 244
   },
   {
    "from": "webapp.app.Handler.do_GET",
@@ -45041,6 +46989,226 @@
    "from": "webapp.app.Handler.do_POST",
    "raw": "str",
    "line": 204
+  },
+  {
+   "from": "webapp.auto_research",
+   "raw": "sys.path.insert",
+   "line": 24
+  },
+  {
+   "from": "webapp.auto_research",
+   "raw": "str",
+   "line": 24
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "_queries",
+   "line": 98,
+   "to": "webapp.auto_research._queries",
+   "resolved": true
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "_llm_queries",
+   "line": 99,
+   "to": "webapp.auto_research._llm_queries",
+   "resolved": true
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "ResearchSession",
+   "line": 103
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "lines.append",
+   "line": 134
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "_report",
+   "line": 136,
+   "to": "webapp.auto_research._report",
+   "resolved": true
+  },
+  {
+   "from": "webapp.auto_research.trigger",
+   "raw": "sqlite3.connect",
+   "line": 142
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "s.collect",
+   "line": 108
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "s.make_shortlist",
+   "line": 109
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "s.deep_read",
+   "line": 110
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "s.conclude",
+   "line": 112
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "rh_webapp_hits",
+   "line": 122
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "lines.append",
+   "line": 129
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "lines.append",
+   "line": 132
+  },
+  {
+   "from": "webapp.auto_research.trigger",
+   "raw": "conn.close",
+   "line": 148
+  },
+  {
+   "from": "webapp.auto_research._queries",
+   "raw": "list",
+   "line": 50
+  },
+  {
+   "from": "webapp.auto_research._report",
+   "raw": "sys.path.insert",
+   "line": 77
+  },
+  {
+   "from": "webapp.auto_research._report",
+   "raw": "orc.get_task",
+   "line": 79
+  },
+  {
+   "from": "webapp.auto_research._report",
+   "raw": "_t.add_event",
+   "line": 88,
+   "to": "kb.threads.add_event",
+   "resolved": true
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "_report",
+   "line": 116,
+   "to": "webapp.auto_research._report",
+   "resolved": true
+  },
+  {
+   "from": "webapp.auto_research.trigger",
+   "raw": "threading.Thread",
+   "line": 151
+  },
+  {
+   "from": "webapp.auto_research",
+   "raw": "Path",
+   "line": 23
+  },
+  {
+   "from": "webapp.auto_research._queries",
+   "raw": "re.findall",
+   "line": 48
+  },
+  {
+   "from": "webapp.auto_research._queries",
+   "raw": "dict.fromkeys",
+   "line": 50
+  },
+  {
+   "from": "webapp.auto_research._queries",
+   "raw": "qs.items",
+   "line": 54
+  },
+  {
+   "from": "webapp.auto_research._llm_queries",
+   "raw": "client",
+   "line": 61
+  },
+  {
+   "from": "webapp.auto_research._report",
+   "raw": "str",
+   "line": 77
+  },
+  {
+   "from": "webapp.auto_research._report",
+   "raw": "orc.say",
+   "line": 81
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "len",
+   "line": 127
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "len",
+   "line": 127
+  },
+  {
+   "from": "webapp.auto_research.trigger",
+   "raw": "conn.execute",
+   "line": 144
+  },
+  {
+   "from": "webapp.auto_research._llm_queries",
+   "raw": "str",
+   "line": 66
+  },
+  {
+   "from": "webapp.auto_research._llm_queries",
+   "raw": "ok.items",
+   "line": 68
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "list",
+   "line": 102
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "q.values",
+   "line": 107
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "llm_q.values",
+   "line": 102
+  },
+  {
+   "from": "webapp.auto_research._llm_queries",
+   "raw": "out.get",
+   "line": 66
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "type",
+   "line": 117
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "str",
+   "line": 117
+  },
+  {
+   "from": "webapp.auto_research._llm_queries",
+   "raw": "str",
+   "line": 66
+  },
+  {
+   "from": "webapp.auto_research.run",
+   "raw": "f.get",
+   "line": 130
   },
   {
    "from": "webapp.hyp_runner",
@@ -45331,7 +47499,7 @@
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "threading.Lock",
-   "line": 174
+   "line": 183
   },
   {
    "from": "webapp.orchestrator",
@@ -45406,1147 +47574,1650 @@
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 111
+   "line": 112
   },
   {
    "from": "webapp.orchestrator",
    "raw": "field",
-   "line": 112
+   "line": 114
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 116
+  },
+  {
+   "from": "webapp.orchestrator",
+   "raw": "field",
+   "line": 117
   },
   {
    "from": "webapp.orchestrator.get_task",
    "raw": "TASKS.get",
-   "line": 178
+   "line": 187
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "Task",
-   "line": 183,
+   "line": 192,
    "to": "webapp.orchestrator.Task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "images_b64.items",
-   "line": 187
+   "line": 196
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "task.persist",
+   "line": 251
+  },
+  {
+   "from": "webapp.orchestrator._ask",
+   "raw": "task.ask_wait.clear",
+   "line": 261
+  },
+  {
+   "from": "webapp.orchestrator._ask",
+   "raw": "say",
+   "line": 262,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._ask",
+   "raw": "task.ask_wait.wait",
+   "line": 263
+  },
+  {
+   "from": "webapp.orchestrator._ask",
+   "raw": "say",
+   "line": 268,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "task.persist",
+   "line": 303
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "_chat_reply",
+   "line": 323,
+   "to": "webapp.orchestrator._chat_reply",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "say",
+   "line": 324,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "sorted",
-   "line": 280
+   "line": 430
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.setdefault",
-   "line": 316
+   "line": 466
+  },
+  {
+   "from": "webapp.orchestrator._kb_conn",
+   "raw": "sqlite3.connect",
+   "line": 491
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "sqlite3.connect",
-   "line": 337
+   "raw": "_kb_conn",
+   "line": 505,
+   "to": "webapp.orchestrator._kb_conn",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "conn.close",
+   "line": 520
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.sort",
-   "line": 349
+   "line": 529
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "next",
+   "line": 544
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "json.loads",
+   "line": 550
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_workflow",
+   "raw": "_kb_conn",
+   "line": 566,
+   "to": "webapp.orchestrator._kb_conn",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_workflow",
+   "raw": "conn.close",
+   "line": 570
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_workflow",
+   "raw": "_hit_from_card",
+   "line": 571,
+   "to": "webapp.orchestrator._hit_from_card",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "task.plan.get",
-   "line": 410
+   "line": 626
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "solutions.get_by_name",
-   "line": 418,
+   "line": 634,
    "to": "kb.solutions.get_by_name",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "KeyError",
-   "line": 422
+   "line": 638
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "_chain_for",
-   "line": 466,
+   "line": 725,
    "to": "webapp.orchestrator._chain_for",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 471
+   "line": 730
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 499
+   "line": 758
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.plan.get",
-   "line": 513
+   "line": 772
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.load_api_key",
-   "line": 516,
+   "line": 775,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.log",
-   "line": 519
+   "line": 778
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.run_webapp",
-   "line": 528,
+   "line": 787,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.wait_task",
-   "line": 529,
+   "line": 788,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.collect_file_urls",
-   "line": 530,
+   "line": 789,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "enumerate",
-   "line": 532
+   "line": 791
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "re.search",
+   "line": 806
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "max",
+   "line": 808
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "lst.write_text",
+   "line": 848
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "RuntimeError",
+   "line": 861
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "task.plan.get",
+   "line": 866
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "kb_search_workflow",
+   "line": 875,
+   "to": "webapp.orchestrator.kb_search_workflow",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "_t2v_hit",
+   "line": 883,
+   "to": "webapp.orchestrator._t2v_hit",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "_t2v_prompt_node",
+   "line": 887,
+   "to": "webapp.orchestrator._t2v_prompt_node",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "_t2v_segments",
+   "line": 890,
+   "to": "webapp.orchestrator._t2v_segments",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "_draft_storyboard",
+   "line": 891,
+   "to": "webapp.orchestrator._draft_storyboard",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "rh_task.load_api_key",
+   "line": 892,
+   "to": "experiments.rh_task.load_api_key",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "enumerate",
+   "line": 895
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.iterations.append",
-   "line": 573
+   "line": 957
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sqlite3.connect",
-   "line": 586
+   "line": 970
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "sorted",
-   "line": 590
+   "line": 974
   },
   {
    "from": "webapp.orchestrator.choose_card",
    "raw": "task.card_wait.set",
-   "line": 659
+   "line": 1043
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.imread",
-   "line": 666
+   "line": 1050
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 669
+   "line": 1053
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.resize",
-   "line": 671
+   "line": 1055
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "cv2.imwrite",
-   "line": 674
+   "line": 1058
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoCapture",
-   "line": 686
+   "line": 1070
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.release",
-   "line": 693
+   "line": 1077
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.array",
-   "line": 700
+   "line": 1084
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "float",
-   "line": 702
+   "line": 1086
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "Path",
-   "line": 711
+   "line": 1095
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter",
-   "line": 713
+   "line": 1097
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 715
+   "line": 1099
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.release",
-   "line": 717
+   "line": 1101
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "subprocess.run",
-   "line": 720
+   "line": 1104
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoCapture",
-   "line": 725
+   "line": 1109
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.release",
-   "line": 732
+   "line": 1116
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 734
+   "line": 1118
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter",
-   "line": 739
+   "line": 1123
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.release",
-   "line": 743
+   "line": 1127
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "subprocess.run",
-   "line": 744
+   "line": 1128
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.load_api_key",
-   "line": 760,
+   "line": 1144,
    "to": "experiments.rh_task.load_api_key",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.log",
-   "line": 793
+   "line": 1177
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.run_webapp",
-   "line": 794,
+   "line": 1178,
    "to": "experiments.rh_task.run_webapp",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.wait_task",
-   "line": 795,
+   "line": 1179,
    "to": "experiments.rh_task.wait_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "enumerate",
-   "line": 801
+   "line": 1185
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "task.feedback_wait.set",
-   "line": 1008
+   "line": 1475
   },
   {
    "from": "webapp.orchestrator.Task.dir",
    "raw": "d.mkdir",
-   "line": 116
+   "line": 121
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.persist",
-   "line": 124
+   "line": 129
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "base64.b64decode",
-   "line": 188
+   "line": 197
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "head.startswith",
-   "line": 191
+   "line": 200
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.write_bytes",
-   "line": 202
-  },
-  {
-   "from": "webapp.orchestrator.create_task",
-   "raw": "str",
    "line": 211
   },
   {
    "from": "webapp.orchestrator.create_task",
+   "raw": "str",
+   "line": 220
+  },
+  {
+   "from": "webapp.orchestrator.create_task",
    "raw": "_threads._slug",
-   "line": 215,
+   "line": 224,
    "to": "kb.threads._slug",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "_threads.ensure_thread",
-   "line": 217,
+   "line": 226,
    "to": "kb.threads.ensure_thread",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "task.messages.append",
+   "line": 249
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "_thread_ev",
+   "line": 253,
+   "to": "webapp.orchestrator._thread_ev",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._ask",
+   "raw": "say",
+   "line": 266,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "task.messages.append",
+   "line": 301
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "task.ask_wait.set",
+   "line": 306
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "submit_feedback",
+   "line": 309,
+   "to": "webapp.orchestrator.submit_feedback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "create_task",
+   "line": 315,
+   "to": "webapp.orchestrator.create_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "say",
+   "line": 318,
+   "to": "webapp.orchestrator.say",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "isinstance",
-   "line": 233
+   "line": 334
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "_llm_json",
-   "line": 255,
+   "line": 388,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "plan.get",
-   "line": 260
+   "line": 393
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "plan.setdefault",
+   "line": 402
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "alias.items",
-   "line": 287
+   "line": 437
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "_llm_json",
-   "line": 302,
+   "line": 452,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "fb.get",
-   "line": 306
+   "line": 456
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "any",
-   "line": 316
+   "line": 466
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 329
+   "line": 472
+  },
+  {
+   "from": "webapp.orchestrator.route_for_feedback",
+   "raw": "task.plan.get",
+   "line": 481
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "w.lower",
+   "line": 509
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "conn.close",
+   "line": 512
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "sum",
-   "line": 346
+   "line": 526
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "next",
-   "line": 352
+   "raw": "_hit_from_card",
+   "line": 533,
+   "to": "webapp.orchestrator._hit_from_card",
+   "resolved": true
   },
   {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "json.loads",
-   "line": 358
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "wfid.split",
+   "line": 543
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "RAW_ROOT.glob",
+   "line": 544
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "ai_p.exists",
+   "line": 548
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "ai_p.read_text",
+   "line": 550
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "ai.get",
+   "line": 551
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "ai.get",
+   "line": 553
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "str",
+   "line": 560
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.search_solutions",
-   "line": 377,
+   "line": 592,
    "to": "kb.solutions.search_solutions",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._chain_for",
    "raw": "solutions.get",
-   "line": 412,
+   "line": 628,
    "to": "kb.solutions.get",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 467
+   "line": 726
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.images.get",
-   "line": 468
+   "line": 727
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 508
+   "line": 767
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "RuntimeError",
-   "line": 515
+   "line": 774
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.images.get",
-   "line": 517
+   "line": 776
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.upload_file",
-   "line": 524,
+   "line": 783,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "node_info.append",
-   "line": 525
+   "line": 784
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "files.append",
-   "line": 534
+   "line": 793
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "max",
+   "line": 807
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "min",
+   "line": 808
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "hit.get",
+   "line": 813
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "next",
+   "line": 814
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "next",
+   "line": 816
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "next",
+   "line": 819
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "task.plan.get",
+   "line": 825
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "_llm_json",
+   "line": 834,
+   "to": "webapp.orchestrator._llm_json",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "task.dir",
+   "line": 847
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "task.dir",
+   "line": 850
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "solutions.get",
+   "line": 867,
+   "to": "kb.solutions.get",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "RuntimeError",
+   "line": 885
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "RuntimeError",
+   "line": 889
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "task.log",
+   "line": 896
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "rh_task.run_webapp",
+   "line": 900,
+   "to": "experiments.rh_task.run_webapp",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "tids.append",
+   "line": 901
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "rh_task.wait_task",
+   "line": 902,
+   "to": "experiments.rh_task.wait_task",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "rh_task.download",
+   "line": 907,
+   "to": "experiments.rh_task.download",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "seg_files.append",
+   "line": 908
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "len",
+   "line": 910
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "task.log",
+   "line": 911
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "task.plan.get",
+   "line": 922
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "dict",
-   "line": 588
+   "line": 972
   },
   {
    "from": "webapp.orchestrator._thread_ev",
    "raw": "_t.add_event",
-   "line": 642,
+   "line": 1026,
    "to": "kb.threads.add_event",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "str",
-   "line": 666
+   "line": 1050
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "RuntimeError",
-   "line": 668
+   "line": 1052
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "int",
-   "line": 670
+   "line": 1054
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "int",
-   "line": 670
+   "line": 1054
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 672
+   "line": 1056
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "max",
-   "line": 672
+   "line": 1056
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "str",
-   "line": 674
+   "line": 1058
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 686
+   "line": 1070
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.read",
-   "line": 689
+   "line": 1073
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "frames.append",
-   "line": 692
+   "line": 1076
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 694
+   "line": 1078
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "shutil.copy",
-   "line": 696
+   "line": 1080
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.median",
-   "line": 702
+   "line": 1086
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "np.where",
-   "line": 703
+   "line": 1087
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 704
+   "line": 1088
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "shutil.copy",
-   "line": 706
+   "line": 1090
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "max",
-   "line": 708
+   "line": 1092
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "min",
-   "line": 708
+   "line": 1092
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "tempfile.mkdtemp",
-   "line": 711
+   "line": 1095
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 713
+   "line": 1097
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter_fourcc",
-   "line": 713
+   "line": 1097
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.write",
-   "line": 716
+   "line": 1100
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 725
+   "line": 1109
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cap.read",
-   "line": 728
+   "line": 1112
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "interp.append",
-   "line": 731
+   "line": 1115
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "round",
-   "line": 734
+   "line": 1118
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "min",
-   "line": 735
+   "line": 1119
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 739
+   "line": 1123
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.VideoWriter_fourcc",
-   "line": 739
+   "line": 1123
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "vw.write",
-   "line": 742
+   "line": 1126
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.images.get",
-   "line": 761
+   "line": 1145
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "first.exists",
-   "line": 762
+   "line": 1146
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 763
+   "line": 1147
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_to_169",
-   "line": 769,
+   "line": 1153,
    "to": "webapp.orchestrator._to_169",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_to_169",
-   "line": 770,
+   "line": 1154,
    "to": "webapp.orchestrator._to_169",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 772,
+   "line": 1156,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 773,
+   "line": 1157,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.upload_file",
-   "line": 777,
+   "line": 1161,
    "to": "experiments.rh_task.upload_file",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "node_info.append",
-   "line": 784
+   "line": 1168
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 799
+   "line": 1183
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.download",
-   "line": 802,
+   "line": 1186,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "files.append",
-   "line": 803
+   "line": 1187
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.log",
-   "line": 805
+   "line": 1189
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "_retiming",
-   "line": 807,
+   "line": 1191,
    "to": "webapp.orchestrator._retiming",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "files.insert",
-   "line": 808
+   "line": 1192
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 821
+   "line": 1205
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 828
+   "line": 1212
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 970,
+   "line": 1431,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1433,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 972,
+   "line": 1434,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 973
+   "line": 1435
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "task.messages.append",
+   "line": 1449
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "self.timeline.append",
-   "line": 121
+   "line": 126
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "head.startswith",
-   "line": 193
+   "line": 202
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "task.dir",
-   "line": 201
+   "line": 210
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "cv2.imread",
-   "line": 207
+   "line": 216
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "p.relative_to",
-   "line": 211
+   "line": 220
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "threading.Thread",
-   "line": 223
+   "line": 232
+  },
+  {
+   "from": "webapp.orchestrator._chat_reply",
+   "raw": "task.plan.get",
+   "line": 277
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "say",
+   "line": 311,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "task.plan.setdefault",
+   "line": 322
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "client",
-   "line": 232
+   "line": 333
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "_t.digest",
+   "line": 352,
+   "to": "kb.threads.digest",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 261
+   "line": 396
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "plan.get",
+   "line": 406
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "plan.setdefault",
+   "line": 408
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 270
+   "line": 420
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.search",
-   "line": 274
+   "line": 424
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "range",
+   "line": 507
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "re.search",
+   "line": 508
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "re.findall",
+   "line": 510
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "conn.execute",
-   "line": 340
+   "line": 516
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "scored.append",
-   "line": 348
+   "line": 528
   },
   {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "wfid.split",
-   "line": 351
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "any",
+   "line": 554
   },
   {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "ai_p.exists",
-   "line": 356
-  },
-  {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "ai_p.read_text",
-   "line": 358
-  },
-  {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "ai.get",
-   "line": 359
+   "from": "webapp.orchestrator._hit_from_workflow",
+   "raw": "conn.execute",
+   "line": 567
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.FACE_SWAP_RE.search",
-   "line": 375
+   "line": 586
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "len",
-   "line": 384
+   "line": 600
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "_llm_json",
-   "line": 394,
+   "line": 610,
    "to": "webapp.orchestrator._llm_json",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "pick.get",
-   "line": 395
+   "line": 611
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.input_fingerprint",
-   "line": 430,
+   "line": 647,
    "to": "kb.solutions.input_fingerprint",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.record_success",
-   "line": 431,
+   "line": 648,
    "to": "kb.solutions.record_success",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 474
+   "line": 733
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 475,
+   "line": 734,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 478
+   "line": 737
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 479
+   "line": 738
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 499
+   "line": 758
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "str",
-   "line": 503
+   "line": 762
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 508
+   "line": 767
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "str",
-   "line": 534
+   "line": 793
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "min",
+   "line": 807
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "round",
+   "line": 808
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "task.plan.get",
+   "line": 826
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "len",
+   "line": 837
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "subprocess.run",
+   "line": 855
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "str",
+   "line": 858
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "next",
+   "line": 869
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "RuntimeError",
+   "line": 906
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "str",
+   "line": 908
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "len",
+   "line": 923
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "len",
+   "line": 923
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "diagnose",
-   "line": 564
+   "line": 948
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 575
+   "line": 959
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 577
+   "line": 961
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "sorted",
-   "line": 578
+   "line": 962
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "conn.execute",
-   "line": 589
+   "line": 973
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 597
+   "line": 981
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "suffix.append",
-   "line": 613
+   "line": 997
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "suffix.append",
-   "line": 619
+   "line": 1003
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "suffix.append",
-   "line": 625
+   "line": 1009
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "round",
-   "line": 670
+   "line": 1054
   },
   {
    "from": "webapp.orchestrator._to_169",
    "raw": "round",
-   "line": 670
+   "line": 1054
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "float",
-   "line": 700
+   "line": 1084
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 708
+   "line": 1092
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 721
+   "line": 1105
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 724
+   "line": 1108
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 735
+   "line": 1119
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 736
+   "line": 1120
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 745
+   "line": 1129
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "str",
-   "line": 746
+   "line": 1130
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "RuntimeError",
-   "line": 768
+   "line": 1152
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "rh_task.collect_file_urls",
-   "line": 796,
+   "line": 1180,
    "to": "experiments.rh_task.collect_file_urls",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "str",
-   "line": 803
+   "line": 1187
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 806
+   "line": 1190
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "str",
-   "line": 808
+   "line": 1192
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "boundaries.check",
-   "line": 824,
+   "line": 1208,
    "to": "kb.boundaries.check",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "boundaries.cards_for_api",
-   "line": 829,
+   "line": 1213,
    "to": "kb.boundaries.cards_for_api",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 831
+   "line": 1215
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 835
+   "line": 1219
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.card_wait.wait",
-   "line": 836
+   "line": 1220
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "max",
-   "line": 840
+   "line": 1224
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 843
+   "line": 1227
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_thread_ev",
-   "line": 846,
+   "line": 1230,
    "to": "webapp.orchestrator._thread_ev",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pick_solution",
-   "line": 867,
+   "line": 1252,
    "to": "webapp.orchestrator._pick_solution",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1321,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 896,
+   "line": 1322,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 897
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.log",
-   "line": 901
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "kb_search_workflow",
-   "line": 902,
-   "to": "webapp.orchestrator.kb_search_workflow",
-   "resolved": true
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.log",
-   "line": 912
+   "line": 1323
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 916
+   "line": 1363
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 918
+   "line": 1365
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "evaluate_round",
-   "line": 937,
+   "line": 1387,
    "to": "webapp.orchestrator.evaluate_round",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 939
+   "line": 1389
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 950
+   "line": 1401
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1405,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.clear",
-   "line": 951
+   "line": 1411
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.feedback_wait.wait",
-   "line": 952
+   "line": 1412
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 954
+   "line": 1414
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 967,
+   "line": 1428,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1440,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 978
+   "line": 1441
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "fb.update",
-   "line": 988
+   "line": 1455
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "record_user_ruling",
-   "line": 997
+   "line": 1464
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "_thread_ev",
-   "line": 1003,
+   "line": 1470,
    "to": "webapp.orchestrator._thread_ev",
    "resolved": true
   },
@@ -46558,820 +49229,1257 @@
   {
    "from": "webapp.orchestrator.Task.snapshot",
    "raw": "bool",
-   "line": 138
+   "line": 143
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "json.dumps",
-   "line": 147
+   "line": 154
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "_t.add_event",
-   "line": 157,
+   "line": 164,
    "to": "kb.threads.add_event",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "time.strftime",
-   "line": 183
+   "line": 192
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "b64.split",
-   "line": 188
+   "line": 197
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "head.startswith",
-   "line": 195
+   "line": 204
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "ValueError",
-   "line": 205
+   "line": 214
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "str",
-   "line": 207
+   "line": 216
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "ValueError",
-   "line": 209
+   "line": 218
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "round",
+   "line": 249
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "round",
+   "line": 301
   },
   {
    "from": "webapp.orchestrator._llm_json",
    "raw": "str",
-   "line": 233
+   "line": 334
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "re.search",
+   "line": 397
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "re.fullmatch",
-   "line": 280
+   "line": 430
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "len",
-   "line": 285
+   "line": 435
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "json.dumps",
-   "line": 297
+   "line": 447
   },
   {
    "from": "webapp.orchestrator.classify_feedback",
    "raw": "intents.append",
-   "line": 314
+   "line": 464
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "fb.get",
-   "line": 322
+   "line": 474
   },
   {
    "from": "webapp.orchestrator.route_for_feedback",
    "raw": "task.plan.get",
-   "line": 324
+   "line": 476
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "re.split",
-   "line": 339
+   "raw": "round",
+   "line": 535
   },
   {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "text.count",
-   "line": 346
-  },
-  {
-   "from": "webapp.orchestrator.kb_search_workflow",
-   "raw": "ai.get",
-   "line": 363
+   "from": "webapp.orchestrator._pick_solution",
+   "raw": "re.search",
+   "line": 587
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "abs",
-   "line": 383
+   "line": 599
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 437
+   "line": 654
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.plan.get",
-   "line": 442
+   "line": 681
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 456
+   "line": 715
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "step.get",
-   "line": 483
+   "line": 742
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.log",
-   "line": 484
+   "line": 743
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "sf.run_swap",
-   "line": 485,
+   "line": 744,
    "to": "swap_face.run_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "extract_result_image",
-   "line": 489
+   "line": 748
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 492
+   "line": 751
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "cur.relative_to",
-   "line": 499
+   "line": 758
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "s.get",
-   "line": 502
+   "line": 761
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "enumerate",
-   "line": 505
+   "line": 764
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "u.lower",
-   "line": 533
+   "line": 792
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "int",
+   "line": 807
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "dst.relative_to",
+   "line": 858
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "_hit_from_workflow",
+   "line": 872,
+   "to": "webapp.orchestrator._hit_from_workflow",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "rh_task.collect_file_urls",
+   "line": 903,
+   "to": "experiments.rh_task.collect_file_urls",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "task.dir",
+   "line": 907
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "_concat_videos",
+   "line": 913,
+   "to": "webapp.orchestrator._concat_videos",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "task.log",
+   "line": 915
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ROUTE_CHAINS.get",
-   "line": 553
+   "line": 937
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "next",
-   "line": 554
+   "line": 938
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "evaluate",
-   "line": 559
+   "line": 943
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "it.get",
-   "line": 590
+   "line": 974
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "client",
-   "line": 603
+   "line": 987
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "bars.items",
-   "line": 610
+   "line": 994
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "enumerate",
-   "line": 621
+   "line": 1005
   },
   {
    "from": "webapp.orchestrator.choose_card",
    "raw": "len",
-   "line": 656
+   "line": 1040
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "cv2.resize",
-   "line": 699
+   "line": 1083
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "range",
-   "line": 701
+   "line": 1085
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 708
+   "line": 1092
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "int",
-   "line": 708
+   "line": 1092
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 735
+   "line": 1119
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "round",
-   "line": 735
+   "line": 1119
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.plan.get",
-   "line": 759
+   "line": 1143
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 769
+   "line": 1153
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 771
+   "line": 1155
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "task.dir",
-   "line": 802
+   "line": 1186
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "p.relative_to",
-   "line": 803
+   "line": 1187
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "dst.relative_to",
-   "line": 808
+   "line": 1192
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "list",
-   "line": 824
+   "line": 1208
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 839
+   "line": 1223
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "min",
-   "line": 840
+   "line": 1224
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1242,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 858,
+   "line": 1243,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 859
+   "line": 1244
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "solutions.record_reuse",
-   "line": 877,
+   "line": 1262,
    "to": "kb.solutions.record_reuse",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 878
+   "line": 1263
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "plan_task",
-   "line": 880,
+   "line": 1265,
    "to": "webapp.orchestrator.plan_task",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 881
+   "line": 1266
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 882
+   "line": 1267
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "need.get",
-   "line": 888
+   "line": 1300
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.plan.get",
-   "line": 889
+   "line": 1302
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 891,
+   "line": 1319,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 1330
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "kb_search_workflow",
+   "line": 1331,
+   "to": "webapp.orchestrator.kb_search_workflow",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 1342
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 1344
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_t2v_hit",
+   "line": 1345,
+   "to": "webapp.orchestrator._t2v_hit",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.log",
+   "line": 1356
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1357,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 906,
+   "line": 1393,
    "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1395,
+   "to": "webapp.orchestrator.say",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 908,
+   "line": 1396,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 909
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "write_explanation",
-   "line": 943,
-   "to": "webapp.orchestrator.write_explanation",
-   "resolved": true
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "_writeback",
-   "line": 945,
-   "to": "webapp.orchestrator._writeback",
-   "resolved": true
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.persist",
-   "line": 946
+   "line": 1397
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 958
+   "line": 1418
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 958
+   "line": 1418
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "write_explanation",
-   "line": 960,
+   "line": 1420,
    "to": "webapp.orchestrator.write_explanation",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1422,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "_writeback",
-   "line": 962,
+   "line": 1423,
    "to": "webapp.orchestrator._writeback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.persist",
-   "line": 963
+   "line": 1424
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "round",
+   "line": 1449
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "bool",
+   "line": 1451
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
    "raw": "classify_feedback",
-   "line": 988,
+   "line": 1455,
    "to": "webapp.orchestrator.classify_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "round",
-   "line": 121
+   "line": 126
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.snapshot",
-   "line": 147
+   "line": 154
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "head.startswith",
-   "line": 197
+   "line": 206
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "time.time",
+   "line": 249
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "str",
+   "line": 250
+  },
+  {
+   "from": "webapp.orchestrator.say",
+   "raw": "str",
+   "line": 254
+  },
+  {
+   "from": "webapp.orchestrator._chat_reply",
+   "raw": "e.get",
+   "line": 274
+  },
+  {
+   "from": "webapp.orchestrator._chat_reply",
+   "raw": "client",
+   "line": 284
+  },
+  {
+   "from": "webapp.orchestrator.chat",
+   "raw": "time.time",
+   "line": 301
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "sorted",
-   "line": 240
+   "line": 347
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "str",
-   "line": 257
+   "line": 390
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "alias.items",
-   "line": 291
+   "line": 441
   },
   {
    "from": "webapp.orchestrator.kb_search_workflow",
    "raw": "len",
-   "line": 339
+   "line": 507
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.plan.get",
-   "line": 432
+   "line": 649
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.final_workflow.get",
+   "line": 659
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "solutions.register_solution",
+   "line": 663,
+   "to": "kb.solutions.register_solution",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "task.log",
+   "line": 679
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "bool",
-   "line": 443
+   "line": 682
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "solutions.open_gap",
-   "line": 445,
+   "line": 685,
    "to": "kb.solutions.open_gap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "task.log",
-   "line": 451
+   "line": 694
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 488
+   "line": 747
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 488
+   "line": 747
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "color_match",
-   "line": 496
+   "line": 755
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "steps_meta.append",
-   "line": 498
+   "line": 757
+  },
+  {
+   "from": "webapp.orchestrator._t2v_segments",
+   "raw": "m.group",
+   "line": 807
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "out.get",
+   "line": 835
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "isinstance",
+   "line": 836
+  },
+  {
+   "from": "webapp.orchestrator._draft_storyboard",
+   "raw": "p.strip",
+   "line": 836
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "str",
+   "line": 856
+  },
+  {
+   "from": "webapp.orchestrator._concat_videos",
+   "raw": "str",
+   "line": 856
+  },
+  {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "s.get",
+   "line": 869
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "len",
+   "line": 897
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "len",
+   "line": 911
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "task.plan.get",
-   "line": 553
+   "line": 937
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "r.startswith",
-   "line": 582
+   "line": 966
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "json.dumps",
-   "line": 593
+   "line": 977
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "isinstance",
-   "line": 611
+   "line": 995
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "bool",
-   "line": 849
+   "line": 1233
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1273,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_ask",
+   "line": 1279,
+   "to": "webapp.orchestrator._ask",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1289,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 1335,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1337,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 1338,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 1339
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "write_explanation",
+   "line": 1349,
+   "to": "webapp.orchestrator.write_explanation",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1351,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_writeback",
+   "line": 1352,
+   "to": "webapp.orchestrator._writeback",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 1353
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_face_swap",
-   "line": 920,
+   "line": 1367,
    "to": "webapp.orchestrator._exec_face_swap",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "task.log",
-   "line": 926
+   "line": 1375
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "route_for_feedback",
-   "line": 933,
+   "line": 1383,
    "to": "webapp.orchestrator.route_for_feedback",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator.submit_feedback",
+   "raw": "time.time",
+   "line": 1449
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
    "raw": "task.plan.get",
-   "line": 1000
+   "line": 1467
   },
   {
    "from": "webapp.orchestrator.Task.log",
    "raw": "time.time",
-   "line": 121
+   "line": 126
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.dir",
-   "line": 146
+   "line": 153
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "self.plan.get",
-   "line": 161
+   "line": 168
   },
   {
    "from": "webapp.orchestrator.create_task",
    "raw": "uuid.uuid4",
-   "line": 183
+   "line": 192
+  },
+  {
+   "from": "webapp.orchestrator._chat_reply",
+   "raw": "e.get",
+   "line": 274
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "task.images.items",
-   "line": 240
+   "line": 347
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "str",
+   "line": 409
+  },
+  {
+   "from": "webapp.orchestrator.plan_task",
+   "raw": "plan.get",
+   "line": 411
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "str",
+   "line": 523
+  },
+  {
+   "from": "webapp.orchestrator.kb_search_workflow",
+   "raw": "len",
+   "line": 528
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "chr",
-   "line": 390
+   "line": 606
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 490
+   "line": 749
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "task.dir",
-   "line": 495
+   "line": 754
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "rh_task.download",
-   "line": 534,
+   "line": 793,
    "to": "experiments.rh_task.download",
    "resolved": true
   },
   {
+   "from": "webapp.orchestrator._t2v_hit",
+   "raw": "s.get",
+   "line": 870
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "Path",
+   "line": 908
+  },
+  {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.items",
-   "line": 565
+   "line": 949
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "isinstance",
-   "line": 566
+   "line": 950
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev.get",
-   "line": 568
+   "line": 952
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "best_ev.get",
-   "line": 569
+   "line": 953
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "str",
-   "line": 572
+   "line": 956
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 577
+   "line": 961
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "ev_all.values",
-   "line": 578
+   "line": 962
   },
   {
    "from": "webapp.orchestrator.evaluate_round",
    "raw": "v.get",
-   "line": 579
+   "line": 963
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "fams.items",
-   "line": 597
+   "line": 981
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "abs",
-   "line": 611
+   "line": 995
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "c.get",
-   "line": 622
+   "line": 1006
   },
   {
    "from": "webapp.orchestrator._retiming",
    "raw": "len",
-   "line": 701
+   "line": 1085
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 832
+   "line": 1216
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 838
+   "line": 1222
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "len",
-   "line": 840
+   "line": 1224
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 855
+   "line": 1239
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 1272
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_exec_video_transition",
-   "line": 922,
+   "line": 1369,
    "to": "webapp.orchestrator._exec_video_transition",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
+   "raw": "str",
+   "line": 1378
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "say",
+   "line": 1380,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.persist",
+   "line": 1381
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "fb.get",
+   "line": 1417
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "type",
+   "line": 1439
+  },
+  {
+   "from": "webapp.orchestrator.submit_feedback",
+   "raw": "json.dumps",
+   "line": 1468
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "last.get",
+   "line": 167
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "self.plan.get",
+   "line": 167
+  },
+  {
+   "from": "webapp.orchestrator.Task.persist",
+   "raw": "round",
+   "line": 172
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "fw.get",
+   "line": 673
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "trigger",
+   "line": 702
+  },
+  {
+   "from": "webapp.orchestrator._exec_face_swap",
+   "raw": "Path",
+   "line": 736
+  },
+  {
+   "from": "webapp.orchestrator._exec_kb_generic",
+   "raw": "n.get",
+   "line": 780
+  },
+  {
+   "from": "webapp.orchestrator.evaluate_round",
+   "raw": "chain.get",
+   "line": 938
+  },
+  {
+   "from": "webapp.orchestrator._retiming",
+   "raw": "np.abs",
+   "line": 1084
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 1268
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_exec_t2v",
+   "line": 1371,
+   "to": "webapp.orchestrator._exec_t2v",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
    "raw": "_exec_kb_generic",
-   "line": 924,
+   "line": 1373,
    "to": "webapp.orchestrator._exec_kb_generic",
    "resolved": true
   },
   {
    "from": "webapp.orchestrator._run_task",
-   "raw": "str",
-   "line": 929
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.persist",
-   "line": 931
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 957
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "type",
-   "line": 977
-  },
-  {
-   "from": "webapp.orchestrator.submit_feedback",
-   "raw": "json.dumps",
-   "line": 1001
+   "line": 1415
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "last.get",
-   "line": 160
-  },
-  {
-   "from": "webapp.orchestrator.Task.persist",
-   "raw": "self.plan.get",
-   "line": 160
-  },
-  {
-   "from": "webapp.orchestrator.Task.persist",
-   "raw": "round",
-   "line": 165
-  },
-  {
-   "from": "webapp.orchestrator._exec_face_swap",
-   "raw": "Path",
-   "line": 477
-  },
-  {
-   "from": "webapp.orchestrator._exec_kb_generic",
-   "raw": "n.get",
-   "line": 521
-  },
-  {
-   "from": "webapp.orchestrator.evaluate_round",
-   "raw": "chain.get",
-   "line": 554
-  },
-  {
-   "from": "webapp.orchestrator._retiming",
-   "raw": "np.abs",
-   "line": 700
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "task.plan.get",
-   "line": 883
-  },
-  {
-   "from": "webapp.orchestrator._run_task",
-   "raw": "fb.get",
-   "line": 955
-  },
-  {
-   "from": "webapp.orchestrator.Task.persist",
-   "raw": "last.get",
-   "line": 164
+   "line": 171
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "isinstance",
-   "line": 167
+   "line": 174
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "info.get",
-   "line": 438
+   "line": 655
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "say",
+   "line": 707,
+   "to": "webapp.orchestrator.say",
+   "resolved": true
   },
   {
    "from": "webapp.orchestrator._writeback",
    "raw": "type",
-   "line": 456
+   "line": 715
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "Path",
-   "line": 487
+   "line": 746
   },
   {
    "from": "webapp.orchestrator._exec_face_swap",
    "raw": "len",
-   "line": 488
+   "line": 747
   },
   {
    "from": "webapp.orchestrator._exec_kb_generic",
    "raw": "task.dir",
-   "line": 535
+   "line": 794
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "n.get",
+   "line": 818
   },
   {
    "from": "webapp.orchestrator._exec_video_transition",
    "raw": "u.lower",
-   "line": 797
+   "line": 1181
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "_pre.get",
-   "line": 856
+   "line": 1240
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "_t2v_segments",
+   "line": 1276,
+   "to": "webapp.orchestrator._t2v_segments",
+   "resolved": true
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 1291
   },
   {
    "from": "webapp.orchestrator._run_task",
    "raw": "fb.get",
-   "line": 956
+   "line": 1416
   },
   {
    "from": "webapp.orchestrator.plan_task",
    "raw": "Path",
-   "line": 239
+   "line": 346
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "fw.get",
+   "line": 669
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "fw.get",
+   "line": 670
+  },
+  {
+   "from": "webapp.orchestrator._writeback",
+   "raw": "fw.get",
+   "line": 671
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "n.get",
+   "line": 819
+  },
+  {
+   "from": "webapp.orchestrator._exec_t2v",
+   "raw": "u.lower",
+   "line": 904
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 1290
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "n.get",
+   "line": 557
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "n.get",
+   "line": 815
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "n.get",
+   "line": 815
+  },
+  {
+   "from": "webapp.orchestrator._t2v_prompt_node",
+   "raw": "n.get",
+   "line": 816
   },
   {
    "from": "webapp.orchestrator.write_explanation",
    "raw": "c.get",
-   "line": 628
+   "line": 1012
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "task.plan.get",
+   "line": 1286
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "cn.get",
+   "line": 1315
+  },
+  {
+   "from": "webapp.orchestrator._run_task",
+   "raw": "json.dumps",
+   "line": 1407
   },
   {
    "from": "webapp.orchestrator.Task.persist",
    "raw": "last.get",
-   "line": 166
+   "line": 173
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "n.get",
+   "line": 555
+  },
+  {
+   "from": "webapp.orchestrator._hit_from_card",
+   "raw": "n.get",
+   "line": 556
   },
   {
    "from": "webapp.orchestrator._pick_solution",
    "raw": "solutions.get",
-   "line": 390,
+   "line": 606,
    "to": "kb.solutions.get",
    "resolved": true
   }
