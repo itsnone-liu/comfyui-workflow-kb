@@ -9,6 +9,23 @@
 
 ## 2026-08-27 会话进展
 
+### 三段链段3 直出图片 ✅（用户："最后输出应该是图片，有没有办法"）
+
+**改造**：段3 scail2（wf `2092820995869847553`）内加 `ImageFromBatch`
+(节点300, batch_index=14=hairchain_B 实测最优帧位) → `SaveImage`(节点301)
+——从 GIMMVFI_interpolate(130) 帧序列抽帧直存。**编辑器/webapp/Task API
+三跑法都返回 PNG+mp4 双产物**（任务 2092881408761028609 SUCCESS 664s 验证，
+与 ffmpeg 手动抽帧 S_02 像素差 mean 3.1）。交付链不再需要本地 ffmpeg 选帧。
+画廊 9 号 = 工作流原生直出的 PNG。
+
+**踩坑链（全入 KB #41）**：①手工造节点必须严格对准输入名——
+ImageFromBatch 是 `image` 不是 `images`，错名分支被**静默丢弃**（任务照样
+SUCCESS 只有 mp4，编辑器节点红点）；setContent 后 getContent 回读 inputs
+可零币自查。②getJsonApiFormat 缓存=最近一次成功运行的 prompt，setContent
+不刷新，编辑器成功跑一次才进缓存。③`/api/output/v2/history` 只显示已完成
+任务，运行中不可见。④编辑器就绪信号=顶栏 Run 按钮出现（"Save manually"
+文本出现太早，Ctrl+Enter 会打空）。
+
 ### H3 电影感 LoRA 文章吸收 + 双采/LoRA 双 facet 实测 ✅（用户：知乎链接 → 测试 minimax 文生视频 10 秒工作流）
 
 **知乎抓取突破**：zhuanlan 直抓/jina/知乎API/Wayback/全新浏览器档案全 403
