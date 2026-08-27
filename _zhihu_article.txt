@@ -1,0 +1,94 @@
+TITLE: MiniMax H3 电影感 LoRA 开源了！附保姆级使用教程 - 知乎
+URL: https://zhuanlan.zhihu.com/p/2076237959842501904
+
+推荐一个 MiniMax H3 真实电影感 LoRA，免费开源，附完整使用指南。这篇文章带你快速了解它是什么、好在哪、怎么用。
+
+这是什么：MiniMax H3 电影感 LoRA
+
+MiniMax H3 是 MiniMax 海螺 AI 系列的最新视频生成模型，支持文生视频、图生视频，在 ComfyUI 中已经可以完整跑通本地工作流。
+
+而这次开源的电影感 LoRA，是针对 H3 模型专门训练的风格微调权重。它的作用是让 AI 生成的视频画面摆脱常见的塑料感、AI 味，从光影、色彩、颗粒度、镜头语言这些层面整体逼近真实电影质感。
+
+简单说，就是给你的视频生成加一层电影级的美学滤镜，而且是长在模型权重里的那种，不是后期调色能完全替代的。
+
+核心亮点
+
+开源免费，网盘直下
+
+模型权重直接放在网盘里，免费下载，不需要付费订阅，也不需要排队等 API 额度。
+
+真实电影质感
+
+从视频演示来看，生成画面在胶片颗粒、对比度、色彩倾向、暗部层次上都有明显的电影感提升，适合做短片、预告片、氛围镜头这类创作场景。
+
+ComfyUI 原生支持
+
+整个工作流跑在 ComfyUI 里，配合社区生态，可玩性很高。视频里还专门提到了 Block Cache 和 Latent Upscale 相关节点，说明发布者对性能优化和画质放大都有完整方案。
+
+跑不动也能玩
+
+本地显存不够的，UP 主还给了线上体验方案，免费领取点数直接在云端跑。
+
+保姆级使用指南
+
+整个安装过程分三步：装节点、下模型、跑工作流。
+
+第一步：安装 ComfyUI 插件节点
+
+视频简介里明确列了需要的插件节点，逐个克隆到 ComfyUI 的 custom_nodes 目录即可：
+
+安装方式都是标准的：
+
+
+
+
+class="language-bash">cd ComfyUI/custom_nodes
+git clone https://github.com/yolain/ComfyUI-Easy-Use.git
+git clone https://github.com/kijai/ComfyUI-KJNodes.git
+git clone https://github.com/T8mars/comfyui-minimax-h3-blockcache-T8.git
+git clone https://github.com/wjc573/ComfyUI-H3LatentUpscale-jingchen573.git
+git clone https://github.com/LBH-123-AI/Comfyui_Minimax_h3_latent_Upscaler.git
+git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+git clone https://github.com/rgthree/rgthree-comfy.git
+
+
+
+装完后重启 ComfyUI，确认节点加载无报错。
+
+第二步：下载模型权重
+
+从网盘下载 LoRA 权重文件，放到 ComfyUI 的 models/loras 目录（具体路径以视频中的工作流说明为准）。
+
+第三步：加载工作流
+
+打开 UP 主提供的工作流文件，检查以下几点：
+
+1模型加载器指向正确的 H3 底模和 LoRA 权重
+
+2Block Cache 节点参数按推荐值设置，能显著减少重复计算、加速出图
+
+3Latent Upscale 节点接在采样器之后，用于潜空间放大，提升最终画质
+
+4采样参数参考视频演示的配置，一般不需要大改
+
+一切就绪后点击运行，就能看到电影感画面一帧帧生成了。
+
+注意事项
+
+显存要求：H3 是视频生成模型，对显存有一定要求，本地跑不动的话优先用 UP 主提供的线上体验方案，别硬扛。
+
+节点版本：Block Cache 和 Latent Upscale 节点迭代比较快，如果遇到报错，先检查节点是否更新到最新版。
+
+权重路径：LoRA 文件放对目录，工作流里的名字要跟文件名完全一致，大小写都要对上。
+
+资源获取
+
+模型下载网盘链接（免费）：
+
+https://pan.quark.cn/s/017890070dd6
+
+小结
+
+MiniMax H3 电影感 LoRA 的开源，让普通创作者离真实电影质感又近了一步。它把过去需要专业调色师、专业布光团队才能实现的视觉风格，压缩进了一组模型权重里，ComfyUI 生态也足够成熟，装好节点就能开工。
+
+如果你也在玩 H3 视频生成，这个 LoRA 值得一试。评论区聊聊你的使用体验。
