@@ -1,4 +1,4 @@
-# 进度快照 —— 2026-08-25（M0-M11 + M15-M18设计 + DLC/H3 全日弧 + M19 四条意见修复；git+codegraph 已推远端 ✅）
+# 进度快照 —— 2026-08-26（hairchain_A 组合管线三约束达标 + M0-M11 + M15-M18设计 + DLC/H3 全日弧 + M19 四条意见修复；git+codegraph 已推远端 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
@@ -6,6 +6,40 @@
 > 代码结构查询：`analyzer/codegraph.py`（118 模块 / 8032 调用点，M19 后重建）。
 
 ## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 + M17 设计 + DLC 验证 ✅
+
+## 2026-08-26 会话进展
+
+### hairchain_A：换脸完整三约束组合管线 ✅（用户任务：发型也跟参考图）
+
+**需求** = M8 完整需求 = STATUS 挂起的"组合管线机会"：身份跟 ref + 表情跟
+target + **发型跟 ref**。**路线 = reactor(换脸) → FLUX.2 Klein(指令换发型)
+串联**（耦合律决定非指令路线不可达，Klein 指令段补发型通道）。
+
+**实测**（in/被换脸.jpg × in/脸部参考图.jpg，任务 2092779072482992130 +
+2092779243564457985，2 任务 ~150s，`data/swap/hairchain_A/`）：
+
+| 指标 | step1 reactor | final(+Klein) | 判定 |
+|---|---|---|---|
+| identity_vs_ref | 0.7545 | **0.6749** | ✓ 远超 0.363（Klein 漂移 -0.08） |
+| identity_vs_target | 0.0616 | 0.0412 | ✓ 原身份清除 |
+| expr_follow_target | 0.008 | **0.050** | ✓ <0.1 精确 |
+| hair_vs_ref/target(hist) | 0.33/0.85 | 0.42/0.76 | 方向正确；dark-on-dark 弱区分 |
+| VL 发型三要素 | — | **颜色/纹理/长度全=ref** | ✓✓ |
+
+VL 复核：表情/场景=图3(target)✓；"脸颊白色膏状物"实为 target 场景内容（非
+伪影）；轻微重生成伪影（手指/发际线）+ 原图水印被放大。
+
+**落库**：BL-008 发型-表情耦合律（law，M8+本次复验）；DR-005 串联路线卡
+（recommended，四行文案规范）；`expert_solutions.reactor_klein_hair_chain`
+(candidate #20，route_json 两步可回放)；**flux2_klein_hair candidate→
+validated**（第2个不同输入=reactor 合成输出）；verified_result #38 总 38 条。
+
+**坑（复发第二次）**：cv2.imread 读不了中文文件名（脸部参考图.jpg）→
+swap_face.run_swap 内置指标计算全挂（云端任务不受影响）。本地评测一律先做
+ASCII 副本（in/_ref_ascii.jpg、_tgt_ascii.jpg；此前的 _tmp 文件即同坑产物）。
+工具：`_task_hair_chain.py`(驱动) / `_task_hair_eval.py`(ASCII 补评) /
+`_task_hair_writeback.py`(落库)。
+
 
 ## 2026-08-25 会话进展
 
