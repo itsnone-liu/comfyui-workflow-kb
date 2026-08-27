@@ -74,6 +74,22 @@ with sync_playwright() as p:
     if not ready:
         raise SystemExit("editor never became ready")
 
+    # 关闭阻碍性弹窗(银行账户通知等), 绝不点 Update Now
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(1200)
+    for bname in ("Later", "稍后", "暂不", "Not Now", "Close", "关闭",
+                  "取消", "Ignore", "x"):
+        try:
+            loc = page.get_by_role("button", name=bname, exact=False)
+            if loc.count():
+                loc.first.click(timeout=2000)
+                print(f"  [modal dismissed] {bname!r}", flush=True)
+                break
+        except Exception:
+            continue
+    page.wait_for_timeout(800)
+    page.screenshot(path=str(HERE / "_seg3_ed_modal.png"))
+
     page.mouse.click(1000, 400)
     page.wait_for_timeout(1500)
     page.keyboard.press("Control+Enter")

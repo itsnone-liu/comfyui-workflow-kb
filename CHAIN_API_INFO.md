@@ -36,13 +36,24 @@
 注意：指令里**不要**追加"表情强度不得减弱"类约束——实测表情过冲 3 倍且身份
 坍塌至 0.369（negative_result，KB 已录）。表情强度问题交给段3。
 
-### 段3 scail2 表情复刻（wf 2092820995869847553）
+### 段3 scail2 表情复刻（wf 2092820995869847553）— 输入映射（nodeInfoList）
+
 | nodeId | fieldName | 类型 | 填什么 |
 |---|---|---|---|
 | `68` | `image` | IMAGE | **image = 段2输出图**（身份/发型载体） |
 | `2` | `video` | VIDEO | **驱动视频 = 被换脸原图制备**（见下） |
 | `85` | `value` | INT | 生成秒数，推荐 `8` |
 | `88` | `value` | INT | 分辨率，推荐 `1024` |
+| `303` | `value` | STRING | （可选）表情提示词覆盖。默认静态文案，特定表情（如嘟嘴）可传更贴切的描述 |
+
+> **⚠️ 2026-08-27 深夜平台事故修复**：平台容器丢失 Qwen3-VL-4B-Instruct 模型，
+> 原作者内置的 `128 AILab_QwenVL`（看驱动视频→自动生成表情描述文本→喂
+> scail2 文本条件）报 FileNotFoundError 全线炸。修复=加 `303
+> EXPR_PROMPT`（PrimitiveStringMultiline 静态表情提示词）接管 `17
+> CLIPTextEncode.text`；128 摘链保留为死分支（不可达即不执行，平台恢复后
+> 重接 link 即可回滚）。烤入任务 2092998816108666882 SUCCESS，zip 图
+> identity_vs_ref=0.6328 过门禁——静态文案质量无损。需特定表情描述时用
+> nodeInfoList 覆盖 303.value。
 
 **驱动视频制备（本地 ffmpeg，零币）**——表情来自驱动帧本体，须用被换脸原图：
 
