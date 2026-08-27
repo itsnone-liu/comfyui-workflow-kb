@@ -1,4 +1,4 @@
-# 进度快照 —— 2026-08-26（hairchain_A 组合管线三约束达标 + M0-M11 + M15-M18设计 + DLC/H3 全日弧 + M19 四条意见修复；git+codegraph 已推远端 ✅）
+# 进度快照 —— 2026-08-26（hairchain_A 三约束达标 + hairchain_B 表情强度四臂弧 + M0-M11 + M15-M18设计 + DLC/H3 全日弧 + M19 四条意见修复；git+codegraph 已推远端 ✅）
 
 > 重启后从这份文件恢复上下文。先读 `PLAN.md`（总方案）再看这里（当前状态）。
 > 代码版本管理：本目录是独立 git 仓库（`git log` 看历史；密钥/原始采集/模型/输出图已
@@ -8,6 +8,34 @@
 ## 当前状态：M0–M7 + M8 换脸实战 + M9 探索机制 + M10 Web 前端 + M15 专家方案层 + M11 研究通道（gap#1/#2/#3）+ M16 验证层增强 + M17 设计 + DLC 验证 ✅
 
 ## 2026-08-26 会话进展
+
+### hairchain_B：表情强度修复四臂弧 ✅（用户："发型解决、一致性没问题，但表情强度不够"）
+
+**诊断（AU 通道 M16，`.venv-kb` 子进程 `-I` 隔离跑）**：klein 段 AU 全面稀释
+~30%（mouth_pucker -34% 最重），**5 点几何 0.050 仍过线 = 表情强度盲区又一
+实证**；step1 reactor 级无损（expr_follow_au 0.987）。
+
+**四臂对比**（target 基准 knit 0.174/squint 0.292/pucker 0.333）：
+
+| 臂 | identity | knit | pucker | 判定 |
+|---|---|---|---|---|
+| klein_0 两段链 | 0.675 | 0.166 | 0.220 | 基线（稀释态） |
+| LP 第三段 | 0.660 | 0.131 | 0.291 | 只恢复嘴部，眉眼更弱 |
+| **scail2 第三段 (S_02)** | 0.584 | **0.175** | **0.302** | **三主维全面恢复 → 交付** |
+| Klein 指令强化 | ~~0.369~~ | 0.260 | 0.888 | 表情过冲3x+身份坍塌，淘汰 |
+
+**交付链 v2**：reactor→klein→scail2 三段（3 任务 ~4min）。任务
+2092785534788218882(LP)/2092786389735448577(S)/2092787101847302145(K)，
+产物 `data/swap/hairchain_B/`，画廊 8827（5/6/7 号新帧）。
+
+**落库**：BL-009 扩散编辑表情稀释律（law，含人话版）；DR-005 更新（表情强度
+敏感→三段链 + 禁指令强化的理由）；`reactor_klein_hair_chain` v2 三段路由；
+negative_result ×1（Klein 指令强化=身份/表情挤占律又一例，同 qwen_swap 模式）；
+verified_result #39（总 39）。scail2>LP 与 gap#2 用户校准再次一致。
+
+**工具**：`_task_expr_chain.py`(LP臂) / `_task_expr_arm2.py`(S+K 臂) /
+`_task_expr_au_fix.py`(AU 补评，修子进程编码: -X utf8 + errors=replace) /
+`_task_expr_writeback.py`。
 
 ### hairchain_A：换脸完整三约束组合管线 ✅（用户任务：发型也跟参考图）
 
