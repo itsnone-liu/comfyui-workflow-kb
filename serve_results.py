@@ -117,6 +117,7 @@ def _ago(ts: float) -> str:
 
 class Handler(BaseHTTPRequestHandler):
     roots: list[str] = DEFAULT_ROOTS
+    protocol_version = "HTTP/1.1"  # keep-alive; video elements need this
 
     def log_message(self, fmt, *args):  # quieter
         sys.stderr.write("[%s] %s\n" % (time.strftime("%H:%M:%S"), fmt % args))
@@ -128,6 +129,43 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(body)
+
+    def _send_file(self, f: Path, ctype: str):
+        size = f.stat().st_size
+        start, end = 0, size - 1
+        rng = self.headers.get("Range")
+        partial = False
+        if rng and rng.startswith("bytes="):
+            try:
+                s, _, e = rng[6:].partition("-")
+                start = int(s) if s else 0
+                end = int(e) if e else size - 1
+                end = min(end, size - 1)
+                partial = 0 <= start <= end < size
+            except ValueError:
+                partial = False
+        if rng and not partial:
+            self.send_response(416)
+            self.send_header("Content-Range", f"bytes */{size}")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.send_response(206 if partial else 200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(end - start + 1))
+        if partial:
+            self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+        self.end_headers()
+        with open(f, "rb") as fh:
+            fh.seek(start)
+            remaining = end - start + 1
+            while remaining > 0:
+                chunk = fh.read(min(256 * 1024, remaining))
+                if not chunk:
+                    break
+                self.wfile.write(chunk)
+                remaining -= len(chunk)
 
     def do_GET(self):
         if self.path in ("/", "/index.html"):
@@ -146,8 +184,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(403, b"forbidden", "text/plain")
             if not f.is_file():
                 return self._send(404, b"not found", "text/plain")
-            data = f.read_bytes()
-            self._send(200, data, mimetypes.guess_type(str(f))[0] or "application/octet-stream")
+            self._send_file(f, mimetypes.guess_type(str(f))[0] or "application/octet-stream")
         else:
             self._send(404, b"not found", "text/plain")
 
