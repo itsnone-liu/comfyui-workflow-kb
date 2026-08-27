@@ -26,6 +26,17 @@ SUCCESS 只有 mp4，编辑器节点红点）；setContent 后 getContent 回读
 任务，运行中不可见。④编辑器就绪信号=顶栏 Run 按钮出现（"Save manually"
 文本出现太早，Ctrl+Enter 会打空）。
 
+### 段3 终端二次改造：输出 = 压缩节点，图内零预览 ✅（用户："工作流最后输出为压缩节点，中间过程不要有任何预览节点"）
+
+- 复刻段1 的 **CompressImages** 平台节点（节点302 `ZIP_OUT`，输入槽
+  `images or video_path` 类型 `*`）吃 IMG_PICK(300) 最终帧 → **zip**
+  （内含 image_00000.png ≈1MB，支持 password/格式选项）
+- 删 SaveImage 301（被 zip 取代）、删 ShowText 79 预览节点——图内零预览；
+  mp4（VHS 127）保留作动态佐证
+- 任务 **2092888227938611202** SUCCESS 验证：产物 = zip + mp4，apiFormat
+  39 节点（302 在，301/79 清除）；本地 `scail2_final.zip` zipfile 验过内容
+- KB #42；commit `dfd29ea`→`1d88654` 已推
+
 ### H3 电影感 LoRA 文章吸收 + 双采/LoRA 双 facet 实测 ✅（用户：知乎链接 → 测试 minimax 文生视频 10 秒工作流）
 
 **知乎抓取突破**：zhuanlan 直抓/jina/知乎API/Wayback/全新浏览器档案全 403
