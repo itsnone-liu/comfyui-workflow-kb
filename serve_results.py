@@ -28,6 +28,7 @@ import sys
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
 MEDIA = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".webm", ".avi", ".mov"}
@@ -135,7 +136,9 @@ class Handler(BaseHTTPRequestHandler):
             body = json.dumps({"items": scan(self.roots)}, ensure_ascii=False).encode("utf-8")
             self._send(200, body, "application/json; charset=utf-8")
         elif self.path.startswith("/f/"):
-            rel = self.path[3:].split("?")[0]
+            # browsers percent-encode non-ASCII in <img src>; decode back to
+            # the real (possibly Chinese) filename before hitting the disk
+            rel = unquote(self.path[3:].split("?")[0])
             f = (ROOT / rel).resolve()
             try:
                 f.relative_to(ROOT)
