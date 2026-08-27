@@ -50,7 +50,7 @@
 ffmpeg -loop 1 -i 被换脸原图.jpg -t 2 -r 10 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" driver.mp4
 ```
 
-段3 输出为**PNG + mp4 双产物**（2026-08-27 起内置直出图片，见下节）；
+段3 输出为 **zip（内含最终图片）+ mp4** 双产物（2026-08-27 定稿，见下节）；
 
 ```bash
 ffmpeg -i out.mp4 -vf "select='eq(n\,6)+eq(n\,10)+eq(n\,14)'" -vsync vfr frame_%02d.png
@@ -106,23 +106,27 @@ t3 = rh_task.run_workflow(key, "2092820995869847553", [
     {"nodeId": "85", "fieldName": "value", "fieldValue": "8"},
     {"nodeId": "88", "fieldName": "value", "fieldValue": "1024"}])
 o3 = rh_task.wait_task(key, t3, poll=8, max_wait=900)
-# 段3 现在直接双产物: PNG(交付帧) + mp4 — 按后缀取用, 无需本地 ffmpeg 选帧
+# 段3 返回 zip(最终图片在内) + mp4(动态佐证); 按后缀取用
 urls = rh_task.collect_file_urls(o3)
-p3 = next(u for u in urls if u.endswith(".png"))
-rh_task.download(p3, "step3_final.png")     # 交付图片
+z = next(u for u in urls if u.endswith(".zip"))
+rh_task.download(z, "final.zip")     # 解压即最终图片
 ```
 
-### 段3 直出图片（2026-08-27 增）
+### 段3 输出 = 压缩包，无预览节点（2026-08-27 定稿）
 
-工作流内新增 `IMG_PICK(ImageFromBatch, 节点300, batch_index=14)` →
-`IMG_SAVE(SaveImage, 节点301)`：从最终帧序列抽出第 14 帧（hairchain_B
-实测最优帧位）直接存 PNG。**编辑器 / webapp / Task API 三种跑法都返回
-PNG + mp4 双产物**（任务 2092881408761028609 验证；与 ffmpeg 抽帧
-S_02 像素差 mean 3.1，同帧位）。
-
-- 换帧位：编辑器里改 IMG_PICK 的 `batch_index`（0 基；6/10/14 为备选）
-- 输入名是 **`image`** 不是 `images`（ImageFromBatch 定义；手工造节点
-  必须对准输入名，否则该分支被静默丢弃——本次踩坑主因）
+- 终端节点 `ZIP_OUT(CompressImages, 节点302)`：吃 `IMG_PICK
+  (ImageFromBatch, 节点300, batch_index=14)` 的最终帧，打包成
+  **zip**（内含 image_00000.png ≈1MB）；prefix `scail2_final`，
+  支持 password 选项
+- 附带 mp4（VHS_VideoCombine，动态佐证，非预览节点）
+- **图内无任何预览节点**（ShowText 已删；段1/段2 本就干净）
+- 换抽帧位：编辑器改 IMG_PICK 的 `batch_index`（0 基；6/10/14 备选）
+- 历史沿革：初版出 mp4→ffmpeg 本地抽帧；二版内置 SaveImage 直出
+  PNG；本版按需改为 zip 终端（任务 2092888227938611202 验证，
+  zip+mp4 双产物，apiFormat 39 节点）
+- 踩坑备查：手工造节点输入名必须严格对准节点定义
+  （ImageFromBatch 是 `image`，CompressImages 是 `images or video_path`），
+  错名分支被静默丢弃——setContent 后 getContent 回读 inputs 可零币自查
 
 webapp 替代形态（不需要工作台副本、无 810 概念，效果同源）：
 段2 `rh_task.run_webapp(key, "2075052610570244098", node_info)`、
