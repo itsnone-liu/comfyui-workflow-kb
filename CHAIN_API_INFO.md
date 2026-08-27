@@ -52,6 +52,16 @@ ffmpeg -loop 1 -i 被换脸原图.jpg -t 2 -r 10 -pix_fmt yuv420p -vf "scale=tru
 
 段3 输出为 **zip（内含最终图片）+ mp4** 双产物（2026-08-27 定稿，见下节）；
 
+> **⚠️ 2026-08-27 晚事故修复（重要）**：段3 UI 曾带原作者**演示图**默认输入，
+> 编辑器跑 / API 不传 nodeInfoList 时会吃演示图 → 直出图人物完全不对
+> （identity_vs_ref 仅 0.07-0.11，vs 被换图反而更高）。**工作流接线本身无
+> 问题**（IMG_PICK 300 ← GIMMVFI 130 与视频同源，用户实跑 zip 图 0.629-0.665）。
+> 已修复：UI 默认输入改为正确样例（node68=klein_0.png 哈希 67561ae0…、
+> node2=driver.mp4 哈希 408dca78…），并以显式传参重跑过身份门禁
+> （任务 2092977881955442690，zip 图 identity_vs_ref=0.5971 ≥0.55 PASS）。
+> **协议升级：直出图/zip 验证必须打身份分（FaceComparator vs ref ≥0.55），
+> 禁止只验"zip 里有 PNG"（内容盲检）**。
+
 ```bash
 ffmpeg -i out.mp4 -vf "select='eq(n\,6)+eq(n\,10)+eq(n\,14)'" -vsync vfr frame_%02d.png
 ```
